@@ -343,11 +343,7 @@ managedPrivateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -363,20 +359,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dffcom'
+module factories 'ts/modules:microsoft.datafactory.factories:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Factories'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dffcom001'
+    name: '<name>'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    cMKKeyName: '<keyVaultEncryptionKeyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<managedIdentityResourceId>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     gitConfigureLater: true
     integrationRuntimes: [
       {
@@ -401,8 +397,8 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
           '<storageAccountBlobEndpoint>'
         ]
         groupId: 'blob'
-        name: '<name>'
-        privateLinkResourceId: '<privateLinkResourceId>'
+        name: '<storageAccountName>'
+        privateLinkResourceId: '<storageAccountResourceId>'
       }
     ]
     managedVirtualNetworkName: 'default'
@@ -448,32 +444,32 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dffcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyVaultEncryptionKeyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "gitConfigureLater": {
       "value": true
@@ -506,8 +502,8 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
             "<storageAccountBlobEndpoint>"
           ],
           "groupId": "blob",
-          "name": "<name>",
-          "privateLinkResourceId": "<privateLinkResourceId>"
+          "name": "<storageAccountName>",
+          "privateLinkResourceId": "<storageAccountResourceId>"
         }
       ]
     },
@@ -560,10 +556,10 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dffmin'
+module factories 'ts/modules:microsoft.datafactory.factories:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Factories'
   params: {
-    name: '<<namePrefix>>dffmin001'
+    name: '<name>'
   }
 }
 ```
@@ -581,7 +577,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>dffmin001"
+      "value": "<name>"
     }
   }
 }

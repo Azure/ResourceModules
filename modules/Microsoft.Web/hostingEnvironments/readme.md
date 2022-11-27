@@ -218,11 +218,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-whasev2'
+module hostingEnvironments 'ts/modules:microsoft.web.hostingenvironments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-HostingEnvironments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>whasev2001'
+    name: '<name>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     clusterSettings: [
@@ -231,11 +231,11 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         value: '1'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     ipsslAddressCount: 2
     kind: 'ASEv2'
     multiSize: 'Standard_D1_V2'
@@ -266,7 +266,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>whasev2001"
+      "value": "<name>"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -281,19 +281,19 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "ipsslAddressCount": {
       "value": 2
@@ -329,11 +329,11 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-whasev3'
+module hostingEnvironments 'ts/modules:microsoft.web.hostingenvironments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-HostingEnvironments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>whasev3001'
+    name: '<name>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     clusterSettings: [
@@ -342,11 +342,11 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         value: '1'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -375,7 +375,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>whasev3001"
+      "value": "<name>"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -390,19 +390,19 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"

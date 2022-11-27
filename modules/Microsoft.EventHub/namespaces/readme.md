@@ -292,11 +292,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -312,11 +308,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehncom'
+module namespaces 'ts/modules:microsoft.eventhub.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ehncom001'
+    name: '<name>'
     // Non-required parameters
     authorizationRules: [
       {
@@ -335,11 +331,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     eventHubs: [
       {
         name: '<<namePrefix>>-az-evh-x-001'
@@ -365,7 +361,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
         captureDescriptionDestinationBlobContainer: 'eventhub'
         captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-        captureDescriptionDestinationStorageAccountResourceId: '<captureDescriptionDestinationStorageAccountResourceId>'
+        captureDescriptionDestinationStorageAccountResourceId: '<storageAccountResourceId>'
         captureDescriptionEnabled: true
         captureDescriptionEncoding: 'Avro'
         captureDescriptionIntervalInSeconds: 300
@@ -451,7 +447,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ehncom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -474,19 +470,19 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "eventHubs": {
       "value": [
@@ -514,7 +510,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
           "captureDescriptionDestinationBlobContainer": "eventhub",
           "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
-          "captureDescriptionDestinationStorageAccountResourceId": "<captureDescriptionDestinationStorageAccountResourceId>",
+          "captureDescriptionDestinationStorageAccountResourceId": "<storageAccountResourceId>",
           "captureDescriptionEnabled": true,
           "captureDescriptionEncoding": "Avro",
           "captureDescriptionIntervalInSeconds": 300,
@@ -609,10 +605,10 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehnmin'
+module namespaces 'ts/modules:microsoft.eventhub.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
-    name: '<<namePrefix>>ehnmin001'
+    name: '<name>'
   }
 }
 ```
@@ -630,7 +626,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>ehnmin001"
+      "value": "<name>"
     }
   }
 }
@@ -646,11 +642,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehnpe'
+module namespaces 'ts/modules:microsoft.eventhub.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ehnpe001'
+    name: '<name>'
     // Non-required parameters
     privateEndpoints: [
       {
@@ -681,7 +677,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ehnpe001"
+      "value": "<name>"
     },
     // Non-required parameters
     "privateEndpoints": {

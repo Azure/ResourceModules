@@ -909,8 +909,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslin'
+module virtualMachineScaleSets 'ts/modules:microsoft.compute.virtualmachinescalesets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -920,7 +920,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslin001'
+    name: '<name>'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -934,7 +934,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     availabilityZones: [
       '2'
     ]
-    bootDiagnosticStorageAccountName: '<bootDiagnosticStorageAccountName>'
+    bootDiagnosticStorageAccountName: '<storageAccountName>'
     dataDisks: [
       {
         caching: 'ReadOnly'
@@ -953,22 +953,22 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     disablePasswordAuthentication: true
     encryptionAtHost: false
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
+        KekVaultResourceId: '<keyVaultResourceId>'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
+        KeyEncryptionKeyURL: '<keyVaultEncryptionKeyUrl>'
+        KeyVaultResourceId: '<keyVaultResourceId>'
+        KeyVaultURL: '<keyVaultUrl>'
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -977,8 +977,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       enabled: true
       fileData: [
         {
-          storageAccountId: '<storageAccountId>'
-          uri: '<uri>'
+          storageAccountId: '<storageAccountResourceId>'
+          uri: '<storageAccountCSEFileUrl>'
         }
       ]
       protectedSettings: {
@@ -1002,7 +1002,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '<id>'
+                id: '<subnetResourceId>'
               }
             }
           }
@@ -1012,7 +1012,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     ]
     publicKeys: [
       {
-        keyData: '<keyData>'
+        keyData: '<SSHKeyPublicKey>'
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
@@ -1062,7 +1062,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslin001"
+      "value": "<name>"
     },
     "osDisk": {
       "value": {
@@ -1086,7 +1086,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       ]
     },
     "bootDiagnosticStorageAccountName": {
-      "value": "<bootDiagnosticStorageAccountName>"
+      "value": "<storageAccountName>"
     },
     "dataDisks": {
       "value": [
@@ -1109,19 +1109,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "disablePasswordAuthentication": {
       "value": true
@@ -1134,11 +1134,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "settings": {
           "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KekVaultResourceId": "<keyVaultResourceId>",
           "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
+          "KeyEncryptionKeyURL": "<keyVaultEncryptionKeyUrl>",
+          "KeyVaultResourceId": "<keyVaultResourceId>",
+          "KeyVaultURL": "<keyVaultUrl>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
         }
@@ -1149,8 +1149,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "fileData": [
           {
-            "storageAccountId": "<storageAccountId>",
-            "uri": "<uri>"
+            "storageAccountId": "<storageAccountResourceId>",
+            "uri": "<storageAccountCSEFileUrl>"
           }
         ],
         "protectedSettings": {
@@ -1184,7 +1184,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "<id>"
+                  "id": "<subnetResourceId>"
                 }
               }
             }
@@ -1196,7 +1196,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "publicKeys": {
       "value": [
         {
-          "keyData": "<keyData>",
+          "keyData": "<SSHKeyPublicKey>",
           "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
         }
       ]
@@ -1248,8 +1248,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslinmin'
+module virtualMachineScaleSets 'ts/modules:microsoft.compute.virtualmachinescalesets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1259,7 +1259,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslinmin001'
+    name: '<name>'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1278,7 +1278,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '<id>'
+                id: '<subnetResourceId>'
               }
             }
           }
@@ -1288,7 +1288,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     ]
     publicKeys: [
       {
-        keyData: '<keyData>'
+        keyData: '<SSHKeyPublicKey>'
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
@@ -1321,7 +1321,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslinmin001"
+      "value": "<name>"
     },
     "osDisk": {
       "value": {
@@ -1350,7 +1350,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "<id>"
+                  "id": "<subnetResourceId>"
                 }
               }
             }
@@ -1362,7 +1362,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "publicKeys": {
       "value": [
         {
-          "keyData": "<keyData>",
+          "keyData": "<SSHKeyPublicKey>",
           "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
         }
       ]
@@ -1381,8 +1381,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslcmk'
+module virtualMachineScaleSets 'ts/modules:microsoft.compute.virtualmachinescalesets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1392,13 +1392,13 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslcmk001'
+    name: '<name>'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
       managedDisk: {
         diskEncryptionSet: {
-          id: '<id>'
+          id: '<diskEncryptionSetResourceId>'
         }
         storageAccountType: 'Premium_LRS'
       }
@@ -1413,7 +1413,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         diskSizeGB: '128'
         managedDisk: {
           diskEncryptionSet: {
-            id: '<id>'
+            id: '<diskEncryptionSetResourceId>'
           }
           storageAccountType: 'Premium_LRS'
         }
@@ -1428,7 +1428,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '<id>'
+                id: '<subnetResourceId>'
               }
             }
           }
@@ -1438,7 +1438,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     ]
     publicKeys: [
       {
-        keyData: '<keyData>'
+        keyData: '<SSHKeyPublicKey>'
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
@@ -1471,7 +1471,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslcmk001"
+      "value": "<name>"
     },
     "osDisk": {
       "value": {
@@ -1479,7 +1479,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "diskSizeGB": "128",
         "managedDisk": {
           "diskEncryptionSet": {
-            "id": "<id>"
+            "id": "<diskEncryptionSetResourceId>"
           },
           "storageAccountType": "Premium_LRS"
         }
@@ -1500,7 +1500,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
           "diskSizeGB": "128",
           "managedDisk": {
             "diskEncryptionSet": {
-              "id": "<id>"
+              "id": "<diskEncryptionSetResourceId>"
             },
             "storageAccountType": "Premium_LRS"
           }
@@ -1521,7 +1521,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "<id>"
+                  "id": "<subnetResourceId>"
                 }
               }
             }
@@ -1533,7 +1533,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "publicKeys": {
       "value": [
         {
-          "keyData": "<keyData>",
+          "keyData": "<SSHKeyPublicKey>",
           "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
         }
       ]
@@ -1552,8 +1552,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswin'
+module virtualMachineScaleSets 'ts/modules:microsoft.compute.virtualmachinescalesets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1563,7 +1563,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsswin001'
+    name: '<name>'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1575,11 +1575,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     encryptionAtHost: false
     extensionAntiMalwareConfig: {
       enabled: true
@@ -1603,11 +1603,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
+        KekVaultResourceId: '<keyVaultResourceId>'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
+        KeyEncryptionKeyURL: '<keyVaultEncryptionKeyUrl>'
+        KeyVaultResourceId: '<keyVaultResourceId>'
+        KeyVaultURL: '<keyVaultUrl>'
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -1616,12 +1616,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       enabled: true
       fileData: [
         {
-          storageAccountId: '<storageAccountId>'
-          uri: '<uri>'
+          storageAccountId: '<storageAccountResourceId>'
+          uri: '<storageAccountCSEFileUrl>'
         }
       ]
       protectedSettings: {
-        commandToExecute: '<commandToExecute>'
+        commandToExecute: '<storageAccountCSEFileName>'
       }
     }
     extensionDependencyAgentConfig: {
@@ -1644,7 +1644,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '<id>'
+                id: '<subnetResourceId>'
               }
             }
           }
@@ -1698,7 +1698,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsswin001"
+      "value": "<name>"
     },
     "osDisk": {
       "value": {
@@ -1720,19 +1720,19 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       "value": "<adminPassword>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "encryptionAtHost": {
       "value": false
@@ -1762,11 +1762,11 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "settings": {
           "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KekVaultResourceId": "<keyVaultResourceId>",
           "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
+          "KeyEncryptionKeyURL": "<keyVaultEncryptionKeyUrl>",
+          "KeyVaultResourceId": "<keyVaultResourceId>",
+          "KeyVaultURL": "<keyVaultUrl>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
         }
@@ -1777,12 +1777,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "enabled": true,
         "fileData": [
           {
-            "storageAccountId": "<storageAccountId>",
-            "uri": "<uri>"
+            "storageAccountId": "<storageAccountResourceId>",
+            "uri": "<storageAccountCSEFileUrl>"
           }
         ],
         "protectedSettings": {
-          "commandToExecute": "<commandToExecute>"
+          "commandToExecute": "<storageAccountCSEFileName>"
         }
       }
     },
@@ -1817,7 +1817,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "<id>"
+                  "id": "<subnetResourceId>"
                 }
               }
             }
@@ -1873,8 +1873,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswinmin'
+module virtualMachineScaleSets 'ts/modules:microsoft.compute.virtualmachinescalesets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachineScaleSets'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1884,7 +1884,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsswinmin001'
+    name: '<name>'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1903,7 +1903,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: '<id>'
+                id: '<subnetResourceId>'
               }
             }
           }
@@ -1940,7 +1940,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsswinmin001"
+      "value": "<name>"
     },
     "osDisk": {
       "value": {
@@ -1969,7 +1969,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
               "name": "ipconfig1",
               "properties": {
                 "subnet": {
-                  "id": "<id>"
+                  "id": "<subnetResourceId>"
                 }
               }
             }

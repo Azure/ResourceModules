@@ -297,23 +297,23 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npecom'
+module privateEndpoints 'ts/modules:microsoft.network.privateendpoints:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateEndpoints'
   params: {
     // Required parameters
     groupIds: [
       'vault'
     ]
-    name: '<<namePrefix>>npecom001'
-    serviceResourceId: '<serviceResourceId>'
+    name: '<name>'
+    serviceResourceId: '<keyVaultResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     applicationSecurityGroups: [
       {
-        id: '<id>'
+        id: '<applicationSecurityGroupResourceId>'
       }
     ]
-    customNetworkInterfaceName: '<<namePrefix>>npecom001nic'
+    customNetworkInterfaceName: '<customNetworkInterfaceName>'
     ipConfigurations: [
       {
         name: 'myIPconfig'
@@ -362,10 +362,10 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>npecom001"
+      "value": "<name>"
     },
     "serviceResourceId": {
-      "value": "<serviceResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -374,12 +374,12 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "applicationSecurityGroups": {
       "value": [
         {
-          "id": "<id>"
+          "id": "<applicationSecurityGroupResourceId>"
         }
       ]
     },
     "customNetworkInterfaceName": {
-      "value": "<<namePrefix>>npecom001nic"
+      "value": "<customNetworkInterfaceName>"
     },
     "ipConfigurations": {
       "value": [
@@ -428,15 +428,15 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npemin'
+module privateEndpoints 'ts/modules:microsoft.network.privateendpoints:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateEndpoints'
   params: {
     // Required parameters
     groupIds: [
       'vault'
     ]
-    name: '<<namePrefix>>npemin001'
-    serviceResourceId: '<serviceResourceId>'
+    name: '<name>'
+    serviceResourceId: '<keyVaultResourceId>'
     subnetResourceId: '<subnetResourceId>'
   }
 }
@@ -461,10 +461,10 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>npemin001"
+      "value": "<name>"
     },
     "serviceResourceId": {
-      "value": "<serviceResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"

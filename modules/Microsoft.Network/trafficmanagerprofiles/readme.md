@@ -269,18 +269,18 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ntmpcom'
+module trafficmanagerprofiles 'ts/modules:microsoft.network.trafficmanagerprofiles:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Trafficmanagerprofiles'
   params: {
     // Required parameters
     name: '<name>'
     relativeName: '<relativeName>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -316,19 +316,19 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -358,8 +358,8 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ntmpmin'
+module trafficmanagerprofiles 'ts/modules:microsoft.network.trafficmanagerprofiles:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Trafficmanagerprofiles'
   params: {
     // Required parameters
     name: '<name>'

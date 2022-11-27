@@ -451,11 +451,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.OperationsManagement/solutions` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -471,11 +467,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-oiwcom'
+module workspaces 'ts/modules:microsoft.operationalinsights.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwcom001'
+    name: '<name>'
     // Non-required parameters
     dailyQuotaGb: 10
     dataSources: [
@@ -568,11 +564,11 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         state: 'Enabled'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     gallerySolutions: [
       {
         name: 'AzureAutomation'
@@ -583,13 +579,13 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     linkedServices: [
       {
         name: 'Automation'
-        resourceId: '<resourceId>'
+        resourceId: '<automationAccountResourceId>'
       }
     ]
     linkedStorageAccounts: [
       {
         name: 'Query'
-        resourceId: '<resourceId>'
+        resourceId: '<storageAccountResourceId>'
       }
     ]
     lock: 'CanNotDelete'
@@ -605,7 +601,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '<storageAccountId>'
+        storageAccountId: '<storageAccountResourceId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -633,7 +629,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -732,19 +728,19 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "gallerySolutions": {
       "value": [
@@ -759,7 +755,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       "value": [
         {
           "name": "Automation",
-          "resourceId": "<resourceId>"
+          "resourceId": "<automationAccountResourceId>"
         }
       ]
     },
@@ -767,7 +763,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       "value": [
         {
           "name": "Query",
-          "resourceId": "<resourceId>"
+          "resourceId": "<storageAccountResourceId>"
         }
       ]
     },
@@ -793,7 +789,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "<storageAccountId>",
+          "storageAccountId": "<storageAccountResourceId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",
@@ -820,10 +816,10 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-oiwmin'
+module workspaces 'ts/modules:microsoft.operationalinsights.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
-    name: '<<namePrefix>>oiwmin001'
+    name: '<name>'
   }
 }
 ```
@@ -841,7 +837,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>oiwmin001"
+      "value": "<name>"
     }
   }
 }

@@ -164,11 +164,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nasgcom'
+module applicationSecurityGroups 'ts/modules:microsoft.network.applicationsecuritygroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ApplicationSecurityGroups'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nasgcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -198,7 +198,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nasgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {

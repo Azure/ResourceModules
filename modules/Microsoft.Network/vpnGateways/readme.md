@@ -189,11 +189,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgcom'
+module vpnGateways 'ts/modules:microsoft.network.vpngateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VpnGateways'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvgcom001'
+    name: '<name>'
     virtualHubResourceId: '<virtualHubResourceId>'
     // Non-required parameters
     bgpSettings: {
@@ -206,8 +206,8 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         enableBgp: false
         enableInternetSecurity: true
         enableRateLimiting: false
-        name: '<name>'
-        remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
+        name: '<vpnSiteResourceId>'
+        remoteVpnSiteResourceId: '<vpnSiteResourceId>'
         routingWeight: 0
         useLocalAzureIpAddress: false
         usePolicyBasedTrafficSelectors: false
@@ -250,7 +250,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvgcom001"
+      "value": "<name>"
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"
@@ -269,8 +269,8 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
           "enableBgp": false,
           "enableInternetSecurity": true,
           "enableRateLimiting": false,
-          "name": "<name>",
-          "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
+          "name": "<vpnSiteResourceId>",
+          "remoteVpnSiteResourceId": "<vpnSiteResourceId>",
           "routingWeight": 0,
           "useLocalAzureIpAddress": false,
           "usePolicyBasedTrafficSelectors": false,
@@ -314,11 +314,11 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgmin'
+module vpnGateways 'ts/modules:microsoft.network.vpngateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VpnGateways'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvgmin001'
+    name: '<name>'
     virtualHubResourceId: '<virtualHubResourceId>'
   }
 }
@@ -338,7 +338,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvgmin001"
+      "value": "<name>"
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"

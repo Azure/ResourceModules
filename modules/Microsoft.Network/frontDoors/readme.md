@@ -181,8 +181,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfdcom'
+module frontDoors 'ts/modules:microsoft.network.frontdoors:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-FrontDoors'
   params: {
     // Required parameters
     backendPools: [
@@ -438,8 +438,8 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfdmin'
+module frontDoors 'ts/modules:microsoft.network.frontdoors:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-FrontDoors'
   params: {
     // Required parameters
     backendPools: [

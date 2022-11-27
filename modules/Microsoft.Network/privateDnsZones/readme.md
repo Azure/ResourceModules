@@ -182,11 +182,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npdzcom'
+module privateDnsZones 'ts/modules:microsoft.network.privatednszones:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateDnsZones'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npdzcom001.com'
+    name: '<name>'
     // Non-required parameters
     a: [
       {
@@ -381,7 +381,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npdzcom001.com"
+      "value": "<name>"
     },
     // Non-required parameters
     "a": {
@@ -595,10 +595,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npdzmin'
+module privateDnsZones 'ts/modules:microsoft.network.privatednszones:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateDnsZones'
   params: {
-    name: '<<namePrefix>>npdzmin001.com'
+    name: '<name>'
   }
 }
 ```
@@ -616,7 +616,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>npdzmin001.com"
+      "value": "<name>"
     }
   }
 }

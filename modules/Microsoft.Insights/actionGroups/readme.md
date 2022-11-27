@@ -251,12 +251,12 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iagcom'
+module actionGroups 'ts/modules:microsoft.insights.actiongroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ActionGroups'
   params: {
     // Required parameters
-    groupShortName: 'agiagcom001'
-    name: '<<namePrefix>>iagcom001'
+    groupShortName: '<groupShortName>'
+    name: '<name>'
     // Non-required parameters
     emailReceivers: [
       {
@@ -303,10 +303,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "groupShortName": {
-      "value": "agiagcom001"
+      "value": "<groupShortName>"
     },
     "name": {
-      "value": "<<namePrefix>>iagcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "emailReceivers": {
@@ -356,12 +356,12 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iagmin'
+module actionGroups 'ts/modules:microsoft.insights.actiongroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ActionGroups'
   params: {
     // Required parameters
-    groupShortName: 'agiagmin001'
-    name: '<<namePrefix>>iagmin001'
+    groupShortName: '<groupShortName>'
+    name: '<name>'
   }
 }
 ```
@@ -380,10 +380,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "groupShortName": {
-      "value": "agiagmin001"
+      "value": "<groupShortName>"
     },
     "name": {
-      "value": "<<namePrefix>>iagmin001"
+      "value": "<name>"
     }
   }
 }

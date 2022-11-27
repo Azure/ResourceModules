@@ -176,17 +176,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-asscom'
+module servers 'ts/modules:microsoft.analysisservices.servers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
-    name: '<<namePrefix>>asscom'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -216,23 +216,23 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>asscom"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -265,14 +265,14 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-assmax'
+module servers 'ts/modules:microsoft.analysisservices.servers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
-    name: '<<namePrefix>>assmax'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogCategoriesToEnable: [
       'Engine'
       'Service'
@@ -281,8 +281,8 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     diagnosticMetricsToEnable: [
       'AllMetrics'
     ]
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     firewallSettings: {
       enablePowerBIService: true
       firewallRules: [
@@ -323,14 +323,14 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>assmax"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogCategoriesToEnable": {
       "value": [
@@ -347,10 +347,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       ]
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "firewallSettings": {
       "value": {
@@ -398,10 +398,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-assmin'
+module servers 'ts/modules:microsoft.analysisservices.servers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
-    name: '<<namePrefix>>assmin'
+    name: '<name>'
   }
 }
 ```
@@ -419,7 +419,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>assmin"
+      "value": "<name>"
     }
   }
 }

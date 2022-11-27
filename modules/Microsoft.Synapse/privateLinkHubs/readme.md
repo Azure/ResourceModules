@@ -232,11 +232,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -252,11 +248,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-splhcom'
+module privateLinkHubs 'ts/modules:microsoft.synapse.privatelinkhubs:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateLinkHubs'
   params: {
     // Required parameters
-    name: '<<namePrefix>>splhcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -303,7 +299,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>splhcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
@@ -353,10 +349,10 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-splhmin'
+module privateLinkHubs 'ts/modules:microsoft.synapse.privatelinkhubs:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateLinkHubs'
   params: {
-    name: '<<namePrefix>>splhmin001'
+    name: '<name>'
   }
 }
 ```
@@ -374,7 +370,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>splhmin001"
+      "value": "<name>"
     }
   }
 }

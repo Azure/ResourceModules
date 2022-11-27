@@ -176,13 +176,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module images './Microsoft.Compute/images/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicom'
+module images 'ts/modules:microsoft.compute.images:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Images'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cicom001'
+    name: '<name>'
     osAccountType: 'Premium_LRS'
-    osDiskBlobUri: '<osDiskBlobUri>'
+    osDiskBlobUri: '<vhdUri>'
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     // Non-required parameters
@@ -222,13 +222,13 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cicom001"
+      "value": "<name>"
     },
     "osAccountType": {
       "value": "Premium_LRS"
     },
     "osDiskBlobUri": {
-      "value": "<osDiskBlobUri>"
+      "value": "<vhdUri>"
     },
     "osDiskCaching": {
       "value": "ReadWrite"
@@ -262,7 +262,7 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "tagA": "You\"re it",
+        "tagA": "You're it",
         "tagB": "Player"
       }
     },

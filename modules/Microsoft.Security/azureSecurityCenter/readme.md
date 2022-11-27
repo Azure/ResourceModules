@@ -115,11 +115,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sasccom'
+module azureSecurityCenter 'ts/modules:microsoft.security.azuresecuritycenter:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AzureSecurityCenter'
   params: {
     // Required parameters
-    workspaceId: '<workspaceId>'
+    scope: '<scope>'
+    workspaceId: '<logAnalyticsWorkspaceResourceId>'
+    // Non-required parameters
     securityContactProperties: {
       alertNotifications: 'Off'
       alertsToAdmins: 'Off'
@@ -143,9 +145,13 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "workspaceId": {
-      "value": "<workspaceId>"
+    "scope": {
+      "value": "<scope>"
     },
+    "workspaceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
+    },
+    // Non-required parameters
     "securityContactProperties": {
       "value": {
         "alertNotifications": "Off",

@@ -285,11 +285,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -305,18 +301,18 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-acccom'
+module configurationStores 'ts/modules:microsoft.appconfiguration.configurationstores:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ConfigurationStores'
   params: {
     // Required parameters
-    name: '<<namePrefix>>acccom001'
+    name: '<name>'
     // Non-required parameters
     createMode: 'Default'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     disableLocalAuth: false
     enablePurgeProtection: false
     keyValues: [
@@ -365,26 +361,26 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>acccom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "createMode": {
       "value": "Default"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "disableLocalAuth": {
       "value": false
@@ -444,10 +440,10 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-accmin'
+module configurationStores 'ts/modules:microsoft.appconfiguration.configurationstores:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ConfigurationStores'
   params: {
-    name: '<<namePrefix>>accmin001'
+    name: '<name>'
   }
 }
 ```
@@ -465,7 +461,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>accmin001"
+      "value": "<name>"
     }
   }
 }
@@ -481,11 +477,11 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-accpe'
+module configurationStores 'ts/modules:microsoft.appconfiguration.configurationstores:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ConfigurationStores'
   params: {
     // Required parameters
-    name: '<<namePrefix>>accpe001'
+    name: '<name>'
     // Non-required parameters
     createMode: 'Default'
     disableLocalAuth: false
@@ -520,7 +516,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>accpe001"
+      "value": "<name>"
     },
     // Non-required parameters
     "createMode": {

@@ -247,12 +247,12 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sfccer'
+module clusters 'ts/modules:microsoft.servicefabric.clusters:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>sfccer001'
+    managementEndpoint: '<managementEndpoint>'
+    name: '<name>'
     nodeTypes: [
       {
         applicationPorts: {
@@ -294,10 +294,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080"
+      "value": "<managementEndpoint>"
     },
     "name": {
-      "value": "<<namePrefix>>sfccer001"
+      "value": "<name>"
     },
     "nodeTypes": {
       "value": [
@@ -342,12 +342,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sfccom'
+module clusters 'ts/modules:microsoft.servicefabric.clusters:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>sfccom001'
+    managementEndpoint: '<managementEndpoint>'
+    name: '<name>'
     nodeTypes: [
       {
         applicationPorts: {
@@ -400,7 +400,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     azureActiveDirectory: {
-      clientApplication: '<clientApplication>'
+      clientApplication: '<managedIdentityPrincipalId>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
       tenantId: '<<tenantId>>'
     }
@@ -436,11 +436,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: '<blobEndpoint>'
+      blobEndpoint: '<suffixes>'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: '<queueEndpoint>'
+      queueEndpoint: '<suffixes>'
       storageAccountName: '<storageAccountName>'
-      tableEndpoint: '<tableEndpoint>'
+      tableEndpoint: '<suffixes>'
     }
     fabricSettings: [
       {
@@ -489,7 +489,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     tags: {
-      clusterName: '<<namePrefix>>sfccom001'
+      clusterName: '<clusterName>'
       resourceType: 'Service Fabric'
     }
     upgradeDescription: {
@@ -529,10 +529,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080"
+      "value": "<managementEndpoint>"
     },
     "name": {
-      "value": "<<namePrefix>>sfccom001"
+      "value": "<name>"
     },
     "nodeTypes": {
       "value": [
@@ -595,7 +595,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "azureActiveDirectory": {
       "value": {
-        "clientApplication": "<clientApplication>",
+        "clientApplication": "<managedIdentityPrincipalId>",
         "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
         "tenantId": "<<tenantId>>"
       }
@@ -639,11 +639,11 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "diagnosticsStorageAccountConfig": {
       "value": {
-        "blobEndpoint": "<blobEndpoint>",
+        "blobEndpoint": "<suffixes>",
         "protectedAccountKeyName": "StorageAccountKey1",
-        "queueEndpoint": "<queueEndpoint>",
+        "queueEndpoint": "<suffixes>",
         "storageAccountName": "<storageAccountName>",
-        "tableEndpoint": "<tableEndpoint>"
+        "tableEndpoint": "<suffixes>"
       }
     },
     "fabricSettings": {
@@ -704,7 +704,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "clusterName": "<<namePrefix>>sfccom001",
+        "clusterName": "<clusterName>",
         "resourceType": "Service Fabric"
       }
     },
@@ -745,12 +745,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sfcmin'
+module clusters 'ts/modules:microsoft.servicefabric.clusters:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Clusters'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>sfcmin001'
+    managementEndpoint: '<managementEndpoint>'
+    name: '<name>'
     nodeTypes: [
       {
         applicationPorts: {
@@ -787,10 +787,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080"
+      "value": "<managementEndpoint>"
     },
     "name": {
-      "value": "<<namePrefix>>sfcmin001"
+      "value": "<name>"
     },
     "nodeTypes": {
       "value": [

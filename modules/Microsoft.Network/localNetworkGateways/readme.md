@@ -170,15 +170,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlngcom'
+module localNetworkGateways 'ts/modules:microsoft.network.localnetworkgateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-LocalNetworkGateways'
   params: {
     // Required parameters
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
-    name: '<<namePrefix>>nlngcom001'
+    name: '<name>'
     // Non-required parameters
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
@@ -218,7 +218,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": "8.8.8.8"
     },
     "name": {
-      "value": "<<namePrefix>>nlngcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "localAsn": {
@@ -255,15 +255,15 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlngmin'
+module localNetworkGateways 'ts/modules:microsoft.network.localnetworkgateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-LocalNetworkGateways'
   params: {
     // Required parameters
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
-    name: '<<namePrefix>>nlngmin001'
+    name: '<name>'
   }
 }
 ```
@@ -290,7 +290,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": "8.8.8.8"
     },
     "name": {
-      "value": "<<namePrefix>>nlngmin001"
+      "value": "<name>"
     }
   }
 }

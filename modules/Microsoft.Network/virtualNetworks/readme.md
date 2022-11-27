@@ -367,20 +367,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvncom'
+module virtualNetworks 'ts/modules:microsoft.network.virtualnetworks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '<<namePrefix>>nvncom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     dnsServers: [
       '10.0.1.4'
       '10.0.1.5'
@@ -403,7 +403,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       {
         addressPrefix: '10.0.0.0/24'
         name: '<<namePrefix>>-az-subnet-x-001'
-        networkSecurityGroupId: '<networkSecurityGroupId>'
+        networkSecurityGroupId: '<networkSecurityGroupResourceId>'
         roleAssignments: [
           {
             principalIds: [
@@ -413,7 +413,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
             roleDefinitionIdOrName: 'Reader'
           }
         ]
-        routeTableId: '<routeTableId>'
+        routeTableId: '<routeTableResourceId>'
         serviceEndpoints: [
           {
             service: 'Microsoft.Storage'
@@ -465,23 +465,23 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvncom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "dnsServers": {
       "value": [
@@ -512,7 +512,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         {
           "addressPrefix": "10.0.0.0/24",
           "name": "<<namePrefix>>-az-subnet-x-001",
-          "networkSecurityGroupId": "<networkSecurityGroupId>",
+          "networkSecurityGroupId": "<networkSecurityGroupResourceId>",
           "roleAssignments": [
             {
               "principalIds": [
@@ -522,7 +522,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
               "roleDefinitionIdOrName": "Reader"
             }
           ],
-          "routeTableId": "<routeTableId>",
+          "routeTableId": "<routeTableResourceId>",
           "serviceEndpoints": [
             {
               "service": "Microsoft.Storage"
@@ -566,14 +566,14 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvnmin'
+module virtualNetworks 'ts/modules:microsoft.network.virtualnetworks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '<<namePrefix>>nvnmin001'
+    name: '<name>'
   }
 }
 ```
@@ -597,7 +597,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvnmin001"
+      "value": "<name>"
     }
   }
 }
@@ -613,14 +613,14 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvnpeer'
+module virtualNetworks 'ts/modules:microsoft.network.virtualnetworks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworks'
   params: {
     // Required parameters
     addressPrefixes: [
       '10.0.0.0/24'
     ]
-    name: '<<namePrefix>>nvnpeer001'
+    name: '<name>'
     // Non-required parameters
     subnets: [
       {
@@ -637,7 +637,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         remotePeeringAllowVirtualNetworkAccess: true
         remotePeeringEnabled: true
         remotePeeringName: 'customName'
-        remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
+        remoteVirtualNetworkId: '<virtualNetworkResourceId>'
         useRemoteGateways: false
       }
     ]
@@ -664,7 +664,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nvnpeer001"
+      "value": "<name>"
     },
     // Non-required parameters
     "subnets": {
@@ -685,7 +685,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
           "remotePeeringAllowVirtualNetworkAccess": true,
           "remotePeeringEnabled": true,
           "remotePeeringName": "customName",
-          "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
+          "remoteVirtualNetworkId": "<virtualNetworkResourceId>",
           "useRemoteGateways": false
         }
       ]

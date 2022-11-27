@@ -440,11 +440,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nplscom'
+module privateLinkServices 'ts/modules:microsoft.network.privatelinkservices:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateLinkServices'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nplscom001'
+    name: '<name>'
     // Non-required parameters
     autoApproval: {
       subscriptions: [
@@ -453,24 +453,24 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     }
     enableProxyProtocol: true
     fqdns: [
-      'nplscom.plsfqdn01.azure.privatelinkservice'
-      'nplscom.plsfqdn02.azure.privatelinkservice'
+      '<fqdns>'
+      '<fqdns>'
     ]
     ipConfigurations: [
       {
-        name: 'nplscom01'
+        name: '<name>'
         properties: {
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: '<id>'
+            id: '<subnetResourceId>'
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: '<id>'
+        id: '<loadBalancerFrontendIpConfigurationResourceId>'
       }
     ]
     lock: 'CanNotDelete'
@@ -484,7 +484,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     ]
     visibility: {
       subscriptions: [
-        '<subscriptionId>'
+        '<subscriptions>'
       ]
     }
   }
@@ -505,7 +505,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nplscom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "autoApproval": {
@@ -520,19 +520,19 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     },
     "fqdns": {
       "value": [
-        "nplscom.plsfqdn01.azure.privatelinkservice",
-        "nplscom.plsfqdn02.azure.privatelinkservice"
+        "<fqdns>",
+        "<fqdns>"
       ]
     },
     "ipConfigurations": {
       "value": [
         {
-          "name": "nplscom01",
+          "name": "<name>",
           "properties": {
             "primary": true,
             "privateIPAllocationMethod": "Dynamic",
             "subnet": {
-              "id": "<id>"
+              "id": "<subnetResourceId>"
             }
           }
         }
@@ -541,7 +541,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "loadBalancerFrontendIpConfigurations": {
       "value": [
         {
-          "id": "<id>"
+          "id": "<loadBalancerFrontendIpConfigurationResourceId>"
         }
       ]
     },
@@ -561,7 +561,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "visibility": {
       "value": {
         "subscriptions": [
-          "<subscriptionId>"
+          "<subscriptions>"
         ]
       }
     }
@@ -579,25 +579,25 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nplsmin'
+module privateLinkServices 'ts/modules:microsoft.network.privatelinkservices:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateLinkServices'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nplsmin001'
+    name: '<name>'
     // Non-required parameters
     ipConfigurations: [
       {
-        name: 'nplsmin01'
+        name: '<name>'
         properties: {
           subnet: {
-            id: '<id>'
+            id: '<subnetResourceId>'
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: '<id>'
+        id: '<loadBalancerFrontendIpConfigurationResourceId>'
       }
     ]
   }
@@ -618,16 +618,16 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nplsmin001"
+      "value": "<name>"
     },
     // Non-required parameters
     "ipConfigurations": {
       "value": [
         {
-          "name": "nplsmin01",
+          "name": "<name>",
           "properties": {
             "subnet": {
-              "id": "<id>"
+              "id": "<subnetResourceId>"
             }
           }
         }
@@ -636,7 +636,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "loadBalancerFrontendIpConfigurations": {
       "value": [
         {
-          "id": "<id>"
+          "id": "<loadBalancerFrontendIpConfigurationResourceId>"
         }
       ]
     }

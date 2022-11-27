@@ -551,8 +551,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddagrm'
+module databaseAccounts 'ts/modules:microsoft.documentdb.databaseaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -567,16 +567,16 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddagrm002'
+    name: '<name>'
     // Non-required parameters
     capabilitiesToAdd: [
       'EnableGremlin'
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     gremlinDatabases: [
       {
         graphs: [
@@ -595,7 +595,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-gdb-dddagrm-001'
+        name: '<name>'
       }
       {
         collections: [
@@ -614,7 +614,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-gdb-dddagrm-002'
+        name: '<name>'
       }
     ]
     location: '<location>'
@@ -660,7 +660,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddagrm002"
+      "value": "<name>"
     },
     // Non-required parameters
     "capabilitiesToAdd": {
@@ -669,19 +669,19 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "gremlinDatabases": {
       "value": [
@@ -702,7 +702,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-gdb-dddagrm-001"
+          "name": "<name>"
         },
         {
           "collections": [
@@ -721,7 +721,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-gdb-dddagrm-002"
+          "name": "<name>"
         }
       ]
     },
@@ -756,8 +756,8 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddamng'
+module databaseAccounts 'ts/modules:microsoft.documentdb.databaseaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -772,13 +772,13 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddamng001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     location: '<location>'
     mongodbDatabases: [
       {
@@ -870,7 +870,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             }
           }
         ]
-        name: '<<namePrefix>>-mdb-dddamng-001'
+        name: '<name>'
       }
       {
         collections: [
@@ -961,7 +961,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             }
           }
         ]
-        name: '<<namePrefix>>-mdb-dddamng-002'
+        name: '<name>'
       }
     ]
     roleAssignments: [
@@ -1006,23 +1006,23 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddamng001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "location": {
       "value": "<location>"
@@ -1118,7 +1118,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               }
             }
           ],
-          "name": "<<namePrefix>>-mdb-dddamng-001"
+          "name": "<name>"
         },
         {
           "collections": [
@@ -1209,7 +1209,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               }
             }
           ],
-          "name": "<<namePrefix>>-mdb-dddamng-002"
+          "name": "<name>"
         }
       ]
     },
@@ -1241,8 +1241,8 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddapln'
+module databaseAccounts 'ts/modules:microsoft.documentdb.databaseaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -1257,13 +1257,13 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddapln001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -1306,23 +1306,23 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddapln001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -1352,8 +1352,8 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddasql'
+module databaseAccounts 'ts/modules:microsoft.documentdb.databaseaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
   params: {
     // Required parameters
     locations: [
@@ -1368,13 +1368,13 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddasql001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     location: '<location>'
     roleAssignments: [
       {
@@ -1396,11 +1396,11 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-sql-dddasql-001'
+        name: '<name>'
       }
       {
         containers: []
-        name: '<<namePrefix>>-sql-dddasql-002'
+        name: '<name>'
       }
     ]
     userAssignedIdentities: {
@@ -1438,23 +1438,23 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddasql001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "location": {
       "value": "<location>"
@@ -1482,11 +1482,11 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-001"
+          "name": "<name>"
         },
         {
           "containers": [],
-          "name": "<<namePrefix>>-sql-dddasql-002"
+          "name": "<name>"
         }
       ]
     },

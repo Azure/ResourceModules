@@ -227,8 +227,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aaddscom'
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: '<keyVaultResourceId>'
+  scope: resourceGroup('','')
+}
+
+module DomainServices 'ts/modules:microsoft.aad.domainservices:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DomainServices'
   params: {
     // Required parameters
     domainName: '<<namePrefix>>.onmicrosoft.com'
@@ -236,19 +241,19 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     additionalRecipients: [
       '<<namePrefix>>@noreply.github.com'
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>aaddscom001'
-    pfxCertificate: '<pfxCertificate>'
-    pfxCertificatePassword: '<pfxCertificatePassword>'
+    name: '<name>'
+    pfxCertificate: null
+    pfxCertificatePassword: null
     replicaSets: [
       {
         location: 'WestEurope'
-        subnetId: '<subnetId>'
+        subnetId: '<subnetResourceId>'
       }
     ]
     sku: 'Standard'
@@ -279,37 +284,47 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>aaddscom001"
+      "value": "<name>"
     },
     "pfxCertificate": {
-      "value": "<pfxCertificate>"
+      "reference": {
+        "keyVault": {
+          "id": "<keyVaultResourceId>"
+        },
+        "secretName": "<certSecretName>"
+      }
     },
     "pfxCertificatePassword": {
-      "value": "<pfxCertificatePassword>"
+      "reference": {
+        "keyVault": {
+          "id": "<keyVaultResourceId>"
+        },
+        "secretName": "<certPWSecretName>"
+      }
     },
     "replicaSets": {
       "value": [
         {
           "location": "WestEurope",
-          "subnetId": "<subnetId>"
+          "subnetId": "<subnetResourceId>"
         }
       ]
     },

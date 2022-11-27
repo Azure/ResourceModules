@@ -168,14 +168,14 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cascom'
+module availabilitySets 'ts/modules:microsoft.compute.availabilitysets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AvailabilitySets'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cascom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
-    proximityPlacementGroupId: '<proximityPlacementGroupId>'
+    proximityPlacementGroupId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
         principalIds: [
@@ -203,14 +203,14 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cascom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
       "value": "CanNotDelete"
     },
     "proximityPlacementGroupId": {
-      "value": "<proximityPlacementGroupId>"
+      "value": "<proximityPlacementGroupResourceId>"
     },
     "roleAssignments": {
       "value": [
@@ -237,10 +237,10 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-casmin'
+module availabilitySets 'ts/modules:microsoft.compute.availabilitysets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AvailabilitySets'
   params: {
-    name: '<<namePrefix>>casmin001'
+    name: '<name>'
   }
 }
 ```
@@ -258,7 +258,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>casmin001"
+      "value": "<name>"
     }
   }
 }

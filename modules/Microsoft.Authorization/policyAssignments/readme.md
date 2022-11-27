@@ -187,11 +187,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apamgcom'
+module policyAssignments 'ts/modules:microsoft.authorization.policyassignments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apamgcom001'
+    name: '<name>'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
@@ -241,7 +241,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apamgcom001"
+      "value": "<name>"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -312,11 +312,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apamgmin'
+module policyAssignments 'ts/modules:microsoft.authorization.policyassignments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apamgmin001'
+    name: '<name>'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
   }
 }
@@ -336,7 +336,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apamgmin001"
+      "value": "<name>"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
@@ -355,11 +355,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apargcom'
+module policyAssignments 'ts/modules:microsoft.authorization.policyassignments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apargcom001'
+    name: '<name>'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
@@ -392,7 +392,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
     subscriptionId: '<subscriptionId>'
-    userAssignedIdentityId: '<userAssignedIdentityId>'
+    userAssignedIdentityId: '<managedIdentityResourceId>'
   }
 }
 ```
@@ -411,7 +411,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apargcom001"
+      "value": "<name>"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -472,7 +472,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "<subscriptionId>"
     },
     "userAssignedIdentityId": {
-      "value": "<userAssignedIdentityId>"
+      "value": "<managedIdentityResourceId>"
     }
   }
 }
@@ -488,11 +488,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apargmin'
+module policyAssignments 'ts/modules:microsoft.authorization.policyassignments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apargmin001'
+    name: '<name>'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
     subscriptionId: '<subscriptionId>'
@@ -514,7 +514,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apargmin001"
+      "value": "<name>"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
@@ -537,11 +537,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apasubcom'
+module policyAssignments 'ts/modules:microsoft.authorization.policyassignments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apasubcom001'
+    name: '<name>'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
@@ -573,7 +573,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
     subscriptionId: '<subscriptionId>'
-    userAssignedIdentityId: '<userAssignedIdentityId>'
+    userAssignedIdentityId: '<managedIdentityResourceId>'
   }
 }
 ```
@@ -592,7 +592,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apasubcom001"
+      "value": "<name>"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -650,7 +650,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "<subscriptionId>"
     },
     "userAssignedIdentityId": {
-      "value": "<userAssignedIdentityId>"
+      "value": "<managedIdentityResourceId>"
     }
   }
 }
@@ -666,11 +666,11 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apasubmin'
+module policyAssignments 'ts/modules:microsoft.authorization.policyassignments:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyAssignments'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apasubmin001'
+    name: '<name>'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
     subscriptionId: '<subscriptionId>'
@@ -692,7 +692,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apasubmin001"
+      "value": "<name>"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"

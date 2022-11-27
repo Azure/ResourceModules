@@ -189,11 +189,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdcom'
+module disks 'ts/modules:microsoft.compute.disks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdcom001'
+    name: '<name>'
     sku: 'UltraSSD_LRS'
     // Non-required parameters
     diskIOPSReadWrite: 500
@@ -230,7 +230,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdcom001"
+      "value": "<name>"
     },
     "sku": {
       "value": "UltraSSD_LRS"
@@ -282,11 +282,11 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdimg'
+module disks 'ts/modules:microsoft.compute.disks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdimg001'
+    name: '<name>'
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'FromImage'
@@ -318,7 +318,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdimg001"
+      "value": "<name>"
     },
     "sku": {
       "value": "Standard_LRS"
@@ -355,11 +355,11 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdimp'
+module disks 'ts/modules:microsoft.compute.disks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdimp001'
+    name: '<name>'
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'Import'
@@ -372,8 +372,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    sourceUri: '<sourceUri>'
-    storageAccountId: '<storageAccountId>'
+    sourceUri: '<vhdUri>'
+    storageAccountId: '<storageAccountResourceId>'
   }
 }
 ```
@@ -392,7 +392,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdimp001"
+      "value": "<name>"
     },
     "sku": {
       "value": "Standard_LRS"
@@ -413,10 +413,10 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
       ]
     },
     "sourceUri": {
-      "value": "<sourceUri>"
+      "value": "<vhdUri>"
     },
     "storageAccountId": {
-      "value": "<storageAccountId>"
+      "value": "<storageAccountResourceId>"
     }
   }
 }
@@ -432,11 +432,11 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cdmin'
+module disks 'ts/modules:microsoft.compute.disks:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Disks'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cdmin001'
+    name: '<name>'
     sku: 'Standard_LRS'
     // Non-required parameters
     diskSizeGB: 1
@@ -458,7 +458,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cdmin001"
+      "value": "<name>"
     },
     "sku": {
       "value": "Standard_LRS"

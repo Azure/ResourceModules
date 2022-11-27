@@ -371,11 +371,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -391,13 +387,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvcom'
+module vaults 'ts/modules:microsoft.keyvault.vaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
-    name: '<<namePrefix>>kvvcom002'
+    name: '<name>'
     accessPolicies: [
       {
-        objectId: '<objectId>'
+        objectId: '<managedIdentityPrincipalId>'
         permissions: {
           keys: [
             'get'
@@ -411,7 +407,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         tenantId: '<tenantId>'
       }
       {
-        objectId: '<objectId>'
+        objectId: '<managedIdentityPrincipalId>'
         permissions: {
           certificates: [
             'backup'
@@ -424,11 +420,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
@@ -458,7 +454,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ]
       virtualNetworkRules: [
         {
-          id: '<id>'
+          id: '<subnetResourceId>'
           ignoreMissingVnetServiceEndpoint: false
         }
       ]
@@ -525,12 +521,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>kvvcom002"
+      "value": "<name>"
     },
     "accessPolicies": {
       "value": [
         {
-          "objectId": "<objectId>",
+          "objectId": "<managedIdentityPrincipalId>",
           "permissions": {
             "keys": [
               "get",
@@ -544,7 +540,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           "tenantId": "<tenantId>"
         },
         {
-          "objectId": "<objectId>",
+          "objectId": "<managedIdentityPrincipalId>",
           "permissions": {
             "certificates": [
               "backup",
@@ -559,19 +555,19 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "enablePurgeProtection": {
       "value": false
@@ -611,7 +607,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         ],
         "virtualNetworkRules": [
           {
-            "id": "<id>",
+            "id": "<subnetResourceId>",
             "ignoreMissingVnetServiceEndpoint": false
           }
         ]
@@ -686,11 +682,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvmin'
+module vaults 'ts/modules:microsoft.keyvault.vaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     // Required parameters
-    name: '<<namePrefix>>kvvmin002'
+    name: '<name>'
     // Non-required parameters
     enablePurgeProtection: false
   }
@@ -711,7 +707,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>kvvmin002"
+      "value": "<name>"
     },
     // Non-required parameters
     "enablePurgeProtection": {
@@ -731,11 +727,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvpe'
+module vaults 'ts/modules:microsoft.keyvault.vaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     // Required parameters
-    name: '<<namePrefix>>kvvpe001'
+    name: '<name>'
     // Non-required parameters
     enablePurgeProtection: false
     privateEndpoints: [
@@ -771,7 +767,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>kvvpe001"
+      "value": "<name>"
     },
     // Non-required parameters
     "enablePurgeProtection": {

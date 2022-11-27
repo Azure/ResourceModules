@@ -393,11 +393,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -413,15 +409,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfacom'
+module sites 'ts/modules:microsoft.web.sites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'functionapp'
-    name: '<<namePrefix>>wsfacom001'
+    name: '<name>'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
-    appInsightId: '<appInsightId>'
+    appInsightId: '<applicationInsightsResourceId>'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
       EASYAUTH_SECRET: '<EASYAUTH_SECRET>'
@@ -490,12 +486,12 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         runtimeVersion: '~1'
       }
     }
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
+    keyVaultAccessIdentityResourceId: '<managedIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -522,7 +518,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       alwaysOn: true
       use32BitWorkerProcess: false
     }
-    storageAccountId: '<storageAccountId>'
+    storageAccountId: '<storageAccountResourceId>'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -548,14 +544,14 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "functionapp"
     },
     "name": {
-      "value": "<<namePrefix>>wsfacom001"
+      "value": "<name>"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
     "appInsightId": {
-      "value": "<appInsightId>"
+      "value": "<applicationInsightsResourceId>"
     },
     "appSettingsKeyValuePairs": {
       "value": {
@@ -630,22 +626,22 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       }
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "keyVaultAccessIdentityResourceId": {
-      "value": "<keyVaultAccessIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -684,7 +680,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       }
     },
     "storageAccountId": {
-      "value": "<storageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "systemAssignedIdentity": {
       "value": true
@@ -708,12 +704,12 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfamin'
+module sites 'ts/modules:microsoft.web.sites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'functionapp'
-    name: '<<namePrefix>>wsfamin001'
+    name: '<name>'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     siteConfig: {
@@ -740,7 +736,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "functionapp"
     },
     "name": {
-      "value": "<<namePrefix>>wsfamin001"
+      "value": "<name>"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
@@ -765,19 +761,19 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswa'
+module sites 'ts/modules:microsoft.web.sites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'app'
-    name: '<<namePrefix>>wswa001'
+    name: '<name>'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     httpsOnly: true
     privateEndpoints: [
       {
@@ -833,26 +829,26 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "app"
     },
     "name": {
-      "value": "<<namePrefix>>wswa001"
+      "value": "<name>"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "httpsOnly": {
       "value": true
@@ -914,12 +910,12 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswamin'
+module sites 'ts/modules:microsoft.web.sites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Sites'
   params: {
     // Required parameters
     kind: 'app'
-    name: '<<namePrefix>>wswamin001'
+    name: '<name>'
     serverFarmResourceId: '<serverFarmResourceId>'
   }
 }
@@ -942,7 +938,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "app"
     },
     "name": {
-      "value": "<<namePrefix>>wswamin001"
+      "value": "<name>"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"

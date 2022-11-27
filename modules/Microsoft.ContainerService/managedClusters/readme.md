@@ -380,11 +380,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmaz'
+module managedClusters 'ts/modules:microsoft.containerservice.managedclusters:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ManagedClusters'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmaz001'
+    name: '<name>'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -403,7 +403,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '<vnetSubnetID>'
+        vnetSubnetID: '<subnetResourceIds>'
       }
     ]
     // Non-required parameters
@@ -431,7 +431,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '<vnetSubnetID>'
+        vnetSubnetID: '<subnetResourceIds>'
       }
       {
         availabilityZones: [
@@ -456,16 +456,16 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '<vnetSubnetID>'
+        vnetSubnetID: '<subnetResourceIds>'
       }
     ]
     aksClusterNetworkPlugin: 'azure'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    diskEncryptionSetID: '<diskEncryptionSetID>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
+    diskEncryptionSetID: '<diskEncryptionSetResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -495,7 +495,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmaz001"
+      "value": "<name>"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -516,7 +516,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "vnetSubnetID": "<vnetSubnetID>"
+          "vnetSubnetID": "<subnetResourceIds>"
         }
       ]
     },
@@ -546,7 +546,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "vnetSubnetID": "<vnetSubnetID>"
+          "vnetSubnetID": "<subnetResourceIds>"
         },
         {
           "availabilityZones": [
@@ -571,7 +571,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "vnetSubnetID": "<vnetSubnetID>"
+          "vnetSubnetID": "<subnetResourceIds>"
         }
       ]
     },
@@ -579,22 +579,22 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       "value": "azure"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "diskEncryptionSetID": {
-      "value": "<diskEncryptionSetID>"
+      "value": "<diskEncryptionSetResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -627,11 +627,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmkube'
+module managedClusters 'ts/modules:microsoft.containerservice.managedclusters:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ManagedClusters'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmkube001'
+    name: '<name>'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -704,11 +704,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       }
     ]
     aksClusterNetworkPlugin: 'kubenet'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     roleAssignments: [
       {
         principalIds: [
@@ -739,7 +739,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmkube001"
+      "value": "<name>"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -820,19 +820,19 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       "value": "kubenet"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "roleAssignments": {
       "value": [

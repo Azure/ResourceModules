@@ -297,11 +297,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -317,7 +313,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces 'ts/modules:microsoft.synapse.workspaces:1.0.0 = {
   name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
@@ -390,7 +386,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces 'ts/modules:microsoft.synapse.workspaces:1.0.0 = {
   name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
@@ -459,7 +455,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces 'ts/modules:microsoft.synapse.workspaces:1.0.0 = {
   name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
@@ -528,7 +524,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces 'ts/modules:microsoft.synapse.workspaces:1.0.0 = {
   name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
@@ -579,7 +575,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces 'ts/modules:microsoft.synapse.workspaces:1.0.0 = {
   name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters

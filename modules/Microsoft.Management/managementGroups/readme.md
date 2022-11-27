@@ -142,11 +142,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mmgcom'
+module managementGroups 'ts/modules:microsoft.management.managementgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ManagementGroups'
   params: {
     // Required parameters
-    name: '<<namePrefix>>mmgcom001'
+    name: '<name>'
     // Non-required parameters
     displayName: 'Test MG'
     parentId: '<parentId>'
@@ -168,7 +168,7 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>mmgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "displayName": {
@@ -191,10 +191,10 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mmgmin'
+module managementGroups 'ts/modules:microsoft.management.managementgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ManagementGroups'
   params: {
-    name: '<<namePrefix>>mmgmin001'
+    name: '<name>'
   }
 }
 ```
@@ -212,7 +212,7 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>mmgmin001"
+      "value": "<name>"
     }
   }
 }

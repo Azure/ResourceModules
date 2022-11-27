@@ -319,11 +319,7 @@ customDomains: [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -339,11 +335,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsscom'
+module staticSites 'ts/modules:microsoft.web.staticsites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StaticSites'
   params: {
     // Required parameters
-    name: '<<namePrefix>>wsscom001'
+    name: '<name>'
     // Non-required parameters
     allowConfigFileUpdates: true
     appSettings: {
@@ -356,7 +352,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       setting: 1
     }
     linkedBackend: {
-      resourceId: '<resourceId>'
+      resourceId: '<siteResourceId>'
     }
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -403,7 +399,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>wsscom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowConfigFileUpdates": {
@@ -426,7 +422,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     },
     "linkedBackend": {
       "value": {
-        "resourceId": "<resourceId>"
+        "resourceId": "<siteResourceId>"
       }
     },
     "lock": {
@@ -484,10 +480,10 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wssmin'
+module staticSites 'ts/modules:microsoft.web.staticsites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StaticSites'
   params: {
-    name: '<<namePrefix>>wssmin001'
+    name: '<name>'
   }
 }
 ```
@@ -505,7 +501,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>wssmin001"
+      "value": "<name>"
     }
   }
 }

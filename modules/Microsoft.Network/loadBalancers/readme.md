@@ -478,17 +478,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbcom'
+module loadBalancers 'ts/modules:microsoft.network.loadbalancers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-LoadBalancers'
   params: {
     // Required parameters
     frontendIPConfigurations: [
       {
         name: 'publicIPConfig1'
-        publicIPAddressId: '<publicIPAddressId>'
+        publicIPAddressId: '<publicIPResourceId>'
       }
     ]
-    name: '<<namePrefix>>nlbcom001'
+    name: '<name>'
     // Non-required parameters
     backendAddressPools: [
       {
@@ -498,11 +498,11 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         name: 'backendAddressPool2'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     inboundNatRules: [
       {
         backendPort: 443
@@ -600,12 +600,12 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       "value": [
         {
           "name": "publicIPConfig1",
-          "publicIPAddressId": "<publicIPAddressId>"
+          "publicIPAddressId": "<publicIPResourceId>"
         }
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nlbcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "backendAddressPools": {
@@ -619,19 +619,19 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "inboundNatRules": {
       "value": [
@@ -735,28 +735,28 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbint'
+module loadBalancers 'ts/modules:microsoft.network.loadbalancers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-LoadBalancers'
   params: {
     // Required parameters
     frontendIPConfigurations: [
       {
         name: 'privateIPConfig1'
-        subnetId: '<subnetId>'
+        subnetId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>nlbint001'
+    name: '<name>'
     // Non-required parameters
     backendAddressPools: [
       {
         name: 'servers'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     inboundNatRules: [
       {
         backendPort: 443
@@ -831,12 +831,12 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       "value": [
         {
           "name": "privateIPConfig1",
-          "subnetId": "<subnetId>"
+          "subnetId": "<subnetResourceId>"
         }
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nlbint001"
+      "value": "<name>"
     },
     // Non-required parameters
     "backendAddressPools": {
@@ -847,19 +847,19 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "inboundNatRules": {
       "value": [
@@ -938,17 +938,17 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbmin'
+module loadBalancers 'ts/modules:microsoft.network.loadbalancers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-LoadBalancers'
   params: {
     // Required parameters
     frontendIPConfigurations: [
       {
         name: 'publicIPConfig1'
-        publicIPAddressId: '<publicIPAddressId>'
+        publicIPAddressId: '<publicIPResourceId>'
       }
     ]
-    name: '<<namePrefix>>nlbmin001'
+    name: '<name>'
   }
 }
 ```
@@ -970,12 +970,12 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       "value": [
         {
           "name": "publicIPConfig1",
-          "publicIPAddressId": "<publicIPAddressId>"
+          "publicIPAddressId": "<publicIPResourceId>"
         }
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nlbmin001"
+      "value": "<name>"
     }
   }
 }

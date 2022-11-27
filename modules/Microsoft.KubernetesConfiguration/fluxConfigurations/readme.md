@@ -86,13 +86,14 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcfccom'
+module fluxConfigurations 'ts/modules:microsoft.kubernetesconfiguration.fluxconfigurations:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-FluxConfigurations'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
-    name: '<<namePrefix>>kcfccom001'
+    name: '<name>'
     namespace: 'flux-system'
+    scope: 'cluster'
     sourceKind: 'GitRepository'
     // Non-required parameters
     gitRepository: {
@@ -135,10 +136,13 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       "value": "<clusterName>"
     },
     "name": {
-      "value": "<<namePrefix>>kcfccom001"
+      "value": "<name>"
     },
     "namespace": {
       "value": "flux-system"
+    },
+    "scope": {
+      "value": "cluster"
     },
     "sourceKind": {
       "value": "GitRepository"
@@ -181,14 +185,16 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 <summary>via Bicep module</summary>
 
 ```bicep
-module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcfcmin'
+module fluxConfigurations 'ts/modules:microsoft.kubernetesconfiguration.fluxconfigurations:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-FluxConfigurations'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
-    name: '<<namePrefix>>kcfcmin001'
+    name: '<name>'
     namespace: 'flux-system'
+    scope: 'cluster'
     sourceKind: 'GitRepository'
+    // Non-required parameters
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -219,14 +225,18 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       "value": "<clusterName>"
     },
     "name": {
-      "value": "<<namePrefix>>kcfcmin001"
+      "value": "<name>"
     },
     "namespace": {
       "value": "flux-system"
     },
+    "scope": {
+      "value": "cluster"
+    },
     "sourceKind": {
       "value": "GitRepository"
     },
+    // Non-required parameters
     "gitRepository": {
       "value": {
         "repositoryRef": {

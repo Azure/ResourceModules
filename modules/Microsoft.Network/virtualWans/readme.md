@@ -168,11 +168,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvwcom'
+module virtualWans 'ts/modules:microsoft.network.virtualwans:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualWans'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvwcom001'
+    name: '<name>'
     // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
@@ -206,7 +206,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvwcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowBranchToBranchTraffic": {
@@ -249,10 +249,10 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvwmin'
+module virtualWans 'ts/modules:microsoft.network.virtualwans:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualWans'
   params: {
-    name: '<<namePrefix>>nvwmin001'
+    name: '<name>'
   }
 }
 ```
@@ -270,7 +270,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>nvwmin001"
+      "value": "<name>"
     }
   }
 }

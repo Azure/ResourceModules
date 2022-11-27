@@ -154,11 +154,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.KeyVault/vaults/accessPolicies` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -174,13 +170,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cdescom'
+module diskEncryptionSets 'ts/modules:microsoft.compute.diskencryptionsets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DiskEncryptionSets'
   params: {
     // Required parameters
     keyName: '<keyName>'
     keyVaultResourceId: '<keyVaultResourceId>'
-    name: '<<namePrefix>>cdescom001'
+    name: '<name>'
     // Non-required parameters
     roleAssignments: [
       {
@@ -215,7 +211,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
       "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cdescom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "roleAssignments": {

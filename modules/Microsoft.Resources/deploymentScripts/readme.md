@@ -161,11 +161,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rdscli'
+module deploymentScripts 'ts/modules:microsoft.resources.deploymentscripts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DeploymentScripts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rdscli001'
+    name: '<name>'
     // Non-required parameters
     azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
@@ -195,7 +195,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rdscli001"
+      "value": "<name>"
     },
     // Non-required parameters
     "azCliVersion": {
@@ -214,7 +214,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
       "value": false
     },
     "scriptContent": {
-      "value": "echo \"echo echo echo\""
+      "value": "echo 'echo echo echo'"
     },
     "timeout": {
       "value": "PT30M"
@@ -238,11 +238,11 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rdsps'
+module deploymentScripts 'ts/modules:microsoft.resources.deploymentscripts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DeploymentScripts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rdsps001'
+    name: '<name>'
     // Non-required parameters
     azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
@@ -273,7 +273,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rdsps001"
+      "value": "<name>"
     },
     // Non-required parameters
     "azPowerShellVersion": {
@@ -295,7 +295,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
       "value": false
     },
     "scriptContent": {
-      "value": "Write-Host \"The cake is a lie!\""
+      "value": "Write-Host 'The cake is a lie!'"
     },
     "timeout": {
       "value": "PT30M"

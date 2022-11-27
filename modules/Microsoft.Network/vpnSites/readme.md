@@ -342,12 +342,12 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvscom'
+module vpnSites 'ts/modules:microsoft.network.vpnsites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VpnSites'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-nvscom'
-    virtualWanId: '<virtualWanId>'
+    name: '<name>'
+    virtualWanId: '<virtualWWANResourceId>'
     // Non-required parameters
     deviceProperties: {
       linkSpeedInMbps: 0
@@ -375,7 +375,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-vSite-nvscom'
+        name: '<name>'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -421,10 +421,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-nvscom"
+      "value": "<name>"
     },
     "virtualWanId": {
-      "value": "<virtualWanId>"
+      "value": "<virtualWWANResourceId>"
     },
     // Non-required parameters
     "deviceProperties": {
@@ -464,7 +464,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-vSite-nvscom",
+          "name": "<name>",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -507,12 +507,12 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvsmin'
+module vpnSites 'ts/modules:microsoft.network.vpnsites:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VpnSites'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-nvsmin'
-    virtualWanId: '<virtualWanId>'
+    name: '<name>'
+    virtualWanId: '<virtualWWANResourceId>'
     // Non-required parameters
     addressPrefixes: [
       '10.0.0.0/16'
@@ -536,10 +536,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-nvsmin"
+      "value": "<name>"
     },
     "virtualWanId": {
-      "value": "<virtualWanId>"
+      "value": "<virtualWWANResourceId>"
     },
     // Non-required parameters
     "addressPrefixes": {

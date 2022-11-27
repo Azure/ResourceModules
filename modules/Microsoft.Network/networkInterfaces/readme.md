@@ -198,20 +198,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnicom'
+module networkInterfaces 'ts/modules:microsoft.network.networkinterfaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [
       {
         applicationSecurityGroups: [
           {
-            id: '<id>'
+            id: '<applicationSecurityGroupResourceId>'
           }
         ]
         loadBalancerBackendAddressPools: [
           {
-            id: '<id>'
+            id: '<loadBalancerBackendPoolResourceId>'
           }
         ]
         name: 'ipconfig01'
@@ -220,19 +220,19 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       {
         applicationSecurityGroups: [
           {
-            id: '<id>'
+            id: '<applicationSecurityGroupResourceId>'
           }
         ]
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>nnicom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -265,12 +265,12 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         {
           "applicationSecurityGroups": [
             {
-              "id": "<id>"
+              "id": "<applicationSecurityGroupResourceId>"
             }
           ],
           "loadBalancerBackendAddressPools": [
             {
-              "id": "<id>"
+              "id": "<loadBalancerBackendPoolResourceId>"
             }
           ],
           "name": "ipconfig01",
@@ -279,7 +279,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         {
           "applicationSecurityGroups": [
             {
-              "id": "<id>"
+              "id": "<applicationSecurityGroupResourceId>"
             }
           ],
           "subnetResourceId": "<subnetResourceId>"
@@ -287,23 +287,23 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nnicom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -333,8 +333,8 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnimin'
+module networkInterfaces 'ts/modules:microsoft.network.networkinterfaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -343,7 +343,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>nnimin001'
+    name: '<name>'
   }
 }
 ```
@@ -370,7 +370,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nnimin001"
+      "value": "<name>"
     }
   }
 }

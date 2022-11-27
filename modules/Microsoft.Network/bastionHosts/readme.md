@@ -289,11 +289,7 @@ roleAssignments: [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -309,19 +305,19 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhcom'
+module bastionHosts 'ts/modules:microsoft.network.bastionhosts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BastionHosts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhcom001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
     // Non-required parameters
-    azureBastionSubnetPublicIpId: '<azureBastionSubnetPublicIpId>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    azureBastionSubnetPublicIpId: '<publicIPResourceId>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     disableCopyPaste: true
     enableFileCopy: false
     enableIpConnect: false
@@ -356,29 +352,29 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhcom001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     },
     // Non-required parameters
     "azureBastionSubnetPublicIpId": {
-      "value": "<azureBastionSubnetPublicIpId>"
+      "value": "<publicIPResourceId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "disableCopyPaste": {
       "value": true
@@ -426,12 +422,12 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhctmpip'
+module bastionHosts 'ts/modules:microsoft.network.bastionhosts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BastionHosts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhctmpip001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
     // Non-required parameters
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
@@ -475,10 +471,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhctmpip001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     },
     // Non-required parameters
     "publicIPAddressObject": {
@@ -521,12 +517,12 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhmin'
+module bastionHosts 'ts/modules:microsoft.network.bastionhosts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BastionHosts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhmin001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
   }
 }
 ```
@@ -545,10 +541,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhmin001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     }
   }
 }

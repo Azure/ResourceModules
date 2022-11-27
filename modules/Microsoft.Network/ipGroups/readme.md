@@ -165,11 +165,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nigcom'
+module ipGroups 'ts/modules:microsoft.network.ipgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-IpGroups'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nigcom001'
+    name: '<name>'
     // Non-required parameters
     ipAddresses: [
       '10.0.0.1'
@@ -203,7 +203,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nigcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "ipAddresses": {
@@ -240,10 +240,10 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nigmin'
+module ipGroups 'ts/modules:microsoft.network.ipgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-IpGroups'
   params: {
-    name: '<<namePrefix>>nigmin001'
+    name: '<name>'
   }
 }
 ```
@@ -261,7 +261,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>nigmin001"
+      "value": "<name>"
     }
   }
 }

@@ -178,17 +178,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npiacom'
+module publicIPAddresses 'ts/modules:microsoft.network.publicipaddresses:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PublicIPAddresses'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npiacom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     publicIPAllocationMethod: 'Static'
     roleAssignments: [
@@ -224,23 +224,23 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npiacom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -283,10 +283,10 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npiamin'
+module publicIPAddresses 'ts/modules:microsoft.network.publicipaddresses:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PublicIPAddresses'
   params: {
-    name: '<<namePrefix>>npiamin001'
+    name: '<name>'
   }
 }
 ```
@@ -304,7 +304,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>npiamin001"
+      "value": "<name>"
     }
   }
 }

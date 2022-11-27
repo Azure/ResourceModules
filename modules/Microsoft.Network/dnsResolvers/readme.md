@@ -251,23 +251,23 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndrcom'
+module dnsResolvers 'ts/modules:microsoft.network.dnsresolvers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DnsResolvers'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndrcom001'
+    name: '<name>'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     inboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsin-x-001'
-        subnetId: '<subnetId>'
+        subnetId: '<outputs>'
       }
     ]
     outboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsout-x-001'
-        subnetId: '<subnetId>'
+        subnetId: '<outputs>'
       }
     ]
   }
@@ -288,7 +288,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndrcom001"
+      "value": "<name>"
     },
     "virtualNetworkId": {
       "value": "<virtualNetworkId>"
@@ -298,7 +298,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
       "value": [
         {
           "name": "<<namePrefix>>-az-pdnsin-x-001",
-          "subnetId": "<subnetId>"
+          "subnetId": "<outputs>"
         }
       ]
     },
@@ -306,7 +306,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
       "value": [
         {
           "name": "<<namePrefix>>-az-pdnsout-x-001",
-          "subnetId": "<subnetId>"
+          "subnetId": "<outputs>"
         }
       ]
     }

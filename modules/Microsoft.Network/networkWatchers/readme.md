@@ -164,15 +164,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnwcom'
+module networkWatchers 'ts/modules:microsoft.network.networkwatchers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-NetworkWatchers'
   params: {
     connectionMonitors: [
       {
         endpoints: [
           {
             name: '<name>'
-            resourceId: '<resourceId>'
+            resourceId: '<virtualMachineResourceId>'
             type: 'AzureVM'
           }
           {
@@ -181,7 +181,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: '<<namePrefix>>-nnwcom-cm-001'
+        name: '<name>'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -210,30 +210,30 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             disable: false
             name: 'TestHTTPBing'
             sources: [
-              '<<namePrefix>>-subnet-001(${resourceGroup.name})'
+              '<sources>'
             ]
             testConfigurations: [
               'HTTP Test'
             ]
           }
         ]
-        workspaceResourceId: '<workspaceResourceId>'
+        workspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
       }
     ]
     flowLogs: [
       {
         enabled: false
-        storageId: '<storageId>'
-        targetResourceId: '<targetResourceId>'
+        storageId: '<storageAccountResourceId>'
+        targetResourceId: '<firstNetworkSecurityGroupResourceId>'
       }
       {
         formatVersion: 1
-        name: '<<namePrefix>>-nnwcom-fl-001'
+        name: '<name>'
         retentionInDays: 8
-        storageId: '<storageId>'
-        targetResourceId: '<targetResourceId>'
+        storageId: '<storageAccountResourceId>'
+        targetResourceId: '<secondNetworkSecurityGroupResourceId>'
         trafficAnalyticsInterval: 10
-        workspaceResourceId: '<workspaceResourceId>'
+        workspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
       }
     ]
     location: '<location>'
@@ -269,7 +269,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
           "endpoints": [
             {
               "name": "<name>",
-              "resourceId": "<resourceId>",
+              "resourceId": "<virtualMachineResourceId>",
               "type": "AzureVM"
             },
             {
@@ -278,7 +278,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "<<namePrefix>>-nnwcom-cm-001",
+          "name": "<name>",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -307,14 +307,14 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "disable": false,
               "name": "TestHTTPBing",
               "sources": [
-                "<<namePrefix>>-subnet-001(${resourceGroup.name})"
+                "<sources>"
               ],
               "testConfigurations": [
                 "HTTP Test"
               ]
             }
           ],
-          "workspaceResourceId": "<workspaceResourceId>"
+          "workspaceResourceId": "<logAnalyticsWorkspaceResourceId>"
         }
       ]
     },
@@ -322,17 +322,17 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       "value": [
         {
           "enabled": false,
-          "storageId": "<storageId>",
-          "targetResourceId": "<targetResourceId>"
+          "storageId": "<storageAccountResourceId>",
+          "targetResourceId": "<firstNetworkSecurityGroupResourceId>"
         },
         {
           "formatVersion": 1,
-          "name": "<<namePrefix>>-nnwcom-fl-001",
+          "name": "<name>",
           "retentionInDays": 8,
-          "storageId": "<storageId>",
-          "targetResourceId": "<targetResourceId>",
+          "storageId": "<storageAccountResourceId>",
+          "targetResourceId": "<secondNetworkSecurityGroupResourceId>",
           "trafficAnalyticsInterval": 10,
-          "workspaceResourceId": "<workspaceResourceId>"
+          "workspaceResourceId": "<logAnalyticsWorkspaceResourceId>"
         }
       ]
     },
@@ -367,8 +367,8 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnwmin'
+module networkWatchers 'ts/modules:microsoft.network.networkwatchers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-NetworkWatchers'
   params: {
     location: '<location>'
   }

@@ -175,20 +175,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvwcom'
+module workspaces 'ts/modules:microsoft.desktopvirtualization.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvwcom001'
+    name: '<name>'
     // Non-required parameters
     appGroupResourceIds: [
       '<applicationGroupResourceId>'
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     location: '<location>'
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -220,7 +220,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvwcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "appGroupResourceIds": {
@@ -229,19 +229,19 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "location": {
       "value": "<location>"
@@ -280,10 +280,10 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvwmin'
+module workspaces 'ts/modules:microsoft.desktopvirtualization.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
-    name: '<<namePrefix>>dvwmin001'
+    name: '<name>'
   }
 }
 ```
@@ -301,7 +301,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>dvwmin001"
+      "value": "<name>"
     }
   }
 }

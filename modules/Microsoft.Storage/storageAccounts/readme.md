@@ -373,11 +373,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -393,11 +389,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssacom'
+module storageAccounts 'ts/modules:microsoft.storage.storageaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssacom001'
+    name: '<name>'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -423,23 +419,23 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           WORMRetention: 666
         }
       ]
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
+      diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+      diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticStorageAccountId: '<storageAccountResourceId>'
+      diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     }
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     fileServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
+      diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+      diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticStorageAccountId: '<storageAccountResourceId>'
+      diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
       shares: [
         {
           name: 'avdprofiles'
@@ -473,7 +469,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       virtualNetworkRules: [
         {
           action: 'Allow'
-          id: '<id>'
+          id: '<subnetResourceId>'
         }
       ]
     }
@@ -489,11 +485,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     ]
     queueServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
+      diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+      diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticStorageAccountId: '<storageAccountResourceId>'
+      diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
       queues: [
         {
           metadata: {
@@ -530,11 +526,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     storageAccountSku: 'Standard_LRS'
     systemAssignedIdentity: true
     tableServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
+      diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+      diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticStorageAccountId: '<storageAccountResourceId>'
+      diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
       tables: [
         'table1'
         'table2'
@@ -561,7 +557,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssacom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -591,35 +587,35 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             "WORMRetention": 666
           }
         ],
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
+        "diagnosticEventHubAuthorizationRuleId": "<eventHubAuthorizationRuleId>",
+        "diagnosticEventHubName": "<eventHubNamespaceEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>"
+        "diagnosticStorageAccountId": "<storageAccountResourceId>",
+        "diagnosticWorkspaceId": "<logAnalyticsWorkspaceResourceId>"
       }
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "fileServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
+        "diagnosticEventHubAuthorizationRuleId": "<eventHubAuthorizationRuleId>",
+        "diagnosticEventHubName": "<eventHubNamespaceEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticStorageAccountId": "<storageAccountResourceId>",
+        "diagnosticWorkspaceId": "<logAnalyticsWorkspaceResourceId>",
         "shares": [
           {
             "name": "avdprofiles",
@@ -657,7 +653,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "virtualNetworkRules": [
           {
             "action": "Allow",
-            "id": "<id>"
+            "id": "<subnetResourceId>"
           }
         ]
       }
@@ -677,11 +673,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "queueServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
+        "diagnosticEventHubAuthorizationRuleId": "<eventHubAuthorizationRuleId>",
+        "diagnosticEventHubName": "<eventHubNamespaceEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticStorageAccountId": "<storageAccountResourceId>",
+        "diagnosticWorkspaceId": "<logAnalyticsWorkspaceResourceId>",
         "queues": [
           {
             "metadata": {
@@ -728,11 +724,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "tableServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
+        "diagnosticEventHubAuthorizationRuleId": "<eventHubAuthorizationRuleId>",
+        "diagnosticEventHubName": "<eventHubNamespaceEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticStorageAccountId": "<storageAccountResourceId>",
+        "diagnosticWorkspaceId": "<logAnalyticsWorkspaceResourceId>",
         "tables": [
           "table1",
           "table2"
@@ -758,11 +754,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsencr'
+module storageAccounts 'ts/modules:microsoft.storage.storageaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsencr001'
+    name: '<name>'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -773,9 +769,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    cMKKeyName: '<keyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<managedIdentityResourceId>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -811,7 +807,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsencr001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -828,13 +824,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     },
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "privateEndpoints": {
       "value": [
@@ -877,11 +873,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssamin'
+module storageAccounts 'ts/modules:microsoft.storage.storageaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssamin001'
+    name: '<name>'
     // Non-required parameters
     allowBlobPublicAccess: false
   }
@@ -902,7 +898,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssamin001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -922,18 +918,18 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssanfs'
+module storageAccounts 'ts/modules:microsoft.storage.storageaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssanfs001'
+    name: '<name>'
     // Non-required parameters
     allowBlobPublicAccess: false
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     fileServices: {
       shares: [
         {
@@ -977,26 +973,26 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssanfs001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "fileServices": {
       "value": {
@@ -1053,11 +1049,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssav1'
+module storageAccounts 'ts/modules:microsoft.storage.storageaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-StorageAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssav1001'
+    name: '<name>'
     // Non-required parameters
     allowBlobPublicAccess: false
     storageAccountKind: 'Storage'
@@ -1079,7 +1075,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssav1001"
+      "value": "<name>"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {

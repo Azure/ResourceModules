@@ -205,14 +205,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mmccom'
+module maintenanceConfigurations 'ts/modules:microsoft.maintenance.maintenanceconfigurations:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-MaintenanceConfigurations'
   params: {
     // Required parameters
-    name: '<<namePrefix>>mmccom001'
+    name: '<name>'
     // Non-required parameters
     extensionProperties: {}
     lock: 'CanNotDelete'
+    maintenanceScope: 'OSImage'
     maintenanceWindow: {
       duration: '05:00'
       expirationDateTime: '9999-12-31 23:59:59'
@@ -220,7 +221,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
       startDateTime: '2022-12-31 13:00'
       timeZone: 'W. Europe Standard Time'
     }
-    namespace: 'mmccomns'
+    namespace: '<namespace>'
     roleAssignments: [
       {
         principalIds: [
@@ -253,7 +254,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>mmccom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "extensionProperties": {
@@ -261,6 +262,9 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "maintenanceScope": {
+      "value": "OSImage"
     },
     "maintenanceWindow": {
       "value": {
@@ -272,7 +276,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
       }
     },
     "namespace": {
-      "value": "mmccomns"
+      "value": "<namespace>"
     },
     "roleAssignments": {
       "value": [
@@ -308,10 +312,10 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
 <summary>via Bicep module</summary>
 
 ```bicep
-module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mmcmin'
+module maintenanceConfigurations 'ts/modules:microsoft.maintenance.maintenanceconfigurations:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-MaintenanceConfigurations'
   params: {
-    name: '<<namePrefix>>mmcmin001'
+    name: '<name>'
   }
 }
 ```
@@ -329,7 +333,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>mmcmin001"
+      "value": "<name>"
     }
   }
 }

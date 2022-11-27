@@ -168,14 +168,14 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pbdcapcom'
+module capacities 'ts/modules:microsoft.powerbidedicated.capacities:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Capacities'
   params: {
     // Required parameters
     members: [
       '<managedIdentityPrincipalId>'
     ]
-    name: '<<namePrefix>>pbdcapcom001'
+    name: '<name>'
     skuCapacity: 1
     // Non-required parameters
     lock: 'CanNotDelete'
@@ -215,7 +215,7 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>pbdcapcom001"
+      "value": "<name>"
     },
     "skuCapacity": {
       "value": 1
@@ -255,14 +255,14 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pbdcapmin'
+module capacities 'ts/modules:microsoft.powerbidedicated.capacities:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Capacities'
   params: {
     // Required parameters
     members: [
       '<managedIdentityPrincipalId>'
     ]
-    name: '<<namePrefix>>pbdcapmin001'
+    name: '<name>'
     skuCapacity: 1
   }
 }
@@ -287,7 +287,7 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>pbdcapmin001"
+      "value": "<name>"
     },
     "skuCapacity": {
       "value": 1

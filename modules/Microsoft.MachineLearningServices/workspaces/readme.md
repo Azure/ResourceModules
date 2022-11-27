@@ -408,11 +408,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -428,14 +424,14 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswcom'
+module workspaces 'ts/modules:microsoft.machinelearningservices.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
-    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
-    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '<<namePrefix>>mlswcom001'
+    associatedApplicationInsightsResourceId: '<applicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<keyVaultResourceId>'
+    associatedStorageAccountResourceId: '<storageAccountResourceId>'
+    name: '<name>'
     sku: 'Basic'
     // Non-required parameters
     computes: [
@@ -467,15 +463,15 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       }
     ]
     description: 'The cake is a lie.'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     discoveryUrl: 'http://example.com'
     imageBuildCompute: 'testcompute'
     lock: 'CanNotDelete'
-    primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
+    primaryUserAssignedIdentity: '<managedIdentityResourceId>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -518,16 +514,16 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   "parameters": {
     // Required parameters
     "associatedApplicationInsightsResourceId": {
-      "value": "<associatedApplicationInsightsResourceId>"
+      "value": "<applicationInsightsResourceId>"
     },
     "associatedKeyVaultResourceId": {
-      "value": "<associatedKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "associatedStorageAccountResourceId": {
-      "value": "<associatedStorageAccountResourceId>"
+      "value": "<storageAccountResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>mlswcom001"
+      "value": "<name>"
     },
     "sku": {
       "value": "Basic"
@@ -567,19 +563,19 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "The cake is a lie."
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "discoveryUrl": {
       "value": "http://example.com"
@@ -591,7 +587,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "CanNotDelete"
     },
     "primaryUserAssignedIdentity": {
-      "value": "<primaryUserAssignedIdentity>"
+      "value": "<managedIdentityResourceId>"
     },
     "privateEndpoints": {
       "value": [
@@ -639,20 +635,20 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswecr'
+module workspaces 'ts/modules:microsoft.machinelearningservices.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
-    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
-    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '<<namePrefix>>mlswecr001'
+    associatedApplicationInsightsResourceId: '<applicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<keyVaultResourceId>'
+    associatedStorageAccountResourceId: '<storageAccountResourceId>'
+    name: '<name>'
     sku: 'Basic'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
+    cMKKeyName: '<keyVaultEncryptionKeyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<managedIdentityResourceId>'
+    primaryUserAssignedIdentity: '<managedIdentityResourceId>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -686,32 +682,32 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   "parameters": {
     // Required parameters
     "associatedApplicationInsightsResourceId": {
-      "value": "<associatedApplicationInsightsResourceId>"
+      "value": "<applicationInsightsResourceId>"
     },
     "associatedKeyVaultResourceId": {
-      "value": "<associatedKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "associatedStorageAccountResourceId": {
-      "value": "<associatedStorageAccountResourceId>"
+      "value": "<storageAccountResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>mlswecr001"
+      "value": "<name>"
     },
     "sku": {
       "value": "Basic"
     },
     // Non-required parameters
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyVaultEncryptionKeyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "primaryUserAssignedIdentity": {
-      "value": "<primaryUserAssignedIdentity>"
+      "value": "<managedIdentityResourceId>"
     },
     "privateEndpoints": {
       "value": [
@@ -748,14 +744,14 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswmin'
+module workspaces 'ts/modules:microsoft.machinelearningservices.workspaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Workspaces'
   params: {
     // Required parameters
-    associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
-    associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
-    associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '<<namePrefix>>mlswmin001'
+    associatedApplicationInsightsResourceId: '<applicationInsightsResourceId>'
+    associatedKeyVaultResourceId: '<keyVaultResourceId>'
+    associatedStorageAccountResourceId: '<storageAccountResourceId>'
+    name: '<name>'
     sku: 'Basic'
     // Non-required parameters
     systemAssignedIdentity: true
@@ -777,16 +773,16 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   "parameters": {
     // Required parameters
     "associatedApplicationInsightsResourceId": {
-      "value": "<associatedApplicationInsightsResourceId>"
+      "value": "<applicationInsightsResourceId>"
     },
     "associatedKeyVaultResourceId": {
-      "value": "<associatedKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "associatedStorageAccountResourceId": {
-      "value": "<associatedStorageAccountResourceId>"
+      "value": "<storageAccountResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>mlswmin001"
+      "value": "<name>"
     },
     "sku": {
       "value": "Basic"

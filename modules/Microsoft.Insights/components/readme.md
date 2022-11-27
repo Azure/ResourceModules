@@ -169,12 +169,12 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iccom'
+module components 'ts/modules:microsoft.insights.components:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Components'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iccom001'
-    workspaceResourceId: '<workspaceResourceId>'
+    name: '<name>'
+    workspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     // Non-required parameters
     roleAssignments: [
       {
@@ -203,10 +203,10 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iccom001"
+      "value": "<name>"
     },
     "workspaceResourceId": {
-      "value": "<workspaceResourceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     // Non-required parameters
     "roleAssignments": {
@@ -234,12 +234,12 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-icmin'
+module components 'ts/modules:microsoft.insights.components:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Components'
   params: {
     // Required parameters
-    name: '<<namePrefix>>icmin001'
-    workspaceResourceId: '<workspaceResourceId>'
+    name: '<name>'
+    workspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
   }
 }
 ```
@@ -258,10 +258,10 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>icmin001"
+      "value": "<name>"
     },
     "workspaceResourceId": {
-      "value": "<workspaceResourceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     }
   }
 }

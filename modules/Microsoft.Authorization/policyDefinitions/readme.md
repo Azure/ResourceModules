@@ -145,11 +145,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apdmgcom'
+module policyDefinitions 'ts/modules:microsoft.authorization.policydefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apdmgcom001'
+    name: '<name>'
     policyRule: {
       if: {
         allOf: [
@@ -159,7 +159,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           }
           {
             exists: 'false'
-            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+            field: '<field>'
           }
         ]
       }
@@ -167,9 +167,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         details: {
           operations: [
             {
-              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+              field: '<field>'
               operation: 'add'
-              value: '[parameters(\'tagValue\')]'
+              value: '<operations>'
             }
           ]
           roleDefinitionIds: [
@@ -220,7 +220,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apdmgcom001"
+      "value": "<name>"
     },
     "policyRule": {
       "value": {
@@ -232,7 +232,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             },
             {
               "exists": "false",
-              "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]"
+              "field": "<field>"
             }
           ]
         },
@@ -240,9 +240,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "details": {
             "operations": [
               {
-                "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]",
+                "field": "<field>",
                 "operation": "add",
-                "value": "[parameters(\"tagValue\")]"
+                "value": "<operations>"
               }
             ],
             "roleDefinitionIds": [
@@ -272,14 +272,14 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       "value": {
         "tagName": {
           "metadata": {
-            "description": "Name of the tag such as \"environment\"",
+            "description": "Name of the tag such as 'environment'",
             "displayName": "Tag Name"
           },
           "type": "String"
         },
         "tagValue": {
           "metadata": {
-            "description": "Value of the tag such as \"environment\"",
+            "description": "Value of the tag such as 'environment'",
             "displayName": "Tag Value"
           },
           "type": "String"
@@ -300,11 +300,11 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apdmgmin'
+module policyDefinitions 'ts/modules:microsoft.authorization.policydefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apdmgmin001'
+    name: '<name>'
     policyRule: {
       if: {
         allOf: [
@@ -315,7 +315,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         ]
       }
       then: {
-        effect: '[parameters(\'effect\')]'
+        effect: '<effect>'
       }
     }
     // Non-required parameters
@@ -346,7 +346,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apdmgmin001"
+      "value": "<name>"
     },
     "policyRule": {
       "value": {
@@ -359,7 +359,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         },
         "then": {
-          "effect": "[parameters(\"effect\")]"
+          "effect": "<effect>"
         }
       }
     },
@@ -389,11 +389,11 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apdsubcom'
+module policyDefinitions 'ts/modules:microsoft.authorization.policydefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apdsubcom001'
+    name: '<name>'
     policyRule: {
       if: {
         allOf: [
@@ -403,7 +403,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           }
           {
             exists: 'false'
-            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+            field: '<field>'
           }
         ]
       }
@@ -411,9 +411,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         details: {
           operations: [
             {
-              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
+              field: '<field>'
               operation: 'add'
-              value: '[parameters(\'tagValue\')]'
+              value: '<operations>'
             }
           ]
           roleDefinitionIds: [
@@ -464,7 +464,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apdsubcom001"
+      "value": "<name>"
     },
     "policyRule": {
       "value": {
@@ -476,7 +476,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             },
             {
               "exists": "false",
-              "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]"
+              "field": "<field>"
             }
           ]
         },
@@ -484,9 +484,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "details": {
             "operations": [
               {
-                "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]",
+                "field": "<field>",
                 "operation": "add",
-                "value": "[parameters(\"tagValue\")]"
+                "value": "<operations>"
               }
             ],
             "roleDefinitionIds": [
@@ -513,14 +513,14 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       "value": {
         "tagName": {
           "metadata": {
-            "description": "Name of the tag such as \"environment\"",
+            "description": "Name of the tag such as 'environment'",
             "displayName": "Tag Name"
           },
           "type": "String"
         },
         "tagValue": {
           "metadata": {
-            "description": "Value of the tag such as \"production\"",
+            "description": "Value of the tag such as 'production'",
             "displayName": "Tag Value"
           },
           "type": "String"
@@ -544,11 +544,11 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apdsubmin'
+module policyDefinitions 'ts/modules:microsoft.authorization.policydefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apdsubmin001'
+    name: '<name>'
     policyRule: {
       if: {
         allOf: [
@@ -559,7 +559,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         ]
       }
       then: {
-        effect: '[parameters(\'effect\')]'
+        effect: '<effect>'
       }
     }
     // Non-required parameters
@@ -591,7 +591,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apdsubmin001"
+      "value": "<name>"
     },
     "policyRule": {
       "value": {
@@ -604,7 +604,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         },
         "then": {
-          "effect": "[parameters(\"effect\")]"
+          "effect": "<effect>"
         }
       }
     },

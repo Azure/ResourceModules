@@ -395,8 +395,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-imacom'
+module metricAlerts 'ts/modules:microsoft.insights.metricalerts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-MetricAlerts'
   params: {
     // Required parameters
     criterias: [
@@ -410,7 +410,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
         timeAggregation: 'Average'
       }
     ]
-    name: '<<namePrefix>>imacom001'
+    name: '<name>'
     // Non-required parameters
     actions: [
       '<actionGroupResourceId>'
@@ -459,7 +459,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>imacom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "actions": {

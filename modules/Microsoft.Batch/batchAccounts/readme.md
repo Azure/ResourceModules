@@ -231,11 +231,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -251,18 +247,18 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-bbacom'
+module batchAccounts 'ts/modules:microsoft.batch.batchaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>bbacom001'
-    storageAccountId: '<storageAccountId>'
+    name: '<name>'
+    storageAccountId: '<storageAccountResourceId>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
@@ -285,7 +281,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    storageAccessIdentity: '<storageAccessIdentity>'
+    storageAccessIdentity: '<managedIdentityResourceId>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     systemAssignedIdentity: true
   }
@@ -306,26 +302,26 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>bbacom001"
+      "value": "<name>"
     },
     "storageAccountId": {
-      "value": "<storageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -356,7 +352,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
       ]
     },
     "storageAccessIdentity": {
-      "value": "<storageAccessIdentity>"
+      "value": "<managedIdentityResourceId>"
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
@@ -378,15 +374,15 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-bbaencr'
+module batchAccounts 'ts/modules:microsoft.batch.batchaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>bbaencr001'
-    storageAccountId: '<storageAccountId>'
+    name: '<name>'
+    storageAccountId: '<storageAccountResourceId>'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKKeyName: '<keyVaultEncryptionKeyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
@@ -399,7 +395,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    storageAccessIdentity: '<storageAccessIdentity>'
+    storageAccessIdentity: '<managedIdentityResourceId>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -422,17 +418,17 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>bbaencr001"
+      "value": "<name>"
     },
     "storageAccountId": {
-      "value": "<storageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     // Non-required parameters
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyVaultEncryptionKeyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "poolAllocationMode": {
       "value": "BatchService"
@@ -451,7 +447,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
       ]
     },
     "storageAccessIdentity": {
-      "value": "<storageAccessIdentity>"
+      "value": "<managedIdentityResourceId>"
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
@@ -475,12 +471,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-bbamin'
+module batchAccounts 'ts/modules:microsoft.batch.batchaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BatchAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>bbamin001'
-    storageAccountId: '<storageAccountId>'
+    name: '<name>'
+    storageAccountId: '<storageAccountResourceId>'
   }
 }
 ```
@@ -499,10 +495,10 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>bbamin001"
+      "value": "<name>"
     },
     "storageAccountId": {
-      "value": "<storageAccountId>"
+      "value": "<storageAccountResourceId>"
     }
   }
 }

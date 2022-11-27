@@ -176,8 +176,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-isqrcom'
+module scheduledQueryRules 'ts/modules:microsoft.insights.scheduledqueryrules:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ScheduledQueryRules'
   params: {
     // Required parameters
     criterias: {
@@ -207,7 +207,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
         }
       ]
     }
-    name: '<<namePrefix>>isqrcom001'
+    name: '<name>'
     scopes: [
       '<logAnalyticsWorkspaceResourceId>'
     ]
@@ -274,7 +274,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
       }
     },
     "name": {
-      "value": "<<namePrefix>>isqrcom001"
+      "value": "<name>"
     },
     "scopes": {
       "value": [

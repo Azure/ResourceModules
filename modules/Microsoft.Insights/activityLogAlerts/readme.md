@@ -413,8 +413,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ialacom'
+module activityLogAlerts 'ts/modules:microsoft.insights.activitylogalerts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ActivityLogAlerts'
   params: {
     // Required parameters
     conditions: [
@@ -431,11 +431,11 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         field: 'operationName'
       }
     ]
-    name: '<<namePrefix>>ialacom001'
+    name: '<name>'
     // Non-required parameters
     actions: [
       {
-        actionGroupId: '<actionGroupId>'
+        actionGroupId: '<actionGroupResourceId>'
       }
     ]
     roleAssignments: [
@@ -448,7 +448,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       }
     ]
     scopes: [
-      '<id>'
+      '<scopes>'
     ]
   }
 }
@@ -484,13 +484,13 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>ialacom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "actions": {
       "value": [
         {
-          "actionGroupId": "<actionGroupId>"
+          "actionGroupId": "<actionGroupResourceId>"
         }
       ]
     },
@@ -507,7 +507,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
     },
     "scopes": {
       "value": [
-        "<id>"
+        "<scopes>"
       ]
     }
   }

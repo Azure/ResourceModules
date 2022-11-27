@@ -155,11 +155,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfpcom'
+module firewallPolicies 'ts/modules:microsoft.network.firewallpolicies:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-FirewallPolicies'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nfpcom001'
+    name: '<name>'
     // Non-required parameters
     ruleCollectionGroups: [
       {
@@ -217,7 +217,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nfpcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "ruleCollectionGroups": {
@@ -274,10 +274,10 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfpmin'
+module firewallPolicies 'ts/modules:microsoft.network.firewallpolicies:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-FirewallPolicies'
   params: {
-    name: '<<namePrefix>>nfpmin001'
+    name: '<name>'
   }
 }
 ```
@@ -295,7 +295,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>nfpmin001"
+      "value": "<name>"
     }
   }
 }

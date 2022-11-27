@@ -325,11 +325,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -345,19 +341,19 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crcom'
+module redis 'ts/modules:microsoft.cache.redis:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Redis'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crcom001'
+    name: '<name>'
     // Non-required parameters
     capacity: 2
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
     diagnosticSettingsName: 'redisdiagnostics'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
@@ -398,17 +394,17 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "capacity": {
       "value": 2
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
@@ -417,10 +413,10 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
       "value": "redisdiagnostics"
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "enableNonSslPort": {
       "value": true
@@ -478,10 +474,10 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crmin'
+module redis 'ts/modules:microsoft.cache.redis:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Redis'
   params: {
-    name: '<<namePrefix>>crmin001'
+    name: '<name>'
   }
 }
 ```
@@ -499,7 +495,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>crmin001"
+      "value": "<name>"
     }
   }
 }

@@ -62,8 +62,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-omsmin'
+module solutions 'ts/modules:microsoft.operationsmanagement.solutions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Solutions'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
@@ -105,8 +105,8 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-omsms'
+module solutions 'ts/modules:microsoft.operationsmanagement.solutions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Solutions'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
@@ -158,12 +158,12 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-omsnonms'
+module solutions 'ts/modules:microsoft.operationsmanagement.solutions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Solutions'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
-    name: '<<namePrefix>>omsnonms001'
+    name: '<name>'
     // Non-required parameters
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
@@ -188,7 +188,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "<<namePrefix>>omsnonms001"
+      "value": "<name>"
     },
     // Non-required parameters
     "product": {

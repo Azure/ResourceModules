@@ -178,13 +178,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvagcom'
+module applicationgroups 'ts/modules:microsoft.desktopvirtualization.applicationgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Applicationgroups'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
-    hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagcom001'
+    hostpoolName: '<hostPoolName>'
+    name: '<name>'
     // Non-required parameters
     applications: [
       {
@@ -205,11 +205,11 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       }
     ]
     description: 'This is my first Remote Applications bundle'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     friendlyName: 'Remote Applications 1'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -243,10 +243,10 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": "RemoteApp"
     },
     "hostpoolName": {
-      "value": "<hostpoolName>"
+      "value": "<hostPoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "applications": {
@@ -273,19 +273,19 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": "This is my first Remote Applications bundle"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "friendlyName": {
       "value": "Remote Applications 1"
@@ -321,13 +321,13 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvagmin'
+module applicationgroups 'ts/modules:microsoft.desktopvirtualization.applicationgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Applicationgroups'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
-    hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagmin001'
+    hostpoolName: '<hostPoolName>'
+    name: '<name>'
   }
 }
 ```
@@ -349,10 +349,10 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": "RemoteApp"
     },
     "hostpoolName": {
-      "value": "<hostpoolName>"
+      "value": "<hostPoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagmin001"
+      "value": "<name>"
     }
   }
 }

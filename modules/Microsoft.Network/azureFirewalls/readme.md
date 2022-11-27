@@ -302,11 +302,7 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -322,17 +318,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafaddpip'
+module azureFirewalls 'ts/modules:microsoft.network.azurefirewalls:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafaddpip001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
     // Non-required parameters
     additionalPublicIpConfigurations: [
       {
         name: 'ipConfig01'
-        publicIPAddressResourceId: '<publicIPAddressResourceId>'
+        publicIPAddressResourceId: '<publicIPResourceId>'
       }
     ]
   }
@@ -353,17 +349,17 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafaddpip001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     },
     // Non-required parameters
     "additionalPublicIpConfigurations": {
       "value": [
         {
           "name": "ipConfig01",
-          "publicIPAddressResourceId": "<publicIPAddressResourceId>"
+          "publicIPAddressResourceId": "<publicIPResourceId>"
         }
       ]
     }
@@ -381,12 +377,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcom'
+module azureFirewalls 'ts/modules:microsoft.network.azurefirewalls:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafcom001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
     // Non-required parameters
     applicationRuleCollections: [
       {
@@ -440,12 +436,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       }
     ]
-    azureFirewallSubnetPublicIpId: '<azureFirewallSubnetPublicIpId>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    azureFirewallSubnetPublicIpId: '<publicIPResourceId>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     networkRuleCollections: [
       {
@@ -508,10 +504,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafcom001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     },
     // Non-required parameters
     "applicationRuleCollections": {
@@ -569,22 +565,22 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       ]
     },
     "azureFirewallSubnetPublicIpId": {
-      "value": "<azureFirewallSubnetPublicIpId>"
+      "value": "<publicIPResourceId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -652,12 +648,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcstpip'
+module azureFirewalls 'ts/modules:microsoft.network.azurefirewalls:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafcstpip001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
     // Non-required parameters
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
@@ -668,7 +664,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'new-<<namePrefix>>-pip-nafcstpip'
+      name: '<name>'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
@@ -701,10 +697,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafcstpip001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     },
     // Non-required parameters
     "publicIPAddressObject": {
@@ -717,7 +713,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "new-<<namePrefix>>-pip-nafcstpip",
+        "name": "<name>",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
@@ -747,12 +743,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafmin'
+module azureFirewalls 'ts/modules:microsoft.network.azurefirewalls:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AzureFirewalls'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafmin001'
-    vNetId: '<vNetId>'
+    name: '<name>'
+    vNetId: '<virtualNetworkResourceId>'
   }
 }
 ```
@@ -771,10 +767,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafmin001"
+      "value": "<name>"
     },
     "vNetId": {
-      "value": "<vNetId>"
+      "value": "<virtualNetworkResourceId>"
     }
   }
 }

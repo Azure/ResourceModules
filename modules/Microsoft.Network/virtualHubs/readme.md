@@ -122,13 +122,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvhcom'
+module virtualHubs 'ts/modules:microsoft.network.virtualhubs:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualHubs'
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '<<namePrefix>>-nvhcom'
-    virtualWanId: '<virtualWanId>'
+    name: '<name>'
+    virtualWanId: '<virtualWWANResourceId>'
     // Non-required parameters
     hubRouteTables: [
       {
@@ -138,7 +138,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     hubVirtualNetworkConnections: [
       {
         name: 'connection1'
-        remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
+        remoteVirtualNetworkId: '<virtualNetworkResourceId>'
         routingConfiguration: {
           associatedRouteTable: {
             id: '<id>'
@@ -178,10 +178,10 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-nvhcom"
+      "value": "<name>"
     },
     "virtualWanId": {
-      "value": "<virtualWanId>"
+      "value": "<virtualWWANResourceId>"
     },
     // Non-required parameters
     "hubRouteTables": {
@@ -195,7 +195,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": [
         {
           "name": "connection1",
-          "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
+          "remoteVirtualNetworkId": "<virtualNetworkResourceId>",
           "routingConfiguration": {
             "associatedRouteTable": {
               "id": "<id>"
@@ -231,13 +231,13 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvhmin'
+module virtualHubs 'ts/modules:microsoft.network.virtualhubs:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualHubs'
   params: {
     // Required parameters
     addressPrefix: '10.0.0.0/16'
-    name: '<<namePrefix>>-nvhmin'
-    virtualWanId: '<virtualWanId>'
+    name: '<name>'
+    virtualWanId: '<virtualWWANResourceId>'
   }
 }
 ```
@@ -259,10 +259,10 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "10.0.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-nvhmin"
+      "value": "<name>"
     },
     "virtualWanId": {
-      "value": "<virtualWanId>"
+      "value": "<virtualWWANResourceId>"
     }
   }
 }

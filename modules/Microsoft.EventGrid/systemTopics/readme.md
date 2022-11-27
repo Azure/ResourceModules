@@ -288,19 +288,19 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egstcom'
+module systemTopics 'ts/modules:microsoft.eventgrid.systemtopics:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-SystemTopics'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstcom001'
-    source: '<source>'
+    name: '<name>'
+    source: '<storageAccountResourceId>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -329,29 +329,29 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egstcom001"
+      "value": "<name>"
     },
     "source": {
-      "value": "<source>"
+      "value": "<storageAccountResourceId>"
     },
     "topicType": {
       "value": "Microsoft.Storage.StorageAccounts"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -381,12 +381,12 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egstmin'
+module systemTopics 'ts/modules:microsoft.eventgrid.systemtopics:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-SystemTopics'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstmin001'
-    source: '<source>'
+    name: '<name>'
+    source: '<storageAccountResourceId>'
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
 }
@@ -406,10 +406,10 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egstmin001"
+      "value": "<name>"
     },
     "source": {
-      "value": "<source>"
+      "value": "<storageAccountResourceId>"
     },
     "topicType": {
       "value": "Microsoft.Storage.StorageAccounts"

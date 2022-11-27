@@ -151,11 +151,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apsdmgcom'
+module policySetDefinitions 'ts/modules:microsoft.authorization.policysetdefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdmgcom001'
+    name: '<name>'
     policyDefinitions: [
       {
         groupNames: [
@@ -220,7 +220,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdmgcom001"
+      "value": "<name>"
     },
     "policyDefinitions": {
       "value": [
@@ -294,11 +294,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apsdmgmin'
+module policySetDefinitions 'ts/modules:microsoft.authorization.policysetdefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdmgmin001'
+    name: '<name>'
     policyDefinitions: [
       {
         parameters: {
@@ -329,7 +329,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdmgmin001"
+      "value": "<name>"
     },
     "policyDefinitions": {
       "value": [
@@ -359,11 +359,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apsdsubcom'
+module policySetDefinitions 'ts/modules:microsoft.authorization.policysetdefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdsubcom001'
+    name: '<name>'
     policyDefinitions: [
       {
         groupNames: [
@@ -428,7 +428,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdsubcom001"
+      "value": "<name>"
     },
     "policyDefinitions": {
       "value": [
@@ -502,11 +502,11 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apsdsubmin'
+module policySetDefinitions 'ts/modules:microsoft.authorization.policysetdefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdsubmin001'
+    name: '<name>'
     policyDefinitions: [
       {
         parameters: {
@@ -539,7 +539,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdsubmin001"
+      "value": "<name>"
     },
     "policyDefinitions": {
       "value": [

@@ -72,12 +72,12 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cbcom'
+module budgets 'ts/modules:microsoft.consumption.budgets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Budgets'
   params: {
     // Required parameters
     amount: 500
-    name: '<<namePrefix>>cbcom001'
+    name: '<name>'
     // Non-required parameters
     contactEmails: [
       'dummy@contoso.com'
@@ -110,7 +110,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       "value": 500
     },
     "name": {
-      "value": "<<namePrefix>>cbcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "contactEmails": {
@@ -141,12 +141,12 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cbmin'
+module budgets 'ts/modules:microsoft.consumption.budgets:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Budgets'
   params: {
     // Required parameters
     amount: 500
-    name: '<<namePrefix>>cbmin001'
+    name: '<name>'
     // Non-required parameters
     contactEmails: [
       'dummy@contoso.com'
@@ -172,7 +172,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       "value": 500
     },
     "name": {
-      "value": "<<namePrefix>>cbmin001"
+      "value": "<name>"
     },
     // Non-required parameters
     "contactEmails": {

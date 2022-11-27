@@ -164,11 +164,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndppcom'
+module ddosProtectionPlans 'ts/modules:microsoft.network.ddosprotectionplans:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DdosProtectionPlans'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndppcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -198,7 +198,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndppcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
@@ -229,10 +229,10 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndppmin'
+module ddosProtectionPlans 'ts/modules:microsoft.network.ddosprotectionplans:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DdosProtectionPlans'
   params: {
-    name: '<<namePrefix>>ndppmin001'
+    name: '<name>'
   }
 }
 ```
@@ -250,7 +250,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>ndppmin001"
+      "value": "<name>"
     }
   }
 }

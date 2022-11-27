@@ -184,8 +184,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-msrdcom'
+module registrationDefinitions 'ts/modules:microsoft.managedservices.registrationdefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
   params: {
     // Required parameters
     authorizations: [
@@ -206,7 +206,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
+    name: '<name>'
     registrationDescription: 'Managed by Lighthouse'
   }
 }
@@ -248,7 +248,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - <<namePrefix>>msrdcom Subscription assignment"
+      "value": "<name>"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
@@ -267,8 +267,8 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 <summary>via Bicep module</summary>
 
 ```bicep
-module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-msrdrg'
+module registrationDefinitions 'ts/modules:microsoft.managedservices.registrationdefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
   params: {
     // Required parameters
     authorizations: [
@@ -289,7 +289,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
+    name: '<name>'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
     resourceGroupName: '<resourceGroupName>'
@@ -333,7 +333,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - <<namePrefix>>msrdrg Resource group assignment"
+      "value": "<name>"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"

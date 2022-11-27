@@ -904,11 +904,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -924,11 +920,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvcom'
+module vaults 'ts/modules:microsoft.recoveryservices.vaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rsvcom001'
+    name: '<name>'
     // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -1168,11 +1164,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       crossRegionRestoreFlag: true
       storageModelType: 'GeoRedundant'
     }
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     monitoringSettings: {
       azureMonitorAlertSettings: {
@@ -1236,7 +1232,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rsvcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "backupConfig": {
@@ -1484,19 +1480,19 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -1573,8 +1569,8 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvdr'
+module vaults 'ts/modules:microsoft.recoveryservices.vaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
     // Required parameters
     name: '<name>'
@@ -1728,10 +1724,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvmin'
+module vaults 'ts/modules:microsoft.recoveryservices.vaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Vaults'
   params: {
-    name: '<<namePrefix>>rsvmin001'
+    name: '<name>'
   }
 }
 ```
@@ -1749,7 +1745,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>rsvmin001"
+      "value": "<name>"
     }
   }
 }

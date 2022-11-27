@@ -186,20 +186,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nerccom'
+module expressRouteCircuits 'ts/modules:microsoft.network.expressroutecircuits:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ExpressRouteCircuits'
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: '<<namePrefix>>nerccom001'
+    name: '<name>'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -233,7 +233,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
       "value": 50
     },
     "name": {
-      "value": "<<namePrefix>>nerccom001"
+      "value": "<name>"
     },
     "peeringLocation": {
       "value": "Amsterdam"
@@ -243,19 +243,19 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -291,12 +291,12 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nercmin'
+module expressRouteCircuits 'ts/modules:microsoft.network.expressroutecircuits:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ExpressRouteCircuits'
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: '<<namePrefix>>nercmin001'
+    name: '<name>'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
   }
@@ -320,7 +320,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
       "value": 50
     },
     "name": {
-      "value": "<<namePrefix>>nercmin001"
+      "value": "<name>"
     },
     "peeringLocation": {
       "value": "Amsterdam"

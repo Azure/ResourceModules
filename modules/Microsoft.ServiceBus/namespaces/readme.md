@@ -334,11 +334,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -354,11 +350,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbncom'
+module namespaces 'ts/modules:microsoft.servicebus.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbncom001'
+    name: '<name>'
     // Non-required parameters
     authorizationRules: [
       {
@@ -377,11 +373,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     networkRuleSets: {
       defaultAction: 'Deny'
@@ -399,7 +395,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       virtualNetworkRules: [
         {
           subnet: {
-            id: '<id>'
+            id: '<subnetResourceId>'
             ignoreMissingVnetServiceEndpoint: true
           }
         }
@@ -435,7 +431,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>sbncomq001'
+        name: '<name>'
         roleAssignments: [
           {
             principalIds: [
@@ -480,7 +476,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>sbncomt001'
+        name: '<name>'
         roleAssignments: [
           {
             principalIds: [
@@ -513,7 +509,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbncom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -536,19 +532,19 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -570,7 +566,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "virtualNetworkRules": [
           {
             "subnet": {
-              "id": "<id>",
+              "id": "<subnetResourceId>",
               "ignoreMissingVnetServiceEndpoint": true
             }
           }
@@ -610,7 +606,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>sbncomq001",
+          "name": "<name>",
           "roleAssignments": [
             {
               "principalIds": [
@@ -665,7 +661,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>sbncomt001",
+          "name": "<name>",
           "roleAssignments": [
             {
               "principalIds": [
@@ -697,11 +693,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbnencr'
+module namespaces 'ts/modules:microsoft.servicebus.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnencr001'
+    name: '<name>'
     // Non-required parameters
     authorizationRules: [
       {
@@ -720,9 +716,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    cMKKeyName: '<keyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<managedIdentityResourceId>'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -739,7 +735,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       virtualNetworkRules: [
         {
           subnet: {
-            id: '<id>'
+            id: '<subnetResourceId>'
             ignoreMissingVnetServiceEndpoint: true
           }
         }
@@ -777,7 +773,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnencr001"
+      "value": "<name>"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -800,13 +796,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       ]
     },
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "networkRuleSets": {
       "value": {
@@ -825,7 +821,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "virtualNetworkRules": [
           {
             "subnet": {
-              "id": "<id>",
+              "id": "<subnetResourceId>",
               "ignoreMissingVnetServiceEndpoint": true
             }
           }
@@ -868,10 +864,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbnmin'
+module namespaces 'ts/modules:microsoft.servicebus.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
-    name: '<<namePrefix>>sbnmin001'
+    name: '<name>'
   }
 }
 ```
@@ -889,7 +885,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>sbnmin001"
+      "value": "<name>"
     }
   }
 }
@@ -905,11 +901,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbnpe'
+module namespaces 'ts/modules:microsoft.servicebus.namespaces:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Namespaces'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnpe001'
+    name: '<name>'
     // Non-required parameters
     privateEndpoints: [
       {
@@ -941,7 +937,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnpe001"
+      "value": "<name>"
     },
     // Non-required parameters
     "privateEndpoints": {

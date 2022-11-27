@@ -185,8 +185,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgcom'
+module containerGroups 'ts/modules:microsoft.containerinstance.containergroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ContainerGroups'
   params: {
     // Required parameters
     containers: [
@@ -235,7 +235,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgcom001'
+    name: '<name>'
     // Non-required parameters
     ipAddressPorts: [
       {
@@ -318,7 +318,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "ipAddressPorts": {
@@ -358,8 +358,8 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgmin'
+module containerGroups 'ts/modules:microsoft.containerinstance.containergroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ContainerGroups'
   params: {
     // Required parameters
     containers: [
@@ -382,7 +382,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgmin001'
+    name: '<name>'
     // Non-required parameters
     ipAddressPorts: [
       {
@@ -430,7 +430,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgmin001"
+      "value": "<name>"
     },
     // Non-required parameters
     "ipAddressPorts": {

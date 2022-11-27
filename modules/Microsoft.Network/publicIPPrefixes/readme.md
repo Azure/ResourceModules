@@ -165,11 +165,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npipcom'
+module publicIPPrefixes 'ts/modules:microsoft.network.publicipprefixes:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PublicIPPrefixes'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npipcom001'
+    name: '<name>'
     prefixLength: 28
     // Non-required parameters
     lock: 'CanNotDelete'
@@ -200,7 +200,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npipcom001"
+      "value": "<name>"
     },
     "prefixLength": {
       "value": 28
@@ -234,11 +234,11 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npipmin'
+module publicIPPrefixes 'ts/modules:microsoft.network.publicipprefixes:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PublicIPPrefixes'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npipmin001'
+    name: '<name>'
     prefixLength: 28
   }
 }
@@ -258,7 +258,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npipmin001"
+      "value": "<name>"
     },
     "prefixLength": {
       "value": 28

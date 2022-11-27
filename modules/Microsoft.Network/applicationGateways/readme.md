@@ -241,8 +241,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nagcom'
+module applicationGateways 'ts/modules:microsoft.network.applicationgateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ApplicationGateways'
   params: {
     // Required parameters
     name: '<name>'
@@ -294,11 +294,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     enableHttp2: true
     frontendIPConfigurations: [
       {
@@ -307,7 +307,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           privateIPAddress: '10.0.0.20'
           privateIPAllocationMethod: 'Static'
           subnet: {
-            id: '<id>'
+            id: '<subnetResourceId>'
           }
         }
       }
@@ -316,7 +316,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
-            id: '<id>'
+            id: '<publicIPResourceId>'
           }
         }
       }
@@ -352,7 +352,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'apw-ip-configuration'
         properties: {
           subnet: {
-            id: '<id>'
+            id: '<subnetResourceId>'
           }
         }
       }
@@ -551,7 +551,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
         properties: {
-          keyVaultSecretId: '<keyVaultSecretId>'
+          keyVaultSecretId: '<certificateSecretUrl>'
         }
       }
     ]
@@ -641,19 +641,19 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "enableHttp2": {
       "value": true
@@ -666,7 +666,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "privateIPAddress": "10.0.0.20",
             "privateIPAllocationMethod": "Static",
             "subnet": {
-              "id": "<id>"
+              "id": "<subnetResourceId>"
             }
           }
         },
@@ -675,7 +675,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "properties": {
             "privateIPAllocationMethod": "Dynamic",
             "publicIPAddress": {
-              "id": "<id>"
+              "id": "<publicIPResourceId>"
             }
           }
         }
@@ -715,7 +715,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "apw-ip-configuration",
           "properties": {
             "subnet": {
-              "id": "<id>"
+              "id": "<subnetResourceId>"
             }
           }
         }
@@ -930,7 +930,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         {
           "name": "<<namePrefix>>-az-apgw-x-001-ssl-certificate",
           "properties": {
-            "keyVaultSecretId": "<keyVaultSecretId>"
+            "keyVaultSecretId": "<certificateSecretUrl>"
           }
         }
       ]

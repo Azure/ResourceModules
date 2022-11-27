@@ -97,9 +97,10 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rtmin'
+module tags 'ts/modules:microsoft.resources.tags:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Tags'
   params: {
+
   }
 }
 ```
@@ -129,8 +130,8 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rtrg'
+module tags 'ts/modules:microsoft.resources.tags:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Tags'
   params: {
     onlyUpdate: false
     resourceGroupName: '<resourceGroupName>'
@@ -180,8 +181,8 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rtsub'
+module tags 'ts/modules:microsoft.resources.tags:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Tags'
   params: {
     onlyUpdate: true
     tags: {

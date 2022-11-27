@@ -331,11 +331,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -351,17 +347,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlsadmin'
+module servers 'ts/modules:microsoft.sql.servers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlsadmin'
+    name: '<name>'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
       login: 'myspn'
       principalType: 'Application'
-      sid: '<sid>'
+      sid: '<managedIdentityPrincipalId>'
       tenantId: '<tenantId>'
     }
   }
@@ -382,7 +378,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlsadmin"
+      "value": "<name>"
     },
     // Non-required parameters
     "administrators": {
@@ -390,7 +386,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         "azureADOnlyAuthentication": true,
         "login": "myspn",
         "principalType": "Application",
-        "sid": "<sid>",
+        "sid": "<managedIdentityPrincipalId>",
         "tenantId": "<tenantId>"
       }
     }
@@ -408,11 +404,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlscom'
+module servers 'ts/modules:microsoft.sql.servers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlscom'
+    name: '<name>'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -420,15 +416,15 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       {
         capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+        diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
         diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        diagnosticStorageAccountId: '<storageAccountResourceId>'
+        diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
         elasticPoolId: '<elasticPoolId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-sqlscomdb-001'
+        name: '<name>'
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -436,7 +432,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: '<<namePrefix>>-sqlscom-ep-001'
+        name: '<name>'
         skuCapacity: 10
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
@@ -459,7 +455,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           ]
         }
         service: 'sqlServer'
-        subnetResourceId: '<subnetResourceId>'
+        subnetResourceId: '<privateEndpointSubnetResourceId>'
       }
     ]
     roleAssignments: [
@@ -486,7 +482,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       {
         ignoreMissingVnetServiceEndpoint: true
         name: 'newVnetRule1'
-        virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
+        virtualNetworkSubnetId: '<serviceEndpointSubnetResourceId>'
       }
     ]
     vulnerabilityAssessmentsObj: {
@@ -497,7 +493,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+      vulnerabilityAssessmentsStorageAccountId: '<storageAccountResourceId>'
     }
   }
 }
@@ -517,7 +513,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlscom"
+      "value": "<name>"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -531,15 +527,15 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         {
           "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
-          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticEventHubAuthorizationRuleId": "<eventHubAuthorizationRuleId>",
+          "diagnosticEventHubName": "<eventHubNamespaceEventHubName>",
           "diagnosticLogsRetentionInDays": 7,
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "diagnosticStorageAccountId": "<storageAccountResourceId>",
+          "diagnosticWorkspaceId": "<logAnalyticsWorkspaceResourceId>",
           "elasticPoolId": "<elasticPoolId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-sqlscomdb-001",
+          "name": "<name>",
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
@@ -549,7 +545,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "<<namePrefix>>-sqlscom-ep-001",
+          "name": "<name>",
           "skuCapacity": 10,
           "skuName": "GP_Gen5",
           "skuTier": "GeneralPurpose"
@@ -580,7 +576,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<privateEndpointSubnetResourceId>"
         }
       ]
     },
@@ -617,7 +613,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         {
           "ignoreMissingVnetServiceEndpoint": true,
           "name": "newVnetRule1",
-          "virtualNetworkSubnetId": "<virtualNetworkSubnetId>"
+          "virtualNetworkSubnetId": "<serviceEndpointSubnetResourceId>"
         }
       ]
     },
@@ -630,7 +626,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
+        "vulnerabilityAssessmentsStorageAccountId": "<storageAccountResourceId>"
       }
     }
   }
@@ -647,11 +643,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlspe'
+module servers 'ts/modules:microsoft.sql.servers:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Servers'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sqlspe'
+    name: '<name>'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -684,7 +680,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sqlspe"
+      "value": "<name>"
     },
     // Non-required parameters
     "administratorLogin": {

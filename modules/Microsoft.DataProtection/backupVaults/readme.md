@@ -350,11 +350,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dpbvcom'
+module backupVaults 'ts/modules:microsoft.dataprotection.backupvaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BackupVaults'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dpbvcom001'
+    name: '<name>'
     // Non-required parameters
     backupPolicies: [
       {
@@ -447,7 +447,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dpbvcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "backupPolicies": {
@@ -545,10 +545,10 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dpbvmin'
+module backupVaults 'ts/modules:microsoft.dataprotection.backupvaults:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-BackupVaults'
   params: {
-    name: '<<namePrefix>>dpbvmin001'
+    name: '<name>'
   }
 }
 ```
@@ -566,7 +566,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>dpbvmin001"
+      "value": "<name>"
     }
   }
 }

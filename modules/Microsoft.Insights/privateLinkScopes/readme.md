@@ -234,11 +234,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -254,11 +250,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iplscom'
+module privateLinkScopes 'ts/modules:microsoft.insights.privatelinkscopes:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateLinkScopes'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iplscom001'
+    name: '<name>'
     // Non-required parameters
     privateEndpoints: [
       {
@@ -282,7 +278,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
     ]
     scopedResources: [
       {
-        linkedResourceId: '<linkedResourceId>'
+        linkedResourceId: '<logAnalyticsWorkspaceResourceId>'
         name: 'scoped1'
       }
     ]
@@ -304,7 +300,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iplscom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "privateEndpoints": {
@@ -334,7 +330,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
     "scopedResources": {
       "value": [
         {
-          "linkedResourceId": "<linkedResourceId>",
+          "linkedResourceId": "<logAnalyticsWorkspaceResourceId>",
           "name": "scoped1"
         }
       ]
@@ -353,10 +349,10 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iplsmin'
+module privateLinkScopes 'ts/modules:microsoft.insights.privatelinkscopes:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PrivateLinkScopes'
   params: {
-    name: '<<namePrefix>>iplsmin001'
+    name: '<name>'
   }
 }
 ```
@@ -374,7 +370,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>iplsmin001"
+      "value": "<name>"
     }
   }
 }

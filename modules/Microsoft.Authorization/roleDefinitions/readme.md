@@ -190,18 +190,18 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardmgcom'
+module roleDefinitions 'ts/modules:microsoft.authorization.roledefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardmgcom'
+    roleName: '<roleName>'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
     assignableScopes: [
-      '<id>'
+      '<assignableScopes>'
     ]
     description: 'Test Custom Role Definition Standard (management group scope)'
     notActions: [
@@ -227,7 +227,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardmgcom"
+      "value": "<roleName>"
     },
     // Non-required parameters
     "actions": {
@@ -238,7 +238,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     },
     "assignableScopes": {
       "value": [
-        "<id>"
+        "<assignableScopes>"
       ]
     },
     "description": {
@@ -265,11 +265,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardmgmin'
+module roleDefinitions 'ts/modules:microsoft.authorization.roledefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardmgmin'
+    roleName: '<roleName>'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
@@ -293,7 +293,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardmgmin"
+      "value": "<roleName>"
     },
     // Non-required parameters
     "actions": {
@@ -316,18 +316,18 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardrgcom'
+module roleDefinitions 'ts/modules:microsoft.authorization.roledefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardrgcom'
+    roleName: '<roleName>'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
     assignableScopes: [
-      '<id>'
+      '<assignableScopes>'
     ]
     dataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
@@ -359,7 +359,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardrgcom"
+      "value": "<roleName>"
     },
     // Non-required parameters
     "actions": {
@@ -370,7 +370,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     },
     "assignableScopes": {
       "value": [
-        "<id>"
+        "<assignableScopes>"
       ]
     },
     "dataActions": {
@@ -407,11 +407,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardrgmin'
+module roleDefinitions 'ts/modules:microsoft.authorization.roledefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardrgmin'
+    roleName: '<roleName>'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
@@ -435,7 +435,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardrgmin"
+      "value": "<roleName>"
     },
     // Non-required parameters
     "actions": {
@@ -458,18 +458,18 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardsubcom'
+module roleDefinitions 'ts/modules:microsoft.authorization.roledefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardsubcom'
+    roleName: '<roleName>'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
     assignableScopes: [
-      '<id>'
+      '<assignableScopes>'
     ]
     dataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
@@ -501,7 +501,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardsubcom"
+      "value": "<roleName>"
     },
     // Non-required parameters
     "actions": {
@@ -512,7 +512,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     },
     "assignableScopes": {
       "value": [
-        "<id>"
+        "<assignableScopes>"
       ]
     },
     "dataActions": {
@@ -549,11 +549,11 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ardsubmin'
+module roleDefinitions 'ts/modules:microsoft.authorization.roledefinitions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RoleDefinitions'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardsubmin'
+    roleName: '<roleName>'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
@@ -578,7 +578,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardsubmin"
+      "value": "<roleName>"
     },
     // Non-required parameters
     "actions": {

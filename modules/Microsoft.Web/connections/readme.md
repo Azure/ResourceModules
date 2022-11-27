@@ -172,8 +172,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module connections './Microsoft.Web/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wccom'
+module connections 'ts/modules:microsoft.web.connections:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
     displayName: 'azuremonitorlogs'

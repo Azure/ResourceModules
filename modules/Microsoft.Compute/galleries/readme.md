@@ -167,11 +167,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cgcom'
+module galleries 'ts/modules:microsoft.compute.galleries:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Galleries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cgcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -201,7 +201,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
@@ -232,15 +232,15 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cgimages'
+module galleries 'ts/modules:microsoft.compute.galleries:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Galleries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cgimages001'
+    name: '<name>'
     // Non-required parameters
     images: [
       {
-        name: '<<namePrefix>>-cgimages-imgd-001'
+        name: '<name>'
       }
       {
         hyperVGeneration: 'V1'
@@ -296,13 +296,13 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cgimages001"
+      "value": "<name>"
     },
     // Non-required parameters
     "images": {
       "value": [
         {
-          "name": "<<namePrefix>>-cgimages-imgd-001"
+          "name": "<name>"
         },
         {
           "hyperVGeneration": "V1",

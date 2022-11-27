@@ -276,17 +276,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspcom'
+module scalingplans 'ts/modules:microsoft.desktopvirtualization.scalingplans:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Scalingplans'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvspcom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     friendlyName: 'My Scaling Plan'
     hostPoolType: 'Pooled'
     roleAssignments: [
@@ -321,23 +321,23 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvspcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "friendlyName": {
       "value": "My Scaling Plan"
@@ -379,10 +379,10 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspmin'
+module scalingplans 'ts/modules:microsoft.desktopvirtualization.scalingplans:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Scalingplans'
   params: {
-    name: '<<namePrefix>>dvspmin001'
+    name: '<name>'
   }
 }
 ```
@@ -400,7 +400,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>dvspmin001"
+      "value": "<name>"
     }
   }
 }

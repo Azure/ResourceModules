@@ -255,11 +255,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nrtcom'
+module routeTables 'ts/modules:microsoft.network.routetables:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RouteTables'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nrtcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -299,7 +299,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nrtcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
@@ -342,10 +342,10 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nrtmin'
+module routeTables 'ts/modules:microsoft.network.routetables:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-RouteTables'
   params: {
-    name: '<<namePrefix>>nrtmin001'
+    name: '<name>'
   }
 }
 ```
@@ -363,7 +363,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>nrtmin001"
+      "value": "<name>"
     }
   }
 }

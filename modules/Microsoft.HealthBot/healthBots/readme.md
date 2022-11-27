@@ -165,11 +165,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-hbhbcom'
+module healthBots 'ts/modules:microsoft.healthbot.healthbots:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-HealthBots'
   params: {
     // Required parameters
-    name: '<<namePrefix>>hbhbcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -199,7 +199,7 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>hbhbcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
@@ -230,10 +230,10 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-hbhbmin'
+module healthBots 'ts/modules:microsoft.healthbot.healthbots:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-HealthBots'
   params: {
-    name: '<<namePrefix>>hbhbmin001'
+    name: '<name>'
   }
 }
 ```
@@ -251,7 +251,7 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>hbhbmin001"
+      "value": "<name>"
     }
   }
 }

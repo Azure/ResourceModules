@@ -271,11 +271,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.ApiManagement/authorizationServers` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -291,11 +287,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apiscom'
+module service 'ts/modules:microsoft.apimanagement.service:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apiscom001'
+    name: '<name>'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
@@ -351,7 +347,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apiscom001"
+      "value": "<name>"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -367,7 +363,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       "value": [
         {
           "format": "xml",
-          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
+          "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
         }
       ]
     },
@@ -416,11 +412,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismax'
+module service 'ts/modules:microsoft.apimanagement.service:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apismax001'
+    name: '<name>'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
@@ -443,10 +439,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     authorizationServers: [
       {
         authorizationEndpoint: '<authorizationEndpoint>'
-        clientCredentialsKeyVaultId: '<clientCredentialsKeyVaultId>'
-        clientIdSecretName: '<clientIdSecretName>'
+        clientCredentialsKeyVaultId: '<keyVaultResourceId>'
+        clientIdSecretName: '<keyVaultSecretName>'
         clientRegistrationEndpoint: 'http://localhost'
-        clientSecretSecretName: '<clientSecretSecretName>'
+        clientSecretSecretName: '<keyVaultSecretName>'
         grantTypes: [
           'authorizationCode'
         ]
@@ -471,11 +467,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         useFromLocation: 'westeurope'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     identityProviders: [
       {
         name: 'aadProvider'
@@ -542,6 +538,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     subscriptions: [
       {
         name: 'testArmSubscriptionAllApis'
+        scope: '/apis'
       }
     ]
     systemAssignedIdentity: true
@@ -566,7 +563,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apismax001"
+      "value": "<name>"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -597,10 +594,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       "value": [
         {
           "authorizationEndpoint": "<authorizationEndpoint>",
-          "clientCredentialsKeyVaultId": "<clientCredentialsKeyVaultId>",
-          "clientIdSecretName": "<clientIdSecretName>",
+          "clientCredentialsKeyVaultId": "<keyVaultResourceId>",
+          "clientIdSecretName": "<keyVaultSecretName>",
           "clientRegistrationEndpoint": "http://localhost",
-          "clientSecretSecretName": "<clientSecretSecretName>",
+          "clientSecretSecretName": "<keyVaultSecretName>",
           "grantTypes": [
             "authorizationCode"
           ],
@@ -631,19 +628,19 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "identityProviders": {
       "value": [
@@ -668,7 +665,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       "value": [
         {
           "format": "xml",
-          "value": "<policies> <inbound> <rate-limit-by-key calls=\"250\" renewal-period=\"60\" counter-key=\"@(context.Request.IpAddress)\" /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
+          "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>"
         }
       ]
     },
@@ -725,7 +722,8 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "subscriptions": {
       "value": [
         {
-          "name": "testArmSubscriptionAllApis"
+          "name": "testArmSubscriptionAllApis",
+          "scope": "/apis"
         }
       ]
     },
@@ -751,11 +749,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismin'
+module service 'ts/modules:microsoft.apimanagement.service:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Service'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apismin001'
+    name: '<name>'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
   }
@@ -776,7 +774,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apismin001"
+      "value": "<name>"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"

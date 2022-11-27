@@ -342,11 +342,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -362,20 +358,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrcom'
+module registries 'ts/modules:microsoft.containerregistry.registries:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crrcom001'
+    name: '<name>'
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
     azureADAuthenticationAsArmPolicyStatus: 'enabled'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     exportPolicyStatus: 'enabled'
     lock: 'CanNotDelete'
     networkRuleSetIpRules: [
@@ -442,7 +438,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crrcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "acrAdminUserEnabled": {
@@ -455,19 +451,19 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       "value": "enabled"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "exportPolicyStatus": {
       "value": "enabled"
@@ -557,16 +553,16 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrencr'
+module registries 'ts/modules:microsoft.containerregistry.registries:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crrencr001'
+    name: '<name>'
     // Non-required parameters
     acrSku: 'Premium'
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    cMKKeyName: '<keyVaultEncryptionKeyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<managedIdentityResourceId>'
     publicNetworkAccess: 'Disabled'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -589,20 +585,20 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crrencr001"
+      "value": "<name>"
     },
     // Non-required parameters
     "acrSku": {
       "value": "Premium"
     },
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyVaultEncryptionKeyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "publicNetworkAccess": {
       "value": "Disabled"
@@ -626,10 +622,10 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrmin'
+module registries 'ts/modules:microsoft.containerregistry.registries:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
-    name: '<<namePrefix>>crrmin001'
+    name: '<name>'
   }
 }
 ```
@@ -647,7 +643,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>crrmin001"
+      "value": "<name>"
     }
   }
 }
@@ -663,11 +659,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrpe'
+module registries 'ts/modules:microsoft.containerregistry.registries:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Registries'
   params: {
     // Required parameters
-    name: '<<namePrefix>>crrpe001'
+    name: '<name>'
     // Non-required parameters
     acrSku: 'Premium'
     privateEndpoints: [
@@ -699,7 +695,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>crrpe001"
+      "value": "<name>"
     },
     // Non-required parameters
     "acrSku": {

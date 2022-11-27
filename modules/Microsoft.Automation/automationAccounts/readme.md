@@ -353,13 +353,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | Local reference |
-| `Microsoft.OperationsManagement/solutions` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -375,17 +369,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aacom'
+module automationAccounts 'ts/modules:microsoft.automation.automationaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AutomationAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>aacom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     disableLocalAuth: true
     gallerySolutions: [
       {
@@ -400,7 +394,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         scheduleName: 'TestSchedule'
       }
     ]
-    linkedWorkspaceResourceId: '<linkedWorkspaceResourceId>'
+    linkedWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     modules: [
       {
@@ -565,23 +559,23 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>aacom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "disableLocalAuth": {
       "value": true
@@ -604,7 +598,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       ]
     },
     "linkedWorkspaceResourceId": {
-      "value": "<linkedWorkspaceResourceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -747,7 +741,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         {
           "description": "TestStringDescription",
           "name": "TestString",
-          "value": "\"TestString\""
+          "value": "'TestString'"
         },
         {
           "description": "TestIntegerDescription",
@@ -763,12 +757,12 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "description": "TestDateTimeDescription",
           "isEncrypted": false,
           "name": "TestDateTime",
-          "value": "\"\\/Date(1637934042656)\\/\""
+          "value": "'\\/Date(1637934042656)\\/'"
         },
         {
           "description": "TestEncryptedDescription",
           "name": "TestEncryptedVariable",
-          "value": "\"TestEncryptedValue\""
+          "value": "'TestEncryptedValue'"
         }
       ]
     }
@@ -786,15 +780,15 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aaencr'
+module automationAccounts 'ts/modules:microsoft.automation.automationaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AutomationAccounts'
   params: {
     // Required parameters
-    name: '<<namePrefix>>aaencr001'
+    name: '<name>'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    cMKKeyName: '<keyVaultEncryptionKeyName>'
+    cMKKeyVaultResourceId: '<keyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<managedIdentityResourceId>'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -816,17 +810,17 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>aaencr001"
+      "value": "<name>"
     },
     // Non-required parameters
     "cMKKeyName": {
-      "value": "<cMKKeyName>"
+      "value": "<keyVaultEncryptionKeyName>"
     },
     "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+      "value": "<keyVaultResourceId>"
     },
     "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+      "value": "<managedIdentityResourceId>"
     },
     "userAssignedIdentities": {
       "value": {
@@ -847,10 +841,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aamin'
+module automationAccounts 'ts/modules:microsoft.automation.automationaccounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-AutomationAccounts'
   params: {
-    name: '<<namePrefix>>aamin001'
+    name: '<name>'
   }
 }
 ```
@@ -868,7 +862,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>aamin001"
+      "value": "<name>"
     }
   }
 }

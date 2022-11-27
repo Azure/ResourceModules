@@ -260,22 +260,22 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvngavpn'
+module virtualNetworkGateways 'ts/modules:microsoft.network.virtualnetworkgateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvngavpn001'
+    name: '<name>'
     virtualNetworkGatewaySku: 'VpnGw2AZ'
     virtualNetworkGatewayType: 'Vpn'
-    vNetResourceId: '<vNetResourceId>'
+    vNetResourceId: '<vnetResourceId>'
     // Non-required parameters
     activeActive: false
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     domainNameLabel: [
-      '<<namePrefix>>-dm-nvngavpn'
+      '<domainNameLabel>'
     ]
     lock: 'CanNotDelete'
     publicIpZones: [
@@ -320,7 +320,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvngavpn001"
+      "value": "<name>"
     },
     "virtualNetworkGatewaySku": {
       "value": "VpnGw2AZ"
@@ -329,27 +329,27 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": "Vpn"
     },
     "vNetResourceId": {
-      "value": "<vNetResourceId>"
+      "value": "<vnetResourceId>"
     },
     // Non-required parameters
     "activeActive": {
       "value": false
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-dm-nvngavpn"
+        "<domainNameLabel>"
       ]
     },
     "lock": {
@@ -401,24 +401,24 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvger'
+module virtualNetworkGateways 'ts/modules:microsoft.network.virtualnetworkgateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvger001'
+    name: '<name>'
     virtualNetworkGatewaySku: 'ErGw1AZ'
     virtualNetworkGatewayType: 'ExpressRoute'
-    vNetResourceId: '<vNetResourceId>'
+    vNetResourceId: '<vnetResourceId>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     domainNameLabel: [
-      '<<namePrefix>>-dm-nvger'
+      '<domainNameLabel>'
     ]
-    gatewayPipName: '<<namePrefix>>-pip-nvger'
+    gatewayPipName: '<gatewayPipName>'
     roleAssignments: [
       {
         principalIds: [
@@ -453,7 +453,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvger001"
+      "value": "<name>"
     },
     "virtualNetworkGatewaySku": {
       "value": "ErGw1AZ"
@@ -462,31 +462,31 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": "ExpressRoute"
     },
     "vNetResourceId": {
-      "value": "<vNetResourceId>"
+      "value": "<vnetResourceId>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-dm-nvger"
+        "<domainNameLabel>"
       ]
     },
     "gatewayPipName": {
-      "value": "<<namePrefix>>-pip-nvger"
+      "value": "<gatewayPipName>"
     },
     "roleAssignments": {
       "value": [
@@ -522,23 +522,23 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgvpn'
+module virtualNetworkGateways 'ts/modules:microsoft.network.virtualnetworkgateways:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualNetworkGateways'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvgvpn001'
+    name: '<name>'
     virtualNetworkGatewaySku: 'VpnGw1AZ'
     virtualNetworkGatewayType: 'Vpn'
-    vNetResourceId: '<vNetResourceId>'
+    vNetResourceId: '<vnetResourceId>'
     // Non-required parameters
     activeActive: true
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     domainNameLabel: [
-      '<<namePrefix>>-dm-nvgvpn'
+      '<domainNameLabel>'
     ]
     lock: 'CanNotDelete'
     publicIpZones: [
@@ -571,7 +571,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvgvpn001"
+      "value": "<name>"
     },
     "virtualNetworkGatewaySku": {
       "value": "VpnGw1AZ"
@@ -580,30 +580,30 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": "Vpn"
     },
     "vNetResourceId": {
-      "value": "<vNetResourceId>"
+      "value": "<vnetResourceId>"
     },
     // Non-required parameters
     "activeActive": {
       "value": true
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "domainNameLabel": {
       "value": [
-        "<<namePrefix>>-dm-nvgvpn"
+        "<domainNameLabel>"
       ]
     },
     "lock": {

@@ -152,11 +152,7 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Authorization/locks/resourceGroup` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -172,11 +168,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rrgcom'
+module resourceGroups 'ts/modules:microsoft.resources.resourcegroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ResourceGroups'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rrgcom001'
+    name: '<name>'
     // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -209,7 +205,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rrgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "lock": {
@@ -245,10 +241,10 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rrgmin'
+module resourceGroups 'ts/modules:microsoft.resources.resourcegroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ResourceGroups'
   params: {
-    name: '<<namePrefix>>rrgmin001'
+    name: '<name>'
   }
 }
 ```
@@ -266,7 +262,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>rrgmin001"
+      "value": "<name>"
     }
   }
 }

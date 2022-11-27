@@ -323,19 +323,19 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module connections './Microsoft.Network/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ncvtv'
+module connections 'ts/modules:microsoft.network.connections:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Connections'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ncvtv001'
+    name: '<name>'
     virtualNetworkGateway1: {
-      id: '<id>'
+      id: '<primaryVNETGatewayResourceID>'
     }
     // Non-required parameters
     enableBgp: false
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
-      id: '<id>'
+      id: '<secondaryVNETGatewayResourceID>'
     }
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     vpnSharedKey: '<vpnSharedKey>'
@@ -357,11 +357,11 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ncvtv001"
+      "value": "<name>"
     },
     "virtualNetworkGateway1": {
       "value": {
-        "id": "<id>"
+        "id": "<primaryVNETGatewayResourceID>"
       }
     },
     // Non-required parameters
@@ -373,7 +373,7 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     },
     "virtualNetworkGateway2": {
       "value": {
-        "id": "<id>"
+        "id": "<secondaryVNETGatewayResourceID>"
       }
     },
     "virtualNetworkGatewayConnectionType": {

@@ -168,11 +168,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cppgcom'
+module proximityPlacementGroups 'ts/modules:microsoft.compute.proximityplacementgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ProximityPlacementGroups'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cppgcom001'
+    name: '<name>'
     // Non-required parameters
     colocationStatus: {
       code: 'ColocationStatus/Aligned'
@@ -222,7 +222,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cppgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "colocationStatus": {
@@ -230,7 +230,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
         "code": "ColocationStatus/Aligned",
         "displayStatus": "Aligned",
         "level": "Info",
-        "message": "I\"m a default error message"
+        "message": "I'm a default error message"
       }
     },
     "intent": {
@@ -283,10 +283,10 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
 <summary>via Bicep module</summary>
 
 ```bicep
-module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cppgmin'
+module proximityPlacementGroups 'ts/modules:microsoft.compute.proximityplacementgroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ProximityPlacementGroups'
   params: {
-    name: '<<namePrefix>>cppgmin001'
+    name: '<name>'
   }
 }
 ```
@@ -304,7 +304,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>cppgmin001"
+      "value": "<name>"
     }
   }
 }

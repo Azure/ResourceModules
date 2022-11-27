@@ -174,17 +174,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnsgcom'
+module networkSecurityGroups 'ts/modules:microsoft.network.networksecuritygroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-NetworkSecurityGroups'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nnsgcom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -243,7 +243,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           description: 'Allow inbound access on TCP 8082'
           destinationApplicationSecurityGroups: [
             {
-              id: '<id>'
+              id: '<applicationSecurityGroupResourceId>'
             }
           ]
           destinationPortRange: '8082'
@@ -252,7 +252,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           protocol: '*'
           sourceApplicationSecurityGroups: [
             {
-              id: '<id>'
+              id: '<applicationSecurityGroupResourceId>'
             }
           ]
           sourcePortRange: '*'
@@ -277,23 +277,23 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nnsgcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -358,7 +358,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
             "description": "Allow inbound access on TCP 8082",
             "destinationApplicationSecurityGroups": [
               {
-                "id": "<id>"
+                "id": "<applicationSecurityGroupResourceId>"
               }
             ],
             "destinationPortRange": "8082",
@@ -367,7 +367,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
             "protocol": "*",
             "sourceApplicationSecurityGroups": [
               {
-                "id": "<id>"
+                "id": "<applicationSecurityGroupResourceId>"
               }
             ],
             "sourcePortRange": "*"
@@ -389,10 +389,10 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnsgmin'
+module networkSecurityGroups 'ts/modules:microsoft.network.networksecuritygroups:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-NetworkSecurityGroups'
   params: {
-    name: '<<namePrefix>>nnsgmin001'
+    name: '<name>'
   }
 }
 ```
@@ -410,7 +410,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>nnsgmin001"
+      "value": "<name>"
     }
   }
 }

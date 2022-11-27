@@ -350,11 +350,7 @@ networkAcls: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -370,11 +366,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-srswpscom'
+module webPubSub 'ts/modules:microsoft.signalrservice.webpubsub:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-WebPubSub'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-srswpscom-001'
+    name: '<name>'
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
@@ -391,7 +387,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
             'ServerConnection'
             'Trace'
           ]
-          name: 'pe-<<namePrefix>>-srswpscom-001'
+          name: '<name>'
         }
       ]
       publicNetwork: {
@@ -447,7 +443,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-srswpscom-001"
+      "value": "<name>"
     },
     // Non-required parameters
     "capacity": {
@@ -478,7 +474,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-<<namePrefix>>-srswpscom-001"
+            "name": "<name>"
           }
         ],
         "publicNetwork": {
@@ -543,10 +539,10 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-srswpsmin'
+module webPubSub 'ts/modules:microsoft.signalrservice.webpubsub:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-WebPubSub'
   params: {
-    name: '<<namePrefix>>-srswpsmin-001'
+    name: '<name>'
   }
 }
 ```
@@ -564,7 +560,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>-srswpsmin-001"
+      "value": "<name>"
     }
   }
 }
@@ -580,11 +576,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-srswpspe'
+module webPubSub 'ts/modules:microsoft.signalrservice.webpubsub:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-WebPubSub'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-srswpspe-001'
+    name: '<name>'
     // Non-required parameters
     privateEndpoints: [
       {
@@ -616,7 +612,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-srswpspe-001"
+      "value": "<name>"
     },
     // Non-required parameters
     "privateEndpoints": {

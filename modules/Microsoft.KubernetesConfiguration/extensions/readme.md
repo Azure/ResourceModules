@@ -85,13 +85,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcecom'
+module extensions 'ts/modules:microsoft.kubernetesconfiguration.extensions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    name: '<<namePrefix>>kcecom001'
+    name: '<name>'
     // Non-required parameters
     configurationSettings: {
       'image-automation-controller.enabled': 'false'
@@ -127,7 +127,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       "value": "microsoft.flux"
     },
     "name": {
-      "value": "<<namePrefix>>kcecom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "configurationSettings": {
@@ -162,13 +162,13 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kcemin'
+module extensions 'ts/modules:microsoft.kubernetesconfiguration.extensions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Extensions'
   params: {
     // Required parameters
     clusterName: '<clusterName>'
     extensionType: 'microsoft.flux'
-    name: '<<namePrefix>>kcemin001'
+    name: '<name>'
     // Non-required parameters
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
@@ -196,7 +196,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       "value": "microsoft.flux"
     },
     "name": {
-      "value": "<<namePrefix>>kcemin001"
+      "value": "<name>"
     },
     // Non-required parameters
     "releaseNamespace": {

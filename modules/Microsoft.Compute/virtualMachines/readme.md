@@ -1019,13 +1019,7 @@ For further details on automanage please refer to [Automanage virtual machines](
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/networkInterfaces` | Local reference |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
-| `Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -1041,15 +1035,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmlincom'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
     imageReference: {
       offer: '0001-com-ubuntu-server-focal'
       publisher: 'Canonical'
-      sku: '<sku>'
+      sku: '20_04-lts-gen2'
       version: 'latest'
     }
     nicConfigurations: [
@@ -1059,12 +1053,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           {
             applicationSecurityGroups: [
               {
-                id: '<id>'
+                id: '<applicationSecurityGroupResourceId>'
               }
             ]
             loadBalancerBackendAddressPools: [
               {
-                id: '<id>'
+                id: '<loadBalancerBackendPoolResourceId>'
               }
             ]
             name: 'ipconfig01'
@@ -1108,9 +1102,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     availabilityZone: 1
-    backupPolicyName: '<backupPolicyName>'
-    backupVaultName: '<backupVaultName>'
-    backupVaultResourceGroup: '<backupVaultResourceGroup>'
+    backupPolicyName: '<recoveryServicesVaultBackupPolicyName>'
+    backupVaultName: '<recoveryServicesVaultName>'
+    backupVaultResourceGroup: '<recoveryServicesVaultResourceGroupName>'
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -1131,22 +1125,22 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     disablePasswordAuthentication: true
     encryptionAtHost: false
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
+        KekVaultResourceId: '<keyVaultResourceId>'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
+        KeyEncryptionKeyURL: '<keyVaultEncryptionKeyUrl>'
+        KeyVaultResourceId: '<keyVaultResourceId>'
+        KeyVaultURL: '<keyVaultUrl>'
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -1155,13 +1149,13 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       enabled: true
       fileData: [
         {
-          storageAccountId: '<storageAccountId>'
-          uri: '<uri>'
+          storageAccountId: '<storageAccountResourceId>'
+          uri: '<storageAccountCSEFileUrl>'
         }
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: '<commandToExecute>'
+      commandToExecute: '<storageAccountCSEFileName>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -1177,11 +1171,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     location: '<location>'
     lock: 'CanNotDelete'
-    monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>cvmlincom'
+    monitoringWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
+    name: '<name>'
     publicKeys: [
       {
-        keyData: '<keyData>'
+        keyData: '<SSHKeyPublicKey>'
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
@@ -1222,7 +1216,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "offer": "0001-com-ubuntu-server-focal",
         "publisher": "Canonical",
-        "sku": "<sku>",
+        "sku": "20_04-lts-gen2",
         "version": "latest"
       }
     },
@@ -1234,12 +1228,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             {
               "applicationSecurityGroups": [
                 {
-                  "id": "<id>"
+                  "id": "<applicationSecurityGroupResourceId>"
                 }
               ],
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "<id>"
+                  "id": "<loadBalancerBackendPoolResourceId>"
                 }
               ],
               "name": "ipconfig01",
@@ -1293,13 +1287,13 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": 1
     },
     "backupPolicyName": {
-      "value": "<backupPolicyName>"
+      "value": "<recoveryServicesVaultBackupPolicyName>"
     },
     "backupVaultName": {
-      "value": "<backupVaultName>"
+      "value": "<recoveryServicesVaultName>"
     },
     "backupVaultResourceGroup": {
-      "value": "<backupVaultResourceGroup>"
+      "value": "<recoveryServicesVaultResourceGroupName>"
     },
     "dataDisks": {
       "value": [
@@ -1324,19 +1318,19 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "disablePasswordAuthentication": {
       "value": true
@@ -1349,11 +1343,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "enabled": true,
         "settings": {
           "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KekVaultResourceId": "<keyVaultResourceId>",
           "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
+          "KeyEncryptionKeyURL": "<keyVaultEncryptionKeyUrl>",
+          "KeyVaultResourceId": "<keyVaultResourceId>",
+          "KeyVaultURL": "<keyVaultUrl>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
         }
@@ -1364,15 +1358,15 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "enabled": true,
         "fileData": [
           {
-            "storageAccountId": "<storageAccountId>",
-            "uri": "<uri>"
+            "storageAccountId": "<storageAccountResourceId>",
+            "uri": "<storageAccountCSEFileUrl>"
           }
         ]
       }
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "<commandToExecute>"
+        "commandToExecute": "<storageAccountCSEFileName>"
       }
     },
     "extensionDependencyAgentConfig": {
@@ -1402,15 +1396,15 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "monitoringWorkspaceId": {
-      "value": "<monitoringWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmlincom"
+      "value": "<name>"
     },
     "publicKeys": {
       "value": [
         {
-          "keyData": "<keyData>",
+          "keyData": "<SSHKeyPublicKey>",
           "path": "/home/localAdminUser/.ssh/authorized_keys"
         }
       ]
@@ -1448,8 +1442,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmlinatmg'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1485,10 +1479,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
     location: '<location>'
-    name: '<<namePrefix>>cvmlinatmg'
+    name: '<name>'
     publicKeys: [
       {
-        keyData: '<keyData>'
+        keyData: '<SSHKeyPublicKey>'
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
@@ -1561,12 +1555,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmlinatmg"
+      "value": "<name>"
     },
     "publicKeys": {
       "value": [
         {
-          "keyData": "<keyData>",
+          "keyData": "<SSHKeyPublicKey>",
           "path": "/home/localAdminUser/.ssh/authorized_keys"
         }
       ]
@@ -1585,8 +1579,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmlinmin'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1621,10 +1615,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     disablePasswordAuthentication: true
     location: '<location>'
-    name: '<<namePrefix>>cvmlinmin'
+    name: '<name>'
     publicKeys: [
       {
-        keyData: '<keyData>'
+        keyData: '<SSHKeyPublicKey>'
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
@@ -1694,12 +1688,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmlinmin"
+      "value": "<name>"
     },
     "publicKeys": {
       "value": [
         {
-          "keyData": "<keyData>",
+          "keyData": "<SSHKeyPublicKey>",
           "path": "/home/localAdminUser/.ssh/authorized_keys"
         }
       ]
@@ -1718,8 +1712,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwincom'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1736,12 +1730,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           {
             applicationSecurityGroups: [
               {
-                id: '<id>'
+                id: '<applicationSecurityGroupResourceId>'
               }
             ]
             loadBalancerBackendAddressPools: [
               {
-                id: '<id>'
+                id: '<loadBalancerBackendPoolResourceId>'
               }
             ]
             name: 'ipconfig01'
@@ -1786,9 +1780,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     adminPassword: '<adminPassword>'
     availabilityZone: 2
-    backupPolicyName: '<backupPolicyName>'
-    backupVaultName: '<backupVaultName>'
-    backupVaultResourceGroup: '<backupVaultResourceGroup>'
+    backupPolicyName: '<recoveryServicesVaultBackupPolicyName>'
+    backupVaultName: '<recoveryServicesVaultName>'
+    backupVaultResourceGroup: '<recoveryServicesVaultResourceGroupName>'
     dataDisks: [
       {
         caching: 'None'
@@ -1809,11 +1803,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     encryptionAtHost: false
     extensionAntiMalwareConfig: {
       enabled: true
@@ -1837,11 +1831,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: '<KekVaultResourceId>'
+        KekVaultResourceId: '<keyVaultResourceId>'
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: '<KeyEncryptionKeyURL>'
-        KeyVaultResourceId: '<KeyVaultResourceId>'
-        KeyVaultURL: '<KeyVaultURL>'
+        KeyEncryptionKeyURL: '<keyVaultEncryptionKeyUrl>'
+        KeyVaultResourceId: '<keyVaultResourceId>'
+        KeyVaultURL: '<keyVaultUrl>'
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -1850,13 +1844,13 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       enabled: true
       fileData: [
         {
-          storageAccountId: '<storageAccountId>'
-          uri: '<uri>'
+          storageAccountId: '<storageAccountResourceId>'
+          uri: '<storageAccountCSEFileUrl>'
         }
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: '<commandToExecute>'
+      commandToExecute: '<storageAccountCSEFileName>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -1872,8 +1866,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     location: '<location>'
     lock: 'CanNotDelete'
-    monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>cvmwincom'
+    monitoringWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
+    name: '<name>'
     proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
@@ -1924,12 +1918,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             {
               "applicationSecurityGroups": [
                 {
-                  "id": "<id>"
+                  "id": "<applicationSecurityGroupResourceId>"
                 }
               ],
               "loadBalancerBackendAddressPools": [
                 {
-                  "id": "<id>"
+                  "id": "<loadBalancerBackendPoolResourceId>"
                 }
               ],
               "name": "ipconfig01",
@@ -1986,13 +1980,13 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": 2
     },
     "backupPolicyName": {
-      "value": "<backupPolicyName>"
+      "value": "<recoveryServicesVaultBackupPolicyName>"
     },
     "backupVaultName": {
-      "value": "<backupVaultName>"
+      "value": "<recoveryServicesVaultName>"
     },
     "backupVaultResourceGroup": {
-      "value": "<backupVaultResourceGroup>"
+      "value": "<recoveryServicesVaultResourceGroupName>"
     },
     "dataDisks": {
       "value": [
@@ -2017,19 +2011,19 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "encryptionAtHost": {
       "value": false
@@ -2059,11 +2053,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "enabled": true,
         "settings": {
           "EncryptionOperation": "EnableEncryption",
-          "KekVaultResourceId": "<KekVaultResourceId>",
+          "KekVaultResourceId": "<keyVaultResourceId>",
           "KeyEncryptionAlgorithm": "RSA-OAEP",
-          "KeyEncryptionKeyURL": "<KeyEncryptionKeyURL>",
-          "KeyVaultResourceId": "<KeyVaultResourceId>",
-          "KeyVaultURL": "<KeyVaultURL>",
+          "KeyEncryptionKeyURL": "<keyVaultEncryptionKeyUrl>",
+          "KeyVaultResourceId": "<keyVaultResourceId>",
+          "KeyVaultURL": "<keyVaultUrl>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
         }
@@ -2074,15 +2068,15 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "enabled": true,
         "fileData": [
           {
-            "storageAccountId": "<storageAccountId>",
-            "uri": "<uri>"
+            "storageAccountId": "<storageAccountResourceId>",
+            "uri": "<storageAccountCSEFileUrl>"
           }
         ]
       }
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "<commandToExecute>"
+        "commandToExecute": "<storageAccountCSEFileName>"
       }
     },
     "extensionDependencyAgentConfig": {
@@ -2112,10 +2106,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "monitoringWorkspaceId": {
-      "value": "<monitoringWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwincom"
+      "value": "<name>"
     },
     "proximityPlacementGroupResourceId": {
       "value": "<proximityPlacementGroupResourceId>"
@@ -2153,8 +2147,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwinatmg'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2187,7 +2181,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     location: '<location>'
-    name: '<<namePrefix>>cvmwinatmg'
+    name: '<name>'
   }
 }
 ```
@@ -2254,7 +2248,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwinatmg"
+      "value": "<name>"
     }
   }
 }
@@ -2270,8 +2264,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwinmin'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2303,7 +2297,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     adminPassword: '<adminPassword>'
     location: '<location>'
-    name: '<<namePrefix>>cvmwinmin'
+    name: '<name>'
   }
 }
 ```
@@ -2367,7 +2361,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwinmin"
+      "value": "<name>"
     }
   }
 }
@@ -2383,8 +2377,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwincmk'
+module virtualMachines 'ts/modules:microsoft.compute.virtualmachines:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-VirtualMachines'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2409,7 +2403,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       diskSizeGB: '128'
       managedDisk: {
         diskEncryptionSet: {
-          id: '<id>'
+          id: '<diskEncryptionSetResourceId>'
         }
         storageAccountType: 'Premium_LRS'
       }
@@ -2423,14 +2417,14 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         diskSizeGB: '128'
         managedDisk: {
           diskEncryptionSet: {
-            id: '<id>'
+            id: '<diskEncryptionSetResourceId>'
           }
           storageAccountType: 'Premium_LRS'
         }
       }
     ]
     location: '<location>'
-    name: '<<namePrefix>>cvmwincmk'
+    name: '<name>'
   }
 }
 ```
@@ -2477,7 +2471,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "diskSizeGB": "128",
         "managedDisk": {
           "diskEncryptionSet": {
-            "id": "<id>"
+            "id": "<diskEncryptionSetResourceId>"
           },
           "storageAccountType": "Premium_LRS"
         }
@@ -2499,7 +2493,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "diskSizeGB": "128",
           "managedDisk": {
             "diskEncryptionSet": {
-              "id": "<id>"
+              "id": "<diskEncryptionSetResourceId>"
             },
             "storageAccountType": "Premium_LRS"
           }
@@ -2510,7 +2504,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwincmk"
+      "value": "<name>"
     }
   }
 }

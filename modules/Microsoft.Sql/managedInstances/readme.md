@@ -295,13 +295,13 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
+module managedInstances 'ts/modules:microsoft.sql.managedinstances:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmicom'
-    subnetId: '<subnetId>'
+    name: '<name>'
+    subnetId: '<subnetResourceId>'
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -311,30 +311,30 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         backupShortTermRetentionPolicies: {
           name: 'default'
         }
-        name: '<<namePrefix>>-sqlmicom-db-001'
+        name: '<name>'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     dnsZonePartner: ''
     encryptionProtectorObj: {
-      serverKeyName: '<serverKeyName>'
+      serverKeyName: '<keyVaultEncryptionKeyUrl>'
       serverKeyType: 'AzureKeyVault'
     }
     hardwareFamily: 'Gen5'
     keys: [
       {
-        name: '<name>'
+        name: '<keyVaultEncryptionKeyUrl>'
         serverKeyType: 'AzureKeyVault'
-        uri: '<uri>'
+        uri: '<keyVaultEncryptionKeyUrl>'
       }
     ]
     licenseType: 'LicenseIncluded'
     lock: 'CanNotDelete'
-    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    primaryUserAssignedIdentityId: '<managedIdentityResourceId>'
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false
     roleAssignments: [
@@ -368,7 +368,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+      vulnerabilityAssessmentsStorageAccountId: '<storageAccountResourceId>'
     }
   }
 }
@@ -393,10 +393,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmicom"
+      "value": "<name>"
     },
     "subnetId": {
-      "value": "<subnetId>"
+      "value": "<subnetResourceId>"
     },
     "collation": {
       "value": "SQL_Latin1_General_CP1_CI_AS"
@@ -410,31 +410,31 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
           "backupShortTermRetentionPolicies": {
             "name": "default"
           },
-          "name": "<<namePrefix>>-sqlmicom-db-001"
+          "name": "<name>"
         }
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "dnsZonePartner": {
       "value": ""
     },
     "encryptionProtectorObj": {
       "value": {
-        "serverKeyName": "<serverKeyName>",
+        "serverKeyName": "<keyVaultEncryptionKeyUrl>",
         "serverKeyType": "AzureKeyVault"
       }
     },
@@ -444,9 +444,9 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "keys": {
       "value": [
         {
-          "name": "<name>",
+          "name": "<keyVaultEncryptionKeyUrl>",
           "serverKeyType": "AzureKeyVault",
-          "uri": "<uri>"
+          "uri": "<keyVaultEncryptionKeyUrl>"
         }
       ]
     },
@@ -457,7 +457,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "primaryUserAssignedIdentityId": {
-      "value": "<primaryUserAssignedIdentityId>"
+      "value": "<managedIdentityResourceId>"
     },
     "proxyOverride": {
       "value": "Proxy"
@@ -517,7 +517,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
+        "vulnerabilityAssessmentsStorageAccountId": "<storageAccountResourceId>"
       }
     }
   }
@@ -534,14 +534,14 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
+module managedInstances 'ts/modules:microsoft.sql.managedinstances:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmimin'
-    subnetId: '<subnetId>'
+    name: '<name>'
+    subnetId: '<subnetResourceId>'
   }
 }
 ```
@@ -566,10 +566,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmimin"
+      "value": "<name>"
     },
     "subnetId": {
-      "value": "<subnetId>"
+      "value": "<subnetResourceId>"
     }
   }
 }

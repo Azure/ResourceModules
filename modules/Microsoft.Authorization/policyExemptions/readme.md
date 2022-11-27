@@ -220,11 +220,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apemgcom'
+module policyExemptions 'ts/modules:microsoft.authorization.policyexemptions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apemgcom001'
+    name: '<name>'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     assignmentScopeValidation: 'Default'
@@ -270,7 +270,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apemgcom001"
+      "value": "<name>"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -333,11 +333,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apemgmin'
+module policyExemptions 'ts/modules:microsoft.authorization.policyexemptions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apemgmin001'
+    name: '<name>'
     policyAssignmentId: '<policyAssignmentId>'
   }
 }
@@ -357,7 +357,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apemgmin001"
+      "value": "<name>"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -376,11 +376,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apergcom'
+module policyExemptions 'ts/modules:microsoft.authorization.policyexemptions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apergcom001'
+    name: '<name>'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     assignmentScopeValidation: 'Default'
@@ -392,7 +392,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       category: 'Security'
     }
     policyDefinitionReferenceIds: [
-      '<policyDefinitionReferenceId>'
+      '<policyDefinitionReferenceIds>'
     ]
     resourceGroupName: '<resourceGroupName>'
     resourceSelectors: [
@@ -427,7 +427,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apergcom001"
+      "value": "<name>"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -455,7 +455,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyDefinitionReferenceIds": {
       "value": [
-        "<policyDefinitionReferenceId>"
+        "<policyDefinitionReferenceIds>"
       ]
     },
     "resourceGroupName": {
@@ -493,11 +493,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apergmin'
+module policyExemptions 'ts/modules:microsoft.authorization.policyexemptions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apergmin001'
+    name: '<name>'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     resourceGroupName: '<resourceGroupName>'
@@ -520,7 +520,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apergmin001"
+      "value": "<name>"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -546,11 +546,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apesubcom'
+module policyExemptions 'ts/modules:microsoft.authorization.policyexemptions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apesubcom001'
+    name: '<name>'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     assignmentScopeValidation: 'Default'
@@ -562,7 +562,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       category: 'Security'
     }
     policyDefinitionReferenceIds: [
-      '<policyDefinitionReferenceId>'
+      '<policyDefinitionReferenceIds>'
     ]
     resourceSelectors: [
       {
@@ -596,7 +596,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apesubcom001"
+      "value": "<name>"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -624,7 +624,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyDefinitionReferenceIds": {
       "value": [
-        "<policyDefinitionReferenceId>"
+        "<policyDefinitionReferenceIds>"
       ]
     },
     "resourceSelectors": {
@@ -659,11 +659,11 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apesubmin'
+module policyExemptions 'ts/modules:microsoft.authorization.policyexemptions:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-PolicyExemptions'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apesubmin001'
+    name: '<name>'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     subscriptionId: '<subscriptionId>'
@@ -685,7 +685,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apesubmin001"
+      "value": "<name>"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"

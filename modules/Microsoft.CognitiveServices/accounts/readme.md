@@ -412,11 +412,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -432,19 +428,19 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csacom'
+module accounts 'ts/modules:microsoft.cognitiveservices.accounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'Face'
-    name: '<<namePrefix>>csacom001'
+    name: '<name>'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>xdomain'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Deny'
@@ -455,7 +451,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       ]
       virtualNetworkRules: [
         {
-          id: '<id>'
+          id: '<subnetResourceId>'
           ignoreMissingVnetServiceEndpoint: false
         }
       ]
@@ -506,26 +502,26 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "Face"
     },
     "name": {
-      "value": "<<namePrefix>>csacom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>xdomain"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -540,7 +536,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         ],
         "virtualNetworkRules": [
           {
-            "id": "<id>",
+            "id": "<subnetResourceId>",
             "ignoreMissingVnetServiceEndpoint": false
           }
         ]
@@ -595,20 +591,20 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csaencr'
+module accounts 'ts/modules:microsoft.cognitiveservices.accounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '<<namePrefix>>csaencr001'
+    name: '<name>'
     // Non-required parameters
     encryption: {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
-        identityClientId: '<identityClientId>'
-        keyName: '<keyName>'
+        identityClientId: '<managedIdentityClientId>'
+        keyName: '<keyVaultKeyName>'
         keyVaultUri: '<keyVaultUri>'
-        keyversion: '<keyversion>'
+        keyversion: '<keyVaultKeyVersion>'
       }
     }
     publicNetworkAccess: 'Enabled'
@@ -637,17 +633,17 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "<<namePrefix>>csaencr001"
+      "value": "<name>"
     },
     // Non-required parameters
     "encryption": {
       "value": {
         "keySource": "Microsoft.KeyVault",
         "keyVaultProperties": {
-          "identityClientId": "<identityClientId>",
-          "keyName": "<keyName>",
+          "identityClientId": "<managedIdentityClientId>",
+          "keyName": "<keyVaultKeyName>",
           "keyVaultUri": "<keyVaultUri>",
-          "keyversion": "<keyversion>"
+          "keyversion": "<keyVaultKeyVersion>"
         }
       }
     },
@@ -676,12 +672,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csamin'
+module accounts 'ts/modules:microsoft.cognitiveservices.accounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '<<namePrefix>>csamin001'
+    name: '<name>'
   }
 }
 ```
@@ -703,7 +699,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "<<namePrefix>>csamin001"
+      "value": "<name>"
     }
   }
 }
@@ -719,12 +715,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csaspeech'
+module accounts 'ts/modules:microsoft.cognitiveservices.accounts:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Accounts'
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '<<namePrefix>>csaspeech001'
+    name: '<name>'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>speechdomain'
     privateEndpoints: [
@@ -764,7 +760,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "<<namePrefix>>csaspeech001"
+      "value": "<name>"
     },
     // Non-required parameters
     "customSubDomainName": {

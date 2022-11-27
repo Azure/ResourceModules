@@ -59,15 +59,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-idscom'
+module diagnosticSettings 'ts/modules:microsoft.insights.diagnosticsettings:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-DiagnosticSettings'
   params: {
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    name: '<<namePrefix>>idscom001'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
+    name: '<name>'
   }
 }
 ```
@@ -85,22 +85,22 @@ module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep'
   "contentVersion": "1.0.0.0",
   "parameters": {
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>idscom001"
+      "value": "<name>"
     }
   }
 }

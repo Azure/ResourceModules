@@ -281,8 +281,8 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmicom'
+module imageTemplates 'ts/modules:microsoft.virtualmachineimages.imagetemplates:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-ImageTemplates'
   params: {
     // Required parameters
     customizationSteps: [
@@ -298,13 +298,13 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmicom001'
-    userMsiName: '<userMsiName>'
+    name: '<name>'
+    userMsiName: '<managedIdentityName>'
     // Non-required parameters
     buildTimeoutInMinutes: 0
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-mi-vmicom-001'
+    managedImageName: '<managedImageName>'
     osDiskSizeGB: 127
     roleAssignments: [
       {
@@ -317,7 +317,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-umi-vmicom-001'
+    unManagedImageName: '<unManagedImageName>'
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
@@ -355,10 +355,10 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmicom001"
+      "value": "<name>"
     },
     "userMsiName": {
-      "value": "<userMsiName>"
+      "value": "<managedIdentityName>"
     },
     // Non-required parameters
     "buildTimeoutInMinutes": {
@@ -371,7 +371,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "CanNotDelete"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmicom-001"
+      "value": "<managedImageName>"
     },
     "osDiskSizeGB": {
       "value": 127
@@ -394,7 +394,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": ""
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-umi-vmicom-001"
+      "value": "<unManagedImageName>"
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"

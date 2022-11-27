@@ -243,11 +243,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -263,17 +259,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtcom'
+module topics 'ts/modules:microsoft.eventgrid.topics:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Topics'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtcom001'
+    name: '<name>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<eventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<eventHubNamespaceEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<storageAccountResourceId>'
+    diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     inboundIpRules: [
       {
         action: 'Allow'
@@ -319,23 +315,23 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtcom001"
+      "value": "<name>"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+      "value": "<eventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+      "value": "<eventHubNamespaceEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+      "value": "<storageAccountResourceId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "inboundIpRules": {
       "value": [
@@ -386,10 +382,10 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtmin'
+module topics 'ts/modules:microsoft.eventgrid.topics:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Topics'
   params: {
-    name: '<<namePrefix>>egtmin001'
+    name: '<name>'
   }
 }
 ```
@@ -407,7 +403,7 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>egtmin001"
+      "value": "<name>"
     }
   }
 }
@@ -423,11 +419,11 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtpe'
+module topics 'ts/modules:microsoft.eventgrid.topics:1.0.0 = {
+  name: '${uniqueString(deployment().name)}-Topics'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtpe001'
+    name: '<name>'
     // Non-required parameters
     privateEndpoints: [
       {
@@ -458,7 +454,7 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtpe001"
+      "value": "<name>"
     },
     // Non-required parameters
     "privateEndpoints": {
