@@ -1078,9 +1078,9 @@ function Set-DeploymentExamplesSection {
                 )
             }
         } else {
-            # ------------------------- #
-            #   Prepare JSON to Bicep   #
-            # ------------------------- #
+            # -------------------------------------- #
+            #   Prepare JSON parameter file example  #
+            # -------------------------------------- #
 
             $rawContentHashtable = $rawContent | ConvertFrom-Json -Depth 99 -AsHashtable -NoEnumerate
 
@@ -1088,10 +1088,10 @@ function Set-DeploymentExamplesSection {
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
                 # Case 1: Uses deployment test file (instead of parameter file).
-                # [1/3]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # [1/4]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
-                # [2/3] Build the full ARM-JSON parameter file
+                # [2/4] Build the full ARM-JSON parameter file
                 $jsonParameterContent = [ordered]@{
                     '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
                     contentVersion = '1.0.0.0'
@@ -1099,7 +1099,7 @@ function Set-DeploymentExamplesSection {
                 }
                 $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99).TrimEnd()
 
-                # [3/3]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
+                # [3/4]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 foreach ($row in ($jsonParameterContentArray | Where-Object { $_ -like '*reference(extensionResourceId*' })) {
                     if ($row -match '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"') {
@@ -1117,7 +1117,7 @@ function Set-DeploymentExamplesSection {
                     $jsonParameterContent = $jsonParameterContent.Replace($toReplaceValue, ('<{0}>' -f $expectedValue))
                 }
 
-                # Removing template specific functions
+                # [4/4] Removing template specific functions
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 for ($index = 0; $index -lt $jsonParameterContentArray.Count; $index++) {
                     if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
@@ -1141,135 +1141,27 @@ function Set-DeploymentExamplesSection {
                 $jsonParameterContent = $rawContent.TrimEnd()
             }
 
-            # --------------------- #
-            #   Add Bicep example   #
-            # --------------------- #
-            if ($addBicep) {
-
-                # [1/5] Get all parameters from the parameter object
-                $JSONParametersHashTable = (ConvertFrom-Json $jsonParameterContent -AsHashtable -Depth 99).parameters
-
-                # [2/5] Handle the special case of Key Vault secret references (that have a 'reference' instead of a 'value' property)
-                # [2.1] Find all references and split them into managable objects
-                $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
-
-                if ($keyVaultReferences.Count -gt 0) {
-                    $keyVaultReferenceData = @()
-                    foreach ($reference in $keyVaultReferences) {
-                        $resourceIdElem = $JSONParametersHashTable[$reference].reference.keyVault.id -split '/'
-                        $keyVaultReferenceData += @{
-                            subscriptionId    = $resourceIdElem[2]
-                            resourceGroupName = $resourceIdElem[4]
-                            vaultName         = $resourceIdElem[-1]
-                            secretName        = $JSONParametersHashTable[$reference].reference.secretName
-                            parameterName     = $reference
-                        }
-                    }
-                }
-
-                # [2.2] Remove any duplicates from the referenced key vaults and build 'existing' Key Vault references in Bicep format from them.
-                #        Also, add a link to the corresponding Key Vault 'resource' to each identified Key Vault secret reference
-                $extendedKeyVaultReferences = @()
-                $counter = 0
-                foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
-                    $counter++
-                    $extendedKeyVaultReferences += @(
-                        "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
-                    ("  name: '{0}'" -f $reference.vaultName),
-                    ("  scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
-                        '}',
-                        ''
-                    )
-
-                    # Add attribute for later correct reference
-                    $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
-                        $_['vaultResourceReference'] = "kv$counter"
-                    }
-                }
-
-                # [3/5] Remove the 'value' property from each parameter
-                #      If we're handling a classic ARM-JSON parameter file that includes replacing all 'references' with the link to one of the 'existing' Key Vault resources
-                if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
-                    # If handling a classic parameter file
-                    $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99 -AsHashtable -NoEnumerate).parameters
-                    $JSONParametersWithoutValue = @{}
-                    foreach ($parameterName in $JSONParameters.psbase.Keys) {
-                        $keysOnLevel = $JSONParameters[$parameterName].Keys
-                        if ($keysOnLevel.count -eq 1 -and $keysOnLevel -eq 'value') {
-                            $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]['value']
-                        } else {
-                            # replace key vault references
-                            $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameterName }
-                            $JSONParametersWithoutValue[$parameterName] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
-                        }
-                    }
-                } else {
-                    # If handling a test deployment file
-                    $JSONParametersWithoutValue = @{}
-                    foreach ($parameter in $JSONParametersHashTable.Keys) {
-                        $JSONParametersWithoutValue[$parameter] = $JSONParametersHashTable.$parameter.value
-                    }
-                }
-
-                # [4/5] Convert the JSON parameters to a Bicep parameters block
-                $conversionInputObject = @{
-                    JSONParameters         = $JSONParametersWithoutValue
-                    RequiredParametersList = $null -ne $RequiredParametersList ? $RequiredParametersList : @()
-                }
-                $bicepExample = ConvertTo-FormattedBicep @conversionInputObject
-
-                # [5/5] Create the final content block: That means
-                # - the 'existing' Key Vault resources
-                # - a 'module' header that mimics a module deployment
-                # - all parameters in Bicep format
-                $SectionContent += @(
-                    '',
-                    '<details>'
-                    ''
-                    '<summary>via Bicep module</summary>'
-                    ''
-                    '```bicep',
-                    $extendedKeyVaultReferences,
-                    "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
-                    "  name: '`${uniqueString(deployment().name)}-$resourceTypeUpper'"
-                    '  params: {'
-                    $bicepExample.TrimEnd(),
-                    '  }'
-                    '}'
-                    '```',
-                    '',
-                    '</details>'
-                    '<p>'
-                )
+            # [1/2] Get all parameters from the parameter object and order them recursively
+            $orderingInputObject = @{
+                ParametersJSON         = (($jsonParameterContent | ConvertFrom-Json).parameters | ConvertTo-Json -Depth 99)
+                RequiredParametersList = $null -ne $RequiredParametersList ? $RequiredParametersList : @()
             }
+            $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
 
-            # -------------------- #
-            #   Add JSON example   #
-            # -------------------- #
-            if ($addJson) {
-
-                # [1/2] Get all parameters from the parameter object and order them recursively
-                $orderingInputObject = @{
-                    ParametersJSON         = (($jsonParameterContent | ConvertFrom-Json).parameters | ConvertTo-Json -Depth 99)
-                    RequiredParametersList = $null -ne $RequiredParametersList ? $RequiredParametersList : @()
-                }
-                $orderedJSONExample = Build-OrderedJSONObject @orderingInputObject
-
-                # [2/2] Create the final content block
-                $SectionContent += @(
-                    '',
-                    '<details>',
-                    '',
-                    '<summary>via JSON Parameter file</summary>',
-                    '',
-                    '```json',
-                    $orderedJSONExample.TrimEnd(),
-                    '```',
-                    '',
-                    '</details>'
-                    '<p>'
-                )
-            }
+            # [2/2] Create the final content block
+            $SectionContent += @(
+                '',
+                '<details>',
+                '',
+                '<summary>via JSON Parameter file</summary>',
+                '',
+                '```json',
+                $orderedJSONExample.TrimEnd(),
+                '```',
+                '',
+                '</details>'
+                '<p>'
+            )
         }
 
         $SectionContent += @(
