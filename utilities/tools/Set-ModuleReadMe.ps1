@@ -1103,17 +1103,18 @@ function Set-DeploymentExamplesSection {
                 # [3/4]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 foreach ($row in ($jsonParameterContentArray | Where-Object { $_ -like '*reference(extensionResourceId*' })) {
-                    if ($row -match '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"') {
+                    if ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+)\..*\].*"') {
                         # e.g. "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.logAnalyticsWorkspaceResourceId.value]"
+                        # e.g. "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
                         $expectedValue = $matches[1]
-                    } elseif ($row -match '.+\[reference\(extensionResourceId.+\.(.+)\]"') {
+                    } elseif ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+).*\].*"') {
                         # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $expectedValue = $matches[1]
                     } else {
                         throw "Unhandled case [$row] in file [$testFilePath]"
                     }
 
-                    $toReplaceValue = ([regex]::Match($row, '"(\[reference\(extensionResourceId.+)"')).Captures.Groups[1].Value
+                    $toReplaceValue = ([regex]::Match($row, '"(\[.+)"')).Captures.Groups[1].Value
 
                     $jsonParameterContent = $jsonParameterContent.Replace($toReplaceValue, ('<{0}>' -f $expectedValue))
                 }
