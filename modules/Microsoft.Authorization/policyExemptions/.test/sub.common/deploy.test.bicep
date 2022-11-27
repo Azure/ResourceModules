@@ -76,6 +76,7 @@ resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-
 module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policySetAssignment.id
     displayName: '[Display Name] policy exempt (subscription scope)'

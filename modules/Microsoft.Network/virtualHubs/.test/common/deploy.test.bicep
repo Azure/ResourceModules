@@ -41,6 +41,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
     addressPrefix: '10.1.0.0/16'
@@ -72,4 +73,5 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
   }
+}
 }

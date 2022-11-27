@@ -40,6 +40,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
     addressPrefix: '10.0.0.0/16'
     virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId

@@ -13,6 +13,7 @@ param serviceShort string = 'msrdcom'
 module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: 'Component Validation - <<namePrefix>>${serviceShort} Subscription assignment'
     authorizations: [
       {

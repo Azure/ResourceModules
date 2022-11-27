@@ -47,6 +47,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
     cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName

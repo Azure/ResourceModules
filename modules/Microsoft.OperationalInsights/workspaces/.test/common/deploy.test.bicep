@@ -55,6 +55,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     dailyQuotaGb: 10
     dataSources: [
@@ -184,7 +185,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId:  resourceGroupResources.outputs.storageAccountResourceId
+        storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'

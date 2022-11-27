@@ -40,7 +40,35 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
+    name: DefaultTelemetry: enableDefaultTelemetry
+    name: DefaultTelemetry: enableDefaultTelemetry
+    name: DefaultTelemetry: enableDefaultTelemetry
+    name: DefaultTelemetry: enableDefaultTelemetry
+    name: DefaultTelemetry: enableDefaultTelemetry
+    name: DefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     vNetId: resourceGroupResources.outputs.virtualNetworkResourceId
   }
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
 }

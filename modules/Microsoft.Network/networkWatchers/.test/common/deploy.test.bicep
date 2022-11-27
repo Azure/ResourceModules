@@ -60,6 +60,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: 'NetworkWatcher_${testLocation}'
     location: testLocation
     connectionMonitors: [

@@ -38,3 +38,4 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     }
   }
 }
+}

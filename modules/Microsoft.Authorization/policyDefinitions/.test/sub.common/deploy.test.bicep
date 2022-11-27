@@ -13,6 +13,7 @@ param serviceShort string = 'apdsubcom'
 module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyRule: {
       if: {

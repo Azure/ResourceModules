@@ -32,6 +32,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     managementEndpoint: 'https://<<namePrefix>>${serviceShort}001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'None'

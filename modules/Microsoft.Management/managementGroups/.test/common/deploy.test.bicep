@@ -13,6 +13,7 @@ param serviceShort string = 'mmgcom'
 module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     displayName: 'Test MG'
     parentId: last(split(managementGroup().id, '/'))
