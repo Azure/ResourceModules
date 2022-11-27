@@ -928,7 +928,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rsvcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rsvcom002'
+    name: '<<namePrefix>>rsvcom003'
     // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -1236,7 +1236,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rsvcom002"
+      "value": "<<namePrefix>>rsvcom003"
     },
     // Non-required parameters
     "backupConfig": {
