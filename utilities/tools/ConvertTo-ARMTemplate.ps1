@@ -152,7 +152,11 @@ function ConvertTo-ARMTemplate {
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
 
+        $removeJSONMetadataDef = ${function:Remove-JSONMetadata}.ToString()
         $removeScriptBlock = {
+            # Loading custom function from outside script block
+            ${function:Remove-JSONMetadata} = $using:removeJSONMetadataDef
+
             $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
 
             Write-Verbose ('Removing metadata from file [Microsoft.{0}]' -f (($jsonFilePath -split 'Microsoft\.')[1]))
