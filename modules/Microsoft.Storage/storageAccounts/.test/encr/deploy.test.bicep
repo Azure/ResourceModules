@@ -16,6 +16,9 @@ param serviceShort string = 'stsencr'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
