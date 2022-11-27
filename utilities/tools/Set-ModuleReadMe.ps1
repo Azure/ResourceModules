@@ -1088,10 +1088,10 @@ function Set-DeploymentExamplesSection {
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
                 # Case 1: Uses deployment test file (instead of parameter file).
-                # [1/3]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # [1/4]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
-                # [2/3] Build the full ARM-JSON parameter file
+                # [2/4] Build the full ARM-JSON parameter file
                 $jsonParameterContent = [ordered]@{
                     '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
                     contentVersion = '1.0.0.0'
@@ -1099,7 +1099,7 @@ function Set-DeploymentExamplesSection {
                 }
                 $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99).TrimEnd()
 
-                # [3/3]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
+                # [3/4]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 foreach ($row in ($jsonParameterContentArray | Where-Object { $_ -like '*reference(extensionResourceId*' })) {
                     if ($row -match '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"') {
@@ -1117,7 +1117,7 @@ function Set-DeploymentExamplesSection {
                     $jsonParameterContent = $jsonParameterContent.Replace($toReplaceValue, ('<{0}>' -f $expectedValue))
                 }
 
-                # Removing template specific functions
+                # [4/4] Removing template specific functions
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 for ($index = 0; $index -lt $jsonParameterContentArray.Count; $index++) {
                     if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
