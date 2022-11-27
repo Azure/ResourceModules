@@ -1,0 +1,875 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "[format('ms.compute.images-{0}-rg', parameters('serviceShort'))]",
+      "maxLength": 90,
+      "metadata": {
+        "description": "Optional. The name of the resource group to deploy for a testing purposes."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. The location to deploy resources to."
+      }
+    },
+    "serviceShort": {
+      "type": "string",
+      "defaultValue": "cdimp",
+      "metadata": {
+        "description": "Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('location')]"
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "managedIdentityName": {
+            "value": "[format('dep-<<namePrefix>>-msi-{0}', parameters('serviceShort'))]"
+          },
+          "storageAccountName": {
+            "value": "[format('dep<<namePrefix>>sa{0}01', parameters('serviceShort'))]"
+          },
+          "imageTemplateNamePrefix": {
+            "value": "[format('dep-<<namePrefix>>-imgt-{0}', parameters('serviceShort'))]"
+          },
+          "triggerImageDeploymentScriptName": {
+            "value": "[format('dep-<<namePrefix>>-ds-{0}-triggerImageTemplate', parameters('serviceShort'))]"
+          },
+          "copyVhdDeploymentScriptName": {
+            "value": "[format('dep-<<namePrefix>>-ds-{0}-copyVhdToStorage', parameters('serviceShort'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. The location to deploy to."
+              }
+            },
+            "managedIdentityName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Managed Identity to create."
+              }
+            },
+            "storageAccountName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Storage Account to create and to copy the VHD into."
+              }
+            },
+            "imageTemplateNamePrefix": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name prefix of the Image Template to create."
+              }
+            },
+            "baseTime": {
+              "type": "string",
+              "defaultValue": "[utcNow('yyyy-MM-dd-HH-mm-ss')]",
+              "metadata": {
+                "description": "Generated. Do not provide a value! This date value is used to generate a unique image template name."
+              }
+            },
+            "triggerImageDeploymentScriptName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Deployment Script to create for triggering the image creation."
+              }
+            },
+            "copyVhdDeploymentScriptName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Deployment Script to copy the VHD to a destination storage account."
+              }
+            }
+          },
+          "variables": {
+            "$fxv#0": "<#\r\n    .SYNOPSIS\r\n    Create image artifacts from a given image template\r\n\r\n    .DESCRIPTION\r\n    Create image artifacts from a given image template\r\n\r\n    .PARAMETER ImageTemplateName\r\n    Mandatory. The name of the image template\r\n\r\n    .PARAMETER ImageTemplateResourceGroup\r\n    Mandatory. The resource group name of the image template\r\n\r\n    .PARAMETER NoWait\r\n    Optional. Run the command asynchronously\r\n\r\n    .EXAMPLE\r\n    Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg'\r\n\r\n    Create image artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and wait for their completion\r\n\r\n    .EXAMPLE\r\n    Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -NoWait\r\n\r\n    Start the creation of artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and do not wait for their completion\r\n#>\r\n\r\n[CmdletBinding(SupportsShouldProcess)]\r\nparam (\r\n    [Parameter(Mandatory = $true)]\r\n    [string] $ImageTemplateName,\r\n\r\n    [Parameter(Mandatory = $true)]\r\n    [string] $ImageTemplateResourceGroup,\r\n\r\n    [Parameter(Mandatory = $false)]\r\n    [switch] $NoWait\r\n)\r\n\r\nbegin {\r\n    Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)\r\n\r\n    # Install required modules\r\n    $currentVerbosePreference = $VerbosePreference\r\n    $VerbosePreference = 'SilentlyContinue'\r\n    $requiredModules = @(\r\n        'Az.ImageBuilder'\r\n    )\r\n    foreach ($moduleName in $requiredModules) {\r\n        if (-not ($installedModule = Get-Module $moduleName -ListAvailable)) {\r\n            Install-Module $moduleName -Repository 'PSGallery' -Force -Scope 'CurrentUser'\r\n            if ($installed = Get-Module -Name $moduleName -ListAvailable) {\r\n                Write-Verbose ('Installed module [{0}] with version [{1}]' -f $installed.Name, $installed.Version) -Verbose\r\n            }\r\n        } else {\r\n            Write-Verbose ('Module [{0}] already installed in version [{1}]' -f $installedModule[0].Name, $installedModule[0].Version) -Verbose\r\n        }\r\n    }\r\n    $VerbosePreference = $currentVerbosePreference\r\n}\r\n\r\nprocess {\r\n    # Create image artifacts from existing image template\r\n    $resourceActionInputObject = @{\r\n        ImageTemplateName   = $imageTemplateName\r\n        ResourceGroupName   = $imageTemplateResourceGroup\r\n    }\r\n    if ($NoWait) {\r\n        $resourceActionInputObject['NoWait'] = $true\r\n    }\r\n    if ($PSCmdlet.ShouldProcess('Image template [{0}]' -f $imageTemplateName, 'Start')) {\r\n        $null = Start-AzImageBuilderTemplate @resourceActionInputObject\r\n        Write-Verbose ('Created/initialized creation of image artifacts from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose\r\n    }\r\n}\r\n\r\nend {\r\n    Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)\r\n}\r\n",
+            "$fxv#1": "<#\r\n    .SYNOPSIS\r\n    Copy a VHD baked from a given image template to a given destination storage account blob container\r\n\r\n    .DESCRIPTION\r\n    Copy a VHD baked from a given image template to a given destination storage account blob container\r\n\r\n    .PARAMETER ImageTemplateName\r\n    Mandatory. The name of the image template\r\n\r\n    .PARAMETER ImageTemplateResourceGroup\r\n    Mandatory. The resource group name of the image template\r\n\r\n    .PARAMETER DestinationStorageAccountName\r\n    Mandatory. The name of the destination storage account\r\n\r\n    .PARAMETER DestinationContainerName\r\n    Optional. The name of the existing destination blob container\r\n\r\n    .PARAMETER VhdName\r\n    Optional. Specify a different name for the destination VHD file\r\n\r\n    .PARAMETER WaitForComplete\r\n    Optional. Run the command synchronously. Wait for the completion of the copy.\r\n\r\n    .EXAMPLE\r\n    Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001'\r\n\r\n    Copy a VHD created by image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in blob container named 'vhds'. Save the VHD file as 'vhd-img-template-001-2022-07-29-15-54-01.vhd'.\r\n\r\n    .EXAMPLE\r\n    Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001' -VhdName 'vhd-img-template-001' -WaitForComplete\r\n\r\n    Copy a VHD baked by image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in a blob container named 'vhds' and wait for the completion of the copy. Save the VHD file as 'vhd-img-template-001.vhd'.\r\n#>\r\n\r\n[CmdletBinding(SupportsShouldProcess)]\r\nparam (\r\n    [Parameter(Mandatory = $true)]\r\n    [string] $ImageTemplateName,\r\n\r\n    [Parameter(Mandatory = $true)]\r\n    [string] $ImageTemplateResourceGroup,\r\n\r\n    [Parameter(Mandatory = $true)]\r\n    [string] $DestinationStorageAccountName,\r\n\r\n    [Parameter(Mandatory = $false)]\r\n    [string] $DestinationContainerName = 'vhds',\r\n\r\n    [Parameter(Mandatory = $false)]\r\n    [string] $VhdName = $ImageTemplateName,\r\n\r\n    [Parameter(Mandatory = $false)]\r\n    [switch] $WaitForComplete\r\n)\r\n\r\nbegin {\r\n    Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)\r\n\r\n    # Install required modules\r\n    $currentVerbosePreference = $VerbosePreference\r\n    $VerbosePreference = 'SilentlyContinue'\r\n    $requiredModules = @(\r\n        'Az.ImageBuilder',\r\n        'Az.Storage'\r\n    )\r\n    foreach ($moduleName in $requiredModules) {\r\n        if (-not ($installedModule = Get-Module $moduleName -ListAvailable)) {\r\n            Install-Module $moduleName -Repository 'PSGallery' -Force -Scope 'CurrentUser'\r\n            if ($installed = Get-Module -Name $moduleName -ListAvailable) {\r\n                Write-Verbose ('Installed module [{0}] with version [{1}]' -f $installed.Name, $installed.Version) -Verbose\r\n            }\r\n        } else {\r\n            Write-Verbose ('Module [{0}] already installed in version [{1}]' -f $installedModule[0].Name, $installedModule[0].Version) -Verbose\r\n        }\r\n    }\r\n    $VerbosePreference = $currentVerbosePreference\r\n}\r\n\r\nprocess {\r\n    # Retrieving and initializing parameters before the blob copy\r\n    Write-Verbose 'Initializing source storage account parameters before the blob copy' -Verbose\r\n    Write-Verbose ('Retrieving source storage account from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose\r\n    Get-InstalledModule\r\n    $imgtRunOutput = Get-AzImageBuilderTemplateRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null\r\n    $sourceUri = $imgtRunOutput.ArtifactUri\r\n    $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]\r\n    $storageAccountList = Get-AzStorageAccount\r\n    $sourceStorageAccount = $storageAccountList | Where-Object StorageAccountName -EQ $sourceStorageAccountName\r\n    $sourceStorageAccountContext = $sourceStorageAccount.Context\r\n    $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName\r\n    Write-Verbose ('Retrieving artifact uri [{0}] stored in resource group [{1}]' -f $sourceUri, $sourceStorageAccountRGName) -Verbose\r\n\r\n    Write-Verbose 'Initializing destination storage account parameters before the blob copy' -Verbose\r\n    $destinationStorageAccount = $storageAccountList | Where-Object StorageAccountName -EQ $destinationStorageAccountName\r\n    $destinationStorageAccountContext = $destinationStorageAccount.Context\r\n    $destinationBlobName = \"$vhdName.vhd\"\r\n    Write-Verbose ('Planning for destination blob name [{0}] in container [{1}] and storage account [{2}]' -f $destinationBlobName, $destinationContainerName, $destinationStorageAccountName) -Verbose\r\n\r\n    # Copying the VHD to a destination blob container\r\n    $resourceActionInputObject = @{\r\n        AbsoluteUri   = $sourceUri\r\n        Context       = $sourceStorageAccountContext\r\n        DestContext   = $destinationStorageAccountContext\r\n        DestBlob      = $destinationBlobName\r\n        DestContainer = $destinationContainerName\r\n        Force         = $true\r\n    }\r\n\r\n    if ($PSCmdlet.ShouldProcess('Storage blob copy of VHD [{0}]' -f $destinationBlobName, 'Start')) {\r\n        $destBlob = Start-AzStorageBlobCopy @resourceActionInputObject\r\n        Write-Verbose ('Copied/initialized copy of VHD from URI [{0}] to container [{1}] in storage account [{2}]' -f $sourceUri, $destinationContainerName, $destinationStorageAccountName) -Verbose\r\n    }\r\n\r\n    if ($WaitForComplete) {\r\n        $destBlob | Get-AzStorageBlobCopyState -WaitForComplete\r\n    }\r\n}\r\n\r\nend {\r\n    Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)\r\n}\r\n\r\n"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+              "apiVersion": "2021-09-01",
+              "name": "[format('{0}/{1}/{2}', parameters('storageAccountName'), 'default', 'vhds')]",
+              "properties": {
+                "publicAccess": "None"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts/blobServices",
+              "apiVersion": "2021-09-01",
+              "name": "[format('{0}/{1}', parameters('storageAccountName'), 'default')]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+              "apiVersion": "2018-11-30",
+              "name": "[parameters('managedIdentityName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2021-09-01",
+              "name": "[parameters('storageAccountName')]",
+              "location": "[parameters('location')]",
+              "kind": "StorageV2",
+              "sku": {
+                "name": "Standard_LRS"
+              },
+              "properties": {
+                "allowBlobPublicAccess": false
+              }
+            },
+            {
+              "type": "Microsoft.VirtualMachineImages/imageTemplates",
+              "apiVersion": "2022-02-14",
+              "name": "[format('{0}-{1}', parameters('imageTemplateNamePrefix'), parameters('baseTime'))]",
+              "location": "[parameters('location')]",
+              "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                  "[format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')))]": {}
+                }
+              },
+              "properties": {
+                "buildTimeoutInMinutes": 0,
+                "vmProfile": {
+                  "vmSize": "Standard_D2s_v3",
+                  "osDiskSizeGB": 127
+                },
+                "source": {
+                  "type": "PlatformImage",
+                  "publisher": "MicrosoftWindowsDesktop",
+                  "offer": "Windows-10",
+                  "sku": "19h2-evd",
+                  "version": "latest"
+                },
+                "distribute": [
+                  {
+                    "type": "VHD",
+                    "runOutputName": "[format('{0}-VHD', parameters('imageTemplateNamePrefix'))]",
+                    "artifactTags": {}
+                  }
+                ],
+                "customize": [
+                  {
+                    "restartTimeout": "30m",
+                    "type": "WindowsRestart"
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deploymentScripts",
+              "apiVersion": "2020-10-01",
+              "name": "[parameters('triggerImageDeploymentScriptName')]",
+              "location": "[parameters('location')]",
+              "kind": "AzurePowerShell",
+              "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                  "[format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')))]": {}
+                }
+              },
+              "properties": {
+                "azPowerShellVersion": "8.0",
+                "retentionInterval": "P1D",
+                "arguments": "[format('-ImageTemplateName \\\"{0}\\\" -ImageTemplateResourceGroup \\\"{1}\\\"', format('{0}-{1}', parameters('imageTemplateNamePrefix'), parameters('baseTime')), resourceGroup().name)]",
+                "scriptContent": "[variables('$fxv#0')]",
+                "cleanupPreference": "OnSuccess",
+                "forceUpdateTag": "[parameters('baseTime')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.VirtualMachineImages/imageTemplates', format('{0}-{1}', parameters('imageTemplateNamePrefix'), parameters('baseTime')))]",
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]",
+                "[subscriptionResourceId('Microsoft.Resources/deployments', format('{0}-MSI-roleAssignment', deployment().name))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deploymentScripts",
+              "apiVersion": "2020-10-01",
+              "name": "[parameters('copyVhdDeploymentScriptName')]",
+              "location": "[parameters('location')]",
+              "kind": "AzurePowerShell",
+              "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                  "[format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')))]": {}
+                }
+              },
+              "properties": {
+                "azPowerShellVersion": "8.0",
+                "retentionInterval": "P1D",
+                "arguments": "[format('-ImageTemplateName \\\"{0}\\\" -ImageTemplateResourceGroup \\\"{1}\\\" -DestinationStorageAccountName \\\"{2}\\\" -VhdName \\\"{3}\\\" -WaitForComplete', format('{0}-{1}', parameters('imageTemplateNamePrefix'), parameters('baseTime')), resourceGroup().name, parameters('storageAccountName'), parameters('imageTemplateNamePrefix'))]",
+                "scriptContent": "[variables('$fxv#1')]",
+                "cleanupPreference": "OnSuccess",
+                "forceUpdateTag": "[parameters('baseTime')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.VirtualMachineImages/imageTemplates', format('{0}-{1}', parameters('imageTemplateNamePrefix'), parameters('baseTime')))]",
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+                "[resourceId('Microsoft.Resources/deploymentScripts', parameters('triggerImageDeploymentScriptName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-MSI-roleAssignment', deployment().name)]",
+              "subscriptionId": "[subscription().subscriptionId]",
+              "location": "[resourceGroup().location]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "managedIdentityPrincipalId": {
+                    "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')), '2018-11-30').principalId]"
+                  },
+                  "managedIdentityResourceId": {
+                    "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "managedIdentityResourceId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The resource ID of the created Managed Identity."
+                      }
+                    },
+                    "managedIdentityPrincipalId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The principal ID of the created Managed Identity."
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.Authorization/roleAssignments",
+                      "apiVersion": "2022-04-01",
+                      "name": "[guid(subscription().subscriptionId, 'Contributor', parameters('managedIdentityResourceId'))]",
+                      "properties": {
+                        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                        "principalId": "[parameters('managedIdentityPrincipalId')]",
+                        "principalType": "ServicePrincipal"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "vhdUri": {
+              "type": "string",
+              "value": "[format('https://{0}.blob.{1}/vhds/{2}.vhd', parameters('storageAccountName'), environment().suffixes.storage, parameters('imageTemplateNamePrefix'))]",
+              "metadata": {
+                "description": "The URI of the created VHD."
+              }
+            },
+            "storageAccountResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Storage Account."
+              }
+            },
+            "managedIdentityPrincipalId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')), '2018-11-30').principalId]",
+              "metadata": {
+                "description": "The principal ID of the created Managed Identity."
+              }
+            },
+            "managedIdentityResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Managed Identity."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-test-{1}', uniqueString(deployment().name, parameters('location')), parameters('serviceShort'))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[format('<<namePrefix>>-{0}001', parameters('serviceShort'))]"
+          },
+          "sku": {
+            "value": "Standard_LRS"
+          },
+          "createOption": {
+            "value": "Import"
+          },
+          "roleAssignments": {
+            "value": [
+              {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                  "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityPrincipalId.value]"
+                ],
+                "principalType": "ServicePrincipal"
+              }
+            ]
+          },
+          "sourceUri": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.vhdUri.value]"
+          },
+          "storageAccountId": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.storageAccountResourceId.value]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "name": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the disk that is being created."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. Resource location."
+              }
+            },
+            "sku": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The disks sku name. Can be ."
+              },
+              "allowedValues": [
+                "Standard_LRS",
+                "Premium_LRS",
+                "StandardSSD_LRS",
+                "UltraSSD_LRS",
+                "Premium_ZRS",
+                "Premium_ZRS"
+              ]
+            },
+            "burstingEnabled": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Set to true to enable bursting beyond the provisioned performance target of the disk."
+              }
+            },
+            "completionPercent": {
+              "type": "int",
+              "defaultValue": 100,
+              "metadata": {
+                "description": "Optional. Percentage complete for the background copy when a resource is created via the CopyStart operation."
+              }
+            },
+            "createOption": {
+              "type": "string",
+              "defaultValue": "Empty",
+              "metadata": {
+                "description": "Optional. Sources of a disk creation."
+              },
+              "allowedValues": [
+                "Attach",
+                "Copy",
+                "CopyStart",
+                "Empty",
+                "FromImage",
+                "Import",
+                "ImportSecure",
+                "Restore",
+                "Upload",
+                "UploadPreparedSecure"
+              ]
+            },
+            "imageReferenceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. A relative uri containing either a Platform Image Repository or user image reference."
+              }
+            },
+            "logicalSectorSize": {
+              "type": "int",
+              "defaultValue": 4096,
+              "metadata": {
+                "description": "Optional. Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096."
+              }
+            },
+            "securityDataUri": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state."
+              }
+            },
+            "sourceResourceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. If create option is Copy, this is the ARM ID of the source snapshot or disk."
+              }
+            },
+            "sourceUri": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk."
+              }
+            },
+            "storageAccountId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Conditional. The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import."
+              }
+            },
+            "uploadSizeBytes": {
+              "type": "int",
+              "defaultValue": 20972032,
+              "metadata": {
+                "description": "Optional. If create option is Upload, this is the size of the contents of the upload including the VHD footer."
+              }
+            },
+            "diskSizeGB": {
+              "type": "int",
+              "defaultValue": 0,
+              "metadata": {
+                "description": "Conditional. The size of the disk to create. Required if create option is Empty."
+              }
+            },
+            "diskIOPSReadWrite": {
+              "type": "int",
+              "defaultValue": 0,
+              "metadata": {
+                "description": "Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks."
+              }
+            },
+            "diskMBpsReadWrite": {
+              "type": "int",
+              "defaultValue": 0,
+              "metadata": {
+                "description": "Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks."
+              }
+            },
+            "hyperVGeneration": {
+              "type": "string",
+              "defaultValue": "V2",
+              "metadata": {
+                "description": "Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only."
+              },
+              "allowedValues": [
+                "V1",
+                "V2"
+              ]
+            },
+            "maxShares": {
+              "type": "int",
+              "defaultValue": 1,
+              "metadata": {
+                "description": "Optional. The maximum number of VMs that can attach to the disk at the same time. Default value is 0."
+              }
+            },
+            "networkAccessPolicy": {
+              "type": "string",
+              "defaultValue": "DenyAll",
+              "metadata": {
+                "description": "Optional. Policy for accessing the disk via network."
+              },
+              "allowedValues": [
+                "AllowAll",
+                "AllowPrivate",
+                "DenyAll"
+              ]
+            },
+            "osType": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Sources of a disk creation."
+              },
+              "allowedValues": [
+                "Windows",
+                "Linux",
+                ""
+              ]
+            },
+            "publicNetworkAccess": {
+              "type": "string",
+              "defaultValue": "Disabled",
+              "metadata": {
+                "description": "Optional. Policy for controlling export on the disk."
+              },
+              "allowedValues": [
+                "Disabled",
+                "Enabled"
+              ]
+            },
+            "acceleratedNetwork": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. True if the image from which the OS disk is created supports accelerated networking."
+              }
+            },
+            "lock": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              },
+              "allowedValues": [
+                "",
+                "CanNotDelete",
+                "ReadOnly"
+              ]
+            },
+            "roleAssignments": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Tags of the availability set resource."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Compute/disks",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('name')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "sku": {
+                "name": "[parameters('sku')]"
+              },
+              "properties": {
+                "burstingEnabled": "[parameters('burstingEnabled')]",
+                "completionPercent": "[parameters('completionPercent')]",
+                "creationData": {
+                  "createOption": "[parameters('createOption')]",
+                  "imageReference": "[if(not(equals(parameters('createOption'), 'FromImage')), null(), createObject('id', parameters('imageReferenceId')))]",
+                  "logicalSectorSize": "[if(contains(parameters('sku'), 'Ultra'), parameters('logicalSectorSize'), null())]",
+                  "securityDataUri": "[if(equals(parameters('createOption'), 'ImportSecure'), parameters('securityDataUri'), null())]",
+                  "sourceResourceId": "[if(equals(parameters('createOption'), 'Copy'), parameters('sourceResourceId'), null())]",
+                  "sourceUri": "[if(equals(parameters('createOption'), 'Import'), parameters('sourceUri'), null())]",
+                  "storageAccountId": "[if(equals(parameters('createOption'), 'Import'), parameters('storageAccountId'), null())]",
+                  "uploadSizeBytes": "[if(equals(parameters('createOption'), 'Upload'), parameters('uploadSizeBytes'), null())]"
+                },
+                "diskIOPSReadWrite": "[if(contains(parameters('sku'), 'Ultra'), parameters('diskIOPSReadWrite'), null())]",
+                "diskMBpsReadWrite": "[if(contains(parameters('sku'), 'Ultra'), parameters('diskMBpsReadWrite'), null())]",
+                "diskSizeGB": "[if(equals(parameters('createOption'), 'Empty'), parameters('diskSizeGB'), null())]",
+                "hyperVGeneration": "[if(empty(parameters('osType')), null(), parameters('hyperVGeneration'))]",
+                "maxShares": "[parameters('maxShares')]",
+                "networkAccessPolicy": "[parameters('networkAccessPolicy')]",
+                "osType": "[if(empty(parameters('osType')), null(), parameters('osType'))]",
+                "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
+                "supportedCapabilities": "[if(empty(parameters('osType')), createObject(), createObject('acceleratedNetwork', parameters('acceleratedNetwork')))]"
+              }
+            },
+            {
+              "condition": "[not(empty(parameters('lock')))]",
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2017-04-01",
+              "scope": "[format('Microsoft.Compute/disks/{0}', parameters('name'))]",
+              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "properties": {
+                "level": "[parameters('lock')]",
+                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Compute/disks', parameters('name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "disk_roleAssignments",
+                "count": "[length(parameters('roleAssignments'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-AvSet-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "description": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'description'), parameters('roleAssignments')[copyIndex()].description, '')]"
+                  },
+                  "principalIds": {
+                    "value": "[parameters('roleAssignments')[copyIndex()].principalIds]"
+                  },
+                  "principalType": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'principalType'), parameters('roleAssignments')[copyIndex()].principalType, '')]"
+                  },
+                  "roleDefinitionIdOrName": {
+                    "value": "[parameters('roleAssignments')[copyIndex()].roleDefinitionIdOrName]"
+                  },
+                  "condition": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'condition'), parameters('roleAssignments')[copyIndex()].condition, '')]"
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'delegatedManagedIdentityResourceId'), parameters('roleAssignments')[copyIndex()].delegatedManagedIdentityResourceId, '')]"
+                  },
+                  "resourceId": {
+                    "value": "[resourceId('Microsoft.Compute/disks', parameters('name'))]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "principalIds": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Required. The IDs of the principals to assign the role to."
+                      }
+                    },
+                    "roleDefinitionIdOrName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                      }
+                    },
+                    "resourceId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The resource ID of the resource to apply the role assignment to."
+                      }
+                    },
+                    "principalType": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "allowedValues": [
+                        "ServicePrincipal",
+                        "Group",
+                        "User",
+                        "ForeignGroup",
+                        "Device",
+                        ""
+                      ],
+                      "metadata": {
+                        "description": "Optional. The principal type of the assigned principal ID."
+                      }
+                    },
+                    "description": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. The description of the role assignment."
+                      }
+                    },
+                    "condition": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                      }
+                    },
+                    "conditionVersion": {
+                      "type": "string",
+                      "defaultValue": "2.0",
+                      "allowedValues": [
+                        "2.0"
+                      ],
+                      "metadata": {
+                        "description": "Optional. Version of the condition."
+                      }
+                    },
+                    "delegatedManagedIdentityResourceId": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. Id of the delegated managed identity resource."
+                      }
+                    }
+                  },
+                  "variables": {
+                    "builtInRoleNames": {
+                      "Avere Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+                      "Avere Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+                      "Azure Kubernetes Service Policy Add-on Deployment": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18ed5180-3e48-46fd-8541-4ea054d57064')]",
+                      "Compute Gallery Sharing Admin": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1ef6a3be-d0ac-425d-8c01-acb62866290b')]",
+                      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                      "Data Operator for Managed Disks": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '959f8984-c045-4866-89c7-12bf9737be2e')]",
+                      "Desktop Virtualization Power On Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '489581de-a3bd-480d-9518-53dea7416b33')]",
+                      "Desktop Virtualization Power On Off Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '40c5ff49-9181-41f8-ae61-143b0e78555e')]",
+                      "Desktop Virtualization Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a959dbd1-f747-45e3-8ba6-dd80f235f97c')]",
+                      "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+                      "Disk Backup Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3e5e47e6-65f7-47ef-90b5-e5dd4d455f24')]",
+                      "Disk Pool Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '60fc6e62-5479-42d4-8bf4-67625fcc2840')]",
+                      "Disk Restore Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b50d9833-a0cb-478e-945f-707fcc997c13')]",
+                      "Disk Snapshot Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7efff54f-a5b4-42b5-a1c5-5411624893ce')]",
+                      "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+                      "Log Analytics Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+                      "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+                      "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+                      "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+                      "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+                      "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+                      "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+                      "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+                      "Reservation Purchaser": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f7b75c60-3036-4b75-91c3-6b41c27c1689')]",
+                      "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+                      "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+                      "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+                      "Virtual Machine Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1c0163c0-47e6-4577-8991-ea5c82e286e4')]",
+                      "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
+                      "Virtual Machine User Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]",
+                      "VM Scanner Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd24ecba3-c1f4-40fa-a7bb-4588a071e8fd')]",
+                      "Windows Admin Center Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')]"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "roleAssignment",
+                        "count": "[length(parameters('principalIds'))]"
+                      },
+                      "type": "Microsoft.Authorization/roleAssignments",
+                      "apiVersion": "2022-04-01",
+                      "scope": "[format('Microsoft.Compute/disks/{0}', last(split(parameters('resourceId'), '/')))]",
+                      "name": "[guid(resourceId('Microsoft.Compute/disks', last(split(parameters('resourceId'), '/'))), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
+                      "properties": {
+                        "description": "[parameters('description')]",
+                        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleDefinitionIdOrName')), variables('builtInRoleNames')[parameters('roleDefinitionIdOrName')], parameters('roleDefinitionIdOrName'))]",
+                        "principalId": "[parameters('principalIds')[copyIndex()]]",
+                        "principalType": "[if(not(empty(parameters('principalType'))), parameters('principalType'), null())]",
+                        "condition": "[if(not(empty(parameters('condition'))), parameters('condition'), null())]",
+                        "conditionVersion": "[if(and(not(empty(parameters('conditionVersion'))), not(empty(parameters('condition')))), parameters('conditionVersion'), null())]",
+                        "delegatedManagedIdentityResourceId": "[if(not(empty(parameters('delegatedManagedIdentityResourceId'))), parameters('delegatedManagedIdentityResourceId'), null())]"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Compute/disks', parameters('name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "resourceGroupName": {
+              "type": "string",
+              "value": "[resourceGroup().name]",
+              "metadata": {
+                "description": "The resource group the  disk was deployed into."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Compute/disks', parameters('name'))]",
+              "metadata": {
+                "description": "The resource ID of the disk."
+              }
+            },
+            "name": {
+              "type": "string",
+              "value": "[parameters('name')]",
+              "metadata": {
+                "description": "The name of the disk."
+              }
+            },
+            "location": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Compute/disks', parameters('name')), '2021-08-01', 'full').location]",
+              "metadata": {
+                "description": "The location the resource was deployed into."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location'))))]"
+      ]
+    }
+  ]
+}

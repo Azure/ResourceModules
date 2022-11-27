@@ -1,0 +1,1251 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "NetworkWatcherRG",
+      "maxLength": 90,
+      "metadata": {
+        "description": "Optional. The name of the resource group to deploy for testing purposes."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. The location to deploy resources to."
+      }
+    },
+    "serviceShort": {
+      "type": "string",
+      "defaultValue": "nnwcom",
+      "metadata": {
+        "description": "Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints."
+      }
+    }
+  },
+  "variables": {
+    "testLocation": "westeurope"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('location')]"
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "managedIdentityName": {
+            "value": "[format('dep-<<namePrefix>>-msi-{0}', parameters('serviceShort'))]"
+          },
+          "firstNetworkSecurityGroupName": {
+            "value": "[format('dep-<<namePrefix>>-nsg-1-{0}', parameters('serviceShort'))]"
+          },
+          "secondNetworkSecurityGroupName": {
+            "value": "[format('dep-<<namePrefix>>-nsg-2-{0}', parameters('serviceShort'))]"
+          },
+          "virtualMachineName": {
+            "value": "[format('dep-<<namePrefix>>-vm-{0}', parameters('serviceShort'))]"
+          },
+          "virtualNetworkName": {
+            "value": "[format('dep-<<namePrefix>>-vnet-{0}', parameters('serviceShort'))]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. The location to deploy to."
+              }
+            },
+            "virtualNetworkName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Virtual Network to create."
+              }
+            },
+            "managedIdentityName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Managed Identity to create."
+              }
+            },
+            "firstNetworkSecurityGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the first Network Security Group to create."
+              }
+            },
+            "secondNetworkSecurityGroupName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the second Network Security Group to create."
+              }
+            },
+            "virtualMachineName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Virtual Machine to create."
+              }
+            },
+            "password": {
+              "type": "secureString",
+              "defaultValue": "[newGuid()]",
+              "metadata": {
+                "description": "Optional. The password to leverage for the VM login."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2022-01-01",
+              "name": "[parameters('virtualNetworkName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "addressSpace": {
+                  "addressPrefixes": [
+                    "10.0.0.0/24"
+                  ]
+                },
+                "subnets": [
+                  {
+                    "name": "defaultSubnet",
+                    "properties": {
+                      "addressPrefix": "10.0.0.0/24"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+              "apiVersion": "2018-11-30",
+              "name": "[parameters('managedIdentityName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2022-05-01",
+              "name": "[parameters('firstNetworkSecurityGroupName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2022-05-01",
+              "name": "[parameters('secondNetworkSecurityGroupName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.Network/networkInterfaces",
+              "apiVersion": "2022-05-01",
+              "name": "[format('{0}-nic', parameters('virtualMachineName'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "ipConfigurations": [
+                  {
+                    "name": "ipconfig01",
+                    "properties": {
+                      "subnet": {
+                        "id": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName')), '2022-01-01').subnets[0].id]"
+                      }
+                    }
+                  }
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2022-08-01",
+              "name": "[parameters('virtualMachineName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "networkProfile": {
+                  "networkInterfaces": [
+                    {
+                      "id": "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('virtualMachineName')))]",
+                      "properties": {
+                        "deleteOption": "Delete",
+                        "primary": true
+                      }
+                    }
+                  ]
+                },
+                "storageProfile": {
+                  "imageReference": {
+                    "publisher": "Canonical",
+                    "offer": "0001-com-ubuntu-server-jammy",
+                    "sku": "22_04-lts-gen2",
+                    "version": "latest"
+                  },
+                  "osDisk": {
+                    "deleteOption": "Delete",
+                    "createOption": "FromImage"
+                  }
+                },
+                "hardwareProfile": {
+                  "vmSize": "Standard_B1ms"
+                },
+                "osProfile": {
+                  "adminUsername": "[format('{0}cake', parameters('virtualMachineName'))]",
+                  "adminPassword": "[parameters('password')]",
+                  "computerName": "[parameters('virtualMachineName')]",
+                  "linuxConfiguration": {
+                    "disablePasswordAuthentication": false
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-nic', parameters('virtualMachineName')))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Compute/virtualMachines/extensions",
+              "apiVersion": "2021-07-01",
+              "name": "[format('{0}/{1}', parameters('virtualMachineName'), 'NetworkWatcherAgent')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "publisher": "Microsoft.Azure.NetworkWatcher",
+                "type": "NetworkWatcherAgentLinux",
+                "typeHandlerVersion": "1.4",
+                "autoUpgradeMinorVersion": true,
+                "enableAutomaticUpgrade": false,
+                "settings": {},
+                "protectedSettings": {},
+                "suppressFailures": false
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "managedIdentityPrincipalId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')), '2018-11-30').principalId]",
+              "metadata": {
+                "description": "The principal ID of the created Managed Identity."
+              }
+            },
+            "virtualMachineResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Virtual Machine."
+              }
+            },
+            "firstNetworkSecurityGroupResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('firstNetworkSecurityGroupName'))]",
+              "metadata": {
+                "description": "The resource ID of the first created Network Security Group."
+              }
+            },
+            "secondNetworkSecurityGroupResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('secondNetworkSecurityGroupName'))]",
+              "metadata": {
+                "description": "The resource ID of the second created Network Security Group."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[format('dep<<namePrefix>>diasa{0}01', parameters('serviceShort'))]"
+          },
+          "logAnalyticsWorkspaceName": {
+            "value": "[format('dep-<<namePrefix>>-law-{0}', parameters('serviceShort'))]"
+          },
+          "eventHubNamespaceEventHubName": {
+            "value": "[format('dep-<<namePrefix>>-evh-{0}', parameters('serviceShort'))]"
+          },
+          "eventHubNamespaceName": {
+            "value": "[format('dep-<<namePrefix>>-evhns-{0}', parameters('serviceShort'))]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "storageAccountName": {
+              "type": "string",
+              "maxLength": 24,
+              "metadata": {
+                "description": "Required. The name of the storage account to create."
+              }
+            },
+            "logAnalyticsWorkspaceName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the log analytics workspace to create."
+              }
+            },
+            "eventHubNamespaceName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the event hub namespace to create."
+              }
+            },
+            "eventHubNamespaceEventHubName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the event hub to create inside the event hub namespace."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. The location to deploy resources to."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('eventHubNamespaceName'), parameters('eventHubNamespaceEventHubName'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/authorizationRules",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('eventHubNamespaceName'), 'RootManageSharedAccessKey')]",
+              "properties": {
+                "rights": [
+                  "Listen",
+                  "Manage",
+                  "Send"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('storageAccountName')]",
+              "location": "[parameters('location')]",
+              "kind": "StorageV2",
+              "sku": {
+                "name": "Standard_LRS"
+              },
+              "properties": {
+                "allowBlobPublicAccess": false
+              }
+            },
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2021-12-01-preview",
+              "name": "[parameters('logAnalyticsWorkspaceName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces",
+              "apiVersion": "2021-11-01",
+              "name": "[parameters('eventHubNamespaceName')]",
+              "location": "[parameters('location')]"
+            }
+          ],
+          "outputs": {
+            "storageAccountResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Storage Account."
+              }
+            },
+            "logAnalyticsWorkspaceResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Log Analytics Workspace."
+              }
+            },
+            "eventHubNamespaceResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Event Hub Namespace."
+              }
+            },
+            "eventHubAuthorizationRuleId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('eventHubNamespaceName'), 'RootManageSharedAccessKey')]",
+              "metadata": {
+                "description": "The resource ID of the created Event Hub Namespace Authorization Rule."
+              }
+            },
+            "eventHubNamespaceEventHubName": {
+              "type": "string",
+              "value": "[parameters('eventHubNamespaceEventHubName')]",
+              "metadata": {
+                "description": "The name of the created Event Hub Namespace Event Hub."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-test-{1}', uniqueString(deployment().name), parameters('serviceShort'))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "name": {
+            "value": "[format('NetworkWatcher_{0}', variables('testLocation'))]"
+          },
+          "location": {
+            "value": "[variables('testLocation')]"
+          },
+          "connectionMonitors": {
+            "value": [
+              {
+                "name": "[format('<<namePrefix>>-{0}-cm-001', parameters('serviceShort'))]",
+                "endpoints": [
+                  {
+                    "name": "[format('<<namePrefix>>-subnet-001({0})', parameters('resourceGroupName'))]",
+                    "resourceId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.virtualMachineResourceId.value]",
+                    "type": "AzureVM"
+                  },
+                  {
+                    "address": "www.office.com",
+                    "name": "Office Portal",
+                    "type": "ExternalAddress"
+                  }
+                ],
+                "testConfigurations": [
+                  {
+                    "httpConfiguration": {
+                      "method": "Get",
+                      "port": 80,
+                      "preferHTTPS": false,
+                      "requestHeaders": [],
+                      "validStatusCodeRanges": [
+                        "200"
+                      ]
+                    },
+                    "name": "HTTP Test",
+                    "protocol": "Http",
+                    "successThreshold": {
+                      "checksFailedPercent": 5,
+                      "roundTripTimeMs": 100
+                    },
+                    "testFrequencySec": 30
+                  }
+                ],
+                "testGroups": [
+                  {
+                    "destinations": [
+                      "Office Portal"
+                    ],
+                    "disable": false,
+                    "name": "TestHTTPBing",
+                    "sources": [
+                      "[format('<<namePrefix>>-subnet-001({0})', parameters('resourceGroupName'))]"
+                    ],
+                    "testConfigurations": [
+                      "HTTP Test"
+                    ]
+                  }
+                ],
+                "workspaceResourceId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.logAnalyticsWorkspaceResourceId.value]"
+              }
+            ]
+          },
+          "flowLogs": {
+            "value": [
+              {
+                "enabled": false,
+                "storageId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.storageAccountResourceId.value]",
+                "targetResourceId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.firstNetworkSecurityGroupResourceId.value]"
+              },
+              {
+                "formatVersion": 1,
+                "name": "[format('<<namePrefix>>-{0}-fl-001', parameters('serviceShort'))]",
+                "retentionInDays": 8,
+                "storageId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.storageAccountResourceId.value]",
+                "targetResourceId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.secondNetworkSecurityGroupResourceId.value]",
+                "trafficAnalyticsInterval": 10,
+                "workspaceResourceId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.logAnalyticsWorkspaceResourceId.value]"
+              }
+            ]
+          },
+          "roleAssignments": {
+            "value": [
+              {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                  "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityPrincipalId.value]"
+                ],
+                "principalType": "ServicePrincipal"
+              }
+            ]
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "name": {
+              "type": "string",
+              "defaultValue": "[format('NetworkWatcher_{0}', parameters('location'))]",
+              "minLength": 1,
+              "metadata": {
+                "description": "Optional. Name of the Network Watcher resource (hidden)."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. Location for all resources."
+              }
+            },
+            "connectionMonitors": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Array that contains the Connection Monitors."
+              }
+            },
+            "flowLogs": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Array that contains the Flow Logs."
+              }
+            },
+            "lock": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              },
+              "allowedValues": [
+                "",
+                "CanNotDelete",
+                "ReadOnly"
+              ]
+            },
+            "roleAssignments": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Tags of the resource."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "enableReferencedModulesTelemetry": false
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Network/networkWatchers",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('name')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "properties": {}
+            },
+            {
+              "condition": "[not(empty(parameters('lock')))]",
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2017-04-01",
+              "scope": "[format('Microsoft.Network/networkWatchers/{0}', parameters('name'))]",
+              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "properties": {
+                "level": "[parameters('lock')]",
+                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkWatchers', parameters('name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "networkWatcher_roleAssignments",
+                "count": "[length(parameters('roleAssignments'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-NW-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "description": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'description'), parameters('roleAssignments')[copyIndex()].description, '')]"
+                  },
+                  "principalIds": {
+                    "value": "[parameters('roleAssignments')[copyIndex()].principalIds]"
+                  },
+                  "principalType": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'principalType'), parameters('roleAssignments')[copyIndex()].principalType, '')]"
+                  },
+                  "roleDefinitionIdOrName": {
+                    "value": "[parameters('roleAssignments')[copyIndex()].roleDefinitionIdOrName]"
+                  },
+                  "condition": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'condition'), parameters('roleAssignments')[copyIndex()].condition, '')]"
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'delegatedManagedIdentityResourceId'), parameters('roleAssignments')[copyIndex()].delegatedManagedIdentityResourceId, '')]"
+                  },
+                  "resourceId": {
+                    "value": "[resourceId('Microsoft.Network/networkWatchers', parameters('name'))]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "principalIds": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Required. The IDs of the principals to assign the role to."
+                      }
+                    },
+                    "roleDefinitionIdOrName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                      }
+                    },
+                    "resourceId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The resource ID of the resource to apply the role assignment to."
+                      }
+                    },
+                    "principalType": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "allowedValues": [
+                        "ServicePrincipal",
+                        "Group",
+                        "User",
+                        "ForeignGroup",
+                        "Device",
+                        ""
+                      ],
+                      "metadata": {
+                        "description": "Optional. The principal type of the assigned principal ID."
+                      }
+                    },
+                    "description": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. The description of the role assignment."
+                      }
+                    },
+                    "condition": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                      }
+                    },
+                    "conditionVersion": {
+                      "type": "string",
+                      "defaultValue": "2.0",
+                      "allowedValues": [
+                        "2.0"
+                      ],
+                      "metadata": {
+                        "description": "Optional. Version of the condition."
+                      }
+                    },
+                    "delegatedManagedIdentityResourceId": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. Id of the delegated managed identity resource."
+                      }
+                    }
+                  },
+                  "variables": {
+                    "builtInRoleNames": {
+                      "Avere Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+                      "Avere Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+                      "Azure Kubernetes Service Policy Add-on Deployment": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18ed5180-3e48-46fd-8541-4ea054d57064')]",
+                      "Backup Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e467623-bb1f-42f4-a55d-6e525e11384b')]",
+                      "Backup Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00c29273-979b-4161-815c-10b084fb9324')]",
+                      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                      "Cosmos DB Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '230815da-be43-4aae-9cb4-875f7bd000aa')]",
+                      "Desktop Virtualization Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a959dbd1-f747-45e3-8ba6-dd80f235f97c')]",
+                      "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+                      "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+                      "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+                      "DocumentDB Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5bd9cd88-fe45-4216-938b-f97437e15450')]",
+                      "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+                      "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+                      "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+                      "Log Analytics Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+                      "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+                      "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+                      "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+                      "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+                      "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+                      "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+                      "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+                      "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+                      "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+                      "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+                      "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+                      "Site Recovery Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6670b86e-a3f7-4917-ac9b-5d6ab1be4567')]",
+                      "Site Recovery Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '494ae006-db33-4328-bf46-533a6560a3ca')]",
+                      "SQL Managed Instance Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4939a1f6-9ae0-4e48-a1e0-f2cbe897382d')]",
+                      "SQL Security Manager": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '056cd41c-7e88-42e1-933e-88ba6a50c9c3')]",
+                      "Storage Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')]",
+                      "Traffic Manager Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a4b10055-b0c7-44c2-b00f-c7b5b3550cf7')]",
+                      "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+                      "Virtual Machine Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1c0163c0-47e6-4577-8991-ea5c82e286e4')]",
+                      "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
+                      "Virtual Machine User Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]",
+                      "Windows Admin Center Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')]"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "roleAssignment",
+                        "count": "[length(parameters('principalIds'))]"
+                      },
+                      "type": "Microsoft.Authorization/roleAssignments",
+                      "apiVersion": "2022-04-01",
+                      "scope": "[format('Microsoft.Network/networkWatchers/{0}', last(split(parameters('resourceId'), '/')))]",
+                      "name": "[guid(resourceId('Microsoft.Network/networkWatchers', last(split(parameters('resourceId'), '/'))), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
+                      "properties": {
+                        "description": "[parameters('description')]",
+                        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleDefinitionIdOrName')), variables('builtInRoleNames')[parameters('roleDefinitionIdOrName')], parameters('roleDefinitionIdOrName'))]",
+                        "principalId": "[parameters('principalIds')[copyIndex()]]",
+                        "principalType": "[if(not(empty(parameters('principalType'))), parameters('principalType'), null())]",
+                        "condition": "[if(not(empty(parameters('condition'))), parameters('condition'), null())]",
+                        "conditionVersion": "[if(and(not(empty(parameters('conditionVersion'))), not(empty(parameters('condition')))), parameters('conditionVersion'), null())]",
+                        "delegatedManagedIdentityResourceId": "[if(not(empty(parameters('delegatedManagedIdentityResourceId'))), parameters('delegatedManagedIdentityResourceId'), null())]"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkWatchers', parameters('name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "networkWatcher_connectionMonitors",
+                "count": "[length(parameters('connectionMonitors'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-NW-ConnectionMonitor-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "endpoints": {
+                    "value": "[if(contains(parameters('connectionMonitors')[copyIndex()], 'endpoints'), parameters('connectionMonitors')[copyIndex()].endpoints, createArray())]"
+                  },
+                  "name": {
+                    "value": "[parameters('connectionMonitors')[copyIndex()].name]"
+                  },
+                  "networkWatcherName": {
+                    "value": "[parameters('name')]"
+                  },
+                  "testConfigurations": {
+                    "value": "[if(contains(parameters('connectionMonitors')[copyIndex()], 'testConfigurations'), parameters('connectionMonitors')[copyIndex()].testConfigurations, createArray())]"
+                  },
+                  "testGroups": {
+                    "value": "[if(contains(parameters('connectionMonitors')[copyIndex()], 'testGroups'), parameters('connectionMonitors')[copyIndex()].testGroups, createArray())]"
+                  },
+                  "workspaceResourceId": {
+                    "value": "[if(contains(parameters('connectionMonitors')[copyIndex()], 'workspaceResourceId'), parameters('connectionMonitors')[copyIndex()].workspaceResourceId, '')]"
+                  },
+                  "enableDefaultTelemetry": {
+                    "value": "[variables('enableReferencedModulesTelemetry')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "networkWatcherName": {
+                      "type": "string",
+                      "defaultValue": "[format('NetworkWatcher_{0}', resourceGroup().location)]",
+                      "metadata": {
+                        "description": "Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG."
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the resource."
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "defaultValue": {},
+                      "metadata": {
+                        "description": "Optional. Tags of the resource."
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "defaultValue": "[resourceGroup().location]",
+                      "metadata": {
+                        "description": "Optional. Location for all resources."
+                      }
+                    },
+                    "endpoints": {
+                      "type": "array",
+                      "defaultValue": [],
+                      "metadata": {
+                        "description": "Optional. List of connection monitor endpoints."
+                      }
+                    },
+                    "testConfigurations": {
+                      "type": "array",
+                      "defaultValue": [],
+                      "metadata": {
+                        "description": "Optional. List of connection monitor test configurations."
+                      }
+                    },
+                    "testGroups": {
+                      "type": "array",
+                      "defaultValue": [],
+                      "metadata": {
+                        "description": "Optional. List of connection monitor test groups."
+                      }
+                    },
+                    "workspaceResourceId": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. Specify the Log Analytics Workspace Resource ID."
+                      }
+                    },
+                    "enableDefaultTelemetry": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+                      }
+                    }
+                  },
+                  "variables": {
+                    "outputs": "[if(not(empty(parameters('workspaceResourceId'))), createArray(createObject('type', 'Workspace', 'workspaceSettings', createObject('workspaceResourceId', parameters('workspaceResourceId')))), null())]"
+                  },
+                  "resources": [
+                    {
+                      "condition": "[parameters('enableDefaultTelemetry')]",
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2021-04-01",
+                      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+                      "properties": {
+                        "mode": "Incremental",
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "resources": []
+                        }
+                      }
+                    },
+                    {
+                      "type": "Microsoft.Network/networkWatchers/connectionMonitors",
+                      "apiVersion": "2021-08-01",
+                      "name": "[format('{0}/{1}', parameters('networkWatcherName'), parameters('name'))]",
+                      "tags": "[parameters('tags')]",
+                      "location": "[parameters('location')]",
+                      "properties": {
+                        "endpoints": "[parameters('endpoints')]",
+                        "testConfigurations": "[parameters('testConfigurations')]",
+                        "testGroups": "[parameters('testGroups')]",
+                        "outputs": "[variables('outputs')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "name": {
+                      "type": "string",
+                      "value": "[parameters('name')]",
+                      "metadata": {
+                        "description": "The name of the deployed connection monitor."
+                      }
+                    },
+                    "resourceId": {
+                      "type": "string",
+                      "value": "[resourceId('Microsoft.Network/networkWatchers/connectionMonitors', parameters('networkWatcherName'), parameters('name'))]",
+                      "metadata": {
+                        "description": "The resource ID of the deployed connection monitor."
+                      }
+                    },
+                    "resourceGroupName": {
+                      "type": "string",
+                      "value": "[resourceGroup().name]",
+                      "metadata": {
+                        "description": "The resource group the connection monitor was deployed into."
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "value": "[reference(resourceId('Microsoft.Network/networkWatchers/connectionMonitors', parameters('networkWatcherName'), parameters('name')), '2021-08-01', 'full').location]",
+                      "metadata": {
+                        "description": "The location the resource was deployed into."
+                      }
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkWatchers', parameters('name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "networkWatcher_flowLogs",
+                "count": "[length(parameters('flowLogs'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-NW-FlowLog-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "enabled": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'enabled'), parameters('flowLogs')[copyIndex()].enabled, true())]"
+                  },
+                  "formatVersion": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'formatVersion'), parameters('flowLogs')[copyIndex()].formatVersion, 2)]"
+                  },
+                  "location": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'location'), parameters('flowLogs')[copyIndex()].location, parameters('location'))]"
+                  },
+                  "name": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'name'), parameters('flowLogs')[copyIndex()].name, format('{0}-{1}-flowlog', last(split(parameters('flowLogs')[copyIndex()].targetResourceId, '/')), split(parameters('flowLogs')[copyIndex()].targetResourceId, '/')[4]))]"
+                  },
+                  "networkWatcherName": {
+                    "value": "[parameters('name')]"
+                  },
+                  "retentionInDays": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'retentionInDays'), parameters('flowLogs')[copyIndex()].retentionInDays, 365)]"
+                  },
+                  "storageId": {
+                    "value": "[parameters('flowLogs')[copyIndex()].storageId]"
+                  },
+                  "targetResourceId": {
+                    "value": "[parameters('flowLogs')[copyIndex()].targetResourceId]"
+                  },
+                  "trafficAnalyticsInterval": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'trafficAnalyticsInterval'), parameters('flowLogs')[copyIndex()].trafficAnalyticsInterval, 60)]"
+                  },
+                  "workspaceResourceId": {
+                    "value": "[if(contains(parameters('flowLogs')[copyIndex()], 'workspaceResourceId'), parameters('flowLogs')[copyIndex()].workspaceResourceId, '')]"
+                  },
+                  "enableDefaultTelemetry": {
+                    "value": "[variables('enableReferencedModulesTelemetry')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "networkWatcherName": {
+                      "type": "string",
+                      "defaultValue": "[format('NetworkWatcher_{0}', resourceGroup().location)]",
+                      "metadata": {
+                        "description": "Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG."
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "defaultValue": "[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]",
+                      "metadata": {
+                        "description": "Optional. Name of the resource."
+                      }
+                    },
+                    "tags": {
+                      "type": "object",
+                      "defaultValue": {},
+                      "metadata": {
+                        "description": "Optional. Tags of the resource."
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "defaultValue": "[resourceGroup().location]",
+                      "metadata": {
+                        "description": "Optional. Location for all resources."
+                      }
+                    },
+                    "targetResourceId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Resource ID of the NSG that must be enabled for Flow Logs."
+                      }
+                    },
+                    "storageId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Resource ID of the diagnostic storage account."
+                      }
+                    },
+                    "enabled": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. If the flow log should be enabled."
+                      }
+                    },
+                    "formatVersion": {
+                      "type": "int",
+                      "defaultValue": 2,
+                      "allowedValues": [
+                        1,
+                        2
+                      ],
+                      "metadata": {
+                        "description": "Optional. The flow log format version."
+                      }
+                    },
+                    "workspaceResourceId": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. Specify the Log Analytics Workspace Resource ID."
+                      }
+                    },
+                    "trafficAnalyticsInterval": {
+                      "type": "int",
+                      "defaultValue": 60,
+                      "allowedValues": [
+                        10,
+                        60
+                      ],
+                      "metadata": {
+                        "description": "Optional. The interval in minutes which would decide how frequently TA service should do flow analytics."
+                      }
+                    },
+                    "retentionInDays": {
+                      "type": "int",
+                      "defaultValue": 365,
+                      "maxValue": 365,
+                      "minValue": 0,
+                      "metadata": {
+                        "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+                      }
+                    },
+                    "enableDefaultTelemetry": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+                      }
+                    }
+                  },
+                  "variables": {
+                    "flowAnalyticsConfiguration": "[if(and(not(empty(parameters('workspaceResourceId'))), equals(parameters('enabled'), true())), createObject('networkWatcherFlowAnalyticsConfiguration', createObject('enabled', true(), 'workspaceResourceId', parameters('workspaceResourceId'), 'trafficAnalyticsInterval', parameters('trafficAnalyticsInterval'))), createObject('networkWatcherFlowAnalyticsConfiguration', createObject('enabled', false())))]"
+                  },
+                  "resources": [
+                    {
+                      "condition": "[parameters('enableDefaultTelemetry')]",
+                      "type": "Microsoft.Resources/deployments",
+                      "apiVersion": "2021-04-01",
+                      "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+                      "properties": {
+                        "mode": "Incremental",
+                        "template": {
+                          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                          "contentVersion": "1.0.0.0",
+                          "resources": []
+                        }
+                      }
+                    },
+                    {
+                      "type": "Microsoft.Network/networkWatchers/flowLogs",
+                      "apiVersion": "2021-08-01",
+                      "name": "[format('{0}/{1}', parameters('networkWatcherName'), parameters('name'))]",
+                      "tags": "[parameters('tags')]",
+                      "location": "[parameters('location')]",
+                      "properties": {
+                        "targetResourceId": "[parameters('targetResourceId')]",
+                        "storageId": "[parameters('storageId')]",
+                        "enabled": "[parameters('enabled')]",
+                        "retentionPolicy": {
+                          "days": "[parameters('retentionInDays')]",
+                          "enabled": "[if(equals(parameters('retentionInDays'), 0), false(), true())]"
+                        },
+                        "format": {
+                          "type": "JSON",
+                          "version": "[parameters('formatVersion')]"
+                        },
+                        "flowAnalyticsConfiguration": "[variables('flowAnalyticsConfiguration')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "name": {
+                      "type": "string",
+                      "value": "[parameters('name')]",
+                      "metadata": {
+                        "description": "The name of the flow log."
+                      }
+                    },
+                    "resourceId": {
+                      "type": "string",
+                      "value": "[resourceId('Microsoft.Network/networkWatchers/flowLogs', parameters('networkWatcherName'), parameters('name'))]",
+                      "metadata": {
+                        "description": "The resource ID of the flow log."
+                      }
+                    },
+                    "resourceGroupName": {
+                      "type": "string",
+                      "value": "[resourceGroup().name]",
+                      "metadata": {
+                        "description": "The resource group the flow log was deployed into."
+                      }
+                    },
+                    "location": {
+                      "type": "string",
+                      "value": "[reference(resourceId('Microsoft.Network/networkWatchers/flowLogs', parameters('networkWatcherName'), parameters('name')), '2021-08-01', 'full').location]",
+                      "metadata": {
+                        "description": "The location the resource was deployed into."
+                      }
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/networkWatchers', parameters('name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[parameters('name')]",
+              "metadata": {
+                "description": "The name of the deployed network watcher."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/networkWatchers', parameters('name'))]",
+              "metadata": {
+                "description": "The resource ID of the deployed network watcher."
+              }
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "value": "[resourceGroup().name]",
+              "metadata": {
+                "description": "The resource group the network watcher was deployed into."
+              }
+            },
+            "location": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/networkWatchers', parameters('name')), '2021-08-01', 'full').location]",
+              "metadata": {
+                "description": "The location the resource was deployed into."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location'))))]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location'))))]"
+      ]
+    }
+  ]
+}

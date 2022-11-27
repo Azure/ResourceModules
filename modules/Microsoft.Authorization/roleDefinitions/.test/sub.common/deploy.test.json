@@ -1,0 +1,197 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceShort": {
+      "type": "string",
+      "defaultValue": "ardsubcom",
+      "metadata": {
+        "description": "Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-test-{1}', uniqueString(deployment().name), parameters('serviceShort'))]",
+      "location": "[deployment().location]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "roleName": {
+            "value": "[format('<<namePrefix>>-testRole-{0}', parameters('serviceShort'))]"
+          },
+          "actions": {
+            "value": [
+              "Microsoft.Compute/galleries/*",
+              "Microsoft.Network/virtualNetworks/read"
+            ]
+          },
+          "assignableScopes": {
+            "value": [
+              "[subscription().id]"
+            ]
+          },
+          "dataActions": {
+            "value": [
+              "Microsoft.Storage/storageAccounts/blobServices/*/read"
+            ]
+          },
+          "description": {
+            "value": "Test Custom Role Definition Standard (subscription scope)"
+          },
+          "notActions": {
+            "value": [
+              "Microsoft.Compute/images/delete",
+              "Microsoft.Compute/images/write",
+              "Microsoft.Network/virtualNetworks/subnets/join/action"
+            ]
+          },
+          "notDataActions": {
+            "value": [
+              "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
+            ]
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "roleName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the custom RBAC role to be created."
+              }
+            },
+            "description": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Description of the custom RBAC role to be created."
+              }
+            },
+            "actions": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. List of allowed actions."
+              }
+            },
+            "notActions": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. List of denied actions."
+              }
+            },
+            "dataActions": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes."
+              }
+            },
+            "notDataActions": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes."
+              }
+            },
+            "subscriptionId": {
+              "type": "string",
+              "defaultValue": "[subscription().subscriptionId]",
+              "metadata": {
+                "description": "Optional. The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment."
+              }
+            },
+            "assignableScopes": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Role definition assignable scopes. If not provided, will use the current scope provided."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[deployment().location]",
+              "metadata": {
+                "description": "Optional. Location deployment metadata."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
+              }
+            }
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Authorization/roleDefinitions",
+              "apiVersion": "2022-04-01",
+              "name": "[guid(parameters('roleName'), parameters('subscriptionId'))]",
+              "properties": {
+                "roleName": "[parameters('roleName')]",
+                "description": "[parameters('description')]",
+                "type": "customRole",
+                "permissions": [
+                  {
+                    "actions": "[parameters('actions')]",
+                    "notActions": "[parameters('notActions')]",
+                    "dataActions": "[parameters('dataActions')]",
+                    "notDataActions": "[parameters('notDataActions')]"
+                  }
+                ],
+                "assignableScopes": "[if(not(empty(parameters('assignableScopes'))), parameters('assignableScopes'), array(subscription().id))]"
+              }
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[guid(parameters('roleName'), parameters('subscriptionId'))]",
+              "metadata": {
+                "description": "The GUID of the Role Definition."
+              }
+            },
+            "scope": {
+              "type": "string",
+              "value": "[subscription().id]",
+              "metadata": {
+                "description": "The scope this Role Definition applies to."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "value": "[subscriptionResourceId(parameters('subscriptionId'), 'Microsoft.Authorization/roleDefinitions', guid(parameters('roleName'), parameters('subscriptionId')))]",
+              "metadata": {
+                "description": "The resource ID of the Role Definition."
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
