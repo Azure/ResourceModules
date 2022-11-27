@@ -1126,15 +1126,34 @@ function Set-DeploymentExamplesSection {
                         # e.g.
                         # "policyAssignmentId": {
                         #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
-                        $value = (($jsonParameterContentArray[($index - 1)] -split ':')[0] -replace '"').Trim()
-                        $jsonParameterContentArray[$index] = ('{0}: "<{1}>"' -f $matches[1], $value).TrimEnd()
-                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"' -and $jsonParameterContentArray[$index - 1] -like '*"value"*') {
+                        $prefix = $matches[1]
+
+                        $headerIndex = $index
+                        while (($jsonParameterContentArray[$headerIndex] -notmatch '.+": (\{|\[)+' -or $jsonParameterContentArray[$headerIndex] -like '*"value"*') -and $headerIndex -gt -1) {
+                            $headerIndex--
+                        }
+
+                        $value = (($jsonParameterContentArray[$headerIndex] -split ':')[0] -replace '"').Trim()
+                        $jsonParameterContentArray[$index] = ('{0}: "<{1}>"{2}' -f $prefix, $value, ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"([a-zA-Z]+)": "\[.+\]"') {
+                        # e.g. "name": "[format('{0}01', parameters('serviceShort'))]"
+                        $jsonParameterContentArray[$index] = ('{0}"{1}": "<{1}>"{2}' -f $matches[1], $matches[2], ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"') {
+                        # -and $jsonParameterContentArray[$index - 1] -like '*"value"*') {
                         # e.g.
                         # "policyDefinitionReferenceIds": {
                         #  "value": [
                         #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
-                        $value = (($jsonParameterContentArray[($index - 2)] -split ':')[0] -replace '"').Trim()
-                        $jsonParameterContentArray[$index] = ('{0}"<{1}>"' -f $matches[1], $value).TrimEnd()
+                        $prefix = $matches[1]
+
+                        $headerIndex = $index
+                        while (($jsonParameterContentArray[$headerIndex] -notmatch '.+": (\{|\[)+' -or $jsonParameterContentArray[$headerIndex] -like '*"value"*') -and $headerIndex -gt -1) {
+                            $headerIndex--
+                        }
+
+                        $value = (($jsonParameterContentArray[$headerIndex] -split ':')[0] -replace '"').Trim()
+
+                        $jsonParameterContentArray[$index] = ('{0}"<{1}>"{2}' -f $prefix, $value, ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
                     }
                 }
                 $jsonParameterContent = $jsonParameterContentArray | Out-String
