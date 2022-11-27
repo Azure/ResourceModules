@@ -120,6 +120,3 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
     ]
   }
 }
-    ]
-  }
-}
