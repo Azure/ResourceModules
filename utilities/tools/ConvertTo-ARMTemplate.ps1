@@ -124,7 +124,8 @@ function ConvertTo-ARMTemplate {
     #region Convert bicep files to json
     Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
     if ($PSCmdlet.ShouldProcess(('Bicep [{0}] Templates' -f ($BicepFilesToConvert.count)), 'az bicep build')) {
-        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+        #$BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+        $BicepFilesToConvert | ForEach-Object {
             $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
             if (-not (Test-Path $expectedJSONFilePath)) {
                 az bicep build --file $_
@@ -140,7 +141,8 @@ function ConvertTo-ARMTemplate {
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
         if ($PSCmdlet.ShouldProcess(('Metadata from [{0}] templates' -f ($BicepFilesToConvert.files)), 'Remove')) {
-            $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+            # $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+            $BicepFilesToConvert | ForEach-Object {
                 $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
 
                 $JSONFileContent = Get-Content -Path $JSONFilePath
@@ -180,7 +182,8 @@ function ConvertTo-ARMTemplate {
             $ghWorkflowFilesToUpdate = Get-ChildItem -Path $ghWorkflowFolderPath -Filter 'ms.*.yml' -File -Force
             Write-Verbose ('Update workflow files - Processing [{0}] file(s)' -f $ghWorkflowFilesToUpdate.count)
             if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $ghWorkflowFilesToUpdate.Count, $ghWorkflowFolderPath), 'Set-Content')) {
-                $ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
+                # $ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
+                $ghWorkflowFilesToUpdate | ForEach-Object {
                     $content = $_ | Get-Content
                     $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
                     $_ | Set-Content -Value $content
@@ -194,7 +197,8 @@ function ConvertTo-ARMTemplate {
             $adoPipelineFilesToUpdate = Get-ChildItem -Path $adoPipelineFolderPath -Filter 'ms.*.yml' -File -Force
             Write-Verbose ('Update Azure DevOps pipeline files - Processing [{0}] file(s)' -f $adoPipelineFilesToUpdate.count)
             if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $adoPipelineFilesToUpdate.Count, $adoPipelineFolderPath), 'Set-Content')) {
-                $adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
+                # $adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
+                $adoPipelineFilesToUpdate | ForEach-Object {
                     $content = $_ | Get-Content
                     $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
                     $_ | Set-Content -Value $content
