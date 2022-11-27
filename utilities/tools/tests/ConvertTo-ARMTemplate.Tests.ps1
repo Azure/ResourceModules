@@ -5,12 +5,12 @@
 param ()
 
 BeforeAll {
-    . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1')
-
     # Define paths
     $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
     $modulesFolderPath = Join-Path $rootPath 'modules'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
+
+    . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1')
 
     # Collect original files
     $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
