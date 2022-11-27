@@ -48,7 +48,7 @@ BeforeAll {
 Describe 'Test default behavior' -Tag 'Default' {
 
     BeforeAll {
-        ConvertTo-ARMTemplate -Path $rootPath -Verbose
+        ConvertTo-ARMTemplate -Path $rootPath -Verbose -RunSynchronous
     }
 
     It 'All top-level [deploy.bicep] files are converted to [deploy.json]' {
@@ -115,7 +115,7 @@ Describe 'Test default behavior' -Tag 'Default' {
 Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
     BeforeAll {
-        ConvertTo-ARMTemplate -Path $rootPath -ConvertChildren -Verbose
+        ConvertTo-ARMTemplate -Path $rootPath -ConvertChildren -Verbose -RunSynchronous
     }
 
     It 'All [deploy.bicep] files are converted to [deploy.json]' {
@@ -182,7 +182,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 Describe 'Test flags that skip logic' -Tag 'Skip' {
 
     BeforeAll {
-        ConvertTo-ARMTemplate -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose
+        ConvertTo-ARMTemplate -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose -RunSynchronous
     }
 
     It 'All deploy.bicep files are converted to deploy.json' {

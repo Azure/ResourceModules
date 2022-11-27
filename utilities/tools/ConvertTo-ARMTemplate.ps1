@@ -62,6 +62,9 @@ Optional. Skip replacing .bicep with .json in workflow files
 .PARAMETER RemoveExistingTemplates
 Optional. Remove any currently existing template
 
+.PARAMETER RunSynchronous
+Optional. Don't run the code using multiple threads. May be necessary if context does not support it
+
 .EXAMPLE
 . .\utilities\tools\ConvertTo-ARMTemplate.ps1
 
@@ -91,7 +94,10 @@ function ConvertTo-ARMTemplate {
         [switch] $SkipPipelineUpdate,
 
         [Parameter(Mandatory = $false)]
-        [switch] $RemoveExistingTemplates
+        [switch] $RemoveExistingTemplates,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $RunSynchronous
     )
 
     $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
@@ -123,16 +129,20 @@ function ConvertTo-ARMTemplate {
 
     #region Convert bicep files to json
     Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
+    $buildScriptBlock = {
+        $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
+        if (-not (Test-Path $expectedJSONFilePath)) {
+            Write-Verbose "Building template [$_]"
+            az bicep build --file $_
+        } else {
+            Write-Verbose "Template [$expectedJSONFilePath] already existing"
+        }
+    }
     if ($PSCmdlet.ShouldProcess(('Bicep [{0}] Templates' -f ($BicepFilesToConvert.count)), 'az bicep build')) {
-        #$BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
-        $BicepFilesToConvert | ForEach-Object {
-            $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
-            if (-not (Test-Path $expectedJSONFilePath)) {
-                Write-Verbose "Building template [$_]"
-                az bicep build --file $_
-            } else {
-                Write-Verbose "Template [$expectedJSONFilePath] already existing"
-            }
+        if ($RunSynchronous) {
+            $BicepFilesToConvert | ForEach-Object $buildScriptBlock
+        } else {
+            $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel $buildScriptBlock
         }
     }
     Write-Verbose 'Convert bicep files to json - Done'
@@ -141,19 +151,25 @@ function ConvertTo-ARMTemplate {
     #region Remove Bicep metadata from json
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
+
+        $removeScriptBlock = {
+            $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
+
+            Write-Verbose ('Removing metadata from file [Microsoft.{0}]' -f (($jsonFilePath -split 'Microsoft\.')[1]))
+
+            $JSONFileContent = Get-Content -Path $JSONFilePath
+            $JSONObj = $JSONFileContent | ConvertFrom-Json
+            Remove-JSONMetadata -TemplateObject $JSONObj
+
+            $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
+            Set-Content -Value $JSONFileContent -Path $JSONFilePath
+        }
+
         if ($PSCmdlet.ShouldProcess(('Metadata from [{0}] templates' -f ($BicepFilesToConvert.files)), 'Remove')) {
-            # $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
-            $BicepFilesToConvert | ForEach-Object {
-                $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
-
-                Write-Verbose ('Removing metadata from file [Microsoft.{0}]' -f (($jsonFilePath -split 'Microsoft\.')[1]))
-
-                $JSONFileContent = Get-Content -Path $JSONFilePath
-                $JSONObj = $JSONFileContent | ConvertFrom-Json
-                Remove-JSONMetadata -TemplateObject $JSONObj
-
-                $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
-                Set-Content -Value $JSONFileContent -Path $JSONFilePath
+            if ($RunSynchronous) {
+                $BicepFilesToConvert | ForEach-Object $removeScriptBlock
+            } else {
+                $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel $removeScriptBlock
             }
         }
     }
@@ -184,12 +200,18 @@ function ConvertTo-ARMTemplate {
         if (Test-Path -Path $ghWorkflowFolderPath) {
             $ghWorkflowFilesToUpdate = Get-ChildItem -Path $ghWorkflowFolderPath -Filter 'ms.*.yml' -File -Force
             Write-Verbose ('Update workflow files - Processing [{0}] file(s)' -f $ghWorkflowFilesToUpdate.count)
+
+            $ghWorkflowUpdateScriptBlock = {
+                $content = $_ | Get-Content
+                $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
+                $_ | Set-Content -Value $content
+            }
+
             if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $ghWorkflowFilesToUpdate.Count, $ghWorkflowFolderPath), 'Set-Content')) {
-                # $ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
-                $ghWorkflowFilesToUpdate | ForEach-Object {
-                    $content = $_ | Get-Content
-                    $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
-                    $_ | Set-Content -Value $content
+                if ($RunSynchronous) {
+                    $ghWorkflowFilesToUpdate | ForEach-Object $ghWorkflowUpdateScriptBlock
+                } else {
+                    $ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel $ghWorkflowUpdateScriptBlock
                 }
             }
         }
@@ -199,12 +221,19 @@ function ConvertTo-ARMTemplate {
         if (Test-Path -Path $adoPipelineFolderPath) {
             $adoPipelineFilesToUpdate = Get-ChildItem -Path $adoPipelineFolderPath -Filter 'ms.*.yml' -File -Force
             Write-Verbose ('Update Azure DevOps pipeline files - Processing [{0}] file(s)' -f $adoPipelineFilesToUpdate.count)
+
+            $adoPipelineUpdateScriptBlock = {
+                $content = $_ | Get-Content
+                $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
+                $_ | Set-Content -Value $content
+            }
+
             if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $adoPipelineFilesToUpdate.Count, $adoPipelineFolderPath), 'Set-Content')) {
-                # $adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel {
-                $adoPipelineFilesToUpdate | ForEach-Object {
-                    $content = $_ | Get-Content
-                    $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
-                    $_ | Set-Content -Value $content
+
+                if ($RunSynchronous) {
+                    $adoPipelineFilesToUpdate | ForEach-Object $adoPipelineUpdateScriptBlock
+                } else {
+                    $adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit 4 -Parallel $adoPipelineUpdateScriptBlock
                 }
             }
         }
