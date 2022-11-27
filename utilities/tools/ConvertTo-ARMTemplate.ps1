@@ -1,37 +1,4 @@
-﻿#region helper functions
-<#
-.SYNOPSIS
-Recursively remove 'metadata' property from a provided object.
-
-.DESCRIPTION
-This object is expected to be an ARM template converted to a PowerShell custom object.
-It uses the object reference rather than recreating/copying the object.
-
-.PARAMETER TemplateObject
-Mandatory. The ARM template converted to a PowerShell custom object.
-
-.EXAMPLE
-$JSONFileContent = Get-Content -Path $JSONFilePath
-$JSONObj = $JSONFileContent | ConvertFrom-Json
-Remove-JSONMetadata -TemplateObject $JSONObj
-
-Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' property under the template and recursively on all nested deployments.
-#>
-function Remove-JSONMetadata {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [psobject] $TemplateObject
-    )
-    $TemplateObject.PSObject.Properties.Remove('metadata')
-    $TemplateObject.resources | Where-Object { $_.type -eq 'Microsoft.Resources/deployments' } | ForEach-Object {
-        Remove-JSONMetadata -TemplateObject $_.properties.template
-    }
-}
-#endregion
-
-<#
+﻿<#
 .SYNOPSIS
 This script converts the module library from bicep to json based ARM templates.
 
@@ -152,10 +119,37 @@ function ConvertTo-ARMTemplate {
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
 
-        $removeJSONMetadataDef = ${function:Remove-JSONMetadata}.ToString()
         $removeScriptBlock = {
-            # Loading custom function from outside script block
-            ${function:Remove-JSONMetadata} = $using:removeJSONMetadataDef
+            # helper function start
+            <#
+            .SYNOPSIS
+            Recursively remove 'metadata' property from a provided object.
+
+            .DESCRIPTION
+            This object is expected to be an ARM template converted to a PowerShell custom object.
+            It uses the object reference rather than recreating/copying the object.
+
+            .PARAMETER TemplateObject
+            Mandatory. The ARM template converted to a PowerShell custom object.
+
+            .EXAMPLE
+            Remove-JSONMetadata -TemplateObject (ConvertFrom-Json (Get-Content -Path $JSONFilePath -Raw))
+
+            Reads content from a ARM/JSON file, converts it to a PSCustomObject and removes 'metadata' property under the template and recursively on all nested deployments.
+            #>
+            function Remove-JSONMetadata {
+
+                [CmdletBinding()]
+                param (
+                    [Parameter(Mandatory = $true)]
+                    [psobject] $TemplateObject
+                )
+                $TemplateObject.PSObject.Properties.Remove('metadata')
+                $TemplateObject.resources | Where-Object { $_.type -eq 'Microsoft.Resources/deployments' } | ForEach-Object {
+                    Remove-JSONMetadata -TemplateObject $_.properties.template
+                }
+            }
+            # helper function end
 
             $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
 
