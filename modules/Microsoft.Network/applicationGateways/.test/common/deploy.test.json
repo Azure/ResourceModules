@@ -1,0 +1,1564 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.12.40.16777",
+      "templateHash": "16768687629088447840"
+    }
+  },
+  "parameters": {
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "[format('ms.network.applicationgateways-{0}-rg', parameters('serviceShort'))]",
+      "maxLength": 90,
+      "metadata": {
+        "description": "Optional. The name of the resource group to deploy for testing purposes."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]",
+      "metadata": {
+        "description": "Optional. The location to deploy resources to."
+      }
+    },
+    "serviceShort": {
+      "type": "string",
+      "defaultValue": "nagcom",
+      "metadata": {
+        "description": "Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints."
+      }
+    },
+    "enableDefaultTelemetry": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+      }
+    }
+  },
+  "variables": {
+    "appGWName": "[format('<<namePrefix>>{0}001', parameters('serviceShort'))]",
+    "appGWExpectedResourceID": "[format('{0}/providers/Microsoft.Network/applicationGateways/{1}', subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName')), variables('appGWName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2021-04-01",
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('location')]"
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "virtualNetworkName": {
+            "value": "[format('dep-<<namePrefix>>-vnet-{0}', parameters('serviceShort'))]"
+          },
+          "publicIPName": {
+            "value": "[format('dep-<<namePrefix>>-pip-{0}', parameters('serviceShort'))]"
+          },
+          "managedIdentityName": {
+            "value": "[format('dep-<<namePrefix>>-msi-{0}', parameters('serviceShort'))]"
+          },
+          "certDeploymentScriptName": {
+            "value": "[format('dep-<<namePrefix>>-ds-{0}', parameters('serviceShort'))]"
+          },
+          "keyVaultName": {
+            "value": "[format('dep-<<namePrefix>>-kv-{0}', parameters('serviceShort'))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.12.40.16777",
+              "templateHash": "17045187009670712179"
+            }
+          },
+          "parameters": {
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. The location to deploy to."
+              }
+            },
+            "virtualNetworkName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Virtual Network to create."
+              }
+            },
+            "publicIPName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Public IP to create."
+              }
+            },
+            "managedIdentityName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Managed Identity to create."
+              }
+            },
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Key Vault to create."
+              }
+            },
+            "certDeploymentScriptName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the Deployment Script to create for the Certificate generation."
+              }
+            }
+          },
+          "variables": {
+            "$fxv#0": "param(\r\n    [string] $KeyVaultName,\r\n    [string] $CertName\r\n)\r\n\r\n$certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'Stop'\r\n\r\nif (-not $certificate) {\r\n    $policyInputObject = @{\r\n        SecretContentType = 'application/x-pkcs12'\r\n        SubjectName       = 'CN=fabrikam.com'\r\n        IssuerName        = 'Self'\r\n        ValidityInMonths  = 12\r\n        ReuseKeyOnRenewal = $true\r\n    }\r\n    $certPolicy = New-AzKeyVaultCertificatePolicy @policyInputObject\r\n\r\n    $null = Add-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -CertificatePolicy $certPolicy\r\n    Write-Verbose ('Initiated creation of certificate [{0}] in key vault [{1}]' -f $CertName, $KeyVaultName) -Verbose\r\n\r\n    while (-not (Get-AzKeyVaultCertificateOperation -VaultName $KeyVaultName -Name $CertName).Status -eq 'completed') {\r\n        Write-Verbose 'Waiting 10 seconds for certificate creation' -Verbose\r\n        Start-Sleep 10\r\n    }\r\n\r\n    Write-Verbose 'Certificate created' -Verbose\r\n}\r\n\r\n$secretId = $certificate.SecretId\r\nwhile ([String]::IsNullOrEmpty($secretId)) {\r\n    Write-Verbose 'Waiting 10 seconds until certificate can be fetched' -Verbose\r\n    Start-Sleep 10\r\n    $certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'Stop'\r\n    $secretId = $certificate.SecretId\r\n}\r\n\r\n# Write into Deployment Script output stream\r\n$DeploymentScriptOutputs = @{\r\n    secretUrl = $secretId\r\n}\r\n",
+            "CertName": "applicationGatewaySslCertificate"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2022-01-01",
+              "name": "[parameters('virtualNetworkName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "addressSpace": {
+                  "addressPrefixes": [
+                    "10.0.0.0/24"
+                  ]
+                },
+                "subnets": [
+                  {
+                    "name": "defaultSubnet",
+                    "properties": {
+                      "addressPrefix": "10.0.0.0/24"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Microsoft.Network/publicIPAddresses",
+              "apiVersion": "2022-01-01",
+              "name": "[parameters('publicIPName')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+              },
+              "properties": {
+                "publicIPAllocationMethod": "Static"
+              }
+            },
+            {
+              "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+              "apiVersion": "2018-11-30",
+              "name": "[parameters('managedIdentityName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2022-07-01",
+              "name": "[parameters('keyVaultName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "tenantId": "[tenant().tenantId]",
+                "enablePurgeProtection": null,
+                "enabledForTemplateDeployment": true,
+                "enabledForDiskEncryption": true,
+                "enabledForDeployment": true,
+                "enableRbacAuthorization": true,
+                "accessPolicies": []
+              }
+            },
+            {
+              "type": "Microsoft.Authorization/roleAssignments",
+              "apiVersion": "2022-04-01",
+              "scope": "[format('Microsoft.KeyVault/vaults/{0}', parameters('keyVaultName'))]",
+              "name": "[guid(format('msi-{0}-KeyVault-Admin-RoleAssignment', parameters('managedIdentityName')))]",
+              "properties": {
+                "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')), '2018-11-30').principalId]",
+                "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')]",
+                "principalType": "ServicePrincipal"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deploymentScripts",
+              "apiVersion": "2020-10-01",
+              "name": "[parameters('certDeploymentScriptName')]",
+              "location": "[parameters('location')]",
+              "kind": "AzurePowerShell",
+              "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                  "[format('{0}', resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')))]": {}
+                }
+              },
+              "properties": {
+                "azPowerShellVersion": "8.0",
+                "retentionInterval": "P1D",
+                "arguments": "[format('-KeyVaultName \"{0}\" -CertName \"{1}\"', parameters('keyVaultName'), variables('CertName'))]",
+                "scriptContent": "[variables('$fxv#0')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "subnetResourceId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName')), '2022-01-01').subnets[0].id]",
+              "metadata": {
+                "description": "The resource ID of the created Virtual Network Subnet."
+              }
+            },
+            "publicIPResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Public IP."
+              }
+            },
+            "managedIdentityResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Managed Identity."
+              }
+            },
+            "certificateSecretUrl": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Resources/deploymentScripts', parameters('certDeploymentScriptName')), '2020-10-01').outputs.secretUrl]",
+              "metadata": {
+                "description": "The URL of the created certificate."
+              }
+            },
+            "managedIdentityPrincipalId": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')), '2018-11-30').principalId]",
+              "metadata": {
+                "description": "The principal ID of the created Managed Identity."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "storageAccountName": {
+            "value": "[format('dep<<namePrefix>>diasa{0}01', parameters('serviceShort'))]"
+          },
+          "logAnalyticsWorkspaceName": {
+            "value": "[format('dep-<<namePrefix>>-law-{0}', parameters('serviceShort'))]"
+          },
+          "eventHubNamespaceEventHubName": {
+            "value": "[format('dep-<<namePrefix>>-evh-{0}', parameters('serviceShort'))]"
+          },
+          "eventHubNamespaceName": {
+            "value": "[format('dep-<<namePrefix>>-evhns-{0}', parameters('serviceShort'))]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.12.40.16777",
+              "templateHash": "16578952155183522901"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string",
+              "maxLength": 24,
+              "metadata": {
+                "description": "Required. The name of the storage account to create."
+              }
+            },
+            "logAnalyticsWorkspaceName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the log analytics workspace to create."
+              }
+            },
+            "eventHubNamespaceName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the event hub namespace to create."
+              }
+            },
+            "eventHubNamespaceEventHubName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. The name of the event hub to create inside the event hub namespace."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. The location to deploy resources to."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.EventHub/namespaces/eventhubs",
+              "apiVersion": "2021-11-01",
+              "name": "[format('{0}/{1}', parameters('eventHubNamespaceName'), parameters('eventHubNamespaceEventHubName'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces/authorizationRules",
+              "apiVersion": "2021-06-01-preview",
+              "name": "[format('{0}/{1}', parameters('eventHubNamespaceName'), 'RootManageSharedAccessKey')]",
+              "properties": {
+                "rights": [
+                  "Listen",
+                  "Manage",
+                  "Send"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('storageAccountName')]",
+              "location": "[parameters('location')]",
+              "kind": "StorageV2",
+              "sku": {
+                "name": "Standard_LRS"
+              },
+              "properties": {
+                "allowBlobPublicAccess": false
+              }
+            },
+            {
+              "type": "Microsoft.OperationalInsights/workspaces",
+              "apiVersion": "2021-12-01-preview",
+              "name": "[parameters('logAnalyticsWorkspaceName')]",
+              "location": "[parameters('location')]"
+            },
+            {
+              "type": "Microsoft.EventHub/namespaces",
+              "apiVersion": "2021-11-01",
+              "name": "[parameters('eventHubNamespaceName')]",
+              "location": "[parameters('location')]"
+            }
+          ],
+          "outputs": {
+            "storageAccountResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Storage Account."
+              }
+            },
+            "logAnalyticsWorkspaceResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Log Analytics Workspace."
+              }
+            },
+            "eventHubNamespaceResourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.EventHub/namespaces', parameters('eventHubNamespaceName'))]",
+              "metadata": {
+                "description": "The resource ID of the created Event Hub Namespace."
+              }
+            },
+            "eventHubAuthorizationRuleId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', parameters('eventHubNamespaceName'), 'RootManageSharedAccessKey')]",
+              "metadata": {
+                "description": "The resource ID of the created Event Hub Namespace Authorization Rule."
+              }
+            },
+            "eventHubNamespaceEventHubName": {
+              "type": "string",
+              "value": "[parameters('eventHubNamespaceEventHubName')]",
+              "metadata": {
+                "description": "The name of the created Event Hub Namespace Event Hub."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('{0}-test-{1}', uniqueString(deployment().name), parameters('serviceShort'))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "enableDefaultTelemetry": {
+            "value": "[parameters('enableDefaultTelemetry')]"
+          },
+          "name": {
+            "value": "[variables('appGWName')]"
+          },
+          "backendAddressPools": {
+            "value": [
+              {
+                "name": "appServiceBackendPool",
+                "properties": {
+                  "backendAddresses": [
+                    {
+                      "fqdn": "aghapp.azurewebsites.net"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "privateVmBackendPool",
+                "properties": {
+                  "backendAddresses": [
+                    {
+                      "ipAddress": "10.0.0.4"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "backendHttpSettingsCollection": {
+            "value": [
+              {
+                "name": "appServiceBackendHttpsSetting",
+                "properties": {
+                  "cookieBasedAffinity": "Disabled",
+                  "pickHostNameFromBackendAddress": true,
+                  "port": 443,
+                  "protocol": "Https",
+                  "requestTimeout": 30
+                }
+              },
+              {
+                "name": "privateVmHttpSetting",
+                "properties": {
+                  "cookieBasedAffinity": "Disabled",
+                  "pickHostNameFromBackendAddress": false,
+                  "port": 80,
+                  "probe": {
+                    "id": "[format('{0}/probes/privateVmHttpSettingProbe', variables('appGWExpectedResourceID'))]"
+                  },
+                  "protocol": "Http",
+                  "requestTimeout": 30
+                }
+              }
+            ]
+          },
+          "diagnosticLogsRetentionInDays": {
+            "value": 7
+          },
+          "diagnosticStorageAccountId": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.storageAccountResourceId.value]"
+          },
+          "diagnosticWorkspaceId": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.logAnalyticsWorkspaceResourceId.value]"
+          },
+          "diagnosticEventHubAuthorizationRuleId": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.eventHubAuthorizationRuleId.value]"
+          },
+          "diagnosticEventHubName": {
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.eventHubNamespaceEventHubName.value]"
+          },
+          "enableHttp2": {
+            "value": true
+          },
+          "frontendIPConfigurations": {
+            "value": [
+              {
+                "name": "private",
+                "properties": {
+                  "privateIPAddress": "10.0.0.20",
+                  "privateIPAllocationMethod": "Static",
+                  "subnet": {
+                    "id": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.subnetResourceId.value]"
+                  }
+                }
+              },
+              {
+                "name": "public",
+                "properties": {
+                  "privateIPAllocationMethod": "Dynamic",
+                  "publicIPAddress": {
+                    "id": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.publicIPResourceId.value]"
+                  }
+                }
+              }
+            ]
+          },
+          "frontendPorts": {
+            "value": [
+              {
+                "name": "port443",
+                "properties": {
+                  "port": 443
+                }
+              },
+              {
+                "name": "port4433",
+                "properties": {
+                  "port": 4433
+                }
+              },
+              {
+                "name": "port80",
+                "properties": {
+                  "port": 80
+                }
+              },
+              {
+                "name": "port8080",
+                "properties": {
+                  "port": 8080
+                }
+              }
+            ]
+          },
+          "gatewayIPConfigurations": {
+            "value": [
+              {
+                "name": "apw-ip-configuration",
+                "properties": {
+                  "subnet": {
+                    "id": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.subnetResourceId.value]"
+                  }
+                }
+              }
+            ]
+          },
+          "httpListeners": {
+            "value": [
+              {
+                "name": "public443",
+                "properties": {
+                  "frontendIPConfiguration": {
+                    "id": "[format('{0}/frontendIPConfigurations/public', variables('appGWExpectedResourceID'))]"
+                  },
+                  "frontendPort": {
+                    "id": "[format('{0}/frontendPorts/port443', variables('appGWExpectedResourceID'))]"
+                  },
+                  "hostNames": [],
+                  "protocol": "https",
+                  "requireServerNameIndication": false,
+                  "sslCertificate": {
+                    "id": "[format('{0}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate', variables('appGWExpectedResourceID'))]"
+                  }
+                }
+              },
+              {
+                "name": "private4433",
+                "properties": {
+                  "frontendIPConfiguration": {
+                    "id": "[format('{0}/frontendIPConfigurations/private', variables('appGWExpectedResourceID'))]"
+                  },
+                  "frontendPort": {
+                    "id": "[format('{0}/frontendPorts/port4433', variables('appGWExpectedResourceID'))]"
+                  },
+                  "hostNames": [],
+                  "protocol": "https",
+                  "requireServerNameIndication": false,
+                  "sslCertificate": {
+                    "id": "[format('{0}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate', variables('appGWExpectedResourceID'))]"
+                  }
+                }
+              },
+              {
+                "name": "httpRedirect80",
+                "properties": {
+                  "frontendIPConfiguration": {
+                    "id": "[format('{0}/frontendIPConfigurations/public', variables('appGWExpectedResourceID'))]"
+                  },
+                  "frontendPort": {
+                    "id": "[format('{0}/frontendPorts/port80', variables('appGWExpectedResourceID'))]"
+                  },
+                  "hostNames": [],
+                  "protocol": "Http",
+                  "requireServerNameIndication": false
+                }
+              },
+              {
+                "name": "httpRedirect8080",
+                "properties": {
+                  "frontendIPConfiguration": {
+                    "id": "[format('{0}/frontendIPConfigurations/private', variables('appGWExpectedResourceID'))]"
+                  },
+                  "frontendPort": {
+                    "id": "[format('{0}/frontendPorts/port8080', variables('appGWExpectedResourceID'))]"
+                  },
+                  "hostNames": [],
+                  "protocol": "Http",
+                  "requireServerNameIndication": false
+                }
+              }
+            ]
+          },
+          "lock": {
+            "value": "CanNotDelete"
+          },
+          "probes": {
+            "value": [
+              {
+                "name": "privateVmHttpSettingProbe",
+                "properties": {
+                  "host": "10.0.0.4",
+                  "interval": 60,
+                  "match": {
+                    "statusCodes": [
+                      "200",
+                      "401"
+                    ]
+                  },
+                  "minServers": 3,
+                  "path": "/",
+                  "pickHostNameFromBackendHttpSettings": false,
+                  "protocol": "Http",
+                  "timeout": 15,
+                  "unhealthyThreshold": 5
+                }
+              }
+            ]
+          },
+          "redirectConfigurations": {
+            "value": [
+              {
+                "name": "httpRedirect80",
+                "properties": {
+                  "includePath": true,
+                  "includeQueryString": true,
+                  "redirectType": "Permanent",
+                  "requestRoutingRules": [
+                    {
+                      "id": "[format('{0}/requestRoutingRules/httpRedirect80-public443', variables('appGWExpectedResourceID'))]"
+                    }
+                  ],
+                  "targetListener": {
+                    "id": "[format('{0}/httpListeners/public443', variables('appGWExpectedResourceID'))]"
+                  }
+                }
+              },
+              {
+                "name": "httpRedirect8080",
+                "properties": {
+                  "includePath": true,
+                  "includeQueryString": true,
+                  "redirectType": "Permanent",
+                  "requestRoutingRules": [
+                    {
+                      "id": "[format('{0}/requestRoutingRules/httpRedirect8080-private4433', variables('appGWExpectedResourceID'))]"
+                    }
+                  ],
+                  "targetListener": {
+                    "id": "[format('{0}/httpListeners/private4433', variables('appGWExpectedResourceID'))]"
+                  }
+                }
+              }
+            ]
+          },
+          "requestRoutingRules": {
+            "value": [
+              {
+                "name": "public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting",
+                "properties": {
+                  "backendAddressPool": {
+                    "id": "[format('{0}/backendAddressPools/appServiceBackendPool', variables('appGWExpectedResourceID'))]"
+                  },
+                  "backendHttpSettings": {
+                    "id": "[format('{0}/backendHttpSettingsCollection/appServiceBackendHttpsSetting', variables('appGWExpectedResourceID'))]"
+                  },
+                  "httpListener": {
+                    "id": "[format('{0}/httpListeners/public443', variables('appGWExpectedResourceID'))]"
+                  },
+                  "priority": 200,
+                  "ruleType": "Basic"
+                }
+              },
+              {
+                "name": "private4433-privateVmHttpSetting-privateVmHttpSetting",
+                "properties": {
+                  "backendAddressPool": {
+                    "id": "[format('{0}/backendAddressPools/privateVmBackendPool', variables('appGWExpectedResourceID'))]"
+                  },
+                  "backendHttpSettings": {
+                    "id": "[format('{0}/backendHttpSettingsCollection/privateVmHttpSetting', variables('appGWExpectedResourceID'))]"
+                  },
+                  "httpListener": {
+                    "id": "[format('{0}/httpListeners/private4433', variables('appGWExpectedResourceID'))]"
+                  },
+                  "priority": 250,
+                  "ruleType": "Basic"
+                }
+              },
+              {
+                "name": "httpRedirect80-public443",
+                "properties": {
+                  "httpListener": {
+                    "id": "[format('{0}/httpListeners/httpRedirect80', variables('appGWExpectedResourceID'))]"
+                  },
+                  "priority": 300,
+                  "redirectConfiguration": {
+                    "id": "[format('{0}/redirectConfigurations/httpRedirect80', variables('appGWExpectedResourceID'))]"
+                  },
+                  "ruleType": "Basic"
+                }
+              },
+              {
+                "name": "httpRedirect8080-private4433",
+                "properties": {
+                  "httpListener": {
+                    "id": "[format('{0}/httpListeners/httpRedirect8080', variables('appGWExpectedResourceID'))]"
+                  },
+                  "priority": 350,
+                  "redirectConfiguration": {
+                    "id": "[format('{0}/redirectConfigurations/httpRedirect8080', variables('appGWExpectedResourceID'))]"
+                  },
+                  "ruleType": "Basic"
+                }
+              }
+            ]
+          },
+          "roleAssignments": {
+            "value": [
+              {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                  "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityPrincipalId.value]"
+                ],
+                "principalType": "ServicePrincipal"
+              }
+            ]
+          },
+          "sku": {
+            "value": "WAF_v2"
+          },
+          "sslCertificates": {
+            "value": [
+              {
+                "name": "<<namePrefix>>-az-apgw-x-001-ssl-certificate",
+                "properties": {
+                  "keyVaultSecretId": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.certificateSecretUrl.value]"
+                }
+              }
+            ]
+          },
+          "userAssignedIdentities": {
+            "value": {
+              "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
+            }
+          },
+          "webApplicationFirewallConfiguration": {
+            "value": {
+              "disabledRuleGroups": [],
+              "enabled": true,
+              "fileUploadLimitInMb": 100,
+              "firewallMode": "Detection",
+              "maxRequestBodySizeInKb": 128,
+              "requestBodyCheck": true,
+              "ruleSetType": "OWASP",
+              "ruleSetVersion": "3.0"
+            }
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.12.40.16777",
+              "templateHash": "5839087684277749294"
+            }
+          },
+          "parameters": {
+            "name": {
+              "type": "string",
+              "maxLength": 24,
+              "metadata": {
+                "description": "Required. Name of the Application Gateway."
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Optional. Location for all resources."
+              }
+            },
+            "userAssignedIdentities": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. The ID(s) to assign to the resource."
+              }
+            },
+            "authenticationCertificates": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Authentication certificates of the application gateway resource."
+              }
+            },
+            "autoscaleMaxCapacity": {
+              "type": "int",
+              "defaultValue": -1,
+              "metadata": {
+                "description": "Optional. Upper bound on number of Application Gateway capacity."
+              }
+            },
+            "autoscaleMinCapacity": {
+              "type": "int",
+              "defaultValue": -1,
+              "metadata": {
+                "description": "Optional. Lower bound on number of Application Gateway capacity."
+              }
+            },
+            "backendAddressPools": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Backend address pool of the application gateway resource."
+              }
+            },
+            "backendHttpSettingsCollection": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Backend http settings of the application gateway resource."
+              }
+            },
+            "customErrorConfigurations": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Custom error configurations of the application gateway resource."
+              }
+            },
+            "enableFips": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Whether FIPS is enabled on the application gateway resource."
+              }
+            },
+            "enableHttp2": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Whether HTTP2 is enabled on the application gateway resource."
+              }
+            },
+            "firewallPolicyId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. The resource ID of an associated firewall policy. Should be configured for security reasons."
+              }
+            },
+            "frontendIPConfigurations": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Frontend IP addresses of the application gateway resource."
+              }
+            },
+            "frontendPorts": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Frontend ports of the application gateway resource."
+              }
+            },
+            "gatewayIPConfigurations": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Subnets of the application gateway resource."
+              }
+            },
+            "enableRequestBuffering": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Enable request buffering."
+              }
+            },
+            "enableResponseBuffering": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. Enable response buffering."
+              }
+            },
+            "httpListeners": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Http listeners of the application gateway resource."
+              }
+            },
+            "loadDistributionPolicies": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Load distribution policies of the application gateway resource."
+              }
+            },
+            "privateLinkConfigurations": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. PrivateLink configurations on application gateway."
+              }
+            },
+            "probes": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Probes of the application gateway resource."
+              }
+            },
+            "redirectConfigurations": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Redirect configurations of the application gateway resource."
+              }
+            },
+            "requestRoutingRules": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Request routing rules of the application gateway resource."
+              }
+            },
+            "rewriteRuleSets": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Rewrite rules for the application gateway resource."
+              }
+            },
+            "sku": {
+              "type": "string",
+              "defaultValue": "WAF_Medium",
+              "allowedValues": [
+                "Standard_Small",
+                "Standard_Medium",
+                "Standard_Large",
+                "WAF_Medium",
+                "WAF_Large",
+                "Standard_v2",
+                "WAF_v2"
+              ],
+              "metadata": {
+                "description": "Optional. The name of the SKU for the Application Gateway."
+              }
+            },
+            "capacity": {
+              "type": "int",
+              "defaultValue": 2,
+              "maxValue": 10,
+              "minValue": 1,
+              "metadata": {
+                "description": "Optional. The number of Application instances to be configured."
+              }
+            },
+            "sslCertificates": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. SSL certificates of the application gateway resource."
+              }
+            },
+            "sslPolicyCipherSuites": {
+              "type": "array",
+              "allowedValues": [
+                "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA",
+                "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
+                "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256",
+                "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
+                "TLS_DHE_DSS_WITH_AES_256_CBC_SHA256",
+                "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
+                "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+                "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+                "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+                "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+                "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+                "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+                "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+                "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+                "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+                "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+                "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+                "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+                "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
+                "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+                "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+                "TLS_RSA_WITH_3DES_EDE_CBC_SHA",
+                "TLS_RSA_WITH_AES_128_CBC_SHA",
+                "TLS_RSA_WITH_AES_128_CBC_SHA256",
+                "TLS_RSA_WITH_AES_128_GCM_SHA256",
+                "TLS_RSA_WITH_AES_256_CBC_SHA",
+                "TLS_RSA_WITH_AES_256_CBC_SHA256",
+                "TLS_RSA_WITH_AES_256_GCM_SHA384"
+              ],
+              "defaultValue": [
+                "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+                "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+              ],
+              "metadata": {
+                "description": "Optional. Ssl cipher suites to be enabled in the specified order to application gateway."
+              }
+            },
+            "sslPolicyMinProtocolVersion": {
+              "type": "string",
+              "defaultValue": "TLSv1_2",
+              "allowedValues": [
+                "TLSv1_0",
+                "TLSv1_1",
+                "TLSv1_2"
+              ],
+              "metadata": {
+                "description": "Optional. Ssl protocol enums."
+              }
+            },
+            "sslPolicyName": {
+              "type": "string",
+              "defaultValue": "",
+              "allowedValues": [
+                "AppGwSslPolicy20150501",
+                "AppGwSslPolicy20170401",
+                "AppGwSslPolicy20170401S",
+                ""
+              ],
+              "metadata": {
+                "description": "Optional. Ssl predefined policy name enums."
+              }
+            },
+            "sslPolicyType": {
+              "type": "string",
+              "defaultValue": "Custom",
+              "allowedValues": [
+                "Custom",
+                "Predefined"
+              ],
+              "metadata": {
+                "description": "Optional. Type of Ssl Policy."
+              }
+            },
+            "sslProfiles": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. SSL profiles of the application gateway resource."
+              }
+            },
+            "trustedClientCertificates": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Trusted client certificates of the application gateway resource."
+              }
+            },
+            "trustedRootCertificates": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Trusted Root certificates of the application gateway resource."
+              }
+            },
+            "urlPathMaps": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. URL path map of the application gateway resource."
+              }
+            },
+            "webApplicationFirewallConfiguration": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Application gateway web application firewall configuration. Should be configured for security reasons."
+              }
+            },
+            "zones": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. A list of availability zones denoting where the resource needs to come from."
+              }
+            },
+            "diagnosticLogsRetentionInDays": {
+              "type": "int",
+              "defaultValue": 365,
+              "maxValue": 365,
+              "minValue": 0,
+              "metadata": {
+                "description": "Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely."
+              }
+            },
+            "diagnosticStorageAccountId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+              }
+            },
+            "diagnosticWorkspaceId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+              }
+            },
+            "diagnosticEventHubAuthorizationRuleId": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to."
+              }
+            },
+            "diagnosticEventHubName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub."
+              }
+            },
+            "diagnosticLogCategoriesToEnable": {
+              "type": "array",
+              "allowedValues": [
+                "ApplicationGatewayAccessLog",
+                "ApplicationGatewayPerformanceLog",
+                "ApplicationGatewayFirewallLog"
+              ],
+              "defaultValue": [
+                "ApplicationGatewayAccessLog",
+                "ApplicationGatewayPerformanceLog",
+                "ApplicationGatewayFirewallLog"
+              ],
+              "metadata": {
+                "description": "Optional. The name of logs that will be streamed."
+              }
+            },
+            "diagnosticMetricsToEnable": {
+              "type": "array",
+              "allowedValues": [
+                "AllMetrics"
+              ],
+              "defaultValue": [
+                "AllMetrics"
+              ],
+              "metadata": {
+                "description": "Optional. The name of metrics that will be streamed."
+              }
+            },
+            "diagnosticSettingsName": {
+              "type": "string",
+              "defaultValue": "[format('{0}-diagnosticSettings', parameters('name'))]",
+              "metadata": {
+                "description": "Optional. The name of the diagnostic setting, if deployed."
+              }
+            },
+            "lock": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Specify the type of lock."
+              },
+              "allowedValues": [
+                "",
+                "CanNotDelete",
+                "ReadOnly"
+              ]
+            },
+            "roleAssignments": {
+              "type": "array",
+              "defaultValue": [],
+              "metadata": {
+                "description": "Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'."
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Optional. Resource tags."
+              }
+            },
+            "enableDefaultTelemetry": {
+              "type": "bool",
+              "defaultValue": true,
+              "metadata": {
+                "description": "Optional. Enable telemetry via a Globally Unique Identifier (GUID)."
+              }
+            }
+          },
+          "variables": {
+            "copy": [
+              {
+                "name": "diagnosticsLogs",
+                "count": "[length(parameters('diagnosticLogCategoriesToEnable'))]",
+                "input": {
+                  "category": "[parameters('diagnosticLogCategoriesToEnable')[copyIndex('diagnosticsLogs')]]",
+                  "enabled": true,
+                  "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                  }
+                }
+              },
+              {
+                "name": "diagnosticsMetrics",
+                "count": "[length(parameters('diagnosticMetricsToEnable'))]",
+                "input": {
+                  "category": "[parameters('diagnosticMetricsToEnable')[copyIndex('diagnosticsMetrics')]]",
+                  "timeGrain": null,
+                  "enabled": true,
+                  "retentionPolicy": {
+                    "enabled": true,
+                    "days": "[parameters('diagnosticLogsRetentionInDays')]"
+                  }
+                }
+              }
+            ],
+            "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
+            "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
+          },
+          "resources": [
+            {
+              "condition": "[parameters('enableDefaultTelemetry')]",
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2021-04-01",
+              "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name, parameters('location')))]",
+              "properties": {
+                "mode": "Incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "resources": []
+                }
+              }
+            },
+            {
+              "type": "Microsoft.Network/applicationGateways",
+              "apiVersion": "2021-08-01",
+              "name": "[parameters('name')]",
+              "location": "[parameters('location')]",
+              "tags": "[parameters('tags')]",
+              "identity": "[variables('identity')]",
+              "properties": "[union(createObject('authenticationCertificates', parameters('authenticationCertificates'), 'autoscaleConfiguration', if(and(greater(parameters('autoscaleMaxCapacity'), 0), greaterOrEquals(parameters('autoscaleMinCapacity'), 0)), createObject('maxCapacity', parameters('autoscaleMaxCapacity'), 'minCapacity', parameters('autoscaleMinCapacity')), null()), 'backendAddressPools', parameters('backendAddressPools'), 'backendHttpSettingsCollection', parameters('backendHttpSettingsCollection'), 'customErrorConfigurations', parameters('customErrorConfigurations'), 'enableHttp2', parameters('enableHttp2'), 'firewallPolicy', if(not(empty(parameters('firewallPolicyId'))), createObject('id', parameters('firewallPolicyId')), null()), 'forceFirewallPolicyAssociation', not(empty(parameters('firewallPolicyId'))), 'frontendIPConfigurations', parameters('frontendIPConfigurations'), 'frontendPorts', parameters('frontendPorts'), 'gatewayIPConfigurations', parameters('gatewayIPConfigurations'), 'globalConfiguration', createObject('enableRequestBuffering', parameters('enableRequestBuffering'), 'enableResponseBuffering', parameters('enableResponseBuffering')), 'httpListeners', parameters('httpListeners'), 'loadDistributionPolicies', parameters('loadDistributionPolicies'), 'privateLinkConfigurations', parameters('privateLinkConfigurations'), 'probes', parameters('probes'), 'redirectConfigurations', parameters('redirectConfigurations'), 'requestRoutingRules', parameters('requestRoutingRules'), 'rewriteRuleSets', parameters('rewriteRuleSets'), 'sku', createObject('name', parameters('sku'), 'tier', if(endsWith(parameters('sku'), 'v2'), parameters('sku'), substring(parameters('sku'), 0, indexOf(parameters('sku'), '_'))), 'capacity', if(and(greater(parameters('autoscaleMaxCapacity'), 0), greaterOrEquals(parameters('autoscaleMinCapacity'), 0)), null(), parameters('capacity'))), 'sslCertificates', parameters('sslCertificates'), 'sslPolicy', createObject('cipherSuites', parameters('sslPolicyCipherSuites'), 'minProtocolVersion', parameters('sslPolicyMinProtocolVersion'), 'policyName', if(empty(parameters('sslPolicyName')), null(), parameters('sslPolicyName')), 'policyType', parameters('sslPolicyType')), 'sslProfiles', parameters('sslProfiles'), 'trustedClientCertificates', parameters('trustedClientCertificates'), 'trustedRootCertificates', parameters('trustedRootCertificates'), 'urlPathMaps', parameters('urlPathMaps'), 'webApplicationFirewallConfiguration', parameters('webApplicationFirewallConfiguration')), if(parameters('enableFips'), createObject('enableFips', parameters('enableFips')), createObject()), createObject())]",
+              "zones": "[parameters('zones')]"
+            },
+            {
+              "condition": "[not(empty(parameters('lock')))]",
+              "type": "Microsoft.Authorization/locks",
+              "apiVersion": "2017-04-01",
+              "scope": "[format('Microsoft.Network/applicationGateways/{0}', parameters('name'))]",
+              "name": "[format('{0}-{1}-lock', parameters('name'), parameters('lock'))]",
+              "properties": {
+                "level": "[parameters('lock')]",
+                "notes": "[if(equals(parameters('lock'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]"
+              ]
+            },
+            {
+              "condition": "[or(or(or(not(empty(parameters('diagnosticStorageAccountId'))), not(empty(parameters('diagnosticWorkspaceId')))), not(empty(parameters('diagnosticEventHubAuthorizationRuleId')))), not(empty(parameters('diagnosticEventHubName'))))]",
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "apiVersion": "2021-05-01-preview",
+              "scope": "[format('Microsoft.Network/applicationGateways/{0}', parameters('name'))]",
+              "name": "[parameters('diagnosticSettingsName')]",
+              "properties": {
+                "storageAccountId": "[if(empty(parameters('diagnosticStorageAccountId')), null(), parameters('diagnosticStorageAccountId'))]",
+                "workspaceId": "[if(empty(parameters('diagnosticWorkspaceId')), null(), parameters('diagnosticWorkspaceId'))]",
+                "eventHubAuthorizationRuleId": "[if(empty(parameters('diagnosticEventHubAuthorizationRuleId')), null(), parameters('diagnosticEventHubAuthorizationRuleId'))]",
+                "eventHubName": "[if(empty(parameters('diagnosticEventHubName')), null(), parameters('diagnosticEventHubName'))]",
+                "metrics": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('diagnosticWorkspaceId'))), empty(parameters('diagnosticEventHubAuthorizationRuleId'))), empty(parameters('diagnosticEventHubName'))), null(), variables('diagnosticsMetrics'))]",
+                "logs": "[if(and(and(and(empty(parameters('diagnosticStorageAccountId')), empty(parameters('diagnosticWorkspaceId'))), empty(parameters('diagnosticEventHubAuthorizationRuleId'))), empty(parameters('diagnosticEventHubName'))), null(), variables('diagnosticsLogs'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]"
+              ]
+            },
+            {
+              "copy": {
+                "name": "applicationGateway_roleAssignments",
+                "count": "[length(parameters('roleAssignments'))]"
+              },
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2020-10-01",
+              "name": "[format('{0}-AppGateway-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "description": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'description'), parameters('roleAssignments')[copyIndex()].description, '')]"
+                  },
+                  "principalIds": {
+                    "value": "[parameters('roleAssignments')[copyIndex()].principalIds]"
+                  },
+                  "principalType": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'principalType'), parameters('roleAssignments')[copyIndex()].principalType, '')]"
+                  },
+                  "roleDefinitionIdOrName": {
+                    "value": "[parameters('roleAssignments')[copyIndex()].roleDefinitionIdOrName]"
+                  },
+                  "condition": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'condition'), parameters('roleAssignments')[copyIndex()].condition, '')]"
+                  },
+                  "delegatedManagedIdentityResourceId": {
+                    "value": "[if(contains(parameters('roleAssignments')[copyIndex()], 'delegatedManagedIdentityResourceId'), parameters('roleAssignments')[copyIndex()].delegatedManagedIdentityResourceId, '')]"
+                  },
+                  "resourceId": {
+                    "value": "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.12.40.16777",
+                      "templateHash": "1396352606118760977"
+                    }
+                  },
+                  "parameters": {
+                    "principalIds": {
+                      "type": "array",
+                      "metadata": {
+                        "description": "Required. The IDs of the principals to assign the role to."
+                      }
+                    },
+                    "roleDefinitionIdOrName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead."
+                      }
+                    },
+                    "resourceId": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. The resource ID of the resource to apply the role assignment to."
+                      }
+                    },
+                    "principalType": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "allowedValues": [
+                        "ServicePrincipal",
+                        "Group",
+                        "User",
+                        "ForeignGroup",
+                        "Device",
+                        ""
+                      ],
+                      "metadata": {
+                        "description": "Optional. The principal type of the assigned principal ID."
+                      }
+                    },
+                    "description": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. The description of the role assignment."
+                      }
+                    },
+                    "condition": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase \"foo_storage_container\""
+                      }
+                    },
+                    "conditionVersion": {
+                      "type": "string",
+                      "defaultValue": "2.0",
+                      "allowedValues": [
+                        "2.0"
+                      ],
+                      "metadata": {
+                        "description": "Optional. Version of the condition."
+                      }
+                    },
+                    "delegatedManagedIdentityResourceId": {
+                      "type": "string",
+                      "defaultValue": "",
+                      "metadata": {
+                        "description": "Optional. Id of the delegated managed identity resource."
+                      }
+                    }
+                  },
+                  "variables": {
+                    "builtInRoleNames": {
+                      "Avere Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')]",
+                      "Avere Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c025889f-8102-4ebf-b32c-fc0c6f0c6bd9')]",
+                      "Azure Kubernetes Service Policy Add-on Deployment": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18ed5180-3e48-46fd-8541-4ea054d57064')]",
+                      "Backup Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e467623-bb1f-42f4-a55d-6e525e11384b')]",
+                      "Backup Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00c29273-979b-4161-815c-10b084fb9324')]",
+                      "Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                      "Cosmos DB Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '230815da-be43-4aae-9cb4-875f7bd000aa')]",
+                      "Desktop Virtualization Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a959dbd1-f747-45e3-8ba6-dd80f235f97c')]",
+                      "DevTest Labs User": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '76283e04-6283-4c54-8f91-bcf1374a3c64')]",
+                      "DNS Resolver Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f2ebee7-ffd4-4fc0-b3b7-664099fdad5d')]",
+                      "DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
+                      "DocumentDB Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5bd9cd88-fe45-4216-938b-f97437e15450')]",
+                      "Domain Services Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'eeaeda52-9324-47f6-8069-5d5bade478b2')]",
+                      "Domain Services Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '361898ef-9ed1-48c2-849c-a832951106bb')]",
+                      "Log Analytics Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]",
+                      "Log Analytics Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')]",
+                      "Managed Application Contributor Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')]",
+                      "Managed Application Operator Role": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')]",
+                      "Managed Applications Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')]",
+                      "Monitoring Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')]",
+                      "Monitoring Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')]",
+                      "Network Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+                      "Owner": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+                      "Private DNS Zone Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f')]",
+                      "Reader": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+                      "Resource Policy Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')]",
+                      "Role Based Access Control Administrator (Preview)": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f58310d9-a9f6-439a-9e8d-f62e7b41a168')]",
+                      "Site Recovery Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6670b86e-a3f7-4917-ac9b-5d6ab1be4567')]",
+                      "Site Recovery Operator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '494ae006-db33-4328-bf46-533a6560a3ca')]",
+                      "SQL Managed Instance Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4939a1f6-9ae0-4e48-a1e0-f2cbe897382d')]",
+                      "SQL Security Manager": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '056cd41c-7e88-42e1-933e-88ba6a50c9c3')]",
+                      "Storage Account Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '17d1049b-9a84-46fb-8f53-869881c3d3ab')]",
+                      "Traffic Manager Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a4b10055-b0c7-44c2-b00f-c7b5b3550cf7')]",
+                      "User Access Administrator": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]",
+                      "Virtual Machine Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '1c0163c0-47e6-4577-8991-ea5c82e286e4')]",
+                      "Virtual Machine Contributor": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')]",
+                      "Virtual Machine User Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')]",
+                      "Windows Admin Center Administrator Login": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')]"
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "roleAssignment",
+                        "count": "[length(parameters('principalIds'))]"
+                      },
+                      "type": "Microsoft.Authorization/roleAssignments",
+                      "apiVersion": "2022-04-01",
+                      "scope": "[format('Microsoft.Network/applicationGateways/{0}', last(split(parameters('resourceId'), '/')))]",
+                      "name": "[guid(resourceId('Microsoft.Network/applicationGateways', last(split(parameters('resourceId'), '/'))), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
+                      "properties": {
+                        "description": "[parameters('description')]",
+                        "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleDefinitionIdOrName')), variables('builtInRoleNames')[parameters('roleDefinitionIdOrName')], parameters('roleDefinitionIdOrName'))]",
+                        "principalId": "[parameters('principalIds')[copyIndex()]]",
+                        "principalType": "[if(not(empty(parameters('principalType'))), parameters('principalType'), null())]",
+                        "condition": "[if(not(empty(parameters('condition'))), parameters('condition'), null())]",
+                        "conditionVersion": "[if(and(not(empty(parameters('conditionVersion'))), not(empty(parameters('condition')))), parameters('conditionVersion'), null())]",
+                        "delegatedManagedIdentityResourceId": "[if(not(empty(parameters('delegatedManagedIdentityResourceId'))), parameters('delegatedManagedIdentityResourceId'), null())]"
+                      }
+                    }
+                  ]
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "name": {
+              "type": "string",
+              "value": "[parameters('name')]",
+              "metadata": {
+                "description": "The name of the application gateway."
+              }
+            },
+            "resourceId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/applicationGateways', parameters('name'))]",
+              "metadata": {
+                "description": "The resource ID of the application gateway."
+              }
+            },
+            "resourceGroupName": {
+              "type": "string",
+              "value": "[resourceGroup().name]",
+              "metadata": {
+                "description": "The resource group the application gateway was deployed into."
+              }
+            },
+            "location": {
+              "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/applicationGateways', parameters('name')), '2021-08-01', 'full').location]",
+              "metadata": {
+                "description": "The location the resource was deployed into."
+              }
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location'))))]",
+        "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]",
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location'))))]"
+      ]
+    }
+  ]
+}
