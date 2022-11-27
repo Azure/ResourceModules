@@ -827,17 +827,16 @@ function ConvertTo-FormattedBicep {
         $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
         $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
         $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
-
         $bicepParamsArray = $contentInBicepFormat -split '\n'
         $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
     }
 
     # [3/4] Format params with indent
-    $BicepParams = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
+    $bicepParams = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
 
     # [4/4]  Add comment where required & optional parameters start
     $splitInputObject = @{
-        BicepParams            = $BicepParams
+        BicepParams            = $bicepParams
         RequiredParametersList = $RequiredParametersList
         AllParametersList      = $JSONParametersWithoutValue.Keys
     }
@@ -1103,11 +1102,40 @@ function Set-DeploymentExamplesSection {
                 # [3/3]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 foreach ($row in ($jsonParameterContentArray | Where-Object { $_ -like '*reference(extensionResourceId*' })) {
-                    $expectedValue = ([regex]::Match($row, '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"')).Captures.Groups[1].Value
+                    if ($row -match '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"') {
+                        # e.g. "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.logAnalyticsWorkspaceResourceId.value]"
+                        $expectedValue = $matches[1]
+                    } elseif ($row -match '.+\[reference\(extensionResourceId.+\.(.+)\]"') {
+                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        $expectedValue = $matches[1]
+                    } else {
+                        throw "Unhandled case [$row] in file [$testFilePath]"
+                    }
+
                     $toReplaceValue = ([regex]::Match($row, '"(\[reference\(extensionResourceId.+)"')).Captures.Groups[1].Value
 
                     $jsonParameterContent = $jsonParameterContent.Replace($toReplaceValue, ('<{0}>' -f $expectedValue))
                 }
+
+                # Removing template specific functions
+                $jsonParameterContentArray = $jsonParameterContent -split '\n'
+                for ($index = 0; $index -lt $jsonParameterContentArray.Count; $index++) {
+                    if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
+                        # e.g.
+                        # "policyAssignmentId": {
+                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
+                        $value = (($jsonParameterContentArray[($index - 1)] -split ':')[0] -replace '"').Trim()
+                        $jsonParameterContentArray[$index] = ('{0}: "<{1}>"' -f $matches[1], $value).TrimEnd()
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"') {
+                        # e.g.
+                        # "policyDefinitionReferenceIds": {
+                        #  "value": [
+                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        $value = (($jsonParameterContentArray[($index - 2)] -split ':')[0] -replace '"').Trim()
+                        $jsonParameterContentArray[$index] = ('{0}"<{1}>"' -f $matches[1], $value).TrimEnd()
+                    }
+                }
+                $jsonParameterContent = $jsonParameterContentArray | Out-String
             } else {
                 # Case 2: Uses ARM-JSON parameter file
                 $jsonParameterContent = $rawContent.TrimEnd()
