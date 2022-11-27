@@ -17,6 +17,9 @@ param serviceShort string = 'sqlspe'
 @secure()
 param password string = newGuid()
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
