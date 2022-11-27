@@ -128,6 +128,7 @@ function ConvertTo-ARMTemplate {
         $BicepFilesToConvert | ForEach-Object {
             $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
             if (-not (Test-Path $expectedJSONFilePath)) {
+                Write-Verbose "Building template [$_]"
                 az bicep build --file $_
             } else {
                 Write-Verbose "Template [$expectedJSONFilePath] already existing"
@@ -144,6 +145,8 @@ function ConvertTo-ARMTemplate {
             # $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
             $BicepFilesToConvert | ForEach-Object {
                 $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
+
+                Write-Verbose ('Removing metadata from file [Microsoft.{0}]' -f (($jsonFilePath -split 'Microsoft\.')[1]))
 
                 $JSONFileContent = Get-Content -Path $JSONFilePath
                 $JSONObj = $JSONFileContent | ConvertFrom-Json
