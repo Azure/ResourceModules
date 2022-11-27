@@ -178,6 +178,7 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     name: '<<namePrefix>>pbdcapcom001'
     skuCapacity: 1
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -221,6 +222,9 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
       "value": 1
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -264,6 +268,8 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     ]
     name: '<<namePrefix>>pbdcapmin001'
     skuCapacity: 1
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -291,6 +297,10 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     },
     "skuCapacity": {
       "value": 1
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -173,6 +173,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -204,6 +205,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -238,6 +242,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgimages001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
         name: '<<namePrefix>>-cgimages-imgd-001'
@@ -299,6 +304,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgimages001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "images": {
       "value": [
         {

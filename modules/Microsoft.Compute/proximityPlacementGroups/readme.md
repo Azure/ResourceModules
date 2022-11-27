@@ -180,6 +180,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
       level: 'Info'
       message: 'I\'m a default error message'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     intent: {
       vmSizes: [
         'Standard_B1ms'
@@ -232,6 +233,9 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
         "level": "Info",
         "message": "I\"m a default error message"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "intent": {
       "value": {
@@ -286,7 +290,10 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cppgmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>cppgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -303,8 +310,13 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>cppgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -233,6 +233,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -305,6 +306,9 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -344,6 +348,8 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       }
     ]
     name: '<<namePrefix>>nnimin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -371,6 +377,10 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
     },
     "name": {
       "value": "<<namePrefix>>nnimin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

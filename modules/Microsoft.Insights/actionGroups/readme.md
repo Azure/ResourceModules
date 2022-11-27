@@ -270,6 +270,7 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         useCommonAlertSchema: true
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -323,6 +324,9 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -362,6 +366,8 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
     // Required parameters
     groupShortName: 'agiagmin001'
     name: '<<namePrefix>>iagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -384,6 +390,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>iagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -1137,6 +1137,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -1341,6 +1342,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "disablePasswordAuthentication": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryptionAtHost": {
       "value": false
     },
@@ -1484,6 +1488,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmlinatmg'
     publicKeys: [
@@ -1557,6 +1562,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "disablePasswordAuthentication": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     },
@@ -1620,6 +1628,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmlinmin'
     publicKeys: [
@@ -1689,6 +1698,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     "disablePasswordAuthentication": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
       "value": "<location>"
@@ -1814,6 +1826,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
     extensionAntiMalwareConfig: {
       enabled: true
@@ -2031,6 +2044,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryptionAtHost": {
       "value": false
     },
@@ -2186,6 +2202,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmwinatmg'
   }
@@ -2250,6 +2267,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "configurationProfile": {
       "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     },
@@ -2302,6 +2322,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmwinmin'
   }
@@ -2362,6 +2383,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     // Non-required parameters
     "adminPassword": {
       "value": "<adminPassword>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
       "value": "<location>"
@@ -2429,6 +2453,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         }
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmwincmk'
   }
@@ -2505,6 +2530,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           }
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
       "value": "<location>"

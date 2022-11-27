@@ -68,6 +68,8 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: 'Updates'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -90,6 +92,10 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     },
     "name": {
       "value": "Updates"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -112,6 +118,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: 'AzureAutomation'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }
@@ -138,6 +145,9 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "AzureAutomation"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "product": {
       "value": "OMSGallery"
     },
@@ -165,6 +175,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
     name: '<<namePrefix>>omsnonms001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     product: 'nonmsTestSolutionProduct'
     publisher: 'nonmsTestSolutionPublisher'
   }
@@ -191,6 +202,9 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
       "value": "<<namePrefix>>omsnonms001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "product": {
       "value": "nonmsTestSolutionProduct"
     },

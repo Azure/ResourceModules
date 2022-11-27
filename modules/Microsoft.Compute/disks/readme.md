@@ -199,6 +199,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
     diskSizeGB: 128
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     logicalSectorSize: 512
     osType: 'Windows'
@@ -245,6 +246,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     "diskSizeGB": {
       "value": 128
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -290,6 +294,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'FromImage'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReferenceId: '<imageReferenceId>'
     roleAssignments: [
       {
@@ -327,6 +332,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     "createOption": {
       "value": "FromImage"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "imageReferenceId": {
       "value": "<imageReferenceId>"
     },
@@ -363,6 +371,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'Import'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -400,6 +409,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     // Non-required parameters
     "createOption": {
       "value": "Import"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [
@@ -440,6 +452,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     diskSizeGB: 1
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -466,6 +479,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     // Non-required parameters
     "diskSizeGB": {
       "value": 1
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

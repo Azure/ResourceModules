@@ -473,6 +473,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     discoveryUrl: 'http://example.com'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageBuildCompute: 'testcompute'
     lock: 'CanNotDelete'
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
@@ -584,6 +585,9 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "discoveryUrl": {
       "value": "http://example.com"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "imageBuildCompute": {
       "value": "testcompute"
     },
@@ -652,6 +656,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     primaryUserAssignedIdentity: '<primaryUserAssignedIdentity>'
     privateEndpoints: [
       {
@@ -710,6 +715,9 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "primaryUserAssignedIdentity": {
       "value": "<primaryUserAssignedIdentity>"
     },
@@ -758,6 +766,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     name: '<<namePrefix>>mlswmin001'
     sku: 'Basic'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     systemAssignedIdentity: true
   }
 }
@@ -792,6 +801,9 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "Basic"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "systemAssignedIdentity": {
       "value": true
     }

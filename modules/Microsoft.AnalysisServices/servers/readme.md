@@ -187,6 +187,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -233,6 +234,9 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -283,6 +287,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     ]
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallSettings: {
       enablePowerBIService: true
       firewallRules: [
@@ -352,6 +357,9 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "firewallSettings": {
       "value": {
         "enablePowerBIService": true,
@@ -401,7 +409,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>assmin'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -418,8 +429,13 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>assmin"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

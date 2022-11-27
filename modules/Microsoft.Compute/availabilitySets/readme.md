@@ -174,6 +174,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cascom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     proximityPlacementGroupId: '<proximityPlacementGroupId>'
     roleAssignments: [
@@ -206,6 +207,9 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
       "value": "<<namePrefix>>cascom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -240,7 +244,10 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-casmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>casmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -257,8 +264,13 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>casmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

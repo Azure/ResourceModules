@@ -149,6 +149,7 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
     name: '<<namePrefix>>mmgcom001'
     // Non-required parameters
     displayName: 'Test MG'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     parentId: '<parentId>'
   }
 }
@@ -174,6 +175,9 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
     "displayName": {
       "value": "Test MG"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parentId": {
       "value": "<parentId>"
     }
@@ -194,7 +198,10 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmgmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>mmgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -211,8 +218,13 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>mmgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

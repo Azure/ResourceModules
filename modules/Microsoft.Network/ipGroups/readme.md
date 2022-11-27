@@ -171,6 +171,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nigcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'
@@ -206,6 +207,9 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
       "value": "<<namePrefix>>nigcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipAddresses": {
       "value": [
         "10.0.0.1",
@@ -243,7 +247,10 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nigmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nigmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -260,8 +267,13 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nigmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -382,6 +382,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     networkRuleSets: {
       defaultAction: 'Deny'
@@ -549,6 +550,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -723,6 +727,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -808,6 +813,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "networkRuleSets": {
       "value": {
         "defaultAction": "Deny",
@@ -871,7 +879,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sbnmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>sbnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -888,8 +899,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>sbnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -911,6 +927,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>sbnpe001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -944,6 +961,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>sbnpe001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {

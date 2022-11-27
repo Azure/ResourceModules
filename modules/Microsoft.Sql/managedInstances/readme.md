@@ -320,6 +320,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     dnsZonePartner: ''
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionProtectorObj: {
       serverKeyName: '<serverKeyName>'
       serverKeyType: 'AzureKeyVault'
@@ -432,6 +433,9 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     "dnsZonePartner": {
       "value": ""
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryptionProtectorObj": {
       "value": {
         "serverKeyName": "<serverKeyName>",
@@ -542,6 +546,8 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     administratorLoginPassword: '<administratorLoginPassword>'
     name: '<<namePrefix>>-sqlmimin'
     subnetId: '<subnetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -570,6 +576,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     },
     "subnetId": {
       "value": "<subnetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

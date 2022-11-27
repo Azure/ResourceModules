@@ -100,6 +100,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       'notification-controller.enabled': 'false'
       'source-controller.enabled': 'true'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
     version: '0.5.2'
@@ -139,6 +140,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
         "source-controller.enabled": "true"
       }
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "releaseNamespace": {
       "value": "flux-system"
     },
@@ -170,6 +174,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     extensionType: 'microsoft.flux'
     name: '<<namePrefix>>kcemin001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
   }
@@ -199,6 +204,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       "value": "<<namePrefix>>kcemin001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "releaseNamespace": {
       "value": "flux-system"
     },

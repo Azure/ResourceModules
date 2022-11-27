@@ -302,6 +302,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 0
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: 'CanNotDelete'
     managedImageName: '<<namePrefix>>-mi-vmicom-001'
@@ -363,6 +364,9 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     // Non-required parameters
     "buildTimeoutInMinutes": {
       "value": 0
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "imageReplicationRegions": {
       "value": []

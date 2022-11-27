@@ -258,6 +258,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
     name: '<<namePrefix>>ndrcom001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsin-x-001'
@@ -294,6 +295,9 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
       "value": "<virtualNetworkId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "inboundEndpoints": {
       "value": [
         {

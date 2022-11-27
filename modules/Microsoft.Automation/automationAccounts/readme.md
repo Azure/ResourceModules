@@ -387,6 +387,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gallerySolutions: [
       {
         name: 'Updates'
@@ -585,6 +586,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "disableLocalAuth": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "gallerySolutions": {
       "value": [
@@ -795,6 +799,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -828,6 +833,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -850,7 +858,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aamin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>aamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -867,8 +878,13 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>aamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

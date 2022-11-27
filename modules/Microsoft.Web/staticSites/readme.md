@@ -350,6 +350,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       foo: 'bar'
       setting: 1
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enterpriseGradeCdnStatus: 'Disabled'
     functionAppSettings: {
       foo: 'bar'
@@ -414,6 +415,9 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         "foo": "bar",
         "setting": 1
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enterpriseGradeCdnStatus": {
       "value": "Disabled"
@@ -487,7 +491,10 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wssmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>wssmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -504,8 +511,13 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>wssmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

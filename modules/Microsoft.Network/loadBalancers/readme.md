@@ -503,6 +503,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundNatRules: [
       {
         backendPort: 443
@@ -633,6 +634,9 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "inboundNatRules": {
       "value": [
         {
@@ -757,6 +761,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundNatRules: [
       {
         backendPort: 443
@@ -861,6 +866,9 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "inboundNatRules": {
       "value": [
         {
@@ -949,6 +957,8 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       }
     ]
     name: '<<namePrefix>>nlbmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -976,6 +986,10 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>nlbmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

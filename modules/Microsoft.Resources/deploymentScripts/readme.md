@@ -169,6 +169,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     // Non-required parameters
     azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
     runOnce: false
@@ -203,6 +204,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     "cleanupPreference": {
       "value": "Always"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "kind": {
       "value": "AzureCLI"
@@ -246,6 +250,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     // Non-required parameters
     azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'AzurePowerShell'
     lock: 'CanNotDelete'
     retentionInterval: 'P1D'
@@ -281,6 +286,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     "cleanupPreference": {
       "value": "Always"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "kind": {
       "value": "AzurePowerShell"

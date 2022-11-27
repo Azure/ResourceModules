@@ -182,6 +182,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
@@ -260,6 +261,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at the management group scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "managementGroupId": {
       "value": "<managementGroupId>"
     },
@@ -319,6 +323,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     }
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     parameters: {
       effect: {
         allowedValues: [
@@ -364,6 +369,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parameters": {
       "value": {
         "effect": {
@@ -426,6 +434,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy definition is deployed at subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
     }
@@ -504,6 +513,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at subscription scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "metadata": {
       "value": {
         "category": "Security"
@@ -563,6 +575,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     }
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     parameters: {
       effect: {
         allowedValues: [
@@ -609,6 +622,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parameters": {
       "value": {
         "effect": {

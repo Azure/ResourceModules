@@ -132,6 +132,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rtrg'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: false
     resourceGroupName: '<resourceGroupName>'
     tags: {
@@ -154,6 +155,9 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "onlyUpdate": {
       "value": false
     },

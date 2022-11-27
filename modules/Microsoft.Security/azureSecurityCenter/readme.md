@@ -120,6 +120,8 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
   params: {
     // Required parameters
     workspaceId: '<workspaceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     securityContactProperties: {
       alertNotifications: 'Off'
       alertsToAdmins: 'Off'
@@ -145,6 +147,10 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
     // Required parameters
     "workspaceId": {
       "value": "<workspaceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "securityContactProperties": {
       "value": {

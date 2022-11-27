@@ -82,6 +82,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
     contactEmails: [
       'dummy@contoso.com'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     thresholds: [
       50
       75
@@ -118,6 +119,9 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
         "dummy@contoso.com"
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "thresholds": {
       "value": [
         50,
@@ -151,6 +155,7 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
     contactEmails: [
       'dummy@contoso.com'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -179,6 +184,9 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       "value": [
         "dummy@contoso.com"
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

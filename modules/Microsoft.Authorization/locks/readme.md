@@ -67,6 +67,7 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
     // Required parameters
     level: 'CanNotDelete'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     resourceGroupName: '<resourceGroupName>'
     subscriptionId: '<subscriptionId>'
   }
@@ -90,6 +91,9 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     },

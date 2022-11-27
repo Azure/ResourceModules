@@ -204,6 +204,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       '<id>'
     ]
     description: 'Test Custom Role Definition Standard (management group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
@@ -244,6 +245,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     "description": {
       "value": "Test Custom Role Definition Standard (management group scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
@@ -275,6 +279,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -301,6 +306,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -333,6 +341,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
     description: 'Test Custom Role Definition Standard (resource group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
@@ -381,6 +390,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     "description": {
       "value": "Test Custom Role Definition Standard (resource group scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
@@ -417,6 +429,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -443,6 +456,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -475,6 +491,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
     description: 'Test Custom Role Definition Standard (subscription scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
       'Microsoft.Compute/images/delete'
       'Microsoft.Compute/images/write'
@@ -523,6 +540,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
     "description": {
       "value": "Test Custom Role Definition Standard (subscription scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "notActions": {
       "value": [
         "Microsoft.Compute/images/delete",
@@ -559,6 +579,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
       'Microsoft.Compute/galleries/images/read'
       'Microsoft.Compute/galleries/read'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -586,6 +607,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         "Microsoft.Compute/galleries/images/read",
         "Microsoft.Compute/galleries/read"
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "subscriptionId": {
       "value": "<subscriptionId>"

@@ -260,6 +260,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
     // Required parameters
     name: '<<namePrefix>>iplscom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -307,6 +308,9 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
       "value": "<<namePrefix>>iplscom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -356,7 +360,10 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-iplsmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>iplsmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -373,8 +380,13 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>iplsmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

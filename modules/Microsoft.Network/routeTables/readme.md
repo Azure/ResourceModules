@@ -261,6 +261,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nrtcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -302,6 +303,9 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
       "value": "<<namePrefix>>nrtcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -345,7 +349,10 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nrtmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nrtmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -362,8 +369,13 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nrtmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

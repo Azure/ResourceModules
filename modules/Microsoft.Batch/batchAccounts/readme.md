@@ -263,6 +263,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
@@ -327,6 +328,9 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -387,6 +391,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
@@ -433,6 +438,9 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "poolAllocationMode": {
       "value": "BatchService"
@@ -481,6 +489,8 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>bbamin001'
     storageAccountId: '<storageAccountId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -503,6 +513,10 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "storageAccountId": {
       "value": "<storageAccountId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

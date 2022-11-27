@@ -110,6 +110,7 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
     // Required parameters
     name: '<<namePrefix>>nagwafpcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
       managedRuleSets: [
         {
@@ -150,6 +151,9 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
       "value": "<<namePrefix>>nagwafpcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "managedRules": {
       "value": {
         "managedRuleSets": [

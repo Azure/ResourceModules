@@ -214,6 +214,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         vpnConnectionProtocolType: 'IKEv2'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     natRules: [
       {
@@ -278,6 +279,9 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -320,6 +324,8 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nvgmin001'
     virtualHubResourceId: '<virtualHubResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -342,6 +348,10 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

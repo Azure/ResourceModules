@@ -171,6 +171,7 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>hbhbcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -202,6 +203,9 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
       "value": "<<namePrefix>>hbhbcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -233,7 +237,10 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
 module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hbhbmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>hbhbmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -250,8 +257,13 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>hbhbmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

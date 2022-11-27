@@ -182,6 +182,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     connectionApi: {
       id: '<id>'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -220,6 +221,9 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
       "value": {
         "id": "<id>"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"

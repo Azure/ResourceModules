@@ -196,6 +196,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
     displayName: '[Display Name] Policy Assignment at the management group scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforcementMode: 'DoNotEnforce'
     identity: 'SystemAssigned'
     location: '<location>'
@@ -252,6 +253,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     },
     "displayName": {
       "value": "[Display Name] Policy Assignment at the management group scope"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enforcementMode": {
       "value": "DoNotEnforce"
@@ -318,6 +322,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     // Required parameters
     name: '<<namePrefix>>apamgmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -340,6 +346,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -364,6 +374,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
     displayName: '[Display Name] Policy Assignment at the resource group scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforcementMode: 'DoNotEnforce'
     identity: 'UserAssigned'
     location: '<location>'
@@ -422,6 +433,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     },
     "displayName": {
       "value": "[Display Name] Policy Assignment at the resource group scope"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enforcementMode": {
       "value": "DoNotEnforce"
@@ -495,6 +509,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     name: '<<namePrefix>>apargmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -520,6 +535,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "subscriptionId": {
       "value": "<subscriptionId>"
     }
@@ -546,6 +564,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
     displayName: '[Display Name] Policy Assignment at the subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforcementMode: 'DoNotEnforce'
     identity: 'UserAssigned'
     location: '<location>'
@@ -603,6 +622,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     },
     "displayName": {
       "value": "[Display Name] Policy Assignment at the subscription scope"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enforcementMode": {
       "value": "DoNotEnforce"
@@ -673,6 +695,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     name: '<<namePrefix>>apasubmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -698,6 +721,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "subscriptionId": {
       "value": "<subscriptionId>"
     }

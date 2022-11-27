@@ -416,6 +416,7 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       '<actionGroupResourceId>'
     ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -469,6 +470,9 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
     },
     "alertCriteriaType": {
       "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [

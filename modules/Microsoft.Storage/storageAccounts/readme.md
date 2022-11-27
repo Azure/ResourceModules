@@ -434,6 +434,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fileServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -613,6 +614,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "fileServices": {
       "value": {
         "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
@@ -776,6 +780,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -836,6 +841,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -884,6 +892,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>ssamin001'
     // Non-required parameters
     allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -907,6 +916,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -934,6 +946,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fileServices: {
       shares: [
         {
@@ -998,6 +1011,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "fileServices": {
       "value": {
         "shares": [
@@ -1060,6 +1076,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>ssav1001'
     // Non-required parameters
     allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     storageAccountKind: 'Storage'
   }
 }
@@ -1084,6 +1101,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "storageAccountKind": {
       "value": "Storage"

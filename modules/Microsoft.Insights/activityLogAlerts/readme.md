@@ -438,6 +438,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         actionGroupId: '<actionGroupId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -493,6 +494,9 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
           "actionGroupId": "<actionGroupId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [

@@ -281,6 +281,7 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -330,6 +331,9 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -364,6 +368,8 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     // Required parameters
     name: '<name>'
     relativeName: '<relativeName>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -386,6 +392,10 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     },
     "relativeName": {
       "value": "<relativeName>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

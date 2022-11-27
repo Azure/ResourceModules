@@ -178,6 +178,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>rrgcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -212,6 +213,9 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
       "value": "<<namePrefix>>rrgcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -248,7 +252,10 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rrgmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>rrgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -265,8 +272,13 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>rrgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

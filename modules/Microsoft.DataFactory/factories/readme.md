@@ -377,6 +377,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitConfigureLater: true
     integrationRuntimes: [
       {
@@ -475,6 +476,9 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "gitConfigureLater": {
       "value": true
     },
@@ -563,7 +567,10 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-dffmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>dffmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -580,8 +587,13 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>dffmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

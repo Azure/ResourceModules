@@ -170,6 +170,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>ndppcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -201,6 +202,9 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
       "value": "<<namePrefix>>ndppcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -232,7 +236,10 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ndppmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>ndppmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -249,8 +256,13 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>ndppmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

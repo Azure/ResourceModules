@@ -189,6 +189,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -243,6 +244,9 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     },
@@ -283,7 +287,10 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
 module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-dvwmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>dvwmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -300,8 +307,13 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>dvwmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

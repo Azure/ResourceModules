@@ -208,6 +208,8 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
     name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -252,6 +254,10 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -292,6 +298,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     resourceGroupName: '<resourceGroupName>'
   }
 }
@@ -339,6 +346,9 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "Managed by Lighthouse"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     }

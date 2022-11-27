@@ -161,6 +161,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nfpcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ruleCollectionGroups: [
       {
         name: '<<namePrefix>>-rule-001'
@@ -220,6 +221,9 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
       "value": "<<namePrefix>>nfpcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ruleCollectionGroups": {
       "value": [
         {
@@ -277,7 +281,10 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nfpmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nfpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -294,8 +301,13 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nfpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

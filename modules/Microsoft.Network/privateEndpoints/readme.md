@@ -314,6 +314,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       }
     ]
     customNetworkInterfaceName: '<<namePrefix>>npecom001nic'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipConfigurations: [
       {
         name: 'myIPconfig'
@@ -381,6 +382,9 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     "customNetworkInterfaceName": {
       "value": "<<namePrefix>>npecom001nic"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipConfigurations": {
       "value": [
         {
@@ -438,6 +442,8 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     name: '<<namePrefix>>npemin001'
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -468,6 +474,10 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

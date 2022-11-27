@@ -358,6 +358,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     diagnosticSettingsName: 'redisdiagnostics'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
@@ -422,6 +423,9 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enableNonSslPort": {
       "value": true
     },
@@ -481,7 +485,10 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-crmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>crmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -498,8 +505,13 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>crmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

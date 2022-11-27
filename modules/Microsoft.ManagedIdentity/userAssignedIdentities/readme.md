@@ -163,6 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-miuaicom'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     name: '<<namePrefix>>miuaicom001'
     roleAssignments: [
@@ -194,6 +195,9 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },

@@ -418,6 +418,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
         }
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -514,6 +515,9 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -548,7 +552,10 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-dpbvmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>dpbvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -565,8 +572,13 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>dpbvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

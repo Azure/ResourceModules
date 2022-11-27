@@ -200,6 +200,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -257,6 +258,9 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -299,6 +303,8 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     name: '<<namePrefix>>nercmin001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -327,6 +333,10 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     },
     "serviceProviderName": {
       "value": "Equinix"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

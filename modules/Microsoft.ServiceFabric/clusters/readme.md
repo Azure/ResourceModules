@@ -276,6 +276,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -327,6 +328,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
         "x509StoreName": "My"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -442,6 +446,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       storageAccountName: '<storageAccountName>'
       tableEndpoint: '<tableEndpoint>'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fabricSettings: [
       {
         name: 'Security'
@@ -646,6 +651,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "tableEndpoint": "<tableEndpoint>"
       }
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "fabricSettings": {
       "value": [
         {
@@ -769,6 +777,8 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     reliabilityLevel: 'None'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -813,6 +823,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "reliabilityLevel": {
       "value": "None"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

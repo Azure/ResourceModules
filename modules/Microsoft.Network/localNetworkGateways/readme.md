@@ -180,6 +180,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     localGatewayPublicIpAddress: '8.8.8.8'
     name: '<<namePrefix>>nlngcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
     lock: 'CanNotDelete'
@@ -221,6 +222,9 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": "<<namePrefix>>nlngcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "localAsn": {
       "value": "65123"
     },
@@ -264,6 +268,8 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
     name: '<<namePrefix>>nlngmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -291,6 +297,10 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     },
     "name": {
       "value": "<<namePrefix>>nlngmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

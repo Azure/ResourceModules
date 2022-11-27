@@ -299,6 +299,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableHttp2: true
     frontendIPConfigurations: [
       {
@@ -654,6 +655,9 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enableHttp2": {
       "value": true

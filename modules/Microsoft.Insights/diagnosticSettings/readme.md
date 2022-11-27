@@ -67,6 +67,7 @@ module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     name: '<<namePrefix>>idscom001'
   }
 }
@@ -98,6 +99,9 @@ module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep'
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "name": {
       "value": "<<namePrefix>>idscom001"

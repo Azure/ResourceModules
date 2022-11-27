@@ -211,6 +211,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
     // Required parameters
     name: '<<namePrefix>>mmccom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     extensionProperties: {}
     lock: 'CanNotDelete'
     maintenanceWindow: {
@@ -256,6 +257,9 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
       "value": "<<namePrefix>>mmccom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "extensionProperties": {
       "value": {}
     },
@@ -311,7 +315,10 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
 module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmcmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>mmcmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -328,8 +335,13 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>mmcmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

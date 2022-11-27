@@ -335,6 +335,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         publicIPAddressResourceId: '<publicIPAddressResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -366,6 +367,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
           "publicIPAddressResourceId": "<publicIPAddressResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -446,6 +450,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     networkRuleCollections: [
       {
@@ -586,6 +591,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -659,6 +667,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     name: '<<namePrefix>>nafcstpip001'
     vNetId: '<vNetId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -707,6 +716,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       "value": "<vNetId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -753,6 +765,8 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nafmin001'
     vNetId: '<vNetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -775,6 +789,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     },
     "vNetId": {
       "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

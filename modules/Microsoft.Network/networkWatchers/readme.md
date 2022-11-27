@@ -220,6 +220,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         workspaceResourceId: '<workspaceResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     flowLogs: [
       {
         enabled: false
@@ -318,6 +319,9 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "flowLogs": {
       "value": [
         {
@@ -370,6 +374,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nnwmin'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
   }
 }
@@ -387,6 +392,9 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     }

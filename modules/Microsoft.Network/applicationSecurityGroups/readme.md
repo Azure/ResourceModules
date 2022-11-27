@@ -170,6 +170,7 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
     // Required parameters
     name: '<<namePrefix>>nasgcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -201,6 +202,9 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
       "value": "<<namePrefix>>nasgcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },

@@ -210,6 +210,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'Remote Applications 1'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -287,6 +288,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "friendlyName": {
       "value": "Remote Applications 1"
     },
@@ -328,6 +332,8 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
     name: '<<namePrefix>>dvagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -353,6 +359,10 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     },
     "name": {
       "value": "<<namePrefix>>dvagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

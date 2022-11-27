@@ -385,6 +385,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.1.4'
       '10.0.1.5'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -489,6 +490,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         "10.0.1.5"
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -574,6 +578,8 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.0.0/16'
     ]
     name: '<<namePrefix>>nvnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -598,6 +604,10 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>nvnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -622,6 +632,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     ]
     name: '<<namePrefix>>nvnpeer001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subnets: [
       {
         addressPrefix: '10.0.0.0/26'
@@ -667,6 +678,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       "value": "<<namePrefix>>nvnpeer001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "subnets": {
       "value": [
         {

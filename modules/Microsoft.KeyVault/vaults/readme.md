@@ -429,6 +429,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
@@ -573,6 +574,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enablePurgeProtection": {
       "value": false
     },
@@ -692,6 +696,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvmin002'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
   }
 }
@@ -714,6 +719,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<<namePrefix>>kvvmin002"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enablePurgeProtection": {
       "value": false
     }
@@ -737,6 +745,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvpe001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     privateEndpoints: [
       {
@@ -774,6 +783,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<<namePrefix>>kvvpe001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enablePurgeProtection": {
       "value": false
     },

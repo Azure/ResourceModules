@@ -237,6 +237,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     name: '<<namePrefix>>cicgcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
       {
         port: 80
@@ -321,6 +322,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "<<namePrefix>>cicgcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipAddressPorts": {
       "value": [
         {
@@ -384,6 +388,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     name: '<<namePrefix>>cicgmin001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
       {
         port: 443
@@ -433,6 +438,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": "<<namePrefix>>cicgmin001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipAddressPorts": {
       "value": [
         {

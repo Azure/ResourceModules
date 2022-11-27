@@ -185,6 +185,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -295,6 +296,9 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -392,7 +396,10 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nnsgmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nnsgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -409,8 +416,13 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nnsgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

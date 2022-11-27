@@ -95,6 +95,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -144,6 +145,9 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
       "value": "GitRepository"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "gitRepository": {
       "value": {
         "repositoryRef": {
@@ -189,6 +193,8 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     name: '<<namePrefix>>kcfcmin001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitRepository: {
       repositoryRef: {
         branch: 'main'
@@ -226,6 +232,10 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
     },
     "sourceKind": {
       "value": "GitRepository"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "gitRepository": {
       "value": {

@@ -380,6 +380,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     clientCertEnabled: false
     disableAadAuth: false
     disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
     networkAcls: {
@@ -461,6 +462,9 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     },
     "disableLocalAuth": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
       "value": "<location>"
@@ -546,7 +550,10 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srswpsmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-srswpsmin-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -563,8 +570,13 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-srswpsmin-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -586,6 +598,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-srswpspe-001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -619,6 +632,9 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": "<<namePrefix>>-srswpspe-001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {

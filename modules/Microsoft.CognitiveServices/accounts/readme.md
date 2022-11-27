@@ -445,6 +445,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Deny'
@@ -527,6 +528,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -602,6 +606,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     kind: 'SpeechServices'
     name: '<<namePrefix>>csaencr001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryption: {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
@@ -640,6 +645,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "<<namePrefix>>csaencr001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryption": {
       "value": {
         "keySource": "Microsoft.KeyVault",
@@ -682,6 +690,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     // Required parameters
     kind: 'SpeechServices'
     name: '<<namePrefix>>csamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -704,6 +714,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>csamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -727,6 +741,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     name: '<<namePrefix>>csaspeech001'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>speechdomain'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -769,6 +784,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>speechdomain"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [

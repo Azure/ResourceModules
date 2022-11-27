@@ -189,6 +189,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     publicIPAllocationMethod: 'Static'
     roleAssignments: [
@@ -242,6 +243,9 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -286,7 +290,10 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-npiamin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>npiamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -303,8 +310,13 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>npiamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -177,6 +177,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -218,6 +219,9 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
     "disableVpnEncryption": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -252,7 +256,10 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nvwmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nvwmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -269,8 +276,13 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nvwmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

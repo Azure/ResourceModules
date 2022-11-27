@@ -230,6 +230,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     assignmentScopeValidation: 'Default'
     description: 'My description'
     displayName: '[Display Name] policy exempt (management group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     managementGroupId: '<managementGroupId>'
@@ -285,6 +286,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     "displayName": {
       "value": "[Display Name] policy exempt (management group scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "exemptionCategory": {
       "value": "Waiver"
     },
@@ -339,6 +343,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>apemgmin001'
     policyAssignmentId: '<policyAssignmentId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -361,6 +367,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -386,6 +396,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     assignmentScopeValidation: 'Default'
     description: 'My description'
     displayName: '[Display Name] policy exempt (resource group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
@@ -441,6 +452,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "displayName": {
       "value": "[Display Name] policy exempt (resource group scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "exemptionCategory": {
       "value": "Waiver"
@@ -500,6 +514,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apergmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     resourceGroupName: '<resourceGroupName>'
     subscriptionId: '<subscriptionId>'
   }
@@ -526,6 +541,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     },
@@ -556,6 +574,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     assignmentScopeValidation: 'Default'
     description: 'My description'
     displayName: '[Display Name] policy exempt (subscription scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
@@ -610,6 +629,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "displayName": {
       "value": "[Display Name] policy exempt (subscription scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "exemptionCategory": {
       "value": "Waiver"
@@ -666,6 +688,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apesubmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -691,6 +714,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "subscriptionId": {
       "value": "<subscriptionId>"
     }

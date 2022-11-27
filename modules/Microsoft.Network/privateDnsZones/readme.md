@@ -237,6 +237,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ttl: 3600
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     mx: [
       {
@@ -439,6 +440,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -598,7 +602,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-npdzmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>npdzmin001.com'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -615,8 +622,13 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>npdzmin001.com"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

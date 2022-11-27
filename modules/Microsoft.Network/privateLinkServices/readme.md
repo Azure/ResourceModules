@@ -451,6 +451,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
         '*'
       ]
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableProxyProtocol: true
     fqdns: [
       'nplscom.plsfqdn01.azure.privatelinkservice'
@@ -514,6 +515,9 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
           "*"
         ]
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enableProxyProtocol": {
       "value": true
@@ -585,6 +589,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>nplsmin001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipConfigurations: [
       {
         name: 'nplsmin01'
@@ -621,6 +626,9 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
       "value": "<<namePrefix>>nplsmin001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipConfigurations": {
       "value": [
         {

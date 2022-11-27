@@ -274,6 +274,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       }
     ]
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforceCertificateNameCheck: 'Disabled'
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -404,6 +405,9 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       ]
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enforceCertificateNameCheck": {
       "value": "Disabled"
     },
@@ -522,6 +526,8 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         }
       }
     ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -630,6 +636,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           }
         }
       ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

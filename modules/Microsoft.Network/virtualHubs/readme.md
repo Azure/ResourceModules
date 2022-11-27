@@ -130,6 +130,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     name: '<<namePrefix>>-nvhcom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubRouteTables: [
       {
         name: 'routeTable1'
@@ -184,6 +185,9 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "<virtualWanId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "hubRouteTables": {
       "value": [
         {
@@ -238,6 +242,8 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     addressPrefix: '10.0.0.0/16'
     name: '<<namePrefix>>-nvhmin'
     virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -263,6 +269,10 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

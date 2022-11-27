@@ -364,6 +364,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       sid: '<sid>'
       tenantId: '<tenantId>'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -393,6 +394,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         "sid": "<sid>",
         "tenantId": "<tenantId>"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -442,6 +446,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         skuTier: 'GeneralPurpose'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallRules: [
       {
         endIpAddress: '0.0.0.0'
@@ -556,6 +561,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "firewallRules": {
       "value": [
         {
@@ -655,6 +663,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -692,6 +701,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "administratorLoginPassword": {
       "value": "<administratorLoginPassword>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [

@@ -176,7 +176,10 @@ The following module usage examples are retrieved from the content of the files 
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nanaamin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nanaamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -193,8 +196,13 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nanaamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -284,6 +292,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
         volumes: []
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -392,6 +401,9 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
           "volumes": []
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -515,6 +527,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
         volumes: []
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -632,6 +645,9 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
           "volumes": []
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [

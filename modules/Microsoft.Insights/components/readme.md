@@ -176,6 +176,7 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     name: '<<namePrefix>>iccom001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -209,6 +210,9 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
       "value": "<workspaceResourceId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -240,6 +244,8 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>icmin001'
     workspaceResourceId: '<workspaceResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -262,6 +268,10 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

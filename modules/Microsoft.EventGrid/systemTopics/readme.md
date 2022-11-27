@@ -301,6 +301,7 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -353,6 +354,9 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -388,6 +392,8 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     name: '<<namePrefix>>egstmin001'
     source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -413,6 +419,10 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     },
     "topicType": {
       "value": "Microsoft.Storage.StorageAccounts"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

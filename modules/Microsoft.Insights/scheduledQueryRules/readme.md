@@ -214,6 +214,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     // Non-required parameters
     alertDescription: 'My sample Alert'
     autoMitigate: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     evaluationFrequency: 'PT5M'
     queryTimeRange: 'PT5M'
     roleAssignments: [
@@ -287,6 +288,9 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     },
     "autoMitigate": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "evaluationFrequency": {
       "value": "PT5M"

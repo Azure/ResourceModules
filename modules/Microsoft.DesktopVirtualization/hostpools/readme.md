@@ -287,6 +287,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hostpoolDescription: 'My first AVD Host Pool'
     hostpoolFriendlyName: 'AVDv2'
     hostpoolType: 'Pooled'
@@ -359,6 +360,9 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "hostpoolDescription": {
       "value": "My first AVD Host Pool"

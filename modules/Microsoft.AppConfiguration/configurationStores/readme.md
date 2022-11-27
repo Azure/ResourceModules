@@ -318,6 +318,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     keyValues: [
       {
@@ -389,6 +390,9 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     "disableLocalAuth": {
       "value": false
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enablePurgeProtection": {
       "value": false
     },
@@ -447,7 +451,10 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-accmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>accmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -464,8 +471,13 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>accmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -489,6 +501,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     // Non-required parameters
     createMode: 'Default'
     disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     privateEndpoints: [
       {
@@ -528,6 +541,9 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "disableLocalAuth": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enablePurgeProtection": {
       "value": false

@@ -352,6 +352,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     deviceProperties: {
       linkSpeedInMbps: 0
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     o365Policy: {
       breakOutCategories: {
@@ -431,6 +432,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       "value": {
         "linkSpeedInMbps": 0
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -517,6 +521,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddress: '1.2.3.4'
   }
 }
@@ -546,6 +551,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       "value": [
         "10.0.0.0/16"
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "ipAddress": {
       "value": "1.2.3.4"

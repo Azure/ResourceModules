@@ -241,6 +241,7 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     name: '<<namePrefix>>aaddscom001'
     pfxCertificate: '<pfxCertificate>'
@@ -292,6 +293,9 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
