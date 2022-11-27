@@ -19,6 +19,7 @@ BeforeAll {
     $allBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
     $bicepTestFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.test.bicep' }).Count
     $topLevelBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $allBicepFilesCount = $nestedBicepFilesCount + $allBicepDeployFilesCount + $bicepTestFilesCount
 
     # GitHub Workflows
     $moduleWorkflowFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'workflows') -Filter 'ms.*.yml' -File
@@ -51,12 +52,12 @@ Describe 'Test default behavior' -Tag 'Default' {
         ConvertTo-ARMTemplate -Path $rootPath -Verbose -RunSynchronous
     }
 
-    It 'All top-level [deploy.bicep] files are converted to [deploy.json]' {
+    It 'All [<topLevelBicepDeployFilesCount>] top-level [deploy.bicep] files are converted to [deploy.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
     }
 
-    It 'All [deploy.test.bicep] files are converted to [deploy.test.json]' {
+    It 'All [<bicepTestFilesCount>] [deploy.test.bicep] files are converted to [deploy.test.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.test.json' }).Count
         $deployJsonFilesCount | Should -Be $bicepTestFilesCount
     }
@@ -83,7 +84,7 @@ Describe 'Test default behavior' -Tag 'Default' {
         $metadataFound | Should -Be $false
     }
 
-    It 'All GitHub workflow files are updated' {
+    It 'All [<originalModuleWorkflowWithBicep>] GitHub workflow files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -97,7 +98,7 @@ Describe 'Test default behavior' -Tag 'Default' {
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
 
-    It 'All Azure DevOps pipeline files are changed' {
+    It 'All [<originalModulePipelinesWithBicep>] Azure DevOps pipeline files are changed' {
         $modulePipelineFileUpdated = 0
 
         foreach ($pipelineFile in $adoModulePipelineFiles) {
@@ -118,12 +119,12 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         ConvertTo-ARMTemplate -Path $rootPath -ConvertChildren -Verbose -RunSynchronous
     }
 
-    It 'All [deploy.bicep] files are converted to [deploy.json]' {
+    It 'All [<allBicepDeployFilesCount>] [deploy.bicep] files are converted to [deploy.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $allBicepDeployFilesCount
     }
 
-    It 'All [deploy.test.bicep] files are converted to [deploy.test.json]' {
+    It 'All [<bicepTestFilesCount>] [deploy.test.bicep] files are converted to [deploy.test.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.test.json' }).Count
         $deployJsonFilesCount | Should -Be $bicepTestFilesCount
     }
@@ -150,7 +151,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         $metadataFound | Should -Be $false
     }
 
-    It 'All GitHub workflow files are updated' {
+    It 'All [<originalModuleWorkflowWithBicep>] GitHub workflow files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -164,7 +165,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
 
-    It 'All Azure DevOps pipeline files are changed' {
+    It 'All [<originalModulePipelinesWithBicep>] Azure DevOps pipeline files are changed' {
         $modulePipelineFileUpdated = 0
 
         foreach ($pipelineFile in $adoModulePipelineFiles) {
@@ -185,12 +186,12 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
         ConvertTo-ARMTemplate -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose -RunSynchronous
     }
 
-    It 'All deploy.bicep files are converted to deploy.json' {
+    It 'All [<allBicepDeployFilesCount>] deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
     }
 
-    It 'All bicep files are still there' {
+    It 'All [<allBicepFilesCount>] bicep files are still there' {
         $actualBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
         $actualBicepFilesCount | Should -Be ($nestedBicepFilesCount + $allBicepDeployFilesCount + $bicepTestFilesCount)
     }
