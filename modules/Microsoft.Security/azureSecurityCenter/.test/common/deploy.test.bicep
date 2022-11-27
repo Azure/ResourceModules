@@ -42,6 +42,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     scope: '/subscriptions/${subscription().subscriptionId}'
     workspaceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
     securityContactProperties: {
