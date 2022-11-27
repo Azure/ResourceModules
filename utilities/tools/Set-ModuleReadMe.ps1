@@ -823,7 +823,8 @@ function ConvertTo-FormattedBicep {
     # [2/4] Remove any JSON specific formatting
     $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
     if ($templateParameterObject -ne '{}') {
-        $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+        $contentInBicepFormat = $templateParameterObject -replace "'", "\'" # Update any [ "field": "[[concat('tags[', parameters('tagName'), ']')]"] to [ "field": "[[concat(\'tags[\', parameters(\'tagName\'), \']\')]"]
+        $contentInBicepFormat = $contentInBicepFormat -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
         $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
         $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
         $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
@@ -1126,7 +1127,7 @@ function Set-DeploymentExamplesSection {
                         #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
                         $value = (($jsonParameterContentArray[($index - 1)] -split ':')[0] -replace '"').Trim()
                         $jsonParameterContentArray[$index] = ('{0}: "<{1}>"' -f $matches[1], $value).TrimEnd()
-                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"') {
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"' -and $jsonParameterContentArray[$index - 1] -like '*"value"*') {
                         # e.g.
                         # "policyDefinitionReferenceIds": {
                         #  "value": [
