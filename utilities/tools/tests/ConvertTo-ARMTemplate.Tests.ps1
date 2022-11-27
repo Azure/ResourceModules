@@ -32,18 +32,6 @@ BeforeAll {
             }
         }
     }
-
-    # Azure DevOps pipelines
-    $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $rootPath '.azuredevops' 'modulePipelines') -Filter 'ms.*.yml' -File
-    $originalModulePipelinesWithBicep = 0
-    foreach ($adoModulePipelineFile in $adoModulePipelineFiles) {
-        foreach ($line in (Get-Content -Path $adoModulePipelineFile.FullName)) {
-            if ($line -like '*.bicep*') {
-                $originalModulePipelinesWithBicep += 1
-                break
-            }
-        }
-    }
 }
 
 Describe 'Test default behavior' -Tag 'Default' {
@@ -96,20 +84,6 @@ Describe 'Test default behavior' -Tag 'Default' {
             }
         }
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
-    }
-
-    It 'All [<originalModulePipelinesWithBicep>] Azure DevOps pipeline files are changed' {
-        $modulePipelineFileUpdated = 0
-
-        foreach ($pipelineFile in $adoModulePipelineFiles) {
-            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line -like '*templateFilePath:*.json*') {
-                    $modulePipelineFileUpdated += 1
-                    break
-                }
-            }
-        }
-        $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
     }
 }
 
@@ -164,20 +138,6 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         }
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
-
-    It 'All [<originalModulePipelinesWithBicep>] Azure DevOps pipeline files are changed' {
-        $modulePipelineFileUpdated = 0
-
-        foreach ($pipelineFile in $adoModulePipelineFiles) {
-            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line -like '*templateFilePath:*.json*') {
-                    $modulePipelineFileUpdated += 1
-                    break
-                }
-            }
-        }
-        $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
-    }
 }
 
 Describe 'Test flags that skip logic' -Tag 'Skip' {
@@ -224,19 +184,5 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
             }
         }
         $moduleWorkflowFilesUpdated | Should -Be 0
-    }
-
-    It 'No Azure DevOps pipeline files are changed' {
-        $modulePipelineFileUpdated = 0
-
-        foreach ($pipelineFile in $adoModulePipelineFiles) {
-            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line -like '*templateFilePath:*.json*') {
-                    $modulePipelineFileUpdated += 1
-                    break
-                }
-            }
-        }
-        $modulePipelineFileUpdated | Should -Be 0
     }
 }
