@@ -299,6 +299,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     policies: [
       {
@@ -360,6 +361,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       "value": "<<namePrefix>>-az-amorg-x-001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -476,6 +480,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     identityProviders: [
       {
         name: 'aadProvider'
@@ -645,6 +650,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "identityProviders": {
       "value": [
         {
@@ -758,6 +766,8 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     name: '<<namePrefix>>apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -783,6 +793,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     },
     "publisherName": {
       "value": "<<namePrefix>>-az-amorg-x-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
