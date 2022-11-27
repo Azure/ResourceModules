@@ -59,6 +59,9 @@ Optional. Skip removal of bicep files and folders
 .PARAMETER SkipPipelineUpdate
 Optional. Skip replacing .bicep with .json in workflow files
 
+.PARAMETER RemoveExistingTemplates
+Optional. Remove any currently existing template
+
 .EXAMPLE
 . .\utilities\tools\ConvertTo-ARMTemplate.ps1
 
@@ -85,7 +88,10 @@ function ConvertTo-ARMTemplate {
         [switch] $SkipBicepCleanUp,
 
         [Parameter(Mandatory = $false)]
-        [switch] $SkipPipelineUpdate
+        [switch] $SkipPipelineUpdate,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $RemoveExistingTemplates
     )
 
     $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
@@ -101,25 +107,31 @@ function ConvertTo-ARMTemplate {
     } else {
         $BicepFilesToConvert = $allAvailableBicepFilesToConvert
     }
-    #region Remove existing deploy.json files
-    Write-Verbose 'Remove existing deploy.json files'
 
-    if (Test-Path -Path (Join-Path $modulesFolderPath 'deploy.bicep')) {
-        $JsonFilesToRemove = Get-ChildItem -Path $modulesFolderPath -Filter 'deploy.json' -Recurse -Force -File
-        Write-Verbose "Remove existing deploy.json files - Remove [$($JsonFilesToRemove.count)] file(s)"
-        if ($PSCmdlet.ShouldProcess("[$($JsonFilesToRemove.count)] deploy.json files(s) in path [$modulesFolderPath]", 'Remove-Item')) {
-            $JsonFilesToRemove | Remove-Item -Force
+    #region Remove existing deploy.json files
+    if ($RemoveExistingTemplates) {
+        $JsonFilesToRemove = (Get-ChildItem -Path $modulesFolderPath -Include @('deploy.json', 'deploy.test.json') -Recurse -Force -File).FullName
+        Write-Verbose "Remove existing [deploy.json / deploy.test.json] files - Remove [$($JsonFilesToRemove.count)] file(s)"
+        foreach ($jsonFileToRemove in $JsonFilesToRemove) {
+            if ($PSCmdlet.ShouldProcess(('JSON File in Path [Microsoft.{0}]' -f (($jsonFileToRemove -split 'Microsoft\.')[1] )), 'Remove')) {
+                $null = Remove-Item -Path $jsonFileToRemove -Force
+            }
+            Write-Verbose 'Remove existing deploy.json files - Done'
         }
-        Write-Verbose 'Remove existing deploy.json files - Done'
     }
     #endregion
 
     #region Convert bicep files to json
     Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
-    if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$modulesFolderPath]", 'az bicep build')) {
-        # parallelism is not supported on GitHub runners
-        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
-            az bicep build --file $_
+    # parallelism is not supported on GitHub runners
+    # $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+    $BicepFilesToConvert | ForEach-Object {
+        if (-not (Test-Path $_)) {
+            if ($PSCmdlet.ShouldProcess(('Template [Microsoft.{0}]' -f (($_ -split 'Microsoft\.')[1] )), 'az bicep build')) {
+                az bicep build --file $_
+            }
+        } else {
+            Write-Verbose ('Template [Microsoft.{0}] already existing' -f (($_ -split 'Microsoft\.')[1] ))
         }
     }
     Write-Verbose 'Convert bicep files to json - Done'
@@ -129,27 +141,21 @@ function ConvertTo-ARMTemplate {
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
         # parallelism is not supported on GitHub runners
-        #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        $BicepFilesToConvert | ForEach-Object {
+        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+            $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
 
-            $moduleFolderPath = $_.Directory.FullName
-            $JSONFilePath = Join-Path $moduleFolderPath 'deploy.json'
-            if (Test-Path -Path $JSONFilePath) {
-                $JSONFileContent = Get-Content -Path $JSONFilePath
-                $JSONObj = $JSONFileContent | ConvertFrom-Json
-                if ($PSCmdlet.ShouldProcess("Metadata from file content [$JSONFilePath]", 'Remove')) {
-                    Remove-JSONMetadata -TemplateObject $JSONObj
-                }
-                $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
-                if ($PSCmdlet.ShouldProcess("Content of file [$JSONFilePath]", 'Update')) {
-                    Set-Content -Value $JSONFileContent -Path $JSONFilePath
-                }
-            } else {
-                Write-Warning "Remove Bicep metadata from json - Skipped $JSONFilePath - File not found (deploy.json)"
+            $JSONFileContent = Get-Content -Path $JSONFilePath
+            $JSONObj = $JSONFileContent | ConvertFrom-Json
+            if ($PSCmdlet.ShouldProcess("Metadata from file content [$JSONFilePath]", 'Remove')) {
+                Remove-JSONMetadata -TemplateObject $JSONObj
+            }
+            $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
+            if ($PSCmdlet.ShouldProcess("Content of file [$JSONFilePath]", 'Update')) {
+                Set-Content -Value $JSONFileContent -Path $JSONFilePath
             }
         }
-        Write-Verbose 'Remove Bicep metadata from json - Done'
     }
+    Write-Verbose 'Remove Bicep metadata from json - Done'
     #endregion
 
     #region Remove bicep files and folders
