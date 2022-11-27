@@ -123,14 +123,14 @@ function ConvertTo-ARMTemplate {
 
     #region Convert bicep files to json
     Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
-    $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
-        $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
-        if (-not (Test-Path $expectedJSONFilePath)) {
-            if ($PSCmdlet.ShouldProcess(('Template [Microsoft.{0}]' -f (($_ -split 'Microsoft\.')[1] )), 'az bicep build')) {
+    if ($PSCmdlet.ShouldProcess(('Bicep [{0}] Templates' -f ($BicepFilesToConvert.count)), 'az bicep build')) {
+        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+            $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
+            if (-not (Test-Path $expectedJSONFilePath)) {
                 az bicep build --file $_
+            } else {
+                Write-Verbose "Template [$expectedJSONFilePath] already existing"
             }
-        } else {
-            Write-Verbose "Template [$expectedJSONFilePath] already existing"
         }
     }
     Write-Verbose 'Convert bicep files to json - Done'
@@ -139,16 +139,15 @@ function ConvertTo-ARMTemplate {
     #region Remove Bicep metadata from json
     if (-not $SkipMetadataCleanup) {
         Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
-        $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
-            $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
+        if ($PSCmdlet.ShouldProcess(('Metadata from [{0}] templates' -f ($BicepFilesToConvert.files)), 'Remove')) {
+            $BicepFilesToConvert | ForEach-Object -ThrottleLimit 4 -Parallel {
+                $jsonFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
 
-            $JSONFileContent = Get-Content -Path $JSONFilePath
-            $JSONObj = $JSONFileContent | ConvertFrom-Json
-            if ($PSCmdlet.ShouldProcess("Metadata from file content [$JSONFilePath]", 'Remove')) {
+                $JSONFileContent = Get-Content -Path $JSONFilePath
+                $JSONObj = $JSONFileContent | ConvertFrom-Json
                 Remove-JSONMetadata -TemplateObject $JSONObj
-            }
-            $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
-            if ($PSCmdlet.ShouldProcess("Content of file [$JSONFilePath]", 'Update')) {
+
+                $JSONFileContent = $JSONObj | ConvertTo-Json -Depth 100
                 Set-Content -Value $JSONFileContent -Path $JSONFilePath
             }
         }
