@@ -43,6 +43,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     displayName: 'azuremonitorlogs'
     name: 'azuremonitor'
     connectionApi: {
