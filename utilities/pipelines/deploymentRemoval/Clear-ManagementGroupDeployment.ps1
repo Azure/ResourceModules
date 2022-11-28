@@ -7,10 +7,13 @@ Bulk delete all deployments on the given management group scope
 Bulk delete all deployments on the given management group scope
 
 .PARAMETER ManagementGroupId
-Mandatory. The Resource ID of the Management Group to remove the deployments for.
+Mandatory. The Resource ID of the Management Group to remove the deployments from.
 
 .PARAMETER DeploymentStatusToExclude
 Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
+
+.PARAMETER maxDeploymentRetentionInDays
+Optional. The time to keep deployments with a status to exclude. In other words, if a deployment is in a status to exclude, but older than the threshold, it will be deleted.
 
 .EXAMPLE
 Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId'
@@ -31,13 +34,17 @@ function Clear-ManagementGroupDeployment {
         [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $false)]
-        [string[]] $DeploymentStatusToExclude = @('running', 'failed')
+        [string[]] $DeploymentStatusToExclude = @('running', 'failed'),
+
+        [Parameter(Mandatory = $false)]
+        [int] $maxDeploymentRetentionInDays = 14
     )
 
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 # Enables web reponse
+    $deploymentThreshold = (Get-Date).AddDays(-1 * $maxDeploymentRetentionInDays)
 
     # Load used functions
-    . (Join-Path $PSScriptRoot 'helper' 'Split-Array.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
 
     $getInputObject = @{
         Method  = 'GET'
@@ -52,7 +59,15 @@ function Clear-ManagementGroupDeployment {
         throw ('Fetching deployments failed with error [{0}]' -f ($reponse | Out-String))
     }
 
-    $relevantDeployments = $response.value | Where-Object { $_.properties.provisioningState -notin $DeploymentStatusToExclude }
+    Write-Verbose ('Found [{0}] deployments in management group [{1}]' -f $response.value.Count, $ManagementGroupId) -Verbose
+
+    $relevantDeployments = $response.value | Where-Object {
+        $_.properties.provisioningState -notin $DeploymentStatusToExclude -or
+        ([DateTime]$_.properties.timestamp) -lt $deploymentThreshold -and
+        $_.properties.provisioningState -ne 'running' # we should never delete 'running' deployments
+    }
+
+    Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}] or newer than [{2}] days ({3})' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/'), $maxDeploymentRetentionInDays, $deploymentThreshold.ToString('yyyy-MM-dd')) -Verbose
 
     if (-not $relevantDeployments) {
         Write-Verbose 'No deployments found' -Verbose
@@ -66,20 +81,22 @@ function Clear-ManagementGroupDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments of management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId)
+    Write-Verbose ('Triggering the removal of [{0}] deployments from management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId) -Verbose
 
-    $failedRemovals = 0
-    $successfulRemovals = 0
     foreach ($deployments in $relevantDeploymentChunks) {
 
         $requests = $deployments | ForEach-Object {
             @{ httpMethod            = 'DELETE'
-                name                 = (New-Guid).Guid
+                name                 = (New-Guid).Guid # Each batch request needs a unique ID
                 requestHeaderDetails = @{
                     commandName = 'HubsExtension.Microsoft.Resources/deployments.BulkDelete.execute'
                 }
                 url                  = '/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Resources/deployments/{1}?api-version=2019-08-01' -f $ManagementGroupId, $_.name
             }
+        }
+
+        if ($requests -is [hashtable]) {
+            $requests = , $requests
         }
 
         $removeInputObject = @{
@@ -94,15 +111,8 @@ function Clear-ManagementGroupDeployment {
             } | ConvertTo-Json -Depth 4
         }
         if ($PSCmdlet.ShouldProcess(('Removal of [{0}] deployments' -f $requests.Count), 'Request')) {
-            $response = Invoke-RestMethod @removeInputObject
-
-            $failedRemovals += ($response.responses | Where-Object { $_.httpStatusCode -notlike '20*' }  ).Count
-            $successfulRemovals += ($response.responses | Where-Object { $_.httpStatusCode -like '20*' }  ).Count
+            $null = Invoke-RestMethod @removeInputObject
         }
     }
-
-    Write-Verbose 'Outcome' -Verbose
-    Write-Verbose '=======' -Verbose
-    Write-Verbose "Successful removals:`t`t$successfulRemovals" -Verbose
-    Write-Verbose "Un-successful removals:`t$failedRemovals" -Verbose
+    Write-Verbose 'Script execution finished. Note that the removal can take a few minutes to propagate.' -Verbose
 }
