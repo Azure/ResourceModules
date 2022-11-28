@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Resources/deploymentScripts/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

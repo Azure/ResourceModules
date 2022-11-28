@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.DesktopVirtualization/workspaces/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Network/firewallPolicies/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

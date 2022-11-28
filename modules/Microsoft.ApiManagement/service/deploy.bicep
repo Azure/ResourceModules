@@ -8,7 +8,7 @@ param name string
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Custom properties of the API Management service.')

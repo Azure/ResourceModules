@@ -42,7 +42,7 @@ This template deploys a private DNS zone.
 | `a` | _[A](A/readme.md)_ array | `[]` |  | Array of A records. |
 | `aaaa` | _[AAAA](AAAA/readme.md)_ array | `[]` |  | Array of AAAA records. |
 | `cname` | _[CNAME](CNAME/readme.md)_ array | `[]` |  | Array of CNAME records. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` |  | The location of the PrivateDNSZone. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `mx` | _[MX](MX/readme.md)_ array | `[]` |  | Array of MX records. |
@@ -237,6 +237,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ttl: 3600
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     mx: [
       {
@@ -439,6 +440,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -598,7 +602,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-npdzmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>npdzmin001.com'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -615,8 +622,13 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>npdzmin001.com"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.DBforPostgreSQL/flexibleServers/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

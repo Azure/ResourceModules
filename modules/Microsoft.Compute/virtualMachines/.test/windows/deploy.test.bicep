@@ -11,11 +11,14 @@ param resourceGroupName string = 'ms.compute.virtualMachines-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cvmwindef'
+param serviceShort string = 'cvmwincom'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
 param password string = newGuid()
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
 
 // =========== //
 // Deployments //
@@ -34,7 +37,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
+    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
@@ -67,6 +70,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
@@ -194,7 +198,7 @@ module testDeployment '../../deploy.bicep' = {
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'

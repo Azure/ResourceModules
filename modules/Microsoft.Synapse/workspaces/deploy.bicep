@@ -42,7 +42,7 @@ param encryptionUserAssignedIdentity string = ''
 @description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
 param encryptionActivateWorkspace bool = false
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @maxLength(90)

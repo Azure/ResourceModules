@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Network/frontDoors/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

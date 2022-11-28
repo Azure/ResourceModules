@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Web/sites/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:
