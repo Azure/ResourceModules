@@ -4,16 +4,12 @@ With this module you can create policy definitions across the management group o
 
 ## Navigation
 
-- [Policy Definitions `[Microsoft.Authorization/policyDefinitions]`](#policy-definitions-microsoftauthorizationpolicydefinitions)
-  - [Navigation](#navigation)
-  - [Resource types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `managementGroupId`](#parameter-usage-managementgroupid)
-    - [Parameter Usage: `subscriptionId`](#parameter-usage-subscriptionid)
-  - [Module Usage Guidance](#module-usage-guidance)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
-  - [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Module Usage Guidance](#Module-Usage-Guidance)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -187,7 +183,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -267,9 +262,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {

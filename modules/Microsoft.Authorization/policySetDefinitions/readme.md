@@ -4,17 +4,13 @@ With this module you can create policy set definitions across the management gro
 
 ## Navigation
 
-- [Policy Set Definitions `[Microsoft.Authorization/policySetDefinitions]`](#policy-set-definitions-microsoftauthorizationpolicysetdefinitions)
-  - [Navigation](#navigation)
-  - [Resource types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `managementGroupId`](#parameter-usage-managementgroupid)
-    - [Parameter Usage: `subscriptionId`](#parameter-usage-subscriptionid)
-  - [Module Usage Guidance](#module-usage-guidance)
-  - [Outputs](#outputs)
-  - [Considerations](#considerations)
-  - [Cross-referenced modules](#cross-referenced-modules)
-  - [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Module Usage Guidance](#Module-Usage-Guidance)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -194,7 +190,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -268,9 +263,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -535,7 +527,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -573,9 +564,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }

@@ -4,19 +4,13 @@ With this module you can create policy exemptions across the management group, s
 
 ## Navigation
 
-- [Policy Exemptions `[Microsoft.Authorization/policyExemptions]`](#policy-exemptions-microsoftauthorizationpolicyexemptions)
-  - [Navigation](#navigation)
-  - [Resource types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `managementGroupId`](#parameter-usage-managementgroupid)
-    - [Parameter Usage: `subscriptionId`](#parameter-usage-subscriptionid)
-    - [Parameter Usage: `resourceGroupName`](#parameter-usage-resourcegroupname)
-    - [Parameter Usage: `resourceSelectors`](#parameter-usage-resourceselectors)
-  - [Module Usage Guidance](#module-usage-guidance)
-  - [Outputs](#outputs)
-  - [Considerations](#considerations)
-  - [Cross-referenced modules](#cross-referenced-modules)
-  - [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Module Usage Guidance](#Module-Usage-Guidance)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -239,7 +233,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -300,9 +293,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "expiresOn": {
       "value": "2025-10-02T03:57:00Z"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -513,8 +503,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    resourceGroupName: '<resourceGroupName>'
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -541,12 +529,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -683,7 +665,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -710,9 +691,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
