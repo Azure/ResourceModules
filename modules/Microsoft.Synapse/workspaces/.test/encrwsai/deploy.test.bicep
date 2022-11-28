@@ -16,9 +16,6 @@ param serviceShort string = 'swensa'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Data Lake Storage Filesystem.')
-param dataLakeStorageFilesystem string = 'synapsews'
-
 // =========== //
 // Deployments //
 // =========== //
@@ -37,7 +34,6 @@ module resourceGroupResources 'dependencies.bicep' = {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-    storageContainerName: dataLakeStorageFilesystem
   }
 }
 
@@ -51,7 +47,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     defaultDataLakeStorageAccountName: resourceGroupResources.outputs.storageAccountName
-    defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
+    defaultDataLakeStorageFilesystem: resourceGroupResources.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
     cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId

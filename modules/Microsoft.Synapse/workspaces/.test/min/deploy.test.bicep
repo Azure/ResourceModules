@@ -13,8 +13,6 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'swmin'
 
-@description('Optional. Data Lake Storage Filesystem.')
-param dataLakeStorageFilesystem string = 'synapsews'
 // =========== //
 // Deployments //
 // =========== //
@@ -31,7 +29,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-    storageContainerName: dataLakeStorageFilesystem
+
   }
 }
 
@@ -45,7 +43,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     defaultDataLakeStorageAccountName: resourceGroupResources.outputs.storageAccountName
-    defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
+    defaultDataLakeStorageFilesystem: resourceGroupResources.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
   }
 }

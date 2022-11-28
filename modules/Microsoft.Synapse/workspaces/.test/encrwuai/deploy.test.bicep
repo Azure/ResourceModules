@@ -16,8 +16,6 @@ param serviceShort string = 'swenua'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Data Lake Storage Filesystem.')
-param dataLakeStorageFilesystem string = 'synapsews'
 // =========== //
 // Deployments //
 // =========== //
@@ -37,7 +35,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-    storageContainerName: dataLakeStorageFilesystem
+
   }
 }
 
@@ -51,7 +49,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     defaultDataLakeStorageAccountName: resourceGroupResources.outputs.storageAccountName
-    defaultDataLakeStorageFilesystem: dataLakeStorageFilesystem
+    defaultDataLakeStorageFilesystem: resourceGroupResources.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
     cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId

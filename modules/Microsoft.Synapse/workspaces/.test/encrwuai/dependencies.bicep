@@ -10,8 +10,7 @@ param keyVaultName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-@description('Required. The name of the Container to create.')
-param storageContainerName string
+var storageContainerName = 'synapsews'
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
@@ -85,3 +84,6 @@ output keyVaultEncryptionKeyName string = keyVault::key.name
 
 @description('The name of the created Storage Account.')
 output storageAccountName string = storageAccount.name
+
+@description('The name of the created container.')
+output storageContainerName string = storageContainerName
