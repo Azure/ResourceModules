@@ -35,7 +35,6 @@ module resourceGroupResources 'dependencies.bicep' = {
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-
   }
 }
 

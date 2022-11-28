@@ -45,7 +45,6 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
     eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-
   }
 }
 
