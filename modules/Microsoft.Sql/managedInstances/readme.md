@@ -298,10 +298,12 @@ The following module usage examples are retrieved from the content of the files 
 module managedInstances 'ts/modules:microsoft.sql.managedinstances:1.0.0 = {
   name: '${uniqueString(deployment().name)}-ManagedInstances'
   params: {
+    // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     name: '<name>'
     subnetId: '<subnetResourceId>'
+    // Non-required parameters
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {

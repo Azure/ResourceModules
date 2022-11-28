@@ -390,7 +390,9 @@ The following module usage examples are retrieved from the content of the files 
 module vaults 'ts/modules:microsoft.keyvault.vaults:1.0.0 = {
   name: '${uniqueString(deployment().name)}-Vaults'
   params: {
+    // Required parameters
     name: '<name>'
+    // Non-required parameters
     accessPolicies: [
       {
         objectId: '<managedIdentityPrincipalId>'
