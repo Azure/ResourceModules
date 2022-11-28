@@ -89,4 +89,4 @@ output privateDNSResourceId string = privateDNSZone.id
 output storageAccountName string = storageAccount.name
 
 @description('The name of the created container.')
-output storageContainerName string = storageContainerName
+output storageContainerName string = storageAccount::blobService::container.name
