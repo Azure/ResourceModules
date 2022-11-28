@@ -13,7 +13,7 @@ Mandatory. The Resource ID of the Management Group to remove the deployments fro
 Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
 
 .PARAMETER maxDeploymentRetentionInDays
-Optional. The time to keep deployments for beyong the deployment statuses to exclude. In other words, if a deployment is older than the threshold, they will always be deleted.
+Optional. The time to keep deployments with a status to exclude. In other words, if a deployment is in a status to exclude, but older than the threshold, it will be deleted.
 
 .EXAMPLE
 Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId'
