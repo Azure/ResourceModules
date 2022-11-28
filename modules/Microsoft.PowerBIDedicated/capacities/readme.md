@@ -32,6 +32,7 @@ This module deploys PowerBIDedicated Capacities.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `mode` | string | `'Gen2'` | `[Gen1, Gen2]` | Mode of the resource. |
