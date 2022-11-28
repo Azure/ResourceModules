@@ -925,10 +925,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvcom'
+  name: '${uniqueString(deployment().name)}-test-rsvtst'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rsvcom003'
+    name: '<<namePrefix>>rsvtst010'
     // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -1237,7 +1237,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rsvcom003"
+      "value": "<<namePrefix>>rsvtst010"
     },
     // Non-required parameters
     "backupConfig": {
