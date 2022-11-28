@@ -42,7 +42,7 @@ Both scripts work in the same way:
      -  120 successful deployments
      -  10 failed deployments that are 3 weeks old
 1. Lastly, it removes all matching deployments in chunks of 100 deployments each.
-   - In context of the example, this mean it deletes the deployments with to commands, first removing 100, and then 30 deployments.
+   - In the context of the example, this means the procedure deletes the deployments in 2 chunks, first removing 100, and then 30 deployments.
 
 # How to use it
 
