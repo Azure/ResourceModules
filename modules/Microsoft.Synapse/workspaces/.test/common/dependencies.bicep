@@ -10,8 +10,6 @@ param virtualNetworkName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-var storageContainerName = 'synapsews'
-
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
@@ -68,7 +66,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         name: 'default'
 
         resource container 'containers@2021-09-01' = {
-            name: storageContainerName
+            name: 'synapsews'
         }
     }
 }

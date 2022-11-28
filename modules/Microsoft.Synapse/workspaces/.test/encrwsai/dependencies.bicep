@@ -7,8 +7,6 @@ param keyVaultName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-var storageContainerName = 'synapsews'
-
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     name: keyVaultName
     location: location
@@ -50,7 +48,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         name: 'default'
 
         resource container 'containers@2021-09-01' = {
-            name: storageContainerName
+            name: 'synapsews'
         }
     }
 }
@@ -65,4 +63,4 @@ output keyVaultEncryptionKeyName string = keyVault::key.name
 output storageAccountName string = storageAccount.name
 
 @description('The name of the created container.')
-output storageContainerName string = storageContainerName
+output storageContainerName string = storageAccount::blobService::container.name

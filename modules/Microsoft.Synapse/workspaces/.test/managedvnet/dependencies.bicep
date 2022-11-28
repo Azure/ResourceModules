@@ -4,8 +4,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-var storageContainerName = 'synapsews'
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     name: storageAccountName
     location: location
@@ -21,7 +19,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         name: 'default'
 
         resource container 'containers@2021-09-01' = {
-            name: storageContainerName
+            name: 'synapsews'
         }
     }
 }
@@ -30,4 +28,4 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 output storageAccountName string = storageAccount.name
 
 @description('The name of the created container.')
-output storageContainerName string = storageContainerName
+output storageContainerName string = storageAccount::blobService::container.name
