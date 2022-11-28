@@ -1,4 +1,4 @@
-This pipeline and its scripts can be used to limit the number of deployments that are listed in Azure at any given time. This is especially useful for a scope like 'Management Group' is Azure does not provide any [automatic cleanup](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history-deletions?tabs=azure-powershell).
+This pipeline and its scripts can be used to limit the number of deployments that are listed in the Azure deployments history at any given time. This is especially useful for a scope like 'Management Group', since for that scope, Azure Resource Manager does not currently provide [automatic deletion](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history-deletions?tabs=azure-powershell) of deployments from your history as you near the 800 limit.
 
 The corresponding error message would look similar to `Creating the deployment '<deploymentName>' would exceed the quota of '800'. The current deployment count is '804'. Please delete some deployments before creating a new one, or see https://aka.ms/800LimitFix for information on managing deployment limits.`
 
