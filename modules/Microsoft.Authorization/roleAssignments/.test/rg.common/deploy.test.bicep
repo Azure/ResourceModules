@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'arargcom'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -40,6 +43,7 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
     roleDefinitionIdOrName: 'Backup Reader'
     description: 'Role Assignment (resource group scope)'

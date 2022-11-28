@@ -56,7 +56,7 @@ param snapshotResourceId string = ''
 @description('Optional. Specifies the parameters that are used to add a data disk to a virtual machine.')
 param dataDisks array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

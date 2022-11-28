@@ -30,7 +30,7 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline.                                                                 | 120                                                   |
 ##   | removeDeployment                | 'true'                               | Set to [true] to flag resources for removal. If not provided, defaults to true.                           | 'true'                                                |
 ##   | templateFilePath                | ''                                   | Path to the template file to deploy.                                                                      | 'arm/Microsoft.AnalysisServices/servers/deploy.bicep' |
-##   | customParameterFileTokens       | ''                                   |                                                                                                           |                                                       |
+##   | customTokens                    | ''                                   | Additional token pairs in json format.                                                                    | '{"tokenName":"tokenValue"}'                          |
 ##   | jobDisplayName                  | ''                                   | The display name of the job.                                                                              | 'Deploy module'                                       |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                         |
 ##   | location                        | '$(location)'                        | The location to deploy resources to.                                                                      | 'EastUs2'                                             |
@@ -52,7 +52,7 @@ parameters:
   # Logic-related parameters
   removeDeployment: false
   templateFilePath: ''
-  customParameterFileTokens: ''
+  customTokens: ''
   modulePath: '$(modulePath)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
@@ -172,8 +172,8 @@ jobs:
             }
 
             # Add custom tokens (passed in via the pipeline)
-            if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
-              $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+            if(-not [String]::IsNullOrEmpty('${{ parameters.customTokens }}')) {
+              $customTokens = '${{ parameters.customTokens }}' | ConvertFrom-Json -AsHashTable
               Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
               $ConvertTokensInputs.Tokens += $customTokens
             }
@@ -203,24 +203,23 @@ jobs:
             $subscriptionId = '${{ parameters.subscriptionId }}'
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
-            $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            # Resolve template file path
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
             # Determine possible parameters depending on file type
-            if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
-                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+                $moduleTemplateContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
             } else {
-                $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+                $moduleTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
             }
 
             # ----------- #
             # INVOKE TEST #
             # ----------- #
-
             # Building input object
             $functionInput = @{
-                TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+                TemplateFilePath     = $moduleTestFilePath
                 Location             = $location
                 ResourceGroupName    = $resourceGroupName
                 SubscriptionId       = $subscriptionId
@@ -228,14 +227,7 @@ jobs:
                 AdditionalParameters = @{}
             }
 
-            # Handle template file
-            if ($moduleTestFilePath -like '*parameters.json') {
-                # Original parameter file
-                $functionInput['parameterFilePath'] = $moduleTestFilePath
-            }
-
             # Handle additional parameters
-            # ----------------------------
             if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
@@ -268,15 +260,15 @@ jobs:
             $subscriptionId = '${{ parameters.subscriptionId }}'
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
-            $moduleTemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            # Resolve template file path
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
 
             # Determine possible parameters depending on file type
-            if ((Split-Path $moduleTemplateFilePath -Extension) -eq '.bicep') {
-                $moduleTemplateContent = az bicep build --file $moduleTemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
+                $moduleTemplateContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
             } else {
-                $moduleTemplatePossibleParameters = ((Get-Content $moduleTemplateFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
+                $moduleTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
             }
 
             # ----------- #
@@ -285,7 +277,7 @@ jobs:
 
             # Building input object
             $functionInput = @{
-                TemplateFilePath     = ($moduleTestFilePath -like '*parameters.json') ? $moduleTemplateFilePath : $moduleTestFilePath
+                TemplateFilePath     = $moduleTestFilePath
                 Location             = $location
                 ResourceGroupName    = $resourceGroupName
                 SubscriptionId       = $subscriptionId
@@ -294,14 +286,7 @@ jobs:
                 AdditionalParameters = @{}
             }
 
-            # Handle template file
-            if ($moduleTestFilePath -like '*parameters.json') {
-                # Original paramter file
-                $functionInput['parameterFilePath'] = $moduleTestFilePath
-            }
-
             # Handle additional parameters
-            # ----------------------------
             if (-not [System.Convert]::ToBoolean('$(enableDefaultTelemetry)') -and ($moduleTemplatePossibleParameters.Keys -contains 'enableDefaultTelemetry')) {
                 $functionInput['additionalParameters'] += @{
                     enableDefaultTelemetry = [System.Convert]::ToBoolean('$(enableDefaultTelemetry)')
@@ -353,9 +338,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
             $functionInput = @{
-              TemplateFilePath  = ('$(moduleTestFilePath)' -like '*parameters.json') ?
-                  (Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}') :
-                  (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)')
+              TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
               SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'

@@ -33,7 +33,7 @@ This module deploys an Alert based on Activity Log.
 | `actions` | array | `[]` | The list of actions to take when alert triggers. |
 | `alertDescription` | string | `''` | Description of the alert. |
 | `enabled` | bool | `True` | Indicates whether this alert is enabled. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` | Location for all resources. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this metric alert is scoped to. |
@@ -438,6 +438,7 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
         actionGroupId: '<actionGroupId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -493,6 +494,9 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
           "actionGroupId": "<actionGroupId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [
