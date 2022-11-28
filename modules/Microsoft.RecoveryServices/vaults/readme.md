@@ -1216,9 +1216,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     }
     systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -1557,11 +1554,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
