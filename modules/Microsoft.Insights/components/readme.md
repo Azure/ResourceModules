@@ -29,7 +29,7 @@
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appInsightsType` | string | `'web'` | `[other, web]` | Application type. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `kind` | string | `''` |  | The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Application Insights ingestion. - Enabled or Disabled. |
@@ -176,6 +176,7 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     name: '<<namePrefix>>iccom001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -209,6 +210,9 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
       "value": "<workspaceResourceId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -240,6 +244,8 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>icmin001'
     workspaceResourceId: '<workspaceResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -262,6 +268,10 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
     },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

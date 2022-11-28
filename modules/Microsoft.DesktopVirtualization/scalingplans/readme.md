@@ -35,6 +35,7 @@ This module deploys an AVD Scaling Plan.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `exclusionTag` | string | `''` |  | Provide a tag to be used for hosts that should not be affected by the scaling plan. |
 | `friendlyName` | string | `[parameters('name')]` |  | Friendly Name of the scaling plan. |
 | `hostPoolReferences` | array | `[]` |  | An array of references to hostpools. |
@@ -287,6 +288,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'My Scaling Plan'
     hostPoolType: 'Pooled'
     roleAssignments: [
@@ -339,6 +341,9 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "friendlyName": {
       "value": "My Scaling Plan"
     },
@@ -382,7 +387,10 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-dvspmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>dvspmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -399,8 +407,13 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>dvspmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

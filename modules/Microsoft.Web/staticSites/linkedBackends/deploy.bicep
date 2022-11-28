@@ -10,7 +10,7 @@ param staticSiteName string
 @description('Optional. Name of the backend to link to the static site.')
 param name string = uniqueString(backendResourceId)
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')

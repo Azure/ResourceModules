@@ -28,7 +28,7 @@ This module deploys RecoveryServices Vaults ReplicationAlertSettings.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `customEmailAddresses` | array | `[]` |  | Comma separated list of custom email address for sending alert emails. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `locale` | string | `''` |  | The locale for the email notification. |
 | `name` | string | `'defaultAlertSetting'` |  | The name of the replication Alert Setting. |
 | `sendToOwners` | string | `'Send'` | `[DoNotSend, Send]` | The value indicating whether to send email to subscription administrator. |
