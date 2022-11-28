@@ -45,7 +45,7 @@ This module deploys an Azure SQL Server Database.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `elasticPoolId` | string | `''` |  | The resource ID of the elastic pool containing this database. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `highAvailabilityReplicaCount` | int | `0` |  | The number of readonly secondary replicas associated with the database. |
 | `isLedgerOn` | bool | `False` |  | Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string | `''` |  | The license type to apply for this database. |

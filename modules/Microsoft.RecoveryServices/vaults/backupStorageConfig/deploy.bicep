@@ -16,7 +16,7 @@ param storageModelType string = 'GeoRedundant'
 @description('Optional. Opt in details of Cross Region Restore feature.')
 param crossRegionRestoreFlag bool = true
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

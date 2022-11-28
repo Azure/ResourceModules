@@ -63,7 +63,7 @@ param mongodbDatabases array = []
 @description('Optional. Gremlin Databases configurations.')
 param gremlinDatabases array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @allowed([

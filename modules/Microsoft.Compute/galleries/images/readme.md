@@ -34,7 +34,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |

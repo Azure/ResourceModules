@@ -4,13 +4,19 @@ With this module you can create policy exemptions across the management group, s
 
 ## Navigation
 
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
-- [Outputs](#Outputs)
-- [Considerations](#Considerations)
-- [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Policy Exemptions `[Microsoft.Authorization/policyExemptions]`](#policy-exemptions-microsoftauthorizationpolicyexemptions)
+  - [Navigation](#navigation)
+  - [Resource types](#resource-types)
+  - [Parameters](#parameters)
+    - [Parameter Usage: `managementGroupId`](#parameter-usage-managementgroupid)
+    - [Parameter Usage: `subscriptionId`](#parameter-usage-subscriptionid)
+    - [Parameter Usage: `resourceGroupName`](#parameter-usage-resourcegroupname)
+    - [Parameter Usage: `resourceSelectors`](#parameter-usage-resourceselectors)
+  - [Module Usage Guidance](#module-usage-guidance)
+  - [Outputs](#outputs)
+  - [Considerations](#considerations)
+  - [Cross-referenced modules](#cross-referenced-modules)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource types
 
@@ -34,7 +40,7 @@ With this module you can create policy exemptions across the management group, s
 | `assignmentScopeValidation` | string | `''` | `['', Default, DoNotValidate]` | The option whether validate the exemption is at or under the assignment scope. |
 | `description` | string | `''` |  | The description of the policy exemption. |
 | `displayName` | string | `''` |  | The display name of the policy exemption. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `exemptionCategory` | string | `'Mitigated'` | `[Mitigated, Waiver]` | The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated. |
 | `expiresOn` | string | `''` |  | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
@@ -230,6 +236,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     assignmentScopeValidation: 'Default'
     description: 'My description'
     displayName: '[Display Name] policy exempt (management group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     managementGroupId: '<managementGroupId>'
@@ -285,6 +292,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     "displayName": {
       "value": "[Display Name] policy exempt (management group scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "exemptionCategory": {
       "value": "Waiver"
     },
@@ -339,6 +349,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>apemgmin001'
     policyAssignmentId: '<policyAssignmentId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -361,6 +373,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -386,6 +402,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     assignmentScopeValidation: 'Default'
     description: 'My description'
     displayName: '[Display Name] policy exempt (resource group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
@@ -440,6 +457,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     "displayName": {
       "value": "[Display Name] policy exempt (resource group scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "exemptionCategory": {
       "value": "Waiver"
     },
@@ -491,6 +511,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>apergmin001'
     policyAssignmentId: '<policyAssignmentId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -513,6 +537,16 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "resourceGroupName": {
+      "value": "<resourceGroupName>"
+    },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
     }
   }
 }
@@ -538,6 +572,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     assignmentScopeValidation: 'Default'
     description: 'My description'
     displayName: '[Display Name] policy exempt (subscription scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
@@ -592,6 +627,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     "displayName": {
       "value": "[Display Name] policy exempt (subscription scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "exemptionCategory": {
       "value": "Waiver"
     },
@@ -644,6 +682,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apesubmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -669,6 +708,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "subscriptionId": {
       "value": "<subscriptionId>"
     }

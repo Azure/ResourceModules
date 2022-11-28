@@ -4,12 +4,16 @@ With this module you can create policy definitions across the management group o
 
 ## Navigation
 
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Module Usage Guidance](#Module-Usage-Guidance)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Policy Definitions `[Microsoft.Authorization/policyDefinitions]`](#policy-definitions-microsoftauthorizationpolicydefinitions)
+  - [Navigation](#navigation)
+  - [Resource types](#resource-types)
+  - [Parameters](#parameters)
+    - [Parameter Usage: `managementGroupId`](#parameter-usage-managementgroupid)
+    - [Parameter Usage: `subscriptionId`](#parameter-usage-subscriptionid)
+  - [Module Usage Guidance](#module-usage-guidance)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource types
 
@@ -32,7 +36,7 @@ With this module you can create policy definitions across the management group o
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | The policy definition description. |
 | `displayName` | string | `''` |  | The display name of the policy definition. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
@@ -182,6 +186,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -259,6 +265,12 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at the management group scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "managementGroupId": {
+      "value": "<managementGroupId>"
+    },
     "metadata": {
       "value": {
         "category": "Security"
@@ -315,6 +327,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     }
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     parameters: {
       effect: {
         allowedValues: [
@@ -360,6 +373,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parameters": {
       "value": {
         "effect": {
@@ -422,6 +438,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy definition is deployed at subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
     }
@@ -499,6 +516,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at subscription scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "metadata": {
       "value": {
         "category": "Security"
@@ -555,6 +575,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     }
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     parameters: {
       effect: {
         allowedValues: [
@@ -600,6 +621,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       }
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parameters": {
       "value": {
         "effect": {

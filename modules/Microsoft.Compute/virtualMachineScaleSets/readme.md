@@ -63,7 +63,7 @@ The following resources are required to be able to deploy this resource.
 | `doNotRunExtensionsOnOverprovisionedVMs` | bool | `False` |  | When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs. |
 | `enableAutomaticOSUpgrade` | bool | `False` |  | Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is false. If this is set to true for Windows based scale sets, enableAutomaticUpdates is automatically set to false and cannot be set to true. |
 | `enableAutomaticUpdates` | bool | `True` |  | Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableEvictionPolicy` | bool | `False` |  | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your virtual machine scale sets. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -959,6 +959,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -1126,6 +1127,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "disablePasswordAuthentication": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryptionAtHost": {
       "value": false
     },
@@ -1271,6 +1275,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     skuName: 'Standard_B12ms'
     // Non-required parameters
     disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -1341,6 +1346,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Non-required parameters
     "disablePasswordAuthentication": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "nicConfigurations": {
       "value": [
@@ -1420,6 +1428,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       }
     ]
     disablePasswordAuthentication: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     nicConfigurations: [
       {
@@ -1510,6 +1519,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     "disablePasswordAuthentication": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     },
@@ -1580,6 +1592,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
     extensionAntiMalwareConfig: {
       enabled: true
@@ -1733,6 +1746,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "encryptionAtHost": {
       "value": false
@@ -1896,6 +1912,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     skuName: 'Standard_B12ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     nicConfigurations: [
       {
         ipConfigurations: [
@@ -1960,6 +1977,9 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     // Non-required parameters
     "adminPassword": {
       "value": "<adminPassword>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "nicConfigurations": {
       "value": [

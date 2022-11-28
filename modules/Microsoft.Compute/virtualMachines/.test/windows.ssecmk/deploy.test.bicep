@@ -20,6 +20,9 @@ param password string = newGuid()
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -50,6 +53,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'

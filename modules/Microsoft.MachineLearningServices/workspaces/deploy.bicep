@@ -54,7 +54,7 @@ param computes array = []
 @sys.description('Optional. Resource tags.')
 param tags object = {}
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Identity
