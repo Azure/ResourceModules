@@ -38,7 +38,7 @@ Both scripts work in the same way:
      - 10 failed deployments that are 1 week old
      - 10 running deployments
 1. By default, it then filters them down to non-running & non-failing deployments (can be modified). It only considers failed deployments for deletion if they are older than a provided time limit.
-   - Following the example, and with a time limit of 2 weeks, it now only considers the
+   - Following the example, and with a `maxDeploymentRetentionInDays` of 14 days (2 weeks), the following deployments are targeted for deletion from the deployment history:
      -  120 successful deployments
      -  10 failed deployments that are 3 weeks old
 1. Lastly, it removes all matching deployments in chunks of 100 deployments each.
