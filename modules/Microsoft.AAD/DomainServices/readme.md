@@ -248,8 +248,8 @@ module DomainServices 'ts/modules:microsoft.aad.domainservices:1.0.0 = {
     diagnosticWorkspaceId: '<logAnalyticsWorkspaceResourceId>'
     lock: 'CanNotDelete'
     name: '<name>'
-    pfxCertificate: null
-    pfxCertificatePassword: null
+    pfxCertificate: kv1.getSecret('<certSecretName>')
+    pfxCertificatePassword: kv1.getSecret('<certPWSecretName>')
     replicaSets: [
       {
         location: 'WestEurope'
