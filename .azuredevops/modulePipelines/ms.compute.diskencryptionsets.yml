@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Compute/diskEncryptionSets/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

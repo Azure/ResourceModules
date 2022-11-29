@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Authorization/roleAssignments/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Compute/galleries/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:
