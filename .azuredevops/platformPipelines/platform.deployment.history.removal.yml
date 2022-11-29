@@ -1,4 +1,4 @@
-name: '.Platform - Remove Deployment History'
+name: '.Platform - Clean Up Deployment History'
 
 parameters:
   - name: handleSubscriptionScope
