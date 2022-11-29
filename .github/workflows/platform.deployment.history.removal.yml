@@ -15,7 +15,7 @@ on:
         default: true # Note: This requires your service principal to have permissions on the management group scope.
       maxDeploymentRetentionInDays:
         type: string
-        description: 'The number of days to keep deployments with status [running] or [failed]'
+        description: 'The number of days to keep deployments with status [failed]' # 'Running' are always excluded
         required: false
         default: '14'
   schedule:
