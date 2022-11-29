@@ -27,18 +27,6 @@ Test-NamePrefixAvailability @inputObject
 
 Test if namePrefix 'carml' is available.
 #>
-$inputObject = @{
-    NamePrefix = 'jpe01'
-    Tokens     = @{
-        Location          = 'westeurope'
-        ResourceGroupName = 'validation-rg'
-        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
-        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
-        RemoveDeployment  = $false
-        deploymentSpId    = '00000000-0000-0000-0000-000000000000'
-    }
-}
-Test-NamePrefixAvailability @inputObject
 
 function Test-NamePrefixAvailability {
 
@@ -82,6 +70,8 @@ function Test-NamePrefixAvailability {
 
         foreach ($parameterFile in $parameterFiles) {
 
+            $fileContent = Get-Content -Path $parameterFile
+
             foreach ($relevantResourceType in $relevantResourceTypes) {
                 switch ($relevantResourceType) {
                     'Microsoft.Storage/storageAccounts' {
@@ -100,7 +90,6 @@ function Test-NamePrefixAvailability {
                 }
 
                 $temp = $null
-                $fileContent = Get-Content -Path $parameterFile
 
                 # determine if entry is of one of the resourceTypes using the filter variable
                 $temp = $fileContent | ForEach-Object {
