@@ -23,7 +23,7 @@ on:
 
 env:
   variablesPath: 'settings.yml'
-  workflowPath: '.github/workflows/platform.deployment.history.removal.yml'
+  workflowPath: '.github/workflows/platform.deployment.history.cleanup.yml'
 
 jobs:
   ###########################
