@@ -35,7 +35,6 @@ These are tokens constructed from environment variables, which are defined in th
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
 - `<<tenantId>>`: Will point to the Azure Tenant ID.
 - `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
-- `<<resourceGroupName>>`: Will point to the Azure Resource Group where the resources are being deployed to. (This isn't defined in the secrets section but is injected at runtime)
 
 ## (Optional) Local Custom Tokens
 
