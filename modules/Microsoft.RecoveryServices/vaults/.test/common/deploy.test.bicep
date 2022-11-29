@@ -331,10 +331,10 @@ module testDeployment '../../deploy.bicep' = {
     //     principalType: 'ServicePrincipal'
     //   }
     // ]
-    systemAssignedIdentity: true
-    // userAssignedIdentities: {
-    //   '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-    // }
+    // systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    }
     monitoringSettings: {
       azureMonitorAlertSettings: {
         alertsForAllJobFailures: 'Enabled'
