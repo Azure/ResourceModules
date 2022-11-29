@@ -387,16 +387,19 @@ Below, you can find samples which can be used to orchestrate deployments in GitH
 
 ### Multi-repository
 
-1. Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in GitHub.
-1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure.
-1. This example is creating a Resource group, an NSG and a VNet -
-    1. Job: **Deploy multi-repo solution**
-        1. Checkout 'Azure/ResourceModules' repo at root of the agent
-        1. Set environment variables for the agent
-        1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
-        1. Deploy resource group in target Azure subscription
-        1. Deploy network security group
-        1. Deploy virtual network A
+Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in GitHub.
+
+It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure.
+
+The example executes one job that creates a Resource group, an NSG and a VNet.
+
+It does so by performing the following tasks
+1. Checkout 'Azure/ResourceModules' repo at root of the agent
+1. Set environment variables for the agent
+1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
+1. Deploy resource group in target Azure subscription
+1. Deploy network security group
+1. Deploy virtual network
 
 <h3>Example</h3>
 
@@ -484,23 +487,25 @@ jobs:
 
 ## Azure DevOps Samples
 
-Below, you can find samples which can be used to orchestrate deployments in Azure DevOps. Unlike the above mentioned GitHub sample all samples are using a modified and standalone version of `pipeline.deploy.yml` which can be found with working examples [here](https://github.com/segraef/Platform/blob/main/.azuredevops/pipelineTemplates/jobs.solution.deploy.yml) (`/.azuredevops/pipelineTemplates/jobs.solution.deploy.yml`) which is capable of consuming Modules via any publishing option you prefer.
-
-> Note: The following samples show Azure Pipelines stored in GitHub and use a GitHub service connection endpoint and hence get triggered externally. This is out of pure convenience and can also be stored on Azure Repos directly and be triggered in the same way.
-
-> Note: All DevOps samples can be found here as a reference: [Litware/Platform](https://github.com/segraef/Platform/).
+Below, you can find samples which can be used to orchestrate deployments in Azure DevOps.
 
 <details>
 <summary>Using <b>Multi-repository approach</b></summary>
 
 ### Multi-repository
 
-1. Fetching the _public_ **Azure/ResourceModules** repository for consuming Modules and using the parameter files present in the _private_ **Litware/Platform** repo for deploying infrastructure.
-1. This sample is creating a Resource Group, an NSG, a Route Table and a Virtual Network -
-    1. Job: **Deploy multi-repo solution**
-        1. Checkout 'Azure/ResourceModules' repo in a nested folder `ResourceModules`
-        1. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
-        1. Deploy resources in target Azure subscription
+Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in Azure DevOps.
+
+> **Note:** The sample is using a modified and standalone version of `pipeline.deploy.yml` which can be found with working examples [here](https://github.com/segraef/Platform/blob/main/.azuredevops/pipelineTemplates/jobs.solution.deploy.yml) (`/.azuredevops/pipelineTemplates/jobs.solution.deploy.yml`) which is capable of consuming Modules via any publishing option you prefer. <br>
+> The Pipelines are stored in GitHub and use a GitHub service connection endpoint and hence get triggered externally. This is out of pure convenience and can also be stored on Azure Repos directly and be triggered in the same way. <br>
+> The full source can be found here as a reference: [Litware/Platform](https://github.com/segraef/Platform/).
+
+Each deployment is its own pipeline job. This means, when triggered, each job performs the following actions:
+1.etching the _public_ **Azure/ResourceModules** repository for consuming Module into a nested folder `ResourceModules` of the main **Litware/Platform** repository (which in turn contains all parameters files to be used for deployments)
+1. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
+1. Deploy resources in target Azure subscription
+
+Using these steps it creates a Resource Group, a Network Security Group, a Route Table and a Virtual Network.
 
 <h3>Example</h3>
 
@@ -518,9 +523,8 @@ variables:
 resources:
   repositories:
   - repository: modules
-    name: $(modulesRepository)
-    ref: $(ref)
-    endpoint: segraef
+    name: Azure/ResourceModules
+    endpoint: customCARMLConnection
     type: github
 
 stages:
