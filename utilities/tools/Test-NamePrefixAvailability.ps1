@@ -27,7 +27,6 @@ Test-NamePrefixAvailability @inputObject
 
 Test if namePrefix 'carml' is available.
 #>
-
 function Test-NamePrefixAvailability {
 
     [CmdletBinding()]
@@ -97,11 +96,10 @@ function Test-NamePrefixAvailability {
                 }
 
                 # determine serviceshort default value if no parameter has been supplied
-                $serviceShort = $fileContent | ForEach-Object {
-                    if ($_ -Match "^param serviceShort string = '(\[a-z]+)'$") {
-                        $matches[1]
-                        break
-                    }
+                $serviceShort = $fileContent | Where-Object {
+                    $_ -Match "^param serviceShort string = '([a-z]+)'$"
+                } | ForEach-Object {
+                    $matches[1]
                 }
 
                 if ($temp) {
