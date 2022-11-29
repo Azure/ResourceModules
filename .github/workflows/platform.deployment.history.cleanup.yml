@@ -1,4 +1,4 @@
-name: '.Platform: Remove Deployment History'
+name: '.Platform: Clean up Deployment History'
 
 on:
   workflow_dispatch:
@@ -23,7 +23,7 @@ on:
 
 env:
   variablesPath: 'settings.yml'
-  workflowPath: 'platform.deployment.history.removal.yml'
+  workflowPath: '.github/workflows/platform.deployment.history.removal.yml'
 
 jobs:
   ###########################
