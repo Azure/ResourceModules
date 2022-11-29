@@ -45,6 +45,7 @@ module testDeployment '../../subscription/deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    principalType: 'ServicePrincipal'
     subscriptionId: subscription().subscriptionId
   }
 }
