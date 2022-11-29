@@ -1215,7 +1215,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         state: 'Unlocked'
       }
     }
-    systemAssignedIdentity: true
   }
 }
 ```
@@ -1551,9 +1550,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "state": "Unlocked"
         }
       }
-    },
-    "systemAssignedIdentity": {
-      "value": true
     }
   }
 }
@@ -1735,6 +1731,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     name: '<<namePrefix>>rsvmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -1758,6 +1758,14 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
