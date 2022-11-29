@@ -73,6 +73,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionCustomScriptProtectedSetting` | secureObject | `{object}` |  | Any object that contains the extension specific protected settings. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
+| `extensionAadJoinConfig` | object | `{object}` |  | The configuration for the [AADLoginforWindows] extension. Must at least contain the ["enabled": true] property to be executed. Automatically enables the System Assigned Managed Identity. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -495,6 +496,42 @@ configurationProfileAssignments: [
     '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
 ]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `extensionAadJoinConfig`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"extensionAadJoinConfig": {
+  "value": {
+    "enabled": true,
+    "settings": {
+      "mdmId": "0000000a-0000-0000-c000-000000000000" // This enables Intune Enrollment., Do not set mdmId to disable Intune Enrollment.
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionAadJoinConfig: {
+    enabled: true
+    settings: {
+      mdmId: '0000000a-0000-0000-c000-000000000000' // This enables Intune Enrollment., Do not set mdmId to disable Intune Enrollment.
+    }
+}
+
 ```
 
 </details>
