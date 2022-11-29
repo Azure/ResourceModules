@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.security.azuresecuritycenter.yml'
       - 'modules/Microsoft.Security/azureSecurityCenter/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

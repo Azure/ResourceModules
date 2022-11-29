@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.ddosprotectionplans.yml'
       - 'modules/Microsoft.Network/ddosProtectionPlans/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

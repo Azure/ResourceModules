@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.resources.deploymentscripts.yml'
       - 'modules/Microsoft.Resources/deploymentScripts/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

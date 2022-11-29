@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.compute.galleries.yml'
       - 'modules/Microsoft.Compute/galleries/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

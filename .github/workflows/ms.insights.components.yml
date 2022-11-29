@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.insights.components.yml'
       - 'modules/Microsoft.Insights/components/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

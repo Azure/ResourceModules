@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.AppConfiguration/configurationStores/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

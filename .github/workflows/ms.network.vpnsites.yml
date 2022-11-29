@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.vpnsites.yml'
       - 'modules/Microsoft.Network/vpnSites/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

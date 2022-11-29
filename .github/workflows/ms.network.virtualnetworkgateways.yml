@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
       - 'modules/Microsoft.Network/virtualNetworkGateways/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

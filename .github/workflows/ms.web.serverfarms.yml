@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.web.serverfarms.yml'
       - 'modules/Microsoft.Web/serverfarms/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

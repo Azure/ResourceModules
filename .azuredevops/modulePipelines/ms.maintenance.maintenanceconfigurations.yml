@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Maintenance/maintenanceConfigurations/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

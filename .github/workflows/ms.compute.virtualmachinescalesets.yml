@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.compute.virtualmachinescalesets.yml'
       - 'modules/Microsoft.Compute/virtualMachineScaleSets/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

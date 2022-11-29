@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.applicationsecuritygroups.yml'
       - 'modules/Microsoft.Network/applicationSecurityGroups/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.connections.yml'
       - 'modules/Microsoft.Network/connections/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

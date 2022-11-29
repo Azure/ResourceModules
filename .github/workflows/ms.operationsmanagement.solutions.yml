@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.operationsmanagement.solutions.yml'
       - 'modules/Microsoft.OperationsManagement/solutions/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

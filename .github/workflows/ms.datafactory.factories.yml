@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.datafactory.factories.yml'
       - 'modules/Microsoft.DataFactory/factories/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.applicationgateways.yml'
       - 'modules/Microsoft.Network/applicationGateways/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

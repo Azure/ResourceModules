@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.servicefabric.clusters.yml'
       - 'modules/Microsoft.ServiceFabric/clusters/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

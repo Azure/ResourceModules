@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.networkwatchers.yml'
       - 'modules/Microsoft.Network/networkWatchers/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
