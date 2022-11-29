@@ -586,8 +586,8 @@ Each step in the pipeline has to carry out the same 2 tasks:
 As these 2 steps always remain the same, no matter the deployment, they are abstracted into the below 'Helper Template'.
 
 The 'Main Template' after then references this template 3 times to deploy
+- A 'Resource Group'
 - A 'Network Security Group'
-- A 'Route Table'
 - A 'Virtual Network'
 
 <details>
@@ -667,21 +667,19 @@ variables:
 jobs:
 - template: pipeline.jobs.artifact.deploy.yml
   parameters:
+    displayName: 'Deploy Resource Group'
+    moduleName: 'ResourceGroup'
+    moduleVersion: '1.0.0'
+    parameterFilePath: 'ResourceGroup/parameters.json'
+
+- template: pipeline.jobs.artifact.deploy.yml
+  parameters:
     displayName: 'Deploy Network Security Group'
     moduleName: 'NetworkSecurityGroup'
     moduleVersion: '1.0.0'
     parameterFilePath: 'NetworkSecurityGroup/parameters.json'
     dependsOn:
-    - Deploy_ResourceGroup
-
-- template: pipeline.jobs.artifact.deploy.yml
-  parameters:
-    displayName: 'Deploy Route Table'
-    moduleName: 'RouteTable'
-    moduleVersion: '1.0.0'
-    parameterFilePath: 'RouteTable/parameters.json'
-    dependsOn:
-    - Deploy_ResourceGroup
+    - Deploy_Resource_Group
 
 - template: pipeline.jobs.artifact.deploy.yml
   parameters:
@@ -690,7 +688,7 @@ jobs:
     moduleVersion: '1.0.0'
     parameterFilePath: 'VirtualNetwork/parameters.json'
     dependsOn:
-    - Deploy_ResourceGroup
+    - Deploy_Resource_Group
 ```
 
 </details>
