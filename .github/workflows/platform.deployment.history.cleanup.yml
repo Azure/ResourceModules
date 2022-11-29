@@ -1,4 +1,4 @@
-name: '.Platform: Clean up Deployment History'
+name: '.Platform: Clean up deployment history'
 
 on:
   workflow_dispatch:
