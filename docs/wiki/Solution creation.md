@@ -18,11 +18,10 @@ This section shows you how you can orchestrate a deployment using multiple resou
   - [Template Specs](#template-specs)
 - [Pipeline-orchestration](#pipeline-orchestration)
   - [GitHub Samples](#github-samples)
-    - [Multi-repository](#multi-repository)
+    - [Using Multi-repository](#using-github-multi-repository-approach)
   - [Azure DevOps Samples](#azure-devops-samples)
-    - [Multi-repository](#multi-repository-1)
-    - [Azure Artifacts](#azure-artifacts)
-    - [Local bicep files](#)
+    - [Using Multi-repository](#using-azure-devops-multi-repository-approach)
+    - [Using Azure Artifacts](#using-azure-devops-artifacts)
 
 ---
 
@@ -385,7 +384,7 @@ Below, you can find samples which can be used to orchestrate deployments in GitH
 <details>
 <summary>Using <b>Multi-repository approach</b></summary>
 
-### Multi-repository
+### Using GitHub Multi-repository approach
 
 Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in GitHub.
 
@@ -492,7 +491,7 @@ Below, you can find samples which can be used to orchestrate deployments in Azur
 <details>
 <summary>Using <b>Multi-repository approach</b></summary>
 
-### Multi-repository
+### Using Azure DevOps Multi-repository approach
 
 Below, you can find an example which makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in Azure DevOps.
 
@@ -576,7 +575,7 @@ stages:
 <details>
 <summary>Using <b>Azure Artifacts</b></summary>
 
-### Azure Artifacts
+### Using Azure DevOps Artifacts
 
 The below example using _Azure DevOps Artifacts_ assumes that each CARML module was published as an Universal Package into the Azure DevOps organization ahead of time.
 
