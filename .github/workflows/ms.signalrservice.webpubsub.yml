@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.signalrservice.webpubsub.yml'
       - 'modules/Microsoft.SignalRService/webPubSub/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

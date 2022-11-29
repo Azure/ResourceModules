@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.documentdb.databaseaccounts.yml'
       - 'modules/Microsoft.DocumentDB/databaseAccounts/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

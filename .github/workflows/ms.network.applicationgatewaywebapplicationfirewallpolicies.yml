@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml'
       - 'modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

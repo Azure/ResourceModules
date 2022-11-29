@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.privatednszones.yml'
       - 'modules/Microsoft.Network/privateDnsZones/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

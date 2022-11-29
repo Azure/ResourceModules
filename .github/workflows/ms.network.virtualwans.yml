@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.virtualwans.yml'
       - 'modules/Microsoft.Network/virtualWans/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

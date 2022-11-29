@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.dataprotection.backupvaults.yml'
       - 'modules/Microsoft.DataProtection/backupVaults/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.insights.activitylogalerts.yml'
       - 'modules/Microsoft.Insights/activityLogAlerts/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

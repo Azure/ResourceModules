@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.insights.diagnosticsettings.yml'
       - 'modules/Microsoft.Insights/diagnosticsettings/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

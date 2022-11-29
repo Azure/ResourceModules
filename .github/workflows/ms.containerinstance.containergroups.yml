@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.containerinstance.containergroups.yml'
       - 'modules/Microsoft.ContainerInstance/containerGroups/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

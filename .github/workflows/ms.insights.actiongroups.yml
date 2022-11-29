@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.insights.actiongroups.yml'
       - 'modules/Microsoft.Insights/actionGroups/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

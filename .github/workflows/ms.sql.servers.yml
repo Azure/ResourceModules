@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.sql.servers.yml'
       - 'modules/Microsoft.Sql/servers/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

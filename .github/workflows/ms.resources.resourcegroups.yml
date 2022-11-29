@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.resources.resourcegroups.yml'
       - 'modules/Microsoft.Resources/resourceGroups/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.synapse.privatelinkhubs.yml'
       - 'modules/Microsoft.Synapse/privateLinkHubs/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:

@@ -21,6 +21,7 @@ on:
       - '.github/workflows/ms.network.publicipprefixes.yml'
       - 'modules/Microsoft.Network/publicIPPrefixes/**'
       - 'utilities/pipelines/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
