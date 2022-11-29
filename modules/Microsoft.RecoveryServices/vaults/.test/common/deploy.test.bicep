@@ -322,31 +322,31 @@ module testDeployment '../../deploy.bicep' = {
         subnetResourceId: resourceGroupResources.outputs.subnetResourceId
       }
     ]
-    // roleAssignments: [
-    //   {
-    //     roleDefinitionIdOrName: 'Reader'
-    //     principalIds: [
-    //       resourceGroupResources.outputs.managedIdentityPrincipalId
-    //     ]
-    //     principalType: 'ServicePrincipal'
-    //   }
-    // ]
-    // systemAssignedIdentity: true
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    systemAssignedIdentity: true
     // userAssignedIdentities: {
     //   '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     // }
-    // // monitoringSettings: {
-    // //   azureMonitorAlertSettings: {
-    // //     alertsForAllJobFailures: 'Enabled'
-    // //   }
-    // //   classicAlertSettings: {
-    // //     alertsForCriticalOperations: 'Enabled'
-    // //   }
-    // // }
-    // // securitySettings: {
-    // //   immutabilitySettings: {
-    // //     state: 'Unlocked'
-    // //   }
-    // // }
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: 'Enabled'
+      }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
+    }
+    securitySettings: {
+      immutabilitySettings: {
+        state: 'Unlocked'
+      }
+    }
   }
 }
