@@ -172,6 +172,11 @@ param extensionDomainJoinConfig object = {
   enabled: false
 }
 
+@description('Optional. The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.')
+param extensionAadJoinConfig object = {
+  enabled: false
+}
+
 @description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionAntiMalwareConfig object = {
   enabled: false
@@ -325,8 +330,9 @@ var accountSasProperties = {
   signedResourceTypes: 'o'
   signedProtocol: 'https'
 }
-
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+// change SystemAssignedIdentity to True if AADJoin is enabled.
+var varsystemAssignedIdentity = extensionAadJoinConfig.enabled ? true : systemAssignedIdentity
+var identityType = varsystemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -478,6 +484,20 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
     configurationProfile: configurationProfile
   }
   scope: vm
+}
+
+module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VM-AADLoginForWindows'
+  params: {
+    virtualMachineName: vm.name
+    name: 'AADLoginForWindows'
+    publisher: 'Microsoft.Azure.ActiveDirectory'
+    type: 'AADLoginForWindows'
+    typeHandlerVersion: contains(extensionAadJoinConfig, 'typeHandlerVersion') ? extensionAadJoinConfig.typeHandlerVersion : '1.0'
+    autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
+    settings: extensionAadJoinConfig.settings
+  }
 }
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
