@@ -60,293 +60,293 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}010'
-    // backupConfig: {
-    //   enhancedSecurityState: 'Disabled'
-    //   softDeleteFeatureState: 'Disabled'
-    // }
-    // backupPolicies: [
+    // // backupConfig: {
+    // //   enhancedSecurityState: 'Disabled'
+    // //   softDeleteFeatureState: 'Disabled'
+    // // }
+    // // backupPolicies: [
+    // //   {
+    // //     name: 'VMpolicy'
+    // //     properties: {
+    // //       backupManagementType: 'AzureIaasVM'
+    // //       instantRPDetails: {}
+    // //       instantRpRetentionRangeInDays: 2
+    // //       protectedItemsCount: 0
+    // //       retentionPolicy: {
+    // //         dailySchedule: {
+    // //           retentionDuration: {
+    // //             count: 180
+    // //             durationType: 'Days'
+    // //           }
+    // //           retentionTimes: [
+    // //             '2019-11-07T07:00:00Z'
+    // //           ]
+    // //         }
+    // //         monthlySchedule: {
+    // //           retentionDuration: {
+    // //             count: 60
+    // //             durationType: 'Months'
+    // //           }
+    // //           retentionScheduleFormatType: 'Weekly'
+    // //           retentionScheduleWeekly: {
+    // //             daysOfTheWeek: [
+    // //               'Sunday'
+    // //             ]
+    // //             weeksOfTheMonth: [
+    // //               'First'
+    // //             ]
+    // //           }
+    // //           retentionTimes: [
+    // //             '2019-11-07T07:00:00Z'
+    // //           ]
+    // //         }
+    // //         retentionPolicyType: 'LongTermRetentionPolicy'
+    // //         weeklySchedule: {
+    // //           daysOfTheWeek: [
+    // //             'Sunday'
+    // //           ]
+    // //           retentionDuration: {
+    // //             count: 12
+    // //             durationType: 'Weeks'
+    // //           }
+    // //           retentionTimes: [
+    // //             '2019-11-07T07:00:00Z'
+    // //           ]
+    // //         }
+    // //         yearlySchedule: {
+    // //           monthsOfYear: [
+    // //             'January'
+    // //           ]
+    // //           retentionDuration: {
+    // //             count: 10
+    // //             durationType: 'Years'
+    // //           }
+    // //           retentionScheduleFormatType: 'Weekly'
+    // //           retentionScheduleWeekly: {
+    // //             daysOfTheWeek: [
+    // //               'Sunday'
+    // //             ]
+    // //             weeksOfTheMonth: [
+    // //               'First'
+    // //             ]
+    // //           }
+    // //           retentionTimes: [
+    // //             '2019-11-07T07:00:00Z'
+    // //           ]
+    // //         }
+    // //       }
+    // //       schedulePolicy: {
+    // //         schedulePolicyType: 'SimpleSchedulePolicy'
+    // //         scheduleRunFrequency: 'Daily'
+    // //         scheduleRunTimes: [
+    // //           '2019-11-07T07:00:00Z'
+    // //         ]
+    // //         scheduleWeeklyFrequency: 0
+    // //       }
+    // //       timeZone: 'UTC'
+    // //     }
+    // //   }
+    // //   {
+    // //     name: 'sqlpolicy'
+    // //     properties: {
+    // //       backupManagementType: 'AzureWorkload'
+    // //       protectedItemsCount: 0
+    // //       settings: {
+    // //         isCompression: true
+    // //         issqlcompression: true
+    // //         timeZone: 'UTC'
+    // //       }
+    // //       subProtectionPolicy: [
+    // //         {
+    // //           policyType: 'Full'
+    // //           retentionPolicy: {
+    // //             monthlySchedule: {
+    // //               retentionDuration: {
+    // //                 count: 60
+    // //                 durationType: 'Months'
+    // //               }
+    // //               retentionScheduleFormatType: 'Weekly'
+    // //               retentionScheduleWeekly: {
+    // //                 daysOfTheWeek: [
+    // //                   'Sunday'
+    // //                 ]
+    // //                 weeksOfTheMonth: [
+    // //                   'First'
+    // //                 ]
+    // //               }
+    // //               retentionTimes: [
+    // //                 '2019-11-07T22:00:00Z'
+    // //               ]
+    // //             }
+    // //             retentionPolicyType: 'LongTermRetentionPolicy'
+    // //             weeklySchedule: {
+    // //               daysOfTheWeek: [
+    // //                 'Sunday'
+    // //               ]
+    // //               retentionDuration: {
+    // //                 count: 104
+    // //                 durationType: 'Weeks'
+    // //               }
+    // //               retentionTimes: [
+    // //                 '2019-11-07T22:00:00Z'
+    // //               ]
+    // //             }
+    // //             yearlySchedule: {
+    // //               monthsOfYear: [
+    // //                 'January'
+    // //               ]
+    // //               retentionDuration: {
+    // //                 count: 10
+    // //                 durationType: 'Years'
+    // //               }
+    // //               retentionScheduleFormatType: 'Weekly'
+    // //               retentionScheduleWeekly: {
+    // //                 daysOfTheWeek: [
+    // //                   'Sunday'
+    // //                 ]
+    // //                 weeksOfTheMonth: [
+    // //                   'First'
+    // //                 ]
+    // //               }
+    // //               retentionTimes: [
+    // //                 '2019-11-07T22:00:00Z'
+    // //               ]
+    // //             }
+    // //           }
+    // //           schedulePolicy: {
+    // //             schedulePolicyType: 'SimpleSchedulePolicy'
+    // //             scheduleRunDays: [
+    // //               'Sunday'
+    // //             ]
+    // //             scheduleRunFrequency: 'Weekly'
+    // //             scheduleRunTimes: [
+    // //               '2019-11-07T22:00:00Z'
+    // //             ]
+    // //             scheduleWeeklyFrequency: 0
+    // //           }
+    // //         }
+    // //         {
+    // //           policyType: 'Differential'
+    // //           retentionPolicy: {
+    // //             retentionDuration: {
+    // //               count: 30
+    // //               durationType: 'Days'
+    // //             }
+    // //             retentionPolicyType: 'SimpleRetentionPolicy'
+    // //           }
+    // //           schedulePolicy: {
+    // //             schedulePolicyType: 'SimpleSchedulePolicy'
+    // //             scheduleRunDays: [
+    // //               'Monday'
+    // //             ]
+    // //             scheduleRunFrequency: 'Weekly'
+    // //             scheduleRunTimes: [
+    // //               '2017-03-07T02:00:00Z'
+    // //             ]
+    // //             scheduleWeeklyFrequency: 0
+    // //           }
+    // //         }
+    // //         {
+    // //           policyType: 'Log'
+    // //           retentionPolicy: {
+    // //             retentionDuration: {
+    // //               count: 15
+    // //               durationType: 'Days'
+    // //             }
+    // //             retentionPolicyType: 'SimpleRetentionPolicy'
+    // //           }
+    // //           schedulePolicy: {
+    // //             scheduleFrequencyInMins: 120
+    // //             schedulePolicyType: 'LogSchedulePolicy'
+    // //           }
+    // //         }
+    // //       ]
+    // //       workLoadType: 'SQLDataBase'
+    // //     }
+    // //   }
+    // //   {
+    // //     name: 'filesharepolicy'
+    // //     properties: {
+    // //       backupManagementType: 'AzureStorage'
+    // //       protectedItemsCount: 0
+    // //       retentionPolicy: {
+    // //         dailySchedule: {
+    // //           retentionDuration: {
+    // //             count: 30
+    // //             durationType: 'Days'
+    // //           }
+    // //           retentionTimes: [
+    // //             '2019-11-07T04:30:00Z'
+    // //           ]
+    // //         }
+    // //         retentionPolicyType: 'LongTermRetentionPolicy'
+    // //       }
+    // //       schedulePolicy: {
+    // //         schedulePolicyType: 'SimpleSchedulePolicy'
+    // //         scheduleRunFrequency: 'Daily'
+    // //         scheduleRunTimes: [
+    // //           '2019-11-07T04:30:00Z'
+    // //         ]
+    // //         scheduleWeeklyFrequency: 0
+    // //       }
+    // //       timeZone: 'UTC'
+    // //       workloadType: 'AzureFileShare'
+    // //     }
+    // //   }
+    // // ]
+    // // backupStorageConfig: {
+    // //   crossRegionRestoreFlag: true
+    // //   storageModelType: 'GeoRedundant'
+    // // }
+    // // replicationAlertSettings: {
+    // //   customEmailAddresses: [
+    // //     'test.user@testcompany.com'
+    // //   ]
+    // //   locale: 'en-US'
+    // //   sendToOwners: 'Send'
+    // // }
+    // diagnosticLogsRetentionInDays: 7
+    // diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    // diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    // diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    // diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    // lock: 'CanNotDelete'
+    // privateEndpoints: [
     //   {
-    //     name: 'VMpolicy'
-    //     properties: {
-    //       backupManagementType: 'AzureIaasVM'
-    //       instantRPDetails: {}
-    //       instantRpRetentionRangeInDays: 2
-    //       protectedItemsCount: 0
-    //       retentionPolicy: {
-    //         dailySchedule: {
-    //           retentionDuration: {
-    //             count: 180
-    //             durationType: 'Days'
-    //           }
-    //           retentionTimes: [
-    //             '2019-11-07T07:00:00Z'
-    //           ]
-    //         }
-    //         monthlySchedule: {
-    //           retentionDuration: {
-    //             count: 60
-    //             durationType: 'Months'
-    //           }
-    //           retentionScheduleFormatType: 'Weekly'
-    //           retentionScheduleWeekly: {
-    //             daysOfTheWeek: [
-    //               'Sunday'
-    //             ]
-    //             weeksOfTheMonth: [
-    //               'First'
-    //             ]
-    //           }
-    //           retentionTimes: [
-    //             '2019-11-07T07:00:00Z'
-    //           ]
-    //         }
-    //         retentionPolicyType: 'LongTermRetentionPolicy'
-    //         weeklySchedule: {
-    //           daysOfTheWeek: [
-    //             'Sunday'
-    //           ]
-    //           retentionDuration: {
-    //             count: 12
-    //             durationType: 'Weeks'
-    //           }
-    //           retentionTimes: [
-    //             '2019-11-07T07:00:00Z'
-    //           ]
-    //         }
-    //         yearlySchedule: {
-    //           monthsOfYear: [
-    //             'January'
-    //           ]
-    //           retentionDuration: {
-    //             count: 10
-    //             durationType: 'Years'
-    //           }
-    //           retentionScheduleFormatType: 'Weekly'
-    //           retentionScheduleWeekly: {
-    //             daysOfTheWeek: [
-    //               'Sunday'
-    //             ]
-    //             weeksOfTheMonth: [
-    //               'First'
-    //             ]
-    //           }
-    //           retentionTimes: [
-    //             '2019-11-07T07:00:00Z'
-    //           ]
-    //         }
-    //       }
-    //       schedulePolicy: {
-    //         schedulePolicyType: 'SimpleSchedulePolicy'
-    //         scheduleRunFrequency: 'Daily'
-    //         scheduleRunTimes: [
-    //           '2019-11-07T07:00:00Z'
-    //         ]
-    //         scheduleWeeklyFrequency: 0
-    //       }
-    //       timeZone: 'UTC'
-    //     }
-    //   }
-    //   {
-    //     name: 'sqlpolicy'
-    //     properties: {
-    //       backupManagementType: 'AzureWorkload'
-    //       protectedItemsCount: 0
-    //       settings: {
-    //         isCompression: true
-    //         issqlcompression: true
-    //         timeZone: 'UTC'
-    //       }
-    //       subProtectionPolicy: [
-    //         {
-    //           policyType: 'Full'
-    //           retentionPolicy: {
-    //             monthlySchedule: {
-    //               retentionDuration: {
-    //                 count: 60
-    //                 durationType: 'Months'
-    //               }
-    //               retentionScheduleFormatType: 'Weekly'
-    //               retentionScheduleWeekly: {
-    //                 daysOfTheWeek: [
-    //                   'Sunday'
-    //                 ]
-    //                 weeksOfTheMonth: [
-    //                   'First'
-    //                 ]
-    //               }
-    //               retentionTimes: [
-    //                 '2019-11-07T22:00:00Z'
-    //               ]
-    //             }
-    //             retentionPolicyType: 'LongTermRetentionPolicy'
-    //             weeklySchedule: {
-    //               daysOfTheWeek: [
-    //                 'Sunday'
-    //               ]
-    //               retentionDuration: {
-    //                 count: 104
-    //                 durationType: 'Weeks'
-    //               }
-    //               retentionTimes: [
-    //                 '2019-11-07T22:00:00Z'
-    //               ]
-    //             }
-    //             yearlySchedule: {
-    //               monthsOfYear: [
-    //                 'January'
-    //               ]
-    //               retentionDuration: {
-    //                 count: 10
-    //                 durationType: 'Years'
-    //               }
-    //               retentionScheduleFormatType: 'Weekly'
-    //               retentionScheduleWeekly: {
-    //                 daysOfTheWeek: [
-    //                   'Sunday'
-    //                 ]
-    //                 weeksOfTheMonth: [
-    //                   'First'
-    //                 ]
-    //               }
-    //               retentionTimes: [
-    //                 '2019-11-07T22:00:00Z'
-    //               ]
-    //             }
-    //           }
-    //           schedulePolicy: {
-    //             schedulePolicyType: 'SimpleSchedulePolicy'
-    //             scheduleRunDays: [
-    //               'Sunday'
-    //             ]
-    //             scheduleRunFrequency: 'Weekly'
-    //             scheduleRunTimes: [
-    //               '2019-11-07T22:00:00Z'
-    //             ]
-    //             scheduleWeeklyFrequency: 0
-    //           }
-    //         }
-    //         {
-    //           policyType: 'Differential'
-    //           retentionPolicy: {
-    //             retentionDuration: {
-    //               count: 30
-    //               durationType: 'Days'
-    //             }
-    //             retentionPolicyType: 'SimpleRetentionPolicy'
-    //           }
-    //           schedulePolicy: {
-    //             schedulePolicyType: 'SimpleSchedulePolicy'
-    //             scheduleRunDays: [
-    //               'Monday'
-    //             ]
-    //             scheduleRunFrequency: 'Weekly'
-    //             scheduleRunTimes: [
-    //               '2017-03-07T02:00:00Z'
-    //             ]
-    //             scheduleWeeklyFrequency: 0
-    //           }
-    //         }
-    //         {
-    //           policyType: 'Log'
-    //           retentionPolicy: {
-    //             retentionDuration: {
-    //               count: 15
-    //               durationType: 'Days'
-    //             }
-    //             retentionPolicyType: 'SimpleRetentionPolicy'
-    //           }
-    //           schedulePolicy: {
-    //             scheduleFrequencyInMins: 120
-    //             schedulePolicyType: 'LogSchedulePolicy'
-    //           }
-    //         }
+    //     privateDnsZoneGroup: {
+    //       privateDNSResourceIds: [
+    //         resourceGroupResources.outputs.privateDNSResourceId
     //       ]
-    //       workLoadType: 'SQLDataBase'
     //     }
-    //   }
-    //   {
-    //     name: 'filesharepolicy'
-    //     properties: {
-    //       backupManagementType: 'AzureStorage'
-    //       protectedItemsCount: 0
-    //       retentionPolicy: {
-    //         dailySchedule: {
-    //           retentionDuration: {
-    //             count: 30
-    //             durationType: 'Days'
-    //           }
-    //           retentionTimes: [
-    //             '2019-11-07T04:30:00Z'
-    //           ]
-    //         }
-    //         retentionPolicyType: 'LongTermRetentionPolicy'
-    //       }
-    //       schedulePolicy: {
-    //         schedulePolicyType: 'SimpleSchedulePolicy'
-    //         scheduleRunFrequency: 'Daily'
-    //         scheduleRunTimes: [
-    //           '2019-11-07T04:30:00Z'
-    //         ]
-    //         scheduleWeeklyFrequency: 0
-    //       }
-    //       timeZone: 'UTC'
-    //       workloadType: 'AzureFileShare'
-    //     }
+    //     service: 'AzureSiteRecovery'
+    //     subnetResourceId: resourceGroupResources.outputs.subnetResourceId
     //   }
     // ]
-    // backupStorageConfig: {
-    //   crossRegionRestoreFlag: true
-    //   storageModelType: 'GeoRedundant'
-    // }
-    // replicationAlertSettings: {
-    //   customEmailAddresses: [
-    //     'test.user@testcompany.com'
-    //   ]
-    //   locale: 'en-US'
-    //   sendToOwners: 'Send'
-    // }
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    lock: 'CanNotDelete'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
-          ]
-        }
-        service: 'AzureSiteRecovery'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-      }
-    ]
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-    }
-    // monitoringSettings: {
-    //   azureMonitorAlertSettings: {
-    //     alertsForAllJobFailures: 'Enabled'
+    // roleAssignments: [
+    //   {
+    //     roleDefinitionIdOrName: 'Reader'
+    //     principalIds: [
+    //       resourceGroupResources.outputs.managedIdentityPrincipalId
+    //     ]
+    //     principalType: 'ServicePrincipal'
     //   }
-    //   classicAlertSettings: {
-    //     alertsForCriticalOperations: 'Enabled'
-    //   }
+    // ]
+    // systemAssignedIdentity: true
+    // userAssignedIdentities: {
+    //   '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     // }
-    // securitySettings: {
-    //   immutabilitySettings: {
-    //     state: 'Unlocked'
-    //   }
-    // }
+    // // monitoringSettings: {
+    // //   azureMonitorAlertSettings: {
+    // //     alertsForAllJobFailures: 'Enabled'
+    // //   }
+    // //   classicAlertSettings: {
+    // //     alertsForCriticalOperations: 'Enabled'
+    // //   }
+    // // }
+    // // securitySettings: {
+    // //   immutabilitySettings: {
+    // //     state: 'Unlocked'
+    // //   }
+    // // }
   }
 }
