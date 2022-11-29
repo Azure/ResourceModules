@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.Insights/scheduledQueryRules/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

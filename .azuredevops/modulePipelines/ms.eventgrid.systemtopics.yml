@@ -24,7 +24,6 @@ trigger:
       - '/modules/Microsoft.EventGrid/systemTopics/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
       - '/**/*.md'
 
 variables:

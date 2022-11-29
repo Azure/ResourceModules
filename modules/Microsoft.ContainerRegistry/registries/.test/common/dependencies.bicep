@@ -28,7 +28,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.azurecr.io'
+    name: 'privatelink${environment().suffixes.acrLoginServer}'
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {

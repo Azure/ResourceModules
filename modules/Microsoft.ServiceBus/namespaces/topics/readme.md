@@ -41,7 +41,7 @@ This module deploys a topic for a service bus namespace.
 | `defaultMessageTimeToLive` | string | `'P14D'` |  | ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. |
 | `duplicateDetectionHistoryTimeWindow` | string | `'PT10M'` |  | ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. |
 | `enableBatchedOperations` | bool | `True` |  | Value that indicates whether server-side batched operations are enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableExpress` | bool | `False` |  | A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage. |
 | `enablePartitioning` | bool | `False` |  | A value that indicates whether the topic is to be partitioned across multiple message brokers. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |

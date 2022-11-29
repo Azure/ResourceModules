@@ -31,7 +31,7 @@ With this module you can create role definitions on a resource group level
 | `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `description` | string | `''` | Description of the custom RBAC role to be created. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `notActions` | array | `[]` | List of denied actions. |
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `resourceGroupName` | string | `[resourceGroup().name]` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |

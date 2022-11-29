@@ -24,6 +24,13 @@ variables:
   tokenSuffix: '>>'
 
   ######################################
+  # Agent settings
+  ######################################
+
+  vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
+  poolName: '' # Use this for self-hosted agents
+
+  ######################################
   # Common folders and file paths
   ######################################
 
@@ -58,11 +65,9 @@ variables:
   ###########################################################################################################################
 
   ######################################
-  # Agent settings
+  # Connection settings
   ######################################
 
-  vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
-  poolName: '' # Use this for self-hosted agents
   serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ######################################

@@ -181,11 +181,11 @@ function Set-ParametersSection {
             # Check for local readme references
             if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f $parameter.name, $parameter.type
+                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
                 }
             } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f $parameter.name.TrimEnd('Obj'), $parameter.type
+                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
                 }
             } else {
                 $type = $parameter.type
@@ -823,21 +823,21 @@ function ConvertTo-FormattedBicep {
     # [2/4] Remove any JSON specific formatting
     $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
     if ($templateParameterObject -ne '{}') {
-        $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+        $contentInBicepFormat = $templateParameterObject -replace "'", "\'" # Update any [ "field": "[[concat('tags[', parameters('tagName'), ']')]"] to [ "field": "[[concat(\'tags[\', parameters(\'tagName\'), \']\')]"]
+        $contentInBicepFormat = $contentInBicepFormat -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
         $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
         $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
         $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
-
         $bicepParamsArray = $contentInBicepFormat -split '\n'
         $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
     }
 
     # [3/4] Format params with indent
-    $BicepParams = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
+    $bicepParams = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
 
     # [4/4]  Add comment where required & optional parameters start
     $splitInputObject = @{
-        BicepParams            = $BicepParams
+        BicepParams            = $bicepParams
         RequiredParametersList = $RequiredParametersList
         AllParametersList      = $JSONParametersWithoutValue.Keys
     }
@@ -1089,10 +1089,10 @@ function Set-DeploymentExamplesSection {
             $isParameterFile = $rawContentHashtable.'$schema' -like '*deploymentParameters*'
             if (-not $isParameterFile) {
                 # Case 1: Uses deployment test file (instead of parameter file).
-                # [1/3]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
+                # [1/4]  Need to extract parameters. The target is to get an object which 1:1 represents a classic JSON-Parameter file (aside from KeyVault references)
                 $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
-                # [2/3] Build the full ARM-JSON parameter file
+                # [2/4] Build the full ARM-JSON parameter file
                 $jsonParameterContent = [ordered]@{
                     '$schema'      = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#'
                     contentVersion = '1.0.0.0'
@@ -1100,14 +1100,63 @@ function Set-DeploymentExamplesSection {
                 }
                 $jsonParameterContent = ($jsonParameterContent | ConvertTo-Json -Depth 99).TrimEnd()
 
-                # [3/3]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
+                # [3/4]  Remove 'externalResourceReferences' that are generated for Bicep's 'existing' resource references. Removing them will make the file more readable
                 $jsonParameterContentArray = $jsonParameterContent -split '\n'
                 foreach ($row in ($jsonParameterContentArray | Where-Object { $_ -like '*reference(extensionResourceId*' })) {
-                    $expectedValue = ([regex]::Match($row, '.+\[reference\(extensionResourceId.+\.(.+)\.value\]"')).Captures.Groups[1].Value
-                    $toReplaceValue = ([regex]::Match($row, '"(\[reference\(extensionResourceId.+)"')).Captures.Groups[1].Value
+                    if ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+)\..*\].*"') {
+                        # e.g. "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-diagnosticDependencies', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.logAnalyticsWorkspaceResourceId.value]"
+                        # e.g. "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
+                        $expectedValue = $matches[1]
+                    } elseif ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+).*\].*"') {
+                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        $expectedValue = $matches[1]
+                    } else {
+                        throw "Unhandled case [$row] in file [$testFilePath]"
+                    }
+
+                    $toReplaceValue = ([regex]::Match($row, '"(\[.+)"')).Captures.Groups[1].Value
 
                     $jsonParameterContent = $jsonParameterContent.Replace($toReplaceValue, ('<{0}>' -f $expectedValue))
                 }
+
+                # [4/4] Removing template specific functions
+                $jsonParameterContentArray = $jsonParameterContent -split '\n'
+                for ($index = 0; $index -lt $jsonParameterContentArray.Count; $index++) {
+                    if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
+                        # e.g.
+                        # "policyAssignmentId": {
+                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
+                        $prefix = $matches[1]
+
+                        $headerIndex = $index
+                        while (($jsonParameterContentArray[$headerIndex] -notmatch '.+": (\{|\[)+' -or $jsonParameterContentArray[$headerIndex] -like '*"value"*') -and $headerIndex -gt -1) {
+                            $headerIndex--
+                        }
+
+                        $value = (($jsonParameterContentArray[$headerIndex] -split ':')[0] -replace '"').Trim()
+                        $jsonParameterContentArray[$index] = ('{0}: "<{1}>"{2}' -f $prefix, $value, ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"([\w]+)": "\[.+\]"') {
+                        # e.g. "name": "[format('{0}01', parameters('serviceShort'))]"
+                        $jsonParameterContentArray[$index] = ('{0}"{1}": "<{1}>"{2}' -f $matches[1], $matches[2], ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
+                    } elseif ($jsonParameterContentArray[$index] -match '(\s*)"\[.+\]"') {
+                        # -and $jsonParameterContentArray[$index - 1] -like '*"value"*') {
+                        # e.g.
+                        # "policyDefinitionReferenceIds": {
+                        #  "value": [
+                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        $prefix = $matches[1]
+
+                        $headerIndex = $index
+                        while (($jsonParameterContentArray[$headerIndex] -notmatch '.+": (\{|\[)+' -or $jsonParameterContentArray[$headerIndex] -like '*"value"*') -and $headerIndex -gt -1) {
+                            $headerIndex--
+                        }
+
+                        $value = (($jsonParameterContentArray[$headerIndex] -split ':')[0] -replace '"').Trim()
+
+                        $jsonParameterContentArray[$index] = ('{0}"<{1}>"{2}' -f $prefix, $value, ($jsonParameterContentArray[$index].Trim() -like '*,' ? ',' : ''))
+                    }
+                }
+                $jsonParameterContent = $jsonParameterContentArray | Out-String
             } else {
                 # Case 2: Uses ARM-JSON parameter file
                 $jsonParameterContent = $rawContent.TrimEnd()
@@ -1202,7 +1251,7 @@ function Set-DeploymentExamplesSection {
                     ''
                     '```bicep',
                     $extendedKeyVaultReferences,
-                    "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
+                    "module $resourceType 'ts/modules:$(($FullModuleIdentifier -replace '\\|\/', '.').ToLower()):1.0.0 = {"
                     "  name: '`${uniqueString(deployment().name)}-$resourceTypeUpper'"
                     '  params: {'
                     $bicepExample.TrimEnd(),
