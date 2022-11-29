@@ -305,23 +305,23 @@ module testDeployment '../../deploy.bicep' = {
     // //   locale: 'en-US'
     // //   sendToOwners: 'Send'
     // // }
-    // diagnosticLogsRetentionInDays: 7
-    // diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    // diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    // diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    // diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    // lock: 'CanNotDelete'
-    // privateEndpoints: [
-    //   {
-    //     privateDnsZoneGroup: {
-    //       privateDNSResourceIds: [
-    //         resourceGroupResources.outputs.privateDNSResourceId
-    //       ]
-    //     }
-    //     service: 'AzureSiteRecovery'
-    //     subnetResourceId: resourceGroupResources.outputs.subnetResourceId
-    //   }
-    // ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    lock: 'CanNotDelete'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            resourceGroupResources.outputs.privateDNSResourceId
+          ]
+        }
+        service: 'AzureSiteRecovery'
+        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+      }
+    ]
     // roleAssignments: [
     //   {
     //     roleDefinitionIdOrName: 'Reader'
