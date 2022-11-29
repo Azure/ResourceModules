@@ -574,22 +574,24 @@ stages:
 
 ### Azure Artifacts
 
-1. The _public_ **Azure/ResourceModules** repository is being fetched and could potentially be used to leverage utilities but is not necessary since only Azure Artifacts and parameter files from this local repository are used.
-2. This sample is creating a Resource Group, an NSG, a Route Table and a Virtual Network.
-   1. Job: **WhatIf**
-      1. Verify deployment.
-   2. Job: **Deploy multi-repo solution**
-     1. Checkout 'Azure/ResourceModules' repo in a nested folder `ResourceModules`
-     2. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
-     3. Download specific Modules Artifacts.
-     4. Deploy resources in target Azure subscription using downloaded Artifacts.
+The below example using _Azure DevOps Artifacts_ assumes that each CARML module was published as an Universal Package into the Azure DevOps organization ahead of time.
 
+Each step in the pipeline has to carry out the same 2 tasks:
+1. Download the artifact (based on the inputs, which artifact)
+1. Deploy the artifact using a provided parameter file
+
+As these 2 steps always remain the same, no matter the deployment, they are abstracted into the below 'Helper Template'.
+
+The 'Main Template' after then references this template 3 times to deploy
+- A 'Network Security Group'
+- A 'Route Table'
+- A 'Virtual Network'
 
 <details>
 <summary>Helper Template(s)</summary>
 
 ```YAML
-# Helper Template
+# Helper Template 'pipeline.jobs.artifact.deploy.yml'
 parameters:
   moduleName:
   moduleVersion:
@@ -660,7 +662,7 @@ variables:
   - template: pipeline.variables.yml
 
 jobs:
-- template: /.global/PipelineTemplates/pipeline.jobs.artifact.deploy.yml
+- template: pipeline.jobs.artifact.deploy.yml
   parameters:
     displayName: 'Deploy Network Security Group'
     moduleName: 'NetworkSecurityGroup'
@@ -669,7 +671,7 @@ jobs:
     dependsOn:
     - Deploy_ResourceGroup
 
-- template: /.global/PipelineTemplates/pipeline.jobs.artifact.deploy.yml
+- template: pipeline.jobs.artifact.deploy.yml
   parameters:
     displayName: 'Deploy Route Table'
     moduleName: 'RouteTable'
@@ -678,7 +680,7 @@ jobs:
     dependsOn:
     - Deploy_ResourceGroup
 
-- template: /.global/PipelineTemplates/pipeline.jobs.artifact.deploy.yml
+- template: pipeline.jobs.artifact.deploy.yml
   parameters:
     displayName: 'Deploy Virtual Network'
     moduleName: 'VirtualNetwork'
