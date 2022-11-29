@@ -107,7 +107,6 @@ jobs:
         with:
           templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
           location: '${{ env.location }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
