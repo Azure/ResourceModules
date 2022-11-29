@@ -35,7 +35,6 @@ With this module you can create policy definitions on a subscription level.
 | `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription. |
 
 
 ## Outputs
