@@ -330,9 +330,10 @@ var accountSasProperties = {
   signedResourceTypes: 'o'
   signedProtocol: 'https'
 }
-// change SystemAssignedIdentity to True if AADJoin is enabled.
-var varsystemAssignedIdentity = extensionAadJoinConfig.enabled ? true : systemAssignedIdentity
-var identityType = varsystemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+@description('change SystemAssignedIdentity to True if AADJoin is enabled.')
+var systemAssignedIdentityVar = extensionAadJoinConfig.enabled ? true : systemAssignedIdentity
+var identityType = systemAssignedIdentityVar ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -656,6 +657,7 @@ module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/p
   }
   scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [
+    vm_aadJoinExtension
     vm_domainJoinExtension
     vm_microsoftMonitoringAgentExtension
     vm_microsoftAntiMalwareExtension
