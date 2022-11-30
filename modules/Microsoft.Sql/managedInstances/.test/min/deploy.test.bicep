@@ -51,7 +51,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-${serviceShort}'
+    name: '<<namePrefix>>-${serviceShort}-001'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     subnetId: resourceGroupResources.outputs.subnetResourceId

@@ -300,7 +300,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   params: {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmicom'
+    name: '<<namePrefix>>-sqlmicom-001'
     subnetId: '<subnetId>'
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
@@ -394,7 +394,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmicom"
+      "value": "<<namePrefix>>-sqlmicom-001"
     },
     "subnetId": {
       "value": "<subnetId>"
@@ -544,7 +544,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmimin'
+    name: '<<namePrefix>>-sqlmimin-001'
     subnetId: '<subnetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -572,7 +572,7 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmimin"
+      "value": "<<namePrefix>>-sqlmimin-001"
     },
     "subnetId": {
       "value": "<subnetId>"
