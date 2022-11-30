@@ -102,21 +102,21 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-Invoke-InnerDeployment -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Invoke-TemplateDeploymentInner -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Invoke-InnerDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Invoke-TemplateDeploymentInner -templateFilePath 'C:/KeyVault/deploy.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the deploy.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Invoke-InnerDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -location 'WestEurope'
+Invoke-TemplateDeploymentInner -templateFilePath 'C:/ResourceGroup/deploy.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module without a parameter file in location 'WestEurope'
 #>
-function Invoke-InnerDeployment {
+function Invoke-TemplateDeploymentInner {
 
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -450,18 +450,18 @@ function New-TemplateDeployment {
                 $deploymentResult = [System.Collections.ArrayList]@()
                 foreach ($path in $parameterFilePath) {
                     if ($PSCmdlet.ShouldProcess("Deployment for parameter file [$parameterFilePath]", 'Trigger')) {
-                        $deploymentResult += Invoke-InnerDeployment @deploymentInputObject -parameterFilePath $path
+                        $deploymentResult += Invoke-TemplateDeploymentInner @deploymentInputObject -parameterFilePath $path
                     }
                 }
                 return $deploymentResult
             } else {
                 if ($PSCmdlet.ShouldProcess("Deployment for single parameter file [$parameterFilePath]", 'Trigger')) {
-                    return Invoke-InnerDeployment @deploymentInputObject -parameterFilePath $parameterFilePath
+                    return Invoke-TemplateDeploymentInner @deploymentInputObject -parameterFilePath $parameterFilePath
                 }
             }
         } else {
             if ($PSCmdlet.ShouldProcess('Deployment without parameter file', 'Trigger')) {
-                return Invoke-InnerDeployment @deploymentInputObject
+                return Invoke-TemplateDeploymentInner @deploymentInputObject
             }
         }
     }
