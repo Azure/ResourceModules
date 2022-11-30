@@ -68,4 +68,4 @@ output name string = roleDefinition.name
 output scope string = subscription().id
 
 @sys.description('The resource ID of the Role Definition.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+output resourceId string = roleDefinition.id

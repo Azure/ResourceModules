@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Network/virtualNetworks/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

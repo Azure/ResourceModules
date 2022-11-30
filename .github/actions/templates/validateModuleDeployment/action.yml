@@ -16,7 +16,6 @@
 ##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
 ##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
-##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                            |
 ##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
 ##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
 ##   | customTokens              | false    | ''      | Additional token pairs in json format.                | '{"tokenName":"tokenValue"}'                                               |
@@ -35,9 +34,6 @@ inputs:
   location:
     description: 'The location to use for deployment'
     required: true
-  resourceGroupName:
-    description: 'The resource group to deploy to'
-    required: false
   subscriptionId:
     description: 'The subscription ID to deploy to'
     required: false
@@ -128,7 +124,6 @@ runs:
 
           # Add enforced tokens
           $ConvertTokensInputs.Tokens += @{
-            resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
@@ -180,7 +175,6 @@ runs:
           # --------------------------
           # Fetching parameters
           $location = '${{ inputs.location }}'
-          $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $subscriptionId = '${{ inputs.subscriptionId }}'
           $managementGroupId = '${{ inputs.managementGroupId }}'
 
@@ -201,7 +195,6 @@ runs:
           $functionInput = @{
             TemplateFilePath     = $moduleTestFilePath
             Location             = $location
-            ResourceGroupName    = $resourceGroupName
             SubscriptionId       = $subscriptionId
             ManagementGroupId    = $managementGroupId
             AdditionalParameters = @{}
@@ -238,7 +231,6 @@ runs:
           # Prepare general parameters
           # --------------------------
           $location = '${{ inputs.location }}'
-          $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $subscriptionId = '${{ inputs.subscriptionId }}'
           $managementGroupId = '${{ inputs.managementGroupId }}'
 
@@ -259,7 +251,6 @@ runs:
           $functionInput = @{
             TemplateFilePath     = $moduleTestFilePath
             Location             = $location
-            ResourceGroupName    = $resourceGroupName
             SubscriptionId       = $subscriptionId
             ManagementGroupId    = $managementGroupId
             DoNotThrow           = $true
@@ -317,7 +308,6 @@ runs:
           $functionInput = @{
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-            ResourceGroupName = '${{ inputs.resourceGroupName }}'
             ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }

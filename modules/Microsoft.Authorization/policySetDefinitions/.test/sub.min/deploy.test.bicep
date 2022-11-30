@@ -30,7 +30,5 @@ module testDeployment '../../subscription/deploy.bicep' = {
         policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
       }
     ]
-    // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
   }
 }

@@ -30,9 +30,6 @@ param policyDefinitionReferenceIds array = []
 @sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.')
 param expiresOn string = ''
 
-@sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
-param subscriptionId string = subscription().subscriptionId
-
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
@@ -82,7 +79,7 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2022-07-01-pr
 output name string = policyExemption.name
 
 @sys.description('Policy Exemption resource ID.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyExemptions', policyExemption.name)
+output resourceId string = policyExemption.id
 
 @sys.description('Policy Exemption Scope.')
 output scope string = subscription().id

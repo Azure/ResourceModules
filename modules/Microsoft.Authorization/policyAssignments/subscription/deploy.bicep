@@ -110,7 +110,7 @@ output name string = policyAssignment.name
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
 @sys.description('Policy Assignment resource ID.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+output resourceId string = policyAssignment.id
 
 @sys.description('The location the resource was deployed into.')
 output location string = policyAssignment.location

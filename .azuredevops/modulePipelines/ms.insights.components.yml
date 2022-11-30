@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Insights/components/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

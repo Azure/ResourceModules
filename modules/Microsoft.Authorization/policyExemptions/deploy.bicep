@@ -83,7 +83,6 @@ module policyExemption_mg 'managementGroup/deploy.bicep' = if (empty(subscriptio
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: policyDefinitionReferenceIds
     expiresOn: expiresOn
-    managementGroupId: managementGroupId
     location: location
     assignmentScopeValidation: assignmentScopeValidation
     resourceSelectors: resourceSelectors
@@ -103,7 +102,6 @@ module policyExemption_sub 'subscription/deploy.bicep' = if (!empty(subscription
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: policyDefinitionReferenceIds
     expiresOn: expiresOn
-    subscriptionId: subscriptionId
     location: location
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -121,8 +119,6 @@ module policyExemption_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGrou
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: policyDefinitionReferenceIds
     expiresOn: expiresOn
-    subscriptionId: subscriptionId
-    resourceGroupName: resourceGroupName
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }

@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.NetApp/netAppAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

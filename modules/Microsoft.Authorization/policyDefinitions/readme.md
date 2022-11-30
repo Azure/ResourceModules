@@ -183,7 +183,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -263,9 +262,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -454,7 +450,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         type: 'String'
       }
     }
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -538,9 +533,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "type": "String"
         }
       }
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -585,7 +577,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         type: 'String'
       }
     }
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -635,9 +626,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "type": "String"
         }
       }
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }

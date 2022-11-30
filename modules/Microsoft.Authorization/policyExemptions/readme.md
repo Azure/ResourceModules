@@ -233,7 +233,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
@@ -294,9 +293,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "expiresOn": {
       "value": "2025-10-02T03:57:00Z"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -405,7 +401,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyDefinitionReferenceIds: [
       '<policyDefinitionReferenceId>'
     ]
-    resourceGroupName: '<resourceGroupName>'
     resourceSelectors: [
       {
         name: 'TemporaryMitigation'
@@ -419,7 +414,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         ]
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -472,9 +466,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         "<policyDefinitionReferenceId>"
       ]
     },
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
-    },
     "resourceSelectors": {
       "value": [
         {
@@ -489,9 +480,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
           ]
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -515,8 +503,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    resourceGroupName: '<resourceGroupName>'
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -543,12 +529,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -596,7 +576,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         ]
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -663,9 +642,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
           ]
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -689,7 +665,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -716,9 +691,6 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }

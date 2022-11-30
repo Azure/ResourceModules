@@ -255,6 +255,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    principalType: 'ServicePrincipal'
   }
 }
 ```
@@ -281,6 +282,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
     }
   }
 }
@@ -369,6 +373,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    principalType: 'ServicePrincipal'
     resourceGroupName: '<resourceGroupName>'
     subscriptionId: '<subscriptionId>'
   }
@@ -397,6 +402,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
     },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
@@ -487,6 +495,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    principalType: 'ServicePrincipal'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -514,6 +523,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
     },
     "subscriptionId": {
       "value": "<subscriptionId>"

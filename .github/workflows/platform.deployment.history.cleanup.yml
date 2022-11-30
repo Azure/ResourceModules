@@ -1,4 +1,4 @@
-name: '.Platform: Remove Deployments'
+name: '.Platform: Clean up deployment history'
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
         default: true # Note: This requires your service principal to have permissions on the management group scope.
       maxDeploymentRetentionInDays:
         type: string
-        description: 'The number of days to keep deployments with status [running] or [failed]'
+        description: 'The number of days to keep deployments with status [failed]' # 'Running' are always excluded
         required: false
         default: '14'
   schedule:
@@ -23,7 +23,7 @@ on:
 
 env:
   variablesPath: 'settings.yml'
-  workflowPath: '.github/workflows/platform.cleanup'
+  workflowPath: '.github/workflows/platform.deployment.history.cleanup.yml'
 
 jobs:
   ###########################
@@ -89,7 +89,7 @@ jobs:
         with:
           inlineScript: |
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeploymentHistory.ps1')
 
             $functionInput = @{
               SubscriptionId               = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
@@ -99,7 +99,7 @@ jobs:
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Clear-SubscriptionDeployment @functionInput
+            Clear-SubscriptionDeploymentHistory @functionInput
           azPSVersion: 'latest'
 
   job_cleanup_managementGroup_deployments:
@@ -143,7 +143,7 @@ jobs:
         with:
           inlineScript: |
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeploymentHistory.ps1')
 
             $functionInput = @{
               ManagementGroupId            = '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -153,5 +153,5 @@ jobs:
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Clear-ManagementGroupDeployment @functionInput
+            Clear-ManagementGroupDeploymentHistory @functionInput
           azPSVersion: 'latest'
