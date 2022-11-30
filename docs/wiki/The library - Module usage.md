@@ -7,6 +7,7 @@ This section provides a guideline on how to use the CARML Bicep modules.
 - [Deploy template](#deploy-template)
   - [PowerShell](#powershell)
   - [Azure CLI](#azure-cli)
+  - [As nested deployment](#as-nested-deployment)
 - [Orchestrate deployment](#orchestrate-deployment)
 ---
 
@@ -22,9 +23,10 @@ This sub-section gives you an example on how to deploy a template from your loca
 <summary><i>Resource Group</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
-- **Bicep:** `targetScope = 'resourceGroup'`
+- **Bicep:** `targetScope = 'resourceGroup'` or empty (as default)
 - **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"`
 
+Using parameter file
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
@@ -123,7 +125,7 @@ For more information, please refer to the official [Microsoft docs](https://docs
 <summary><i>Resource Group</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
-- **Bicep:** `targetScope = 'resourceGroup'`
+- **Bicep:** `targetScope = 'resourceGroup'` or empty (as default)
 - **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"`
 
 ```bash
@@ -216,6 +218,33 @@ az deployment tenant create @inputObject
 For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
 
 </details>
+
+# As nested deployment
+
+You can also reference modules in another template using the below syntax. To deploy this 'orchestration template' you can again use the commands described [above](#deploy-template). You can also find further information in the 'Template Orchestration' section of [Solution Creation](./Solution%20creation) site.
+
+```bicep
+// Using local reference
+module testDeployment 'ResourceModules/modules/Microsoft.KeyVaults/vaults/deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-example'
+  params: { ... }
+}
+
+// Using Template-Specs reference (with configuration file)
+module testDeployment 'ts/modules:microsoft.keyvaults.vaults:1.0.0' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-example'
+  params: { ... }
+}
+
+// Using Bicep reference
+module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/microsoft.keyvaults.vaults:1.0.0' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-example'
+  params: { ... }
+}
+```
 
 ---
 
