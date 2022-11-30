@@ -225,21 +225,21 @@ You can also reference modules in another template using the below syntax. To de
 
 ```bicep
 // Using local reference
-module testDeployment 'ResourceModules/modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module testDeployment 'ResourceModules/modules/Microsoft.KeyVaults/vaults/deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }
 }
 
 // Using Template-Specs reference (with configuration file)
-module testDeployment 'ts/modules:microsoft.resources.resourcegroups:1.0.0' = {
+module testDeployment 'ts/modules:microsoft.keyvaults.vaults:1.0.0' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }
 }
 
 // Using Bicep reference
-module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:1.0.0' = {
+module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/microsoft.keyvaults.vaults:1.0.0' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }
