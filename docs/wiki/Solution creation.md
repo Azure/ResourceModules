@@ -500,7 +500,7 @@ Below, you can find an example which makes use of multiple repositories to orche
 > The full source can be found here as a reference: [Litware/Platform](https://github.com/segraef/Platform/).
 
 Each deployment is its own pipeline job. This means, when triggered, each job performs the following actions:
-1.etching the _public_ **Azure/ResourceModules** repository for consuming Module into a nested folder `ResourceModules` of the main **Litware/Platform** repository (which in turn contains all parameters files to be used for deployments)
+1. Fetching the _public_ **Azure/ResourceModules** repository for consuming Module into a nested folder `ResourceModules` of the main **Litware/Platform** repository (which in turn contains all parameters files to be used for deployments)
 1. Checkout 'Litware/Platform' repository containing the parameter files in a nested folder - `Platform`
 1. Deploy resources in target Azure subscription
 
