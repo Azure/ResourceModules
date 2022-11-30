@@ -276,6 +276,9 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
     endIpAddress: firewallRule.endIpAddress
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    flexibleServer_databases
+  ]
 }]
 
 module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
@@ -287,6 +290,9 @@ module flexibleServer_configurations 'configurations/deploy.bicep' = [for (confi
     value: contains(configuration, 'value') ? configuration.value : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    flexibleServer_firewallRules
+  ]
 }]
 
 resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
