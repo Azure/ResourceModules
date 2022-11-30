@@ -1215,10 +1215,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         state: 'Unlocked'
       }
     }
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -1553,14 +1549,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         "immutabilitySettings": {
           "state": "Unlocked"
         }
-      }
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
