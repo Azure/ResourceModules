@@ -8,8 +8,8 @@ param name string
 ])
 param azureSkuTier string = 'Standard'
 
-@description('Required. Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable.')
-param vNetId string
+@description('Conditional. Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty.')
+param vNetId string = ''
 
 @description('Optional. The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet.')
 param azureFirewallSubnetPublicIpId string = ''
@@ -34,6 +34,12 @@ param natRuleCollections array = []
 
 @description('Optional. Resource ID of the Firewall Policy that should be attached.')
 param firewallPolicyId string = ''
+
+@description('Conditional. IP addresses associated with AzureFirewall. Must be set if `virtualHubId` is supplied.')
+param hubIPAddresses object = {}
+
+@description('Conditional. The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty.')
+param virtualHubId string = ''
 
 @allowed([
   'Alert'
@@ -143,7 +149,6 @@ var newPip = {
 
 var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
 
-
 var ipConfigurations = concat([
     {
       name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
@@ -186,7 +191,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a public ip address if one is not provided and the flag is true
-module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
+module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
@@ -227,11 +232,11 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   zones: length(zones) == 0 ? null : zones
   tags: tags
   properties: {
-    threatIntelMode: threatIntelMode
+    threatIntelMode: azureSkuName == 'AZFW_Hub' ? null : threatIntelMode
     firewallPolicy: empty(firewallPolicyId) ? null : {
       id: firewallPolicyId
     }
-    ipConfigurations: ipConfigurations
+    ipConfigurations: azureSkuName == 'AZFW_Hub' ? null : ipConfigurations
     sku: {
       name: azureSkuName
       tier: azureSkuTier

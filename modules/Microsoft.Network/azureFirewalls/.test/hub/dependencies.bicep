@@ -5,7 +5,7 @@ param virtualWanName string
 
 param virtualHubName string
 
-param firewallPolicieName string
+param firewallPolicyName string
 
 resource virtualWan 'Microsoft.Network/virtualWans@2021-08-01' = {
   name: virtualWanName
@@ -29,7 +29,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-08-01' = {
 }
 
 resource policy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
-  name: firewallPolicieName
+  name: firewallPolicyName
   location: location
   properties: {
     threatIntelMode: 'Alert'
@@ -40,4 +40,4 @@ resource policy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
 output virtualHubResourceId string = virtualHub.id
 
 @description('The resource ID of the created Firewall Policie.')
-output firewallPolicieResourceId string = policy.id
+output firewallPolicyResourceId string = policy.id
