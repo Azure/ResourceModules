@@ -1,13 +1,6 @@
 @description('Required. Name of the Azure Firewall.')
 param name string
 
-@description('Optional. Name of an Azure Firewall SKU.')
-@allowed([
-  'AZFW_VNet'
-  'AZFW_Hub'
-])
-param azureSkuName string = 'AZFW_VNet'
-
 @description('Optional. Tier of an Azure Firewall.')
 @allowed([
   'Standard'
@@ -147,6 +140,9 @@ var newPip = {
     id: publicIPAddress.outputs.resourceId
   } : null
 }
+
+var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
+
 
 var ipConfigurations = concat([
     {
