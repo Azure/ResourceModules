@@ -33,6 +33,7 @@
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `indexingPolicy` | object | `{object}` |  | Indexing policy of the container. |
 | `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning. |
 | `paths` | array | `[]` |  | List of paths using which data within the container can be partitioned. |
 | `tags` | object | `{object}` |  | Tags of the SQL Database resource. |
