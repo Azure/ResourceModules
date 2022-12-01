@@ -31,9 +31,9 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualWanName: 'dep-jpe-vwan-${serviceShort}'
-    virtualHubName: 'dep-jpe-vhub-${serviceShort}'
-    firewallPolicyName: 'dep-jpe-afwp-${serviceShort}'
+    virtualWanName: 'dep-<<namePrefix>>-vwan-${serviceShort}'
+    virtualHubName: 'dep-<<namePrefix>>-vhub-${serviceShort}'
+    firewallPolicyName: 'dep-<<namePrefix>>-afwp-${serviceShort}'
   }
 }
 
@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'jpe${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     firewallPolicyId: resourceGroupResources.outputs.firewallPolicyResourceId
     virtualHubId: resourceGroupResources.outputs.virtualHubResourceId
     hubIPAddresses: {
