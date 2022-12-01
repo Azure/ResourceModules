@@ -8,7 +8,7 @@ The template spec is set up if not already existing.
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
+Example: 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -27,7 +27,7 @@ Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
+Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a template spec in resource group 'artifacts-rg'.
 #>
@@ -56,7 +56,7 @@ function Publish-ModuleToTemplateSpec {
     }
 
     process {
-        $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
+        $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
         $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         #############################

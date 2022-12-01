@@ -4,7 +4,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -21,35 +21,20 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.networkwatchers.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/arm/Microsoft.Network/networkWatchers/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/networkWatchers/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/networkWatchers'
+    value: '/modules/Microsoft.Network/networkWatchers'
 
 stages:
-  - stage: Validation
-    displayName: Static validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-
-  - stage: Deployment
-    displayName: Deployment validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
-
-  - stage: Publishing
-    displayName: Publishing
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'

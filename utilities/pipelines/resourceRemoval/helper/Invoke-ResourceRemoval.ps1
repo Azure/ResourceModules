@@ -27,8 +27,7 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
-    Write-Verbose ('Resource ID [{0}]' -f $resourceId) -Verbose
-    Write-Verbose ('Resource Type [{0}]' -f $type) -Verbose
+    Write-Verbose ('Removing resource [{0}]' -f $resourceId) -Verbose
 
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
@@ -55,6 +54,14 @@ function Invoke-ResourceRemoval {
         }
         'Microsoft.KeyVault/vaults/accessPolicies' {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
+            break
+        }
+        'Microsoft.ServiceBus/namespaces/authorizationRules' {
+            if ((Split-Path $ResourceId '/')[-1] -eq 'RootManageSharedAccessKey') {
+                Write-Verbose ('Skip resource removal for type [{0}]. Reason: The Service Bus''s default authorization key [RootManageSharedAccessKey] cannot be removed.' -f $type) -Verbose
+            } else {
+                $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            }
             break
         }
         'Microsoft.Compute/diskEncryptionSets' {
@@ -88,7 +95,7 @@ function Invoke-ResourceRemoval {
             $idElem = $ResourceId.Split('/')
             $scope = $idElem[0..($idElem.Count - 5)] -join '/'
             $roleAssignmentsOnScope = Get-AzRoleAssignment -Scope $scope
-            $roleAssignmentsOnScope | Where-Object { $_.RoleAssignmentId -eq $ResourceId } | Remove-AzRoleAssignment
+            $null = $roleAssignmentsOnScope | Where-Object { $_.RoleAssignmentId -eq $ResourceId } | Remove-AzRoleAssignment
             break
         }
         'Microsoft.RecoveryServices/vaults' {

@@ -12,19 +12,19 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |=======================================================================================================================================================================================================|
-##   | Parameter                | Required | Default | Description                                                                                      | Example                                            |
-##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|----------------------------------------------------|
-##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'arm/Microsoft.ApiManagement/service/deploy.bicep' |
-##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                     |
-##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                       |
-##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'       |
-##   | templateSpecsDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to template specs                                     | 'true'                                             |
-##   | bicepRegistryName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to      | 'myacr'                                            |
-##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                     |
-##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                       |
-##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                             |
-##   |=======================================================================================================================================================================================================|
+##   |===========================================================================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
+##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/Microsoft.ApiManagement/service/deploy.bicep' |
+##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
+##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
+##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |
+##   | templateSpecsDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to template specs                                     | 'true'                                                 |
+##   | bicepRegistryName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to      | 'myacr'                                                |
+##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                         |
+##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                           |
+##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                                 |
+##   |===========================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
 name: 'Publishing'
@@ -68,7 +68,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -83,7 +83,7 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -98,7 +98,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Publish module to template specs"
+          Write-Output '::group::Publish module to template specs'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
@@ -116,7 +116,7 @@ runs:
 
           # Publish the modified child resources
           foreach ($ModuleToPublish in $ModulesToPublish) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
             $functionInput = @{
@@ -133,7 +133,7 @@ runs:
             Publish-ModuleToTemplateSpec @functionInput -Verbose
           }
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'
 
     - name: 'Publish module to private bicep registry'
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
@@ -142,7 +142,7 @@ runs:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output "::group::Publish module to private bicep registry"
+          Write-Output '::group::Publish module to private bicep registry'
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
@@ -160,7 +160,7 @@ runs:
 
           # Publish the modified child resources
           foreach ($ModuleToPublish in $ModulesToPublish) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
             $functionInput = @{
@@ -177,4 +177,4 @@ runs:
             Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
           }
 
-          Write-Output "::endgroup::"
+          Write-Output '::endgroup::'

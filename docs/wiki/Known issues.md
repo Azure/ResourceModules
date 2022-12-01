@@ -6,17 +6,13 @@ This section provides an overview of the most impactful limitations and known is
 
 - [Module specific](#module-specific)
   - [Microsoft.AAD/DomainServices](#microsoftaaddomainservices)
-  - [Microsoft.KubernetesConfiguration/extensions](#microsoftkubernetesconfigurationextensions)
-  - [Microsoft.KubernetesConfiguration/fluxConfigurations](#microsoftkubernetesconfigurationfluxconfigurations)
   - [Microsoft.Management/managementGroups](#microsoftmanagementmanagementgroups)
-  - [Microsoft.Network/vpnGateways](#microsoftnetworkvpngateways)
-  - [Microsoft.Network/virtualHubs](#microsoftnetworkvirtualhubs)
-  - [Microsoft.Network/vpnSites](#microsoftnetworkvpnsites)
-  - [Microsoft.Network/connections](#microsoftnetworkconnections)
+  - [Microsoft.RecoveryServices/vaults](#microsoftrecoveryservicesvaults)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
-    - [Limited parameter file set](#limited-parameter-file-set)
+    - [Limited module test file set](#limited-module-test-file-set)
+    - [Limited job execution time](#limited-job-execution-time)
   - [Publishing](#publishing)
 
 ---
@@ -36,19 +32,6 @@ Therefore, the module was manually tested in a dedicated environment.
 
 For the general prerequisites, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
-## Microsoft.KubernetesConfiguration/extensions
-
-The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.KubernetesConfiguration/fluxConfigurations
-
-The module has a dependency on
-
-- a pre-existing AKS cluster (managed cluster)
-- a pre-existing Kubernetes Configuration extension deployment
-
-which we don't have deployed using the dependencies pipeline for cost reasons.
-
 ## Microsoft.Management/managementGroups
 
 The Management Group module does not currently include the role assignments extension resource.
@@ -59,21 +42,13 @@ A related issue has been opened to the Bicep board [#6832](https://github.com/Az
 
 Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
 
-## Microsoft.Network/vpnGateways
+## Microsoft.RecoveryServices/vaults
 
-The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependencies pipeline for cost reasons.
+The Recovery Services Vaults module does not currently validate the identity property (system or user assigned identity).
 
-## Microsoft.Network/virtualHubs
+The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.Network/vpnSites
-
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.Network/connections
-
-The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependencies pipeline for cost reasons.
+A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
 
 ---
 
@@ -89,11 +64,19 @@ This section outlines known issues that currently affect the CI environment stat
 
 This section outlines known issues that currently affect the CI environment deployment validation step.
 
-### Limited parameter file set
+### Limited module test file set
 
-The deployment validation step aims to validate multiple configurations for each module. This is done by providing multiple parameter files to be leveraged by the same resource module, each covering a specific scenario.
+The deployment validation step aims to validate multiple configurations for each module. This is done by providing multiple module test files to be leveraged by the same resource module, each covering a specific scenario.
 
-The first planned step for each module is to provide a 'minimum-set' parameter file, limited to the top-level resource required parameters, vs. a 'maximum-set' parameter file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one parameter file only. This is tracked by issue [#401](https://github.com/Azure/ResourceModules/issues/401).
+The first planned step for each module is to provide a 'minimum-set' module test file, limited to the top-level resource required parameters, vs. a 'maximum-set' module test file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one module test file only. This is tracked by issue [#401](https://github.com/Azure/ResourceModules/issues/401).
+
+### Limited job execution time
+
+GitHub workflows used to validate CARML modules are running on GitHub-hosted runners.
+
+In such a scenario, as documented in the [Usage limits for GitHub Actions workflows](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits), if a job reaches a limit of 6 hours of execution time, the job is terminated and fails to complete.
+
+For modules that can take more than 6 hours to deploy, this restriction applies. In these cases, the corresponding deployment validation job may be terminated before completion, causing the entire module validation pipeline to fail. One module where this can happen is the **Microsoft.Sql\managedInstances** module.
 
 ## Publishing
 
