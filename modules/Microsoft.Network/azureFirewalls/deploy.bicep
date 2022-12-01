@@ -312,10 +312,10 @@ output name string = azureFirewall.name
 output resourceGroupName string = resourceGroup().name
 
 @description('The private IP of the Azure firewall.')
-output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
+output privateIp string = contains(azureFirewall.properties, 'ipConfigurations') ? azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress : ''
 
 @description('The public ipconfiguration object for the AzureFirewallSubnet.')
-output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
+output ipConfAzureFirewallSubnet object = contains(azureFirewall.properties, 'ipConfigurations') ? azureFirewall.properties.ipConfigurations[0] : {}
 
 @description('List of Application Rule Collections.')
 output applicationRuleCollections array = applicationRuleCollections
