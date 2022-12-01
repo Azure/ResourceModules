@@ -178,6 +178,36 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
+var firewallProperties = azureSkuName == 'AZFW_VNet' ? {
+  threatIntelMode: threatIntelMode
+  firewallPolicy: empty(firewallPolicyId) ? null : {
+    id: firewallPolicyId
+  }
+  ipConfigurations: ipConfigurations
+  sku: {
+    name: azureSkuName
+    tier: azureSkuTier
+  }
+  applicationRuleCollections: applicationRuleCollections
+  natRuleCollections: natRuleCollections
+  networkRuleCollections: networkRuleCollections
+} : {
+  firewallPolicy: empty(firewallPolicyId) ? null : {
+    id: firewallPolicyId
+  }
+  sku: {
+    name: azureSkuName
+    tier: azureSkuTier
+  }
+  applicationRuleCollections: applicationRuleCollections
+  natRuleCollections: natRuleCollections
+  networkRuleCollections: networkRuleCollections
+  hubIPAddresses: empty(hubIPAddresses) ? null : hubIPAddresses
+  virtualHub: empty(virtualHubId) ? null : {
+    id: virtualHubId
+  }
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -231,24 +261,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   location: location
   zones: length(zones) == 0 ? null : zones
   tags: tags
-  properties: {
-    threatIntelMode: azureSkuName == 'AZFW_Hub' ? null : threatIntelMode
-    firewallPolicy: empty(firewallPolicyId) ? null : {
-      id: firewallPolicyId
-    }
-    ipConfigurations: azureSkuName == 'AZFW_Hub' ? null : ipConfigurations
-    sku: {
-      name: azureSkuName
-      tier: azureSkuTier
-    }
-    applicationRuleCollections: applicationRuleCollections
-    natRuleCollections: natRuleCollections
-    networkRuleCollections: networkRuleCollections
-    hubIPAddresses: empty(hubIPAddresses) ? null : hubIPAddresses
-    virtualHub: empty(virtualHubId) ? null : {
-      id: virtualHubId
-    }
-  }
+  properties: firewallProperties
   dependsOn: [
     publicIPAddress
   ]
