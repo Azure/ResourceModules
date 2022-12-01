@@ -35,7 +35,7 @@ param natRuleCollections array = []
 @description('Optional. Resource ID of the Firewall Policy that should be attached.')
 param firewallPolicyId string = ''
 
-@description('Conditional. IP addresses associated with AzureFirewall. Must be set if `virtualHubId` is supplied.')
+@description('Conditional. IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied.')
 param hubIPAddresses object = {}
 
 @description('Conditional. The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty.')
