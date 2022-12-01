@@ -19,8 +19,8 @@ This module deploys different kinds of cognitive services resources
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.CognitiveServices/accounts` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2021-10-01/accounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -53,7 +53,7 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryption` | object | `{object}` |  | Properties to configure encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -445,6 +445,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Deny'
@@ -476,6 +477,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -526,6 +528,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -564,6 +569,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -600,6 +606,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     kind: 'SpeechServices'
     name: '<<namePrefix>>csaencr001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryption: {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
@@ -638,6 +645,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "<<namePrefix>>csaencr001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryption": {
       "value": {
         "keySource": "Microsoft.KeyVault",
@@ -680,6 +690,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     // Required parameters
     kind: 'SpeechServices'
     name: '<<namePrefix>>csamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -702,6 +714,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>csamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -725,6 +741,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     name: '<<namePrefix>>csaspeech001'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>speechdomain'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -767,6 +784,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>speechdomain"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [

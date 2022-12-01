@@ -43,7 +43,7 @@ This module deploys an Azure virtual desktop application group.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `friendlyName` | string | `''` |  | The friendly name of the Application Group to be created. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -171,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -179,59 +179,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Applicationgroups'
+  name: '${uniqueString(deployment().name)}-test-dvagcom'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
-    hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
-    name: '<<namePrefix>>-az-avdag-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "applicationGroupType": {
-      "value": "RemoteApp"
-    },
-    "hostpoolName": {
-      "value": "adp-<<namePrefix>>-az-avdhp-x-001"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-avdag-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Applicationgroups'
-  params: {
-    // Required parameters
-    applicationGroupType: 'RemoteApp'
-    hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
-    name: '<<namePrefix>>-az-avdag-x-001'
+    hostpoolName: '<hostpoolName>'
+    name: '<<namePrefix>>dvagcom001'
     // Non-required parameters
     applications: [
       {
@@ -252,19 +205,21 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       }
     ]
     description: 'This is my first Remote Applications bundle'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'Remote Applications 1'
-    location: 'westeurope'
+    location: '<location>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -289,10 +244,10 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": "RemoteApp"
     },
     "hostpoolName": {
-      "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+      "value": "<hostpoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-avdag-x-001"
+      "value": "<<namePrefix>>dvagcom001"
     },
     // Non-required parameters
     "applications": {
@@ -319,25 +274,28 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": "This is my first Remote Applications bundle"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "friendlyName": {
       "value": "Remote Applications 1"
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -346,11 +304,65 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-dvagmin'
+  params: {
+    // Required parameters
+    applicationGroupType: 'RemoteApp'
+    hostpoolName: '<hostpoolName>'
+    name: '<<namePrefix>>dvagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "applicationGroupType": {
+      "value": "RemoteApp"
+    },
+    "hostpoolName": {
+      "value": "<hostpoolName>"
+    },
+    "name": {
+      "value": "<<namePrefix>>dvagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

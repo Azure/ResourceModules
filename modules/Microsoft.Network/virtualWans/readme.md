@@ -33,7 +33,7 @@ This template deploys a virtual WAN.
 | `allowBranchToBranchTraffic` | bool | `False` |  | True if branch to branch traffic is allowed. |
 | `allowVnetToVnetTraffic` | bool | `False` |  | True if VNET to VNET traffic is allowed. |
 | `disableVpnEncryption` | bool | `False` |  | VPN encryption to be disabled or not. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -161,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -169,57 +169,22 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualWans'
-  params: {
-    name: '<<namePrefix>>-az-vw-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-vw-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VirtualWans'
+  name: '${uniqueString(deployment().name)}-test-nvwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-vw-x-001'
+    name: '<<namePrefix>>nvwcom001'
     // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
     disableVpnEncryption: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -242,7 +207,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-vw-x-001"
+      "value": "<<namePrefix>>nvwcom001"
     },
     // Non-required parameters
     "allowBranchToBranchTraffic": {
@@ -254,6 +219,9 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
     "disableVpnEncryption": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -261,14 +229,60 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
     "type": {
       "value": "Basic"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvwmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nvwmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nvwmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -51,7 +51,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | :-- | :-- | :-- | :-- |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created. |
 | `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
@@ -100,6 +100,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       'notification-controller.enabled': 'false'
       'source-controller.enabled': 'true'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
     version: '0.5.2'
@@ -139,6 +140,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
         "source-controller.enabled": "true"
       }
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "releaseNamespace": {
       "value": "flux-system"
     },
@@ -170,6 +174,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     extensionType: 'microsoft.flux'
     name: '<<namePrefix>>kcemin001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
   }
@@ -199,6 +204,9 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       "value": "<<namePrefix>>kcemin001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "releaseNamespace": {
       "value": "flux-system"
     },

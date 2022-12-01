@@ -30,13 +30,10 @@ param parameters object = {}
 @sys.description('Required. The Policy Rule details for the Policy Definition.')
 param policyRule object
 
-@sys.description('Optional. The group ID of the Management Group. If not provided, will use the current scope for deployment.')
-param managementGroupId string = managementGroup().name
-
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -69,7 +66,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 output name string = policyDefinition.name
 
 @sys.description('Policy Definition resource ID.')
-output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
+output resourceId string = policyDefinition.id
 
 @sys.description('Policy Definition Role Definition IDs.')
 output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])

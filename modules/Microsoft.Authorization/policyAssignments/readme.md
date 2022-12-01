@@ -33,7 +33,7 @@ With this module you can perform policy assignments across the management group,
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | This message will be part of response in case of policy violation. |
 | `displayName` | string | `''` |  | The display name of the policy assignment. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enforcementMode` | string | `'Default'` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce. |
 | `identity` | string | `'SystemAssigned'` | `[None, SystemAssigned, UserAssigned]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
@@ -180,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg Min</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -188,61 +188,19 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apamgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-mg-polAss'
-    policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-min-mg-polAss"
-    },
-    "policyDefinitionID": {
-      "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-polAss'
+    name: '<<namePrefix>>apamgcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
     displayName: '[Display Name] Policy Assignment at the management group scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforcementMode: 'DoNotEnforce'
     identity: 'SystemAssigned'
-    location: 'australiaeast'
-    managementGroupId: '<<managementGroupId>>'
+    location: '<location>'
+    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
       version: '1.0'
@@ -284,7 +242,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-mg-polAss"
+      "value": "<<namePrefix>>apamgcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -296,6 +254,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "displayName": {
       "value": "[Display Name] Policy Assignment at the management group scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enforcementMode": {
       "value": "DoNotEnforce"
     },
@@ -303,10 +264,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "SystemAssigned"
     },
     "location": {
-      "value": "australiaeast"
+      "value": "<location>"
     },
     "managementGroupId": {
-      "value": "<<managementGroupId>>"
+      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -348,7 +309,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 </details>
 <p>
 
-<h3>Example 3: Rg Min</h3>
+<h3>Example 2: Mg.Min</h3>
 
 <details>
 
@@ -356,14 +317,13 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apamgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-rg-polAss'
-    policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    name: '<<namePrefix>>apamgmin001'
+    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
-    resourceGroupName: 'validation-rg'
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -382,17 +342,14 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-min-rg-polAss"
+      "value": "<<namePrefix>>apamgmin001"
     },
-    "policyDefinitionID": {
+    "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
-    "resourceGroupName": {
-      "value": "validation-rg"
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -401,7 +358,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 </details>
 <p>
 
-<h3>Example 4: Rg</h3>
+<h3>Example 3: Rg.Common</h3>
 
 <details>
 
@@ -409,17 +366,18 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apargcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-rg-polAss'
+    name: '<<namePrefix>>apargcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
     displayName: '[Display Name] Policy Assignment at the resource group scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforcementMode: 'DoNotEnforce'
     identity: 'UserAssigned'
-    location: 'australiaeast'
+    location: '<location>'
     metadata: {
       category: 'Security'
       version: '1.0'
@@ -430,7 +388,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       }
     ]
     notScopes: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+      '<keyVaultResourceId>'
     ]
     parameters: {
       tagName: {
@@ -440,12 +398,12 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         value: 'prod'
       }
     }
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: '<resourceGroupName>'
     roleDefinitionIds: [
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
-    subscriptionId: '<<subscriptionId>>'
-    userAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    subscriptionId: '<subscriptionId>'
+    userAssignedIdentityId: '<userAssignedIdentityId>'
   }
 }
 ```
@@ -464,7 +422,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-rg-polAss"
+      "value": "<<namePrefix>>apargcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -476,6 +434,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "displayName": {
       "value": "[Display Name] Policy Assignment at the resource group scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enforcementMode": {
       "value": "DoNotEnforce"
     },
@@ -483,7 +444,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "UserAssigned"
     },
     "location": {
-      "value": "australiaeast"
+      "value": "<location>"
     },
     "metadata": {
       "value": {
@@ -500,7 +461,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     },
     "notScopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+        "<keyVaultResourceId>"
       ]
     },
     "parameters": {
@@ -514,7 +475,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       }
     },
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     },
     "roleDefinitionIds": {
       "value": [
@@ -522,10 +483,10 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       ]
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     },
     "userAssignedIdentityId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+      "value": "<userAssignedIdentityId>"
     }
   }
 }
@@ -534,7 +495,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 </details>
 <p>
 
-<h3>Example 5: Sub Min</h3>
+<h3>Example 4: Rg.Min</h3>
 
 <details>
 
@@ -542,13 +503,14 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apargmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-min-sub-polAss'
-    policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    name: '<<namePrefix>>apargmin001'
+    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -567,14 +529,17 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-min-sub-polAss"
+      "value": "<<namePrefix>>apargmin001"
     },
-    "policyDefinitionID": {
+    "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     }
   }
 }
@@ -583,7 +548,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 </details>
 <p>
 
-<h3>Example 6: Sub</h3>
+<h3>Example 5: Sub.Common</h3>
 
 <details>
 
@@ -591,17 +556,18 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyAssignments'
+  name: '${uniqueString(deployment().name)}-test-apasubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-polAss'
+    name: '<<namePrefix>>apasubcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
     // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
     displayName: '[Display Name] Policy Assignment at the subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforcementMode: 'DoNotEnforce'
     identity: 'UserAssigned'
-    location: 'australiaeast'
+    location: '<location>'
     metadata: {
       category: 'Security'
       version: '1.0'
@@ -625,8 +591,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     roleDefinitionIds: [
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
-    subscriptionId: '<<subscriptionId>>'
-    userAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    subscriptionId: '<subscriptionId>'
+    userAssignedIdentityId: '<userAssignedIdentityId>'
   }
 }
 ```
@@ -645,7 +611,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-polAss"
+      "value": "<<namePrefix>>apasubcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
@@ -657,6 +623,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     "displayName": {
       "value": "[Display Name] Policy Assignment at the subscription scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enforcementMode": {
       "value": "DoNotEnforce"
     },
@@ -664,7 +633,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "UserAssigned"
     },
     "location": {
-      "value": "australiaeast"
+      "value": "<location>"
     },
     "metadata": {
       "value": {
@@ -700,10 +669,63 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       ]
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     },
     "userAssignedIdentityId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+      "value": "<userAssignedIdentityId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 6: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apasubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>apasubmin001'
+    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>apasubmin001"
+    },
+    "policyDefinitionId": {
+      "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
     }
   }
 }

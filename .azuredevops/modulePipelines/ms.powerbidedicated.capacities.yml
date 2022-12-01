@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.PowerBIDedicated/capacities/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

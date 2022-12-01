@@ -31,7 +31,6 @@
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                                  |
 ##   | moduleTestFilePath              | '$(moduleTestFilePath)'              | The path to the module Pester tests.                                                                      | 'utilities/pipelines/staticValidation/module.tests.ps1'        |
 ##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                                               |
-##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                                                |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                         |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14'                         |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                                    |
@@ -53,7 +52,6 @@ parameters:
   moduleTestFilePath: '$(moduleTestFilePath)'
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
-  resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   modulesRepository: '$(modulesRepository)'

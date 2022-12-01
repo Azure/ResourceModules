@@ -52,7 +52,7 @@ param enableRbacAuthorization bool = false
 param createMode string = 'default'
 
 @description('Optional. Provide \'true\' to enable Key Vault\'s purge protection feature.')
-param enablePurgeProtection bool = false
+param enablePurgeProtection bool = true
 
 @description('Optional. Specifies the SKU for the vault.')
 @allowed([
@@ -106,7 +106,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')

@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'rsvcom'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -55,6 +58,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -294,6 +298,13 @@ module testDeployment '../../deploy.bicep' = {
       crossRegionRestoreFlag: true
       storageModelType: 'GeoRedundant'
     }
+    replicationAlertSettings: {
+      customEmailAddresses: [
+        'test.user@testcompany.com'
+      ]
+      locale: 'en-US'
+      sendToOwners: 'Send'
+    }
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
@@ -313,15 +324,25 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: 'Enabled'
+      }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
+    }
+    securitySettings: {
+      immutabilitySettings: {
+        state: 'Unlocked'
+      }
     }
   }
 }

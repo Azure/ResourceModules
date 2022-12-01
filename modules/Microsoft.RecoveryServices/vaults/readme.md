@@ -17,14 +17,15 @@ This module deploys a recovery service vault.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.RecoveryServices/vaults` | [2022-09-10](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-09-10/vaults) |
 | `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupPolicies) |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupstorageconfig) |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-08-01/vaults/replicationAlertSettings) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
@@ -53,14 +54,17 @@ This module deploys a recovery service vault.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
+| `replicationAlertSettings` | _[replicationAlertSettings](replicationAlertSettings/readme.md)_ object | `{object}` |  | Replication alert settings. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `securitySettings` | object | `{object}` |  | Security Settings of the vault. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -1169,7 +1173,16 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: 'Enabled'
+      }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -1181,17 +1194,26 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    replicationAlertSettings: {
+      customEmailAddresses: [
+        'test.user@testcompany.com'
+      ]
+      locale: 'en-US'
+      sendToOwners: 'Send'
+    }
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
+    securitySettings: {
+      immutabilitySettings: {
+        state: 'Unlocked'
+      }
     }
   }
 }
@@ -1473,8 +1495,21 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "monitoringSettings": {
+      "value": {
+        "azureMonitorAlertSettings": {
+          "alertsForAllJobFailures": "Enabled"
+        },
+        "classicAlertSettings": {
+          "alertsForCriticalOperations": "Enabled"
+        }
+      }
     },
     "privateEndpoints": {
       "value": [
@@ -1489,22 +1524,31 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         }
       ]
     },
+    "replicationAlertSettings": {
+      "value": {
+        "customEmailAddresses": [
+          "test.user@testcompany.com"
+        ],
+        "locale": "en-US",
+        "sendToOwners": "Send"
+      }
+    },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
+    "securitySettings": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "immutabilitySettings": {
+          "state": "Unlocked"
+        }
       }
     }
   }
@@ -1527,6 +1571,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     // Required parameters
     name: '<name>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     replicationFabrics: [
       {
         location: 'NorthEurope'
@@ -1537,7 +1582,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
               {
                 policyName: 'Default_values'
                 targetContainerName: 'pluto'
-                targetProtectionContainerId: '${resourceGroup.id}/providers/Microsoft.RecoveryServices/vaults/${rsvName}/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2'
+                targetProtectionContainerId: '<targetProtectionContainerId>'
               }
             ]
           }
@@ -1603,6 +1648,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       "value": "<name>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "replicationFabrics": {
       "value": [
         {
@@ -1614,7 +1662,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                 {
                   "policyName": "Default_values",
                   "targetContainerName": "pluto",
-                  "targetProtectionContainerId": "${resourceGroup.id}/providers/Microsoft.RecoveryServices/vaults/${rsvName}/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2"
+                  "targetProtectionContainerId": "<targetProtectionContainerId>"
                 }
               ]
             },
@@ -1679,7 +1727,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rsvmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>rsvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -1696,8 +1747,13 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>rsvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

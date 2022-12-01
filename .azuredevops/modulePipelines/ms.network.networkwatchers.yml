@@ -4,7 +4,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.Network/networkWatchers/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

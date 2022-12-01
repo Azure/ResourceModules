@@ -21,7 +21,7 @@ on:
       - '.github/workflows/ms.authorization.policyexemptions.yml'
       - 'modules/Microsoft.Authorization/policyExemptions/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
@@ -43,7 +43,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'
@@ -57,7 +57,7 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
     outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
   #########################
@@ -68,7 +68,7 @@ jobs:
     name: 'Static validation'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -93,10 +93,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moduleTestFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -109,13 +109,11 @@ jobs:
       - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
           location: '${{ env.location }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
+          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
 
   ##################
   #   Publishing   #
@@ -128,7 +126,7 @@ jobs:
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables

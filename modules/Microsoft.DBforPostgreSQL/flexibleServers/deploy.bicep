@@ -122,7 +122,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -276,6 +276,9 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
     endIpAddress: firewallRule.endIpAddress
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    flexibleServer_databases
+  ]
 }]
 
 module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
@@ -287,6 +290,9 @@ module flexibleServer_configurations 'configurations/deploy.bicep' = [for (confi
     value: contains(configuration, 'value') ? configuration.value : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    flexibleServer_firewallRules
+  ]
 }]
 
 resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {

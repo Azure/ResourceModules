@@ -42,7 +42,7 @@ This module deploys a bastion host.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableCopyPaste` | bool | `False` |  | Choose to disable or enable Copy Paste. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFileCopy` | bool | `True` |  | Choose to disable or enable File Copy. |
 | `enableIpConnect` | bool | `False` |  | Choose to disable or enable IP Connect. |
 | `enableShareableLink` | bool | `False` |  | Choose to disable or enable Shareable Link. |
@@ -302,7 +302,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Custompip</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -310,12 +310,134 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BastionHosts'
+  name: '${uniqueString(deployment().name)}-test-nbhcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-bas-custompip-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas'
+    name: '<<namePrefix>>nbhcom001'
+    vNetId: '<vNetId>'
     // Non-required parameters
+    azureBastionSubnetPublicIpId: '<azureBastionSubnetPublicIpId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    disableCopyPaste: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableFileCopy: false
+    enableIpConnect: false
+    enableShareableLink: false
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    scaleUnits: 4
+    skuType: 'Standard'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nbhcom001"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "azureBastionSubnetPublicIpId": {
+      "value": "<azureBastionSubnetPublicIpId>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "disableCopyPaste": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enableFileCopy": {
+      "value": false
+    },
+    "enableIpConnect": {
+      "value": false
+    },
+    "enableShareableLink": {
+      "value": false
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scaleUnits": {
+      "value": 4
+    },
+    "skuType": {
+      "value": "Standard"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Custompip</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nbhctmpip'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nbhctmpip001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -331,8 +453,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       roleAssignments: [
         {
           principalIds: [
-            '<<deploymentSpId>>'
+            '<managedIdentityPrincipalId>'
           ]
+          principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
       ]
@@ -357,12 +480,15 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-bas-custompip-001"
+      "value": "<<namePrefix>>nbhctmpip001"
     },
     "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas"
+      "value": "<vNetId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -379,8 +505,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         "roleAssignments": [
           {
             "principalIds": [
-              "<<deploymentSpId>>"
+              "<managedIdentityPrincipalId>"
             ],
+            "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
         ],
@@ -395,7 +522,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 3: Min</h3>
 
 <details>
 
@@ -403,11 +530,13 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BastionHosts'
+  name: '${uniqueString(deployment().name)}-test-nbhmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-bas-min-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002'
+    name: '<<namePrefix>>nbhmin001'
+    vNetId: '<vNetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -426,125 +555,14 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-bas-min-001"
+      "value": "<<namePrefix>>nbhmin001"
     },
     "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-BastionHosts'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-bas-x-001'
-    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-    // Non-required parameters
-    azureBastionSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    disableCopyPaste: true
-    enableFileCopy: false
-    enableIpConnect: false
-    enableShareableLink: false
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    scaleUnits: 4
-    skuType: 'Standard'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-bas-x-001"
-    },
-    "vNetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+      "value": "<vNetId>"
     },
     // Non-required parameters
-    "azureBastionSubnetPublicIpId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-    },
-    "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-    },
-    "disableCopyPaste": {
-      "value": true
-    },
-    "enableFileCopy": {
-      "value": false
-    },
-    "enableIpConnect": {
-      "value": false
-    },
-    "enableShareableLink": {
-      "value": false
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ],
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "scaleUnits": {
-      "value": 4
-    },
-    "skuType": {
-      "value": "Standard"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

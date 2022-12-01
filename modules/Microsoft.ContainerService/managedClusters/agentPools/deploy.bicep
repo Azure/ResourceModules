@@ -172,7 +172,7 @@ var upgradeSettings = {
   maxSurge: maxSurge
 }
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -187,11 +187,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-06-01' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-09-01' = {
   name: name
   parent: managedCluster
   properties: {

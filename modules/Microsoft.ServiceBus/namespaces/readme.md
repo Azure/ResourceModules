@@ -17,8 +17,8 @@ This module deploys a service bus namespace resource.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.ServiceBus/namespaces` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces) |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules) |
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs) |
@@ -41,7 +41,7 @@ This module deploys a service bus namespace resource.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Service Bus namespace. |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
@@ -55,7 +55,7 @@ This module deploys a service bus namespace resource.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | The disaster recovery configuration. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
@@ -347,7 +347,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -355,47 +355,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Namespaces'
-  params: {
-    name: '<<namePrefix>>-az-sbn-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-sbn-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Namespaces'
+  name: '${uniqueString(deployment().name)}-test-sbncom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-sbn-x-002'
+    name: '<<namePrefix>>sbncom001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -414,17 +377,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    cMKKeyName: 'keyEncryptionKey'
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
-    cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    disasterRecoveryConfigs: {}
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    migrationConfigurations: {}
     networkRuleSets: {
       defaultAction: 'Deny'
       ipRules: [
@@ -440,8 +399,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       trustedServiceAccessEnabled: true
       virtualNetworkRules: [
         {
-          ignoreMissingVnetServiceEndpoint: true
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003'
+          subnet: {
+            id: '<id>'
+            ignoreMissingVnetServiceEndpoint: true
+          }
         }
       ]
     }
@@ -449,11 +410,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'namespace'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     queues: [
@@ -475,12 +436,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-az-sbq-x-002'
+        name: '<<namePrefix>>sbncomq001'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -489,14 +451,17 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     skuName: 'Premium'
     systemAssignedIdentity: true
-    tags: {}
+    tags: {
+      test: 'true'
+    }
     topics: [
       {
         authorizationRules: [
@@ -516,19 +481,20 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-az-sbt-x-001'
+        name: '<<namePrefix>>sbncomt001'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
       }
     ]
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -548,7 +514,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-sbn-x-002"
+      "value": "<<namePrefix>>sbncom001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -570,38 +536,26 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
       ]
     },
-    "cMKKeyName": {
-      "value": "keyEncryptionKey"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-    },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
-    "disasterRecoveryConfigs": {
-      "value": {}
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "migrationConfigurations": {
-      "value": {}
     },
     "networkRuleSets": {
       "value": {
@@ -619,8 +573,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "trustedServiceAccessEnabled": true,
         "virtualNetworkRules": [
           {
-            "ignoreMissingVnetServiceEndpoint": true,
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-003"
+            "subnet": {
+              "id": "<id>",
+              "ignoreMissingVnetServiceEndpoint": true
+            }
           }
         ]
       }
@@ -630,11 +586,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -658,12 +614,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-sbq-x-002",
+          "name": "<<namePrefix>>sbncomq001",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -674,8 +631,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -687,7 +645,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": true
     },
     "tags": {
-      "value": {}
+      "value": {
+        "test": "true"
+      }
     },
     "topics": {
       "value": [
@@ -709,12 +669,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-sbt-x-001",
+          "name": "<<namePrefix>>sbncomt001",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -723,7 +684,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -733,7 +694,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Pe</h3>
+<h3>Example 2: Encr</h3>
 
 <details>
 
@@ -741,20 +702,241 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Namespaces'
+  name: '${uniqueString(deployment().name)}-test-sbnencr'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-sbn-pe-001'
+    name: '<<namePrefix>>sbnencr001'
     // Non-required parameters
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+      {
+        name: 'AnotherKey'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          action: 'Allow'
+          ipMask: '10.0.1.0/32'
+        }
+        {
+          action: 'Allow'
+          ipMask: '10.0.2.0/32'
+        }
+      ]
+      trustedServiceAccessEnabled: true
+      virtualNetworkRules: [
+        {
+          subnet: {
+            id: '<id>'
+            ignoreMissingVnetServiceEndpoint: true
+          }
+        }
+      ]
+    }
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    skuName: 'Premium'
+    systemAssignedIdentity: false
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>sbnencr001"
+    },
+    // Non-required parameters
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "rights": [
+            "Listen",
+            "Manage",
+            "Send"
+          ]
+        },
+        {
+          "name": "AnotherKey",
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      ]
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "networkRuleSets": {
+      "value": {
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "action": "Allow",
+            "ipMask": "10.0.1.0/32"
+          },
+          {
+            "action": "Allow",
+            "ipMask": "10.0.2.0/32"
+          }
+        ],
+        "trustedServiceAccessEnabled": true,
+        "virtualNetworkRules": [
+          {
+            "subnet": {
+              "id": "<id>",
+              "ignoreMissingVnetServiceEndpoint": true
+            }
+          }
+        ]
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "skuName": {
+      "value": "Premium"
+    },
+    "systemAssignedIdentity": {
+      "value": false
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-sbnmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>sbnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>sbnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-sbnpe'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>sbnpe001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'namespace'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     skuName: 'Premium'
@@ -776,19 +958,22 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-sbn-pe-001"
+      "value": "<<namePrefix>>sbnpe001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.servicebus.windows.net"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },

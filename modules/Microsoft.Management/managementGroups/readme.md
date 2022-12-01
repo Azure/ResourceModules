@@ -35,9 +35,9 @@ This module has some known **limitations**:
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `parentId` | string | `''` | The management group parent ID. Defaults to current scope. |
+| `parentId` | string | `[last(split(managementGroup().id, '/'))]` | The management group parent ID. Defaults to current scope. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -135,7 +135,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -143,13 +143,14 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ManagementGroups'
+  name: '${uniqueString(deployment().name)}-test-mmgcom'
   params: {
     // Required parameters
-    name: 'testMG'
+    name: '<<namePrefix>>mmgcom001'
     // Non-required parameters
     displayName: 'Test MG'
-    parentId: '<<managementGroupId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    parentId: '<parentId>'
   }
 }
 ```
@@ -168,14 +169,62 @@ module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "testMG"
+      "value": "<<namePrefix>>mmgcom001"
     },
     // Non-required parameters
     "displayName": {
       "value": "Test MG"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parentId": {
-      "value": "<<managementGroupId>>"
+      "value": "<parentId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-mmgmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>mmgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>mmgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

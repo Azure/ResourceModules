@@ -32,7 +32,7 @@ This module deploys a local network gateway.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `fqdn` | string | `''` |  | FQDN of local network gateway. |
 | `localAsn` | string | `''` |  | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
 | `localBgpPeeringAddress` | string | `''` |  | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
@@ -163,7 +163,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -171,23 +171,25 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-LocalNetworkGateways'
+  name: '${uniqueString(deployment().name)}-test-nlngcom'
   params: {
     // Required parameters
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
-    name: '<<namePrefix>>-az-lng-x-001'
+    name: '<<namePrefix>>nlngcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -217,9 +219,12 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": "8.8.8.8"
     },
     "name": {
-      "value": "<<namePrefix>>-az-lng-x-001"
+      "value": "<<namePrefix>>nlngcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "localAsn": {
       "value": "65123"
     },
@@ -233,11 +238,69 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nlngmin'
+  params: {
+    // Required parameters
+    localAddressPrefixes: [
+      '192.168.1.0/24'
+    ]
+    localGatewayPublicIpAddress: '8.8.8.8'
+    name: '<<namePrefix>>nlngmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "localAddressPrefixes": {
+      "value": [
+        "192.168.1.0/24"
+      ]
+    },
+    "localGatewayPublicIpAddress": {
+      "value": "8.8.8.8"
+    },
+    "name": {
+      "value": "<<namePrefix>>nlngmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -13,7 +13,7 @@ This module deploys virtual hub virtual network connections.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubVirtualNetworkConnections) |
+| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Parameters
 
@@ -34,7 +34,7 @@ This module deploys virtual hub virtual network connections.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableInternetSecurity` | bool | `True` | Enable internet security. |
 | `routingConfiguration` | object | `{object}` | Routing Configuration indicating the associated and propagated route tables for this connection. |
 

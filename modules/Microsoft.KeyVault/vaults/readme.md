@@ -21,8 +21,8 @@ This module deploys a key vault and its child resources.
 | `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
 | `Microsoft.KeyVault/vaults/keys` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys) |
 | `Microsoft.KeyVault/vaults/secrets` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -46,8 +46,8 @@ This module deploys a key vault and its child resources.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enablePurgeProtection` | bool | `False` |  | Provide 'true' to enable Key Vault's purge protection feature. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enablePurgeProtection` | bool | `True` |  | Provide 'true' to enable Key Vault's purge protection feature. |
 | `enableRbacAuthorization` | bool | `False` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
 | `enableSoftDelete` | bool | `True` |  | Switch to enable/disable Key Vault's soft delete feature. |
 | `enableVaultForDeployment` | bool | `True` | `[False, True]` | Specifies if the vault is enabled for deployment by script or compute. |
@@ -394,7 +394,7 @@ The following module usage examples are retrieved from the content of the files 
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kvvcom'
   params: {
-    name: '<<namePrefix>>kvvcom001'
+    name: '<<namePrefix>>kvvcom002'
     accessPolicies: [
       {
         objectId: '<objectId>'
@@ -429,6 +429,8 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
       {
@@ -440,6 +442,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -477,6 +480,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -492,6 +496,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
+              principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
           ]
@@ -500,6 +505,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -517,7 +526,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>kvvcom001"
+      "value": "<<namePrefix>>kvvcom002"
     },
     "accessPolicies": {
       "value": [
@@ -565,6 +574,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
     "enableRbacAuthorization": {
       "value": false
     },
@@ -579,6 +594,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -624,6 +640,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -641,6 +658,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
+                "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
             ],
@@ -651,6 +669,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "softDeleteRetentionInDays": {
       "value": 7
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -669,7 +693,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kvvmin'
   params: {
-    name: '<<namePrefix>>kvvmin001'
+    // Required parameters
+    name: '<<namePrefix>>kvvmin002'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
   }
 }
 ```
@@ -686,8 +714,16 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
-      "value": "<<namePrefix>>kvvmin001"
+      "value": "<<namePrefix>>kvvmin002"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
     }
   }
 }
@@ -709,6 +745,8 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvpe001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -720,6 +758,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -741,6 +783,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<<namePrefix>>kvvpe001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -753,6 +801,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
