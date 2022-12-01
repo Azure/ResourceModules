@@ -199,9 +199,6 @@ var firewallProperties = azureSkuName == 'AZFW_VNet' ? {
     name: azureSkuName
     tier: azureSkuTier
   }
-  applicationRuleCollections: applicationRuleCollections
-  natRuleCollections: natRuleCollections
-  networkRuleCollections: networkRuleCollections
   hubIPAddresses: empty(hubIPAddresses) ? null : hubIPAddresses
   virtualHub: empty(virtualHubId) ? null : {
     id: virtualHubId
