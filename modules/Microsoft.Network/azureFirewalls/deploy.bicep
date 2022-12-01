@@ -243,11 +243,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
     applicationRuleCollections: applicationRuleCollections
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
-    hubIPAddresses: {
-      publicIPs: {
-        count: 1
-      }
-    }
+    hubIPAddresses: empty(hubIPAddresses) ? null : hubIPAddresses
     virtualHub: empty(virtualHubId) ? null : {
       id: virtualHubId
     }
