@@ -766,10 +766,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafmin'
+  name: '${uniqueString(deployment().name)}-test-nafhub'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafmin001'
+    name: '<<namePrefix>>nafhub001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallPolicyId: '<firewallPolicyId>'
@@ -797,7 +797,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafmin001"
+      "value": "<<namePrefix>>nafhub001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
