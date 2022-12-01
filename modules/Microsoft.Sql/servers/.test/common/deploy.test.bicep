@@ -35,6 +35,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
@@ -127,6 +128,13 @@ module testDeployment '../../deploy.bicep' = {
         name: 'Default'
         state: 'Enabled'
         emailAccountAdmins: true
+      }
+    ]
+    keys: [
+      {
+        name: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+        serverKeyType: 'AzureKeyVault'
+        uri: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
       }
     ]
     systemAssignedIdentity: true
