@@ -67,7 +67,7 @@ module testDeployment '../../deploy.bicep' = {
           resources: {
             requests: {
               cpu: 2
-              memoryInGB: 2
+              memoryInGB: 4
             }
           }
           volumeMounts: [

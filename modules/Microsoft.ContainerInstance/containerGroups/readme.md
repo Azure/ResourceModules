@@ -483,7 +483,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     // Required parameters
     containers: [
       {
-        name: 'jpe-az-aci-x-001'
+        name: '<<namePrefix>>-az-aci-x-001'
         properties: {
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
           ports: [
@@ -501,7 +501,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: 'jpecicgmin001'
+    name: '<<namePrefix>>cicgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -530,7 +530,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     "containers": {
       "value": [
         {
-          "name": "jpe-az-aci-x-001",
+          "name": "<<namePrefix>>-az-aci-x-001",
           "properties": {
             "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
             "ports": [
@@ -550,7 +550,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "jpecicgmin001"
+      "value": "<<namePrefix>>cicgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -602,7 +602,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           resources: {
             requests: {
               cpu: 2
-              memoryInGB: 2
+              memoryInGB: 4
             }
           }
           volumeMounts: [
@@ -702,7 +702,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
             "resources": {
               "requests": {
                 "cpu": 2,
-                "memoryInGB": 2
+                "memoryInGB": 4
               }
             },
             "volumeMounts": [
