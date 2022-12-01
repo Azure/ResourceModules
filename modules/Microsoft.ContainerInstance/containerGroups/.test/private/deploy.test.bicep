@@ -31,8 +31,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-jpe-msi-${serviceShort}'
-    virtualNetworkName: 'dep-jpe-vnet-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
@@ -45,11 +45,11 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'jpe${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
     containers: [
       {
-        name: 'jpe-az-aci-x-001'
+        name: '<<namePrefix>>-az-aci-x-001'
         properties: {
           command: []
           environmentVariables: []
@@ -79,7 +79,7 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
       {
-        name: 'jpe-az-aci-x-002'
+        name: '<<namePrefix>>-az-aci-x-002'
         properties: {
           command: []
           environmentVariables: []
