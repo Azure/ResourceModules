@@ -36,10 +36,10 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'jpe${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     containers: [
       {
-        name: 'jpe-az-aci-x-001'
+        name: '<<namePrefix>>-az-aci-x-001'
         properties: {
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
           ports: [
