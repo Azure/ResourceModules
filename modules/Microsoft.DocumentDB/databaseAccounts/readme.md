@@ -582,14 +582,18 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         graphs: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'car_collection'
             partitionKeyPaths: [
               '/car_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'truck_collection'
             partitionKeyPaths: [
               '/truck_id'
@@ -601,14 +605,18 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         collections: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bike_collection'
             partitionKeyPaths: [
               '/bike_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bicycle_collection'
             partitionKeyPaths: [
               '/bicycle_id'
@@ -692,14 +700,18 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "graphs": [
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "car_collection",
               "partitionKeyPaths": [
                 "/car_id"
               ]
             },
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "truck_collection",
               "partitionKeyPaths": [
                 "/truck_id"
@@ -711,14 +723,18 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "collections": [
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "bike_collection",
               "partitionKeyPaths": [
                 "/bike_id"
               ]
             },
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "bicycle_collection",
               "partitionKeyPaths": [
                 "/bicycle_id"
@@ -1402,6 +1418,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         containers: [
           {
+            indexingPolicy: {
+              automatic: true
+            }
             kind: 'Hash'
             name: 'container-001'
             paths: [
@@ -1491,6 +1510,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [
             {
+              "indexingPolicy": {
+                "automatic": true
+              },
               "kind": "Hash",
               "name": "container-001",
               "paths": [
