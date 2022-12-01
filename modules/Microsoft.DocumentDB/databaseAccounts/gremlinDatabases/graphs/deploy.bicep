@@ -13,8 +13,8 @@ param databaseAccountName string
 @description('Conditional. The name of the parent Gremlin Database. Required if the template is used in a standalone deployment.')
 param gremlinDatabaseName string
 
-@description('Optional. Indicates if the indexing policy is automatic.')
-param automaticIndexing bool = true
+@description('Optional. Indexing policy of the graph.')
+param indexingPolicy object = {}
 
 @description('Optional. List of paths using which data within the container can be partitioned.')
 param partitionKeyPaths array = []
@@ -46,9 +46,7 @@ resource gremlinGraph 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/gr
   properties: {
     resource: {
       id: name
-      indexingPolicy: {
-        automatic: automaticIndexing
-      }
+      indexingPolicy: !empty(indexingPolicy) ? indexingPolicy : null
       partitionKey: {
         paths: !empty(partitionKeyPaths) ? partitionKeyPaths : null
       }
