@@ -1,27 +1,43 @@
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Virtual Network to create.')
-param virtualNetworkName string
+param virtualWanName string
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
-    name: virtualNetworkName
-    location: location
-    properties: {
-        addressSpace: {
-            addressPrefixes: [
-                '10.0.0.0/24'
-            ]
-        }
-        subnets: [
-            {
-                name: 'AzureFirewallSubnet'
-                properties: {
-                    addressPrefix: '10.0.0.0/24'
-                }
-            }
-        ]
-    }
+param virtualHubName string
+
+param firewallPolicieName string
+
+resource virtualWan 'Microsoft.Network/virtualWans@2021-08-01' = {
+  name: virtualWanName
+  location: location
+  properties: {
+    disableVpnEncryption: false
+    allowBranchToBranchTraffic: true
+    type: 'Standard'
+  }
 }
-@description('The resource ID of the created Virtual Network.')
-output virtualNetworkResourceId string = virtualNetwork.id
+
+resource virtualHub 'Microsoft.Network/virtualHubs@2021-08-01' = {
+  name: virtualHubName
+  location: location
+  properties: {
+    addressPrefix: '10.1.0.0/16'
+    virtualWan: {
+      id: virtualWan.id
+    }
+  }
+}
+
+resource policy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
+  name: firewallPolicieName
+  location: location
+  properties: {
+    threatIntelMode: 'Alert'
+  }
+}
+
+@description('The resource ID of the created Virtual Hub.')
+output virtualHubResourceId string = virtualHub.id
+
+@description('The resource ID of the created Firewall Policie.')
+output firewallPolicieResourceId string = policy.id
