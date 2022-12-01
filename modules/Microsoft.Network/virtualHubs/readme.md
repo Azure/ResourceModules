@@ -1,14 +1,18 @@
 # Virtual Hubs `[Microsoft.Network/virtualHubs]`
 
 This module deploys a Virtual Hub.
+If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integrated), please refer to the Azure Firewall module.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Virtual Hubs `[Microsoft.Network/virtualHubs]`](#virtual-hubs-microsoftnetworkvirtualhubs)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+    - [Parameter Usage: `tags`](#parameter-usage-tags)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
+  - [Deployment examples](#deployment-examples)
 
 ## Resource Types
 
