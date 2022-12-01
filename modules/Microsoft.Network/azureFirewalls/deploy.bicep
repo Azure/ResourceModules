@@ -199,9 +199,6 @@ var firewallProperties = azureSkuName == 'AZFW_VNet' ? {
     name: azureSkuName
     tier: azureSkuTier
   }
-  applicationRuleCollections: applicationRuleCollections
-  natRuleCollections: natRuleCollections
-  networkRuleCollections: networkRuleCollections
   hubIPAddresses: empty(hubIPAddresses) ? null : hubIPAddresses
   virtualHub: empty(virtualHubId) ? null : {
     id: virtualHubId
@@ -315,7 +312,7 @@ output resourceGroupName string = resourceGroup().name
 output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
 @description('The public ipconfiguration object for the AzureFirewallSubnet.')
-output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
+output ipConfAzureFirewallSubnet object = azureSkuName == 'AZFW_VNet' ? azureFirewall.properties.ipConfigurations[0] : {}
 
 @description('List of Application Rule Collections.')
 output applicationRuleCollections array = applicationRuleCollections
