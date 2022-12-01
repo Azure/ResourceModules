@@ -13,9 +13,6 @@ param addressPrefix string
 @description('Optional. Flag to control transit for VirtualRouter hub.')
 param allowBranchToBranchTraffic bool = true
 
-@description('Optional. Resource ID of the Azure Firewall to link to.')
-param azureFirewallId string = ''
-
 @description('Optional. Resource ID of the Express Route Gateway to link to.')
 param expressRouteGatewayId string = ''
 
@@ -100,9 +97,6 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2022-05-01' = {
   properties: {
     addressPrefix: addressPrefix
     allowBranchToBranchTraffic: allowBranchToBranchTraffic
-    azureFirewall: !empty(azureFirewallId) ? {
-      id: azureFirewallId
-    } : null
     expressRouteGateway: !empty(expressRouteGatewayId) ? {
       id: expressRouteGatewayId
     } : null
