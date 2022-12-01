@@ -26,6 +26,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `containers` | array | The containers and their respective config within the container group. |
+| `ipAddressPorts` | array | Ports to open on the public IP address. Must include all ports assigned on container level. |
 | `name` | string | Name for the container group. |
 
 **Optional parameters**
@@ -42,7 +43,6 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `encrytionKeyName` | string | `''` |  | If Non-Microsoft-managed encryption should be used, specify the key name. |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `initContainers` | array | `[]` |  | A list of container definitions which will be executed before the application container starts. |
-| `ipAddressPorts` | array | `[]` |  | Ports to open on the public IP address. Must include all ports assigned on container level. |
 | `ipAddressType` | string | `'Public'` | `[Private, Public]` | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -483,7 +483,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     // Required parameters
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: 'jpe-az-aci-x-001'
         properties: {
           image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
           ports: [
@@ -501,7 +501,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgmin001'
+    name: 'jpecicgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -530,7 +530,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     "containers": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-aci-x-001",
+          "name": "jpe-az-aci-x-001",
           "properties": {
             "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
             "ports": [
@@ -550,7 +550,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgmin001"
+      "value": "jpecicgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -651,8 +651,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         protocol: 'Tcp'
       }
     ]
+    ipAddressType: 'Private'
     lock: 'CanNotDelete'
-    subnetId: ''
+    subnetId: '<subnetId>'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -757,218 +758,6 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       ]
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "subnetId": {
-      "value": ""
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
-    "volumes": {
-      "value": [
-        {
-          "emptyDir": {},
-          "name": "my-name"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 4: Private</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module containerGroups 'ts/modules:microsoft.containerinstance.containergroups:1.0.0 = {
-  name: '${uniqueString(deployment().name)}-ContainerGroups'
-  params: {
-    // Required parameters
-    containers: [
-      {
-        name: '<<namePrefix>>-az-aci-x-001'
-        properties: {
-          command: []
-          environmentVariables: []
-          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-          ports: [
-            {
-              port: '80'
-              protocol: 'Tcp'
-            }
-            {
-              port: '443'
-              protocol: 'Tcp'
-            }
-          ]
-          resources: {
-            requests: {
-              cpu: 2
-              memoryInGB: 2
-            }
-          }
-          volumeMounts: [
-            {
-              mountPath: '/mnt/empty'
-              name: 'my-name'
-            }
-          ]
-        }
-      }
-      {
-        name: '<<namePrefix>>-az-aci-x-002'
-        properties: {
-          command: []
-          environmentVariables: []
-          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-          ports: [
-            {
-              port: '8080'
-              protocol: 'Tcp'
-            }
-          ]
-          resources: {
-            requests: {
-              cpu: 2
-              memoryInGB: 2
-            }
-          }
-        }
-      }
-    ]
-    name: '<<namePrefix>>-az-acg-x-002'
-    // Non-required parameters
-    ipAddressPorts: [
-      {
-        port: '80'
-        protocol: 'Tcp'
-      }
-      {
-        port: '443'
-        protocol: 'Tcp'
-      }
-      {
-        port: '8080'
-        protocol: 'Tcp'
-      }
-    ]
-    ipAddressType: 'Private'
-    lock: 'CanNotDelete'
-    subnetId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-010'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-    volumes: [
-      {
-        emptyDir: {}
-        name: 'my-name'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "containers": {
-      "value": [
-        {
-          "name": "<<namePrefix>>-az-aci-x-001",
-          "properties": {
-            "command": [],
-            "environmentVariables": [],
-            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
-            "ports": [
-              {
-                "port": "80",
-                "protocol": "Tcp"
-              },
-              {
-                "port": "443",
-                "protocol": "Tcp"
-              }
-            ],
-            "resources": {
-              "requests": {
-                "cpu": 2,
-                "memoryInGB": 2
-              }
-            },
-            "volumeMounts": [
-              {
-                "mountPath": "/mnt/empty",
-                "name": "my-name"
-              }
-            ]
-          }
-        },
-        {
-          "name": "<<namePrefix>>-az-aci-x-002",
-          "properties": {
-            "command": [],
-            "environmentVariables": [],
-            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
-            "ports": [
-              {
-                "port": "8080",
-                "protocol": "Tcp"
-              }
-            ],
-            "resources": {
-              "requests": {
-                "cpu": 2,
-                "memoryInGB": 2
-              }
-            }
-          }
-        }
-      ]
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-acg-x-002"
-    },
-    // Non-required parameters
-    "ipAddressPorts": {
-      "value": [
-        {
-          "port": "80",
-          "protocol": "Tcp"
-        },
-        {
-          "port": "443",
-          "protocol": "Tcp"
-        },
-        {
-          "port": "8080",
-          "protocol": "Tcp"
-        }
-      ]
-    },
     "ipAddressType": {
       "value": "Private"
     },
@@ -976,14 +765,14 @@ module containerGroups 'ts/modules:microsoft.containerinstance.containergroups:1
       "value": "CanNotDelete"
     },
     "subnetId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-010"
+      "value": "<subnetId>"
     },
     "systemAssignedIdentity": {
       "value": true
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     },
     "volumes": {
