@@ -26,8 +26,13 @@ The top-level resource in Azure Container Instances is the container group. A co
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `containers` | array | The containers and their respective config within the container group. |
-| `ipAddressPorts` | array | Ports to open on the public IP address. Must include all ports assigned on container level. |
 | `name` | string | Name for the container group. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `ipAddressPorts` | array | Ports to open on the public IP address. Must include all ports assigned on container level. Required if `ipAddressType` is set to `public`. |
 
 **Optional parameters**
 
@@ -579,7 +584,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgcom'
+  name: '${uniqueString(deployment().name)}-test-cicgprivate'
   params: {
     // Required parameters
     containers: [
@@ -634,7 +639,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgcom001'
+    name: '<<namePrefix>>cicgprivate001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -736,7 +741,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgcom001"
+      "value": "<<namePrefix>>cicgprivate001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
