@@ -22,7 +22,6 @@ param sshDeploymentScriptName string
 @description('Required. The name of the SSH Key to create.')
 param sshKeyName string
 
-var storageContainerName = 'scripts'
 var storageAccountCSEFileName = 'scriptExtensionMasterInstaller.ps1'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -107,7 +106,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         name: 'default'
 
         resource container 'containers@2021-09-01' = {
-            name: storageContainerName
+            name: 'scripts'
         }
     }
 }
@@ -187,7 +186,7 @@ output storageAccountName string = storageAccount.name
 output storageAccountResourceId string = storageAccount.id
 
 @description('The URL of the Custom Script Extension in the created Storage Account')
-output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
+output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageAccount::blobService::container.name}/${storageAccountCSEFileName}'
 
 @description('The Public Key of the created SSH Key')
 output SSHKeyPublicKey string = sshKey.properties.publicKey

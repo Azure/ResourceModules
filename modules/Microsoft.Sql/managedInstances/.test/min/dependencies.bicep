@@ -10,7 +10,6 @@ param routeTableName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-var sqlMiVnetAddressPrefix = '10.0.0.0/16'
 var sqlMiSubnetAddressPrefix = '10.0.0.0/24'
 var sqlMiSubnetAddressPrefixString = replace(replace(sqlMiSubnetAddressPrefix, '.', '-'), '/', '-')
 
@@ -257,7 +256,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        sqlMiVnetAddressPrefix
+        '10.0.0.0/16'
       ]
     }
     subnets: [
