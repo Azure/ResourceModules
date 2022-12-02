@@ -256,7 +256,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
       }
     } : enableEncryption ? {
       // Service-managed key
-      keySource: 'Microsoft.CognitiveServices/accounts'
+      keySource: 'Microsoft.CognitiveServices'
     } : null
     migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
