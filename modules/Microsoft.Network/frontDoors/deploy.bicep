@@ -20,7 +20,7 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. Backend address pool of the frontdoor resource.')
@@ -136,7 +136,7 @@ resource frontDoor 'Microsoft.Network/frontDoors@2020-05-01' = {
   }
 }
 
-resource frontDoor_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource frontDoor_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${frontDoor.name}-${lock}-lock'
   properties: {
     level: any(lock)

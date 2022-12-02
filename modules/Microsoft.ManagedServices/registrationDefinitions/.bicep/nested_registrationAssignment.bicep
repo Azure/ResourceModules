@@ -8,8 +8,8 @@ resource registrationAssignment 'Microsoft.ManagedServices/registrationAssignmen
   }
 }
 
-@description('The name of the registration assignment')
+@description('The name of the registration assignment.')
 output name string = registrationAssignment.name
 
-@description('The resource ID of the registration assignment')
+@description('The resource ID of the registration assignment.')
 output resourceId string = registrationAssignment.id

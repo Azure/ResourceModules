@@ -60,8 +60,9 @@ They can be deployed in different configurations just by changing the input para
 A **CARML module** consists of
 
 - The Bicep template deployment file (`deploy.bicep`).
-- One or multiple template parameters files (`*parameters.json`) or module test files (`deploy.test.bicep`) that will be used for testing, located in the `.test` folder and its subfolders.
+- One or multiple module test files (`deploy.test.bicep`) that will be used for testing, located in the `.test` folder and its subfolders.
 - A `readme.md` file which describes the module itself.
+- A `version.json` file which contains information on the module's major and minor version.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
 
@@ -149,7 +150,7 @@ The locks extension can be added as a `resource` to the resource template direct
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -205,7 +206,7 @@ Here, you specify the platform roles available for the main resource.
 
 The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_roleAssignments.bicep` template applies.
 
-> **Note**: You use the helper script [Get-RoleAssignmentsList.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to get a formatted list of RBAC roles for a given service, used in the CARML modules.
+> **Note**: You use the helper script [Get-RoleAssignmentList.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to get a formatted list of RBAC roles for a given service, used in the CARML modules.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child resource hierarchy.
 
@@ -549,24 +550,17 @@ Note the following recommendations:
 
 # Module test files
 
-Module test files in CARML are implemented in
+Module test files in CARML are implemented using comprehensive `.bicep` test files that not only test the module's template in a certain scenario, but also deploy any required dependency for it.
 
-- a classic way leveraging the common `deploymentParameters.json` schema for ARM deployments or
-- using comprehensive `.bicep` test files that not only test the module's template in a certain scenario, but also deploy any required dependency for it. All classic test files will be migrated to this module following the issue [1583](https://github.com/Azure/ResourceModules/issues/1583).
-
-In either case, we follow the following, general guidelines:
+Module test files follow these general guidelines:
 
 - A module should have as many module test files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
 
-In addition, we follow the following, file-type-specific guidelines:
-
-- JSON Parameter file specific
-  - Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameters to deploy the module.
-  - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
-- Bicep file specific
+In addition, they follow these file-type-specific guidelines:
 
   - Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
+  - Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters are used to deploy the module.
   - Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file. The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario. The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
   - Parameters
     - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements. As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`)
@@ -593,7 +587,7 @@ In addition, we follow the following, file-type-specific guidelines:
     param location string = deployment().location
 
     @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-    param serviceShort string = 'asdef'
+    param serviceShort string = 'asscom'
 
     // =========== //
     // Deployments //
@@ -645,6 +639,7 @@ In addition, we follow the following, file-type-specific guidelines:
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
+            principalType: 'ServicePrincipal'
           }
         ]
         diagnosticLogsRetentionInDays: 7

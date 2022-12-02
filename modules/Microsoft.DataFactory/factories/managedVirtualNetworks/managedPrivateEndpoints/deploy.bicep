@@ -16,7 +16,7 @@ param fqdns array
 @description('Required. The ARM resource ID of the resource to which the managed private endpoint is created.')
 param privateLinkResourceId string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource datafactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {

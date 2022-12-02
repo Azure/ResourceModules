@@ -45,7 +45,7 @@ param tags object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -185,7 +185,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
   }
 }]
 
-resource privateDnsZone_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateDnsZone_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateDnsZone.name}-${lock}-lock'
   properties: {
     level: any(lock)

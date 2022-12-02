@@ -1,4 +1,4 @@
-# Role Assignments
+# Role Assignments `[Microsoft.Authorization/roleAssignments-multiRolesMultiPrincipals]`
 
 This module deploys Role Assignments.
 
@@ -8,6 +8,8 @@ This module deploys Role Assignments.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -18,9 +20,10 @@ This module deploys Role Assignments.
 ## Parameters
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location for all resources. |
 | `managementGroupId` | string | `''` | Group ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group. |
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
@@ -151,3 +154,77 @@ This module can be deployed both at management group, subscription or resource g
 - To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter, along side the `subscriptionId` parameter.
 - To deploy the module at the subscription level, only provide the `subscriptionId` parameter.
 - To deploy the module at the management group level, only provide the `managementGroupId` parameter.
+
+## Cross-referenced modules
+
+_None_
+
+## Deployment examples
+
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Parameters</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleAssignments-multiRolesMultiPrincipals './Microsoft.Authorization/roleAssignments-multiRolesMultiPrincipals/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-RoleAssignments-multiRolesMultiPrincipals'
+  params: {
+    resourceGroupName: 'validation-rg'
+    roleAssignments: [
+      {
+        principalIds: []
+        roleDefinitionIdOrName: 'Owner'
+      }
+      {
+        principalIds: []
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+      }
+    ]
+    subscriptionId: '<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceGroupName": {
+      "value": "validation-rg"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [],
+          "roleDefinitionIdOrName": "Owner"
+        },
+        {
+          "principalIds": [],
+          "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11"
+        }
+      ]
+    },
+    "subscriptionId": {
+      "value": "<<subscriptionId>>"
+    }
+  }
+}
+```
+
+</details>
+<p>

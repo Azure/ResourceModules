@@ -77,7 +77,7 @@ param networkRuleSets object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The queues to create in the service bus namespace.')
@@ -307,7 +307,7 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
   }
 }]
 
-resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${serviceBusNamespace.name}-${lock}-lock'
   properties: {
     level: any(lock)

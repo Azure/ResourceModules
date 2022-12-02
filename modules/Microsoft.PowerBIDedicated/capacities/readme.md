@@ -14,7 +14,7 @@ This module deploys PowerBIDedicated Capacities.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2016-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks) |
+| `Microsoft.Authorization/locks` | [2016-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.PowerBIDedicated/capacities` | [2021-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.PowerBIDedicated/2021-01-01/capacities) |
 
@@ -32,6 +32,7 @@ This module deploys PowerBIDedicated Capacities.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `mode` | string | `'Gen2'` | `[Gen1, Gen2]` | Mode of the resource. |
@@ -161,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -169,14 +170,30 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Capacities'
+  name: '${uniqueString(deployment().name)}-test-pbdcapcom'
   params: {
     // Required parameters
     members: [
-      '<<deploymentSpId>>'
+      '<managedIdentityPrincipalId>'
     ]
-    name: '<<namePrefix>>azpbid001'
+    name: '<<namePrefix>>pbdcapcom001'
     skuCapacity: 1
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -196,14 +213,95 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     // Required parameters
     "members": {
       "value": [
-        "<<deploymentSpId>>"
+        "<managedIdentityPrincipalId>"
       ]
     },
     "name": {
-      "value": "<<namePrefix>>azpbid001"
+      "value": "<<namePrefix>>pbdcapcom001"
     },
     "skuCapacity": {
       "value": 1
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-pbdcapmin'
+  params: {
+    // Required parameters
+    members: [
+      '<managedIdentityPrincipalId>'
+    ]
+    name: '<<namePrefix>>pbdcapmin001'
+    skuCapacity: 1
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "members": {
+      "value": [
+        "<managedIdentityPrincipalId>"
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>pbdcapmin001"
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

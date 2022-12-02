@@ -1,5 +1,5 @@
 param keyvaultName string
-param workspaceIdentity string
+param workspaceIndentityPrincipalId string
 param usesRbacAuthorization bool = false
 
 // Workspace encryption - Assign Workspace System Identity Keyvault Crypto Reader at Encryption Keyvault
@@ -9,10 +9,10 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 
 // Assign RBAC role Key Vault Crypto User
 resource workspace_cmk_rbac 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (usesRbacAuthorization) {
-  name: '${workspaceIdentity}-cmk-rbac'
+  name: guid('${keyVault.id}-${workspaceIndentityPrincipalId}-Key-Vault-Crypto-User')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
-    principalId: workspaceIdentity
+    principalId: workspaceIndentityPrincipalId
     principalType: 'ServicePrincipal'
   }
   scope: keyVault
@@ -32,7 +32,7 @@ resource workspace_cmk_accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@20
             'get'
           ]
         }
-        objectId: workspaceIdentity
+        objectId: workspaceIndentityPrincipalId
         tenantId: tenant().tenantId
       }
     ]

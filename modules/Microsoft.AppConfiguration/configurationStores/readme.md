@@ -16,11 +16,11 @@ This module deploys an App Configuration Store.
 | :-- | :-- |
 | `Microsoft.AppConfiguration/configurationStores` | [2021-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores) |
 | `Microsoft.AppConfiguration/configurationStores/keyValues` | [2021-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores/keyValues) |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -44,7 +44,7 @@ This module deploys an App Configuration Store.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePurgeProtection` | bool | `False` |  | Property specifying whether protection against purge is enabled for this configuration store. |
 | `keyValues` | _[keyValues](keyValues/readme.md)_ array | `[]` |  | All Key / Values to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -318,6 +318,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     keyValues: [
       {
@@ -328,6 +329,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -340,6 +342,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -387,6 +390,9 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     "disableLocalAuth": {
       "value": false
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enablePurgeProtection": {
       "value": false
     },
@@ -400,6 +406,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -416,6 +423,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -443,7 +451,10 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-accmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>accmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -460,8 +471,13 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>accmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -485,6 +501,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     // Non-required parameters
     createMode: 'Default'
     disableLocalAuth: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
     privateEndpoints: [
       {
@@ -524,6 +541,9 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "disableLocalAuth": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enablePurgeProtection": {
       "value": false

@@ -37,7 +37,7 @@ remote/managing tenant.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `resourceGroupName` | string | `''` | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
@@ -190,17 +190,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     // Required parameters
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
@@ -208,6 +208,8 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
     name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -228,17 +230,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "authorizations": {
       "value": [
         {
-          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalId": "9740a11d-a508-4a83-8ed5-4cb5bff5154a",
           "principalIdDisplayName": "ResourceModules-Reader",
           "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
         {
-          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalId": "9bce07dd-ae3a-4062-a24d-33631a4b35e8",
           "principalIdDisplayName": "ResourceModules-Contributor",
           "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         {
-          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalId": "441519e3-00e5-4070-8ec8-4b8cddf6409a",
           "principalIdDisplayName": "ResourceModules-LHManagement",
           "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
@@ -252,6 +254,10 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -273,17 +279,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     // Required parameters
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
@@ -292,6 +298,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     resourceGroupName: '<resourceGroupName>'
   }
 }
@@ -313,17 +320,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "authorizations": {
       "value": [
         {
-          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalId": "9740a11d-a508-4a83-8ed5-4cb5bff5154a",
           "principalIdDisplayName": "ResourceModules-Reader",
           "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
         {
-          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalId": "9bce07dd-ae3a-4062-a24d-33631a4b35e8",
           "principalIdDisplayName": "ResourceModules-Contributor",
           "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         {
-          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalId": "441519e3-00e5-4070-8ec8-4b8cddf6409a",
           "principalIdDisplayName": "ResourceModules-LHManagement",
           "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
@@ -339,6 +346,9 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "Managed by Lighthouse"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     }

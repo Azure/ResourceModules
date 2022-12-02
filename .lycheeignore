@@ -1,4 +1,6 @@
+<!-- This file lists all links/regex to be ignored by lychee in the Platform: Broken Links Check workflow -->
 https://foo.psd1/
+https://sts.windows.net/
 https://teststringforvalidation.com/
 http://localhost/
 https://mystorageaccount.blob.core.windows.net
@@ -19,3 +21,9 @@ test@contoso.com
 foo@contoso.com
 @parameters.json
 '@odata.type
+
+<!-- The following regex excludes all local file paths besides the ones having an '.md' extension.
+That is to ignore false positives such as the ones coming from the 'docs/wiki' folder, where internal references are supporting the Wiki formatting.
+To avoid ignoring checks on the 'docs/wiki/media' sub-folder, an explicit inclusion is made at lychee argument level, since 'include' has preference over all excludes.
+Ref https://github.com/marketplace/actions/lychee-broken-link-checker and https://github.com/lycheeverse/lychee#commandline-parameters -->
+^file:.*([^d]|[^m]d|[^.]md)$

@@ -28,7 +28,7 @@ param virtualNetworkRules array = []
 @description('Optional. List of IpRules. It will not be set if publicNetworkAccess is "Disabled". Otherwise, when used, defaultAction will be set to "Deny".')
 param ipRules array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var networkRules = [for (virtualNetworkRule, index) in virtualNetworkRules: {

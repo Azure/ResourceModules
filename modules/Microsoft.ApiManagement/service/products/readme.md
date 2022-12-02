@@ -37,7 +37,7 @@ This module deploys API Management Service Products.
 | :-- | :-- | :-- | :-- |
 | `apis` | _[apis](apis/readme.md)_ array | `[]` | Array of Product APIs. |
 | `approvalRequired` | bool | `False` | Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `groups` | _[groups](groups/readme.md)_ array | `[]` | Array of Product Groups. |
 | `productDescription` | string | `''` | Product description. May include HTML formatting tags. |
 | `state` | string | `'published'` | whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published. |

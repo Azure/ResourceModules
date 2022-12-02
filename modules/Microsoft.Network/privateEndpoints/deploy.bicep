@@ -7,6 +7,15 @@ param subnetResourceId string
 @description('Required. Resource ID of the resource that needs to be connected to the network.')
 param serviceResourceId string
 
+@description('Optional. Application security groups in which the private endpoint IP configuration is included.')
+param applicationSecurityGroups array = []
+
+@description('Optional. The custom name of the network interface attached to the private endpoint.')
+param customNetworkInterfaceName string = ''
+
+@description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
+param ipConfigurations array = []
+
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
 param groupIds array
 
@@ -36,7 +45,7 @@ param customDnsConfigs array = []
 @description('Optional. Manual PrivateLink Service Connections.')
 param manualPrivateLinkServiceConnections array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -53,11 +62,14 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-08-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2022-05-01' = {
   name: name
   location: location
   tags: tags
   properties: {
+    applicationSecurityGroups: applicationSecurityGroups
+    customNetworkInterfaceName: customNetworkInterfaceName
+    ipConfigurations: ipConfigurations
     privateLinkServiceConnections: [
       {
         name: name
@@ -84,7 +96,7 @@ module privateEndpoint_privateDnsZoneGroup 'privateDnsZoneGroups/deploy.bicep' =
   }
 }
 
-resource privateEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateEndpoint_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateEndpoint.name}-${lock}-lock'
   properties: {
     level: any(lock)

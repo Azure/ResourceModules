@@ -14,11 +14,11 @@ This module deploys Network DnsResolvers.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/dnsResolvers` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates) |
-| `Microsoft.Network/dnsResolvers/inboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/dnsResolvers) |
-| `Microsoft.Network/dnsResolvers/outboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/dnsResolvers) |
+| `Microsoft.Network/dnsResolvers` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers) |
+| `Microsoft.Network/dnsResolvers/inboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers/inboundEndpoints) |
+| `Microsoft.Network/dnsResolvers/outboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers/outboundEndpoints) |
 
 ## Parameters
 
@@ -33,7 +33,7 @@ This module deploys Network DnsResolvers.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `inboundEndpoints` | array | `[]` |  | Inbound Endpoints for Private DNS Resolver. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -258,6 +258,7 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
     name: '<<namePrefix>>ndrcom001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsin-x-001'
@@ -294,6 +295,9 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
       "value": "<virtualNetworkId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "inboundEndpoints": {
       "value": [
         {

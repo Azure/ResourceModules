@@ -177,10 +177,10 @@ param scheduleDescription string = ''
 @description('Generated. Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var updateClassifications_var = replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')
+var updateClassificationsVar = replace(replace(replace(replace(string(updateClassifications), ',', ', '), '[', ''), ']', ''), '"', '')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -208,13 +208,13 @@ resource softwareUpdateConfiguration 'Microsoft.Automation/automationAccounts/so
       linux: ((operatingSystem == 'Linux') ? {
         excludedPackageNameMasks: excludeUpdates
         includedPackageNameMasks: includeUpdates
-        includedPackageClassifications: updateClassifications_var
+        includedPackageClassifications: updateClassificationsVar
         rebootSetting: rebootSetting
       } : null)
       windows: ((operatingSystem == 'Windows') ? {
         excludedKbNumbers: excludeUpdates
         includedKbNumbers: includeUpdates
-        includedUpdateClassifications: updateClassifications_var
+        includedUpdateClassifications: updateClassificationsVar
         rebootSetting: rebootSetting
       } : null)
       targets: {

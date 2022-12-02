@@ -14,7 +14,7 @@ This module deploys a bastion host.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/bastionHosts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/bastionHosts) |
@@ -42,7 +42,7 @@ This module deploys a bastion host.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableCopyPaste` | bool | `False` |  | Choose to disable or enable Copy Paste. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFileCopy` | bool | `True` |  | Choose to disable or enable File Copy. |
 | `enableIpConnect` | bool | `False` |  | Choose to disable or enable IP Connect. |
 | `enableShareableLink` | bool | `False` |  | Choose to disable or enable Shareable Link. |
@@ -323,6 +323,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableCopyPaste: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableFileCopy: false
     enableIpConnect: false
     enableShareableLink: false
@@ -332,6 +333,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -382,6 +384,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "disableCopyPaste": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enableFileCopy": {
       "value": false
     },
@@ -400,6 +405,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -431,6 +437,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     name: '<<namePrefix>>nbhctmpip001'
     vNetId: '<vNetId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -448,6 +455,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
           principalIds: [
             '<managedIdentityPrincipalId>'
           ]
+          principalType: 'ServicePrincipal'
           roleDefinitionIdOrName: 'Reader'
         }
       ]
@@ -478,6 +486,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       "value": "<vNetId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -496,6 +507,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
             "principalIds": [
               "<managedIdentityPrincipalId>"
             ],
+            "principalType": "ServicePrincipal",
             "roleDefinitionIdOrName": "Reader"
           }
         ],
@@ -523,6 +535,8 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nbhmin001'
     vNetId: '<vNetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -545,6 +559,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     },
     "vNetId": {
       "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -10,11 +10,16 @@ BeforeAll {
     $modulesFolderPath = Join-Path $rootPath 'modules'
     $toolsPath = Join-Path $rootPath 'utilities' 'tools'
 
+    # Load function
+    . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1')
+
     # Collect original files
     $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
     $nestedBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
-    $deployBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
-    $deployParentBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $allBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $bicepTestFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.test.bicep' }).Count
+    $topLevelBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $allBicepFilesCount = $nestedBicepFilesCount + $allBicepDeployFilesCount + $bicepTestFilesCount
 
     # GitHub Workflows
     $moduleWorkflowFiles = Get-ChildItem -Path (Join-Path $rootPath '.github' 'workflows') -Filter 'ms.*.yml' -File
@@ -27,53 +32,47 @@ BeforeAll {
             }
         }
     }
-
-    # Azure DevOps pipelines
-    $adoModulePipelineFiles = Get-ChildItem -Path (Join-Path $rootPath '.azuredevops' 'modulePipelines') -Filter 'ms.*.yml' -File
-    $originalModulePipelinesWithBicep = 0
-    foreach ($adoModulePipelineFile in $adoModulePipelineFiles) {
-        foreach ($line in (Get-Content -Path $adoModulePipelineFile.FullName)) {
-            if ($line -like '*.bicep*') {
-                $originalModulePipelinesWithBicep += 1
-                break
-            }
-        }
-    }
 }
 
 Describe 'Test default behavior' -Tag 'Default' {
 
     BeforeAll {
-        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath
+        ConvertTo-ARMTemplate -Path $rootPath -Verbose -RunSynchronous
     }
 
-    It 'All top-level deploy.bicep files are converted to deploy.json' {
+    It 'All [<topLevelBicepDeployFilesCount>] top-level [deploy.bicep] files are converted to [deploy.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
-        $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
+        $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
+    }
+
+    It 'All [<bicepTestFilesCount>] [deploy.test.bicep] files are converted to [deploy.test.json]' {
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.test.json' }).Count
+        $deployJsonFilesCount | Should -Be $bicepTestFilesCount
     }
 
     It 'All bicep files are removed' {
-        $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
-        $bicepFilesCount | Should -Be 0
+        $actualBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        $actualBicepFilesCount | Should -Be 0
     }
 
     It 'All json files have metadata removed' {
-        $deployJsonFiles = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
+        $releveantJSONFiles = (Get-ChildItem -Recurse $modulesFolderPath).FullName | Where-Object { $_ -match '.+(deploy.json|deploy.test.json)$' }
+
         $metadataFound = $false
 
         foreach ($deployJsonFile in $deployJsonFiles) {
-            $TemplateObject = Get-Content -Path $deployJsonFile.FullName -Raw | ConvertFrom-Json
+            $TemplateObject = Get-Content -Path $deployJsonFile -Raw | ConvertFrom-Json -AsHashtable
 
-            if ([bool]($TemplateObject.PSobject.Properties.name -match 'metadata')) {
-                $metadataFound = $true;
-                break;
+            if ([bool]($TemplateObject.Keys -contains 'metadata')) {
+                $metadataFound = $true
+                break
             }
         }
 
         $metadataFound | Should -Be $false
     }
 
-    It 'All GitHub workflow files are updated' {
+    It 'All [<originalModuleWorkflowWithBicep>] GitHub workflow files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -85,56 +84,48 @@ Describe 'Test default behavior' -Tag 'Default' {
             }
         }
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
-    }
-
-    It 'All Azure DevOps pipeline files are changed' {
-        $modulePipelineFileUpdated = 0
-
-        foreach ($pipelineFile in $adoModulePipelineFiles) {
-            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line -like '*templateFilePath:*.json*') {
-                    $modulePipelineFileUpdated += 1
-                    break
-                }
-            }
-        }
-        $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
     }
 }
 
 Describe 'Test flag to including children' -Tag 'ConvertChildren' {
 
     BeforeAll {
-        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -ConvertChildren
+        ConvertTo-ARMTemplate -Path $rootPath -ConvertChildren -Verbose -RunSynchronous
     }
 
-    It 'All deploy.bicep files are converted to deploy.json' {
+    It 'All [<allBicepDeployFilesCount>] [deploy.bicep] files are converted to [deploy.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
-        $deployJsonFilesCount | Should -Be $deployBicepFilesCount
+        $deployJsonFilesCount | Should -Be $allBicepDeployFilesCount
+    }
+
+    It 'All [<bicepTestFilesCount>] [deploy.test.bicep] files are converted to [deploy.test.json]' {
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.test.json' }).Count
+        $deployJsonFilesCount | Should -Be $bicepTestFilesCount
     }
 
     It 'All bicep files are removed' {
-        $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
-        $bicepFilesCount | Should -Be 0
+        $actualBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        $actualBicepFilesCount | Should -Be 0
     }
 
     It 'All json files have metadata removed' {
-        $deployJsonFiles = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' })
+        $releveantJSONFiles = (Get-ChildItem -Recurse $modulesFolderPath).FullName | Where-Object { $_ -match '.+(deploy.json|deploy.test.json)$' }
+
         $metadataFound = $false
 
         foreach ($deployJsonFile in $deployJsonFiles) {
-            $TemplateObject = Get-Content -Path $deployJsonFile.FullName -Raw | ConvertFrom-Json
+            $TemplateObject = Get-Content -Path $deployJsonFile -Raw | ConvertFrom-Json -AsHashtable
 
-            if ([bool]($TemplateObject.PSobject.Properties.name -match 'metadata')) {
-                $metadataFound = $true;
-                break;
+            if ([bool]($TemplateObject.Keys -contains 'metadata')) {
+                $metadataFound = $true
+                break
             }
         }
 
         $metadataFound | Should -Be $false
     }
 
-    It 'All GitHub workflow files are updated' {
+    It 'All [<originalModuleWorkflowWithBicep>] GitHub workflow files are updated' {
         $moduleWorkflowFilesUpdated = 0
 
         foreach ($workFlowFile in $moduleWorkflowFiles) {
@@ -147,36 +138,22 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         }
         $moduleWorkflowFilesUpdated | Should -Be $originalModuleWorkflowWithBicep
     }
-
-    It 'All Azure DevOps pipeline files are changed' {
-        $modulePipelineFileUpdated = 0
-
-        foreach ($pipelineFile in $adoModulePipelineFiles) {
-            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line -like '*templateFilePath:*.json*') {
-                    $modulePipelineFileUpdated += 1
-                    break
-                }
-            }
-        }
-        $modulePipelineFileUpdated | Should -Be $originalModulePipelinesWithBicep
-    }
 }
 
 Describe 'Test flags that skip logic' -Tag 'Skip' {
 
     BeforeAll {
-        . (Join-Path $toolsPath 'ConvertTo-ARMTemplate.ps1') -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate
+        ConvertTo-ARMTemplate -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose -RunSynchronous
     }
 
-    It 'All deploy.bicep files are converted to deploy.json' {
+    It 'All [<allBicepDeployFilesCount>] deploy.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
-        $deployJsonFilesCount | Should -Be $deployParentBicepFilesCount
+        $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
     }
 
-    It 'All bicep files are still there' {
-        $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
-        $bicepFilesCount | Should -Be $bicepFilesCount
+    It 'All [<allBicepFilesCount>] bicep files are still there' {
+        $actualBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match '.*.bicep' }).Count
+        $actualBicepFilesCount | Should -Be ($nestedBicepFilesCount + $allBicepDeployFilesCount + $bicepTestFilesCount)
     }
 
     It 'All json files still have metadata' {
@@ -185,9 +162,9 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
 
         foreach ($deployJsonFile in $deployJsonFiles) {
             $content = Get-Content -Path $deployJsonFile.FullName -Raw
-            $TemplateObject = $content | ConvertFrom-Json
+            $TemplateObject = $content | ConvertFrom-Json -AsHashtable
 
-            if ([bool]($TemplateObject.PSobject.Properties.name -match 'metadata')) {
+            if ([bool]($TemplateObject.Keys -contains 'metadata')) {
                 $metadataFound = $true;
                 break;
             }
@@ -207,19 +184,5 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
             }
         }
         $moduleWorkflowFilesUpdated | Should -Be 0
-    }
-
-    It 'No Azure DevOps pipeline files are changed' {
-        $modulePipelineFileUpdated = 0
-
-        foreach ($pipelineFile in $adoModulePipelineFiles) {
-            foreach ($line in (Get-Content -Path $pipelineFile.FullName)) {
-                if ($line -like '*templateFilePath:*.json*') {
-                    $modulePipelineFileUpdated += 1
-                    break
-                }
-            }
-        }
-        $modulePipelineFileUpdated | Should -Be 0
     }
 }

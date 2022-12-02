@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'nanaanfs41'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -41,16 +44,17 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     capacityPools: [
       {
         name: '<<namePrefix>>-${serviceShort}-cp-001'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
             principalType: 'ServicePrincipal'
           }
         ]
@@ -74,10 +78,10 @@ module testDeployment '../../deploy.bicep' = {
             ]
             roleAssignments: [
               {
+                roleDefinitionIdOrName: 'Reader'
                 principalIds: [
                   resourceGroupResources.outputs.managedIdentityPrincipalId
                 ]
-                roleDefinitionIdOrName: 'Reader'
                 principalType: 'ServicePrincipal'
               }
             ]
@@ -108,10 +112,10 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-${serviceShort}-cp-002'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
             principalType: 'ServicePrincipal'
           }
         ]
@@ -122,10 +126,10 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
         principalType: 'ServicePrincipal'
       }
     ]

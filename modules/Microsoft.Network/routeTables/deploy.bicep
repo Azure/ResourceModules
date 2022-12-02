@@ -24,7 +24,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -49,7 +49,7 @@ resource routeTable 'Microsoft.Network/routeTables@2021-08-01' = {
   }
 }
 
-resource routeTable_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource routeTable_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${routeTable.name}-${lock}-lock'
   properties: {
     level: any(lock)

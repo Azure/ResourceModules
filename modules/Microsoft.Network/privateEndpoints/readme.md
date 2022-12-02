@@ -14,10 +14,10 @@ This template deploys a private endpoint for a generic service.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ### Resource dependency
 
@@ -44,8 +44,11 @@ The following resources are required to be able to deploy this resource:
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `applicationSecurityGroups` | array | `[]` |  | Application security groups in which the private endpoint IP configuration is included. |
 | `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `customNetworkInterfaceName` | string | `''` |  | The custom name of the network interface attached to the private endpoint. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `ipConfigurations` | array | `[]` |  | A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
@@ -154,6 +157,119 @@ roleAssignments: [
 </details>
 <p>
 
+### Parameter Usage: `applicationSecurityGroups`
+
+You can attach multiple Application Security Groups to a private endpoint resource.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"applicationSecurityGroups": {
+    "value": [
+        {
+            "id": "<applicationSecurityGroupResourceId>"
+        },
+        {
+            "id": "<applicationSecurityGroupResourceId>"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+applicationSecurityGroups: [
+    {
+        id: '<applicationSecurityGroupResourceId>'
+    }
+    {
+        id: '<applicationSecurityGroupResourceId>'
+    }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `customNetworkInterfaceName`
+
+You can customize the name of the private endpoint network interface instead of the default one that contains the string 'nic.GUID'. This helps with having consistent naming standards across all resources. Existing private endpoints cannot be renamed. See [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#network-interface-rename) for more details.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"customNetworkInterfaceName": {
+    "value": "myPrivateEndpointName-Nic"
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customNetworkInterfaceName: 'myPrivateEndpointName-Nic'
+```
+
+</details>
+<p>
+
+### Parameter Usage: `ipConfigurations`
+
+You can use this property to define a static IP address for the private endpoint instead of the default dynamic one. To do that, first extract the `memberName` and `groupId` for the resource type you are creating the private endpoint for. See [documentation](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#determine-groupid-and-membername) for guidance on how to do that. Also provide the `privateIPAddress` for the private endpoint from the subnet range you are creating the private endpoint in. Note that static IP addresses [can be applied](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint?tabs=manage-private-link-powershell#custom-properties) when the private endpoint is created.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"customNetworkInterfaceName": {
+    "value": [
+      {
+          "name": "myIPconfig",
+          "properties": {
+              "memberName": "<memberName>", // e.g. default, sites, blob
+              "groupId": "<groupId>", // e.g. vault, registry, blob
+              "privateIPAddress": "10.10.10.10"
+          }
+      }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+ipConfigurations: [
+    {
+        name: 'myIPconfig'
+        properties: {
+            memberName: '<memberName>' // e.g. default, sites, blob
+            groupId: '<groupId>' // e.g. vault, registry, blob
+            privateIPAddress: '10.10.10.10'
+        }
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -192,6 +308,23 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
+    applicationSecurityGroups: [
+      {
+        id: '<id>'
+      }
+    ]
+    customNetworkInterfaceName: '<<namePrefix>>npecom001nic'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipConfigurations: [
+      {
+        name: 'myIPconfig'
+        properties: {
+          groupId: 'vault'
+          memberName: 'default'
+          privateIPAddress: '10.0.0.10'
+        }
+      }
+    ]
     lock: 'CanNotDelete'
     privateDnsZoneGroup: {
       privateDNSResourceIds: [
@@ -203,6 +336,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -238,6 +372,31 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
+    "applicationSecurityGroups": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
+    },
+    "customNetworkInterfaceName": {
+      "value": "<<namePrefix>>npecom001nic"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "myIPconfig",
+          "properties": {
+            "groupId": "vault",
+            "memberName": "default",
+            "privateIPAddress": "10.0.0.10"
+          }
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -254,6 +413,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -282,6 +442,8 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     name: '<<namePrefix>>npemin001'
     serviceResourceId: '<serviceResourceId>'
     subnetResourceId: '<subnetResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -312,6 +474,10 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
