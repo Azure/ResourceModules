@@ -155,9 +155,9 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
       sku: sku
       subnetIds: subnetIds
       volumes: volumes
-    }, !empty(dnsConfig) ? {
+    }, (!empty(dnsConfig) ? {
       dnsConfig: dnsConfig
-    } : {})
+    } : {}))
 }
 
 resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
