@@ -102,7 +102,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-
 // =========== //
 // Deployments //
 // =========== //
@@ -129,7 +128,6 @@ resource dicom 'Microsoft.HealthcareApis/workspaces/dicomservices@2022-06-01' = 
   parent: workspace
   identity: identity
   properties: {
-    // authenticationConfiguration: {}
     corsConfiguration: {
       allowCredentials: corsAllowCredentials
       headers: corsHeaders
