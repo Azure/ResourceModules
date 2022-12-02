@@ -1,4 +1,4 @@
-# DICOM Services `[Microsoft.HealthcareApis/workspaces]`
+# Health Data Services workspace `[Microsoft.HealthcareApis/workspaces]`
 
 This module deploys a Health Data Services workspace.
 
@@ -72,13 +72,13 @@ tags: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module dicom './Microsoft.HealthcareApis/deploy.bicep' = {
+module health './Microsoft.HealthcareApis/deploy.bicep' = {
     name: '${uniqueString(deployment().name)}-test-hds'
     params: {
         // Required parameters
-        name: '<<namePrefix>>hds001'        
-        // Non-required parameters        
-        lock: 'CanNotDelete'        
+        name: '<<namePrefix>>hds001'
+        // Non-required parameters
+        lock: 'CanNotDelete'
         publicNetworkAccess: 'Enabled'
     }
 }
