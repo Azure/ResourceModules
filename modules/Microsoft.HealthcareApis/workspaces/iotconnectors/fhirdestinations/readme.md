@@ -7,6 +7,7 @@ This module deploys HealthcareApis MedTech FHIR Destination.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -36,9 +37,71 @@ This module deploys HealthcareApis MedTech FHIR Destination.
 | `resourceIdentityResolutionType` | string | `'Lookup'` | `[Create, Lookup]` | Determines how resource identity is resolved on the destination. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `destinationMapping`
 
-// TODO: Fill in Parameter usage
+You can specify a collection of destination mapping using the following format:
+
+> NOTE: More detailed information on destination mappings can be found [here](https://learn.microsoft.com/en-us/azure/healthcare-apis/iot/how-to-use-fhir-mappings).
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"destinationMapping": {
+    "value": {
+        "templateType": "CodeValueFhir",
+        "template": {
+            "codes": [
+                {
+                    "code": "8867-4",
+                    "system": "http://loinc.org",
+                    "display": "Heart rate"
+                }
+            ],
+            "periodInterval": 60,
+            "typeName": "heartrate",
+            "value": {
+                "defaultPeriod": 5000,
+                "unit": "count/min",
+                "valueName": "hr",
+                "valueType": "SampledData"
+            }
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+destinationMapping: {
+    templateType: 'CodeValueFhir'
+    template: {
+        codes: [
+            {
+                code: '8867-4'
+                system: 'http://loinc.org'
+                display: 'Heart rate'
+            }
+        ],
+        periodInterval: 60,
+        typeName: 'heartrate'
+        value: {
+            defaultPeriod: 5000
+            unit: 'count/min'
+            valueName: 'hr'
+            valueType: 'SampledData'
+        }
+    }
+}
+```
+
+</details>
 
 ## Outputs
 
@@ -49,6 +112,30 @@ This module deploys HealthcareApis MedTech FHIR Destination.
 | `name` | string | The name of the FHIR destination. |
 | `resourceGroupName` | string | The resource group where the namespace is deployed. |
 | `resourceId` | string | The resource ID of the FHIR destination. |
+
+## Deployment examples
+
+<h3>Example 1: min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module iotConnector_destination './Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations/deploy.bicep' = {
+    name: '${uniqueString(deployment().name)}-test-iomtmap'
+    params: {
+        // Required parameters
+        name: '<<namePrefix>>iomtmap001'
+        workspaceName: '<workspaceName>'
+        iotConnectorName: '<eventHubName>'
+        destinationMapping '<destinationMapping>'
+        fhirServiceResourceId: '<fhirServiceResourceId>'
+    }
+}
+```
+
+</details>
 
 ## Cross-referenced modules
 

@@ -7,6 +7,7 @@ This module deploys HealthcareApis MedTech Service.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -285,7 +286,7 @@ userAssignedIdentities: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module iotConnector './Microsoft.HealthcareApis/workspaces/iotconnectorsdeploy.bicep' = {
+module iotConnector './Microsoft.HealthcareApis/workspaces/iotconnectors/deploy.bicep' = {
     name: '${uniqueString(deployment().name)}-test-iomt'
     params: {
         // Required parameters
