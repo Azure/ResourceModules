@@ -57,8 +57,9 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
+| `dynamicThrottlingEnabled` | bool | `False` |  | The flag to enable dynamic throttling. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryption` | object | `{object}` |  | Properties to configure encryption. |
+| `enableEncryption` | bool | `True` |  | Enable service encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
@@ -610,16 +611,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     kind: 'SpeechServices'
     name: '<<namePrefix>>csaencr001'
     // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: '<identityClientId>'
-        keyName: '<keyName>'
-        keyVaultUri: '<keyVaultUri>'
-        keyversion: '<keyversion>'
-      }
-    }
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
     userAssignedIdentities: {
@@ -649,19 +644,17 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "<<namePrefix>>csaencr001"
     },
     // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "encryption": {
-      "value": {
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-          "identityClientId": "<identityClientId>",
-          "keyName": "<keyName>",
-          "keyVaultUri": "<keyVaultUri>",
-          "keyversion": "<keyversion>"
-        }
-      }
     },
     "publicNetworkAccess": {
       "value": "Enabled"

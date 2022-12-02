@@ -215,7 +215,12 @@ resource cmkKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource cmkUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMkUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
   name: last(split(cMKUserAssignedIdentityResourceId, '/'))
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
@@ -244,10 +249,10 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
       // Customer-managed key
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
-        identityClientId: cmkUserAssignedIdentity.properties.clientId
+        identityClientId: cMkUserAssignedIdentity.properties.clientId
         keyVaultUri: cmkKeyVault.properties.vaultUri
         keyName: cMKKeyName
-        keyVersion: cMKKeyVersion
+        keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
       }
     } : enableEncryption ? {
       // Service-managed key
