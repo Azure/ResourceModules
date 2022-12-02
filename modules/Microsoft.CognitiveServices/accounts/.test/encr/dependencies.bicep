@@ -77,14 +77,8 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
-@description('The vault URI of the created Key Vault.')
-output keyVaultUri string = keyVault.properties.vaultUri
-
 @description('The name of the created Key Vault encryption key.')
 output keyVaultKeyName string = keyVault::key.name
-
-@description('The version of the created Key Vault encryption key.')
-output keyVaultKeyVersion string = last(split(keyVault::key.properties.keyUriWithVersion, '/'))
 
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
