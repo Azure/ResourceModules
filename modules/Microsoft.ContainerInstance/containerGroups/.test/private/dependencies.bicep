@@ -40,7 +40,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   }
 }
 
-@description('The resource ID of the created managed identity.')
+@description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Virtual Network Subnet.')
