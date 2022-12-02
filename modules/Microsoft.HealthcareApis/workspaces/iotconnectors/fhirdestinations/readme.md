@@ -1,7 +1,6 @@
 # HealthcareApis Workspaces Iotconnectors Fhirdestinations `[Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations]`
 
-This module deploys HealthcareApis Workspaces Iotconnectors Fhirdestinations.
-// TODO: Replace Resource and fill in description
+This module deploys HealthcareApis MedTech FHIR Destination.
 
 ## Navigation
 
