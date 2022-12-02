@@ -82,7 +82,7 @@ param privateEndpoints array = []
 param tags object = {}
 
 // PID
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Role Assignments
@@ -199,7 +199,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
       id: appServiceEnvironmentId
     } : null
     storageAccountRequired: storageAccountRequired
-    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId: null
+    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
   }
@@ -228,7 +228,7 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
   properties: {
     level: any(lock)

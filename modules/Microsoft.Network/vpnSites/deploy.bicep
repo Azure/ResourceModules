@@ -28,7 +28,7 @@ param isSecuritySite bool = false
 @description('Optional. The Office365 breakout policy.')
 param o365Policy object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. List of all VPN site links.')
@@ -77,7 +77,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-08-01' = {
   }
 }
 
-resource vpnSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vpnSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vpnSite.name}-${lock}-lock'
   properties: {
     level: any(lock)

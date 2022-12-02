@@ -9,6 +9,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'apesubcom'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -76,6 +79,7 @@ resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-
 module testDeployment '../../subscription/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policySetAssignment.id
     displayName: '[Display Name] policy exempt (subscription scope)'
@@ -84,7 +88,6 @@ module testDeployment '../../subscription/deploy.bicep' = {
     metadata: {
       category: 'Security'
     }
-    subscriptionId: subscription().subscriptionId
     assignmentScopeValidation: 'Default'
     description: 'My description'
     resourceSelectors: [

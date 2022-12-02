@@ -8,7 +8,7 @@ param name string
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Custom properties of the API Management service.')
@@ -419,7 +419,7 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   }
 }]
 
-resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
     level: any(lock)

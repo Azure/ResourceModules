@@ -14,7 +14,7 @@ This module deploys Network Private Link Services.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateLinkServices` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/privateLinkServices) |
 
@@ -31,7 +31,7 @@ This module deploys Network Private Link Services.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoApproval` | object | `{object}` |  | The auto-approval list of the private link service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableProxyProtocol` | bool | `False` |  | Whether the private link service is enabled for proxy protocol or not. |
 | `extendedLocation` | object | `{object}` |  | The extended location of the load balancer. |
 | `fqdns` | array | `[]` |  | The list of Fqdn. |
@@ -451,6 +451,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
         '*'
       ]
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableProxyProtocol: true
     fqdns: [
       'nplscom.plsfqdn01.azure.privatelinkservice'
@@ -514,6 +515,9 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
           "*"
         ]
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enableProxyProtocol": {
       "value": true
@@ -585,6 +589,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>nplsmin001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipConfigurations: [
       {
         name: 'nplsmin01'
@@ -621,6 +626,9 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
       "value": "<<namePrefix>>nplsmin001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipConfigurations": {
       "value": [
         {

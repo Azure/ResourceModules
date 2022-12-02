@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.SignalRService/webPubSub/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

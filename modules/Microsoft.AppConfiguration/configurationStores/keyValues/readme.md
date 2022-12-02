@@ -35,7 +35,7 @@ This module deploys an App Configuration Store.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `contentType` | string | `''` | The content type of the key-values value. Providing a proper content-type can enable transformations of values when they are retrieved by applications. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 

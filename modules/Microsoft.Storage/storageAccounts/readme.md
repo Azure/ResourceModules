@@ -15,7 +15,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
@@ -63,7 +63,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -434,6 +434,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fileServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -613,6 +614,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "fileServices": {
       "value": {
         "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
@@ -776,6 +780,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -836,6 +841,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -884,6 +892,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>ssamin001'
     // Non-required parameters
     allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -907,6 +916,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -934,6 +946,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fileServices: {
       shares: [
         {
@@ -998,6 +1011,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "fileServices": {
       "value": {
         "shares": [
@@ -1060,6 +1076,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>ssav1001'
     // Non-required parameters
     allowBlobPublicAccess: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     storageAccountKind: 'Storage'
   }
 }
@@ -1084,6 +1101,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "storageAccountKind": {
       "value": "Storage"

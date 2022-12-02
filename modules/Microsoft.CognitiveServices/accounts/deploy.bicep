@@ -131,7 +131,7 @@ param restrictOutboundNetworkAccess bool = true
 @description('Optional. The storage accounts for this resource.')
 param userOwnedStorage array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -223,7 +223,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
 }
 
-resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource cognitiveServices_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${cognitiveServices.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -13,7 +13,7 @@ param isActiveCMK bool
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param keyVaultResourceId string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(keyVaultResourceId)) {

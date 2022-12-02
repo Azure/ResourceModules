@@ -34,7 +34,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed" . |
 | `typeProperties` | object | `{object}` | Integration Runtime type properties. Required if type is "Managed". |
 

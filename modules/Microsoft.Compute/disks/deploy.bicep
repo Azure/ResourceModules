@@ -116,7 +116,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the availability set resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -167,7 +167,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
   }
 }
 
-resource disk_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource disk_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${disk.name}-${lock}-lock'
   properties: {
     level: any(lock)

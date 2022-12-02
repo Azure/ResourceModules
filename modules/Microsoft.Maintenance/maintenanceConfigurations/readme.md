@@ -14,7 +14,7 @@ This module deploys a Maintenance Configuration.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Maintenance/maintenanceConfigurations` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Maintenance/2021-05-01/maintenanceConfigurations) |
 
@@ -30,7 +30,7 @@ This module deploys a Maintenance Configuration.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `extensionProperties` | object | `{object}` |  | Gets or sets extensionProperties of the maintenanceConfiguration. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -211,6 +211,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
     // Required parameters
     name: '<<namePrefix>>mmccom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     extensionProperties: {}
     lock: 'CanNotDelete'
     maintenanceWindow: {
@@ -256,6 +257,9 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
       "value": "<<namePrefix>>mmccom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "extensionProperties": {
       "value": {}
     },
@@ -311,7 +315,10 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
 module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmcmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>mmcmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -328,8 +335,13 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>mmcmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

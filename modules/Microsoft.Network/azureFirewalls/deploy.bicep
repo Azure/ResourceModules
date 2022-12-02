@@ -91,7 +91,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Azure Firewall resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of firewall logs that will be streamed.')
@@ -249,7 +249,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   ]
 }
 
-resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource azureFirewall_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${azureFirewall.name}-${lock}-lock'
   properties: {
     level: any(lock)

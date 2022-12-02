@@ -32,6 +32,7 @@ This module deploys PowerBIDedicated Capacities.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `mode` | string | `'Gen2'` | `[Gen1, Gen2]` | Mode of the resource. |
@@ -178,6 +179,7 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     name: '<<namePrefix>>pbdcapcom001'
     skuCapacity: 1
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -221,6 +223,9 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
       "value": 1
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -264,6 +269,8 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     ]
     name: '<<namePrefix>>pbdcapmin001'
     skuCapacity: 1
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -291,6 +298,10 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
     },
     "skuCapacity": {
       "value": 1
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
