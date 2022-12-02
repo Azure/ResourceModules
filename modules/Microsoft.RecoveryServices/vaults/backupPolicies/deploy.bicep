@@ -7,7 +7,7 @@ param name string
 @description('Required. Configuration of the Azure Recovery Service Vault Backup Policy.')
 param backupPolicyProperties object
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -22,11 +22,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' existing = {
   name: recoveryVaultName
 }
 
-resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2021-08-01' = {
+resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2022-02-01' = {
   name: name
   parent: rsv
   properties: backupPolicyProperties

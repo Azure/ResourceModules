@@ -24,7 +24,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -39,7 +39,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-05-01' = {
+resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -52,7 +52,7 @@ resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-05-01' = {
   }
 }
 
-resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${publicIpPrefix.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -68,6 +68,8 @@ module publicIpPrefix_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: publicIpPrefix.id
   }
 }]

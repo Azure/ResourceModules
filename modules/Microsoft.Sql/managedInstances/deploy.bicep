@@ -113,7 +113,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -142,6 +142,15 @@ param encryptionProtectorObj object = {}
 
 @description('Optional. The administrator configuration.')
 param administratorsObj object = {}
+
+@allowed([
+  'None'
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. Minimal TLS version allowed.')
+param minimalTlsVersion string = '1.2'
 
 @description('Optional. The storage account type used to store backups for this database.')
 @allowed([
@@ -213,7 +222,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' = {
   name: name
   location: location
   identity: identity
@@ -232,23 +241,24 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     vCores: vCores
     storageSizeInGB: storageSizeInGB
     collation: collation
-    dnsZonePartner: dnsZonePartner
+    dnsZonePartner: !empty(dnsZonePartner) ? dnsZonePartner : null
     publicDataEndpointEnabled: publicDataEndpointEnabled
-    sourceManagedInstanceId: sourceManagedInstanceId
-    restorePointInTime: restorePointInTime
+    sourceManagedInstanceId: !empty(sourceManagedInstanceId) ? sourceManagedInstanceId : null
+    restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
     proxyOverride: proxyOverride
     timezoneId: timezoneId
-    instancePoolId: instancePoolResourceId
-    primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
+    instancePoolId: !empty(instancePoolResourceId) ? instancePoolResourceId : null
+    primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     requestedBackupStorageRedundancy: requestedBackupStorageRedundancy
     zoneRedundant: zoneRedundant
     servicePrincipal: {
       type: servicePrincipal
     }
+    minimalTlsVersion: minimalTlsVersion
   }
 }
 
-resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource managedInstance_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedInstance.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -277,6 +287,8 @@ module managedInstance_roleAssignments '.bicep/nested_roleAssignments.bicep' = [
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: managedInstance.id
   }
 }]
@@ -337,11 +349,11 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
   ]
 }
 
-module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
+module managedInstance_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
   name: '${uniqueString(deployment().name, location)}-SqlMi-Key-${index}'
   params: {
+    name: key.name
     managedInstanceName: managedInstance.name
-    name: contains(key, 'name') ? key.name : ''
     serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
     uri: contains(key, 'uri') ? key.uri : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -352,12 +364,15 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
   name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
   params: {
     managedInstanceName: managedInstance.name
-    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.name
+    serverKeyName: encryptionProtectorObj.serverKeyName
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    managedInstance_keys
+  ]
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {

@@ -9,29 +9,32 @@ This module deploys custom RBAC Role Definitions across the management group, su
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
+| `Microsoft.Authorization/roleDefinitions` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleDefinitions) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `roleName` | string | Name of the custom RBAC role to be created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | List of allowed actions. |
 | `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes. |
 | `description` | string | `''` | Description of the custom RBAC role to be created. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` | List of denied actions. |
@@ -159,7 +162,7 @@ module roledefinition 'yourpath/modules/Microsoft.Authorization.roleDefinitions/
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Definition. |
 | `resourceId` | string | The resource ID of the Role Definition. |
-| `roleDefinitionScope` | string | The scope this Role Definition applies to. |
+| `scope` | string | The scope this Role Definition applies to. |
 
 ## Considerations
 
@@ -169,33 +172,18 @@ This module can be deployed both at subscription or resource group level:
 - To deploy the module at the subscription level, provide an existing subscription ID in the `subscriptionId` parameter.
 - To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleName": {
-            "value": "<<namePrefix>>-az-testRole-mg-min"
-        },
-        "actions": {
-            "value": [
-                "Microsoft.Compute/galleries/read",
-                "Microsoft.Compute/galleries/images/read"
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -203,251 +191,165 @@ This module can be deployed both at subscription or resource group level:
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardmgcom'
   params: {
-    roleName: '<<namePrefix>>-az-testRole-mg-min'
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardmgcom'
+    // Non-required parameters
     actions: [
-      'Microsoft.Compute/galleries/read'
-      'Microsoft.Compute/galleries/images/read'
+      'Microsoft.Compute/galleries/*'
+      'Microsoft.Network/virtualNetworks/read'
     ]
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleName": {
-            "value": "<<namePrefix>>-az-testRole-mg"
-        },
-        "description": {
-            "value": "Test Custom Role Definition Standard (management group scope)"
-        },
-        "actions": {
-            "value": [
-                "Microsoft.Compute/galleries/*",
-                "Microsoft.Network/virtualNetworks/read"
-            ]
-        },
-        "notActions": {
-            "value": [
-                "Microsoft.Compute/images/write",
-                "Microsoft.Compute/images/delete",
-                "Microsoft.Network/virtualNetworks/subnets/join/action"
-            ]
-        },
-        "dataActions": {
-            "value": [
-                "Microsoft.Storage/storageAccounts/blobServices/*/read"
-            ]
-        },
-        "notDataActions": {
-            "value": [
-                "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
-            ]
-        },
-        "assignableScopes": {
-            "value": [
-                "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>"
-            ]
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
-  params: {
-    roleName: '<<namePrefix>>-az-testRole-mg'
+    assignableScopes: [
+      '<id>'
+    ]
     description: 'Test Custom Role Definition Standard (management group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    notActions: [
+      'Microsoft.Compute/images/delete'
+      'Microsoft.Compute/images/write'
+      'Microsoft.Network/virtualNetworks/subnets/join/action'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardmgcom"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/*",
+        "Microsoft.Network/virtualNetworks/read"
+      ]
+    },
+    "assignableScopes": {
+      "value": [
+        "<id>"
+      ]
+    },
+    "description": {
+      "value": "Test Custom Role Definition Standard (management group scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "notActions": {
+      "value": [
+        "Microsoft.Compute/images/delete",
+        "Microsoft.Compute/images/write",
+        "Microsoft.Network/virtualNetworks/subnets/join/action"
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Mg.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ardmgmin'
+  params: {
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardmgmin'
+    // Non-required parameters
+    actions: [
+      'Microsoft.Compute/galleries/images/read'
+      'Microsoft.Compute/galleries/read'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardmgmin"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/images/read",
+        "Microsoft.Compute/galleries/read"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Rg.Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ardrgcom'
+  params: {
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardrgcom'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
-    notActions: [
-      'Microsoft.Compute/images/write'
-      'Microsoft.Compute/images/delete'
-      'Microsoft.Network/virtualNetworks/subnets/join/action'
+    assignableScopes: [
+      '<id>'
     ]
     dataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
-    notDataActions: [
-      'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
-    ]
-    assignableScopes: [
-      '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
-    ]
-    managementGroupId: '<<managementGroupId>>'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleName": {
-            "value": "<<namePrefix>>-az-testRole-rg-min"
-        },
-        "actions": {
-            "value": [
-                "Microsoft.Compute/galleries/read",
-                "Microsoft.Compute/galleries/images/read"
-            ]
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
-  params: {
-    roleName: '<<namePrefix>>-az-testRole-rg-min'
-    actions: [
-      'Microsoft.Compute/galleries/read'
-      'Microsoft.Compute/galleries/images/read'
-    ]
-    subscriptionId: '<<subscriptionId>>'
-    resourceGroupName: '<<resourceGroupName>>'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 4</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleName": {
-            "value": "<<namePrefix>>-az-testRole-rg"
-        },
-        "description": {
-            "value": "Test Custom Role Definition Standard (resource group scope)"
-        },
-        "actions": {
-            "value": [
-                "Microsoft.Compute/galleries/*",
-                "Microsoft.Network/virtualNetworks/read"
-            ]
-        },
-        "notActions": {
-            "value": [
-                "Microsoft.Compute/images/write",
-                "Microsoft.Compute/images/delete",
-                "Microsoft.Network/virtualNetworks/subnets/join/action"
-            ]
-        },
-        "dataActions": {
-            "value": [
-                "Microsoft.Storage/storageAccounts/blobServices/*/read"
-            ]
-        },
-        "notDataActions": {
-            "value": [
-                "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
-            ]
-        },
-        "assignableScopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>"
-            ]
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        },
-        "resourceGroupName": {
-            "value": "<<resourceGroupName>>"
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
-  params: {
-    roleName: '<<namePrefix>>-az-testRole-rg'
     description: 'Test Custom Role Definition Standard (resource group scope)'
-    actions: [
-      'Microsoft.Compute/galleries/*'
-      'Microsoft.Network/virtualNetworks/read'
-    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     notActions: [
-      'Microsoft.Compute/images/write'
       'Microsoft.Compute/images/delete'
+      'Microsoft.Compute/images/write'
       'Microsoft.Network/virtualNetworks/subnets/join/action'
-    ]
-    dataActions: [
-      'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
     notDataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
     ]
-    assignableScopes: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>'
-    ]
-    subscriptionId: '<<subscriptionId>>'
-    resourceGroupName: '<<resourceGroupName>>'
   }
 }
 ```
@@ -455,34 +357,62 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 5</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleName": {
-            "value": "<<namePrefix>>-az-testRole-sub-min"
-        },
-        "actions": {
-            "value": [
-                "Microsoft.Compute/galleries/read",
-                "Microsoft.Compute/galleries/images/read"
-            ]
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardrgcom"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/*",
+        "Microsoft.Network/virtualNetworks/read"
+      ]
+    },
+    "assignableScopes": {
+      "value": [
+        "<id>"
+      ]
+    },
+    "dataActions": {
+      "value": [
+        "Microsoft.Storage/storageAccounts/blobServices/*/read"
+      ]
+    },
+    "description": {
+      "value": "Test Custom Role Definition Standard (resource group scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "notActions": {
+      "value": [
+        "Microsoft.Compute/images/delete",
+        "Microsoft.Compute/images/write",
+        "Microsoft.Network/virtualNetworks/subnets/join/action"
+      ]
+    },
+    "notDataActions": {
+      "value": [
+        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
+      ]
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 4: Rg.Min</h3>
 
 <details>
 
@@ -490,14 +420,16 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
-    roleName: '<<namePrefix>>-az-testRole-sub-min'
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardrgmin'
+    // Non-required parameters
     actions: [
-      'Microsoft.Compute/galleries/read'
       'Microsoft.Compute/galleries/images/read'
+      'Microsoft.Compute/galleries/read'
     ]
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -505,59 +437,37 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 </details>
 <p>
 
-<h3>Example 6</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "roleName": {
-            "value": "<<namePrefix>>-az-testRole-sub"
-        },
-        "description": {
-            "value": "Test Custom Role Definition Standard (subscription scope)"
-        },
-        "actions": {
-            "value": [
-                "Microsoft.Compute/galleries/*",
-                "Microsoft.Network/virtualNetworks/read"
-            ]
-        },
-        "notActions": {
-            "value": [
-                "Microsoft.Compute/images/write",
-                "Microsoft.Compute/images/delete",
-                "Microsoft.Network/virtualNetworks/subnets/join/action"
-            ]
-        },
-        "dataActions": {
-            "value": [
-                "Microsoft.Storage/storageAccounts/blobServices/*/read"
-            ]
-        },
-        "notDataActions": {
-            "value": [
-                "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
-            ]
-        },
-        "assignableScopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>"
-            ]
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardrgmin"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/images/read",
+        "Microsoft.Compute/galleries/read"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 5: Sub.Common</h3>
 
 <details>
 
@@ -565,29 +475,145 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 
 ```bicep
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-roleDefinitions'
+  name: '${uniqueString(deployment().name)}-test-ardsubcom'
   params: {
-    roleName: '<<namePrefix>>-az-testRole-sub'
-    description: 'Test Custom Role Definition Standard (subscription scope)'
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardsubcom'
+    // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'
     ]
-    notActions: [
-      'Microsoft.Compute/images/write'
-      'Microsoft.Compute/images/delete'
-      'Microsoft.Network/virtualNetworks/subnets/join/action'
+    assignableScopes: [
+      '<id>'
     ]
     dataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/*/read'
     ]
+    description: 'Test Custom Role Definition Standard (subscription scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    notActions: [
+      'Microsoft.Compute/images/delete'
+      'Microsoft.Compute/images/write'
+      'Microsoft.Network/virtualNetworks/subnets/join/action'
+    ]
     notDataActions: [
       'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
     ]
-    assignableScopes: [
-      '/subscriptions/<<subscriptionId>>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardsubcom"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/*",
+        "Microsoft.Network/virtualNetworks/read"
+      ]
+    },
+    "assignableScopes": {
+      "value": [
+        "<id>"
+      ]
+    },
+    "dataActions": {
+      "value": [
+        "Microsoft.Storage/storageAccounts/blobServices/*/read"
+      ]
+    },
+    "description": {
+      "value": "Test Custom Role Definition Standard (subscription scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "notActions": {
+      "value": [
+        "Microsoft.Compute/images/delete",
+        "Microsoft.Compute/images/write",
+        "Microsoft.Network/virtualNetworks/subnets/join/action"
+      ]
+    },
+    "notDataActions": {
+      "value": [
+        "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 6: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-ardsubmin'
+  params: {
+    // Required parameters
+    roleName: '<<namePrefix>>-testRole-ardsubmin'
+    // Non-required parameters
+    actions: [
+      'Microsoft.Compute/galleries/images/read'
+      'Microsoft.Compute/galleries/read'
     ]
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "roleName": {
+      "value": "<<namePrefix>>-testRole-ardsubmin"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        "Microsoft.Compute/galleries/images/read",
+        "Microsoft.Compute/galleries/read"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
+    }
   }
 }
 ```

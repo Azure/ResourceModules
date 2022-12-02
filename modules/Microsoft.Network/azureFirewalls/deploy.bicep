@@ -91,7 +91,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Azure Firewall resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of firewall logs that will be streamed.')
@@ -117,7 +117,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPublicIpConfigurations: {
+var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPublicIpConfigurations: {
   name: ipConfiguration.name
   properties: {
     publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
@@ -132,7 +132,7 @@ var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPub
 // 2. Use new public ip created in this module
 // 3. Do not use a public ip if isCreateDefaultPublicIP is false
 
-var subnet_var = {
+var subnetVar = {
   subnet: {
     id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
   }
@@ -150,11 +150,11 @@ var newPip = {
 
 var ipConfigurations = concat([
     {
-      name: 'IpConfAzureFirewallSubnet'
+      name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
       //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-      properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+      properties: union(subnetVar, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
-  ], additionalPublicIpConfigurations_var)
+  ], additionalPublicIpConfigurationsVar)
 
 // ----------------------------------------------------------------------------
 
@@ -225,7 +225,7 @@ module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' 
   }
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   name: name
   location: location
   zones: length(zones) == 0 ? null : zones
@@ -244,9 +244,12 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
   }
+  dependsOn: [
+    publicIPAddress
+  ]
 }
 
-resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource azureFirewall_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${azureFirewall.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -275,6 +278,8 @@ module azureFirewall_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: azureFirewall.id
   }
 }]

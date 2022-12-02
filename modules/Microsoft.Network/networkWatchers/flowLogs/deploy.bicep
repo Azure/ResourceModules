@@ -41,7 +41,7 @@ param trafficAnalyticsInterval int = 60
 @maxValue(365)
 param retentionInDays int = 365
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var flowAnalyticsConfiguration = !empty(workspaceResourceId) && enabled == true ? {
@@ -68,11 +68,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2021-05-01' existing = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-08-01' existing = {
   name: networkWatcherName
 }
 
-resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-05-01' = {
+resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-08-01' = {
   name: name
   parent: networkWatcher
   tags: tags

@@ -48,15 +48,8 @@ param roleAssignments array = []
 @description('Optional. Fault Domain count for each placement group.')
 param scaleSetFaultDomain int = 2
 
-@description('Optional. Creates an proximity placement group and adds the VMs to it.')
-param proximityPlacementGroupName string = ''
-
-@description('Optional. Specifies the type of the proximity placement group.')
-@allowed([
-  'Standard'
-  'Ultra'
-])
-param proximityPlacementGroupType string = 'Standard'
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array = []
@@ -83,10 +76,7 @@ param maxPriceForLowPriorityVm string = ''
 ])
 param licenseType string = ''
 
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
+@description('Optional. Required if name is specified. Password of the user specified in user parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
 
@@ -118,8 +108,8 @@ param extensionNetworkWatcherAgentConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
-param extensionDiskEncryptionConfig object = {
+@description('Optional. The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.')
+param extensionAzureDiskEncryptionConfig object = {
   enabled: false
 }
 
@@ -208,7 +198,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.')
 param timeZone string = ''
 
 @description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.')
@@ -218,12 +208,14 @@ param additionalUnattendContent array = []
 param winRM object = {}
 
 @description('Optional. Specifies whether password authentication should be disabled.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param disablePasswordAuthentication bool = false
 
 @description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
 @description('Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param secrets array = []
 
 @description('Optional. Specifies Scheduled Event related configurations.')
@@ -260,7 +252,7 @@ param availabilityZones array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. The chosen OS type.')
@@ -355,24 +347,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = if (!empty(proximityPlacementGroupName)) {
-  name: !empty(proximityPlacementGroupName) ? proximityPlacementGroupName : 'dummyProximityGroup'
-  location: location
-  tags: tags
-  properties: {
-    proximityPlacementGroupType: proximityPlacementGroupType
-  }
-}
-
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
   name: name
   location: location
   tags: tags
   identity: identity
   zones: availabilityZones
   properties: {
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? {
-      id: az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)
+    proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
+      id: proximityPlacementGroupResourceId
     } : null
     upgradePolicy: {
       mode: upgradePolicyMode
@@ -422,23 +405,25 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           vhdContainers: contains(osDisk, 'vhdContainers') ? osDisk.vhdContainers : null
           managedDisk: {
             storageAccountType: osDisk.managedDisk.storageAccountType
-            diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
+            diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? {
+              id: osDisk.managedDisk.diskEncryptionSet.id
+            } : null
           }
         }
-        dataDisks: [for (item, j) in dataDisks: {
-          lun: j
-          diskSizeGB: item.diskSizeGB
-          createOption: item.createOption
-          caching: item.caching
+        dataDisks: [for (dataDisk, index) in dataDisks: {
+          lun: index
+          diskSizeGB: dataDisk.diskSizeGB
+          createOption: dataDisk.createOption
+          caching: dataDisk.caching
           writeAcceleratorEnabled: contains(osDisk, 'writeAcceleratorEnabled') ? osDisk.writeAcceleratorEnabled : null
           managedDisk: {
-            storageAccountType: item.managedDisk.storageAccountType
-            diskEncryptionSet: {
-              id: enableServerSideEncryption ? item.managedDisk.diskEncryptionSet.id : null
-            }
+            storageAccountType: dataDisk.managedDisk.storageAccountType
+            diskEncryptionSet: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? {
+              id: dataDisk.managedDisk.diskEncryptionSet.id
+            } : null
           }
-          diskIOPSReadWrite: contains(osDisk, 'diskIOPSReadWrite') ? item.diskIOPSReadWrite : null
-          diskMBpsReadWrite: contains(osDisk, 'diskMBpsReadWrite') ? item.diskMBpsReadWrite : null
+          diskIOPSReadWrite: contains(osDisk, 'diskIOPSReadWrite') ? dataDisk.diskIOPSReadWrite : null
+          diskMBpsReadWrite: contains(osDisk, 'diskMBpsReadWrite') ? dataDisk.diskMBpsReadWrite : null
         }]
       }
       networkProfile: {
@@ -446,8 +431,8 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           name: '${name}${nicConfiguration.nicSuffix}configuration-${index}'
           properties: {
             primary: (index == 0) ? true : any(null)
-            enableAcceleratedNetworking: contains(nicConfigurations, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : null
-            networkSecurityGroup: contains(nicConfigurations, 'nsgId') ? {
+            enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
+            networkSecurityGroup: contains(nicConfiguration, 'nsgId') ? {
               id: nicConfiguration.nsgId
             } : null
             ipConfigurations: nicConfiguration.ipConfigurations
@@ -606,18 +591,18 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
   ]
 }
 
-module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VMSS-DiskEncryption'
+module vmss_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VMSS-AzureDiskEncryption'
   params: {
     virtualMachineScaleSetName: vmss.name
-    name: 'DiskEncryption'
+    name: 'AzureDiskEncryption'
     publisher: 'Microsoft.Azure.Security'
     type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
-    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
-    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
-    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
-    settings: extensionDiskEncryptionConfig.settings
+    typeHandlerVersion: contains(extensionAzureDiskEncryptionConfig, 'typeHandlerVersion') ? extensionAzureDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
+    autoUpgradeMinorVersion: contains(extensionAzureDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionAzureDiskEncryptionConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
+    forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
+    settings: extensionAzureDiskEncryptionConfig.settings
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
@@ -626,7 +611,7 @@ module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDis
   ]
 }
 
-resource vmss_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vmss_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vmss.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -654,6 +639,8 @@ module vmss_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAs
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: vmss.id
   }
 }]

@@ -7,25 +7,28 @@ This module deploys Authorization Locks.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `level` | string | `[CanNotDelete, ReadOnly]` | Set lock level. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location for all resources. |
 | `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
@@ -40,33 +43,18 @@ This module deploys Authorization Locks.
 | `resourceId` | string | The resource ID of the lock. |
 | `scope` | string | The scope this lock applies to. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "level": {
-            "value": "CanNotDelete"
-        },
-        "resourceGroupName": {
-            "value": "adp-<<namePrefix>>-az-locks-rg-001"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -74,11 +62,44 @@ This module deploys Authorization Locks.
 
 ```bicep
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-locks'
+  name: '${uniqueString(deployment().name)}-test-alcom'
   params: {
+    // Required parameters
     level: 'CanNotDelete'
-    resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
-    subscriptionId: '<<subscriptionId>>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "level": {
+      "value": "CanNotDelete"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "resourceGroupName": {
+      "value": "<resourceGroupName>"
+    },
+    "subscriptionId": {
+      "value": "<subscriptionId>"
+    }
   }
 }
 ```

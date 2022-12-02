@@ -56,7 +56,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
@@ -87,13 +87,12 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
+@description('Optional. When true, this App Service Plan will perform availability zone balancing.')
+param zoneRedundant bool = false
+
 // =========== //
 // Variables   //
 // =========== //
-var hostingEnvironmentProfile = {
-  id: appServiceEnvironmentId
-}
-
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
@@ -127,12 +126,15 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   sku: sku
   properties: {
     workerTierName: workerTierName
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? hostingEnvironmentProfile : null
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
+      id: appServiceEnvironmentId
+    } : null
     perSiteScaling: perSiteScaling
     maximumElasticWorkerCount: maximumElasticWorkerCount
     reserved: serverOS == 'Linux'
     targetWorkerCount: targetWorkerCount
     targetWorkerSizeId: targetWorkerSize
+    zoneRedundant: zoneRedundant
   }
 }
 
@@ -149,7 +151,7 @@ resource appServicePlan_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
   scope: appServicePlan
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${appServicePlan.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -165,6 +167,8 @@ module appServicePlan_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: appServicePlan.id
   }
 }]

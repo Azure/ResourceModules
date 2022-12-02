@@ -45,19 +45,19 @@ param logicalSectorSize int = 4096
 @description('Optional. If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state.')
 param securityDataUri string = ''
 
-@description('Optional. If create option is Copy, this is the ARM id of the source snapshot or disk.')
+@description('Optional. If create option is Copy, this is the ARM ID of the source snapshot or disk.')
 param sourceResourceId string = ''
 
 @description('Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk.')
 param sourceUri string = ''
 
-@description('Optional. Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk.')
+@description('Conditional. The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import.')
 param storageAccountId string = ''
 
 @description('Optional. If create option is Upload, this is the size of the contents of the upload including the VHD footer.')
 param uploadSizeBytes int = 20972032
 
-@description('Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create.')
+@description('Conditional. The size of the disk to create. Required if create option is Empty.')
 param diskSizeGB int = 0
 
 @description('Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks.')
@@ -116,7 +116,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the availability set resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -167,7 +167,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
   }
 }
 
-resource disk_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource disk_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${disk.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -183,6 +183,8 @@ module disk_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAs
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: disk.id
   }
 }]

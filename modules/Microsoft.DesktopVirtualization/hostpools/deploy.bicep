@@ -80,7 +80,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The type of preferred application group type, default to Desktop Application Group.')
@@ -165,7 +165,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
   }
 }
 
-resource hostPool_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource hostPool_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${hostPool.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -193,6 +193,8 @@ module hostPool_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (ro
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: hostPool.id
   }
 }]

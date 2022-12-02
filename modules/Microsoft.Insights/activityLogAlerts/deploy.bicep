@@ -10,7 +10,7 @@ param location string = 'global'
 @description('Optional. Indicates whether this alert is enabled.')
 param enabled bool = true
 
-@description('Required. the list of resource IDs that this metric alert is scoped to.')
+@description('Optional. The list of resource IDs that this metric alert is scoped to.')
 param scopes array = [
   subscription().id
 ]
@@ -27,7 +27,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var actionGroups = [for action in actions: {
@@ -71,6 +71,8 @@ module activityLogAlert_roleAssignments '.bicep/nested_roleAssignments.bicep' = 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: activityLogAlert.id
   }
 }]

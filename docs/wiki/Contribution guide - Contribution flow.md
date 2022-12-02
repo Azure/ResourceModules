@@ -19,9 +19,14 @@ Depending on the nature of your contribution, the number and implementation of t
 We kindly ask you to have an issue mapped to the contribution you'd like to make.
 How you proceed from here, depends on the scenario:
 
-- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects](https://github.com/Azure/ResourceModules/projects)' tab on the repository, check what items are currently still in the 'to-do' swim lane and pick one that speaks to you. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
+- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects (classic)](https://github.com/Azure/ResourceModules/projects?type=classic)' tab on the repository. You will find, that we have 2 projects: 'Bug board' & 'Backlog'. In the CARML repository we apply the following priorities when selecting issues:
+  1. The Bug board's `'High Priority'` column
+  1. The Bug board's `'Low Priority'` column
+  1. The Backlog's `'To do'` column, which has its items sorted by priority from the top <p>
 
-   <img src="./media/ContributionGuide/projectsTab.jpg" alt="Projects Tab" height="178" width="414">
+  For the biggest impact, you can help us by following the same path. However, if none of the items speak to you, feel free to self-assign any other item of the `'To do'` column that you feel comfortable with. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
+
+   <img src="./media/ContributionGuide/projectsTab.png" alt="Projects Tab" height="300">
 
   > Note: For starters, we suggest to search for issues labelled with `good first issue`.
 
@@ -68,13 +73,12 @@ Finally, once your contribution is implemented and validated, open a PR for the 
 - Provide a meaningful PR title in the following format: `[<Category>] <PR title>`. For `[<Category>]` use one of the following, depending on which one is the primary improvement your PR intends to make:
   - `[Modules]`: For improvements to the CARML library.
   - `[CI environment]`: For improvements to the CI environment pipelines.
-  - `[Static Validation]`: For improvements to global Pester tests.
+  - `[Static Validation]`: For improvements to Pester tests.
   - `[Wiki]`: For improvements to the documentation.
   - `[Utilities]`: For improvements to the tools in the utilities.
   - `[Fixes]`: For bug fixes when not specifically related to any of the above categories.
 - Provide a meaningful PR description.
 - Follow instructions you find in the PR template.
-- Set your Github handle as assignee.
 - Reference the issue number as per the [Create or pick up an issue](#create-or-pick-up-an-issue) step.
 - If applicable, please reference the badge status of your pipeline run. This badge will show the reviewer that the code changes were successfully validated & tested in your environment. To create a badge, first select the three dots (`...`) at the top right of the pipeline, and then chose the `Create status badge` option.
 

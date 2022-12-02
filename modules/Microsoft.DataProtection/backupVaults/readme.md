@@ -7,37 +7,39 @@ This module deploys DataProtection BackupVaults.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.DataProtection/backupVaults` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-03-01/backupVaults) |
-| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-03-01/backupVaults/backupPolicies) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.DataProtection/backupVaults` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults) |
+| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults/backupPolicies) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Backup Vault. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupPolicies` | _[backupPolicies](backupPolicies/readme.md)_ array | `[]` |  | List of all backup policies. |
-| `dataStoreType` | string | `'SnapshotStore'` | `[ArchiveStore, SnapshotStore, VaultStore]` | The datastore type to use. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `dataStoreType` | string | `'VaultStore'` | `[ArchiveStore, OperationalStore, VaultStore]` | The datastore type to use. ArchiveStore does not support ZoneRedundancy. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
-| `type` | string | `'LocallyRedundant'` | `[LocallyRedundant, GeoRedundant]` | The vault redundancy level to use. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `type` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ZoneRedundant]` | The vault redundancy level to use. |
 
 
 ### Parameter Usage: `backupPolicies`
@@ -298,8 +300,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -312,8 +314,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -330,27 +332,18 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the backup vault. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bv-min-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -358,124 +351,33 @@ userAssignedIdentities: {
 
 ```bicep
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-backupVaults'
+  name: '${uniqueString(deployment().name)}-test-dpbvcom'
   params: {
-    name: '<<namePrefix>>-az-bv-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-bv-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "backupPolicies": {
-            "value": [
-                {
-                    "name": "DefaultPolicy",
-                    "properties": {
-                        "policyRules": [
-                            {
-                                "backupParameters": {
-                                    "backupType": "Incremental",
-                                    "objectType": "AzureBackupParams"
-                                },
-                                "trigger": {
-                                    "schedule": {
-                                        "repeatingTimeIntervals": [
-                                            "R/2022-05-31T23:30:00+01:00/P1D"
-                                        ],
-                                        "timeZone": "W. Europe Standard Time"
-                                    },
-                                    "taggingCriteria": [
-                                        {
-                                            "tagInfo": {
-                                                "tagName": "Default",
-                                                "id": "Default_"
-                                            },
-                                            "taggingPriority": 99,
-                                            "isDefault": true
-                                        }
-                                    ],
-                                    "objectType": "ScheduleBasedTriggerContext"
-                                },
-                                "dataStore": {
-                                    "dataStoreType": "OperationalStore",
-                                    "objectType": "DataStoreInfoBase"
-                                },
-                                "name": "BackupDaily",
-                                "objectType": "AzureBackupRule"
-                            },
-                            {
-                                "lifecycles": [
-                                    {
-                                        "deleteAfter": {
-                                            "objectType": "AbsoluteDeleteOption",
-                                            "duration": "P7D"
-                                        },
-                                        "targetDataStoreCopySettings": [],
-                                        "sourceDataStore": {
-                                            "dataStoreType": "OperationalStore",
-                                            "objectType": "DataStoreInfoBase"
-                                        }
-                                    }
-                                ],
-                                "isDefault": true,
-                                "name": "Default",
-                                "objectType": "AzureRetentionRule"
-                            }
-                        ],
-                        "datasourceTypes": [
-                            "Microsoft.Compute/disks"
-                        ],
-                        "objectType": "BackupPolicy"
-                    }
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-backupVaults'
-  params: {
-    name: '<<namePrefix>>-az-bv-x-001'
-    lock: 'CanNotDelete'
+    // Required parameters
+    name: '<<namePrefix>>dpbvcom001'
+    // Non-required parameters
     backupPolicies: [
       {
         name: 'DefaultPolicy'
         properties: {
+          datasourceTypes: [
+            'Microsoft.Compute/disks'
+          ]
+          objectType: 'BackupPolicy'
           policyRules: [
             {
               backupParameters: {
                 backupType: 'Incremental'
                 objectType: 'AzureBackupParams'
               }
+              dataStore: {
+                dataStoreType: 'OperationalStore'
+                objectType: 'DataStoreInfoBase'
+              }
+              name: 'BackupDaily'
+              objectType: 'AzureBackupRule'
               trigger: {
+                objectType: 'ScheduleBasedTriggerContext'
                 schedule: {
                   repeatingTimeIntervals: [
                     'R/2022-05-31T23:30:00+01:00/P1D'
@@ -484,49 +386,200 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
                 }
                 taggingCriteria: [
                   {
-                    tagInfo: {
-                      tagName: 'Default'
-                      id: 'Default_'
-                    }
-                    taggingPriority: 99
                     isDefault: true
+                    taggingPriority: 99
+                    tagInfo: {
+                      id: 'Default_'
+                      tagName: 'Default'
+                    }
                   }
                 ]
-                objectType: 'ScheduleBasedTriggerContext'
               }
-              dataStore: {
-                dataStoreType: 'OperationalStore'
-                objectType: 'DataStoreInfoBase'
-              }
-              name: 'BackupDaily'
-              objectType: 'AzureBackupRule'
             }
             {
+              isDefault: true
               lifecycles: [
                 {
                   deleteAfter: {
-                    objectType: 'AbsoluteDeleteOption'
                     duration: 'P7D'
+                    objectType: 'AbsoluteDeleteOption'
                   }
-                  targetDataStoreCopySettings: []
                   sourceDataStore: {
                     dataStoreType: 'OperationalStore'
                     objectType: 'DataStoreInfoBase'
                   }
+                  targetDataStoreCopySettings: []
                 }
               ]
-              isDefault: true
               name: 'Default'
               objectType: 'AzureRetentionRule'
             }
           ]
-          datasourceTypes: [
-            'Microsoft.Compute/disks'
-          ]
-          objectType: 'BackupPolicy'
         }
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>dpbvcom001"
+    },
+    // Non-required parameters
+    "backupPolicies": {
+      "value": [
+        {
+          "name": "DefaultPolicy",
+          "properties": {
+            "datasourceTypes": [
+              "Microsoft.Compute/disks"
+            ],
+            "objectType": "BackupPolicy",
+            "policyRules": [
+              {
+                "backupParameters": {
+                  "backupType": "Incremental",
+                  "objectType": "AzureBackupParams"
+                },
+                "dataStore": {
+                  "dataStoreType": "OperationalStore",
+                  "objectType": "DataStoreInfoBase"
+                },
+                "name": "BackupDaily",
+                "objectType": "AzureBackupRule",
+                "trigger": {
+                  "objectType": "ScheduleBasedTriggerContext",
+                  "schedule": {
+                    "repeatingTimeIntervals": [
+                      "R/2022-05-31T23:30:00+01:00/P1D"
+                    ],
+                    "timeZone": "W. Europe Standard Time"
+                  },
+                  "taggingCriteria": [
+                    {
+                      "isDefault": true,
+                      "taggingPriority": 99,
+                      "tagInfo": {
+                        "id": "Default_",
+                        "tagName": "Default"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "isDefault": true,
+                "lifecycles": [
+                  {
+                    "deleteAfter": {
+                      "duration": "P7D",
+                      "objectType": "AbsoluteDeleteOption"
+                    },
+                    "sourceDataStore": {
+                      "dataStoreType": "OperationalStore",
+                      "objectType": "DataStoreInfoBase"
+                    },
+                    "targetDataStoreCopySettings": []
+                  }
+                ],
+                "name": "Default",
+                "objectType": "AzureRetentionRule"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-dpbvmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>dpbvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>dpbvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
   }
 }
 ```

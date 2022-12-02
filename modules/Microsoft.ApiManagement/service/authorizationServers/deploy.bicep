@@ -33,7 +33,7 @@ param clientRegistrationEndpoint string = ''
 @secure()
 param clientSecret string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values.')
@@ -46,6 +46,7 @@ param serverDescription string = ''
 param grantTypes array
 
 @description('Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param resourceOwnerPassword string = ''
 
 @description('Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username.')

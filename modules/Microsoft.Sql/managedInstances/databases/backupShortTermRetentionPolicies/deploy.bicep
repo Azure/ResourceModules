@@ -10,7 +10,7 @@ param managedInstanceName string
 @description('Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported.')
 param retentionDays int = 35
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -25,7 +25,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 
   resource managedInstaceDatabase 'databases@2020-02-02-preview' existing = {
@@ -33,7 +33,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' exi
   }
 }
 
-resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies@2017-03-01-preview' = {
+resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies@2022-02-01-preview' = {
   name: name
   parent: managedInstance::managedInstaceDatabase
   properties: {

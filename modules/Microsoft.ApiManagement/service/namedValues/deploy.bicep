@@ -1,7 +1,7 @@
 @description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.')
@@ -17,6 +17,7 @@ param name string
 param namedValueTags array = []
 
 @description('Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param secret bool = false
 
 @description('Optional. Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on \'GET\' operations! Use \'/listSecrets\' POST request to get the value.')

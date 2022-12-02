@@ -7,6 +7,7 @@ This module deploys API Management Service Named Values.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -17,20 +18,23 @@ This module deploys API Management Service Named Values.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `displayName` | string | Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
 | `name` | string | Named value Name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | `''` | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `keyVault` | object | `{object}` | KeyVault location details of the namedValue. |
 | `namedValueTags` | array | `[]` | Tags that when provided can be used to filter the NamedValue list. - string. |
 | `secret` | bool | `False` | Determines whether the value is a secret and should be encrypted or not. Default value is false. |
@@ -75,3 +79,7 @@ keyVault: {
 | `name` | string | The name of the named value. |
 | `resourceGroupName` | string | The resource group the named value was deployed into. |
 | `resourceId` | string | The resource ID of the named value. |
+
+## Cross-referenced modules
+
+_None_

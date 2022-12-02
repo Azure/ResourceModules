@@ -66,7 +66,7 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Tags of the resource.')
@@ -114,10 +114,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var publicIPPrefix = {
-  id: publicIPPrefixResourceId
-}
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -130,7 +126,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -142,13 +138,15 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   properties: {
     publicIPAddressVersion: publicIPAddressVersion
     publicIPAllocationMethod: publicIPAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? {
+      id: publicIPPrefixResourceId
+    } : null
     idleTimeoutInMinutes: 4
     ipTags: []
   }
 }
 
-resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpAddress_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -177,6 +175,8 @@ module publicIpAddress_roleAssignments '.bicep/nested_roleAssignments.bicep' = [
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: publicIpAddress.id
   }
 }]
@@ -191,7 +191,7 @@ output name string = publicIpAddress.name
 output resourceId string = publicIpAddress.id
 
 @description('The public IP address of the public IP address resource.')
-output ipAddress string = publicIpAddress.properties.ipAddress
+output ipAddress string = contains(publicIpAddress.properties, 'ipAddress') ? publicIpAddress.properties.ipAddress : ''
 
 @description('The location the resource was deployed into.')
 output location string = publicIpAddress.location

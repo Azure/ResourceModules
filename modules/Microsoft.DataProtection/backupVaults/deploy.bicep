@@ -1,7 +1,7 @@
 @description('Required. Name of the Backup Vault.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
@@ -21,35 +21,32 @@ param lock string = ''
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
-
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-@description('Optional. The datastore type to use.')
+@description('Optional. The datastore type to use. ArchiveStore does not support ZoneRedundancy.')
 @allowed([
   'ArchiveStore'
-  'SnapshotStore'
   'VaultStore'
+  'OperationalStore'
 ])
-param dataStoreType string = 'SnapshotStore'
+param dataStoreType string = 'VaultStore'
 
 @description('Optional. The vault redundancy level to use.')
 @allowed([
   'LocallyRedundant'
   'GeoRedundant'
+  'ZoneRedundant'
 ])
-param type string = 'LocallyRedundant'
+param type string = 'GeoRedundant'
 
 @description('Optional. List of all backup policies.')
 param backupPolicies array = []
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
 
 var identity = identityType != 'None' ? {
   type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -66,11 +63,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource backupVault 'Microsoft.DataProtection/backupVaults@2022-03-01' = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2022-05-01' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   properties: {
     storageSettings: [
       {
@@ -91,7 +88,7 @@ module backupVault_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPo
   }
 }]
 
-resource backupVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource backupVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${backupVault.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -107,6 +104,8 @@ module backupVault_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: backupVault.id
   }
 }]

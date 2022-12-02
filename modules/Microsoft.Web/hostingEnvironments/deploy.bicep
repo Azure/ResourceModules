@@ -89,7 +89,7 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The Dedicated Host Count. Is not supported by ASEv2. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0.')
@@ -149,7 +149,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
   }
 }
 
-resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${appServiceEnvironment.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -177,6 +177,8 @@ module appServiceEnvironment_roleAssignments '.bicep/nested_roleAssignments.bice
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: appServiceEnvironment.id
   }
 }]

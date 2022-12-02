@@ -81,7 +81,7 @@ function Convert-TokenInFile {
         # Set Content
         if ($OutputDirectory -and (Test-Path -Path $OutputDirectory -PathType Container)) {
             # If Specific Output Directory Provided
-            $Path = (Join-Path -Path $OutputDirectory -ChildPath $FileName)
+            $Path = Join-Path $OutputDirectory $FileName
         }
         # Set Content
         $File | Set-Content -Path $Path

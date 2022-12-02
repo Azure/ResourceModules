@@ -7,33 +7,36 @@ This module deploys an Alert based on Activity Log.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/activityLogAlerts` | [2020-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts) |
 
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `conditions` | array |  | The condition that will cause this alert to activate. Array of objects. |
-| `name` | string |  | The name of the alert. |
-| `scopes` | array | `[[subscription().id]]` | the list of resource IDs that this metric alert is scoped to. |
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `conditions` | array | The condition that will cause this alert to activate. Array of objects. |
+| `name` | string | The name of the alert. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` | The list of actions to take when alert triggers. |
 | `alertDescription` | string | `''` | Description of the alert. |
 | `enabled` | bool | `True` | Indicates whether this alert is enabled. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` | Location for all resources. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this metric alert is scoped to. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
@@ -392,65 +395,18 @@ tags: {
 | `resourceGroupName` | string | The resource group the activity log alert was deployed into. |
 | `resourceId` | string | The resource ID of the activity log alert. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-ala-x-001"
-        },
-        "scopes": {
-            "value": [
-                "/subscriptions/<<subscriptionId>>"
-            ]
-        },
-        "conditions": {
-            "value": [
-                {
-                    "field": "category",
-                    "equals": "Administrative"
-                },
-                {
-                    "field": "resourceType",
-                    "equals": "microsoft.compute/virtualmachines"
-                },
-                {
-                    "field": "operationName",
-                    "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
-                }
-            ]
-        },
-        "actions": {
-            "value": [
-                {
-                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -458,39 +414,106 @@ tags: {
 
 ```bicep
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-activityLogAlerts'
+  name: '${uniqueString(deployment().name)}-test-ialacom'
   params: {
-    name: '<<namePrefix>>-az-ala-x-001'
-    scopes: [
-      '/subscriptions/<<subscriptionId>>'
-    ]
+    // Required parameters
     conditions: [
       {
-        field: 'category'
         equals: 'Administrative'
+        field: 'category'
       }
       {
-        field: 'resourceType'
         equals: 'microsoft.compute/virtualmachines'
+        field: 'resourceType'
       }
       {
-        field: 'operationName'
         equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+        field: 'operationName'
       }
     ]
+    name: '<<namePrefix>>ialacom001'
+    // Non-required parameters
     actions: [
       {
-        actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+        actionGroupId: '<actionGroupId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    scopes: [
+      '<id>'
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "conditions": {
+      "value": [
+        {
+          "equals": "Administrative",
+          "field": "category"
+        },
+        {
+          "equals": "microsoft.compute/virtualmachines",
+          "field": "resourceType"
+        },
+        {
+          "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action",
+          "field": "operationName"
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>ialacom001"
+    },
+    // Non-required parameters
+    "actions": {
+      "value": [
+        {
+          "actionGroupId": "<actionGroupId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "scopes": {
+      "value": [
+        "<id>"
+      ]
+    }
   }
 }
 ```

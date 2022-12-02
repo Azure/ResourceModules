@@ -16,7 +16,7 @@
 ##   |==================================================================================================================================================================|
 ##   | Parameter          | Required | Default | Description                                                                              | Example                     |
 ##   |--------------------|----------|---------|------------------------------------------------------------------------------------------|-----------------------------|
-##   | variablesPath      | true     | ''      | The path to the YAML file that contains the key value pairs for environment variables    | './global.variables.yml'    |
+##   | variablesPath      | true     | ''      | The path to the YAML file that contains the key value pairs for environment variables    | './settings.yml'    |
 ##   |==================================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -38,7 +38,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Setup agent"
+        Write-Output '::group::Setup agent'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -51,7 +51,7 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'
 
     # [Set environment variables] task(s)
     # ---------------
@@ -60,7 +60,7 @@ runs:
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output "::group::Set environment variables"
+        Write-Output '::group::Set environment variables'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Add-YamlListToFile.ps1')
@@ -77,4 +77,4 @@ runs:
         # Convert YAML Variable File to Environment Variables
         Add-YamlListToFile @functionInput -Verbose
 
-        Write-Output "::endgroup::"
+        Write-Output '::endgroup::'

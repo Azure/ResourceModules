@@ -1,7 +1,7 @@
 @description('Required. The name of the Flux Configuration.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. The name of the AKS cluster that should be configured.')
@@ -43,7 +43,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-07-01' existing = {
   name: clusterName
 }
 

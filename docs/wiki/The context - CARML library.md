@@ -20,7 +20,7 @@ Using configuration & template files that represent the deployed infrastructure 
 - Repeatability: You can deploy your infrastructure in a repeatable fashion, hence minimizing the chance of manual errors.
 - Reusability: You can reuse your automation to deploy the same infrastructure to different environments. For example, leveraging a multi-stage deployment from a sandbox environment, via integration to production using the same code.
 
-In the context of Bicep or ARM/JSON templates, we usually leverage a combination of flexible templates that are deployed using multiple parameter files mapped to different scenarios.
+In the context of Bicep or ARM/JSON templates, we usually leverage a combination of flexible templates that are deployed using multiple module test files mapped to different scenarios.
 
 # A module in CARML
 
@@ -28,7 +28,7 @@ In the context of _CARML_, we define a module as a reusable, template-based **bu
 
 Each module is generalized for maximum flexibility. Each template should be able to cover as many resource-specific scenarios as possible and not restrict the user by making assumptions on the user's behalf. Eventually, the injected parameters should decide what the template deploys.
 
-Furthermore, each module comes with default values for its optional parameters, a detailed documentation for its usage and one or multiple parameter files to prove its correctness.
+Furthermore, each module comes with default values for its optional parameters, a detailed documentation for its usage and one or multiple module test files to prove its correctness.
 
 ## CARML module features
 
@@ -38,7 +38,7 @@ A CARML module should comply with the following characteristics:
   > For example, a virtual machine module also deploys related OS disks and network interfaces.
 - **Reusable**: Several modules can be combined together to create & orchestrate more complex architectures (i.e., multi-module solutions) like workloads/applications or single services.
   > For example, the resource group, the network security group and the virtual network modules can be combined to create a resource group hosting a virtual network with multiple subnets associated to specific NSGs.
-- **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, a generalized module can be consumed through parameter files​.
+- **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, a generalized module can be consumed through module test files.
   > For example, the same virtual machine module can deploy a Windows OS VM or a Linux-based VM depending on input parameters.
 - **Integrates child resources**: Each module can deploy **_one_** instance of a resource and optionally **_n_** instances of its child resources.
   > For example, the Key Vault module can deploy **_one_** Key Vault and optionally **_n_** Key Vault access policies.
@@ -53,7 +53,7 @@ CARML can be considered "*opinionated*" as its code strictly follows a set of de
 
 This section illustrates the previously described module features applied to the storage account module.
 
-Leveraging five different parameter files, the same storage account module is able to deploy five different storage account configurations.
+Leveraging five different module test files, the same storage account module is able to deploy five different storage account configurations.
 
 <img src="./media/Context/Library_storage-variants.png" alt="Library: storage variants" height="350">
 

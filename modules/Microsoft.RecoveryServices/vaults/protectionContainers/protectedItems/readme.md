@@ -7,16 +7,18 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | Name of the resource. |
@@ -25,15 +27,17 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 | `sourceResourceId` | string |  | Resource ID of the resource to back up. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `protectionContainerName` | string | Name of the Azure Recovery Service Vault Protection Container. Required if the template is used in a standalone deployment. |
 | `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 
 
@@ -44,3 +48,7 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 | `name` | string | The Name of the protected item. |
 | `resourceGroupName` | string | The name of the Resource Group the protected item was created in. |
 | `resourceId` | string | The resource ID of the protected item. |
+
+## Cross-referenced modules
+
+_None_

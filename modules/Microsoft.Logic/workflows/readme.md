@@ -7,25 +7,28 @@ This module deploys a Logic App resource.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Logic/workflows` | [2019-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The logic app workflow name. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionsAccessControlConfiguration` | object | `{object}` |  | The access control configuration for workflow actions. |
@@ -40,13 +43,13 @@ This module deploys a Logic App resource.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `integrationAccount` | object | `{object}` |  | The integration account. |
-| `integrationServiceEnvironment` | object | `{object}` |  | The integration service environment. |
+| `integrationServiceEnvironmentResourceId` | string | `''` |  | The integration service environment Id. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `state` | string | `'Enabled'` | `[NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended]` | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
+| `state` | string | `'Enabled'` | `[Completed, Deleted, Disabled, Enabled, NotSpecified, Suspended]` | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `triggersAccessControlConfiguration` | object | `{object}` |  | The access control configuration for invoking workflow triggers. |
@@ -87,7 +90,6 @@ This module deploys a Logic App resource.
 ```
 
 </details>
-
 
 <details>
 
@@ -279,8 +281,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -293,8 +295,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -311,96 +313,18 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the logic app. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-lga-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "tags": {
-            "value": {}
-        },
-        "workflowActions": {
-            "value": {
-                "HTTP": {
-                    "type": "Http",
-                    "inputs": {
-                        "method": "POST",
-                        "uri": "https://testStringForValidation.com",
-                        "body": {
-                            "HostPoolName": "[HostPoolName]",
-                            "LAWorkspaceName": "[LAWorkspaceName]",
-                            "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
-                            "EndPeakTime": "[EndPeakTime]",
-                            "BeginPeakTime": "[BeginPeakTime]",
-                            "UtcOffset": "[UtcOffset]",
-                            "LogOffMessageBody": "[LogOffMessageBody]",
-                            "LogOffMessageTitle": "[LogOffMessageTitle]",
-                            "MinimumNumberOfRDSH": 1,
-                            "SessionThresholdPerCPU": 1,
-                            "ResourceGroupName": "[ResourceGroupName]"
-                        }
-                    }
-                }
-            }
-        },
-        "workflowTriggers": {
-            "value": {
-                "Recurrence": {
-                    "recurrence": {
-                        "frequency": "Minute",
-                        "interval": 15
-                    },
-                    "type": "Recurrence"
-                }
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticLogsRetentionInDays": {
-            "value": 7
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -408,31 +332,54 @@ userAssignedIdentities: {
 
 ```bicep
 module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-workflows'
+  name: '${uniqueString(deployment().name)}-test-lwcom'
   params: {
-    name: '<<namePrefix>>-az-lga-x-001'
+    // Required parameters
+    name: '<<namePrefix>>lwcom001'
+    // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    tags: {}
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     workflowActions: {
       HTTP: {
-        type: 'Http'
         inputs: {
+          body: {
+            BeginPeakTime: '<BeginPeakTime>'
+            EndPeakTime: '<EndPeakTime>'
+            HostPoolName: '<HostPoolName>'
+            LAWorkspaceName: '<LAWorkspaceName>'
+            LimitSecondsToForceLogOffUser: '<LimitSecondsToForceLogOffUser>'
+            LogOffMessageBody: '<LogOffMessageBody>'
+            LogOffMessageTitle: '<LogOffMessageTitle>'
+            MinimumNumberOfRDSH: 1
+            ResourceGroupName: '<ResourceGroupName>'
+            SessionThresholdPerCPU: 1
+            UtcOffset: '<UtcOffset>'
+          }
           method: 'POST'
           uri: 'https://testStringForValidation.com'
-          body: {
-            HostPoolName: '[HostPoolName]'
-            LAWorkspaceName: '[LAWorkspaceName]'
-            LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
-            EndPeakTime: '[EndPeakTime]'
-            BeginPeakTime: '[BeginPeakTime]'
-            UtcOffset: '[UtcOffset]'
-            LogOffMessageBody: '[LogOffMessageBody]'
-            LogOffMessageTitle: '[LogOffMessageTitle]'
-            MinimumNumberOfRDSH: 1
-            SessionThresholdPerCPU: 1
-            ResourceGroupName: '[ResourceGroupName]'
-          }
         }
+        type: 'Http'
       }
     }
     workflowTriggers: {
@@ -444,20 +391,105 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
         type: 'Recurrence'
       }
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>lwcom001"
+    },
+    // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    systemAssignedIdentity: true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "workflowActions": {
+      "value": {
+        "HTTP": {
+          "inputs": {
+            "body": {
+              "BeginPeakTime": "<BeginPeakTime>",
+              "EndPeakTime": "<EndPeakTime>",
+              "HostPoolName": "<HostPoolName>",
+              "LAWorkspaceName": "<LAWorkspaceName>",
+              "LimitSecondsToForceLogOffUser": "<LimitSecondsToForceLogOffUser>",
+              "LogOffMessageBody": "<LogOffMessageBody>",
+              "LogOffMessageTitle": "<LogOffMessageTitle>",
+              "MinimumNumberOfRDSH": 1,
+              "ResourceGroupName": "<ResourceGroupName>",
+              "SessionThresholdPerCPU": 1,
+              "UtcOffset": "<UtcOffset>"
+            },
+            "method": "POST",
+            "uri": "https://testStringForValidation.com"
+          },
+          "type": "Http"
+        }
+      }
+    },
+    "workflowTriggers": {
+      "value": {
+        "Recurrence": {
+          "recurrence": {
+            "frequency": "Minute",
+            "interval": 15
+          },
+          "type": "Recurrence"
+        }
+      }
+    }
   }
 }
 ```

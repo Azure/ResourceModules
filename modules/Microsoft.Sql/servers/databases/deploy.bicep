@@ -53,10 +53,13 @@ param autoPauseDelay string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. The resource ID of the elastic pool containing this database.')
+param elasticPoolId string = ''
+
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -178,11 +181,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2021-05-01-preview' existing = {
+resource server 'Microsoft.Sql/servers@2021-11-01' existing = {
   name: serverName
 }
 
-resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
+resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
   name: name
   parent: server
   location: location
@@ -200,6 +203,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
     isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
+    elasticPoolId: elasticPoolId
   }
   sku: skuVar
 }

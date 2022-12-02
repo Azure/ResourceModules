@@ -40,7 +40,7 @@ param lock string = ''
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -68,7 +68,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-01-01' = {
   name: name
   tags: tags
   location: location
@@ -77,7 +77,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   }
 }
 
-resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource netAppAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -93,6 +93,8 @@ module netAppAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: netAppAccount.id
   }
 }]

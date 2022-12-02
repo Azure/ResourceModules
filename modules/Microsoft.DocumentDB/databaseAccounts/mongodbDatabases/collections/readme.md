@@ -7,6 +7,7 @@ This module deploys a collection within a MongoDB.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,6 +18,7 @@ This module deploys a collection within a MongoDB.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `indexes` | array | Indexes for the collection. |
@@ -24,15 +26,17 @@ This module deploys a collection within a MongoDB.
 | `shardKey` | object | ShardKey for the collection. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
 | `mongodbDatabaseName` | string | The name of the parent mongodb database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `throughput` | int | `400` | Name of the mongodb database. |
 
 
@@ -173,3 +177,7 @@ shardKey: {
 | `name` | string | The name of the mongodb database. |
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
 | `resourceId` | string | The resource ID of the mongodb database. |
+
+## Cross-referenced modules
+
+_None_

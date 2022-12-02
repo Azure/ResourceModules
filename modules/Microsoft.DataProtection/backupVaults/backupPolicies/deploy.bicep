@@ -7,7 +7,7 @@ param name string = 'DefaultPolicy'
 @description('Optional. The properties of the backup policy.')
 param properties object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -22,11 +22,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource backupVault 'Microsoft.DataProtection/backupVaults@2022-03-01' existing = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2022-05-01' existing = {
   name: backupVaultName
 }
 
-resource backupPolicy 'Microsoft.DataProtection/backupVaults/backupPolicies@2022-03-01' = {
+resource backupPolicy 'Microsoft.DataProtection/backupVaults/backupPolicies@2022-05-01' = {
   name: name
   parent: backupVault
   properties: properties

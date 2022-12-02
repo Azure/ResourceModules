@@ -7,35 +7,43 @@ This module deploys a VPN Site.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/vpnSites` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/vpnSites` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnSites) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the VPN Site. |
 | `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `addressPrefixes` | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
+| `bgpProperties` | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
+
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `addressPrefixes` | array | `[]` |  | An array of IP address ranges that can be used by subnets of the virtual network. Must be provided if no bgpProperties or VPNSiteLinks are configured. |
-| `bgpProperties` | object | `{object}` |  | BGP settings details. Must be provided if no addressPrefixes or VPNSiteLinks are configured. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `deviceProperties` | object | `{object}` |  | List of properties of the device. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `o365Policy` | object | `{object}` |  | The Office365 breakout policy. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -316,38 +324,18 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the VPN site was deployed into. |
 | `resourceId` | string | The resource ID of the VPN site. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vSite-min-001"
-        },
-        "addressPrefixes": {
-            "value": [
-                "10.0.0.0/16"
-            ]
-        },
-        "ipAddress": {
-            "value": "1.2.3.4"
-        },
-        "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -355,130 +343,40 @@ roleAssignments: [
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnSites'
+  name: '${uniqueString(deployment().name)}-test-nvscom'
   params: {
-    name: '<<namePrefix>>-az-vSite-min-001'
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    ipAddress: '1.2.3.4'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-vSite-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "tags": {
-            "value": {
-                "tagA": "valueA",
-                "tagB": "valueB"
-            }
-        },
-        "deviceProperties": {
-            "value": {
-                "linkSpeedInMbps": 0
-            }
-        },
-        "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
-        },
-        "vpnSiteLinks": {
-            "value": [
-                {
-                    "name": "<<namePrefix>>-az-vSite-x-001",
-                    "properties": {
-                        "bgpProperties": {
-                            "asn": 65010,
-                            "bgpPeeringAddress": "1.1.1.1"
-                        },
-                        "ipAddress": "1.2.3.4",
-                        "linkProperties": {
-                            "linkProviderName": "contoso",
-                            "linkSpeedInMbps": 5
-                        }
-                    }
-                },
-                {
-                    "name": "Link1",
-                    "properties": {
-                        "bgpProperties": {
-                            "asn": 65020,
-                            "bgpPeeringAddress": "192.168.1.0"
-                        },
-                        "ipAddress": "2.2.2.2",
-                        "linkProperties": {
-                            "linkProviderName": "contoso",
-                            "linkSpeedInMbps": 5
-                        }
-                    }
-                }
-            ]
-        },
-        "o365Policy": {
-            "value": {
-                "breakOutCategories": {
-                    "optimize": true,
-                    "allow": true,
-                    "default": true
-                }
-            }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
+    // Required parameters
+    name: '<<namePrefix>>-nvscom'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    deviceProperties: {
+      linkSpeedInMbps: 0
     }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-vpnSites'
-  params: {
-    name: '<<namePrefix>>-az-vSite-x-001'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    o365Policy: {
+      breakOutCategories: {
+        allow: true
+        default: true
+        optimize: true
+      }
+    }
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       tagA: 'valueA'
       tagB: 'valueB'
     }
-    deviceProperties: {
-      linkSpeedInMbps: 0
-    }
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-az-vSite-x-001'
+        name: '<<namePrefix>>-vSite-nvscom'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -506,21 +404,160 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         }
       }
     ]
-    o365Policy: {
-      breakOutCategories: {
-        optimize: true
-        allow: true
-        default: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-nvscom"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "deviceProperties": {
+      "value": {
+        "linkSpeedInMbps": 0
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "o365Policy": {
+      "value": {
+        "breakOutCategories": {
+          "allow": true,
+          "default": true,
+          "optimize": true
+        }
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "tagA": "valueA",
+        "tagB": "valueB"
+      }
+    },
+    "vpnSiteLinks": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-vSite-nvscom",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65010,
+              "bgpPeeringAddress": "1.1.1.1"
+            },
+            "ipAddress": "1.2.3.4",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        },
+        {
+          "name": "Link1",
+          "properties": {
+            "bgpProperties": {
+              "asn": 65020,
+              "bgpPeeringAddress": "192.168.1.0"
+            },
+            "ipAddress": "2.2.2.2",
+            "linkProperties": {
+              "linkProviderName": "contoso",
+              "linkSpeedInMbps": 5
+            }
+          }
+        }
+      ]
     }
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nvsmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-nvsmin'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    addressPrefixes: [
+      '10.0.0.0/16'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddress: '1.2.3.4'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-nvsmin"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddress": {
+      "value": "1.2.3.4"
+    }
   }
 }
 ```

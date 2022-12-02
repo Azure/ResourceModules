@@ -7,30 +7,34 @@ This module deploys an Image Definition in a Shared Image Gallery.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/galleries/images` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries/images) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the image definition. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `galleryName` | string | The name of the parent Azure Shared Image Gallery. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
@@ -43,7 +47,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `minRecommendedvCPUs` | int | `1` |  | The minimum number of the CPU cores recommended for this image. |
 | `offer` | string | `'WindowsServer'` |  | The name of the gallery Image Definition offer. |
 | `osState` | string | `'Generalized'` | `[Generalized, Specialized]` | This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'. |
-| `osType` | string | `'Windows'` | `[Windows, Linux]` | OS type of the image to be created. |
+| `osType` | string | `'Windows'` | `[Linux, Windows]` | OS type of the image to be created. |
 | `planName` | string | `''` |  | The plan ID. |
 | `planPublisherName` | string | `''` |  | The publisher ID. |
 | `privacyStatementUri` | string | `''` |  | The privacy statement uri. Has to be a valid URL. |
@@ -163,3 +167,7 @@ tags: {
 | `name` | string | The name of the image. |
 | `resourceGroupName` | string | The resource group the image was deployed into. |
 | `resourceId` | string | The resource ID of the image. |
+
+## Cross-referenced modules
+
+_None_

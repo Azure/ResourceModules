@@ -7,20 +7,22 @@ This module deploys Resources Tags on a subscription or resource group scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags) |
+| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/tags) |
 
 ## Parameters
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
@@ -77,23 +79,18 @@ tags: {
 | `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {}
-}
-```
-
-</details>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -101,9 +98,8 @@ tags: {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
+  name: '${uniqueString(deployment().name)}-test-rtmin'
   params: {
-
   }
 }
 ```
@@ -111,34 +107,22 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "onlyUpdate": {
-            "value": false
-        },
-        "tags": {
-            "value": {
-                "Test": "Yes",
-                "TestToo": "No"
-            }
-        },
-        "resourceGroupName": {
-            "value": "validation-rg"
-        }
-    }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {}
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 2: Rg</h3>
 
 <details>
 
@@ -146,14 +130,15 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
+  name: '${uniqueString(deployment().name)}-test-rtrg'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: false
+    resourceGroupName: '<resourceGroupName>'
     tags: {
       Test: 'Yes'
       TestToo: 'No'
     }
-    resourceGroupName: 'validation-rg'
   }
 }
 ```
@@ -161,31 +146,38 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
-
 <details>
 
 <summary>via JSON Parameter file</summary>
 
 ```json
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "onlyUpdate": {
-            "value": true
-        },
-        "tags": {
-            "value": {
-                "Test": "Yes",
-                "TestToo": "No"
-            }
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "onlyUpdate": {
+      "value": false
+    },
+    "resourceGroupName": {
+      "value": "<resourceGroupName>"
+    },
+    "tags": {
+      "value": {
+        "Test": "Yes",
+        "TestToo": "No"
+      }
     }
+  }
 }
 ```
 
 </details>
+<p>
+
+<h3>Example 3: Sub</h3>
 
 <details>
 
@@ -193,12 +185,37 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-tags'
+  name: '${uniqueString(deployment().name)}-test-rtsub'
   params: {
     onlyUpdate: true
     tags: {
       Test: 'Yes'
       TestToo: 'No'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "onlyUpdate": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "Test": "Yes",
+        "TestToo": "No"
+      }
     }
   }
 }

@@ -10,7 +10,7 @@ param priority int
 @description('Optional. Group of Firewall Policy rule collections.')
 param ruleCollections array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -25,11 +25,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' existing = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-08-01' existing = {
   name: firewallPolicyName
 }
 
-resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-05-01' = {
+resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-08-01' = {
   name: name
   parent: firewallPolicy
   properties: {

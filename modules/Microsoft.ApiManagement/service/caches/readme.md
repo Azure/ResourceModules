@@ -7,6 +7,7 @@ This module deploys an API Management Service Cache.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -17,6 +18,7 @@ This module deploys an API Management Service Cache.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `connectionString` | string | Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}. |
@@ -24,15 +26,17 @@ This module deploys an API Management Service Cache.
 | `useFromLocation` | string | Location identifier to use cache from (should be either 'default' or valid Azure region identifier). |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `cacheDescription` | string | `''` | Cache description. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 
 
@@ -43,3 +47,7 @@ This module deploys an API Management Service Cache.
 | `name` | string | The name of the API management service cache. |
 | `resourceGroupName` | string | The resource group the API management service cache was deployed into. |
 | `resourceId` | string | The resource ID of the API management service cache. |
+
+## Cross-referenced modules
+
+_None_

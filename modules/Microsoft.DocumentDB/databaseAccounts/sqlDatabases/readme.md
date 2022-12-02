@@ -5,6 +5,7 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -16,20 +17,23 @@
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the SQL database . |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the SQL database resource. |
 | `throughput` | int | `400` | Request units per second. |
 
@@ -82,3 +86,7 @@ tags: {
 | `name` | string | The name of the SQL database. |
 | `resourceGroupName` | string | The name of the resource group the SQL database was created in. |
 | `resourceId` | string | The resource ID of the SQL database. |
+
+## Cross-referenced modules
+
+_None_

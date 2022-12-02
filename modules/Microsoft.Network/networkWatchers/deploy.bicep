@@ -1,4 +1,4 @@
-@description('Required. Name of the Network Watcher resource (hidden).')
+@description('Optional. Name of the Network Watcher resource (hidden).')
 @minLength(1)
 param name string = 'NetworkWatcher_${location}'
 
@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -42,14 +42,14 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2021-05-01' = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-08-01' = {
   name: name
   location: location
   tags: tags
   properties: {}
 }
 
-resource networkWatcher_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkWatcher_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${networkWatcher.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -65,6 +65,8 @@ module networkWatcher_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: networkWatcher.id
   }
 }]

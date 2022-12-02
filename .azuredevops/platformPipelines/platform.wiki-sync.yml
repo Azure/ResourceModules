@@ -16,7 +16,7 @@ trigger:
 
 variables:
   - group: 'PLATFORM_VARIABLES'
-  - template: '../../global.variables.yml'
+  - template: '../../settings.yml'
   - name: pipelinePrincipalGitUserName
     value: 'CARMLPipelinePrincipal'
   - name: pipelinePrincipalGitUserEmail

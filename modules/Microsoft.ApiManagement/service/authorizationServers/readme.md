@@ -7,6 +7,7 @@ This module deploys API Management Service Authorization Servers.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -23,6 +24,7 @@ The following resources are required to be able to deploy this resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `authorizationEndpoint` | string | OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
@@ -32,11 +34,13 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | Identifier of the authorization server. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `authorizationMethods` | array | `[GET]` | HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE. |
@@ -44,7 +48,7 @@ The following resources are required to be able to deploy this resource.
 | `clientAuthenticationMethod` | array | `[Basic]` | Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body. |
 | `clientRegistrationEndpoint` | string | `''` | Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
 | `defaultScope` | string | `''` | Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `resourceOwnerPassword` | string | `''` | Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |
 | `resourceOwnerUsername` | string | `''` | Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username. |
 | `serverDescription` | string | `''` | Description of the authorization server. Can contain HTML formatting tags. |
@@ -60,3 +64,7 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service authorization server. |
 | `resourceGroupName` | string | The resource group the API management service authorization server was deployed into. |
 | `resourceId` | string | The resource ID of the API management service authorization server. |
+
+## Cross-referenced modules
+
+_None_

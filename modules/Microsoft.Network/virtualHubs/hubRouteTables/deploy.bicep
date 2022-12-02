@@ -10,7 +10,7 @@ param labels array = []
 @description('Optional. List of all routes.')
 param routes array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -25,11 +25,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' existing = {
+resource virtualHub 'Microsoft.Network/virtualHubs@2022-05-01' existing = {
   name: virtualHubName
 }
 
-resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2021-05-01' = {
+resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2022-05-01' = {
   name: name
   parent: virtualHub
   properties: {

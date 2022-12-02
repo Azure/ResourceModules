@@ -34,7 +34,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. File shares to create.')
 param shares array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -93,11 +93,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
 }
 
-resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2021-04-01' = {
+resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2021-09-01' = {
   name: name
   parent: storageAccount
   properties: {

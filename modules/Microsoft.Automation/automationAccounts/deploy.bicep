@@ -11,24 +11,17 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
-@description('Optional. User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required.')
-param encryptionUserAssignedIdentity string = ''
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
 
-@description('Optional. Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available.')
-@allowed([
-  'Microsoft.Automation'
-  'Microsoft.Keyvault'
-])
-param encryptionKeySource string = 'Microsoft.Automation'
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
 
-@description('Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
-param keyName string = ''
+@description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
-param keyvaultUri string = ''
-
-@description('Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
-param keyVersion string = ''
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
 
 @description('Optional. List of modules to be created in the automation account.')
 param modules array = []
@@ -54,7 +47,18 @@ param gallerySolutions array = []
 @description('Optional. List of softwareUpdateConfigurations to be created in the automation account.')
 param softwareUpdateConfigurations array = []
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
+
+@description('Optional. Disable local authentication profile used within the resource.')
+param disableLocalAuth bool = true
+
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @minValue(0)
@@ -94,7 +98,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -160,7 +164,17 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource automationAccount 'Microsoft.Automation/automationAccounts@2021-06-22' = {
   name: name
   location: location
   tags: tags
@@ -169,17 +183,19 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
     sku: {
       name: skuName
     }
-    encryption: {
-      identity: encryptionKeySource == 'Microsoft.Keyvault' ? {
-        userAssignedIdentity: any(encryptionUserAssignedIdentity)
-      } : null
-      keySource: encryptionKeySource
-      keyVaultProperties: encryptionKeySource == 'Microsoft.Keyvault' ? {
-        keyName: keyName
-        keyvaultUri: keyvaultUri
-        keyVersion: keyVersion
-      } : null
-    }
+    encryption: !empty(cMKKeyName) ? {
+      keySource: 'Microsoft.KeyVault'
+      identity: {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      }
+      keyVaultProperties: {
+        keyName: cMKKeyName
+        keyVaultUri: cMKKeyVault.properties.vaultUri
+        keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+      }
+    } : null
+    publicNetworkAccess: !empty(publicNetworkAccess) ? (publicNetworkAccess == 'Disabled' ? false : true) : (!empty(privateEndpoints) ? false : null)
+    disableLocalAuth: disableLocalAuth
   }
 }
 
@@ -334,7 +350,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
   ]
 }]
 
-resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource automationAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${automationAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -368,7 +384,7 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
@@ -383,6 +399,8 @@ module automationAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' =
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: automationAccount.id
   }
 }]

@@ -31,7 +31,7 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
@@ -41,7 +41,7 @@ Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -location '
 Test the deploy.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -96,23 +96,37 @@ function Test-TemplateDeployment {
 
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
 
-        if ($deploymentScope -ne 'resourceGroup') {
-            $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-            if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
-                $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
-            }
-            # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
-            do {
-                $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
-            } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+        }
+        if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
+            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
+            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, deploy.test.bicep
+            $providerNamespace = $shortPathElem[0] # e.g., AppConfiguration
+            $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
 
+            $resourceType = $shortPathElem[1] # e.g., configurationStores
+            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
+
+            $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
+
+            $deploymentNamePrefix = "$providerNamespaceShort-$resourceTypeShort-$testFolderShort" # e.g., ac-cs-common
+        }
+
+        # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+        do {
+            $deploymentName = ('{0}-{1}' -f $deploymentNamePrefix, (Get-Date -Format 'yyyyMMddTHHMMssffffZ'))[0..63] -join ''
+        } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+        if ($deploymentScope -ne 'resourceGroup') {
             Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
             $DeploymentInputs['DeploymentName'] = $deploymentName
         }
 
-        #######################
-        ## INVOKE DEPLOYMENT ##
-        #######################
+        #################
+        ## INVOKE TEST ##
+        #################
         switch ($deploymentScope) {
             'resourceGroup' {
                 if (-not [String]::IsNullOrEmpty($subscriptionId)) {
@@ -121,7 +135,7 @@ function Test-TemplateDeployment {
                 }
                 if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                     if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
-                        New-AzResourceGroup -Name $resourceGroupName -Location $location
+                        $null = New-AzResourceGroup -Name $resourceGroupName -Location $location
                     }
                 }
                 if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Test')) {

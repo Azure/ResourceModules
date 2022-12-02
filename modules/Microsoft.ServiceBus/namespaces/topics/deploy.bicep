@@ -77,7 +77,7 @@ param lock string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -94,7 +94,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 
@@ -127,7 +127,7 @@ module topic_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
   }
 }]
 
-resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource topic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${topic.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -137,12 +137,14 @@ resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock
 }
 
 module topic_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-rbac-${index}'
+  name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: topic.id
   }
 }]

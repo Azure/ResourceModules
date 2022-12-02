@@ -31,14 +31,20 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The databases to create in the server.')
 param databases array = []
 
+@description('Optional. The Elastic Pools to create in the server.')
+param elasticPools array = []
+
 @description('Optional. The firewall rules to create in the server.')
 param firewallRules array = []
+
+@description('Optional. The virtual network rules to create in the server.')
+param virtualNetworkRules array = []
 
 @description('Optional. The security alert policies to create in the server.')
 param securityAlertPolicies array = []
@@ -46,8 +52,24 @@ param securityAlertPolicies array = []
 @description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
 
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@allowed([
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. Minimal TLS version allowed.')
+param minimalTlsVersion string = '1.2'
+
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
+
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and neither firewall rules nor virtual network rules are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
@@ -73,7 +95,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
+resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
   location: location
   name: name
   tags: tags
@@ -90,10 +112,12 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
       tenantId: administrators.tenantId
     } : null
     version: '12.0'
+    minimalTlsVersion: minimalTlsVersion
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource server_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -109,6 +133,8 @@ module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (role
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: server.id
   }
 }]
@@ -144,7 +170,34 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     tags: contains(database, 'tags') ? database.tags : {}
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+    diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
+    elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    server_elasticPools // Enables us to add databases to existing elastic pools
+  ]
+}]
+
+module server_elasticPools 'elasticPools/deploy.bicep' = [for (elasticPool, index) in elasticPools: {
+  name: '${uniqueString(deployment().name, location)}-SQLServer-ElasticPool-${index}'
+  params: {
+    name: elasticPool.name
+    serverName: server.name
+    databaseMaxCapacity: contains(elasticPool, 'databaseMaxCapacity') ? elasticPool.databaseMaxCapacity : 2
+    databaseMinCapacity: contains(elasticPool, 'databaseMinCapacity') ? elasticPool.databaseMinCapacity : 0
+    highAvailabilityReplicaCount: contains(elasticPool, 'highAvailabilityReplicaCount') ? elasticPool.highAvailabilityReplicaCount : -1
+    licenseType: contains(elasticPool, 'licenseType') ? elasticPool.licenseType : 'LicenseIncluded'
+    maintenanceConfigurationId: contains(elasticPool, 'maintenanceConfigurationId') ? elasticPool.maintenanceConfigurationId : ''
+    maxSizeBytes: contains(elasticPool, 'maxSizeBytes') ? elasticPool.maxSizeBytes : 34359738368
+    minCapacity: contains(elasticPool, 'minCapacity') ? elasticPool.minCapacity : 0
+    skuCapacity: contains(elasticPool, 'skuCapacity') ? elasticPool.skuCapacity : 2
+    skuName: contains(elasticPool, 'skuName') ? elasticPool.skuName : 'GP_Gen5'
+    skuTier: contains(elasticPool, 'skuTier') ? elasticPool.skuTier : 'GeneralPurpose'
+    zoneRedundant: contains(elasticPool, 'zoneRedundant') ? elasticPool.zoneRedundant : false
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: contains(elasticPool, 'location') ? elasticPool.location : server.location
+    tags: contains(elasticPool, 'tags') ? elasticPool.tags : {}
   }
 }]
 
@@ -160,7 +213,7 @@ module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
@@ -175,6 +228,17 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
     serverName: server.name
     endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
     startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module server_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+  name: '${uniqueString(deployment().name, location)}-Sql-VirtualNetworkRules-${index}'
+  params: {
+    name: virtualNetworkRule.name
+    serverName: server.name
+    ignoreMissingVnetServiceEndpoint: contains(virtualNetworkRule, 'ignoreMissingVnetServiceEndpoint') ? virtualNetworkRule.ignoreMissingVnetServiceEndpoint : false
+    virtualNetworkSubnetId: virtualNetworkRule.virtualNetworkSubnetId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

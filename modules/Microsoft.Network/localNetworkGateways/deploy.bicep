@@ -34,7 +34,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. FQDN of local network gateway.')
@@ -72,7 +72,7 @@ resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-08-01'
   }
 }
 
-resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${localNetworkGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -88,6 +88,8 @@ module localNetworkGateway_roleAssignments '.bicep/nested_roleAssignments.bicep'
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: localNetworkGateway.id
   }
 }]

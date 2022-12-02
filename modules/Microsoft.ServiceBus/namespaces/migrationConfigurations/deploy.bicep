@@ -12,7 +12,7 @@ param postMigrationName string
 @description('Required. Existing premium Namespace resource ID which has no entities, will be used for migration.')
 param targetNamespaceResourceId string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -27,7 +27,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 

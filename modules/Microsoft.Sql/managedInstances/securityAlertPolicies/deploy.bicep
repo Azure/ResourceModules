@@ -14,7 +14,7 @@ param state string = 'Disabled'
 @description('Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators.')
 param emailAccountAdmins bool = false
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -29,11 +29,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' existing = {
+resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
   name: managedInstanceName
 }
 
-resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2017-03-01-preview' = {
+resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolicies@2022-02-01-preview' = {
   name: name
   parent: managedInstance
   properties: {

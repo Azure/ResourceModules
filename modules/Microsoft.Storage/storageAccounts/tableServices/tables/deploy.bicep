@@ -8,7 +8,7 @@ param tableServicesName string = 'default'
 @description('Required. Name of the table.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -23,15 +23,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
 
-  resource tableServices 'tableServices@2021-04-01' existing = {
+  resource tableServices 'tableServices@2021-09-01' existing = {
     name: tableServicesName
   }
 }
 
-resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-01' = {
+resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-09-01' = {
   name: name
   parent: storageAccount::tableServices
 }

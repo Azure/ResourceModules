@@ -7,6 +7,7 @@ This module deploys API Management Service APIs policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,20 +18,23 @@ This module deploys API Management Service APIs policies.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `value` | string | Contents of the Policy as defined by the format. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 | `apiName` | string | The name of the parent API. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `format` | string | `'xml'` | `[rawxml, rawxml-link, xml, xml-link]` | Format of the policyContent. |
 | `name` | string | `'policy'` |  | The name of the policy. |
 
@@ -42,3 +46,7 @@ This module deploys API Management Service APIs policies.
 | `name` | string | The name of the API policy. |
 | `resourceGroupName` | string | The resource group the API policy was deployed into. |
 | `resourceId` | string | The resource ID of the API policy. |
+
+## Cross-referenced modules
+
+_None_

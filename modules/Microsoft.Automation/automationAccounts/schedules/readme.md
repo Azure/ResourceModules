@@ -7,6 +7,7 @@ This module deploys an Azure Automation Account Schedule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -17,20 +18,23 @@ This module deploys an Azure Automation Account Schedule.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account schedule. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `advancedSchedule` | object | `{object}` |  | The properties of the create Advanced Schedule. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expiryTime` | string | `''` |  | The end time of the schedule. |
 | `frequency` | string | `'OneTime'` | `[Day, Hour, Minute, Month, OneTime, Week]` | The frequency of the schedule. |
 | `interval` | int | `0` |  | Anything. |
@@ -39,6 +43,7 @@ This module deploys an Azure Automation Account Schedule.
 | `timeZone` | string | `''` |  | The time zone of the schedule. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
@@ -51,3 +56,7 @@ This module deploys an Azure Automation Account Schedule.
 | `name` | string | The name of the deployed schedule. |
 | `resourceGroupName` | string | The resource group of the deployed schedule. |
 | `resourceId` | string | The resource ID of the deployed schedule. |
+
+## Cross-referenced modules
+
+_None_

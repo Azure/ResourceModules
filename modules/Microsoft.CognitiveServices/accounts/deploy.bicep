@@ -70,10 +70,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' or \'privateEndpoints\' are set.')
-param customSubDomainName string = ''
-
-@description('Optional. Whether or not public endpoint access is allowed for this account.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.')
 @allowed([
   ''
   'Enabled'
@@ -81,8 +78,14 @@ param customSubDomainName string = ''
 ])
 param publicNetworkAccess string = ''
 
-@description('Optional. Service endpoint object information.')
+@description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' or \'privateEndpoints\' are set.')
+param customSubDomainName string = ''
+
+@description('Optional. A collection of rules governing the accessibility from specific network locations.')
 param networkAcls object = {}
+
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -97,9 +100,6 @@ param userAssignedIdentities object = {}
 ])
 @description('Optional. Specify the type of lock.')
 param lock string = ''
-
-@description('Optional. Configuration Details for private endpoints.')
-param privateEndpoints array = []
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -131,7 +131,7 @@ param restrictOutboundNetworkAccess bool = true
 @description('Optional. The storage accounts for this resource.')
 param userOwnedStorage array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -206,8 +206,12 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
   properties: {
     customSubDomainName: !empty(customSubDomainName) ? customSubDomainName : null
-    networkAcls: networkAcls
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+    networkAcls: !empty(networkAcls) ? {
+      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : null
+      virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
+      ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
+    } : null
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
@@ -219,7 +223,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
 }
 
-resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource cognitiveServices_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${cognitiveServices.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -253,7 +257,7 @@ module cognitiveServices_privateEndpoints '../../Microsoft.Network/privateEndpoi
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
@@ -268,6 +272,8 @@ module cognitiveServices_roleAssignments '.bicep/nested_roleAssignments.bicep' =
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: cognitiveServices.id
   }
 }]

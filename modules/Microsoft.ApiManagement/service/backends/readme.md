@@ -7,6 +7,7 @@ This module deploys API Management Service Backends.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
@@ -23,22 +24,25 @@ The following resources are required to be able to deploy this resource.
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Backend Name. |
 | `url` | string | Runtime URL of the Backend. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `backendDescription` | string | `''` | Backend Description. |
 | `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `protocol` | string | `'http'` | Backend communication protocol. - http or soap. |
 | `proxy` | object | `{object}` | Backend Proxy Contract Properties. |
 | `resourceId` | string | `''` | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
@@ -139,3 +143,7 @@ tls: {
 | `name` | string | The name of the API management service backend. |
 | `resourceGroupName` | string | The resource group the API management service backend was deployed into. |
 | `resourceId` | string | The resource ID of the API management service backend. |
+
+## Cross-referenced modules
+
+_None_

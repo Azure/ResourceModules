@@ -10,7 +10,7 @@ param loadBalancerBackendAddresses array = []
 @description('Optional. An array of gateway load balancer tunnel interfaces.')
 param tunnelInterfaces array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -25,11 +25,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' existing = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
   name: loadBalancerName
 }
 
-resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2021-05-01' = {
+resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2021-08-01' = {
   name: name
   properties: {
     loadBalancerBackendAddresses: loadBalancerBackendAddresses

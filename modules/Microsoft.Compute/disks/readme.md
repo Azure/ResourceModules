@@ -7,25 +7,35 @@ This template deploys a disk
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/disks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-08-01/disks) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | The name of the disk that is being created. |
-| `sku` | string | `[Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, Premium_ZRS]` | The disks sku name. Can be . |
+| `sku` | string | `[Premium_LRS, Premium_ZRS, Premium_ZRS, Standard_LRS, StandardSSD_LRS, UltraSSD_LRS]` | The disks sku name. Can be . |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `diskSizeGB` | int | `0` | The size of the disk to create. Required if create option is Empty. |
+| `storageAccountId` | string | `''` | The resource ID of the storage account containing the blob to import as a disk. Required if create option is Import. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acceleratedNetwork` | bool | `False` |  | True if the image from which the OS disk is created supports accelerated networking. |
@@ -34,22 +44,20 @@ This template deploys a disk
 | `createOption` | string | `'Empty'` | `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]` | Sources of a disk creation. |
 | `diskIOPSReadWrite` | int | `0` |  | The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
 | `diskMBpsReadWrite` | int | `0` |  | The bandwidth allowed for this disk; only settable for UltraSSD disks. |
-| `diskSizeGB` | int | `0` |  | If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hyperVGeneration` | string | `'V2'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string | `''` |  | A relative uri containing either a Platform Image Repository or user image reference. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logicalSectorSize` | int | `4096` |  | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. |
 | `maxShares` | int | `1` |  | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
 | `networkAccessPolicy` | string | `'DenyAll'` | `[AllowAll, AllowPrivate, DenyAll]` | Policy for accessing the disk via network. |
-| `osType` | string | `''` | `[Windows, Linux, ]` | Sources of a disk creation. |
+| `osType` | string | `''` | `['', Linux, Windows]` | Sources of a disk creation. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Policy for controlling export on the disk. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityDataUri` | string | `''` |  | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
-| `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM id of the source snapshot or disk. |
+| `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM ID of the source snapshot or disk. |
 | `sourceUri` | string | `''` |  | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
-| `storageAccountId` | string | `''` |  | Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk. |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
 | `uploadSizeBytes` | int | `20972032` |  | If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
 
@@ -163,46 +171,18 @@ tags: {
 | `resourceGroupName` | string | The resource group the  disk was deployed into. |
 | `resourceId` | string | The resource ID of the disk. |
 
+## Cross-referenced modules
+
+_None_
+
 ## Deployment examples
 
-<h3>Example 1</h3>
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
 
-<details>
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-image-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "createOption": {
-            "value": "FromImage"
-        },
-        "imageReferenceId": {
-            "value": "/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -210,238 +190,299 @@ tags: {
 
 ```bicep
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
+  name: '${uniqueString(deployment().name, location)}-test-cdcom'
   params: {
-    name: '<<namePrefix>>-az-disk-image-001'
-    sku: 'Standard_LRS'
-    createOption: 'FromImage'
-    imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-import-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "createOption": {
-            "value": "Import"
-        },
-        "sourceUri": {
-            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
-        },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
-  params: {
-    name: '<<namePrefix>>-az-disk-import-001'
-    sku: 'Standard_LRS'
-    createOption: 'Import'
-    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-min-001"
-        },
-        "sku": {
-            "value": "Standard_LRS"
-        },
-        "diskSizeGB": {
-            "value": 1
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
-  params: {
-    name: '<<namePrefix>>-az-disk-min-001'
-    sku: 'Standard_LRS'
-    diskSizeGB: 1
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 4</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
-            "value": "<<namePrefix>>-az-disk-x-001"
-        },
-        "lock": {
-            "value": "CanNotDelete"
-        },
-        "sku": {
-            "value": "UltraSSD_LRS"
-        },
-        "diskSizeGB": {
-            "value": 128
-        },
-        "logicalSectorSize": {
-            "value": 512
-        },
-        "diskIOPSReadWrite": {
-            "value": 500
-        },
-        "diskMBpsReadWrite": {
-            "value": 60
-        },
-        "osType": {
-            "value": "Windows"
-        },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        }
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module disks './Microsoft.Compute/disks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-disks'
-  params: {
-    name: '<<namePrefix>>-az-disk-x-001'
-    lock: 'CanNotDelete'
+    // Required parameters
+    name: '<<namePrefix>>-cdcom001'
     sku: 'UltraSSD_LRS'
-    diskSizeGB: 128
-    logicalSectorSize: 512
+    // Non-required parameters
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
+    diskSizeGB: 128
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    logicalSectorSize: 512
     osType: 'Windows'
     publicNetworkAccess: 'Enabled'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-cdcom001"
+    },
+    "sku": {
+      "value": "UltraSSD_LRS"
+    },
+    // Non-required parameters
+    "diskIOPSReadWrite": {
+      "value": 500
+    },
+    "diskMBpsReadWrite": {
+      "value": 60
+    },
+    "diskSizeGB": {
+      "value": 128
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "logicalSectorSize": {
+      "value": 512
+    },
+    "osType": {
+      "value": "Windows"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Image</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disks './Microsoft.Compute/disks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdimg'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-cdimg001'
+    sku: 'Standard_LRS'
+    // Non-required parameters
+    createOption: 'FromImage'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageReferenceId: '<imageReferenceId>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-cdimg001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "createOption": {
+      "value": "FromImage"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "imageReferenceId": {
+      "value": "<imageReferenceId>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Import</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disks './Microsoft.Compute/disks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdimp'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-cdimp001'
+    sku: 'Standard_LRS'
+    // Non-required parameters
+    createOption: 'Import'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    sourceUri: '<sourceUri>'
+    storageAccountId: '<storageAccountId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-cdimp001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "createOption": {
+      "value": "Import"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "sourceUri": {
+      "value": "<sourceUri>"
+    },
+    "storageAccountId": {
+      "value": "<storageAccountId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module disks './Microsoft.Compute/disks/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-cdmin001'
+    sku: 'Standard_LRS'
+    // Non-required parameters
+    diskSizeGB: 1
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-cdmin001"
+    },
+    "sku": {
+      "value": "Standard_LRS"
+    },
+    // Non-required parameters
+    "diskSizeGB": {
+      "value": 1
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
   }
 }
 ```

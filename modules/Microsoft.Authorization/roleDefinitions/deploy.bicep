@@ -33,7 +33,7 @@ param location string = deployment().location
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -107,4 +107,4 @@ output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleDef
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.resourceId : roleDefinition_rg.outputs.resourceId)
 
 @sys.description('The scope this Role Definition applies to.')
-output roleDefinitionScope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)
+output scope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)

@@ -1,0 +1,125 @@
+name: '.Platform - Clean up deployment history'
+
+parameters:
+  - name: handleSubscriptionScope
+    displayName: Include Subscription deployments
+    type: boolean
+    default: true # Note: This requires your service principal to have permissions on the subscription scope.
+  - name: handleManagementGroupScope
+    displayName: Include Management Group deployments
+    type: boolean
+    default: true # Note: This requires your service principal to have permissions on the management group scope.
+  - name: maxDeploymentRetentionInDays
+    displayName: The number of days to keep deployments with status [failed] # 'Running' are always excluded
+    type: number
+    default: 14
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Nightly run
+  branches:
+    include:
+    - main
+
+pr: none
+
+variables:
+  - template: '../../settings.yml'
+  - group: 'PLATFORM_VARIABLES'
+
+jobs:
+  - job: Remove_Subscription_Deployments
+    condition: and(succeeded(), eq('${{ parameters.handleSubscriptionScope }}', 'true'))
+    displayName: Remove Subscription deployments
+    pool:
+      ${{ if eq(variables['vmImage'], '') }}:
+        name: $(poolName)
+      ${{ if eq(variables['poolName'], '') }}:
+        vmImage: $(vmImage)
+    steps:
+      - checkout: self
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Accounts' }
+            )
+
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
+      - task: AzurePowerShell@5
+        displayName: 'Cleanup deployments via connection [$(serviceConnection)]'
+        inputs:
+          azureSubscription: '$(serviceConnection)'
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
+          pwsh: true
+          ScriptType: InlineScript
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeploymentHistory.ps1')
+
+            $functionInput = @{
+              SubscriptionId               = '$(ARM_SUBSCRIPTION_ID)'
+              maxDeploymentRetentionInDays = ${{ parameters.maxDeploymentRetentionInDays }}
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Clear-SubscriptionDeploymentHistory @functionInput
+
+  - job: Remove_ManagementGroup_Deployments
+    condition: and(succeeded(), eq('${{ parameters.handleManagementGroupScope }}', 'true'))
+    displayName: Remove Management Group deployments
+    pool:
+      ${{ if eq(variables['vmImage'], '') }}:
+        name: $(poolName)
+      ${{ if eq(variables['poolName'], '') }}:
+        vmImage: $(vmImage)
+    steps:
+      - checkout: self
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Accounts' }
+            )
+
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
+      - task: AzurePowerShell@5
+        displayName: 'Cleanup deployments via connection [$(serviceConnection)]'
+        inputs:
+          azureSubscription: '$(serviceConnection)'
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
+          pwsh: true
+          ScriptType: InlineScript
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeploymentHistory.ps1')
+
+            $functionInput = @{
+              ManagementGroupId            = '$(ARM_MGMTGROUP_ID)'
+              maxDeploymentRetentionInDays = ${{ parameters.maxDeploymentRetentionInDays }}
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Clear-ManagementGroupDeploymentHistory @functionInput

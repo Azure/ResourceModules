@@ -19,6 +19,7 @@ param location string = resourceGroup().location
 param replicaSets array = []
 
 @description('Conditional. The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days.')
+@secure()
 param pfxCertificate string = ''
 
 @description('Conditional. The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled.')
@@ -35,7 +36,7 @@ param additionalRecipients array = []
 ])
 param domainConfigurationType string = 'FullySynced'
 
-@description('Optional. The value is to synchronise scoped users and groups.')
+@description('Optional. The value is to synchronize scoped users and groups.')
 param filteredSync string = 'Enabled'
 
 @description('Optional. The value is to enable clients making request using TLSv1.')
@@ -57,6 +58,7 @@ param ntlmV1 string = 'Enabled'
   'Enabled'
   'Disabled'
 ])
+#disable-next-line secure-secrets-in-params // Not a secret
 param syncNtlmPasswords string = 'Enabled'
 
 @description('Optional. The value is to enable on-premises users to authenticate against managed domain.')
@@ -64,6 +66,7 @@ param syncNtlmPasswords string = 'Enabled'
   'Enabled'
   'Disabled'
 ])
+#disable-next-line secure-secrets-in-params // Not a secret
 param syncOnPremPasswords string = 'Enabled'
 
 @description('Optional. The value is to enable Kerberos requests that use RC4 encryption.')
@@ -128,7 +131,7 @@ param tags object = {}
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @allowed([
@@ -231,7 +234,7 @@ resource domainService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
   scope: domainService
 }
 
-resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource domainService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${domainService.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -247,6 +250,8 @@ module domainService_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: domainService.id
   }
 }]

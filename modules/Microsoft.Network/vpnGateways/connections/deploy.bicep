@@ -50,7 +50,7 @@ param sharedKey string = ''
 @description('Optional. Reference to a VPN site to link to.')
 param remoteVpnSiteResourceId string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -65,11 +65,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' existing = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2021-08-01' existing = {
   name: vpnGatewayName
 }
 
-resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2021-05-01' = {
+resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2021-08-01' = {
   name: name
   parent: vpnGateway
   properties: {

@@ -1,25 +1,11 @@
 @description('Required. Name for the container group.')
 param name string
 
-@description('Required. Name for the container.')
-param containername string
+@description('Required. The containers and their respective config within the container group.')
+param containers array
 
-@description('Required. Name of the image.')
-param image string
-
-@description('Optional. Port to open on the container and the public IP address.')
-param ports array = [
-  {
-    protocol: 'Tcp'
-    port: '443'
-  }
-]
-
-@description('Optional. The number of CPU cores to allocate to the container.')
-param cpuCores int = 2
-
-@description('Optional. The amount of memory to allocate to the container in gigabytes.')
-param memoryInGB int = 2
+@description('Optional. Ports to open on the public IP address. Must include all ports assigned on container level.')
+param ipAddressPorts array = []
 
 @description('Optional. The operating system type required by the containers in the container group. - Windows or Linux.')
 param osType string = 'Linux'
@@ -32,9 +18,6 @@ param ipAddressType string = 'Public'
 
 @description('Optional. The image registry credentials by which the container group is created from.')
 param imageRegistryCredentials array = []
-
-@description('Optional. Environment variables of the container group.')
-param environmentVariables array = []
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -56,7 +39,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The container group SKU.')
@@ -104,46 +87,30 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
+resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
   name: name
   location: location
   identity: identity
   tags: tags
   properties: {
     sku: sku
-    containers: [
-      {
-        name: containername
-        properties: {
-          command: []
-          image: image
-          ports: ports
-          resources: {
-            requests: {
-              cpu: cpuCores
-              memoryInGB: memoryInGB
-            }
-          }
-          environmentVariables: environmentVariables
-        }
-      }
-    ]
     encryptionProperties: !empty(cMKKeyName) ? {
       keyName: cMKKeyName
       keyVersion: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       vaultBaseUrl: cmkKeyVault.properties.vaultUri
     } : null
+    containers: containers
     imageRegistryCredentials: imageRegistryCredentials
     restartPolicy: restartPolicy
     osType: osType
     ipAddress: {
       type: ipAddressType
-      ports: ports
+      ports: ipAddressPorts
     }
   }
 }
 
-resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource containergroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${containergroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -1,7 +1,7 @@
 @description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Used to enable the deployment of the identityProviders child resource.')
@@ -21,6 +21,7 @@ param identityProviderClientId string = ''
 param identityProviderClientSecret string = ''
 
 @description('Optional. Password Reset Policy Name. Only applies to AAD B2C Identity Provider.')
+#disable-next-line secure-secrets-in-params // Not a secret
 param identityProviderPasswordResetPolicyName string = ''
 
 @description('Optional. Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.')

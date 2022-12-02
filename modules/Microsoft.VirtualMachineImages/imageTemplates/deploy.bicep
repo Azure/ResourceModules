@@ -1,4 +1,4 @@
-@description('Required. Name of the Image Template to be built by the Azure Image Builder service.')
+@description('Required. Name prefix of the Image Template to be built by the Azure Image Builder service.')
 param name string
 
 @description('Required. Name of the User Assigned Identity to be used to deploy Image Templates in Azure Image Builder.')
@@ -56,21 +56,21 @@ param tags object = {}
 @description('Generated. Do not provide a value! This date value is used to generate a unique image template name.')
 param baseTime string = utcNow('yyyy-MM-dd-HH-mm-ss')
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-var managedImageName_var = '${managedImageName}-${baseTime}'
-var managedImageId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Compute/images/${managedImageName_var}'
-var imageReplicationRegions_var = empty(imageReplicationRegions) ? array(location) : imageReplicationRegions
+var managedImageNameVar = '${managedImageName}-${baseTime}'
+var managedImageId = '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.Compute/images/${managedImageNameVar}'
+var imageReplicationRegionsVar = empty(imageReplicationRegions) ? array(location) : imageReplicationRegions
 
 var managedImage = {
   type: 'ManagedImage'
   imageId: managedImageId
   location: location
-  runOutputName: '${managedImageName_var}-ManagedImage'
+  runOutputName: '${managedImageNameVar}-ManagedImage'
   artifactTags: {
     sourceType: imageSource.type
     sourcePublisher: contains(imageSource, 'publisher') ? imageSource.publisher : null
@@ -86,7 +86,7 @@ var conditionalManagedImage = empty(managedImageName) ? [] : array(managedImage)
 var sharedImage = {
   type: 'SharedImage'
   galleryImageId: sigImageDefinitionId
-  runOutputName: !empty(sigImageDefinitionId) ? '${split(sigImageDefinitionId, '/')[10]}-SharedImage' : 'SharedImage'
+  runOutputName: !empty(sigImageDefinitionId) ? '${last(split(sigImageDefinitionId, '/'))}-SharedImage' : 'SharedImage'
   artifactTags: {
     sourceType: imageSource.type
     sourcePublisher: contains(imageSource, 'publisher') ? imageSource.publisher : null
@@ -97,7 +97,7 @@ var sharedImage = {
     sourceImageVersionID: contains(imageSource, 'imageVersionID') ? imageSource.imageVersionID : null
     creationTime: baseTime
   }
-  replicationRegions: imageReplicationRegions_var
+  replicationRegions: imageReplicationRegionsVar
 }
 var conditionalSharedImage = empty(sigImageDefinitionId) ? [] : array(sharedImage)
 var unManagedImage = {
@@ -155,7 +155,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
   }
 }
 
-resource imageTemplate_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource imageTemplate_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${imageTemplate.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -171,6 +171,8 @@ module imageTemplate_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: imageTemplate.id
   }
 }]
@@ -181,8 +183,11 @@ output resourceId string = imageTemplate.id
 @description('The resource group the image template was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the image template.')
+@description('The full name of the deployed image template.')
 output name string = imageTemplate.name
+
+@description('The prefix of the image template name provided as input.')
+output namePrefix string = name
 
 @description('The command to run in order to trigger the image build.')
 output runThisCommand string = 'Invoke-AzResourceAction -ResourceName ${imageTemplate.name} -ResourceGroupName ${resourceGroup().name} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force'

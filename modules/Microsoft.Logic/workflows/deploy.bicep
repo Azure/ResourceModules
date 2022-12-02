@@ -10,7 +10,7 @@ param connectorEndpointsConfiguration object = {}
 @description('Optional. The access control configuration for accessing workflow run contents.')
 param contentsAccessControlConfiguration object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Parameters for the definition template.')
@@ -25,8 +25,8 @@ param userAssignedIdentities object = {}
 @description('Optional. The integration account.')
 param integrationAccount object = {}
 
-@description('Optional. The integration service environment.')
-param integrationServiceEnvironment object = {}
+@description('Optional. The integration service environment Id.')
+param integrationServiceEnvironmentResourceId string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -172,7 +172,10 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
       workflowManagement: !empty(workflowManagementAccessControlConfiguration) ? workflowManagementAccessControlConfiguration : null
     }
     integrationAccount: !empty(integrationAccount) ? integrationAccount : null
-    integrationServiceEnvironment: !empty(integrationServiceEnvironment) ? integrationServiceEnvironment : null
+    integrationServiceEnvironment: !empty(integrationServiceEnvironmentResourceId) ? {
+      id: integrationServiceEnvironmentResourceId
+    } : null
+
     definition: {
       '$schema': 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
       actions: workflowActions
@@ -186,7 +189,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   }
 }
 
-resource logicApp_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource logicApp_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${logicApp.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -215,6 +218,8 @@ module logicApp_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (ro
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: logicApp.id
   }
 }]

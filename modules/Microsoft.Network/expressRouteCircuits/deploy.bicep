@@ -10,7 +10,7 @@ param peeringLocation string
 @description('Required. This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call.')
 param bandwidthInMbps int
 
-@description('Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers.')
+@description('Optional. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers.')
 @allowed([
   'Local'
   'Standard'
@@ -18,7 +18,7 @@ param bandwidthInMbps int
 ])
 param skuTier string = 'Standard'
 
-@description('Required. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families.')
+@description('Optional. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families.')
 @allowed([
   'MeteredData'
   'UnlimitedData'
@@ -88,7 +88,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -155,7 +155,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-05-01' = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -174,7 +174,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-05-01
   }
 }
 
-resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -203,6 +203,8 @@ module expressRouteCircuits_roleAssignments '.bicep/nested_roleAssignments.bicep
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: expressRouteCircuits.id
   }
 }]

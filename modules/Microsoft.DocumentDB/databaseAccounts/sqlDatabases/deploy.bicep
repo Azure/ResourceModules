@@ -13,7 +13,7 @@ param throughput int = 400
 @description('Optional. Tags of the SQL database resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -42,7 +42,7 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-06
     resource: {
       id: name
     }
-    options: {
+    options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
       throughput: throughput
     }
   }

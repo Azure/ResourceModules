@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Indicates whether IP forwarding is enabled on this network interface.')
@@ -86,7 +86,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -100,16 +100,16 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
       id: networkSecurityGroupResourceId
     } : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurations: {
-      name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
+      name: contains(ipConfiguration, 'name') ? ipConfiguration.name : 'ipconfig0${index + 1}'
       properties: {
         primary: index == 0 ? true : false
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
-        privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
+        privateIPAddress: contains(ipConfiguration, 'privateIPAddress') ? (!empty(ipConfiguration.privateIPAddress) ? ipConfiguration.privateIPAddress : null) : null
         publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? (ipConfiguration.publicIPAddressResourceId != null ? {
           id: ipConfiguration.publicIPAddressResourceId
         } : null) : null
         subnet: {
-          id: ipConfiguration.subnetId
+          id: ipConfiguration.subnetResourceId
         }
         loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
         applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
@@ -135,7 +135,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: networkInterface
 }
 
-resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkInterface_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -151,6 +151,8 @@ module networkInterface_roleAssignments '.bicep/nested_roleAssignments.bicep' = 
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: networkInterface.id
   }
 }]

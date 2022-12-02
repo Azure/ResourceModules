@@ -4,7 +4,7 @@ param name string
 @description('Optional. The storage configuration for the Azure Recovery Service Vault.')
 param backupStorageConfig object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
@@ -27,6 +27,9 @@ param replicationFabrics array = []
 @description('Optional. List of all replication policies.')
 @minLength(0)
 param replicationPolicies array = []
+
+@description('Optional. Replication alert settings.')
+param replicationAlertSettings object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -110,6 +113,15 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
+@description('Optional. Monitoring Settings of the vault.')
+param monitoringSettings object = {}
+
+@description('Optional. Security Settings of the vault.')
+param securitySettings object = {}
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -150,16 +162,19 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   sku: {
     name: 'RS0'
     tier: 'Standard'
   }
-  properties: {}
+  properties: {
+    monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
+    securitySettings: !empty(securitySettings) ? securitySettings : null
+  }
 }
 
 module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
@@ -235,11 +250,24 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
+    isSoftDeleteFeatureStateEditable: contains(backupConfig, 'isSoftDeleteFeatureStateEditable') ? backupConfig.isSoftDeleteFeatureStateEditable : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSettings)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
+  params: {
+    name: 'defaultAlertSetting'
+    recoveryVaultName: rsv.name
+    customEmailAddresses: contains(replicationAlertSettings, 'customEmailAddresses') ? replicationAlertSettings.customEmailAddresses : []
+    locale: contains(replicationAlertSettings, 'locale') ? replicationAlertSettings.locale : ''
+    sendToOwners: contains(replicationAlertSettings, 'sendToOwners') ? replicationAlertSettings.sendToOwners : 'Send'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+resource rsv_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -261,6 +289,26 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   scope: rsv
 }
 
+module rsv_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-RSV-PrivateEndpoint-${index}'
+  params: {
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(rsv.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: rsv.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+  }
+}]
+
 module rsv_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RSV-Rbac-${index}'
   params: {
@@ -268,6 +316,8 @@ module rsv_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: rsv.id
   }
 }]

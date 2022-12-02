@@ -13,7 +13,7 @@ param collections array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -42,8 +42,8 @@ resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases
     resource: {
       id: name
     }
-    options: {
-      throughput: contains(databaseAccount.properties.capabilities, 'EnableServerless') ? null : throughput
+    options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
+      throughput: throughput
     }
   }
 }

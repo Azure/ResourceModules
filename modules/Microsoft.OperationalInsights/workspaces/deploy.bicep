@@ -19,6 +19,9 @@ param storageInsightsConfigs array = []
 @description('Optional. List of services to be linked.')
 param linkedServices array = []
 
+@description('Conditional. List of Storage Accounts to be linked. Required if \'forceCmkForQuery\' is set to \'true\' and \'savedSearches\' is not empty.')
+param linkedStorageAccounts array = []
+
 @description('Optional. Kusto Query Language searches to save.')
 param savedSearches array = []
 
@@ -71,6 +74,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
+@description('Optional. Indicates whether customer managed storage is mandatory for query management.')
+param forceCmkForQuery bool = true
+
 @allowed([
   ''
   'CanNotDelete'
@@ -85,7 +91,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -142,7 +148,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
   location: location
   name: name
   tags: tags
@@ -160,6 +166,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
     }
     publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
+    forceCmkForQuery: forceCmkForQuery
   }
 }
 
@@ -198,6 +205,16 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
   }
 }]
 
+module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/deploy.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
+  name: '${uniqueString(deployment().name, location)}-LAW-LinkedStorageAccount-${index}'
+  params: {
+    logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
+    name: linkedStorageAccount.name
+    resourceId: linkedStorageAccount.resourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
   name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
@@ -212,6 +229,9 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
     version: contains(savedSearch, 'version') ? savedSearch.version : 2
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    logAnalyticsWorkspace_linkedStorageAccounts
+  ]
 }]
 
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
@@ -247,7 +267,7 @@ module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/sol
   }
 }]
 
-resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${logAnalyticsWorkspace.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -263,6 +283,8 @@ module logAnalyticsWorkspace_roleAssignments '.bicep/nested_roleAssignments.bice
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: logAnalyticsWorkspace.id
   }
 }]
