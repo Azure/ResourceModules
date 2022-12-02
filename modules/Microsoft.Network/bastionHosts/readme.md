@@ -42,7 +42,7 @@ This module deploys a bastion host.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableCopyPaste` | bool | `False` |  | Choose to disable or enable Copy Paste. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFileCopy` | bool | `True` |  | Choose to disable or enable File Copy. |
 | `enableIpConnect` | bool | `False` |  | Choose to disable or enable IP Connect. |
 | `enableShareableLink` | bool | `False` |  | Choose to disable or enable Shareable Link. |
@@ -323,6 +323,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableCopyPaste: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableFileCopy: false
     enableIpConnect: false
     enableShareableLink: false
@@ -383,6 +384,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "disableCopyPaste": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enableFileCopy": {
       "value": false
     },
@@ -433,6 +437,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     name: '<<namePrefix>>nbhctmpip001'
     vNetId: '<vNetId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -481,6 +486,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       "value": "<vNetId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -527,6 +535,8 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nbhmin001'
     vNetId: '<vNetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -549,6 +559,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     },
     "vNetId": {
       "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

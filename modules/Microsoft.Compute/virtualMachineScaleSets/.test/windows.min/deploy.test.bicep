@@ -17,6 +17,9 @@ param serviceShort string = 'cvmsswinmin'
 @secure()
 param password string = newGuid()
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -44,13 +47,14 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     adminUsername: 'localAdminUser'
     adminPassword: password
     imageReference: {
-      offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2016-Datacenter'
+      offer: 'WindowsServer'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     osDisk: {

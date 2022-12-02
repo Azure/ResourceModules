@@ -99,7 +99,7 @@ param cMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')

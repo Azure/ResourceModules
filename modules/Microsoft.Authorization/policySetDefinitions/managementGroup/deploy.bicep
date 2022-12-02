@@ -11,9 +11,6 @@ param displayName string = ''
 @sys.description('Optional. The description name of the Set Definition (Initiative).')
 param description string = ''
 
-@sys.description('Optional. The group ID of the Management Group. If not provided, will use the current scope for deployment.')
-param managementGroupId string = managementGroup().name
-
 @sys.description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
@@ -29,7 +26,7 @@ param parameters object = {}
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -62,4 +59,4 @@ resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2021-
 output name string = policySetDefinition.name
 
 @sys.description('Policy Set Definition resource ID.')
-output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)
+output resourceId string = policySetDefinition.id

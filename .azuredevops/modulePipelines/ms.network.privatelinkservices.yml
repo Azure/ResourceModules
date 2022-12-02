@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.Network/privateLinkServices/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

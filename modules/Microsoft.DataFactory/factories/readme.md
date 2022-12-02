@@ -46,7 +46,7 @@
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gitAccountName` | string | `''` |  | The account name. |
 | `gitCollaborationBranch` | string | `'main'` |  | The collaboration branch name. Default is 'main'. |
 | `gitConfigureLater` | bool | `True` |  | Boolean to define whether or not to configure git during template deployment. |
@@ -377,6 +377,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitConfigureLater: true
     integrationRuntimes: [
       {
@@ -475,6 +476,9 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "gitConfigureLater": {
       "value": true
     },
@@ -563,7 +567,10 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-dffmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>dffmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -580,8 +587,13 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>dffmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

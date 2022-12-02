@@ -40,7 +40,7 @@ This module deploys a Static Web App.
 | `branch` | string | `''` |  | The branch name of the GitHub repository. |
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
 | `customDomains` | _[customDomains](customDomains/readme.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
 | `functionAppSettings` | object | `{object}` |  | Function app settings. |
 | `linkedBackend` | object | `{object}` |  | Object with "resourceId" and "location" of the a user defined function app. |
@@ -350,6 +350,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       foo: 'bar'
       setting: 1
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enterpriseGradeCdnStatus: 'Disabled'
     functionAppSettings: {
       foo: 'bar'
@@ -414,6 +415,9 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         "foo": "bar",
         "setting": 1
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enterpriseGradeCdnStatus": {
       "value": "Disabled"
@@ -487,7 +491,10 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wssmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>wssmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -504,8 +511,13 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>wssmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

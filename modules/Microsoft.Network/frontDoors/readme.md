@@ -42,7 +42,7 @@ This module deploys Front Doors.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enabledState` | string | `'Enabled'` |  | State of the frontdoor resource. |
 | `enforceCertificateNameCheck` | string | `'Disabled'` |  | Enforce certificate name check of the frontdoor resource. |
 | `friendlyName` | string | `''` |  | Friendly name of the frontdoor resource. |
@@ -274,6 +274,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       }
     ]
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enforceCertificateNameCheck: 'Disabled'
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -404,6 +405,9 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       ]
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enforceCertificateNameCheck": {
       "value": "Disabled"
     },
@@ -522,6 +526,8 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
         }
       }
     ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -630,6 +636,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           }
         }
       ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

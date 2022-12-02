@@ -13,7 +13,7 @@ param name string = 'ActiveDirectory'
 @description('Optional. Tenant ID of the managed instance administrator.')
 param tenantId string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

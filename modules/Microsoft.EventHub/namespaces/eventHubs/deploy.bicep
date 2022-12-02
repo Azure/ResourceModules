@@ -93,7 +93,7 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 @description('Optional. A value that indicates whether to Skip Empty Archives.')
 param captureDescriptionSkipEmptyArchives bool = false
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -155,7 +155,7 @@ resource eventHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
   scope: eventHub
 }
 
-module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGroup, index) in consumerGroups: {
+module eventHub_consumergroups 'consumerGroups/deploy.bicep' = [for (consumerGroup, index) in consumerGroups: {
   name: '${deployment().name}-ConsumerGroup-${index}'
   params: {
     namespaceName: namespaceName

@@ -42,7 +42,7 @@ This template deploys an express route circuit.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peerASN` | int | `0` |  | The autonomous system number of the customer/connectivity provider. |
@@ -200,6 +200,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -257,6 +258,9 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -299,6 +303,8 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     name: '<<namePrefix>>nercmin001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -327,6 +333,10 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     },
     "serviceProviderName": {
       "value": "Equinix"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

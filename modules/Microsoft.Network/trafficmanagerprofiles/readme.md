@@ -40,7 +40,7 @@ This module deploys a traffic manager profile.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `endpoints` | array | `[]` |  | The list of endpoints in the Traffic Manager profile. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxReturn` | int | `1` |  | Maximum number of endpoints to be returned for MultiValue routing type. |
@@ -281,6 +281,7 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -330,6 +331,9 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -364,6 +368,8 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     // Required parameters
     name: '<name>'
     relativeName: '<relativeName>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -386,6 +392,10 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
     },
     "relativeName": {
       "value": "<relativeName>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

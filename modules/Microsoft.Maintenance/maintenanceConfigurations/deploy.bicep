@@ -5,7 +5,7 @@
 @description('Required. Maintenance Configuration Name.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Gets or sets extensionProperties of the maintenanceConfiguration.')

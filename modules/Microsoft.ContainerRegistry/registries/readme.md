@@ -56,7 +56,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `exportPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the export policy is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -376,6 +376,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exportPolicyStatus: 'enabled'
     lock: 'CanNotDelete'
     networkRuleSetIpRules: [
@@ -468,6 +469,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "exportPolicyStatus": {
       "value": "enabled"
@@ -567,6 +571,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicNetworkAccess: 'Disabled'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -604,6 +609,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "publicNetworkAccess": {
       "value": "Disabled"
     },
@@ -629,7 +637,10 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-crrmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>crrmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -646,8 +657,13 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>crrmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -670,6 +686,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     name: '<<namePrefix>>crrpe001'
     // Non-required parameters
     acrSku: 'Premium'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -704,6 +721,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     // Non-required parameters
     "acrSku": {
       "value": "Premium"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [

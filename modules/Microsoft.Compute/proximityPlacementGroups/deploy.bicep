@@ -31,7 +31,7 @@ param zones array = []
 @description('Optional. Describes colocation status of the Proximity Placement Group.')
 param colocationStatus object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Specifies the user intent of the proximity placement group.')

@@ -82,7 +82,7 @@ param privateEndpoints array = []
 param tags object = {}
 
 // PID
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Role Assignments

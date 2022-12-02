@@ -47,7 +47,7 @@ This module deploys a firewall.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
 | `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -335,6 +335,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         publicIPAddressResourceId: '<publicIPAddressResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -366,6 +367,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
           "publicIPAddressResourceId": "<publicIPAddressResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -446,6 +450,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     networkRuleCollections: [
       {
@@ -586,6 +591,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -659,6 +667,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     name: '<<namePrefix>>nafcstpip001'
     vNetId: '<vNetId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
@@ -707,6 +716,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       "value": "<vNetId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "publicIPAddressObject": {
       "value": {
         "diagnosticLogCategoriesToEnable": [
@@ -753,6 +765,8 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nafmin001'
     vNetId: '<vNetId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -775,6 +789,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     },
     "vNetId": {
       "value": "<vNetId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

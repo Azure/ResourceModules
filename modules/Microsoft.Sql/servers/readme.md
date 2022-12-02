@@ -20,7 +20,8 @@ This module deploys a SQL server.
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Sql/servers` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers) |
-| `Microsoft.Sql/servers/databases` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/databases) |
+| `Microsoft.Sql/servers/databases` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/databases) |
+| `Microsoft.Sql/servers/elasticPools` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/elasticPools) |
 | `Microsoft.Sql/servers/firewallRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/firewallRules) |
 | `Microsoft.Sql/servers/securityAlertPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/securityAlertPolicies) |
 | `Microsoft.Sql/servers/virtualNetworkRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/virtualNetworkRules) |
@@ -47,7 +48,8 @@ This module deploys a SQL server.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `elasticPools` | _[elasticPools](elasticPools/readme.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -362,6 +364,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       sid: '<sid>'
       tenantId: '<tenantId>'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -391,6 +394,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         "sid": "<sid>",
         "tenantId": "<tenantId>"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -416,21 +422,31 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
       {
+        capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
         diagnosticEventHubName: '<diagnosticEventHubName>'
         diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        elasticPoolId: '<elasticPoolId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: '<<namePrefix>>-sqlscomdb-001'
-        skuCapacity: 12
-        skuFamily: 'Gen5'
-        skuName: 'BC_Gen5'
-        skuTier: 'BusinessCritical'
+        skuName: 'ElasticPool'
+        skuTier: 'GeneralPurpose'
       }
     ]
+    elasticPools: [
+      {
+        maintenanceConfigurationId: '<maintenanceConfigurationId>'
+        name: '<<namePrefix>>-sqlscom-ep-001'
+        skuCapacity: 10
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallRules: [
       {
         endIpAddress: '0.0.0.0'
@@ -518,21 +534,35 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     "databases": {
       "value": [
         {
+          "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
           "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
           "diagnosticEventHubName": "<diagnosticEventHubName>",
           "diagnosticLogsRetentionInDays": 7,
           "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "elasticPoolId": "<elasticPoolId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "<<namePrefix>>-sqlscomdb-001",
-          "skuCapacity": 12,
-          "skuFamily": "Gen5",
-          "skuName": "BC_Gen5",
-          "skuTier": "BusinessCritical"
+          "skuName": "ElasticPool",
+          "skuTier": "GeneralPurpose"
         }
       ]
+    },
+    "elasticPools": {
+      "value": [
+        {
+          "maintenanceConfigurationId": "<maintenanceConfigurationId>",
+          "name": "<<namePrefix>>-sqlscom-ep-001",
+          "skuCapacity": 10,
+          "skuName": "GP_Gen5",
+          "skuTier": "GeneralPurpose"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "firewallRules": {
       "value": [
@@ -633,6 +663,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -670,6 +701,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "administratorLoginPassword": {
       "value": "<administratorLoginPassword>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [

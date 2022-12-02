@@ -42,7 +42,7 @@ This module deploys a Redis Cache service.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableNonSslPort` | bool | `False` |  | Specifies whether the non-ssl Redis server port (6379) is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Redis cache service. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -358,6 +358,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     diagnosticSettingsName: 'redisdiagnostics'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
@@ -422,6 +423,9 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enableNonSslPort": {
       "value": true
     },
@@ -481,7 +485,10 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-crmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>crmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -498,8 +505,13 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>crmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

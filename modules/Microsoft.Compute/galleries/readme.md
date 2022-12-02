@@ -31,7 +31,7 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -173,6 +173,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -204,6 +205,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -238,6 +242,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgimages001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
         name: '<<namePrefix>>-cgimages-imgd-001'
@@ -299,6 +304,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgimages001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "images": {
       "value": [
         {

@@ -34,7 +34,7 @@ This module deploys an Azure API connection.
 | `alternativeParameterValues` | object | `{object}` |  | Alternative parameter values. |
 | `connectionApi` | object | `{object}` |  | Specific values for some API connections. |
 | `customParameterValues` | object | `{object}` |  | Customized parameter values for specific connections. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location of the deployment. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `nonSecretParameterValues` | object | `{object}` |  | Dictionary of nonsecret parameter values. |
@@ -182,6 +182,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     connectionApi: {
       id: '<id>'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -220,6 +221,9 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
       "value": {
         "id": "<id>"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"

@@ -17,6 +17,9 @@ param serviceShort string = 'sqlscom'
 @secure()
 param password string = newGuid()
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -60,6 +63,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
     administratorLogin: 'adminUserName'
@@ -84,14 +88,23 @@ module testDeployment '../../deploy.bicep' = {
       ]
       vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     }
+    elasticPools: [
+      {
+        name: '<<namePrefix>>-${serviceShort}-ep-001'
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
+        skuCapacity: 10
+        // Pre-existing 'public' configuration
+        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
+      }
+    ]
     databases: [
       {
         name: '<<namePrefix>>-${serviceShort}db-001'
         collation: 'SQL_Latin1_General_CP1_CI_AS'
-        skuTier: 'BusinessCritical'
-        skuName: 'BC_Gen5'
-        skuCapacity: 12
-        skuFamily: 'Gen5'
+        skuTier: 'GeneralPurpose'
+        skuName: 'ElasticPool'
+        capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
         diagnosticLogsRetentionInDays: 7
@@ -99,6 +112,7 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/<<namePrefix>>-${serviceShort}/elasticPools/<<namePrefix>>-${serviceShort}-ep-001'
       }
     ]
     firewallRules: [

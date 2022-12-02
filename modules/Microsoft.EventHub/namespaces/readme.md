@@ -49,7 +49,7 @@ This module deploys an event hub namespace.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfig` | object | `{object}` |  | The disaster recovery config for this namespace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventHubs` | _[eventHubs](eventHubs/readme.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
 | `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -340,6 +340,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     eventHubs: [
       {
         name: '<<namePrefix>>-az-evh-x-001'
@@ -488,6 +489,9 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "eventHubs": {
       "value": [
         {
@@ -612,7 +616,10 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ehnmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>ehnmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -629,8 +636,13 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>ehnmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -652,6 +664,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>ehnpe001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -684,6 +697,9 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>ehnpe001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {

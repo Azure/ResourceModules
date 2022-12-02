@@ -27,7 +27,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `crossRegionRestoreFlag` | bool | `True` |  | Opt in details of Cross Region Restore feature. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `name` | string | `'vaultstorageconfig'` |  | The name of the backup storage config. |
 | `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Change Vault Storage Type (Works if vault has not registered any backup instance). |
 

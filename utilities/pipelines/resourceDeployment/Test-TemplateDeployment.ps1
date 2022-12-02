@@ -119,8 +119,10 @@ function Test-TemplateDeployment {
             $deploymentName = ('{0}-{1}' -f $deploymentNamePrefix, (Get-Date -Format 'yyyyMMddTHHMMssffffZ'))[0..63] -join ''
         } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
-        Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
-        $DeploymentInputs['DeploymentName'] = $deploymentName
+        if ($deploymentScope -ne 'resourceGroup') {
+            Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
+            $DeploymentInputs['DeploymentName'] = $deploymentName
+        }
 
         #################
         ## INVOKE TEST ##

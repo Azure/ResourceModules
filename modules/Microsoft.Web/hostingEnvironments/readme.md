@@ -42,7 +42,7 @@ This module deploys an app service environment.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string | `''` |  | DNS suffix of the App Service Environment. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
 | `internalLoadBalancingMode` | string | `'None'` | `[None, Publishing, Web]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
 | `ipsslAddressCount` | int | `-1` |  | Number of IP SSL addresses reserved for the App Service Environment. |
@@ -236,6 +236,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipsslAddressCount: 2
     kind: 'ASEv2'
     multiSize: 'Standard_D1_V2'
@@ -295,6 +296,9 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipsslAddressCount": {
       "value": 2
     },
@@ -347,6 +351,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -403,6 +408,9 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"

@@ -31,11 +31,14 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The databases to create in the server.')
 param databases array = []
+
+@description('Optional. The Elastic Pools to create in the server.')
+param elasticPools array = []
 
 @description('Optional. The firewall rules to create in the server.')
 param firewallRules array = []
@@ -167,7 +170,34 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     tags: contains(database, 'tags') ? database.tags : {}
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+    diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
+    elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    server_elasticPools // Enables us to add databases to existing elastic pools
+  ]
+}]
+
+module server_elasticPools 'elasticPools/deploy.bicep' = [for (elasticPool, index) in elasticPools: {
+  name: '${uniqueString(deployment().name, location)}-SQLServer-ElasticPool-${index}'
+  params: {
+    name: elasticPool.name
+    serverName: server.name
+    databaseMaxCapacity: contains(elasticPool, 'databaseMaxCapacity') ? elasticPool.databaseMaxCapacity : 2
+    databaseMinCapacity: contains(elasticPool, 'databaseMinCapacity') ? elasticPool.databaseMinCapacity : 0
+    highAvailabilityReplicaCount: contains(elasticPool, 'highAvailabilityReplicaCount') ? elasticPool.highAvailabilityReplicaCount : -1
+    licenseType: contains(elasticPool, 'licenseType') ? elasticPool.licenseType : 'LicenseIncluded'
+    maintenanceConfigurationId: contains(elasticPool, 'maintenanceConfigurationId') ? elasticPool.maintenanceConfigurationId : ''
+    maxSizeBytes: contains(elasticPool, 'maxSizeBytes') ? elasticPool.maxSizeBytes : 34359738368
+    minCapacity: contains(elasticPool, 'minCapacity') ? elasticPool.minCapacity : 0
+    skuCapacity: contains(elasticPool, 'skuCapacity') ? elasticPool.skuCapacity : 2
+    skuName: contains(elasticPool, 'skuName') ? elasticPool.skuName : 'GP_Gen5'
+    skuTier: contains(elasticPool, 'skuTier') ? elasticPool.skuTier : 'GeneralPurpose'
+    zoneRedundant: contains(elasticPool, 'zoneRedundant') ? elasticPool.zoneRedundant : false
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: contains(elasticPool, 'location') ? elasticPool.location : server.location
+    tags: contains(elasticPool, 'tags') ? elasticPool.tags : {}
   }
 }]
 

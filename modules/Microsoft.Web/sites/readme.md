@@ -49,7 +49,7 @@ This module deploys a web or function app.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -495,6 +495,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -644,6 +645,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "keyVaultAccessIdentityResourceId": {
       "value": "<keyVaultAccessIdentityResourceId>"
     },
@@ -716,6 +720,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     name: '<<namePrefix>>wsfamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     siteConfig: {
       alwaysOn: true
     }
@@ -746,6 +751,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "siteConfig": {
       "value": {
         "alwaysOn": true
@@ -778,6 +786,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     httpsOnly: true
     privateEndpoints: [
       {
@@ -854,6 +863,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "httpsOnly": {
       "value": true
     },
@@ -921,6 +933,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     kind: 'app'
     name: '<<namePrefix>>wswamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -946,6 +960,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

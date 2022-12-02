@@ -33,7 +33,7 @@
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the SQL database resource. |
 | `throughput` | int | `400` | Request units per second. |
 

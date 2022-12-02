@@ -94,7 +94,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `disableRunCommand` | bool | `False` |  | Whether to disable run command for the cluster or not. |
 | `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided. |
 | `enableAzureDefender` | bool | `False` |  | Whether to enable Azure Defender. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
 | `enableOidcIssuerProfile` | bool | `False` |  | Whether the The OIDC issuer profile of the Managed Cluster is enabled. |
 | `enablePodSecurityPolicy` | bool | `False` |  | Whether to enable Kubernetes pod security policy. |
@@ -466,6 +466,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     diskEncryptionSetID: '<diskEncryptionSetID>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -596,6 +597,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "diskEncryptionSetID": {
       "value": "<diskEncryptionSetID>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -709,6 +713,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -833,6 +838,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [

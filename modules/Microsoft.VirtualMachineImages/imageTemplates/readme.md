@@ -34,7 +34,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `buildTimeoutInMinutes` | int | `0` |  | Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `imageReplicationRegions` | array | `[]` |  | List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -302,6 +302,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 0
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: 'CanNotDelete'
     managedImageName: '<<namePrefix>>-mi-vmicom-001'
@@ -363,6 +364,9 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     // Non-required parameters
     "buildTimeoutInMinutes": {
       "value": 0
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "imageReplicationRegions": {
       "value": []
