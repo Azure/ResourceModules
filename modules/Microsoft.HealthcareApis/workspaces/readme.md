@@ -72,7 +72,7 @@ tags: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module dicom './Microsoft.HealthDataServices/deploy.bicep' = {
+module dicom './Microsoft.HealthcareApis/deploy.bicep' = {
     name: '${uniqueString(deployment().name)}-test-hds'
     params: {
         // Required parameters

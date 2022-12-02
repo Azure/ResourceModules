@@ -17,13 +17,6 @@ param accessPolicyObjectIds array = []
 @description('Optional. The list of the Azure container registry login servers.')
 param acrLoginServers array = []
 
-/*
-{
-  digest: 'string'
-  imageName: 'string'
-  loginServer: 'string'
-}
-*/
 @description('Optional. The list of Open Container Initiative (OCI) artifacts.')
 param acrOciArtifacts array = []
 
@@ -275,7 +268,8 @@ module fhir_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAs
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceName: '${workspaceName}/${fhir.name}'
+    //resourceName: '${workspaceName}/${fhir.name}'
+    resourceId: fhir.id
   }
 }]
 

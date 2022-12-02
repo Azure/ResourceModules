@@ -106,7 +106,7 @@ userAssignedIdentities: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module dicom './Microsoft.HealthDataServices/dicomservices/deploy.bicep' = {
+module dicom './Microsoft.HealthcareApis/dicomservices/deploy.bicep' = {
     name: '${uniqueString(deployment().name)}-test-dicom'
     params: {
         // Required parameters
