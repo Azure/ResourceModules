@@ -193,7 +193,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   properties: bastionpropertiesVar
 }
 
-resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource azureBastion_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${azureBastion.name}-${lock}-lock'
   properties: {
     level: any(lock)

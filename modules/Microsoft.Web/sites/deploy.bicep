@@ -228,7 +228,7 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
   properties: {
     level: any(lock)
