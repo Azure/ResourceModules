@@ -96,7 +96,8 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
     sku: sku
     encryptionProperties: !empty(cMKKeyName) ? {
       keyName: cMKKeyName
-      keyVersion: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      // keyVersion: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
       vaultBaseUrl: cmkKeyVault.properties.vaultUri
     } : null
     containers: containers
