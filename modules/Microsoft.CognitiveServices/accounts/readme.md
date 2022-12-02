@@ -451,6 +451,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enableEncryption: false
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Deny'
@@ -535,6 +536,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "enableEncryption": {
+      "value": false
     },
     "lock": {
       "value": "CanNotDelete"

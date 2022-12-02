@@ -63,6 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     kind: 'Face'
     customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticLogsRetentionInDays: 7
+    enableEncryption: false
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
