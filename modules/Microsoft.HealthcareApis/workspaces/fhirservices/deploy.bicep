@@ -258,7 +258,6 @@ resource fhir_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-
   scope: fhir
 }
 
-
 module fhir_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
@@ -268,7 +267,6 @@ module fhir_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAs
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    //resourceName: '${workspaceName}/${fhir.name}'
     resourceId: fhir.id
   }
 }]
