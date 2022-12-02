@@ -1,0 +1,28 @@
+name: RunCredScan
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install detect-secrets using pip
+        run: pip install detect-secrets
+
+      - name: Run detect-secrets tool
+        run: |
+          detect-secrets --version
+          cp .secrets.baseline .secrets.new
+          detect-secrets scan --baseline .secrets.new $(find . -type f ! -name '.secrets.*' ! -path '*/.git*')
+
+      - name: Upload Secret Baseline as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: secret-baseline
+          path: ./.secrets.baseline
