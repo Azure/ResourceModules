@@ -41,7 +41,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>-azsa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     skuName: 'S0'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Readerrrr'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
