@@ -100,7 +100,7 @@ function Remove-Deployment {
             if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
                 $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
             }
-            $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
+            $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject
         }
 
         [array] $deployedTargetResources = $deployedTargetResources | Select-Object -Unique
@@ -158,7 +158,7 @@ function Remove-Deployment {
         # ================
         if ($resourcesToRemove.Count -gt 0) {
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
-                Remove-ResourceList -ResourcesToRemove $resourcesToRemove -Verbose
+                Remove-ResourceList -ResourcesToRemove $resourcesToRemove
             }
         } else {
             Write-Verbose 'Found [0] resources to remove'

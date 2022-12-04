@@ -91,7 +91,7 @@ function Get-DeploymentTargetResourceListInner {
     # Manage nested resources #
     ###########################
     foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
-        Write-Verbose ('Found deployed resource [{0}]' -f $deployment) -Verbose
+        Write-Verbose ('Found deployed resource [{0}]' -f $deployment)
         [array]$resultSet += $deployment
     }
 
