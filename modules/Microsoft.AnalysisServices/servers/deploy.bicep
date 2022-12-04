@@ -7,7 +7,7 @@ param skuName string = 'S0'
 @description('Optional. The total number of query replica scale-out instances.')
 param skuCapacity int = 1
 
-@description('Optional. The inbound firewall rules to define on the server. If not specified, firewall is disabled.')
+@description('Optional. The inbound firewall rules to define on the server. If not specified, the firewall is disabled.')
 param firewallSettings object = {
   firewallRules: [
     {
