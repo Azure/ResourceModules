@@ -112,7 +112,7 @@ function Initialize-DeploymentRemoval {
         if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
             $inputObject['ManagementGroupId'] = $ManagementGroupId
         }
-        Remove-Deployment @inputObject -Verbose
+        Remove-Deployment @inputObject
     }
 
     end {
