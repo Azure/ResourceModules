@@ -334,7 +334,7 @@ jobs:
               TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
               SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
-              DeploymentNames   = '$(deploymentNames)'
+              DeploymentNames   = '$(deploymentNames)' | ConvertFrom-Json
               Verbose           = $true
             }
 
