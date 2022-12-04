@@ -21,8 +21,8 @@ Optional. The maximum times to retry the search for resources via their removal 
 .PARAMETER SearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
-.PARAMETER DeploymentName
-Optional. The deployment name to use for the removal
+.PARAMETER DeploymentNames
+Optional. The deployment names to use for the removal
 
 .PARAMETER TemplateFilePath
 Mandatory. The path to the deployment file
@@ -31,7 +31,7 @@ Mandatory. The path to the deployment file
 Optional. The order of resource types to apply for deletion
 
 .EXAMPLE
-Remove-Deployment -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
+Remove-Deployment =DeploymentNames @('KeyVault-t1') -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
 
 Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
 #>
@@ -46,7 +46,7 @@ function Remove-Deployment {
         [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $true)]
-        [string] $DeploymentName,
+        [string[]] $DeploymentNames,
 
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
@@ -67,6 +67,7 @@ function Remove-Deployment {
         # Load helper
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentTargetResourceList.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-MatchingDeploymentNameList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-OrderedResourcesList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-ResourceList.ps1')
@@ -87,17 +88,24 @@ function Remove-Deployment {
 
         # Fetch deployments
         # =================
-        $deploymentsInputObject = @{
-            Name  = $deploymentName
-            Scope = $deploymentScope
+        $deployedTargetResources = @()
+
+        foreach ($deploymentName in $DeploymentNames) {
+            $deploymentsInputObject = @{
+                Name  = $deploymentName
+                Scope = $deploymentScope
+            }
+            if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+                $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
+            }
+            if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+                $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
+            }
+            $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
         }
-        if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
-            $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
-        }
-        if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
-            $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
-        }
-        [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
+
+        [array] $deployedTargetResources = $deployedTargetResources | Select-Object -Unique
+
         Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
 
         # Pre-Filter & order items
