@@ -115,7 +115,7 @@ param description string = ''
 @sys.description('Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services.')
 param discoveryUrl string = ''
 
-@sys.description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@sys.description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @sys.description('Optional. The name of the customer managed key to use for encryption.')

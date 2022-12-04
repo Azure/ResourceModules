@@ -35,6 +35,7 @@ This module deploys different kinds of cognitive services resources
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
@@ -46,7 +47,6 @@ This module deploys different kinds of cognitive services resources
 | `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
 | `apiProperties` | object | `{object}` |  | The API properties for special APIs. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
-| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
