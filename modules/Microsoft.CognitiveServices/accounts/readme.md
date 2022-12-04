@@ -59,7 +59,6 @@ This module deploys different kinds of cognitive services resources
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
 | `dynamicThrottlingEnabled` | bool | `False` |  | The flag to enable dynamic throttling. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableEncryption` | bool | `True` |  | Enable service encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
@@ -451,7 +450,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableEncryption: false
     lock: 'CanNotDelete'
     networkAcls: {
       defaultAction: 'Deny'
@@ -536,9 +534,6 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "enableEncryption": {
-      "value": false
     },
     "lock": {
       "value": "CanNotDelete"

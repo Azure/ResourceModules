@@ -116,9 +116,6 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication. Should be enabled for security reasons.')
 param disableLocalAuth bool = true
 
-@description('Optional. Enable service encryption.')
-param enableEncryption bool = true
-
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
 param cMKKeyVaultResourceId string = ''
 
@@ -245,8 +242,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
-    encryption: enableEncryption && !empty(cMKKeyName) ? {
-      // Customer-managed key
+    encryption: !empty(cMKKeyName) ? {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
         identityClientId: cMkUserAssignedIdentity.properties.clientId
@@ -254,9 +250,6 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
         keyName: cMKKeyName
         keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
       }
-    } : enableEncryption ? {
-      // Service-managed key
-      keySource: 'Microsoft.CognitiveServices'
     } : null
     migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
