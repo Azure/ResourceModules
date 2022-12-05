@@ -27,7 +27,7 @@ This module deploys a key for a SQL managed instance.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `serverName` | string | The name of the parent SQL server. |
+| `serverName` | string | The name of the parent SQL server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
