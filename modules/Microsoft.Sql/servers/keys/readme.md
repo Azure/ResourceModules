@@ -1,4 +1,4 @@
-# SQL Managed Instance Keys `[Microsoft.Sql/managedInstances/keys]`
+# SQL Servers Keys `[Microsoft.Sql/servers/keys]`
 
 This module deploys a key for a SQL managed instance.
 
@@ -13,7 +13,7 @@ This module deploys a key for a SQL managed instance.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/keys` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/managedInstances/keys) |
+| `Microsoft.Sql/servers/keys` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/keys) |
 
 ## Parameters
 

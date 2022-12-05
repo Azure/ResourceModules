@@ -279,7 +279,7 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
 }
 
 module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
-  name: '${uniqueString(deployment().name, location)}-SqlMi-Key-${index}'
+  name: '${uniqueString(deployment().name, location)}-Sql-Key-${index}'
   params: {
     name: key.name
     serverName: server.name
