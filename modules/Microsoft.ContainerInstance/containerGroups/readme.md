@@ -311,7 +311,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     // Required parameters
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: 'jpe-az-aci-x-001'
         properties: {
           command: []
           environmentVariables: []
@@ -335,7 +335,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
       {
-        name: '<<namePrefix>>-az-aci-x-002'
+        name: 'jpe-az-aci-x-002'
         properties: {
           command: []
           environmentVariables: []
@@ -355,7 +355,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgcom001'
+    name: 'jpecicgcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
@@ -393,7 +393,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     "containers": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-aci-x-001",
+          "name": "jpe-az-aci-x-001",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -417,7 +417,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           }
         },
         {
-          "name": "<<namePrefix>>-az-aci-x-002",
+          "name": "jpe-az-aci-x-002",
           "properties": {
             "command": [],
             "environmentVariables": [],
@@ -439,7 +439,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgcom001"
+      "value": "jpecicgcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
