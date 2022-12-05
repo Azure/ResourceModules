@@ -140,7 +140,6 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
   tags: tags
   properties: union({
       containers: containers
-      dnsConfig: dnsConfig
       encryptionProperties: encryptionProperties
       imageRegistryCredentials: imageRegistryCredentials
       initContainers: initContainers
