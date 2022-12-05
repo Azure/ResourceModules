@@ -13,7 +13,7 @@ This module deploys a key for a SQL managed instance.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/keys` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/keys) |
+| `Microsoft.Sql/servers/keys` | [2022-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/keys) |
 
 ## Parameters
 
@@ -27,7 +27,7 @@ This module deploys a key for a SQL managed instance.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
+| `serverName` | string | The name of the parent SQL server. |
 
 **Optional parameters**
 
@@ -42,9 +42,9 @@ This module deploys a key for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed managed instance key. |
-| `resourceGroupName` | string | The resource group of the deployed managed instance key. |
-| `resourceId` | string | The resource ID of the deployed managed instance key. |
+| `name` | string | The name of the deployed server key. |
+| `resourceGroupName` | string | The resource group of the deployed server key. |
+| `resourceId` | string | The resource ID of the deployed server key. |
 
 ## Cross-referenced modules
 
