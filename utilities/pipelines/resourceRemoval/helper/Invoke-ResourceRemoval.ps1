@@ -27,8 +27,6 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
-    Write-Verbose ('Removing resource [{0}]' -f $resourceId)
-
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]

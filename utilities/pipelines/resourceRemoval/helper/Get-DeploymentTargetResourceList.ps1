@@ -103,23 +103,23 @@ function Get-DeploymentTargetResourceListInner {
         if ($deployment -match '/resourceGroups/') {
             # Resource Group Level Child Deployments #
             ##########################################
-            Write-Verbose ('Found [resource group] deployment [{0}]' -f $deployment) -Verbose
+            Write-Verbose ('Found [resource group] deployment [{0}]' -f $deployment)
             $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'resourcegroup' -ResourceGroupName $ResourceGroupName
         } elseif ($deployment -match '/subscriptions/') {
             # Subscription Level Child Deployments #
             ########################################
-            Write-Verbose ('Found [subscription] deployment [{0}]' -f $deployment) -Verbose
+            Write-Verbose ('Found [subscription] deployment [{0}]' -f $deployment)
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'subscription'
         } elseif ($deployment -match '/managementgroups/') {
             # Management Group Level Child Deployments #
             ############################################
-            Write-Verbose ('Found [management group] deployment [{0}]' -f $deployment) -Verbose
+            Write-Verbose ('Found [management group] deployment [{0}]' -f $deployment)
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'managementgroup' -ManagementGroupId $ManagementGroupId
         } else {
             # Tenant Level Child Deployments #
             ##################################
-            Write-Verbose ('Found [tenant] deployment [{0}]' -f $deployment) -Verbose
+            Write-Verbose ('Found [tenant] deployment [{0}]' -f $deployment)
             [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -Scope 'tenant'
         }
     }
