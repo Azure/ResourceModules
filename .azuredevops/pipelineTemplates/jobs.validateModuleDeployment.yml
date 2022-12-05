@@ -294,20 +294,24 @@ jobs:
 
             # Get deployment name
             $deploymentNames = $res.DeploymentNames | ConvertTo-Json -Compress
-            Write-Verbose "Deployment name(s) [$deploymentNames]" -Verbose
+            Write-Verbose "Deployment name(s): $deploymentNames" -Verbose
             Write-Host "##vso[task.setvariable variable=deploymentNames]$deploymentNames"
             Write-Host "##vso[task.setvariable variable=deploymentNames;isOutput=true]$deploymentNames"
 
             # Populate further outputs
             $deploymentOutputHashTable = @{}
 
-            foreach ($outputKey in $res.deploymentOutput.Keys) {
-              Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-              $deploymentOutputHashTable.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-            }
+            if($res.deploymentOutput.Keys) {
+              foreach ($outputKey in $res.deploymentOutput.Keys) {
+                Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                $deploymentOutputHashTable.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+              }
 
-            $deploymentOutput = $deploymentOutputHashTable | ConvertTo-Json -Compress -Depth 100
-            Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+              $deploymentOutput = $deploymentOutputHashTable | ConvertTo-Json -Compress -Depth 100
+              Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+            } else {
+              Write-Verbose "No deployment output" -Verbose
+            }
 
             if ($res.ContainsKey('exception')) {
               # Happens only if there is an exception
