@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     skuName: 'S0'
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Readerr'
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
