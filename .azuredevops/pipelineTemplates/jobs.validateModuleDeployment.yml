@@ -335,7 +335,6 @@ jobs:
               SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               DeploymentNames   = '$(deploymentNames)' | ConvertFrom-Json
-              Verbose           = $true
             }
 
             Write-Verbose 'Invoke task with' -Verbose

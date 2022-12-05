@@ -56,13 +56,6 @@ function Initialize-DeploymentRemoval {
             $null = Set-AzContext -Subscription $subscriptionId
         }
 
-        if (-not (Split-Path (Split-Path $templateFilePath -Parent) -LeafBase)) {
-            # In case of new dependency approach (template is in subfolder)
-            $moduleName = Split-Path (Split-Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase
-        } else {
-            $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
-        }
-
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Authorization/locks',
@@ -82,13 +75,12 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
-        Write-Verbose ('Template file path: [{0}]' -f $templateFilePath) -Verbose
-        Write-Verbose ('Module name: [{0}]' -f $moduleName) -Verbose
 
         Write-Verbose ('Handling resource removal with deployment names [{0}]' -f ($deploymentNames -join ', ')) -Verbose
 
         ### CODE LOCATION: Add custom removal sequence here
         ## Add custom module-specific removal sequence following the example below
+        # $moduleName = Split-Path (Split-Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase
         # switch ($moduleName) {
         #     '<moduleName01>' {                # For example: 'virtualWans', 'automationAccounts'
         #         $removalSequence += @(
