@@ -149,7 +149,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
   }
 }
 
-resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${appServiceEnvironment.name}-${lock}-lock'
   properties: {
     level: any(lock)

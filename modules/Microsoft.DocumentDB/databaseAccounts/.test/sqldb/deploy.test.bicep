@@ -92,6 +92,9 @@ module testDeployment '../../deploy.bicep' = {
           {
             kind: 'Hash'
             name: 'container-001'
+            indexingPolicy: {
+              automatic: true
+            }
             paths: [
               '/myPartitionKey'
             ]

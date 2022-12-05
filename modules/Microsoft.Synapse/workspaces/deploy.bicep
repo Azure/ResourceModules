@@ -248,7 +248,7 @@ module workspace_key './keys/deploy.bicep' = if (encryptionActivateWorkspace) {
 }
 
 // Resource Lock
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

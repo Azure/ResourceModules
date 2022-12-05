@@ -307,7 +307,7 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
   }
 }]
 
-resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${serviceBusNamespace.name}-${lock}-lock'
   properties: {
     level: any(lock)
