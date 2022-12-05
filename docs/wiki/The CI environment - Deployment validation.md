@@ -54,6 +54,8 @@ The removal step is triggered after the deployment completes. It removes all res
 
 However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs).
 
+> Note: The logic will consider all deployment names used during the deployment step - even those of retries.
+
 ### How it works
 
 The removal process will delete all resources created by the deployment. The list of resources is identified by:
