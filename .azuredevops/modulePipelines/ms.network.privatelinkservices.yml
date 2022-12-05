@@ -1,4 +1,4 @@
-git name: 'Network - PrivateLinkServices'
+name: 'Network - PrivateLinkServices'
 
 parameters:
   - name: removeDeployment
