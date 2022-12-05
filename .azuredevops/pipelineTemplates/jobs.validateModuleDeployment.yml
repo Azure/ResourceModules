@@ -299,14 +299,14 @@ jobs:
             Write-Host "##vso[task.setvariable variable=deploymentNames;isOutput=true]$deploymentNames"
 
             # Populate further outputs
-            $deploymentOutputHash=@{}
+            $deploymentOutputHashTable = @{}
 
             foreach ($outputKey in $res.deploymentOutput.Keys) {
               Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-              $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+              $deploymentOutputHashTable.add($outputKey,$res.deploymentOutput[$outputKey].Value)
             }
 
-            $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+            $deploymentOutput = $deploymentOutputHashTable | ConvertTo-Json -Compress -Depth 100
             Write-Verbose "Deployment output: $deploymentOutput" -Verbose
 
             if ($res.ContainsKey('exception')) {

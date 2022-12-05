@@ -195,7 +195,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Readerrrr'
+        roleDefinitionIdOrName: 'Reader'
       }
     ]
     skuName: 'S0'
@@ -248,7 +248,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
             "<managedIdentityPrincipalId>"
           ],
           "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Readerrrr"
+          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
