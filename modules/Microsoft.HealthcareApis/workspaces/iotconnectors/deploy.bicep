@@ -145,7 +145,7 @@ resource workspace 'Microsoft.HealthcareApis/workspaces@2022-06-01' existing = {
 resource iotConnector 'Microsoft.HealthcareApis/workspaces/iotconnectors@2022-06-01' = {
   name: name
   parent: workspace
-  location: location  
+  location: location
   tags: tags
   identity: identity
   properties: {
@@ -185,7 +185,7 @@ resource iotConnector_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
 module fhir_destination 'fhirdestinations/deploy.bicep' = {
   name: '${deployment().name}-FhirDestination'
   params: {
-    name: '${iotConnector.name}-map'
+    name: '${uniqueString(workspaceName, iotConnector.name)}-map'
     iotConnectorName: iotConnector.name
     resourceIdentityResolutionType: resourceIdentityResolutionType
     fhirServiceResourceId: fhirServiceResourceId
