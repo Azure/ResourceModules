@@ -55,6 +55,7 @@ This module deploys HealthcareApis Workspaces FHIR Service.
 | `importEnabled` | bool | `False` |  | If the import operation is enabled. |
 | `importStorageAccountName` | string | `''` |  | The name of the default integration storage account. |
 | `initialImportMode` | bool | `False` |  | If the FHIR service is in InitialImportMode. |
+| `kind` | string | `'fhir-R4'` | `[fhir-R4, fhir-Stu3]` | The kind of the service. Defaults to R4. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
@@ -66,7 +67,6 @@ This module deploys HealthcareApis Workspaces FHIR Service.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
-<p>
 
 ### Parameter Usage: `acrOciArtifacts`
 
@@ -139,7 +139,6 @@ userAssignedIdentities: {
 ```
 
 </details>
-
 <p>
 
 ### Parameter Usage: `roleAssignments`
