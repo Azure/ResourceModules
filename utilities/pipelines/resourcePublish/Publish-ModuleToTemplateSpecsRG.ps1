@@ -53,12 +53,12 @@ function Publish-ModuleToTemplateSpecsRG {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        # Load helper functions
+        . (Join-Path $PSScriptRoot 'Get-TemplateSpecsName.ps1')
     }
 
     process {
-        $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
-        $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
-
         #############################
         ##    EVALUATE RESOURCES   ##
         #############################
@@ -67,6 +67,9 @@ function Publish-ModuleToTemplateSpecsRG {
                 New-AzResourceGroup -Name $TemplateSpecsRgName -Location $TemplateSpecsRgLocation
             }
         }
+
+        # Get a valid Template Specs name
+        $templateSpecIdentifier = Get-TemplateSpecsName -TemplateFilePath $TemplateFilePath
 
         ################################
         ##    Create template spec    ##

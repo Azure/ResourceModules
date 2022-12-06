@@ -216,7 +216,12 @@ jobs:
             $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Add all modules that don't exist in the target location
-            foreach($missingModule in (Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath $TemplateFilePath)) {
+            $missingInputObject = @{
+                TemplateFilePath    = $TemplateFilePath
+                TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
+            }
+            $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
+            foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
@@ -285,7 +290,13 @@ jobs:
             $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Add all modules that don't exist in the target location
-            foreach($missingModule in (Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath $TemplateFilePath)) {
+            $missingInputObject = @{
+                TemplateFilePath    = $TemplateFilePath
+                BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
+                BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
+            }
+            $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
+            foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
