@@ -55,7 +55,7 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         foreach ($templatePath in $availableModuleTemplatePaths) {
 
             # Get a valid Universal Artifact name
-            $templateSpecsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath
+            $artifactsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath
 
             $null = # TODO Add call -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 
