@@ -170,7 +170,276 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-hwcom'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>hwcom001'
+    // Non-required parameters
+    publicNetworkAccess: 'Enabled'
+    iotConnectors: [
+      {
+        workspaceName: '<<namePrefix>>hwcom001'
+        eventHubNamespaceName: '<eventHubNamespaceName>'
+        diagnosticLogsRetentionInDays: 7
+        destinationMapping: {
+          template: []
+          templateType: 'CollectionFhir'
+        }
+        resourceIdentityResolutionType: 'Lookup'
+        location: '<location>'
+        systemAssignedIdentity: true
+        userAssignedIdentities: {
+          '<managedIdentityResourceId>': {}
+        }
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        consumerGroup: '<<namePrefix>>-az-iomt-x-001'
+        eventHubName: '<eventHubName>'
+        name: '<<namePrefix>>-az-iomt-x-001'
+        publicNetworkAccess: 'Enabled'
+        resourceVersionPolicy: 'versioned'
+        deviceMapping: {
+          template: []
+          templateType: 'CollectionContent'
+        }
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    dicomServices: [
+      {
+        location: '<location>'
+        corsHeaders: [
+          '*'
+        ]
+        publicNetworkAccess: 'Enabled'
+        workspaceName: '<<namePrefix>>hwcom001'
+        corsMaxAge: 600
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        systemAssignedIdentity: true
+        corsMethods: [
+          'GET'
+        ]
+        name: '<<namePrefix>>-az-dicom-x-001'
+        corsAllowCredentials: true
+        corsOrigins: [
+          '*'
+        ]
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        userAssignedIdentities: {
+          '<managedIdentityResourceId>': {}
+        }
+      }
+    ]
+    location: '<location>'
+    fhirServices: [
+      {
+        corsAllowCredentials: true
+        corsMethods: [
+          'GET'
+        ]
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        corsMaxAge: 600
+        publicNetworkAccess: 'Enabled'
+        kind: 'fhir-R4'
+        diagnosticLogsRetentionInDays: 7
+        initialImportMode: false
+        userAssignedIdentities: {
+          '<managedIdentityResourceId>': {}
+        }
+        corsHeaders: [
+          '*'
+        ]
+        roleAssignments: [
+          {
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+          }
+        ]
+        systemAssignedIdentity: true
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        resourceVersionPolicy: 'versioned'
+        corsOrigins: [
+          '*'
+        ]
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        location: '<location>'
+        name: '<<namePrefix>>-az-fhir-x-001'
+        workspaceName: '<<namePrefix>>hwcom001'
+        importEnabled: false
+        smartProxyEnabled: false
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+      }
+    ]
+    lock: 'CanNotDelete'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>hwcom001"
+    },
+    // Non-required parameters
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "iotConnectors": {
+      "value": [
+        {
+          "workspaceName": "<<namePrefix>>hwcom001",
+          "eventHubNamespaceName": "<eventHubNamespaceName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "destinationMapping": {
+            "template": [],
+            "templateType": "CollectionFhir"
+          },
+          "resourceIdentityResolutionType": "Lookup",
+          "location": "<location>",
+          "systemAssignedIdentity": true,
+          "userAssignedIdentities": {
+            "<managedIdentityResourceId>": {}
+          },
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "consumerGroup": "<<namePrefix>>-az-iomt-x-001",
+          "eventHubName": "<eventHubName>",
+          "name": "<<namePrefix>>-az-iomt-x-001",
+          "publicNetworkAccess": "Enabled",
+          "resourceVersionPolicy": "versioned",
+          "deviceMapping": {
+            "template": [],
+            "templateType": "CollectionContent"
+          },
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "dicomServices": {
+      "value": [
+        {
+          "location": "<location>",
+          "corsHeaders": [
+            "*"
+          ],
+          "publicNetworkAccess": "Enabled",
+          "workspaceName": "<<namePrefix>>hwcom001",
+          "corsMaxAge": 600,
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "systemAssignedIdentity": true,
+          "corsMethods": [
+            "GET"
+          ],
+          "name": "<<namePrefix>>-az-dicom-x-001",
+          "corsAllowCredentials": true,
+          "corsOrigins": [
+            "*"
+          ],
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "userAssignedIdentities": {
+            "<managedIdentityResourceId>": {}
+          }
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "fhirServices": {
+      "value": [
+        {
+          "corsAllowCredentials": true,
+          "corsMethods": [
+            "GET"
+          ],
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "corsMaxAge": 600,
+          "publicNetworkAccess": "Enabled",
+          "kind": "fhir-R4",
+          "diagnosticLogsRetentionInDays": 7,
+          "initialImportMode": false,
+          "userAssignedIdentities": {
+            "<managedIdentityResourceId>": {}
+          },
+          "corsHeaders": [
+            "*"
+          ],
+          "roleAssignments": [
+            {
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "<roleDefinitionIdOrName>",
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ]
+            }
+          ],
+          "systemAssignedIdentity": true,
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "resourceVersionPolicy": "versioned",
+          "corsOrigins": [
+            "*"
+          ],
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "location": "<location>",
+          "name": "<<namePrefix>>-az-fhir-x-001",
+          "workspaceName": "<<namePrefix>>hwcom001",
+          "importEnabled": false,
+          "smartProxyEnabled": false,
+          "diagnosticEventHubName": "<diagnosticEventHubName>"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
 
 <details>
 
