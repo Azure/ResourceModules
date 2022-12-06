@@ -102,6 +102,7 @@ runs:
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
           $functionInput = @{
@@ -112,19 +113,26 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           # Get the modified child resources
-          $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+          $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+          # Add all modules that don't exist in the target location
+          foreach($missingModule in (Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath $TemplateFilePath)) {
+            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              $modulesToPublish += $missingModule
+            }
+          }
 
           # Publish the modified child resources
-          foreach ($ModuleToPublish in $ModulesToPublish) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+          foreach ($moduleToPublish in $modulesToPublish) {
+            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
             $functionInput = @{
-              TemplateFilePath         = $ModuleToPublish.TemplateFilePath
+              TemplateFilePath         = $moduleToPublish.TemplateFilePath
               TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
               TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
               TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
-              ModuleVersion            = $ModuleToPublish.Version
+              ModuleVersion            = $moduleToPublish.Version
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -146,6 +154,7 @@ runs:
 
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
           $functionInput = @{
@@ -157,19 +166,26 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           # Get the modified child resources
-          $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+          $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+          # Add all modules that don't exist in the target location
+          foreach($missingModule in (Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath $TemplateFilePath)) {
+            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              $modulesToPublish += $missingModule
+            }
+          }
 
           # Publish the modified child resources
-          foreach ($ModuleToPublish in $ModulesToPublish) {
-            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+          foreach ($moduleToPublish in $modulesToPublish) {
+            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
             $functionInput = @{
-              TemplateFilePath        = $ModuleToPublish.TemplateFilePath
+              TemplateFilePath        = $moduleToPublish.TemplateFilePath
               BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
               BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
               BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
-              ModuleVersion           = $ModuleToPublish.Version
+              ModuleVersion           = $moduleToPublish.Version
             }
 
             Write-Verbose "Invoke task with" -Verbose

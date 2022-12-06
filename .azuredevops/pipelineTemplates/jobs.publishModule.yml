@@ -130,6 +130,7 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactsFeed.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromUniversalArtifactsFeed.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
@@ -145,19 +146,26 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+            # Add all modules that don't exist in the target location
+            foreach($missingModule in (Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath $TemplateFilePath)) {
+              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
 
             # Publish the modified child resources
-            foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            foreach ($moduleToPublish in $modulesToPublish) {
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath = $moduleToPublish.TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
                 VstsFeedProject  = '${{ parameters.vstsFeedProject }}'
                 VstsFeedName     = '${{ parameters.vstsFeedName }}'
-                ModuleVersion    = $ModuleToPublish.Version
+                ModuleVersion    = $moduleToPublish.Version
                 BearerToken      = $env:TOKEN
               }
 
@@ -188,6 +196,7 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
             #Prioritizing the bicep file
@@ -204,19 +213,26 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+            # Add all modules that don't exist in the target location
+            foreach($missingModule in (Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath $TemplateFilePath)) {
+              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
 
             # Publish the modified child resources
-            foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            foreach ($moduleToPublish in $modulesToPublish) {
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath         = $moduleToPublish.TemplateFilePath
                 TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-                ModuleVersion            = $ModuleToPublish.Version
+                ModuleVersion            = $moduleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
@@ -248,6 +264,7 @@ jobs:
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
@@ -265,19 +282,26 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+
+            # Add all modules that don't exist in the target location
+            foreach($missingModule in (Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath $TemplateFilePath)) {
+              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
 
             # Publish the modified child resources
-            foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            foreach ($moduleToPublish in $modulesToPublish) {
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath        = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath        = $moduleToPublish.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                ModuleVersion           = $ModuleToPublish.Version
+                ModuleVersion           = $moduleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
