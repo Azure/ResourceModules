@@ -150,6 +150,7 @@ runs:
 
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            publishLatest    = $(publishLatest)
           }
 
           Write-Verbose "Invoke task with" -Verbose
