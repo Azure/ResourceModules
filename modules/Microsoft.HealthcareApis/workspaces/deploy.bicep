@@ -162,6 +162,14 @@ module health_iomt 'iotconnectors/deploy.bicep' = [for (iomt, index) in iotConne
     tags: contains(iomt, 'tags') ? iomt.tags : {}
     eventHubName: iomt.eventHubName
     eventHubNamespaceName: iomt.eventHubNamespaceName
+    deviceMapping: contains(iomt, 'deviceMapping') ? iomt.deviceMapping : {
+      templateType: 'CollectionContent'
+      template: []
+    }
+    destinationMapping: contains(iomt, 'destinationMapping') ? iomt.destinationMapping : {
+      templateType: 'CollectionFhir'
+      template: []
+    }
     consumerGroup: contains(iomt, 'consumerGroup') ? iomt.consumerGroup : iomt.name
     systemAssignedIdentity: contains(iomt, 'systemAssignedIdentity') ? iomt.systemAssignedIdentity : false
     fhirServiceResourceId: iomt.fhirServiceResourceId
