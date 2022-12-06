@@ -488,12 +488,12 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
 }
 
 module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VM-AADLoginForWindows'
+  name: '${uniqueString(deployment().name, location)}-VM-AADLogin'
   params: {
     virtualMachineName: vm.name
-    name: 'AADLoginForWindows'
+    name: 'AADLogin'
     publisher: 'Microsoft.Azure.ActiveDirectory'
-    type: 'AADLoginForWindows'
+    type: osType == 'Windows' ? 'AADLoginForWindows' : 'AADSSHLoginforLinux'
     typeHandlerVersion: contains(extensionAadJoinConfig, 'typeHandlerVersion') ? extensionAadJoinConfig.typeHandlerVersion : '1.0'
     autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
