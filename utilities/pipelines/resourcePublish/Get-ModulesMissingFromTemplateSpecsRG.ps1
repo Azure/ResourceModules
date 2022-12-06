@@ -53,11 +53,11 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         if (-not (Get-AzResourceGroup -ResourceGroupName 'artifacts-rg')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
         } else {
-            # Test all children against ACR
+            # Test all children against Resource Group
             $missingTemplatePaths = @()
             foreach ($templatePath in $availableModuleTemplatePaths) {
 
-                # Get a valid Container Registry name
+                # Get a valid Template Spec name
                 $templateSpecsIdentifier = Get-TemplateSpecsName -TemplateFilePath $templatePath
 
                 $null = Get-AzTemplateSpec -ResourceGroupName $TemplateSpecsRGName -Name $templateSpecsIdentifier -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
