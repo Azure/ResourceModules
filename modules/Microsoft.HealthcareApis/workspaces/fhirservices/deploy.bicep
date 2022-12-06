@@ -6,6 +6,7 @@ param name string
   'fhir-R4'
   'fhir-Stu3'
 ])
+@description('Optional. The kind of the service. Defaults to R4.')
 param kind string = 'fhir-R4'
 
 @description('Required. The name of the parent health data services workspace.')
