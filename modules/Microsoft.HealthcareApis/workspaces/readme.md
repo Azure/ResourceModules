@@ -8,6 +8,7 @@ This module deploys Healthcare Data Services workspace.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -161,3 +162,63 @@ tags: {
 ## Cross-referenced modules
 
 _None_
+
+## Deployment examples
+
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-hwmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>hwmin001'
+    // Non-required parameters
+    publicNetworkAccess: 'Enabled'
+    location: '<location>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>hwmin001"
+    },
+    // Non-required parameters
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
