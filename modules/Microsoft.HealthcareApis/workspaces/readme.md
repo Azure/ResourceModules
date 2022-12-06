@@ -1,7 +1,6 @@
 # HealthcareApis Workspaces `[Microsoft.HealthcareApis/workspaces]`
 
-This module deploys HealthcareApis Workspaces.
-// TODO: Replace Resource and fill in description
+This module deploys Healthcare Data Services workspace.
 
 ## Navigation
 
