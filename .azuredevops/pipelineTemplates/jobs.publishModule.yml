@@ -149,7 +149,15 @@ jobs:
             $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Add all modules that don't exist in the target location
-            foreach($missingModule in (Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath $TemplateFilePath)) {
+            $missingInputObject = @{
+                TemplateFilePath    = $TemplateFilePath
+                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
+                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName        = '${{ parameters.vstsFeedName }}'
+                BearerToken         = $env:TOKEN
+            }
+            $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject
+            foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
