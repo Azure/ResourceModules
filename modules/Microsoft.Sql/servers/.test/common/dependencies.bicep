@@ -88,17 +88,7 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
   scope: keyVault::key
   properties: {
-    principalId: '0664bbad-f57c-4c87-bee4-74cec8b677d2' //FABMAS  managedIdentity.properties.principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-    principalType: 'User' //'ServicePrincipal'
-  }
-}
-
-resource keyPermissions2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
-  scope: keyVault::key
-  properties: {
-    principalId: managedIdentity.properties.principalId  //PIPPO
+    principalId: managedIdentity.properties.principalId
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
     principalType: 'ServicePrincipal'
   }
@@ -109,7 +99,7 @@ resource keyPermissions2 'Microsoft.Authorization/roleAssignments@2022-04-01' = 
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created managed identity.')
-output managedIdentitResourceId string = managedIdentity.id
+output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created virtual network subnet for a Private Endpoint.')
 output privateEndpointSubnetResourceId string = virtualNetwork.properties.subnets[0].id

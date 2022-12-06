@@ -139,7 +139,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentitResourceId}': {}
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
     privateEndpoints: [
       {
