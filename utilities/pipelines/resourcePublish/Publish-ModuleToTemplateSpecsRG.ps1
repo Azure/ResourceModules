@@ -27,11 +27,11 @@ Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
+Publish-ModuleToTemplateSpecsRG -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a template spec in resource group 'artifacts-rg'.
 #>
-function Publish-ModuleToTemplateSpec {
+function Publish-ModuleToTemplateSpecsRG {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

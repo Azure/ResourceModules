@@ -60,11 +60,11 @@ Example: 'Artifacts'.
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Publish-ModuleToUniversalArtifactFeed -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
+Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a Universal Package Feed called 'Artifacts' under the project 'IaC'.
 #>
-function Publish-ModuleToUniversalArtifactFeed {
+function Publish-ModuleToUniversalArtifactsFeed {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

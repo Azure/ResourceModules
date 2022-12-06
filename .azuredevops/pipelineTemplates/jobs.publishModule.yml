@@ -129,7 +129,7 @@ jobs:
           script: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactsFeed.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
@@ -161,10 +161,10 @@ jobs:
                 BearerToken      = $env:TOKEN
               }
 
-              Write-Verbose "Invoke Publish-ModuleToUniversalArtifactFeed with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
+              Publish-ModuleToUniversalArtifactsFeed @functionInput -Verbose
               Write-Host "##[endgroup]"
             }
         env:
@@ -188,7 +188,7 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
@@ -219,10 +219,10 @@ jobs:
                 ModuleVersion            = $ModuleToPublish.Version
               }
 
-              Write-Verbose "Invoke Publish-ModuleToTemplateSpec with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToTemplateSpec @functionInput -Verbose
+              Publish-ModuleToTemplateSpecsRG @functionInput -Verbose
               Write-Host "##[endgroup]"
             }
 
@@ -258,6 +258,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              publishLatest    = $(publishLatest)
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
