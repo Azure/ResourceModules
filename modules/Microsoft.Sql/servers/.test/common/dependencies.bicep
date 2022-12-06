@@ -90,7 +90,7 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   properties: {
     principalId: '0664bbad-f57c-4c87-bee4-74cec8b677d2' //FABMAS  managedIdentity.properties.principalId
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-    principalType: 'ServicePrincipal'
+    principalType: 'User' //'ServicePrincipal'
   }
 }
 
