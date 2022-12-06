@@ -492,7 +492,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '<managedIdentitResourceId>': {}
+      '<managedIdentityResourceId>': {}
     }
     virtualNetworkRules: [
       {
@@ -631,7 +631,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "<managedIdentitResourceId>": {}
+        "<managedIdentityResourceId>": {}
       }
     },
     "virtualNetworkRules": {
