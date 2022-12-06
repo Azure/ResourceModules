@@ -1,20 +1,32 @@
 ﻿<#
 .SYNOPSIS
-Get a list of all modules (path & version) in the given TemplatePath that do not exist as a Template Spec in the given Resource Group
+Get a list of all modules (path & version) in the given TemplatePath that do not exist as an Universal Package in the given Azure DevOps project & artifacts feed
 
 .DESCRIPTION
-Get a list of all modules (path & version) in the given TemplatePath that do not exist as a Template Spec in the given Resource Group
+Get a list of all modules (path & version) in the given TemplatePath that do not exist as an Universal Package in the given Azure DevOps project & artifacts feed
 
 .PARAMETER TemplateFilePath
 Mandatory. The Template File Path to process
 
-.PARAMETER TemplateSpecsRGName
-Mandatory. The Resource Group to search in
+.PARAMETER VstsOrganizationUri
+Mandatory. Azure DevOps organization URL hosting the artifacts feed.
+Example: 'https://dev.azure.com/fabrikam/'.
+
+.PARAMETER VstsFeedProject
+Optional. Name of the project hosting the artifacts feed. May be empty.
+Example: 'IaC'.
+
+.PARAMETER VstsFeedName
+Mandatory. Name to the feed to publish to.
+Example: 'Artifacts'.
+
+.PARAMETER BearerToken
+Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep' -TemplateSpecsRGName 'artifacts-rg'
+Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
-Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in the Resource Group 'artifacts-rg'
+Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in artifacts feed 'Artifacts' of Azure DevOps project 'https://dev.azure.com/fabrikam/IaC'
 
 Returns for example:
 Name                           Value
@@ -35,8 +47,17 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
 
-        [Parameter(Mandatory = $true)]
-        [string] $TemplateSpecsRGName
+        [Parameter(Mandatory)]
+        [string] $VstsOrganizationUri,
+
+        [Parameter(Mandatory = $false)]
+        [string] $VstsFeedProject = '',
+
+        [Parameter(Mandatory)]
+        [string] $VstsFeedName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $BearerToken = $env:TOKEN
     )
 
     begin {
@@ -50,6 +71,19 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         # Get all children
         $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
 
+        # Get artifacts
+        $VstsOrganization = Split-Path $VstsOrganizationUri -Leaf
+
+        $modulesInputObject = @{
+            Method  = 'Get'
+            Headers = @{
+                Authorization = "Basic $BearerToken"
+            }
+            Uri     = "https://feeds.dev.azure.com/$VstsOrganization/$VstsFeedProject/_apis/packaging/Feeds/$VstsFeedName/Packages?api-version=6.0-preview"
+        }
+        $publishedModules = Invoke-RestMethod @modulesInputObject
+        $publishedModules = $publishedModules.value.name # Reduce down to the name
+
         # Test all children against Universal Artifacts feed
         $missingTemplatePaths = @()
         foreach ($templatePath in $availableModuleTemplatePaths) {
@@ -57,9 +91,7 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
             # Get a valid Universal Artifact name
             $artifactsIdentifier = Get-UniversalArtifactsName -TemplateFilePath $templatePath
 
-            $null = # TODO Add call -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
-
-            if ($result.exception.Response.StatusCode -eq 'NotFound') {
+            if ($publishedModules -notcontains $artifactsIdentifier) {
                 $missingTemplatePaths += $templatePath
             }
         }
@@ -80,4 +112,3 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-
