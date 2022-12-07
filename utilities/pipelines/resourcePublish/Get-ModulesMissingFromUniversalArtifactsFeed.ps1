@@ -82,6 +82,9 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
             }
             Uri     = "https://feeds.dev.azure.com/$VstsOrganization/$VstsFeedProject/_apis/packaging/Feeds/$VstsFeedName/Packages?api-version=6.0-preview"
         }
+
+        Write-Verbose "URL: [$($modulesInputObject.Uri)]" -Verbose
+
         $publishedModules = Invoke-RestMethod @modulesInputObject
         $publishedModules = $publishedModules.value.name # Reduce down to the name
 
