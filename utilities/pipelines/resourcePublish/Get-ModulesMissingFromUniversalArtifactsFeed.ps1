@@ -112,6 +112,10 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
             Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version) -Verbose
         }
 
+        if ($moduleToPublish.count -eq 0) {
+            Write-Verbose 'No modules missing in the target environment' -Verbose
+        }
+
         return $modulesToPublish
     }
 
