@@ -132,6 +132,7 @@ runs:
           $missingInputObject = @{
               TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
               TemplateSpecsRGName = '${{ inputs.templateSpecsRgName }}'
+              PublishLatest       = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
@@ -188,7 +189,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            publishLatest    = [bool] "${{ inputs.publishLatest }}"
+            PublishLatest    = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -205,6 +206,7 @@ runs:
               TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
               BicepRegistryName   = '${{ inputs.bicepRegistryName }}'
               BicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
+              PublishLatest    = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose

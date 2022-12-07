@@ -11,6 +11,10 @@ Mandatory. The Template File Path to process
 .PARAMETER TemplateSpecsRGName
 Mandatory. The Resource Group to search in
 
+.PARAMETER PublishLatest
+Optional. Publish an absolute latest version.
+Note: This version may include breaking changes and is not recommended for production environments
+
 .EXAMPLE
 Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep' -TemplateSpecsRGName 'artifacts-rg'
 
@@ -21,11 +25,35 @@ Name                           Value
 ----                           -----
 Version                        0.4.0
 TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+Version                        0.4
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+Version                        0
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
+Version                        latest
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\accessPolicies\deploy.bicep
 Version                        0.4.0
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+Version                        0.4
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+Version                        0
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
+Version                        latest
 TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\keys\deploy.bicep
 Version                        0.4.0
 TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+Version                        0.4
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+Version                        0
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
+Version                        latest
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\secrets\deploy.bicep
 Version                        0.5.0
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+Version                        0.5
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+Version                        0
+TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
+Version                        latest
 TemplateFilePath               C:\ResourceModules\modules\Microsoft.KeyVault\vaults\deploy.bicep
 #>
 function Get-ModulesMissingFromTemplateSpecsRG {
@@ -36,7 +64,10 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $true)]
-        [string] $TemplateSpecsRGName
+        [string] $TemplateSpecsRGName,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $PublishLatest = $true
     )
 
     begin {
@@ -71,12 +102,32 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         # Collect any that are not part of the ACR, fetch their version and return the result array
         $modulesToPublish = @()
         foreach ($missingTemplatePath in $missingTemplatePaths) {
-            $moduleToPublish = @{
-                TemplateFilePath = $missingTemplatePath
-                Version          = '{0}.0' -f (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
+            $moduleVersionsToPublish = @(
+                # Patch version
+                @{
+                    TemplateFilePath = $missingTemplatePath
+                    Version          = '{0}.0' -f (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
+                },
+                # Minor version
+                @{
+                    TemplateFilePath = $missingTemplatePath
+                    Version          = (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
+                },
+                # Major version
+                @{
+                    TemplateFilePath = $missingTemplatePath
+                    Version          = ((Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version -split '\.')[0]
+                }
+            )
+            if ($PublishLatest) {
+                $moduleVersionsToPublish += @{
+                    TemplateFilePath = $missingTemplatePath
+                    Version          = 'latest'
+                }
             }
-            $modulesToPublish += $moduleToPublish
-            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version) -Verbose
+
+            $modulesToPublish += $moduleVersionsToPublish
+            Write-Verbose ('Missing module [{0}] will be considered for publishing with version(s) [{1}]' -f $missingTemplatePath, ($moduleVersionsToPublish.Version -join ', ')) -Verbose
         }
 
         if ($moduleToPublish.count -eq 0) {
