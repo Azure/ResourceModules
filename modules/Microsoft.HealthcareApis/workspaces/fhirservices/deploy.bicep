@@ -1,5 +1,5 @@
-@description('Required. The name of the FHIR service.')
 @maxLength(50)
+@description('Required. The name of the FHIR service.')
 param name string
 
 @allowed([
@@ -126,18 +126,18 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
 @allowed([
   'AuditLogs'
 ])
+@description('Optional. The name of logs that will be streamed.')
 param diagnosticLogCategoriesToEnable array = [
   'AuditLogs'
 ]
 
-@description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
 ])
+@description('Optional. The name of metrics that will be streamed.')
 param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
