@@ -115,7 +115,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            PublishLatest    = "${{ inputs.publishLatest }}"
+            PublishLatest    = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -188,7 +188,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            publishLatest    = "${{ inputs.publishLatest }}"
+            publishLatest    = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
