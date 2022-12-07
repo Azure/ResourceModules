@@ -304,7 +304,7 @@ jobs:
             . $profile # Load PS-Profile configuration
             $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
             $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
-            Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+            $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
