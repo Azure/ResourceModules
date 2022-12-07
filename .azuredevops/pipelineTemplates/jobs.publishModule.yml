@@ -181,18 +181,17 @@ jobs:
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath = $moduleToPublish.TemplateFilePath
+                TemplateFilePath    = $moduleToPublish.TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject  = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName     = '${{ parameters.vstsFeedName }}'
-                ModuleVersion    = $moduleToPublish.Version
-                BearerToken      = $env:TOKEN
+                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName        = '${{ parameters.vstsFeedName }}'
+                ModuleVersion       = $moduleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToUniversalArtifactsFeed @functionInput -Verbose
+              Publish-ModuleToUniversalArtifactsFeed @functionInput -BearerToken $env:TOKEN  -Verbose
               Write-Host "##[endgroup]"
             }
         env:

@@ -126,7 +126,7 @@ function Publish-ModuleToUniversalArtifactsFeed {
                 '--scope', "$feedScope",
                 '--name', "$universalPackageModuleName",
                 '--version', "$ModuleVersion",
-                '--path', "$ModuleFolderPath",
+                '--path', "$TemplateFilePath",
                 '--description', "$universalPackageModuleName Module",
                 '--verbose'
             )

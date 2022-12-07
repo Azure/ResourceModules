@@ -86,8 +86,6 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
             Uri     = "https://feeds.dev.azure.com/$VstsOrganization/$VstsFeedProject/_apis/packaging/Feeds/$VstsFeedName/Packages?api-version=6.0-preview"
         }
 
-        Write-Verbose "URL: [$($modulesInputObject.Uri)]" -Verbose
-
         $publishedModules = Invoke-RestMethod @modulesInputObject
         $publishedModules = $publishedModules.value.name # Reduce down to the name
 
@@ -106,10 +104,12 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         # Collect any that are not part of the ACR, fetch their version and return the result array
         $modulesToPublish = @()
         foreach ($missingTemplatePath in $missingTemplatePaths) {
-            $modulesToPublish += @{
+            $moduleToPublish = @{
                 TemplateFilePath = $missingTemplatePath
                 Version          = '{0}.0' -f (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
             }
+            $modulesToPublish += $moduleToPublish
+            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version) -Verbose
         }
 
         return $modulesToPublish
