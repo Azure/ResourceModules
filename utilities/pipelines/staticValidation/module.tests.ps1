@@ -1031,28 +1031,29 @@ Describe 'Deployment template tests' -Tag Template {
             $outputs | Should -Contain 'resourceId'
         }
 
-        # It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
 
-        #     param(
-        #         [string] $moduleFolderName,
-        #         [hashtable] $templateContent
-        #     )
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
+            )
 
-        #     if (-not $templateContent.parameters) {
-        #         Set-ItResult -Skipped -Because 'the module template has no parameters.'
-        #         return
-        #     }
+            if (-not $templateContent.parameters) {
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
+                return
+            }
 
-        #     $incorrectParameters = @()
-        #     $templateParameters = $templateContent.parameters.Keys
-        #     foreach ($parameter in $templateParameters) {
-        #         $data = ($templateContent.parameters.$parameter.metadata).description
-        #         if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
-        #             $incorrectParameters += $parameter
-        #         }
-        #     }
-        #     $incorrectParameters | Should -BeNullOrEmpty
-        # }
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
+                    Write-Host "ERROR: Param: $parameter. '$data'."
+                    $incorrectParameters += $parameter
+                }
+            }
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
 
         It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
 
