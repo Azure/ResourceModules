@@ -72,7 +72,7 @@ output resourceId string = fhirDestination.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = iotConnector.location
+output location string = location
 
 @description('The name of the medtech service.')
 output iotConnectorName string = iotConnector.name

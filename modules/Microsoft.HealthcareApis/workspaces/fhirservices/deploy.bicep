@@ -21,10 +21,10 @@ param acrLoginServers array = []
 @description('Optional. The list of Open Container Initiative (OCI) artifacts.')
 param acrOciArtifacts array = []
 
-@description('Optional. ')
+@description('Optional. The authority url for the service.')
 param authenticationAuthority string = uri(environment().authentication.loginEndpoint, subscription().tenantId)
 
-@description('Optional. ')
+@description('Optional. The audience url for the service.')
 param authenticationAudience string = 'https://${workspaceName}-${name}.fhir.azurehealthcareapis.com'
 
 @description('Optional. Specify URLs of origin sites that can access this API, or use "*" to allow access from any site.')
@@ -105,13 +105,13 @@ param publicNetworkAccess string = 'Disabled'
   'versioned'
   'versioned-update'
 ])
-@description('Optional. ')
+@description('Optional. The default value for tracking history across all resources.')
 param resourceVersionPolicy string = 'versioned'
 
-@description('Optional. ')
+@description('Optional. A list of FHIR Resources and their version policy overrides.')
 param resourceVersionOverrides object = {}
 
-@description('Optional. ')
+@description('Optional. If the SMART on FHIR proxy is enabled')
 param smartProxyEnabled bool = false
 
 @description('Optional. Enables system assigned managed identity on the resource.')
