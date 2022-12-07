@@ -83,7 +83,7 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
                 # Authorization = "Basic $BearerToken" # For custom PAT
                 Authorization = "Bearer $BearerToken" # For pipeline PAT
             }
-            Uri     = "https://feeds.dev.azure.com/$VstsOrganization/_apis/packaging/Feeds/$VstsFeedName/Packages?api-version=6.0-preview"
+            Uri     = "https://feeds.dev.azure.com/$VstsOrganization/$VstsFeedProject/_apis/packaging/Feeds/$VstsFeedName/Packages?api-version=6.0-preview"
         }
 
         Write-Verbose "URL: [$($modulesInputObject.Uri)]" -Verbose
