@@ -21,12 +21,13 @@
 ##   |======================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                           |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------|
-##   | displayName                     | 'Publishing'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
+##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
 ##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                           | 'demo-internal'                   |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
+##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version                                           | true                              |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -55,6 +56,9 @@ parameters:
   # Logic-related parameters
   ## Module-related
   modulePath: '$(modulePath)'
+
+  # Shared
+  publishLatest: '$(publishLatest)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -230,7 +234,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishLatest    = $(publishLatest)
+              PublishLatest    = '${{ parameters.publishLatest }}'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -318,7 +322,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishLatest    = $(publishLatest)
+              PublishLatest    = '${{ parameters.publishLatest }}'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
