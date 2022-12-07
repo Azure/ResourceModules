@@ -143,6 +143,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              PublishLatest    = $false # Not supported by Azure DevOps feeds
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -229,6 +230,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              PublishLatest    = $(publishLatest)
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -316,7 +318,7 @@ jobs:
             ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              publishLatest    = $(publishLatest)
+              PublishLatest    = $(publishLatest)
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose

@@ -24,6 +24,7 @@
 ##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                         |
 ##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                           |
 ##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                                 |
+##   | publishLatest            | false    | 'true'  | Flag to indicate whether or not to publish a "latest" version                                    | 'true'                                                 |
 ##   |===========================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
@@ -59,6 +60,10 @@ inputs:
   bicepRegistryDoPublish:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
+    required: false
+  publishLatest:
+    description: 'Flag to indicate whether or not to publish a "latest" version'
+    default: 'true'
     required: false
 
 runs:
@@ -110,6 +115,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            PublishLatest    = "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -182,7 +188,7 @@ runs:
           ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            publishLatest    = $(publishLatest)
+            publishLatest    = "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
