@@ -54,6 +54,9 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         [string] $VstsOrganizationUri,
 
         [Parameter(Mandatory = $false)]
+        [string] $VstsFeedProject = '',
+
+        [Parameter(Mandatory = $false)]
         [string] $BearerToken = $env:TOKEN
     )
 
