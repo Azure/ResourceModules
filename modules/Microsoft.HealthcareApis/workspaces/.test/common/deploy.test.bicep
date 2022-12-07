@@ -74,7 +74,7 @@ module testDeployment '../../deploy.bicep' = {
         corsHeaders: [ '*' ]
         corsMethods: [ 'GET' ]
         corsMaxAge: 600
-        corsAllowCredentials: true
+        corsAllowCredentials: false
         location: location
         diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
@@ -110,7 +110,7 @@ module testDeployment '../../deploy.bicep' = {
         corsHeaders: [ '*' ]
         corsMethods: [ 'GET' ]
         corsMaxAge: 600
-        corsAllowCredentials: true
+        corsAllowCredentials: false
         location: location
         diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
