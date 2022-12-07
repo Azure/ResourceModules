@@ -72,7 +72,10 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
 
         # Get artifacts
-        $VstsOrganization = Split-Path $VstsOrganizationUri -Leaf
+        if ($VstsOrganizationUri -like '*/') {
+            $VstsOrganizationUri = $VstsOrganizationUri.Substring(0, ($VstsOrganizationUri.length - 1)) # Remove tailing slash if any
+        }
+        $VstsOrganization = Split-Path $VstsOrganizationUri -Leaf # Extract only organization name
 
         $modulesInputObject = @{
             Method  = 'Get'
