@@ -138,6 +138,9 @@ jobs:
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
+            ################################
+            ##   Get modules to publish   ##
+            ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
             }
@@ -148,22 +151,31 @@ jobs:
             # Get the modified child resources
             $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
+            #############################
+            ##   Get missing modules   ##
+            #############################
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
                 TemplateFilePath    = $TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
                 VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
                 VstsFeedName        = '${{ parameters.vstsFeedName }}'
-                BearerToken         = $env:TOKEN
             }
-            $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject
+
+            Write-Verbose "Invoke Get-ModulesMissingFromUniversalArtifactsFeed with" -Verbose
+            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+            $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
+
             foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
             }
 
-            # Publish the modified child resources
+            #################
+            ##   Publish   ##
+            #################
             foreach ($moduleToPublish in $modulesToPublish) {
               $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
@@ -213,6 +225,9 @@ jobs:
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
+            ################################
+            ##   Get modules to publish   ##
+            ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
             }
@@ -223,19 +238,30 @@ jobs:
             # Get the modified child resources
             $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
+            #############################
+            ##   Get missing modules   ##
+            #############################
+
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
                 TemplateFilePath    = $TemplateFilePath
                 TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
             }
+
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
             $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
+
             foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
             }
 
-            # Publish the modified child resources
+            #################
+            ##   Publish   ##
+            #################
             foreach ($moduleToPublish in $modulesToPublish) {
               $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
@@ -286,6 +312,9 @@ jobs:
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
+            ################################
+            ##   Get modules to publish   ##
+            ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
               publishLatest    = $(publishLatest)
@@ -297,20 +326,30 @@ jobs:
             # Get the modified child resources
             $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
+            #############################
+            ##   Get missing modules   ##
+            #############################
             # Add all modules that don't exist in the target location
             $missingInputObject = @{
                 TemplateFilePath    = $TemplateFilePath
                 BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
             }
+
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
             $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
+
             foreach($missingModule in $missingModules) {
               if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
                 $modulesToPublish += $missingModule
               }
             }
 
-            # Publish the modified child resources
+            #################
+            ##   Publish   ##
+            #################
             foreach ($moduleToPublish in $modulesToPublish) {
               $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
