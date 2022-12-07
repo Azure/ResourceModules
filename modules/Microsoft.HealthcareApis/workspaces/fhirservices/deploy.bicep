@@ -111,7 +111,7 @@ param resourceVersionPolicy string = 'versioned'
 @description('Optional. A list of FHIR Resources and their version policy overrides.')
 param resourceVersionOverrides object = {}
 
-@description('Optional. If the SMART on FHIR proxy is enabled')
+@description('Optional. If the SMART on FHIR proxy is enabled.')
 param smartProxyEnabled bool = false
 
 @description('Optional. Enables system assigned managed identity on the resource.')

@@ -1048,7 +1048,6 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($parameter in $templateParameters) {
                 $data = ($templateContent.parameters.$parameter.metadata).description
                 if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
-                    Write-Host "ERROR: Param: $parameter. '$data'."
                     $incorrectParameters += $parameter
                 }
             }
