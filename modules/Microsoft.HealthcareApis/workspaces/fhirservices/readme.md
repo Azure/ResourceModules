@@ -35,8 +35,8 @@ This module deploys HealthcareApis Workspaces FHIR Service.
 | `accessPolicyObjectIds` | array | `[]` |  | List of Azure AD object IDs (User or Apps) that is allowed access to the FHIR service. |
 | `acrLoginServers` | array | `[]` |  | The list of the Azure container registry login servers. |
 | `acrOciArtifacts` | array | `[]` |  | The list of Open Container Initiative (OCI) artifacts. |
-| `authenticationAudience` | string | `[format('https://{0}-{1}.fhir.azurehealthcareapis.com', parameters('workspaceName'), parameters('name'))]` |  |  |
-| `authenticationAuthority` | string | `[uri(environment().authentication.loginEndpoint, subscription().tenantId)]` |  |  |
+| `authenticationAudience` | string | `[format('https://{0}-{1}.fhir.azurehealthcareapis.com', parameters('workspaceName'), parameters('name'))]` |  | The audience url for the service. |
+| `authenticationAuthority` | string | `[uri(environment().authentication.loginEndpoint, subscription().tenantId)]` |  | The authority url for the service. |
 | `corsAllowCredentials` | bool | `False` |  | Use this setting to indicate that cookies should be included in CORS requests. |
 | `corsHeaders` | array | `[]` |  | Specify HTTP headers which can be used during the request. Use "*" for any header. |
 | `corsMaxAge` | int | `-1` |  | Specify how long a result from a request can be cached in seconds. Example: 600 means 10 minutes. |
@@ -59,10 +59,10 @@ This module deploys HealthcareApis Workspaces FHIR Service.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| `resourceVersionOverrides` | object | `{object}` |  |  |
-| `resourceVersionPolicy` | string | `'versioned'` | `[no-version, versioned, versioned-update]` |  |
+| `resourceVersionOverrides` | object | `{object}` |  | A list of FHIR Resources and their version policy overrides. |
+| `resourceVersionPolicy` | string | `'versioned'` | `[no-version, versioned, versioned-update]` | The default value for tracking history across all resources. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `smartProxyEnabled` | bool | `False` |  |  |
+| `smartProxyEnabled` | bool | `False` |  | If the SMART on FHIR proxy is enabled |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
