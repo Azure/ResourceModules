@@ -110,6 +110,8 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
+          $modulesToPublish = @()
+
           ################################
           ##   Get modules to publish   ##
           ################################
@@ -122,7 +124,7 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           # Get the modified child resources
-          $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+          $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
           #############################
           ##   Get missing modules   ##
@@ -183,6 +185,7 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
+          $modulesToPublish = @()
 
           ################################
           ##   Get modules to publish   ##
@@ -196,7 +199,7 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           # Get the modified child resources
-          $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+          $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
           #############################
           ##   Get missing modules   ##

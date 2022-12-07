@@ -153,8 +153,10 @@ jobs:
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
+            $modulesToPublish = @()
+
             # Get the modified child resources
-            $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
             #############################
             ##   Get missing modules   ##
@@ -240,8 +242,10 @@ jobs:
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
+            $modulesToPublish = @()
+
             # Get the modified child resources
-            $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
             #############################
             ##   Get missing modules   ##
@@ -329,8 +333,10 @@ jobs:
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
+            $modulesToPublish = @()
+
             # Get the modified child resources
-            $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
 
             #############################
             ##   Get missing modules   ##
