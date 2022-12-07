@@ -184,68 +184,6 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     name: '<<namePrefix>>hwcom001'
     // Non-required parameters
     publicNetworkAccess: 'Enabled'
-    iotConnectors: [
-      {
-        workspaceName: '<<namePrefix>>hwcom001'
-        eventHubNamespaceName: '<eventHubNamespaceName>'
-        diagnosticLogsRetentionInDays: 7
-        destinationMapping: {
-          template: []
-          templateType: 'CollectionFhir'
-        }
-        resourceIdentityResolutionType: 'Lookup'
-        location: '<location>'
-        systemAssignedIdentity: true
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
-        enableDefaultTelemetry: '<enableDefaultTelemetry>'
-        consumerGroup: '<<namePrefix>>-az-iomt-x-001'
-        eventHubName: '<eventHubName>'
-        name: '<<namePrefix>>-az-iomt-x-001'
-        publicNetworkAccess: 'Enabled'
-        resourceVersionPolicy: 'versioned'
-        deviceMapping: {
-          template: []
-          templateType: 'CollectionContent'
-        }
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    dicomServices: [
-      {
-        location: '<location>'
-        corsHeaders: [
-          '*'
-        ]
-        publicNetworkAccess: 'Enabled'
-        workspaceName: '<<namePrefix>>hwcom001'
-        corsMaxAge: 600
-        enableDefaultTelemetry: '<enableDefaultTelemetry>'
-        systemAssignedIdentity: true
-        corsMethods: [
-          'GET'
-        ]
-        name: '<<namePrefix>>-az-dicom-x-001'
-        corsAllowCredentials: true
-        corsOrigins: [
-          '*'
-        ]
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
-      }
-    ]
-    location: '<location>'
     fhirServices: [
       {
         corsAllowCredentials: true
@@ -289,6 +227,37 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
         diagnosticEventHubName: '<diagnosticEventHubName>'
       }
     ]
+    location: '<location>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    dicomServices: [
+      {
+        location: '<location>'
+        corsHeaders: [
+          '*'
+        ]
+        publicNetworkAccess: 'Enabled'
+        workspaceName: '<<namePrefix>>hwcom001'
+        corsMaxAge: 600
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        systemAssignedIdentity: true
+        corsMethods: [
+          'GET'
+        ]
+        name: '<<namePrefix>>-az-dicom-x-001'
+        corsAllowCredentials: true
+        corsOrigins: [
+          '*'
+        ]
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        userAssignedIdentities: {
+          '<managedIdentityResourceId>': {}
+        }
+      }
+    ]
     lock: 'CanNotDelete'
   }
 }
@@ -311,78 +280,11 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
       "value": "<<namePrefix>>hwcom001"
     },
     // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
     "publicNetworkAccess": {
       "value": "Enabled"
-    },
-    "iotConnectors": {
-      "value": [
-        {
-          "workspaceName": "<<namePrefix>>hwcom001",
-          "eventHubNamespaceName": "<eventHubNamespaceName>",
-          "diagnosticLogsRetentionInDays": 7,
-          "destinationMapping": {
-            "template": [],
-            "templateType": "CollectionFhir"
-          },
-          "resourceIdentityResolutionType": "Lookup",
-          "location": "<location>",
-          "systemAssignedIdentity": true,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
-          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-          "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-          "consumerGroup": "<<namePrefix>>-az-iomt-x-001",
-          "eventHubName": "<eventHubName>",
-          "name": "<<namePrefix>>-az-iomt-x-001",
-          "publicNetworkAccess": "Enabled",
-          "resourceVersionPolicy": "versioned",
-          "deviceMapping": {
-            "template": [],
-            "templateType": "CollectionContent"
-          },
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>"
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "dicomServices": {
-      "value": [
-        {
-          "location": "<location>",
-          "corsHeaders": [
-            "*"
-          ],
-          "publicNetworkAccess": "Enabled",
-          "workspaceName": "<<namePrefix>>hwcom001",
-          "corsMaxAge": 600,
-          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-          "systemAssignedIdentity": true,
-          "corsMethods": [
-            "GET"
-          ],
-          "name": "<<namePrefix>>-az-dicom-x-001",
-          "corsAllowCredentials": true,
-          "corsOrigins": [
-            "*"
-          ],
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-          "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "diagnosticLogsRetentionInDays": 7,
-          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          }
-        }
-      ]
-    },
-    "location": {
-      "value": "<location>"
     },
     "fhirServices": {
       "value": [
@@ -429,8 +331,42 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
         }
       ]
     },
-    "lock": {
-      "value": "CanNotDelete"
+    "location": {
+      "value": "<location>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "dicomServices": {
+      "value": [
+        {
+          "location": "<location>",
+          "corsHeaders": [
+            "*"
+          ],
+          "publicNetworkAccess": "Enabled",
+          "workspaceName": "<<namePrefix>>hwcom001",
+          "corsMaxAge": 600,
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "systemAssignedIdentity": true,
+          "corsMethods": [
+            "GET"
+          ],
+          "name": "<<namePrefix>>-az-dicom-x-001",
+          "corsAllowCredentials": true,
+          "corsOrigins": [
+            "*"
+          ],
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "userAssignedIdentities": {
+            "<managedIdentityResourceId>": {}
+          }
+        }
+      ]
     }
   }
 }

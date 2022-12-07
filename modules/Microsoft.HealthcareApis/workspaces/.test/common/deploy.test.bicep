@@ -125,36 +125,5 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
-    iotConnectors: [
-      {
-        name: '<<namePrefix>>-az-iomt-x-001'
-        workspaceName: '<<namePrefix>>${serviceShort}001'
-        eventHubName: resourceGroupResources.outputs.eventHubName
-        eventHubNamespaceName: resourceGroupResources.outputs.eventHubNamespaceName
-        consumerGroup: '<<namePrefix>>-az-iomt-x-001'
-        location: location
-        deviceMapping: {
-          templateType: 'CollectionContent'
-          template: []
-        }
-        destinationMapping: {
-          templateType: 'CollectionFhir'
-          template: []
-        }
-        diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-        publicNetworkAccess: 'Enabled'
-        resourceVersionPolicy: 'versioned'
-        enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: true
-        resourceIdentityResolutionType: 'Lookup'
-        userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
-        }
-      }
-    ]
   }
 }
