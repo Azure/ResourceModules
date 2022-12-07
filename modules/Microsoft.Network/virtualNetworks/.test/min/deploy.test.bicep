@@ -36,7 +36,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: 'ses${serviceShort}001'
     addressPrefixes: [
       '10.0.0.0/16'
     ]

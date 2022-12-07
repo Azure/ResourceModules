@@ -53,6 +53,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. Enable the -all- Log Category. Will not use diagnosticLogCategoriesToEnable if set to true.')
+param enableDiagnosticLogCategoryAll bool = true
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'VMProtectionAlerts'
@@ -72,7 +75,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
   retentionPolicy: {
@@ -80,6 +83,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogsAll = [for category in diagnosticLogCategoriesToEnable: {
+  category: null
+  categoryGroup: 'allLogs'
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+var diagnosticsLogs = (enableDiagnosticLogCategoryAll) ? diagnosticsLogsAll : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -265,3 +279,5 @@ output subnetResourceIds array = [for subnet in subnets: az.resourceId('Microsof
 
 @description('The location the resource was deployed into.')
 output location string = virtualNetwork.location
+
+output diagnosticsLogs array = diagnosticsLogs

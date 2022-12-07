@@ -31,9 +31,9 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
-    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
+    managedIdentityName: 'dep-ses-msi-${serviceShort}'
+    routeTableName: 'dep-ses-rt-${serviceShort}'
+    networkSecurityGroupName: 'dep-ses-nsg-${serviceShort}'
   }
 }
 
@@ -43,10 +43,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'depsesdiasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-ses-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-ses-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-ses-evhns-${serviceShort}'
     location: location
   }
 }
@@ -60,7 +60,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: 'ses${serviceShort}001'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -90,7 +90,7 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         addressPrefix: '10.0.0.0/24'
-        name: '<<namePrefix>>-az-subnet-x-001'
+        name: 'ses-az-subnet-x-001'
         networkSecurityGroupId: resourceGroupResources.outputs.networkSecurityGroupResourceId
         roleAssignments: [
           {
@@ -121,11 +121,11 @@ module testDeployment '../../deploy.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-az-subnet-x-002'
+        name: 'ses-az-subnet-x-002'
       }
       {
         addressPrefix: '10.0.6.0/24'
-        name: '<<namePrefix>>-az-subnet-x-003'
+        name: 'ses-az-subnet-x-003'
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
