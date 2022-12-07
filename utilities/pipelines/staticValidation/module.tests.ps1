@@ -502,38 +502,38 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        # It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
 
-        #     param(
-        #         [string] $moduleFolderName,
-        #         [string] $templateFilePath,
-        #         [hashtable] $templateContent,
-        #         [string] $readMeFilePath
-        #     )
+            param(
+                [string] $moduleFolderName,
+                [string] $templateFilePath,
+                [hashtable] $templateContent,
+                [string] $readMeFilePath
+            )
 
-        #     # Get current hash
-        #     $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
+            # Get current hash
+            $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
-        #     # Load function
-        #     . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+            # Load function
+            . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
 
-        #     # Apply update with already compiled template content
-        #     Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
+            # Apply update with already compiled template content
+            Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
 
-        #     # Get hash after 'update'
-        #     $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
+            # Get hash after 'update'
+            $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
-        #     # Compare
-        #     $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
-        #     if (-not $filesAreTheSame) {
-        #         $diffReponse = git diff $readMeFilePath
-        #         Write-Warning ($diffReponse | Out-String) -Verbose
+            # Compare
+            $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
+            if (-not $filesAreTheSame) {
+                $diffReponse = git diff $readMeFilePath
+                Write-Warning ($diffReponse | Out-String) -Verbose
 
-        #         # Reset readme file to original state
-        #         git checkout HEAD -- $readMeFilePath
-        #     }
-        #     $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
-        # }
+                # Reset readme file to original state
+                git checkout HEAD -- $readMeFilePath
+            }
+            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+        }
     }
 }
 
