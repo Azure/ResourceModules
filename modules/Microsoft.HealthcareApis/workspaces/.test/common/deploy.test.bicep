@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     location: location
     publicNetworkAccess: 'Enabled'
-    lock: 'CanNotDelete'
+    lock: ''
     fhirServices: [
       {
         name: '<<namePrefix>>-az-fhir-x-001'
