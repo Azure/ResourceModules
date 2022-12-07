@@ -456,7 +456,7 @@ function Get-ModulesToPublish {
             Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
         }
     } else {
-        Write-Verbose 'No modules to publish.'-Verbose
+        Write-Verbose 'No modules with changes found to publish.'-Verbose
     }
 
     return $modulesToPublish
