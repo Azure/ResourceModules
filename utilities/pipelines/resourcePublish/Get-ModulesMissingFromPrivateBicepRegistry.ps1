@@ -78,7 +78,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
                 Version          = '{0}.0' -f (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
             }
             $modulesToPublish += $moduleToPublish
-            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version)
+            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version) -Verbose
         }
 
         return $modulesToPublish
