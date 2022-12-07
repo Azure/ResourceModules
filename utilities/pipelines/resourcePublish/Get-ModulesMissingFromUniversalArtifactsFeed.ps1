@@ -47,14 +47,14 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
+        [string] $VstsFeedName,
+
+        [Parameter(Mandatory = $true)]
         [string] $VstsOrganizationUri,
 
         [Parameter(Mandatory = $false)]
         [string] $VstsFeedProject = '',
-
-        [Parameter(Mandatory)]
-        [string] $VstsFeedName,
 
         [Parameter(Mandatory = $false)]
         [string] $BearerToken = $env:TOKEN
@@ -77,7 +77,8 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         $modulesInputObject = @{
             Method  = 'Get'
             Headers = @{
-                Authorization = "Basic $BearerToken"
+                # Authorization = "Basic $BearerToken" # For custom PAT
+                Authorization = "Bearer $BearerToken" # For pipeline PAT
             }
             Uri     = "https://feeds.dev.azure.com/$VstsOrganization/$VstsFeedProject/_apis/packaging/Feeds/$VstsFeedName/Packages?api-version=6.0-preview"
         }
