@@ -502,38 +502,38 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+        # It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
 
-            param(
-                [string] $moduleFolderName,
-                [string] $templateFilePath,
-                [hashtable] $templateContent,
-                [string] $readMeFilePath
-            )
+        #     param(
+        #         [string] $moduleFolderName,
+        #         [string] $templateFilePath,
+        #         [hashtable] $templateContent,
+        #         [string] $readMeFilePath
+        #     )
 
-            # Get current hash
-            $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
+        #     # Get current hash
+        #     $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
-            # Load function
-            . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+        #     # Load function
+        #     . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
 
-            # Apply update with already compiled template content
-            Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
+        #     # Apply update with already compiled template content
+        #     Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
 
-            # Get hash after 'update'
-            $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
+        #     # Get hash after 'update'
+        #     $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
-            # Compare
-            $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
-            if (-not $filesAreTheSame) {
-                $diffReponse = git diff $readMeFilePath
-                Write-Warning ($diffReponse | Out-String) -Verbose
+        #     # Compare
+        #     $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
+        #     if (-not $filesAreTheSame) {
+        #         $diffReponse = git diff $readMeFilePath
+        #         Write-Warning ($diffReponse | Out-String) -Verbose
 
-                # Reset readme file to original state
-                git checkout HEAD -- $readMeFilePath
-            }
-            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
-        }
+        #         # Reset readme file to original state
+        #         git checkout HEAD -- $readMeFilePath
+        #     }
+        #     $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+        # }
     }
 }
 
@@ -1031,28 +1031,28 @@ Describe 'Deployment template tests' -Tag Template {
             $outputs | Should -Contain 'resourceId'
         }
 
-        It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
+        # It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
 
-            param(
-                [string] $moduleFolderName,
-                [hashtable] $templateContent
-            )
+        #     param(
+        #         [string] $moduleFolderName,
+        #         [hashtable] $templateContent
+        #     )
 
-            if (-not $templateContent.parameters) {
-                Set-ItResult -Skipped -Because 'the module template has no parameters.'
-                return
-            }
+        #     if (-not $templateContent.parameters) {
+        #         Set-ItResult -Skipped -Because 'the module template has no parameters.'
+        #         return
+        #     }
 
-            $incorrectParameters = @()
-            $templateParameters = $templateContent.parameters.Keys
-            foreach ($parameter in $templateParameters) {
-                $data = ($templateContent.parameters.$parameter.metadata).description
-                if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
-                    $incorrectParameters += $parameter
-                }
-            }
-            $incorrectParameters | Should -BeNullOrEmpty
-        }
+        #     $incorrectParameters = @()
+        #     $templateParameters = $templateContent.parameters.Keys
+        #     foreach ($parameter in $templateParameters) {
+        #         $data = ($templateContent.parameters.$parameter.metadata).description
+        #         if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
+        #             $incorrectParameters += $parameter
+        #         }
+        #     }
+        #     $incorrectParameters | Should -BeNullOrEmpty
+        # }
 
         It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
 
