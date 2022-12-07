@@ -128,7 +128,7 @@ runs:
               TemplateSpecsRGName = '${{ inputs.templateSpecsRgName }}'
           }
 
-          Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+          Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
           Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
 
           $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
@@ -201,7 +201,7 @@ runs:
               BicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
           }
 
-          Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+          Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
           Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
 
           $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject

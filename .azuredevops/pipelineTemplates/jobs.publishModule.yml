@@ -247,7 +247,7 @@ jobs:
                 TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
             }
 
-            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+            Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
             Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
 
             $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
@@ -335,7 +335,7 @@ jobs:
                 BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
             }
 
-            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+            Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
             Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
 
             $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
