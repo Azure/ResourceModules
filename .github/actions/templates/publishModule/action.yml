@@ -105,6 +105,9 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
+          ################################
+          ##   Get modules to publish   ##
+          ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
           }
@@ -115,14 +118,30 @@ runs:
           # Get the modified child resources
           $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
+          #############################
+          ##   Get missing modules   ##
+          #############################
+
           # Add all modules that don't exist in the target location
-          foreach($missingModule in (Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath $TemplateFilePath)) {
+          $missingInputObject = @{
+              TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+              TemplateSpecsRGName = '${{ inputs.templateSpecsRgName }}'
+          }
+
+          Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+          Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+          $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
+
+          foreach($missingModule in $missingModules) {
             if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
           }
 
-          # Publish the modified child resources
+          #################
+          ##   Publish   ##
+          #################
           foreach ($moduleToPublish in $modulesToPublish) {
             $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
@@ -157,6 +176,10 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
+
+          ################################
+          ##   Get modules to publish   ##
+          ################################
           $functionInput = @{
             TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
             publishLatest    = $(publishLatest)
@@ -168,14 +191,30 @@ runs:
           # Get the modified child resources
           $modulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
+          #############################
+          ##   Get missing modules   ##
+          #############################
           # Add all modules that don't exist in the target location
-          foreach($missingModule in (Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath $TemplateFilePath)) {
+          $missingInputObject = @{
+              TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+              BicepRegistryName   = '${{ inputs.bicepRegistryName }}'
+              BicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
+          }
+
+          Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
+          Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+          $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
+
+          foreach($missingModule in $missingModules) {
             if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
               $modulesToPublish += $missingModule
             }
           }
 
-          # Publish the modified child resources
+          #################
+          ##   Publish   ##
+          #################
           foreach ($moduleToPublish in $modulesToPublish) {
             $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
