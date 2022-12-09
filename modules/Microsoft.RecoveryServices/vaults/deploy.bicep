@@ -4,7 +4,7 @@ param name string
 @description('Optional. The storage configuration for the Azure Recovery Service Vault.')
 param backupStorageConfig object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
@@ -27,6 +27,9 @@ param replicationFabrics array = []
 @description('Optional. List of all replication policies.')
 @minLength(0)
 param replicationPolicies array = []
+
+@description('Optional. Replication alert settings.')
+param replicationAlertSettings object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -163,7 +166,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   sku: {
     name: 'RS0'
     tier: 'Standard'
@@ -252,7 +255,19 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSettings)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
+  params: {
+    name: 'defaultAlertSetting'
+    recoveryVaultName: rsv.name
+    customEmailAddresses: contains(replicationAlertSettings, 'customEmailAddresses') ? replicationAlertSettings.customEmailAddresses : []
+    locale: contains(replicationAlertSettings, 'locale') ? replicationAlertSettings.locale : ''
+    sendToOwners: contains(replicationAlertSettings, 'sendToOwners') ? replicationAlertSettings.sendToOwners : 'Send'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+resource rsv_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
     level: any(lock)

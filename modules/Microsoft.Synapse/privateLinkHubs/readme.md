@@ -14,7 +14,7 @@ This module deploys Azure Synapse Analytics (private link hubs).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
@@ -32,7 +32,7 @@ This module deploys Azure Synapse Analytics (private link hubs).
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -258,6 +258,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>splhcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -275,6 +276,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
       {
@@ -305,6 +307,9 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
       "value": "<<namePrefix>>splhcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -327,6 +332,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         },
         {
@@ -354,7 +360,10 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-splhmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>splhmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -371,8 +380,13 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>splhmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

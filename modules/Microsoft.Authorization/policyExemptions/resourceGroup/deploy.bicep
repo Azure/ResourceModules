@@ -30,13 +30,18 @@ param policyDefinitionReferenceIds array = []
 @sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.')
 param expiresOn string = ''
 
-@sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
-param subscriptionId string = subscription().subscriptionId
+@sys.description('Optional. The option whether validate the exemption is at or under the assignment scope.')
+@allowed([
+  ''
+  'Default'
+  'DoNotValidate'
+])
+param assignmentScopeValidation string = ''
 
-@sys.description('Optional. The name of the resource group to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
-param resourceGroupName string = resourceGroup().name
+@sys.description('Optional. The resource selector list to filter policies by resource properties.')
+param resourceSelectors array = []
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -51,7 +56,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
+resource policyExemption 'Microsoft.Authorization/policyExemptions@2022-07-01-preview' = {
   name: name
   properties: {
     displayName: !empty(displayName) ? displayName : null
@@ -61,6 +66,8 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceIds: !empty(policyDefinitionReferenceIds) ? policyDefinitionReferenceIds : []
     expiresOn: !empty(expiresOn) ? expiresOn : null
+    assignmentScopeValidation: !empty(assignmentScopeValidation) ? assignmentScopeValidation : null
+    resourceSelectors: resourceSelectors
   }
 }
 
@@ -68,7 +75,7 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
 output name string = policyExemption.name
 
 @sys.description('Policy Exemption resource ID.')
-output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyExemptions', policyExemption.name)
+output resourceId string = policyExemption.id
 
 @sys.description('Policy Exemption Scope.')
 output scope string = resourceGroup().id

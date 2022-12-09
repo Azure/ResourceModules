@@ -113,7 +113,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -258,7 +258,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' = {
   }
 }
 
-resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource managedInstance_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedInstance.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -370,6 +370,9 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    managedInstance_keys
+  ]
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {

@@ -14,7 +14,7 @@ This module deploys a local network gateway.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/localNetworkGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/localNetworkGateways) |
 
@@ -32,7 +32,7 @@ This module deploys a local network gateway.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `fqdn` | string | `''` |  | FQDN of local network gateway. |
 | `localAsn` | string | `''` |  | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
 | `localBgpPeeringAddress` | string | `''` |  | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
@@ -180,6 +180,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     localGatewayPublicIpAddress: '8.8.8.8'
     name: '<<namePrefix>>nlngcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     localAsn: '65123'
     localBgpPeeringAddress: '192.168.1.5'
     lock: 'CanNotDelete'
@@ -188,6 +189,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -220,6 +222,9 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
       "value": "<<namePrefix>>nlngcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "localAsn": {
       "value": "65123"
     },
@@ -235,6 +240,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -262,6 +268,8 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
     name: '<<namePrefix>>nlngmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -289,6 +297,10 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
     },
     "name": {
       "value": "<<namePrefix>>nlngmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

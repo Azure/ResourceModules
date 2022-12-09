@@ -14,7 +14,7 @@ This template deploys a virtual network gateway connection.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Network/connections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/connections) |
 
 ## Parameters
@@ -32,7 +32,7 @@ This template deploys a virtual network gateway connection.
 | :-- | :-- | :-- | :-- | :-- |
 | `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |
 | `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -333,6 +333,7 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     }
     // Non-required parameters
     enableBgp: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
       id: '<id>'
@@ -367,6 +368,9 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     // Non-required parameters
     "enableBgp": {
       "value": false
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"

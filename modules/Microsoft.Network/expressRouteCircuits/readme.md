@@ -14,7 +14,7 @@ This template deploys an express route circuit.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/expressRouteCircuits` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/expressRouteCircuits) |
@@ -42,11 +42,11 @@ This template deploys an express route circuit.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peerASN` | int | `0` |  | The autonomous system number of the customer/connectivity provider. |
-| `peering` | bool | `False` | `[False, True]` | Enabled BGP peering type for the Circuit. |
+| `peering` | bool | `False` |  | Enabled BGP peering type for the Circuit. |
 | `peeringType` | string | `'AzurePrivatePeering'` | `[AzurePrivatePeering, MicrosoftPeering]` | BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering. |
 | `primaryPeerAddressPrefix` | string | `''` |  | A /30 subnet used to configure IP addresses for interfaces on Link1. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -200,12 +200,14 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -256,6 +258,9 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -265,6 +270,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -297,6 +303,8 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     name: '<<namePrefix>>nercmin001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -325,6 +333,10 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     },
     "serviceProviderName": {
       "value": "Equinix"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

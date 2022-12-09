@@ -27,7 +27,7 @@ This module deploys recovery services vault backup config.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enhancedSecurityState` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
 | `isSoftDeleteFeatureStateEditable` | bool | `True` |  | Is soft delete feature state editable. |
 | `name` | string | `'vaultconfig'` |  | Name of the Azure Recovery Service Vault Backup Policy. |

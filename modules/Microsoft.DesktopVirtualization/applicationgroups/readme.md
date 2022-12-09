@@ -14,7 +14,7 @@ This module deploys an Azure virtual desktop application group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DesktopVirtualization/applicationGroups` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups) |
 | `Microsoft.DesktopVirtualization/applicationGroups/applications` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups/applications) |
@@ -43,7 +43,7 @@ This module deploys an Azure virtual desktop application group.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `friendlyName` | string | `''` |  | The friendly name of the Application Group to be created. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -210,6 +210,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     friendlyName: 'Remote Applications 1'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -218,6 +219,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -286,6 +288,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "friendlyName": {
       "value": "Remote Applications 1"
     },
@@ -301,6 +306,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -326,6 +332,8 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
     name: '<<namePrefix>>dvagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -351,6 +359,10 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     },
     "name": {
       "value": "<<namePrefix>>dvagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

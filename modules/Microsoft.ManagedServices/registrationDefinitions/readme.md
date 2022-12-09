@@ -37,7 +37,7 @@ remote/managing tenant.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `resourceGroupName` | string | `''` | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
@@ -208,6 +208,8 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
     name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -252,6 +254,10 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -292,6 +298,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     resourceGroupName: '<resourceGroupName>'
   }
 }
@@ -339,6 +346,9 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "Managed by Lighthouse"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     }

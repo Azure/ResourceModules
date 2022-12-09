@@ -30,7 +30,7 @@ This module deploys an API management service.
 | `Microsoft.ApiManagement/service/products/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis) |
 | `Microsoft.ApiManagement/service/products/groups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups) |
 | `Microsoft.ApiManagement/service/subscriptions` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/subscriptions) |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -66,7 +66,7 @@ This module deploys an API management service.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableGateway` | bool | `False` |  | Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
 | `enableClientCertificate` | bool | `False` |  | Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hostnameConfigurations` | array | `[]` |  | Custom hostname configuration of the API Management service. |
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -299,6 +299,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     policies: [
       {
@@ -329,6 +330,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -359,6 +361,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       "value": "<<namePrefix>>-az-amorg-x-001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -396,6 +401,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -440,7 +446,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     ]
     authorizationServers: [
       {
-        authorizationEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
+        authorizationEndpoint: '<authorizationEndpoint>'
         clientCredentialsKeyVaultId: '<clientCredentialsKeyVaultId>'
         clientIdSecretName: '<clientIdSecretName>'
         clientRegistrationEndpoint: 'http://localhost'
@@ -449,7 +455,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
           'authorizationCode'
         ]
         name: 'AuthServer1'
-        tokenEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token'
+        tokenEndpoint: '<tokenEndpoint>'
       }
     ]
     backends: [
@@ -474,6 +480,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     identityProviders: [
       {
         name: 'aadProvider'
@@ -533,6 +540,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -593,7 +601,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     "authorizationServers": {
       "value": [
         {
-          "authorizationEndpoint": "${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize",
+          "authorizationEndpoint": "<authorizationEndpoint>",
           "clientCredentialsKeyVaultId": "<clientCredentialsKeyVaultId>",
           "clientIdSecretName": "<clientIdSecretName>",
           "clientRegistrationEndpoint": "http://localhost",
@@ -602,7 +610,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
             "authorizationCode"
           ],
           "name": "AuthServer1",
-          "tokenEndpoint": "${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token"
+          "tokenEndpoint": "<tokenEndpoint>"
         }
       ]
     },
@@ -641,6 +649,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "identityProviders": {
       "value": [
@@ -714,6 +725,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -754,6 +766,8 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     name: '<<namePrefix>>apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -779,6 +793,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     },
     "publisherName": {
       "value": "<<namePrefix>>-az-amorg-x-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

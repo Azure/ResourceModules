@@ -14,7 +14,7 @@ This template deploys a disk
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/disks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-08-01/disks) |
 
@@ -44,7 +44,7 @@ This template deploys a disk
 | `createOption` | string | `'Empty'` | `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]` | Sources of a disk creation. |
 | `diskIOPSReadWrite` | int | `0` |  | The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
 | `diskMBpsReadWrite` | int | `0` |  | The bandwidth allowed for this disk; only settable for UltraSSD disks. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hyperVGeneration` | string | `'V2'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string | `''` |  | A relative uri containing either a Platform Image Repository or user image reference. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
@@ -199,6 +199,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60
     diskSizeGB: 128
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     logicalSectorSize: 512
     osType: 'Windows'
@@ -208,6 +209,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -244,6 +246,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     "diskSizeGB": {
       "value": 128
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -262,6 +267,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -288,12 +294,14 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'FromImage'
-    imageReferenceId: '${subscription().id}/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    imageReferenceId: '<imageReferenceId>'
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -324,8 +332,11 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     "createOption": {
       "value": "FromImage"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "imageReferenceId": {
-      "value": "${subscription().id}/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
+      "value": "<imageReferenceId>"
     },
     "roleAssignments": {
       "value": [
@@ -333,6 +344,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -359,11 +371,13 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     createOption: 'Import'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -396,12 +410,16 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     "createOption": {
       "value": "Import"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -434,6 +452,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     sku: 'Standard_LRS'
     // Non-required parameters
     diskSizeGB: 1
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -460,6 +479,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     // Non-required parameters
     "diskSizeGB": {
       "value": 1
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

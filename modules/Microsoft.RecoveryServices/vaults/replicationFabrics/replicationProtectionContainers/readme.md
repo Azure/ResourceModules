@@ -37,7 +37,7 @@ This module deploys a Replication Protection Container.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `replicationContainerMappings` | array | `[]` | Replication containers mappings to create. |
 
 

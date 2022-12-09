@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -52,7 +52,7 @@ resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource gallery_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${gallery.name}-${lock}-lock'
   properties: {
     level: any(lock)

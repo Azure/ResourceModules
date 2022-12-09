@@ -8,15 +8,9 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 ## Status
 
-<a href="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml">
-  <img alt="Super Linter" src="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml/badge.svg" />
-</a>
-<a href="https://github.com/Azure/ResourceModules/issues">
-  <img alt="Issues" src="https://img.shields.io/github/issues/Azure/ResourceModules?color=0088ff" />
-</a>
-<a href="https://github.com/Azure/ResourceModules/pulls">
-  <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/ResourceModules?color=0088ff" />
-</a>
+[![.Platform: Linter](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml)
+
+[![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml)
 
 ## Get started
 
@@ -91,6 +85,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [Log Analytics Workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.OperationalInsights/workspaces) | [!['OperationalInsights: Workspaces'](https://github.com/Azure/ResourceModules/workflows/OperationalInsights:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationalinsights.workspaces.yml) |
 | [Logic Apps](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Logic/workflows) | [!['Logic: Workflows'](https://github.com/Azure/ResourceModules/workflows/Logic:%20Workflows/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.logic.workflows.yml) |
 | [Machine Learning Workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.MachineLearningServices/workspaces) | [!['MachineLearningServices: Workspaces'](https://github.com/Azure/ResourceModules/workflows/MachineLearningServices:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.machinelearningservices.workspaces.yml) |
+| [Maintenance Configurations](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Maintenance/maintenanceConfigurations) | [!['Maintenance: MaintenanceConfigurations'](https://github.com/Azure/ResourceModules/workflows/Maintenance:%20MaintenanceConfigurations/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.maintenance.maintenanceconfigurations.yml) |
 | [Management Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Management/managementGroups) | [!['Management: ManagementGroups'](https://github.com/Azure/ResourceModules/workflows/Management:%20ManagementGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.management.managementgroups.yml) |
 | [Metric Alerts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Insights/metricAlerts) | [!['Insights: MetricAlerts'](https://github.com/Azure/ResourceModules/workflows/Insights:%20MetricAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.metricalerts.yml) |
 | [NAT Gateways](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/natGateways) | [!['Network: NatGateways'](https://github.com/Azure/ResourceModules/workflows/Network:%20NatGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml) |

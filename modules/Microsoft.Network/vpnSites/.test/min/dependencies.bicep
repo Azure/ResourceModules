@@ -9,5 +9,5 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   location: location
 }
 
-@description('The resource ID of the created Virtual WAN')
+@description('The resource ID of the created Virtual WAN.')
 output virtualWWANResourceId string = virtualWan.id

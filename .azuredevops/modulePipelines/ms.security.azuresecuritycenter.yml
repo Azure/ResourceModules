@@ -4,7 +4,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Needs custom removals script
+    default: true # Note: Deployed resources under the Microsoft.Security resource provider are not removed
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.Security/azureSecurityCenter/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

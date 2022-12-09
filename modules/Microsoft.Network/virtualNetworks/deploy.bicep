@@ -50,7 +50,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -91,7 +91,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var dnsServers_var = {
+var dnsServersVar = {
   dnsServers: array(dnsServers)
 }
 
@@ -122,7 +122,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
       addressPrefixes: addressPrefixes
     }
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
-    dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
+    dhcpOptions: !empty(dnsServers) ? dnsServersVar : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
     subnets: [for subnet in subnets: {
       name: subnet.name
@@ -133,15 +133,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
         delegations: contains(subnet, 'delegations') ? subnet.delegations : []
         ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
         natGateway: contains(subnet, 'natGatewayId') ? {
-          'id': subnet.natGatewayId
+          id: subnet.natGatewayId
         } : null
         networkSecurityGroup: contains(subnet, 'networkSecurityGroupId') ? {
-          'id': subnet.networkSecurityGroupId
+          id: subnet.networkSecurityGroupId
         } : null
         privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
         privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
         routeTable: contains(subnet, 'routeTableId') ? {
-          'id': subnet.routeTableId
+          id: subnet.routeTableId
         } : null
         serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
         serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
@@ -213,7 +213,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
   }
 }]
 
-resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualNetwork_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetwork.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -28,7 +28,7 @@ param version int = 2
 @description('Optional. The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag.')
 param etag string = '*'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

@@ -19,24 +19,12 @@ param secrets object = {}
 param keys array = []
 
 @description('Optional. Specifies if the vault is enabled for deployment by script or compute.')
-@allowed([
-  true
-  false
-])
 param enableVaultForDeployment bool = true
 
 @description('Optional. Specifies if the vault is enabled for a template deployment.')
-@allowed([
-  true
-  false
-])
 param enableVaultForTemplateDeployment bool = true
 
 @description('Optional. Specifies if the azure platform has access to the vault for enabling disk encryption scenarios.')
-@allowed([
-  true
-  false
-])
 param enableVaultForDiskEncryption bool = true
 
 @description('Optional. Switch to enable/disable Key Vault\'s soft delete feature.')
@@ -52,7 +40,7 @@ param enableRbacAuthorization bool = false
 param createMode string = 'default'
 
 @description('Optional. Provide \'true\' to enable Key Vault\'s purge protection feature.')
-param enablePurgeProtection bool = false
+param enablePurgeProtection bool = true
 
 @description('Optional. Specifies the SKU for the vault.')
 @allowed([
@@ -106,7 +94,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -207,7 +195,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   }
 }
 
-resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource keyVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${keyVault.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -52,7 +52,7 @@ param lock string = ''
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @sys.description('Optional. The name of logs that will be streamed.')
@@ -112,7 +112,7 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
   }
 }
 
-resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${appGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

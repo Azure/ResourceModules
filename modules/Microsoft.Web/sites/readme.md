@@ -14,7 +14,7 @@ This module deploys a web or function app.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
@@ -28,7 +28,7 @@ This module deploys a web or function app.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[app, functionapp, functionapp,linux]` | Type of site to deploy. |
+| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 | `serverFarmResourceId` | string |  | The resource ID of the app service plan to use for the site. |
 
@@ -49,7 +49,7 @@ This module deploys a web or function app.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -77,16 +77,12 @@ For all other app settings key-value pairs use this object.
 
 ```json
 "appSettingsKeyValuePairs": {
-    "value": [
-        {
-            "name": "key1",
-            "value": "val1"
-        },
-        {
-            "name": "key2",
-            "value": "val2"
-        }
-    ]
+    "value": {
+      "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+      "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password",
+      "FUNCTIONS_EXTENSION_VERSION": "~4",
+      "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    }
 }
 ```
 
@@ -97,16 +93,12 @@ For all other app settings key-value pairs use this object.
 <summary>Bicep format</summary>
 
 ```bicep
-appSettingsKeyValuePairs: [
-    {
-        name: 'key1'
-        value: 'val1'
-    }
-    {
-        name: 'key2'
-        value: 'val2'
-    }
-]
+appSettingsKeyValuePairs: {
+  AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+  EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
+  FUNCTIONS_EXTENSION_VERSION: '~4'
+  FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+}
 ```
 
 </details>
@@ -432,7 +424,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     appInsightId: '<appInsightId>'
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-      EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
+      EASYAUTH_SECRET: '<EASYAUTH_SECRET>'
       FUNCTIONS_EXTENSION_VERSION: '~4'
       FUNCTIONS_WORKER_RUNTIME: 'dotnet'
     }
@@ -459,7 +451,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           registration: {
             clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
             clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: 'https://sts.windows.net/${tenant().tenantId}/v2.0/'
+            openIdIssuer: '<openIdIssuer>'
           }
           validation: {
             allowedAudiences: [
@@ -503,6 +495,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -521,6 +514,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -567,7 +561,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "appSettingsKeyValuePairs": {
       "value": {
         "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
-        "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password",
+        "EASYAUTH_SECRET": "<EASYAUTH_SECRET>",
         "FUNCTIONS_EXTENSION_VERSION": "~4",
         "FUNCTIONS_WORKER_RUNTIME": "dotnet"
       }
@@ -596,7 +590,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             "registration": {
               "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
               "clientSecretSettingName": "EASYAUTH_SECRET",
-              "openIdIssuer": "https://sts.windows.net/${tenant().tenantId}/v2.0/"
+              "openIdIssuer": "<openIdIssuer>"
             },
             "validation": {
               "allowedAudiences": [
@@ -651,6 +645,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "keyVaultAccessIdentityResourceId": {
       "value": "<keyVaultAccessIdentityResourceId>"
     },
@@ -676,6 +673,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -722,6 +720,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     name: '<<namePrefix>>wsfamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     siteConfig: {
       alwaysOn: true
     }
@@ -752,6 +751,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "siteConfig": {
       "value": {
         "alwaysOn": true
@@ -784,6 +786,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     httpsOnly: true
     privateEndpoints: [
       {
@@ -801,6 +804,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -859,6 +863,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "httpsOnly": {
       "value": true
     },
@@ -881,6 +888,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -925,6 +933,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     kind: 'app'
     name: '<<namePrefix>>wswamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -950,6 +960,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
