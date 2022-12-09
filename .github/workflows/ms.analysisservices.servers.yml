@@ -85,6 +85,8 @@ jobs:
   #   Deployment validation   #
   #############################
   job_module_deploy_validation:
+    concurrency:
+      group: ${{ github.workflow }}
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
     needs:
