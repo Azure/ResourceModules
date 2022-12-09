@@ -36,7 +36,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: '<<namePrefix>>-${serviceShort}' //'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
   }
