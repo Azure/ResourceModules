@@ -10,9 +10,13 @@ param location string = resourceGroup().location
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+// resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+//   name: managedIdentityName
+//   location: location
+// }
+
+resource managedIdentity 'Microsoft.ManagedIdentity/identities@2022-01-31-preview' existing = {
   name: managedIdentityName
-  location: location
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
