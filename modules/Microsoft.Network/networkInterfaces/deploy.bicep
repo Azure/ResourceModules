@@ -7,7 +7,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Indicates whether IP forwarding is enabled on this network interface.')
@@ -135,7 +135,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: networkInterface
 }
 
-resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkInterface_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: any(lock)

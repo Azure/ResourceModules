@@ -49,7 +49,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -116,7 +116,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   }
 }
 
-resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource topic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${topic.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -78,7 +78,7 @@ param backupLongTermRetentionPoliciesObj object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -144,7 +144,7 @@ resource database 'Microsoft.Sql/managedInstances/databases@2022-02-01-preview' 
   }
 }
 
-resource database_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource database_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${last(split(database.name, '/'))}-${lock}-lock'
   properties: {
     level: any(lock)

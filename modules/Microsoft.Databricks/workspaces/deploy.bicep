@@ -49,7 +49,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -91,7 +91,7 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 }]
 
 var managedResourceGroupName = '${name}-rg'
-var managedResourceGroupId_var = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
+var managedResourceGroupIdVar = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -113,12 +113,12 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
     name: pricingTier
   }
   properties: {
-    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupId_var : managedResourceGroupId)
+    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupIdVar : managedResourceGroupId)
     parameters: workspaceParameters
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

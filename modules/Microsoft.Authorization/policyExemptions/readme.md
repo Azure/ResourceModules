@@ -16,7 +16,7 @@ With this module you can create policy exemptions across the management group, s
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions) |
+| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
 
 ## Parameters
 
@@ -31,9 +31,10 @@ With this module you can create policy exemptions across the management group, s
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `assignmentScopeValidation` | string | `''` | `['', Default, DoNotValidate]` | The option whether validate the exemption is at or under the assignment scope. |
 | `description` | string | `''` |  | The description of the policy exemption. |
 | `displayName` | string | `''` |  | The display name of the policy exemption. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `exemptionCategory` | string | `'Mitigated'` | `[Mitigated, Waiver]` | The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated. |
 | `expiresOn` | string | `''` |  | The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z. |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
@@ -41,6 +42,7 @@ With this module you can create policy exemptions across the management group, s
 | `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 | `resourceGroupName` | string | `''` |  | The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
+| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
 
 
@@ -117,6 +119,56 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 
+### Parameter Usage: `resourceSelectors`
+
+To deploy Resource Selectors, you can apply the following syntax
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"resourceSelectors": [
+  {
+    "name": "TemporaryMitigation",
+    "selectors": [
+      {
+        "kind": "resourceLocation",
+        "in": [
+          "westcentralus"
+        ]
+      }
+    ]
+  }
+]
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+resourceSelectors: [
+  {
+    name: 'TemporaryMitigation'
+    selectors: [
+      {
+        kind: 'resourceLocation'
+        in: [
+          'westcentralus'
+        ]
+      }
+    ]
+  }
+]
+```
+
+</details>
+<p>
+
 ## Module Usage Guidance
 
 In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `deploy.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](deploy.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/deploy.bicep'](./subscription/deploy.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
@@ -175,13 +227,31 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apemgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
     displayName: '[Display Name] policy exempt (management group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
     }
+    policyDefinitionReferenceIds: [
+      '<policyDefinitionReferenceId>'
+    ]
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            in: [
+              'westcentralus'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -206,8 +276,17 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "assignmentScopeValidation": {
+      "value": "Default"
+    },
+    "description": {
+      "value": "My description"
+    },
     "displayName": {
       "value": "[Display Name] policy exempt (management group scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "exemptionCategory": {
       "value": "Waiver"
@@ -215,13 +294,30 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     "expiresOn": {
       "value": "2025-10-02T03:57:00Z"
     },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
-    },
     "metadata": {
       "value": {
         "category": "Security"
       }
+    },
+    "policyDefinitionReferenceIds": {
+      "value": [
+        "<policyDefinitionReferenceId>"
+      ]
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "TemporaryMitigation",
+          "selectors": [
+            {
+              "in": [
+                "westcentralus"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     }
   }
 }
@@ -243,6 +339,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>apemgmin001'
     policyAssignmentId: '<policyAssignmentId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -265,6 +363,10 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -287,14 +389,31 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apergcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
     displayName: '[Display Name] policy exempt (resource group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
       category: 'Security'
     }
-    resourceGroupName: '<resourceGroupName>'
-    subscriptionId: '<subscriptionId>'
+    policyDefinitionReferenceIds: [
+      '<policyDefinitionReferenceId>'
+    ]
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            in: [
+              'westcentralus'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -319,8 +438,17 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "assignmentScopeValidation": {
+      "value": "Default"
+    },
+    "description": {
+      "value": "My description"
+    },
     "displayName": {
       "value": "[Display Name] policy exempt (resource group scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "exemptionCategory": {
       "value": "Waiver"
@@ -333,11 +461,25 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         "category": "Security"
       }
     },
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
+    "policyDefinitionReferenceIds": {
+      "value": [
+        "<policyDefinitionReferenceId>"
+      ]
     },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "TemporaryMitigation",
+          "selectors": [
+            {
+              "in": [
+                "westcentralus"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     }
   }
 }
@@ -360,8 +502,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apergmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
-    resourceGroupName: '<resourceGroupName>'
-    subscriptionId: '<subscriptionId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -386,11 +527,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
-    "resourceGroupName": {
-      "value": "<resourceGroupName>"
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -413,13 +551,31 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apesubcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
+    assignmentScopeValidation: 'Default'
+    description: 'My description'
     displayName: '[Display Name] policy exempt (subscription scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     exemptionCategory: 'Waiver'
     expiresOn: '2025-10-02T03:57:00Z'
     metadata: {
       category: 'Security'
     }
-    subscriptionId: '<subscriptionId>'
+    policyDefinitionReferenceIds: [
+      '<policyDefinitionReferenceId>'
+    ]
+    resourceSelectors: [
+      {
+        name: 'TemporaryMitigation'
+        selectors: [
+          {
+            in: [
+              'westcentralus'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
   }
 }
 ```
@@ -444,8 +600,17 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
+    "assignmentScopeValidation": {
+      "value": "Default"
+    },
+    "description": {
+      "value": "My description"
+    },
     "displayName": {
       "value": "[Display Name] policy exempt (subscription scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "exemptionCategory": {
       "value": "Waiver"
@@ -458,8 +623,25 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
         "category": "Security"
       }
     },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
+    "policyDefinitionReferenceIds": {
+      "value": [
+        "<policyDefinitionReferenceId>"
+      ]
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "TemporaryMitigation",
+          "selectors": [
+            {
+              "in": [
+                "westcentralus"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     }
   }
 }
@@ -482,7 +664,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
     name: '<<namePrefix>>apesubmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
-    subscriptionId: '<subscriptionId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -507,8 +689,8 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
       "value": "<policyAssignmentId>"
     },
     // Non-required parameters
-    "subscriptionId": {
-      "value": "<subscriptionId>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

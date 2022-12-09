@@ -133,7 +133,7 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
@@ -202,7 +202,7 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
   zones: skuName == 'Premium' ? pickZones('Microsoft.Cache', 'redis', location, 1) : null
 }
 
-resource redisCache_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource redisCache_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${redisCache.name}-${lock}-lock'
   properties: {
     level: any(lock)

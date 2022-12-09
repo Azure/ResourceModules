@@ -35,7 +35,7 @@ This module deploys Role Assignments across the management group, subscription o
 | `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0". |
 | `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource. |
 | `description` | string | `''` |  | The description of the role assignment. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 | `principalType` | string | `''` | `['', Device, ForeignGroup, Group, ServicePrincipal, User]` | The principal type of the assigned principal ID. |
@@ -194,6 +194,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Backup Reader'
     // Non-required parameters
     description: 'Role Assignment (management group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managementGroupId: '<managementGroupId>'
     principalType: 'ServicePrincipal'
   }
@@ -223,6 +224,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "description": {
       "value": "Role Assignment (management group scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "managementGroupId": {
       "value": "<managementGroupId>"
     },
@@ -249,6 +253,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     // Required parameters
     principalId: '<principalId>'
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    principalType: 'ServicePrincipal'
   }
 }
 ```
@@ -271,6 +278,13 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     },
     "roleDefinitionIdOrName": {
       "value": "Storage Queue Data Reader"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
     }
   }
 }
@@ -294,6 +308,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Backup Reader'
     // Non-required parameters
     description: 'Role Assignment (resource group scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     principalType: 'ServicePrincipal'
     resourceGroupName: '<resourceGroupName>'
     subscriptionId: '<subscriptionId>'
@@ -323,6 +338,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     // Non-required parameters
     "description": {
       "value": "Role Assignment (resource group scope)"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "principalType": {
       "value": "ServicePrincipal"
@@ -354,6 +372,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     principalId: '<principalId>'
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    principalType: 'ServicePrincipal'
     resourceGroupName: '<resourceGroupName>'
     subscriptionId: '<subscriptionId>'
   }
@@ -380,6 +400,12 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
       "value": "Storage Queue Data Reader"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
+    },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
     },
@@ -408,6 +434,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Backup Reader'
     // Non-required parameters
     description: 'Role Assignment (subscription scope)'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     principalType: 'ServicePrincipal'
     subscriptionId: '<subscriptionId>'
   }
@@ -437,6 +464,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     "description": {
       "value": "Role Assignment (subscription scope)"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "principalType": {
       "value": "ServicePrincipal"
     },
@@ -464,6 +494,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     principalId: '<principalId>'
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    principalType: 'ServicePrincipal'
     subscriptionId: '<subscriptionId>'
   }
 }
@@ -489,6 +521,12 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
       "value": "Storage Queue Data Reader"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "principalType": {
+      "value": "ServicePrincipal"
+    },
     "subscriptionId": {
       "value": "<subscriptionId>"
     }

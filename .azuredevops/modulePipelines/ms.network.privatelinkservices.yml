@@ -1,4 +1,4 @@
-name: 'Network: PrivateLinkServices'
+name: 'Network - PrivateLinkServices'
 
 parameters:
   - name: removeDeployment
@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.Network/privateLinkServices/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

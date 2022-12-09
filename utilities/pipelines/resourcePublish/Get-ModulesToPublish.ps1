@@ -346,9 +346,12 @@ Generates a hashtable with template file paths to publish with a new version.
 .PARAMETER TemplateFilePath
 Mandatory. Path to a deploy.bicep/json file.
 
+.PARAMETER PublishLatest
+Optional. Publish an absolute latest version.
+Note: This version may include breaking changes and is not recommended for production environments
+
 .EXAMPLE
 Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep'
-
 
 Name               Value
 ----               -----
@@ -361,14 +364,17 @@ Version            0.3.848-prerelease
 
 Generates a hashtable with template file paths to publish and their new versions.
 
-
 #>#
 function Get-ModulesToPublish {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $TemplateFilePath
+        [string] $TemplateFilePath,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $PublishLatest = $true
+
     )
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
@@ -396,6 +402,14 @@ function Get-ModulesToPublish {
                 Version          = ($ModuleVersion.Split('.')[0])
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
+
+            if ($PublishLatest) {
+                # Absolute latest
+                $ModulesToPublish += @{
+                    Version          = 'latest'
+                    TemplateFilePath = $TemplateFileToPublish.FullName
+                }
+            }
         }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
@@ -419,6 +433,14 @@ function Get-ModulesToPublish {
                 $ModulesToPublish += @{
                     Version          = ($ParentModuleVersion.Split('.')[0])
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                }
+
+                if ($PublishLatest) {
+                    # Absolute latest
+                    $ModulesToPublish += @{
+                        Version          = 'latest'
+                        TemplateFilePath = $ParentTemplateFileToPublish.FullName
+                    }
                 }
             }
         }

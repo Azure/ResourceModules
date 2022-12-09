@@ -6,16 +6,18 @@ param appName string
 
 @description('Required. Type of site to deploy.')
 @allowed([
-  'functionapp'
-  'functionapp,linux'
-  'app'
+  'functionapp' // function app windows os
+  'functionapp,linux' // function app linux os
+  'functionapp,workflowapp' // logic app workflow
+  'functionapp,workflowapp,linux' // logic app docker container
+  'app' // normal web app
 ])
 param kind string
 
 @description('Required. The auth settings V2 configuration.')
 param authSettingV2Configuration object
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // =========== //

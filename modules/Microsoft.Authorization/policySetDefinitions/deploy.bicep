@@ -32,7 +32,7 @@ param parameters object = {}
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -61,7 +61,6 @@ module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscri
     parameters: !empty(parameters) ? parameters : {}
     policyDefinitions: policyDefinitions
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
-    managementGroupId: managementGroupId
     location: location
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -78,7 +77,6 @@ module policySetDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscrip
     parameters: !empty(parameters) ? parameters : {}
     policyDefinitions: policyDefinitions
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
-    subscriptionId: subscriptionId
     location: location
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }

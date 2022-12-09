@@ -116,8 +116,20 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication. Should be enabled for security reasons.')
 param disableLocalAuth bool = true
 
-@description('Optional. Properties to configure encryption.')
-param encryption object = {}
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+param cMKKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
+param cMKKeyVersion string = ''
+
+@description('Optional. The flag to enable dynamic throttling.')
+param dynamicThrottlingEnabled bool = false
 
 @description('Optional. Resource migration token.')
 param migrationToken string = ''
@@ -131,7 +143,7 @@ param restrictOutboundNetworkAccess bool = true
 @description('Optional. The storage accounts for this resource.')
 param userOwnedStorage array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -195,7 +207,22 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+  name: last(split(cMKUserAssignedIdentityResourceId, '/'))
+  scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
+}
+
+resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2022-10-01' = {
   name: name
   kind: kind
   identity: identity
@@ -215,15 +242,24 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
-    encryption: !empty(encryption) ? encryption : null
+    encryption: !empty(cMKKeyName) ? {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        identityClientId: cMKUserAssignedIdentity.properties.clientId
+        keyVaultUri: cMKKeyVault.properties.vaultUri
+        keyName: cMKKeyName
+        keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
+      }
+    } : null
     migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
     restrictOutboundNetworkAccess: restrictOutboundNetworkAccess
     userOwnedStorage: !empty(userOwnedStorage) ? userOwnedStorage : null
+    dynamicThrottlingEnabled: dynamicThrottlingEnabled
   }
 }
 
-resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource cognitiveServices_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${cognitiveServices.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -14,7 +14,7 @@ This module deploys an Azure Automation Account.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Automation/automationAccounts` | [2021-06-22](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2021-06-22/automationAccounts) |
 | `Microsoft.Automation/automationAccounts/jobSchedules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/jobSchedules) |
@@ -37,14 +37,19 @@ This module deploys an Azure Automation Account.
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
-| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[DscNodeStatus, JobLogs, JobStreams]` | `[DscNodeStatus, JobLogs, JobStreams]` | The name of logs that will be streamed. |
@@ -54,7 +59,7 @@ This module deploys an Azure Automation Account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Disable local authentication profile used within the resource. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
@@ -387,6 +392,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gallerySolutions: [
       {
         name: 'Updates'
@@ -434,6 +440,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -538,7 +545,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         description: 'TestDateTimeDescription'
         isEncrypted: false
         name: 'TestDateTime'
-        value: '<value>'
+        value: '\'\\/Date(1637934042656)\\/\''
       }
       {
         description: 'TestEncryptedDescription'
@@ -584,6 +591,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "disableLocalAuth": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "gallerySolutions": {
       "value": [
@@ -645,6 +655,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -761,7 +772,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "description": "TestDateTimeDescription",
           "isEncrypted": false,
           "name": "TestDateTime",
-          "value": "<value>"
+          "value": "\"\\/Date(1637934042656)\\/\""
         },
         {
           "description": "TestEncryptedDescription",
@@ -793,6 +804,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -826,6 +838,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -848,7 +863,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aamin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>aamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -865,8 +883,13 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>aamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
