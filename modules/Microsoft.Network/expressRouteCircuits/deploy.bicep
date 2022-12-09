@@ -26,10 +26,6 @@ param skuTier string = 'Standard'
 param skuFamily string = 'MeteredData'
 
 @description('Optional. Enabled BGP peering type for the Circuit.')
-@allowed([
-  true
-  false
-])
 param peering bool = false
 
 @description('Optional. BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering.')

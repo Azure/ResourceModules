@@ -90,7 +90,7 @@ param tags object = {}
 @description('Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.')
 param allowedAuthenticationModes array = []
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
