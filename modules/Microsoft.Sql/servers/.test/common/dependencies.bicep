@@ -95,7 +95,7 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 }
 
 resource FabioPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
+  name: guid('msi-${keyVault::key.id}-${location}-FabioMasciotra001-Key-Crypto-Service-Encryption-RoleAssignment')
   scope: keyVault // keyVault::key
   properties: {
     principalId: '0664bbad-f57c-4c87-bee4-74cec8b677d2' //managedIdentity.properties.principalId
