@@ -222,7 +222,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
   name: last(split(cMKUserAssignedIdentityResourceId, '/'))
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
@@ -245,7 +245,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
     encryption: !empty(cMKKeyName) ? {
       status: 'enabled'
       keyVaultProperties: {
-        identity: encryptionIdentity.properties.clientId
+        identity: cMKUserAssignedIdentity.properties.clientId
         keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
