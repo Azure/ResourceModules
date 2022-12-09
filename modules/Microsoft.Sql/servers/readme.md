@@ -490,7 +490,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         state: 'Enabled'
       }
     ]
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -627,7 +627,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       ]
     },
     "systemAssignedIdentity": {
-      "value": true
+      "value": false
     },
     "userAssignedIdentities": {
       "value": {
