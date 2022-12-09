@@ -1,6 +1,6 @@
 # SQL Servers Keys `[Microsoft.Sql/servers/keys]`
 
-This module deploys a key for a SQL managed instance.
+This module deploys a key for a SQL server.
 
 ## Navigation
 
