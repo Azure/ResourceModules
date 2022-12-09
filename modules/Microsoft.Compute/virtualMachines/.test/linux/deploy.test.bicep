@@ -190,6 +190,9 @@ module testDeployment '../../deploy.bicep' = {
         VolumeType: 'All'
       }
     }
+    extensionAadJoinConfig: {
+      enabled: true
+    }
     extensionDSCConfig: {
       enabled: false
     }
