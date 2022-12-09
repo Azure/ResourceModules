@@ -95,11 +95,11 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 }
 
 resource FabioPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${keyVault::key.id}-${location}-FabioMasciotra001-Key-Crypto-Service-Encryption-RoleAssignment')
+  name: guid('msi-${keyVault::key.id}-${location}-FabioMasciotra002-Key-Crypto-Service-Encryption-RoleAssignment')
   scope: keyVault // keyVault::key
   properties: {
     principalId: '0664bbad-f57c-4c87-bee4-74cec8b677d2' //managedIdentity.properties.principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635') // Key Vault Crypto Service Encryption User
     principalType: 'User' //'ServicePrincipal'
   }
 }
