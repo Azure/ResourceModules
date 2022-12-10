@@ -137,7 +137,7 @@ module testDeployment '../../deploy.bicep' = {
         uri: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
       }
     ]
-    systemAssignedIdentity: false
+    systemAssignedIdentity: true
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
