@@ -67,6 +67,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
+    primaryUserAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     location: location

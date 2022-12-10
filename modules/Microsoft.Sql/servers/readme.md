@@ -43,6 +43,7 @@ This module deploys a SQL server.
 | `administratorLogin` | string | `''` | The administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
 | `administratorLoginPassword` | secureString | `''` | The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
 | `administrators` | object | `{object}` | The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
+| `primaryUserAssignedIdentityId` | string | `''` | The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty. |
 
 **Optional parameters**
 
@@ -463,6 +464,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     ]
     location: '<location>'
     lock: 'CanNotDelete'
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -592,6 +594,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
     },
     "privateEndpoints": {
       "value": [

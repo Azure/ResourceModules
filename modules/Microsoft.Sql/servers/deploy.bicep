@@ -17,6 +17,9 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
+@description('Conditional. The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty.')
+param primaryUserAssignedIdentityId string = ''
+
 @allowed([
   ''
   'CanNotDelete'
@@ -116,6 +119,7 @@ resource server 'Microsoft.Sql/servers@2022-05-01-preview' = {
     } : null
     version: '12.0'
     minimalTlsVersion: minimalTlsVersion
+    primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
   }
 }
