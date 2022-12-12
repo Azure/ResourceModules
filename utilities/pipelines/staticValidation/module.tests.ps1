@@ -11,7 +11,10 @@ param (
 
     # Dedicated Tokens configuration hashtable containing the tokens and token prefix and suffix.
     [Parameter(Mandatory = $false)]
-    [hashtable] $tokenConfiguration = @{}
+    [hashtable] $tokenConfiguration = @{},
+
+    [Parameter(Mandatory = $false)]
+    [bool] $AllowPreviewVersionsInAPITests = $true
 )
 
 Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
@@ -1248,52 +1251,57 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             switch ($resource.type) {
                 { $PSItem -like '*diagnosticsettings*' } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'diagnosticsettings'
-                        ProviderNamespace    = 'Microsoft.insights'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'diagnosticsettings'
+                        ProviderNamespace              = 'Microsoft.insights'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 { $PSItem -like '*locks' } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'locks'
-                        ProviderNamespace    = 'Microsoft.Authorization'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'locks'
+                        ProviderNamespace              = 'Microsoft.Authorization'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 { $PSItem -like '*roleAssignments' } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'roleassignments'
-                        ProviderNamespace    = 'Microsoft.Authorization'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'roleassignments'
+                        ProviderNamespace              = 'Microsoft.Authorization'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 { $PSItem -like '*privateEndpoints' -and ($PSItem -notlike '*managedPrivateEndpoints') } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'privateEndpoints'
-                        ProviderNamespace    = 'Microsoft.Network'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'privateEndpoints'
+                        ProviderNamespace              = 'Microsoft.Network'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 Default {
                     $ProviderNamespace, $rest = $resource.Type.Split('/')
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = $rest -join '/'
-                        ProviderNamespace    = $ProviderNamespace
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = $rest -join '/'
+                        ProviderNamespace              = $ProviderNamespace
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
@@ -1308,7 +1316,8 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             [string] $ResourceType,
             [string] $TargetApi,
             [string] $ProviderNamespace,
-            [PSCustomObject] $AvailableApiVersions
+            [PSCustomObject] $AvailableApiVersions,
+            [bool] $AllowPreviewVersionsInAPITests
         )
 
         if (-not (($AvailableApiVersions | Get-Member -Type NoteProperty).Name -contains $ProviderNamespace)) {
@@ -1329,10 +1338,16 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             continue
         }
 
-        # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
         $approvedApiVersions = @()
-        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -Last 5
-        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+        if ($AllowPreviewVersionsInAPITests) {
+            # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
+            $approvedApiVersions += $resourceTypeApiVersions | Select-Object -Last 5
+            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+        } else {
+            # We allow the latest 3 non-preview preview
+            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+        }
+
         ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
     }
 }
