@@ -35,7 +35,7 @@ This module deploys VPN Gateways Connections.
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionBandwidth` | int | `10` |  | Expected bandwidth in MBPS. |
 | `enableBgp` | bool | `False` |  | Enable BGP flag. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableInternetSecurity` | bool | `False` |  | Enable internet security. |
 | `enableRateLimiting` | bool | `False` |  | Enable rate limiting. |
 | `ipsecPolicies` | array | `[]` |  | The IPSec policies to be considered by this connection. |

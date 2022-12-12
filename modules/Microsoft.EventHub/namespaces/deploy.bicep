@@ -83,7 +83,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The event hubs to deploy into this namespace.')
@@ -206,7 +206,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.
   }
 }
 
-module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'eventHubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -286,7 +286,7 @@ module eventHubNamespace_roleAssignments '.bicep/nested_roleAssignments.bicep' =
   }
 }]
 
-resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${eventHubNamespace.name}-${lock}-lock'
   properties: {
     level: any(lock)

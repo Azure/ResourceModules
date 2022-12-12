@@ -117,7 +117,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] folder should contain one or more *parameters.json files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] folder should contain one or more test files' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -141,7 +141,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] *parameters.json files in the .test folder should be valid json' -TestCases $testFolderFilesTestCases {
+        It '[<moduleFolderName>] JSON test files in the .test folder should be valid json' -TestCases $testFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -150,7 +150,7 @@ Describe 'File/folder tests' -Tag Modules {
             if ((Split-Path $testFilePath -Extension) -eq '.json') {
                 { (Get-Content $testFilePath) | ConvertFrom-Json } | Should -Not -Throw
             } else {
-                Set-ItResult -Skipped -Because 'the module has no JSON parameter file.'
+                Set-ItResult -Skipped -Because 'the module has no JSON test files.'
             }
         }
     }

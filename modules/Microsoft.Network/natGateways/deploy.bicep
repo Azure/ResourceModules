@@ -59,7 +59,7 @@ param roleAssignments array = []
 @description('Optional. Tags for the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -149,7 +149,7 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = if (natGate
   }
 }
 
-resource publicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIP_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${publicIP.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -184,7 +184,7 @@ resource natGateway 'Microsoft.Network/natGateways@2021-08-01' = {
   zones: zones
 }
 
-resource natGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource natGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${natGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

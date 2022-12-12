@@ -63,7 +63,7 @@ param mongodbDatabases array = []
 @description('Optional. Gremlin Databases configurations.')
 param gremlinDatabases array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @allowed([
@@ -285,7 +285,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-previ
   properties: databaseAccount_properties
 }
 
-resource databaseAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource databaseAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${databaseAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

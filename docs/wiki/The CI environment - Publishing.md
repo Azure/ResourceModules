@@ -29,7 +29,7 @@ The publishing works as follows:
 1. The script [`utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1) gets all changed module files, including child modules, and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the `version.json` file in the module folder.
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
-   1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`) and a `major.minor` version (`x.y`) are also updated, allowing a consumer to:
+   1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`), a `major.minor` version (`x.y`) and a `latest` version are also updated, allowing a consumer to:
       - Reference the latest version of a major, i.e., the latest minor and patch of a major version.
          > Example: Using Template Specs, the reference to a `major` could look like: `ts/modules:microsoft.resources.resourcegroups:1` which means that the template will always consume whatever the potentially overwritten/updated version `1` contains.
       - Reference the latest version of a minor, i.e., the latest patch of a minor version.

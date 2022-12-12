@@ -29,7 +29,7 @@ This module deploys a WAF policy.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `customRules` | array | `[]` | The custom rules inside the policy. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `managedRules` | object | `{object}` | Describes the managedRules structure. |
 | `policySettings` | object | `{object}` | The PolicySettings for policy. |
@@ -110,6 +110,7 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
     // Required parameters
     name: '<<namePrefix>>nagwafpcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
       managedRuleSets: [
         {
@@ -150,6 +151,9 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
       "value": "<<namePrefix>>nagwafpcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "managedRules": {
       "value": {
         "managedRuleSets": [

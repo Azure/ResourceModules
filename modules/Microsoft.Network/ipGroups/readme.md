@@ -14,7 +14,7 @@ This module deploys an IP group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/ipGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/ipGroups) |
 
@@ -30,7 +30,7 @@ This module deploys an IP group.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAddresses` | array | `[]` |  | IpAddresses/IpAddressPrefixes in the IpGroups resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -171,6 +171,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nigcom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'
@@ -206,6 +207,9 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
       "value": "<<namePrefix>>nigcom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "ipAddresses": {
       "value": [
         "10.0.0.1",
@@ -243,7 +247,10 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nigmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>nigmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -260,8 +267,13 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>nigmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

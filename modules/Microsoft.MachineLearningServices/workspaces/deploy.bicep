@@ -54,7 +54,7 @@ param computes array = []
 @sys.description('Optional. Resource tags.')
 param tags object = {}
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Identity
@@ -115,7 +115,7 @@ param description string = ''
 @sys.description('Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services.')
 param discoveryUrl string = ''
 
-@sys.description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@sys.description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @sys.description('Optional. The name of the customer managed key to use for encryption.')
@@ -255,7 +255,7 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
   }
 }]
 
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'nfdmin'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -32,12 +35,13 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: resourceName
     frontendEndpoints: [
       {
         name: 'frontEnd'
         properties: {
-          hostName: '${resourceName}.azurefd.net'
+          hostName: '${resourceName}.${environment().suffixes.azureFrontDoorEndpointSuffix}'
           sessionAffinityEnabledState: 'Disabled'
           sessionAffinityTtlSeconds: 60
         }

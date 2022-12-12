@@ -14,7 +14,7 @@ This module deploys a DocumentDB database account and its child resources.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DocumentDB/databaseAccounts` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts) |
 | `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases) |
@@ -55,7 +55,7 @@ This module deploys a DocumentDB database account and its child resources.
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gremlinDatabases` | _[gremlinDatabases](gremlinDatabases/readme.md)_ array | `[]` |  | Gremlin Databases configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -577,18 +577,23 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gremlinDatabases: [
       {
         graphs: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'car_collection'
             partitionKeyPaths: [
               '/car_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'truck_collection'
             partitionKeyPaths: [
               '/truck_id'
@@ -600,14 +605,18 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         collections: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bike_collection'
             partitionKeyPaths: [
               '/bike_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bicycle_collection'
             partitionKeyPaths: [
               '/bicycle_id'
@@ -683,19 +692,26 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "gremlinDatabases": {
       "value": [
         {
           "graphs": [
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "car_collection",
               "partitionKeyPaths": [
                 "/car_id"
               ]
             },
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "truck_collection",
               "partitionKeyPaths": [
                 "/truck_id"
@@ -707,14 +723,18 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "collections": [
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "bike_collection",
               "partitionKeyPaths": [
                 "/bike_id"
               ]
             },
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "bicycle_collection",
               "partitionKeyPaths": [
                 "/bicycle_id"
@@ -779,6 +799,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     mongodbDatabases: [
       {
@@ -1024,6 +1045,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     },
@@ -1264,6 +1288,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -1324,6 +1349,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -1375,6 +1403,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     roleAssignments: [
       {
@@ -1389,6 +1418,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         containers: [
           {
+            indexingPolicy: {
+              automatic: true
+            }
             kind: 'Hash'
             name: 'container-001'
             paths: [
@@ -1456,6 +1488,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "location": {
       "value": "<location>"
     },
@@ -1475,6 +1510,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [
             {
+              "indexingPolicy": {
+                "automatic": true
+              },
               "kind": "Hash",
               "name": "container-001",
               "paths": [

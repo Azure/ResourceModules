@@ -28,7 +28,7 @@ param outboundEndpoints array = []
 @description('Optional. Inbound Endpoints for Private DNS Resolver.')
 param inboundEndpoints array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -82,7 +82,7 @@ resource dnsResolver_outboundEndpoint 'Microsoft.Network/dnsResolvers/outboundEn
   }
 }]
 
-resource dnsResolver_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource dnsResolver_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${dnsResolver.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -103,7 +103,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -329,7 +329,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-08-01'
 }]
 
 @batchSize(1)
-resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: if (!empty(lock)) {
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2020-05-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: if (!empty(lock)) {
   name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -376,7 +376,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08
   ]
 }
 
-resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

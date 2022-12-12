@@ -37,7 +37,7 @@ This module deploys load balancers inbound NAT rules.
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPoolName` | string | `''` |  | Name of the backend address pool. |
 | `backendPort` | int | `[parameters('frontendPort')]` |  | The port used for the internal endpoint. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFloatingIP` | bool | `False` |  | Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint. |
 | `enableTcpReset` | bool | `False` |  | Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP. |
 | `frontendPortRangeEnd` | int | `-1` |  | The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. |

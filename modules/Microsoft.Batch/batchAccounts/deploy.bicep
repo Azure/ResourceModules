@@ -90,7 +90,7 @@ param tags object = {}
 @description('Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.')
 param allowedAuthenticationModes array = []
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
@@ -99,7 +99,7 @@ param cMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -215,7 +215,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-06-01' = {
   }
 }
 
-resource batchAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource batchAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${batchAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'cvmsslinmin'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -43,12 +46,13 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     adminUsername: 'scaleSetAdmin'
     imageReference: {
-      offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      offer: '0001-com-ubuntu-server-jammy'
+      sku: '22_04-lts-gen2'
       version: 'latest'
     }
     osDisk: {

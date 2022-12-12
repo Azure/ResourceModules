@@ -129,7 +129,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
@@ -222,7 +222,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
   name: last(split(cMKUserAssignedIdentityResourceId, '/'))
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
@@ -245,7 +245,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
     encryption: !empty(cMKKeyName) ? {
       status: 'enabled'
       keyVaultProperties: {
-        identity: encryptionIdentity.properties.clientId
+        identity: cMKUserAssignedIdentity.properties.clientId
         keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
@@ -317,7 +317,7 @@ module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webh
   }
 }]
 
-resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource registry_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${registry.name}-${lock}-lock'
   properties: {
     level: any(lock)

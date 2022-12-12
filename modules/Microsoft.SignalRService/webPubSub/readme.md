@@ -14,7 +14,7 @@ This module deploys a Web PubSub Service resource.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
@@ -36,7 +36,7 @@ This module deploys a Web PubSub Service resource.
 | `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
 | `disableAadAuth` | bool | `False` |  | When set as true, connection with AuthType=aad won't work. |
 | `disableLocalAuth` | bool | `True` |  | Disables all authentication methods other than AAD authentication. For security reasons, this value should be set to `true`. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | The location for the resource. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to allow and/or Subnet information. Can only be set if the 'SKU' is not 'Free_F1'. For security reasons, it is recommended to set the DefaultAction Deny. |
@@ -380,6 +380,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     clientCertEnabled: false
     disableAadAuth: false
     disableLocalAuth: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
     networkAcls: {
@@ -461,6 +462,9 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     },
     "disableLocalAuth": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
       "value": "<location>"
@@ -546,7 +550,10 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srswpsmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>-srswpsmin-001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -563,8 +570,13 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>-srswpsmin-001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -586,6 +598,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-srswpspe-001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -619,6 +632,9 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": "<<namePrefix>>-srswpspe-001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "privateEndpoints": {
       "value": [
         {
