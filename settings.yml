@@ -39,7 +39,7 @@ variables:
   # Static validation #
   # ----------------- #
 
-  allowPreviewVersionsInAPITests: true # When enabled, preview versions do not fail the API version tests in the `module.tests.ps1` file
+  allowPreviewVersionsInAPITests: false # When enabled, preview versions do not fail the API version tests in the `module.tests.ps1` file
 
   # Deployment validation #
   # --------------------- #
