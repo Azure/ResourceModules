@@ -28,5 +28,5 @@ jobs:
         if: |
           contains(github.event.issue.labels.*.name, 'enhancement')
         with:
-          project: https://github.com/Azure/ResourceModules/projects/5
+          project: https://github.com/orgs/Azure/projects/364
           column_name: 'Needs triage'
