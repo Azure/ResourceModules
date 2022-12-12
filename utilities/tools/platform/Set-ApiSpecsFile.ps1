@@ -37,7 +37,7 @@ function Set-ApiSpecsFile {
     # Set content
     if (-not (Test-Path $SpecsFilePath)) {
         if ($PSCmdlet.ShouldProcess('API Specs file [apiSpecsList.json]', 'Create')) {
-            $null = New-Item -Path $SpecsFilePath -Force -Value $fileContent
+            $null = New-Item -Path $SpecsFilePath -Value $fileContent -Force
         }
     } else {
         if ($PSCmdlet.ShouldProcess('API Specs file [apiSpecsList.json]', 'Update')) {
