@@ -55,8 +55,8 @@ jobs:
             git config --global user.email '$(pipelinePrincipalGitUserEmail)'
             git config --global user.name '$(pipelinePrincipalGitUserName)'
 
-            git pull
-            git status
             git add .
+            git status
             git commit -m 'Push updated API Specs file'
-            git push
+            git pull $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
+            git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
