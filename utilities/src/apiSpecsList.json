@@ -65,6 +65,9 @@
     ],
     "farmBeats/privateEndpointConnections": [
       "2021-09-01-preview"
+    ],
+    "farmBeats/solutions": [
+      "2021-09-01-preview"
     ]
   },
   "Microsoft.AlertsManagement": {
