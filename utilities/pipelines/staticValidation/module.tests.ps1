@@ -1348,6 +1348,25 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
         }
 
-        ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
+        $approvedApiVersions = $approvedApiVersions | Sort-Object -Unique -Descending
+        $approvedApiVersions | Should -Contain $TargetApi
+
+        # Provide a warning if an API version is second to next to expire.
+        if ($approvedApiVersions -contains $TargetApi) {
+            $indexOfVersion = $approvedApiVersions.IndexOf($TargetApi)
+
+            # Example
+            # Available versions:
+            #
+            # 2017-08-01-beta
+            # 2017-08-01        < $TargetApi (Index = 1)
+            # 2017-07-14
+            # 2016-05-16
+
+            if ($indexOfVersion -gt ($approvedApiVersions.Count - 2)) {
+                $newerAPIVersions = $approvedApiVersions[0..($indexOfVersion - 1)]
+                Write-Warning ("The used API version [$TargetApi] for Resource Type [$ProviderNamespace/$ResourceType] will soon expire. Please consider updating it. Consider using one of the newer API versions [{0}]" -f ($newerAPIVersions -join ', '))
+            }
+        }
     }
 }
