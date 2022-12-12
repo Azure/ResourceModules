@@ -8,6 +8,12 @@ Update the API Specs file in the given path. The file contains an outline of all
 .PARAMETER SpecsFilePath
 Optional. The path the the file to create/overwrite. By default points to path '<root>/utilities/src/apiSpecsList.json'
 
+.PARAMETER ModuleVersion
+Optional. The module version of the AzureAPICrawler to install. Available versions at: https://www.powershellgallery.com/packages/AzureAPICrawler
+
+.PARAMETER IncludePreview
+Optional. A switch parameter to control whether or not to include Preview versions in the table
+
 .EXAMPLE
 Set-ApiSpecsFile -SpecsFilePath 'C:/dev/ResourceModules/utilities/src/apiSpecsList.json'
 
@@ -18,7 +24,13 @@ function Set-ApiSpecsFile {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $SpecsFilePath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent)) 'src' 'apiSpecsList.json')
+        [string] $SpecsFilePath = (Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent)) 'src' 'apiSpecsList.json'),
+
+        [Parameter(Mandatory = $false)]
+        [string] $ModuleVersion = '0.2.0',
+
+        [Parameter(Mandatory = $false)]
+        [switch] $IncludePreview
     )
 
     # Install and or import module
@@ -31,7 +43,11 @@ function Set-ApiSpecsFile {
     $null = Import-Module 'AzureAPICrawler'
 
     # Fetch data
-    $res = Get-AzureApiSpecsVersionList -IncludePreview -Verbose
+    $getInputObject = @{
+        IncludePreview = $true
+        Verbose        = $true
+    }
+    $res = Get-AzureApiSpecsVersionList @getInputObject
     $fileContent = $res | ConvertTo-Json
 
     # Set content

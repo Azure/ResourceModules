@@ -26,7 +26,8 @@ jobs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'tools' 'platform' 'Set-ApiSpecsFile.ps1')
 
           $functionInput = @{
-            SpecsFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'src' 'apiSpecsList.json'
+            SpecsFilePath  = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'src' 'apiSpecsList.json'
+            IncludePreview = $true
           }
 
           Write-Verbose "Invoke task with" -Verbose
