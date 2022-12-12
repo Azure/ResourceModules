@@ -128,7 +128,7 @@ runs:
               Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
               moduleFolderPaths              = $moduleFolderPaths
               tokenConfiguration             = $tokenConfiguration
-              allowPreviewVersionsInAPITests = [bool] ${{ env.allowPreviewVersionsInAPITests }}
+              allowPreviewVersionsInAPITests = [bool] '${{ env.allowPreviewVersionsInAPITests }}'
             }
           }
           TestResult = @{
