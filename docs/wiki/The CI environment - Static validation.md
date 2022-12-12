@@ -56,7 +56,7 @@ This test also leverages the [`utilities/pipelines/staticValidation/module.tests
 
 To test the API versions, the test leverages the file `utilities/src/apiSpecsList.json` file as a reference for all API versions available for any used Provider Namespace & Resource Type.
 
-> **NOTE:** This functionality has a dependency on the [AzureAPICrawler](https://www.powershellgallery.com/packages/AzureAPICrawler/0.1.2) PowerShell module.
+> **NOTE:** This functionality has a dependency on the [AzureAPICrawler](https://www.powershellgallery.com/packages/AzureAPICrawler) PowerShell module.
 
 # Verify the static validation of your module locally
 
