@@ -41,6 +41,7 @@ jobs:
           git config --global user.name '${{ env.pipelinePrincipalGitUserName }}'
 
           git pull
+          git status
           git add .
           git commit -m 'Push updated API Specs file'
           git push

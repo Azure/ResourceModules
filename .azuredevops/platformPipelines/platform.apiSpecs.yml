@@ -53,9 +53,9 @@ jobs:
           script: |
             git config --global user.email '$(pipelinePrincipalGitUserEmail)'
             git config --global user.name '$(pipelinePrincipalGitUserName)'
-            Write-Verbose '$(Build.SourceBranch)' -Verbose
-            git add .
+
+            git pull
             git status
+            git add .
             git commit -m 'Push updated API Specs file'
-            git pull $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
-            git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
+            git push
