@@ -7,9 +7,6 @@ on:
     types:
       - opened
 
-env:
-  GITHUB_TOKEN: ${{ github.token }}
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   add-to-project:
@@ -18,7 +15,7 @@ jobs:
     steps:
       - name: 'Add Bug to Bug Board'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PLATFORM_PROJECT_TOKEN }}
         if: |
           contains(github.event.issue.labels.*.name, 'bug')
         shell: pwsh
