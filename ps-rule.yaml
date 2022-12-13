@@ -20,8 +20,6 @@ requires:
 
 # Use PSRule for Azure.
 include:
-  versions:
-    - 2.4.0
   module:
     - PSRule.Rules.Azure
 
