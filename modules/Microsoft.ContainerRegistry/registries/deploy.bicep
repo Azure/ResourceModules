@@ -170,6 +170,9 @@ param diagnosticEventHubName string = ''
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. Enables registry-wide pull from unauthenticated clients. It\'s in preview and available in the Standard and Premium service tiers.')
+param anonymousPullEnabled bool = false
+
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyVaultResourceId string = ''
 
@@ -222,7 +225,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
   name: last(split(cMKUserAssignedIdentityResourceId, '/'))
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
@@ -241,11 +244,12 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
     name: acrSku
   }
   properties: {
+    anonymousPullEnabled: anonymousPullEnabled
     adminUserEnabled: acrAdminUserEnabled
     encryption: !empty(cMKKeyName) ? {
       status: 'enabled'
       keyVaultProperties: {
-        identity: encryptionIdentity.properties.clientId
+        identity: cMKUserAssignedIdentity.properties.clientId
         keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null

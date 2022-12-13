@@ -19,24 +19,12 @@ param secrets object = {}
 param keys array = []
 
 @description('Optional. Specifies if the vault is enabled for deployment by script or compute.')
-@allowed([
-  true
-  false
-])
 param enableVaultForDeployment bool = true
 
 @description('Optional. Specifies if the vault is enabled for a template deployment.')
-@allowed([
-  true
-  false
-])
 param enableVaultForTemplateDeployment bool = true
 
 @description('Optional. Specifies if the azure platform has access to the vault for enabling disk encryption scenarios.')
-@allowed([
-  true
-  false
-])
 param enableVaultForDiskEncryption bool = true
 
 @description('Optional. Switch to enable/disable Key Vault\'s soft delete feature.')
