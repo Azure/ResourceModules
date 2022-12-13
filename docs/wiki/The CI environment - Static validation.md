@@ -18,7 +18,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way, e.g.:
   - readme.md file exists
-  - template file (either deploy.json or deploy.bicep) exists
+  - template file (either `deploy.json` or `deploy.bicep`) exists
   - compliance with file naming convention
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters, e.g.:
   - template file (or the built bicep template) converts from JSON and has all expected properties
@@ -55,6 +55,8 @@ In particular, each resource's API version is compared with those currently avai
 This test also leverages the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.
 
 To test the API versions, the test leverages the file `utilities/src/apiSpecsList.json` file as a reference for all API versions available for any used Provider Namespace & Resource Type.
+
+> **NOTE:** If this file does not exist, the API tests will be skipped.
 
 > **NOTE:** This functionality has a dependency on the [AzureAPICrawler](https://www.powershellgallery.com/packages/AzureAPICrawler) PowerShell module.
 
