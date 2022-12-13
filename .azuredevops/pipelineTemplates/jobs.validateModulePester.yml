@@ -163,13 +163,18 @@ jobs:
             # --------------------- #
             # Invoke Pester test(s) #
             # --------------------- #
+            $testContainerData = @{
+              moduleFolderPaths              = $moduleFolderPaths
+              tokenConfiguration             = $tokenConfiguration
+              allowPreviewVersionsInAPITests = [bool] '$(ALLOWPREVIEWVERSIONSINAPITESTS)'
+            }
+
+            Write-Verbose 'Invoke test with' -Verbose
+            Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
+
             Invoke-Pester -Configuration @{
               Run        = @{
-                  Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-                  moduleFolderPaths  = $moduleFolderPaths
-                  tokenConfiguration = $tokenConfiguration
-                  allowPreviewVersionsInAPITests = [bool] '$(ALLOWPREVIEWVERSIONSINAPITESTS)'
-                }
+                  Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
               }
               TestResult = @{
                 TestSuiteName = 'Module Tests'
