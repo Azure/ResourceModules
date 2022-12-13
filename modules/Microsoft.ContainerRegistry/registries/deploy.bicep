@@ -170,6 +170,9 @@ param diagnosticEventHubName string = ''
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. Enables registry-wide pull from unauthenticated clients. It\'s in preview and available in the Standard and Premium service tiers.')
+param anonymousPullEnabled bool = false
+
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyVaultResourceId string = ''
 
@@ -241,6 +244,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
     name: acrSku
   }
   properties: {
+    anonymousPullEnabled: anonymousPullEnabled
     adminUserEnabled: acrAdminUserEnabled
     encryption: !empty(cMKKeyName) ? {
       status: 'enabled'
