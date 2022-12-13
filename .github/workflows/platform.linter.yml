@@ -6,11 +6,6 @@ on:
     branches:
       - main
 
-env:
-  variablesPath: 'settings.yml'
-  modulesPath: 'modules'
-  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
-
 jobs:
   build:
     name: Linter
