@@ -53,7 +53,7 @@ function Set-PSRuleOutput {
     # Set output content #
     ######################
 
-    # Header //TBD: Remove?
+    # Header
     $header = [System.Collections.ArrayList]@(
         '# PSRule pre-flight validation summary ',
         ''
@@ -93,7 +93,7 @@ function Set-PSRuleOutput {
                 $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
             }
 
-            # Build hyperlinks to PSrule documentation for the rules
+            # Build hyperlinks to PSRule documentation for the rules
             $TemplatesBaseUrl = 'https://azure.github.io/PSRule.Rules.Azure/en/rules'
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
@@ -132,7 +132,7 @@ function Set-PSRuleOutput {
                 $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
             }
 
-            # Build hyperlinks to PSrule documentation for the rules
+            # Build hyperlinks to PSRule documentation for the rules
             $TemplatesBaseUrl = 'https://azure.github.io/PSRule.Rules.Azure/en/rules'
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
