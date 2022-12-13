@@ -1,4 +1,30 @@
-﻿function Set-PSRuleOutput {
+﻿<#
+.SYNOPSIS
+Parse an input csv file containing the output of the PSRule pre-flight checks and generate formatted markdown file out of it.
+
+.DESCRIPTION
+Parse input csv file containing the output of the PSRule pre-flight checks and generate formatted markdown file out of it.
+
+.PARAMETER inputFilePath
+Mandatory. The path to the output file created by PSRule in csv format.
+
+.PARAMETER outputFilePath
+Optional. The path to the formatted .md file to be created.
+
+.PARAMETER skipPassedRulesReport
+Optional. Whether to add the detail of passed PSRule to the output markdown file or to limit the list to the failed ones.
+
+.EXAMPLE
+Set-PSRuleOutput -inputFilePath 'C:/PSRule-output.csv'
+
+Generate a markdown file 'output.md' in the current folder, out of the 'C:/PSRule-output.csv' input, listing all passed and failed rules.
+
+.EXAMPLE
+Set-PSRuleOutput -inputFilePath 'C:/PSRule-output.csv' -outputFilePath 'C:/PSRule-output.md' -skipPassedRulesReport
+
+Generate a markdown file 'C:/PSRule-output.md', out of the 'C:/PSRule-output.csv' input, listing only the failed rules.
+#>
+function Set-PSRuleOutput {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
