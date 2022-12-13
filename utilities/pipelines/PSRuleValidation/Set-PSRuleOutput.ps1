@@ -1,14 +1,45 @@
-﻿function Set-PSRuleOutput {
+﻿<#
+.SYNOPSIS
+Parse an input csv file containing the output of the PSRule pre-flight checks and generate formatted markdown file out of it.
+
+.DESCRIPTION
+Parse input csv file containing the output of the PSRule pre-flight checks and generate formatted markdown file out of it.
+
+.PARAMETER inputFilePath
+Mandatory. The path to the output file created by PSRule in csv format.
+
+.PARAMETER outputFilePath
+Optional. The path to the formatted .md file to be created.
+
+.PARAMETER skipPassedRulesReport
+Optional. Whether to add the detail of passed PSRule to the output markdown file or to limit the list to the failed ones.
+
+.EXAMPLE
+Set-PSRuleOutput -inputFilePath 'C:/PSRule-output.csv'
+
+Generate a markdown file 'output.md' in the current folder, out of the 'C:/PSRule-output.csv' input, listing all passed and failed rules.
+
+.EXAMPLE
+Set-PSRuleOutput -inputFilePath 'C:/PSRule-output.csv' -outputFilePath 'C:/PSRule-output.md' -skipPassedRulesReport
+
+Generate a markdown file 'C:/PSRule-output.md', out of the 'C:/PSRule-output.csv' input, listing only the failed rules.
+#>
+function Set-PSRuleOutput {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
         [String] $inputFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $outputFilePath = './output.md'
+        [string] $outputFilePath = './output.md',
+
+        [Parameter(Mandatory = $false)]
+        [switch] $skipPassedRulesReport
     )
 
-    # Import CSV output and filter by results
+    ###########################################
+    # Import CSV output and filter by results #
+    ###########################################
 
     $results = Import-Csv -Path $inputFilePath
 
@@ -18,28 +49,34 @@
     $passedRules += $results | Where-Object { $_.Outcome -EQ 'Pass' }
     $failedRules += $results | Where-Object { $_.Outcome -EQ 'Fail' }
 
+    ######################
+    # Set output content #
+    ######################
 
-    #Create Summary table
-
-    $headerTable = [System.Collections.ArrayList]@(
-        '# Output Summary ',
-        '',
-        '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
-        '| :-- | :-- | :-- |'
+    # Header //TBD: Remove?
+    $header = [System.Collections.ArrayList]@(
+        '# PSRule pre-flight validation summary ',
+        ''
     )
+    Out-File -FilePath $outputFilePath -NoClobber -InputObject $header
 
-    $headerTable += ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count)
-    $headerTable += [System.Collections.ArrayList]@(
-        '')
+    if ($failedRules.Count -eq 0) {
+        # No failure content
+        $noFailuresContent = ('## :rocket: All {0} rules passed, YAY! :rocket:' -f $results.Count)
+        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $noFailuresContent
+    } else {
+        # Failure content
 
-    # Create markdown file with header table
-    Out-File -FilePath $outputFilePath -NoClobber -InputObject $headerTable
+        ## Header table
+        $headerTable = [System.Collections.ArrayList]@(
+            '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
+            '| :-- | :-- | :-- |'
+            ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count),
+            ''
+        )
+        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $headerTable
 
-
-    if ($failedRules.Count -gt 0) {
-
-        #Create Failing table
-
+        ## List of failed rules
         $failContent = [System.Collections.ArrayList]@(
             '',
             '<details>',
@@ -50,7 +87,6 @@
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- | :-- |'
         )
-
         foreach ($content in $failedRules ) {
             # Shorten the target name for deployment resoure type
             if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
@@ -68,20 +104,18 @@
                 $resourceLink = $content.RuleName
             }
             $failContent += ('| {0} | {1} | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
-
         }
         $failContent += [System.Collections.ArrayList]@(
             '',
             '</details>',
             ''
         )
-        #Append markdown with failed rules table
+        # Append to output
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $failContent
     }
 
-    # Create Passing table
-    if ($passedRules.Count -gt 0) {
-
+    if (($passedRules.Count -gt 0) -and -not $skipPassedRulesReport) {
+        # List of passed rules
         $passContent = [System.Collections.ArrayList]@(
             '',
             '<details>',
@@ -92,7 +126,6 @@
             '| RuleName | TargetName |  Synopsis |',
             '| :-- | :-- |  :-- |'
         )
-
         foreach ($content in $passedRules ) {
             # Shorten the target name for deployment resoure type
             if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
@@ -109,7 +142,6 @@
                 Write-Warning "Unable to build url for $content.RuleName"
                 $resourceLink = $content.RuleName
             }
-
             $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
@@ -118,13 +150,7 @@
             '</details>',
             ''
         )
-        #Append markdown with passed rules table
+        # Append to output
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
-
     }
-
-
 }
-
-
-

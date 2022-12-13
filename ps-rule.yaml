@@ -25,6 +25,7 @@ include:
 
 execution:
   suppressedRuleWarning: false
+  notProcessedWarning: false
 
 output:
   culture:
@@ -35,14 +36,9 @@ output:
 input:
   pathIgnore:
     # Ignore other files in the repository.
-    - '.vscode/'
-    - '.github/'
-    - '*.md'
-
-    # Exclude modules but not tests.
-    - 'modules/**/*.bicep'
+    - '**/*'
+    # Do not ignore tests.
     - '!modules/**/*.test.bicep'
-    - 'modules/**/*version.json'
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
@@ -60,7 +56,7 @@ rule:
   exclude:
   # Ignore the following rules for all resources
    - Azure.KeyVault.PurgeProtect
-  
+
 # Suppression ignores rules for a specific Azure resource by name.
 # suppression:
 #  Azure.KeyVault.PurgeProtect:

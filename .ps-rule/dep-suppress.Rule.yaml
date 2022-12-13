@@ -3,9 +3,11 @@
 apiVersion: github.com/microsoft/PSRule/v1
 kind: SuppressionGroup
 metadata:
-  name: 'SuppressDependancy'
+  name: 'SuppressDependency'
 spec:
   if:
     name: '.'
     startsWith:
       - 'dep'
+      - 'ms.'
+      - 'privatelink.'
