@@ -60,6 +60,8 @@ To test the API versions, the test leverages the file `utilities/src/apiSpecsLis
 
 > **NOTE:** This functionality has a dependency on the [AzureAPICrawler](https://www.powershellgallery.com/packages/AzureAPICrawler) PowerShell module.
 
+The pipeline `platform.apiSpecs.yml` updates this file using the script `utilities/tools/platform/Set-ApiSpecsFile.ps1` and, once registered, runs on a weekly schedule. During runtime, the script installs & imports the `AzureAPICrawler` module, fetches all available API versions for all Resource Types via the module and updates the JSON file according to the latest information.
+
 # Verify the static validation of your module locally
 
 This paragraph is intended for CARML contributors or more generally for those leveraging the CARML CI environment and having the need to update or add a new module to the library.
