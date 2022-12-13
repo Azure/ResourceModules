@@ -92,8 +92,9 @@ param eventHubs array = []
 @description('Optional. The disaster recovery config for this namespace.')
 param disasterRecoveryConfig object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ArchiveLogs'
   'OperationalLogs'
   'AutoScaleLogs'
@@ -105,15 +106,7 @@ param disasterRecoveryConfig object = {}
   'ApplicationMetricsLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ArchiveLogs'
-  'OperationalLogs'
-  'AutoScaleLogs'
-  'KafkaCoordinatorLogs'
-  'KafkaUserErrorLogs'
-  'EventHubVNetConnectionEvent'
-  'CustomerManagedKeyUserLogs'
-  'RuntimeAuditLogs'
-  'ApplicationMetricsLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

@@ -95,12 +95,13 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The Dedicated Host Count. Is not supported by ASEv2. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0.')
 param dedicatedHostCount int = -1
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AppServiceEnvironmentPlatformLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AppServiceEnvironmentPlatformLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')

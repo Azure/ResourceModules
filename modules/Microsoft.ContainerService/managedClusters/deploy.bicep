@@ -295,8 +295,9 @@ param tags object = {}
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'kube-apiserver'
   'kube-audit'
   'kube-controller-manager'
@@ -306,13 +307,7 @@ param diskEncryptionSetID string = ''
   'guard'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'kube-apiserver'
-  'kube-audit'
-  'kube-controller-manager'
-  'kube-scheduler'
-  'cluster-autoscaler'
-  'kube-audit-admin'
-  'guard'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

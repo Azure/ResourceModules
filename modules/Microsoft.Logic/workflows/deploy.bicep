@@ -97,12 +97,13 @@ param workflowStaticResults object = {}
 @description('Optional. The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer.')
 param workflowTriggers object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'WorkflowRuntime'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'WorkflowRuntime'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

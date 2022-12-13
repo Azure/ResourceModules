@@ -72,12 +72,13 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Optional. The name of bastion logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'BastionAuditLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'BastionAuditLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')

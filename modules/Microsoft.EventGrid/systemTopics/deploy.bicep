@@ -57,12 +57,13 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DeliveryFailures'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'DeliveryFailures'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

@@ -88,8 +88,9 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ActivityRuns'
   'PipelineRuns'
   'TriggerRuns'
@@ -101,15 +102,7 @@ param cMKUserAssignedIdentityResourceId string = ''
   'SSISIntegrationRuntimeLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ActivityRuns'
-  'PipelineRuns'
-  'TriggerRuns'
-  'SSISPackageEventMessages'
-  'SSISPackageExecutableStatistics'
-  'SSISPackageEventMessageContext'
-  'SSISPackageExecutionComponentPhases'
-  'SSISPackageExecutionDataStatistics'
-  'SSISIntegrationRuntimeLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

@@ -161,14 +161,14 @@ param minimalTlsVersion string = '1.2'
 ])
 param requestedBackupStorageRedundancy string = 'Geo'
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ResourceUsageStats'
   'SQLSecurityAuditEvents'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ResourceUsageStats'
-  'SQLSecurityAuditEvents'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
