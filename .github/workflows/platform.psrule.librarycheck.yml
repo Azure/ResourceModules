@@ -1,4 +1,4 @@
-name: '.Platform: PSRule Pre-Flight validation'
+name: '.Platform: Library PSRule pre-flight validation'
 
 on:
   workflow_dispatch:
@@ -17,9 +17,9 @@ env:
 jobs:
   psrule:
     name: PSRule
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      # Analyze repository with PSRule
+      # Analyze module library with PSRule
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set environment variables
