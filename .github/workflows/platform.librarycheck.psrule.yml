@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
-  push:
-    branches:
-      - users/erikag/psrule-check-onschedule
+  # push:
+  #   branches:
+  #     - users/erikag/psrule-check-onschedule
 
 
 env:
