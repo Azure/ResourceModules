@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - hack/topic6
 
 env:
   variablesPath: 'settings.yml'
