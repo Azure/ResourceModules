@@ -56,7 +56,7 @@ jobs:
                   id
                 }
               }
-            }' -f organization="Azure" -F number=364 | ConvertFrom-Json -Depth 10
+            }' -f organization="Azure" -F number=363 | ConvertFrom-Json -Depth 10
 
           $backlogId = $project.data.organization.projectV2.id
 
