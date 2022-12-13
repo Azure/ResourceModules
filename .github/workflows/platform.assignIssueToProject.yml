@@ -41,7 +41,7 @@ jobs:
                   id
                 }
               }
-            }' -f project=$bugBoardId -f issue=${{ github.event.issue.node_id }} --jq '.data.addProjectV2ItemById.projectV2Item.id'
+            }' -f project=@bugBoardId -f issue=${{ github.event.issue.node_id }} --jq '.data.addProjectV2ItemById.projectV2Item.id'
       - name: 'Add Issues to Backlog Board'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -67,4 +67,4 @@ jobs:
                   id
                 }
               }
-            }' -f project=$backlogId -f issue=${{ github.event.issue.node_id }} --jq '.data.addProjectV2ItemById.projectV2Item.id'
+            }' -f project=@backlogId -f issue=${{ github.event.issue.node_id }} --jq '.data.addProjectV2ItemById.projectV2Item.id'
