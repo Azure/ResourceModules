@@ -3,11 +3,7 @@ name: '.Platform: Library PSRule pre-flight validation'
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 12 * * 0"
-      displayName: Weekly Sunday Update
-      branches:
-        include:
-        - main
+    - cron: '0 12 * * 0' # Weekly Sunday Update
   push:
     branches:
       - users/erikag/psrule-check-onschedule
