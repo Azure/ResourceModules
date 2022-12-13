@@ -4381,22 +4381,26 @@
     "accounts": [
       "2020-03-01-preview",
       "2022-04-01-preview",
-      "2022-10-01"
+      "2022-10-01",
+      "2022-12-01-preview"
     ],
     "accounts/instances": [
       "2020-03-01-preview",
       "2022-04-01-preview",
-      "2022-10-01"
+      "2022-10-01",
+      "2022-12-01-preview"
     ],
     "accounts/privateEndpointConnectionProxies": [
       "2020-03-01-preview",
       "2022-04-01-preview",
-      "2022-10-01"
+      "2022-10-01",
+      "2022-12-01-preview"
     ],
     "accounts/privateEndpointConnections": [
       "2020-03-01-preview",
       "2022-04-01-preview",
-      "2022-10-01"
+      "2022-10-01",
+      "2022-12-01-preview"
     ]
   },
   "Microsoft.DevOps": {
