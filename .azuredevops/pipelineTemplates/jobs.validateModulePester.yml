@@ -166,7 +166,7 @@ jobs:
             $testContainerData = @{
               moduleFolderPaths              = $moduleFolderPaths
               tokenConfiguration             = $tokenConfiguration
-              allowPreviewVersionsInAPITests = [bool] '$(ALLOWPREVIEWVERSIONSINAPITESTS)'
+              allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('$(ALLOWPREVIEWVERSIONSINAPITESTS)')
             }
 
             Write-Verbose 'Invoke test with' -Verbose

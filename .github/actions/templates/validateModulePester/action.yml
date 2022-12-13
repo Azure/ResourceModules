@@ -126,7 +126,7 @@ runs:
         $testContainerData = @{
           moduleFolderPaths              = $moduleFolderPaths
           tokenConfiguration             = $tokenConfiguration
-          allowPreviewVersionsInAPITests = [bool] '${{ env.allowPreviewVersionsInAPITests }}'
+          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
         }
 
         Write-Verbose 'Invoke test with' -Verbose
