@@ -1,5 +1,5 @@
 ---
-# Synopsis: Suppress Rules for dependancies
+# Synopsis: Suppress Rules for dependencies
 apiVersion: github.com/microsoft/PSRule/v1
 kind: SuppressionGroup
 metadata:
