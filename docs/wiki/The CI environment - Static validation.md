@@ -60,7 +60,7 @@ To test the API versions, the test leverages the file `utilities/src/apiSpecsLis
 
 > **NOTE:** This functionality has a dependency on the [AzureAPICrawler](https://www.powershellgallery.com/packages/AzureAPICrawler) PowerShell module.
 
-The pipeline `platform.apiSpecs.yml` updates this file using the script `utilities/tools/platform/Set-ApiSpecsFile.ps1` and, once registered, runs on a weekly schedule. During runtime, the script installs & imports the `AzureAPICrawler` module, fetches all available API versions for all Resource Types via the module and updates the JSON file according to the latest information.
+The pipeline `platform.apiSpecs.yml` updates this file using the script `utilities/tools/platform/Set-ApiSpecsFile.ps1` and, once registered, runs on a weekly schedule. Upon execution, the script installs & imports the `AzureAPICrawler` module, fetches all available API versions for all Resource Types via the module and updates the JSON file according to the latest information.
 
 # Verify the static validation of your module locally
 
