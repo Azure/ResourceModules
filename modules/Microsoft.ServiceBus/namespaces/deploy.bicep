@@ -101,12 +101,13 @@ param cMKUserAssignedIdentityResourceId string = ''
 @description('Optional. Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters.')
 param requireInfrastructureEncryption bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'OperationalLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'OperationalLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

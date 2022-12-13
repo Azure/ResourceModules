@@ -102,12 +102,13 @@ param cMKKeyVersion string = ''
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ServiceLog'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ServiceLog'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

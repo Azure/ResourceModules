@@ -68,8 +68,9 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AzureBackupReport'
   'CoreAzureBackup'
   'AddonAzureBackupJobs'
@@ -86,20 +87,7 @@ param tags object = {}
   'AzureSiteRecoveryProtectedDiskDataChurn'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AzureBackupReport'
-  'CoreAzureBackup'
-  'AddonAzureBackupJobs'
-  'AddonAzureBackupAlerts'
-  'AddonAzureBackupPolicy'
-  'AddonAzureBackupStorage'
-  'AddonAzureBackupProtectedInstance'
-  'AzureSiteRecoveryJobs'
-  'AzureSiteRecoveryEvents'
-  'AzureSiteRecoveryReplicatedItems'
-  'AzureSiteRecoveryReplicationStats'
-  'AzureSiteRecoveryRecoveryPoints'
-  'AzureSiteRecoveryReplicationDataUploadRate'
-  'AzureSiteRecoveryProtectedDiskDataChurn'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

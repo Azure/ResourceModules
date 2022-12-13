@@ -22,8 +22,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'Administrative'
   'Security'
   'ServiceHealth'
@@ -34,14 +35,7 @@ param diagnosticEventHubName string = ''
   'ResourceHealth'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'Administrative'
-  'Security'
-  'ServiceHealth'
-  'Alert'
-  'Recommendation'
-  'Policy'
-  'Autoscale'
-  'ResourceHealth'
+  'allLogs'
 ]
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')

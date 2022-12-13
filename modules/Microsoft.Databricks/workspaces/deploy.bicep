@@ -52,8 +52,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'dbfs'
   'clusters'
   'accounts'
@@ -66,16 +67,7 @@ param enableDefaultTelemetry bool = true
   'instancePools'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'dbfs'
-  'clusters'
-  'accounts'
-  'jobs'
-  'notebook'
-  'ssh'
-  'workspace'
-  'secrets'
-  'sqlPermissions'
-  'instancePools'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')

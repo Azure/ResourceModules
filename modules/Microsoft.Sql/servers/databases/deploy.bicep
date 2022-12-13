@@ -79,8 +79,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'SQLInsights'
   'AutomaticTuning'
   'QueryStoreRuntimeStatistics'
@@ -94,17 +95,7 @@ param diagnosticEventHubName string = ''
   'SQLSecurityAuditEvents'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'SQLInsights'
-  'AutomaticTuning'
-  'QueryStoreRuntimeStatistics'
-  'QueryStoreWaitStatistics'
-  'Errors'
-  'DatabaseWaitStatistics'
-  'Timeouts'
-  'Blocks'
-  'Deadlocks'
-  'DevOpsOperationsAudit'
-  'SQLSecurityAuditEvents'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

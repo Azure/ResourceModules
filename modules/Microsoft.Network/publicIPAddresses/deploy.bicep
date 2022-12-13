@@ -72,16 +72,15 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

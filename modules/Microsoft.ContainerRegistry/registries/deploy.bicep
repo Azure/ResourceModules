@@ -132,14 +132,14 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ContainerRegistryRepositoryEvents'
-  'ContainerRegistryLoginEvents'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

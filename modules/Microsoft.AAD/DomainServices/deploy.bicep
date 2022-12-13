@@ -145,8 +145,9 @@ param lock string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'SystemSecurity'
   'AccountManagement'
   'LogonLogoff'
@@ -157,20 +158,12 @@ param roleAssignments array = []
   'DirectoryServiceAccess'
   'AccountLogon'
 ])
-param logsToEnable array = [
-  'SystemSecurity'
-  'AccountManagement'
-  'LogonLogoff'
-  'ObjectAccess'
-  'PolicyChange'
-  'PrivilegeUse'
-  'DetailTracking'
-  'DirectoryServiceAccess'
-  'AccountLogon'
+param diagnosticLogCategoriesToEnable array = [
+  'allLogs'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

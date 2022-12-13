@@ -106,20 +106,20 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param publicIpdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -127,11 +127,7 @@ param publicIpdiagnosticLogCategoriesToEnable array = [
   'P2SDiagnosticLog'
 ])
 param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
-  'GatewayDiagnosticLog'
-  'TunnelDiagnosticLog'
-  'RouteDiagnosticLog'
-  'IKEDiagnosticLog'
-  'P2SDiagnosticLog'
+  'allLogs'
 ]
 
 @description('Optional. Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided.')

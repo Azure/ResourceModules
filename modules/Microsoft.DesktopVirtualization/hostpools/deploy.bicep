@@ -97,8 +97,9 @@ param startVMOnConnect bool = false
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'Checkpoint'
   'Error'
   'Management'
@@ -107,12 +108,7 @@ param roleAssignments array = []
   'AgentHealthStatus'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'Checkpoint'
-  'Error'
-  'Management'
-  'Connection'
-  'HostRegistration'
-  'AgentHealthStatus'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')

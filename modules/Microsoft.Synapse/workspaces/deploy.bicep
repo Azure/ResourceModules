@@ -112,8 +112,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'SynapseRbacOperations'
   'GatewayApiRequests'
   'BuiltinSqlReqsEnded'
@@ -122,12 +123,7 @@ param diagnosticEventHubName string = ''
   'IntegrationTriggerRuns'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'SynapseRbacOperations'
-  'GatewayApiRequests'
-  'BuiltinSqlReqsEnded'
-  'IntegrationPipelineRuns'
-  'IntegrationActivityRuns'
-  'IntegrationTriggerRuns'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')

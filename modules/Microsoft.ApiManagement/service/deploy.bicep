@@ -109,12 +109,13 @@ param diagnosticWorkspaceId string = ''
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
 param zones array = []
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'GatewayLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'GatewayLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

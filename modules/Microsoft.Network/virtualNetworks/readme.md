@@ -38,7 +38,7 @@ This template deploys a virtual network (vNet).
 | `ddosProtectionPlanId` | string | `''` |  | Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[VMProtectionAlerts]` | `[VMProtectionAlerts]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, VMProtectionAlerts]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -342,6 +342,7 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `diagnosticsLogs` | array | The Diagnostic Settings of the virtual network. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the virtual network. |
 | `resourceGroupName` | string | The resource group the virtual network was deployed into. |
