@@ -49,6 +49,8 @@ This module deploys Storage StorageAccounts LocalUsers.
 | :-- | :-- | :-- |
 | `localUser` | string | The name of the local user created for SFTP Authentication. |
 | `permissionScopes` | array | The permission scopes granted for the local user. |
+| `resourceGroupName` | string | The resource group of the deployed management policy. |
+| `resourceId` | string | The resource ID of the local user resource created. |
 
 ## Cross-referenced modules
 

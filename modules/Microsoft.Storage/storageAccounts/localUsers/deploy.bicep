@@ -64,3 +64,8 @@ output localUser string = localUsers.name
 @description('The permission scopes granted for the local user.')
 output permissionScopes array = localUsers.properties.permissionScopes
 
+@description('The resource group of the deployed management policy.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The resource ID of the local user resource created.')
+output resourceId string = localUsers.id
