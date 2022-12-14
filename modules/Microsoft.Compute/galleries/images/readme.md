@@ -39,7 +39,8 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
 | `hyperVGeneration` | string | `'V1'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2. |
-| `imageDefinitionDescription` | string | `''` |  | The description of this gallery Image Definition resource. This property is updatable. |
+| `securityType` | string | | `[TrustedLaunch, ConfidentialVM, ConfidentialVMSupported]` | Security type refers to the different security features available for a Generation 2 virtual machines. Requires V2 hyperVGeneration. |
+| `imageDefinitionDescription` | string | `''` |  | The description of this gallery Image Definition resource. This property can be updated. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `maxRecommendedMemory` | int | `16` |  | The maximum amount of RAM in GB recommended for this image. |
 | `maxRecommendedvCPUs` | int | `4` |  | The maximum number of the CPU cores recommended for this image. |
