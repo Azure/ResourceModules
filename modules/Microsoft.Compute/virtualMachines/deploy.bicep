@@ -276,7 +276,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. VM guest patching orchestration mode. Allowed values are \'AutomaticByPlatform\', \'AutomaticByOS (Windows only)\', \'Manual (Windows only)\', \'ImageDefault (Linux only)\'. Default value is blank (not set).')
+@description('Optional. VM guest patching orchestration mode.')
 @allowed([
   'AutomaticByPlatform'
   'AutomaticByOS'
