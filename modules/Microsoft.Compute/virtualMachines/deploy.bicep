@@ -172,11 +172,6 @@ param extensionDomainJoinConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.')
-param extensionAadJoinConfig object = {
-  enabled: false
-}
-
 @description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionAntiMalwareConfig object = {
   enabled: false
@@ -331,9 +326,7 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-@description('change SystemAssignedIdentity to True if AADJoin is enabled.')
-var systemAssignedIdentityVar = extensionAadJoinConfig.enabled ? true : systemAssignedIdentity
-var identityType = systemAssignedIdentityVar ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -485,20 +478,6 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
     configurationProfile: configurationProfile
   }
   scope: vm
-}
-
-module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VM-AADLogin'
-  params: {
-    virtualMachineName: vm.name
-    name: 'AADLogin'
-    publisher: 'Microsoft.Azure.ActiveDirectory'
-    type: osType == 'Windows' ? 'AADLoginForWindows' : 'AADSSHLoginforLinux'
-    typeHandlerVersion: contains(extensionAadJoinConfig, 'typeHandlerVersion') ? extensionAadJoinConfig.typeHandlerVersion : '1.0'
-    autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
-    enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
-    settings: extensionAadJoinConfig.settings
-  }
 }
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
@@ -657,7 +636,6 @@ module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/p
   }
   scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [
-    vm_aadJoinExtension
     vm_domainJoinExtension
     vm_microsoftMonitoringAgentExtension
     vm_microsoftAntiMalwareExtension
@@ -668,7 +646,7 @@ module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/p
   ]
 }
 
-resource vm_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vm_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vm.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -15,7 +15,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Automanage/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Compute/virtualMachines` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines) |
@@ -73,7 +73,6 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionCustomScriptProtectedSetting` | secureObject | `{object}` |  | Any object that contains the extension specific protected settings. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionAadJoinConfig` | object | `{object}` |  | The configuration for the [AADLoginforWindows] extension. Must at least contain the ["enabled": true] property to be executed. Automatically enables the System Assigned Managed Identity. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -496,42 +495,6 @@ configurationProfileAssignments: [
     '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
 ]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `extensionAadJoinConfig`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"extensionAadJoinConfig": {
-  "value": {
-    "enabled": true,
-    "settings": {
-      "mdmId": "0000000a-0000-0000-c000-000000000000" // This enables Intune Enrollment., Do not set mdmId to disable Intune Enrollment.
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-extensionAadJoinConfig: {
-    enabled: true
-    settings: {
-      mdmId: '0000000a-0000-0000-c000-000000000000' // This enables Intune Enrollment., Do not set mdmId to disable Intune Enrollment.
-    }
-}
-
 ```
 
 </details>
