@@ -26,6 +26,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
 | `Microsoft.Storage/storageAccounts/fileServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices) |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices/shares) |
+| `Microsoft.Storage/storageAccounts/localUsers` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/localUsers) |
 | `Microsoft.Storage/storageAccounts/managementPolicies` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/managementPolicies) |
 | `Microsoft.Storage/storageAccounts/queueServices` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/queueServices) |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/queueServices/queues) |
@@ -65,7 +66,10 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. |
+| `enableNfsV3` | bool | `False` |  | If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true. |
+| `enableSftp` | bool | `False` |  | If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
+| `localUsers` | _[localUsers](localUsers/readme.md)_ array | `[]` |  | Details of local users to be added for SFTP authentication. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managementPolicyRules` | array | `[]` |  | The Storage Account ManagementPolicies Rules. |
@@ -399,151 +403,170 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>ssacom001'
     // Non-required parameters
-    allowBlobPublicAccess: false
-    blobServices: {
-      containers: [
-        {
-          name: 'avdscripts'
-          publicAccess: 'None'
-          roleAssignments: [
-            {
-              principalIds: [
-                '<managedIdentityPrincipalId>'
-              ]
-              principalType: 'ServicePrincipal'
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-        }
-        {
-          allowProtectedAppendWrites: false
-          enableWORM: true
-          name: 'archivecontainer'
-          publicAccess: 'None'
-          WORMRetention: 666
-        }
-      ]
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    }
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fileServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-      diagnosticEventHubName: '<diagnosticEventHubName>'
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-      shares: [
-        {
-          name: 'avdprofiles'
-          roleAssignments: [
-            {
-              principalIds: [
-                '<managedIdentityPrincipalId>'
-              ]
-              principalType: 'ServicePrincipal'
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          shareQuota: 5120
-        }
-        {
-          name: 'avdprofiles2'
-          shareQuota: 5120
-        }
-      ]
-    }
-    lock: 'CanNotDelete'
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      ipRules: [
-        {
-          action: 'Allow'
-          value: '1.1.1.1'
-        }
-      ]
-      virtualNetworkRules: [
-        {
-          action: 'Allow'
-          id: '<id>'
-        }
-      ]
-    }
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'blob'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
+    requireInfrastructureEncryption: true
     queueServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
       queues: [
         {
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<managedIdentityPrincipalId>'
+              ]
+              principalType: 'ServicePrincipal'
+            }
+          ]
+          name: 'queue1'
           metadata: {
             key1: 'value1'
             key2: 'value2'
           }
-          name: 'queue1'
-          roleAssignments: [
-            {
-              principalIds: [
-                '<managedIdentityPrincipalId>'
-              ]
-              principalType: 'ServicePrincipal'
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
         }
         {
           metadata: {}
           name: 'queue2'
         }
       ]
+      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     }
-    requireInfrastructureEncryption: true
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountSku: 'Standard_LRS'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     systemAssignedIdentity: true
-    tableServices: {
-      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    blobServices: {
       diagnosticEventHubName: '<diagnosticEventHubName>'
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+      containers: [
+        {
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<managedIdentityPrincipalId>'
+              ]
+              principalType: 'ServicePrincipal'
+            }
+          ]
+          publicAccess: 'None'
+          name: 'avdscripts'
+        }
+        {
+          name: 'archivecontainer'
+          publicAccess: 'None'
+          enableWORM: true
+          WORMRetention: 666
+          allowProtectedAppendWrites: false
+        }
+      ]
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    }
+    storageAccountSku: 'Standard_LRS'
+    enableNfsV3: true
+    localUsers: [
+      {
+        hasSshPassword: false
+        permissionScopes: [
+          {
+            service: 'blob'
+            permissions: 'r'
+            resourceName: 'avdscripts'
+          }
+        ]
+        storageAccountName: '<<namePrefix>>ssacom001'
+        hasSshKey: true
+        hasSharedKey: false
+        name: 'testuser'
+      }
+    ]
+    enableHierarchicalNamespace: true
+    lock: 'CanNotDelete'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    fileServices: {
+      diagnosticEventHubName: '<diagnosticEventHubName>'
+      diagnosticLogsRetentionInDays: 7
+      shares: [
+        {
+          shareQuota: 5120
+          name: 'avdprofiles'
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<managedIdentityPrincipalId>'
+              ]
+              principalType: 'ServicePrincipal'
+            }
+          ]
+        }
+        {
+          shareQuota: 5120
+          name: 'avdprofiles2'
+        }
+      ]
+      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    }
+    tableServices: {
+      diagnosticEventHubName: '<diagnosticEventHubName>'
+      diagnosticLogsRetentionInDays: 7
       tables: [
         'table1'
         'table2'
       ]
+      diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+      diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+      diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     }
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
+    diagnosticLogsRetentionInDays: 7
+    allowBlobPublicAccess: false
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableSftp: true
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    networkAcls: {
+      virtualNetworkRules: [
+        {
+          action: 'Allow'
+          id: '<id>'
+        }
+      ]
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      ipRules: [
+        {
+          value: '1.1.1.1'
+          action: 'Allow'
+        }
+      ]
     }
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    privateEndpoints: [
+      {
+        subnetResourceId: '<subnetResourceId>'
+        service: 'blob'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+      }
+    ]
   }
 }
 ```
@@ -565,188 +588,215 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       "value": "<<namePrefix>>ssacom001"
     },
     // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "blobServices": {
-      "value": {
-        "containers": [
-          {
-            "name": "avdscripts",
-            "publicAccess": "None",
-            "roleAssignments": [
-              {
-                "principalIds": [
-                  "<managedIdentityPrincipalId>"
-                ],
-                "principalType": "ServicePrincipal",
-                "roleDefinitionIdOrName": "Reader"
-              }
-            ]
-          },
-          {
-            "allowProtectedAppendWrites": false,
-            "enableWORM": true,
-            "name": "archivecontainer",
-            "publicAccess": "None",
-            "WORMRetention": 666
-          }
-        ],
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
-        "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>"
-      }
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "fileServices": {
-      "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-        "diagnosticEventHubName": "<diagnosticEventHubName>",
-        "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-        "shares": [
-          {
-            "name": "avdprofiles",
-            "roleAssignments": [
-              {
-                "principalIds": [
-                  "<managedIdentityPrincipalId>"
-                ],
-                "principalType": "ServicePrincipal",
-                "roleDefinitionIdOrName": "Reader"
-              }
-            ],
-            "shareQuota": 5120
-          },
-          {
-            "name": "avdprofiles2",
-            "shareQuota": 5120
-          }
-        ]
-      }
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "networkAcls": {
-      "value": {
-        "bypass": "AzureServices",
-        "defaultAction": "Deny",
-        "ipRules": [
-          {
-            "action": "Allow",
-            "value": "1.1.1.1"
-          }
-        ],
-        "virtualNetworkRules": [
-          {
-            "action": "Allow",
-            "id": "<id>"
-          }
-        ]
-      }
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "blob",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
+    "requireInfrastructureEncryption": {
+      "value": true
     },
     "queueServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
         "diagnosticEventHubName": "<diagnosticEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
         "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
         "queues": [
           {
-            "metadata": {
-              "key1": "value1",
-              "key2": "value2"
-            },
-            "name": "queue1",
             "roleAssignments": [
               {
+                "roleDefinitionIdOrName": "Reader",
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
-                "principalType": "ServicePrincipal",
-                "roleDefinitionIdOrName": "Reader"
+                "principalType": "ServicePrincipal"
               }
-            ]
+            ],
+            "name": "queue1",
+            "metadata": {
+              "key1": "value1",
+              "key2": "value2"
+            }
           },
           {
             "metadata": {},
             "name": "queue2"
           }
-        ]
+        ],
+        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>"
       }
-    },
-    "requireInfrastructureEncryption": {
-      "value": true
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
     },
-    "storageAccountSku": {
-      "value": "Standard_LRS"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "systemAssignedIdentity": {
       "value": true
     },
-    "tableServices": {
+    "blobServices": {
       "value": {
-        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
         "diagnosticEventHubName": "<diagnosticEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+        "containers": [
+          {
+            "roleAssignments": [
+              {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                  "<managedIdentityPrincipalId>"
+                ],
+                "principalType": "ServicePrincipal"
+              }
+            ],
+            "publicAccess": "None",
+            "name": "avdscripts"
+          },
+          {
+            "name": "archivecontainer",
+            "publicAccess": "None",
+            "enableWORM": true,
+            "WORMRetention": 666,
+            "allowProtectedAppendWrites": false
+          }
+        ],
         "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-        "tables": [
-          "table1",
-          "table2"
+        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>"
+      }
+    },
+    "enableNfsV3": {
+      "value": true
+    },
+    "localUsers": {
+      "value": [
+        {
+          "hasSshPassword": false,
+          "permissionScopes": [
+            {
+              "service": "blob",
+              "permissions": "r",
+              "resourceName": "avdscripts"
+            }
+          ],
+          "storageAccountName": "<<namePrefix>>ssacom001",
+          "hasSshKey": true,
+          "hasSharedKey": false,
+          "name": "testuser"
+        }
+      ]
+    },
+    "networkAcls": {
+      "value": {
+        "virtualNetworkRules": [
+          {
+            "action": "Allow",
+            "id": "<id>"
+          }
+        ],
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "ipRules": [
+          {
+            "value": "1.1.1.1",
+            "action": "Allow"
+          }
         ]
+      }
+    },
+    "enableHierarchicalNamespace": {
+      "value": true
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "fileServices": {
+      "value": {
+        "diagnosticEventHubName": "<diagnosticEventHubName>",
+        "diagnosticLogsRetentionInDays": 7,
+        "shares": [
+          {
+            "shareQuota": 5120,
+            "name": "avdprofiles",
+            "roleAssignments": [
+              {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                  "<managedIdentityPrincipalId>"
+                ],
+                "principalType": "ServicePrincipal"
+              }
+            ]
+          },
+          {
+            "shareQuota": 5120,
+            "name": "avdprofiles2"
+          }
+        ],
+        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>"
       }
     },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "tableServices": {
+      "value": {
+        "diagnosticEventHubName": "<diagnosticEventHubName>",
+        "diagnosticLogsRetentionInDays": 7,
+        "tables": [
+          "table1",
+          "table2"
+        ],
+        "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+        "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+        "diagnosticStorageAccountId": "<diagnosticStorageAccountId>"
+      }
+    },
+    "storageAccountSku": {
+      "value": "Standard_LRS"
+    },
+    "allowBlobPublicAccess": {
+      "value": false
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableSftp": {
+      "value": true
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "<subnetResourceId>",
+          "service": "blob",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
     }
   }
 }
@@ -768,35 +818,35 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>stsencr001'
     // Non-required parameters
-    allowBlobPublicAccess: false
-    blobServices: {
-      containers: [
-        {
-          name: '<<namePrefix>>container'
-          publicAccess: 'None'
-        }
-      ]
-    }
-    cMKKeyName: '<cMKKeyName>'
+    requireInfrastructureEncryption: true
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: false
+    allowBlobPublicAccess: false
+    storageAccountSku: 'Standard_LRS'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     privateEndpoints: [
       {
+        subnetResourceId: '<subnetResourceId>'
+        service: 'blob'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'blob'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    requireInfrastructureEncryption: true
-    storageAccountSku: 'Standard_LRS'
-    systemAssignedIdentity: false
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
+    cMKKeyName: '<cMKKeyName>'
+    blobServices: {
+      containers: [
+        {
+          publicAccess: 'None'
+          name: '<<namePrefix>>container'
+        }
+      ]
     }
   }
 }
@@ -819,56 +869,56 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       "value": "<<namePrefix>>stsencr001"
     },
     // Non-required parameters
+    "requireInfrastructureEncryption": {
+      "value": true
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": false
+    },
     "allowBlobPublicAccess": {
       "value": false
+    },
+    "storageAccountSku": {
+      "value": "Standard_LRS"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "subnetResourceId": "<subnetResourceId>",
+          "service": "blob",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
     },
     "blobServices": {
       "value": {
         "containers": [
           {
-            "name": "<<namePrefix>>container",
-            "publicAccess": "None"
+            "publicAccess": "None",
+            "name": "<<namePrefix>>container"
           }
         ]
-      }
-    },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "blob",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "requireInfrastructureEncryption": {
-      "value": true
-    },
-    "storageAccountSku": {
-      "value": "Standard_LRS"
-    },
-    "systemAssignedIdentity": {
-      "value": false
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -940,38 +990,38 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>ssanfs001'
     // Non-required parameters
-    allowBlobPublicAccess: false
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    allowBlobPublicAccess: false
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fileServices: {
       shares: [
         {
-          enabledProtocols: 'NFS'
           name: 'nfsfileshare'
+          enabledProtocols: 'NFS'
         }
       ]
     }
-    lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountKind: 'FileStorage'
-    storageAccountSku: 'Premium_LRS'
     supportsHttpsTrafficOnly: false
     systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticLogsRetentionInDays: 7
+    storageAccountSku: 'Premium_LRS'
+    storageAccountKind: 'FileStorage'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    lock: 'CanNotDelete'
   }
 }
 ```
@@ -993,23 +1043,22 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       "value": "<<namePrefix>>ssanfs001"
     },
     // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    "lock": {
+      "value": "CanNotDelete"
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
     },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "allowBlobPublicAccess": {
+      "value": false
+    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -1018,31 +1067,22 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       "value": {
         "shares": [
           {
-            "enabledProtocols": "NFS",
-            "name": "nfsfileshare"
+            "name": "nfsfileshare",
+            "enabledProtocols": "NFS"
           }
         ]
       }
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
-    },
-    "storageAccountKind": {
-      "value": "FileStorage"
-    },
-    "storageAccountSku": {
-      "value": "Premium_LRS"
     },
     "supportsHttpsTrafficOnly": {
       "value": false
@@ -1050,10 +1090,20 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": true
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "storageAccountSku": {
+      "value": "Premium_LRS"
+    },
+    "storageAccountKind": {
+      "value": "FileStorage"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -1076,8 +1126,8 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: '<<namePrefix>>ssav1001'
     // Non-required parameters
     allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     storageAccountKind: 'Storage'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -1102,11 +1152,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "allowBlobPublicAccess": {
       "value": false
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "storageAccountKind": {
       "value": "Storage"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

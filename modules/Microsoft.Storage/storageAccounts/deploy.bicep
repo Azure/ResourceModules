@@ -85,6 +85,15 @@ param minimumTlsVersion string = 'TLS1_2'
 @description('Optional. If true, enables Hierarchical Namespace for the storage account.')
 param enableHierarchicalNamespace bool = false
 
+@description('Optional. If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true.')
+param enableSftp bool = false
+
+@description('Optional. Details of local users to be added for SFTP authentication.')
+param localUsers array = []
+
+@description('Optional. If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true.')
+param enableNfsV3 bool = false
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -227,6 +236,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
+    isSftpEnabled: enableSftp ? enableSftp : null
+    isNfsV3Enabled: enableNfsV3 ? enableNfsV3 : null
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
@@ -303,6 +314,21 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
+
+// SFTP user settings
+module storageAccount_localUsers 'localUsers/deploy.bicep' = [ for (localUser, index) in localUsers: {
+  name: '${uniqueString(deployment().name, location)}-Storage-LocalUsers-${index}'
+  params: {
+    storageAccountName: storageAccount.name
+    name: localUser.name
+    hasSharedKey: localUser.hasSharedKey
+    hasSshKey: localUser.hasSshKey
+    hasSshPassword: localUser.hasSshPassword
+    homeDirectory: localUser.homeDirectory
+    permissionScopes: localUser.permissionScopes
+    sshAuthorizedKeys: localUser.sshAuthorizedKeys
+     }
+}]
 
 // Containers
 module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
