@@ -73,6 +73,29 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         hyperVGeneration: 'V2'
+        securityType: 'TrustedLaunch'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-x-002'
+        offer: 'WindowsDesktop'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsDesktop'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        sku: 'Win11-21H2'
+      }
+      {
+        hyperVGeneration: 'V2'
         maxRecommendedMemory: 32
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
