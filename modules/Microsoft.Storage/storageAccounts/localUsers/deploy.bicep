@@ -59,10 +59,7 @@ resource localUsers 'Microsoft.Storage/storageAccounts/localUsers@2021-09-01' = 
 }
 
 @description('The name of the local user created for SFTP Authentication.')
-output localUser string = localUsers.name
-
-@description('The permission scopes granted for the local user.')
-output permissionScopes array = localUsers.properties.permissionScopes
+output name string = localUsers.name
 
 @description('The resource group of the deployed management policy.')
 output resourceGroupName string = resourceGroup().name
