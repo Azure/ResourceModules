@@ -275,6 +275,7 @@ param diagnosticEventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   <LogsIfAny>
 ])
 param diagnosticLogCategoriesToEnable array = [
