@@ -74,9 +74,8 @@ param diagnosticEventHubName string = ''
   'FrontdoorAccessLog'
   'FrontdoorWebApplicationFirewallLog'
 ])
-param logsToEnable array = [
-  'FrontdoorAccessLog'
-  'FrontdoorWebApplicationFirewallLog'
+param diagnosticLogCategoriesToEnable array = [
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -87,14 +86,25 @@ param metricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in metricsToEnable: {
   category: metric

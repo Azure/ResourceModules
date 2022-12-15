@@ -151,7 +151,7 @@ param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
 // ================//
 
 // Diagnostic Variables
-var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+var virtualNetworkGatewayDiagnosticsLogsSpecified = [for category in filter(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -160,7 +160,18 @@ var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewa
   }
 }]
 
-var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesToEnable: {
+var virtualNetworkGatewayDiagnosticsLogs = contains(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : virtualNetworkGatewayDiagnosticsLogsSpecified
+
+var publicIpDiagnosticsLogsSpecified = [for category in filter(publicIpdiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -168,6 +179,17 @@ var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesTo
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var publicIpDiagnosticsLogs = contains(publicIpdiagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : publicIpDiagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
