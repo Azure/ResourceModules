@@ -1,0 +1,49 @@
+name: '.Platform - Run CredScan'
+
+pr: none
+
+stages:
+  - stage: Run_CredScan
+    jobs:
+      - job: ubuntu
+        displayName: "detect-secrets on Ubuntu Linux agent"
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - task: UsePythonVersion@0
+            displayName: "Set Python 3 as default"
+            inputs:
+              versionSpec: "3"
+              addToPath: true
+              architecture: "x64"
+
+          - bash: pip install detect-secrets
+            displayName: "Install detect-secrets using pip"
+
+          - bash: |
+              detect-secrets --version
+              cp utilities/pipelines/credScan/.secrets.baseline .secrets.current
+              detect-secrets scan --baseline .secrets.current $(find . -type f ! -name '.secrets.*' ! -path '*/.git*' ! -name 'readme.md')
+            displayName: "Run detect-secrets tool"
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish scan baseline"
+            inputs:
+              targetPath: "utilities/pipelines/credScan/.secrets.baseline"
+              artifact: "secret-baseline"
+              publishLocation: "pipeline"
+
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish scan report"
+            inputs:
+              targetPath: ".secrets.current"
+              artifact: "secret-current-run"
+              publishLocation: "pipeline"
+          - bash: |
+              list_secrets() { jq -r '.results | keys[] as $key | "\($key),\(.[$key] | .[] | .line_number)"' "$1" | sort; }
+
+              if ! diff <(list_secrets utilities/pipelines/credScan/.secrets.baseline) <(list_secrets .secrets.current) >&2; then
+                echo "Detected new secrets in the repo" >&2
+                exit 1
+              fi
+            displayName: "Compare results"

@@ -20,7 +20,6 @@ jobs:
           detect-secrets --version
           cp utilities/pipelines/credScan/.secrets.baseline .secrets.current
           detect-secrets scan --baseline .secrets.current $(find . -type f ! -name '.secrets.*' ! -path '*/.git*' ! -name 'readme.md')
-          ls
 
       - name: Upload Secret Baseline as Artifact
         uses: actions/upload-artifact@v2
