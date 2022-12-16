@@ -90,7 +90,7 @@ param planName string = ''
 @description('Optional. The publisher ID.')
 param planPublisherName string = ''
 
-@description('Optional. The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z.')
+@description('Optional. The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property can be updated. Allowed format: 2020-01-10T23:00:00.000Z.')
 param endOfLife string = ''
 
 @description('Optional. List of the excluded disk types. E.g. Standard_LRS.')

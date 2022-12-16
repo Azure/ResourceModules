@@ -35,7 +35,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
+| `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property can be updated. Allowed format: 2020-01-10T23:00:00.000Z. |
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
 | `hyperVGeneration` | string | `'V1'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2. If the Security Type (via the securityType paramater) of the image definition is specified, the hyperVGeneration will automatically be set to "V2". |
