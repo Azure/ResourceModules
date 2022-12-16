@@ -5,7 +5,7 @@ This section details the design principles followed by the CARML Bicep modules.
 ### _Navigation_
 
 - [General guidelines](#general-guidelines)
-- [File & folder structure](#file--folder-structure)
+- [File \& folder structure](#file--folder-structure)
   - [Structure](#structure)
     - [**Child resources**](#child-resources)
   - [Naming](#naming)
@@ -27,6 +27,10 @@ This section details the design principles followed by the CARML Bicep modules.
 - [ReadMe](#readme)
 - [Module test files](#module-test-files)
 - [Telemetry](#telemetry)
+  - [Overview](#overview)
+  - [Technical Details](#technical-details)
+  - [Opting Out](#opting-out)
+  - [Telemetry vs Customer Usage Attribution](#telemetry-vs-customer-usage-attribution)
 
 ---
 
@@ -655,12 +659,26 @@ In addition, they follow these file-type-specific guidelines:
 
 # Telemetry
 
+## Overview 
+
+Microsoft uses the approach detailed in this section to identify the deployments of the Bicep and ARM JSON templates of the CARML library. Microsoft collects this information to provide the best experiences with their products and to operate their business. Telemetry data is captured through the built-in mechanisms of the Azure platform; therefore, it never leaves the platform, providing only Microsoft with access. Deployments are identified through a specific GUID (Globally Unique ID) representing the code is originated in the CARML library. The data is collected and governed by Microsoft's privacy policies, located at the [Trust Center](https://www.microsoft.com/en-us/trust-center).
+
+Telemetry collected as described here does not provide Microsoft with insights into the resources deployed, their configuration or any customer data stored in or processed by Azure resources deployed by using code from the CARML library. Microsoft does not track the usage/consumption of individual resources using telemetry described here.
+
+> **Note:** While telemetry gathered as described here is only accessible by Microsoft, Customers have access to the exact same deployment information on the Azure portal, under the Deployments section of the corresponding scope (Resource Group, Subscription, etc.).
+
+## Technical Details
+
 Each module in CARML contains a `defaultTelemetry` deployment `'pid-<GUID>-${uniqueString(deployment().name)}'`, resulting in deployments such as `'pid-<GUID>-nx2c3rnlt2wru'`.
 
 > **Note:** Though implemented at each level in a module hierarchy (e.g., storage account & blobServices), the deployment will only happen for the top-level module in a deployment, but not for its children. To illustrate this better, see the following examples:
 >
 > - Deployment of the KeyVault module and 2 Secrets: Results in 1 `PID` deployment for the KeyVault (and none for the secrets)
 > - Deployment of the Secret module: Results in 1 `PID` deployment for the Secret
+
+## Opting Out
+
+Albeit telemetry described in this section is optional, the implementation follows an opt-out logic, as most commercial software solutions, this project also requires continuously demonstrating evidence of usage, hence the CARML product team recommends leaving the telemetry setting on its default, enabled configuration.
 
 This resource enables the CARML product team to query the number of deployments of a given template from Azure - and as such, get insights into its adoption.
 
@@ -671,6 +689,8 @@ When consuming the modules outside of CARML's pipelines you can either
 - Set the parameter to a default value of `'false'`
 - Set the parameter to false when deploying a module
 
-> **Note:** _The deployment and its GUID can NOT be used to track [Azure Consumed Revenue (ACR)](https://docs.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)._
->
-> _If you want to track consumption, we recommend to implement it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format `'pid-<GUID>'` (without the suffix)._
+## Telemetry vs Customer Usage Attribution
+
+Though similar in principles, this approach is not to be confused and does not conflict with the usage of CUA IDs that are used to track Customer Usage Attribution of Azure marketplace solutions (partner solutions). The GUID-based telemetry approach described here can coexist and can be used side-by-side with CUA IDs. If you have any partner or customer scenario require the addition of CUA IDs, you can customize the modules of this library by adding the required CUA ID deployment while keeping the built-in telemetry solution.
+
+> **Note:** *If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix).*

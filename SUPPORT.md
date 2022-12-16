@@ -33,4 +33,3 @@ For help and questions about using this project, please submit a GitHub issue wi
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
 [PowerShellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
-[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
