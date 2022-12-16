@@ -15,7 +15,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Automanage/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Compute/virtualMachines` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines) |
@@ -68,7 +68,6 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableEvictionPolicy` | bool | `False` |  | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
-| `extensionAadJoinConfig` | object | `{object}` |  | The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys. |
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -496,42 +495,6 @@ configurationProfileAssignments: [
     '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
 ]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `extensionAadJoinConfig`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"extensionAadJoinConfig": {
-  "value": {
-    "enabled": true,
-    "settings": {
-      "mdmId": "0000000a-0000-0000-c000-000000000000" // This enables Intune Enrollment., Do not set mdmId to disable Intune Enrollment.
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-extensionAadJoinConfig: {
-    enabled: true
-    settings: {
-      mdmId: '0000000a-0000-0000-c000-000000000000' // This enables Intune Enrollment., Do not set mdmId to disable Intune Enrollment.
-    }
-}
-
 ```
 
 </details>
@@ -1176,9 +1139,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     disablePasswordAuthentication: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
-    extensionAadJoinConfig: {
-      enabled: true
-    }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
@@ -1387,11 +1347,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "encryptionAtHost": {
       "value": false
-    },
-    "extensionAadJoinConfig": {
-      "value": {
-        "enabled": true
-      }
     },
     "extensionAzureDiskEncryptionConfig": {
       "value": {
@@ -1873,9 +1828,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
-    extensionAadJoinConfig: {
-      enabled: true
-    }
     extensionAntiMalwareConfig: {
       enabled: true
       settings: {
@@ -2097,11 +2049,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "encryptionAtHost": {
       "value": false
-    },
-    "extensionAadJoinConfig": {
-      "value": {
-        "enabled": true
-      }
     },
     "extensionAntiMalwareConfig": {
       "value": {
