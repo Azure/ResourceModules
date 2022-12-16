@@ -54,7 +54,7 @@ param minRecommendedMemory int = 4
 @maxValue(4000)
 param maxRecommendedMemory int = 16
 
-@description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2.')
+@description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2. If the Security Type (via the securityType paramater) of the image definition is specified, the hyperVGeneration will automatically be set to "V2".')
 @allowed([
   'V1'
   'V2'
@@ -69,7 +69,7 @@ param hyperVGeneration string = 'V1'
 ])
 param securityType string
 
-@description('Optional. The description of this gallery Image Definition resource. This property is updatable.')
+@description('Optional. The description of this gallery Image Definition resource. This property can be updated.')
 param imageDefinitionDescription string = ''
 
 @description('Optional. The Eula agreement for the gallery Image Definition. Has to be a valid URL.')
