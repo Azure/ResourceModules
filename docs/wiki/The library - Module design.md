@@ -678,9 +678,9 @@ Each module in CARML contains a `defaultTelemetry` deployment `'pid-<GUID>-${uni
 
 ## Opting Out
 
-Albeit telemetry described in this section is optional, the implementation follows an opt-out logic, as most commercial software solutions, this project also requires continuously demonstrating evidence of usage, hence the CARML product team recommends leaving the telemetry setting on its default, enabled configuration.
+Albeit telemetry described in this section is optional, the implementation follows an opt-out logic, as most commercial software solutions, this project also requires continuously demonstrating evidence of usage, hence the CARML team recommends leaving the telemetry setting on its default, enabled configuration.
 
-This resource enables the CARML product team to query the number of deployments of a given template from Azure - and as such, get insights into its adoption.
+This resource enables the CARML team to query the number of deployments of a given template from Azure - and as such, get insights into its adoption.
 
 When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.yml` file in the repository's root. This value is automatically injected into each individual deployment that is performed as part of the environment's pipeline.
 
