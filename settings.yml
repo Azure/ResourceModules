@@ -8,7 +8,7 @@ variables:
   enableDefaultTelemetry: true
 
   ########################
-  ##   Tokens settings   ##
+  ##   Token settings   ##
   #########################
 
   # the 'localToken_' prefix will be removed from the key name when the pipelines run.
