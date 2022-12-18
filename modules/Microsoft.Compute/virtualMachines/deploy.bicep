@@ -276,7 +276,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. VM guest patching orchestration mode.')
+@description('Optional. VM guest patching orchestration mode. Refer to \'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching\'')
 @allowed([
   'AutomaticByPlatform'
   'AutomaticByOS'
@@ -285,6 +285,13 @@ param enableAutomaticUpdates bool = true
   ''
 ])
 param patchMode string = ''
+
+@description('Optional. VM guest patching assessment mode. Allowed values are \'AutomaticByPlatform\', \'ImageDefault\'. Set it to \'AutomaticByPlatform\' to enable automatically check for updates every 24 hours.')
+@allowed([
+  'AutomaticByPlatform'
+  'ImageDefault'
+])
+param patchAssessmentMode string = 'ImageDefault'
 
 @description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.')
 param timeZone string = ''
@@ -318,14 +325,16 @@ var linuxConfiguration = {
   provisionVMAgent: provisionVMAgent
   patchSettings: (provisionVMAgent && (patchMode =~ 'AutomaticByPlatform' || patchMode =~ 'ImageDefault')) ? {
     patchMode: patchMode
+    assessmentMode: patchAssessmentMode
   } : null
 }
 
 var windowsConfiguration = {
   provisionVMAgent: provisionVMAgent
-  enableAutomaticUpdates: patchMode !~ 'Manual' ? enableAutomaticUpdates : false
+  enableAutomaticUpdates: enableAutomaticUpdates
   patchSettings: (provisionVMAgent && (patchMode =~ 'AutomaticByPlatform' || patchMode =~ 'AutomaticByOS' || patchMode =~ 'Manual')) ? {
     patchMode: patchMode
+    assessmentMode: patchAssessmentMode
   } : null
   timeZone: empty(timeZone) ? null : timeZone
   additionalUnattendContent: empty(additionalUnattendContent) ? null : additionalUnattendContent
