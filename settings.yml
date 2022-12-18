@@ -9,7 +9,7 @@ variables:
 
   ########################
   ##   Token settings   ##
-  #########################
+  ########################
 
   # the 'localToken_' prefix will be removed from the key name when the pipelines run.
   # e.g. if you have a token in your parameter file as <<customKey>>, then the token defined in this file looks like "localToken_customKey": 'value'
