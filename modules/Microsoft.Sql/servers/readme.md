@@ -361,11 +361,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     name: '<<namePrefix>>-sqlsadmin'
     // Non-required parameters
     administrators: {
-      azureADOnlyAuthentication: true
-      login: 'myspn'
       principalType: 'Application'
-      sid: '<sid>'
+      login: 'myspn'
       tenantId: '<tenantId>'
+      azureADOnlyAuthentication: true
+      sid: '<sid>'
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -391,11 +391,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Non-required parameters
     "administrators": {
       "value": {
-        "azureADOnlyAuthentication": true,
-        "login": "myspn",
         "principalType": "Application",
-        "sid": "<sid>",
-        "tenantId": "<tenantId>"
+        "login": "myspn",
+        "tenantId": "<tenantId>",
+        "azureADOnlyAuthentication": true,
+        "sid": "<sid>"
       }
     },
     "enableDefaultTelemetry": {
@@ -419,83 +419,67 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlscom'
   params: {
     name: '<<namePrefix>>-sqlscom'
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
-    databases: [
-      {
-        capacity: 0
-        collation: 'SQL_Latin1_General_CP1_CI_AS'
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-        elasticPoolId: '<elasticPoolId>'
-        licenseType: 'LicenseIncluded'
-        maxSizeBytes: 34359738368
-        name: '<<namePrefix>>-sqlscomdb-001'
-        skuName: 'ElasticPool'
-        skuTier: 'GeneralPurpose'
-      }
-    ]
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: '<<namePrefix>>-sqlscom-ep-001'
         skuCapacity: 10
-        skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    firewallRules: [
-      {
-        endIpAddress: '0.0.0.0'
-        name: 'AllowAllWindowsAzureIps'
-        startIpAddress: '0.0.0.0'
+        name: '<<namePrefix>>-sqlscom-ep-001'
+        skuName: 'GP_Gen5'
       }
     ]
     keys: [
       {
-        name: '<name>'
         serverKeyType: 'AzureKeyVault'
+        name: '<name>'
         uri: '<uri>'
       }
     ]
-    location: '<location>'
-    lock: 'CanNotDelete'
+    securityAlertPolicies: [
+      {
+        state: 'Enabled'
+        name: 'Default'
+        emailAccountAdmins: true
+      }
+    ]
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    vulnerabilityAssessmentsObj: {
+      emailSubscriptionAdmins: true
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+      name: 'default'
+    }
+    administratorLoginPassword: '<administratorLoginPassword>'
     primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    administratorLogin: 'adminUserName'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
     privateEndpoints: [
       {
+        service: 'sqlServer'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'sqlServer'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    securityAlertPolicies: [
-      {
-        emailAccountAdmins: true
-        name: 'Default'
-        state: 'Enabled'
-      }
-    ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
+    lock: 'CanNotDelete'
     virtualNetworkRules: [
       {
         ignoreMissingVnetServiceEndpoint: true
@@ -503,16 +487,32 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
       }
     ]
-    vulnerabilityAssessmentsObj: {
-      emailSubscriptionAdmins: true
-      name: 'default'
-      recurringScansEmails: [
-        'test1@contoso.com'
-        'test2@contoso.com'
-      ]
-      recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
-    }
+    databases: [
+      {
+        diagnosticLogsRetentionInDays: 7
+        skuName: 'ElasticPool'
+        maxSizeBytes: 34359738368
+        skuTier: 'GeneralPurpose'
+        elasticPoolId: '<elasticPoolId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        name: '<<namePrefix>>-sqlscomdb-001'
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        capacity: 0
+        collation: 'SQL_Latin1_General_CP1_CI_AS'
+        licenseType: 'LicenseIncluded'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+      }
+    ]
+    systemAssignedIdentity: true
+    firewallRules: [
+      {
+        endIpAddress: '0.0.0.0'
+        name: 'AllowAllWindowsAzureIps'
+        startIpAddress: '0.0.0.0'
+      }
+    ]
+    location: '<location>'
   }
 }
 ```
@@ -532,112 +532,90 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>-sqlscom"
     },
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
-    "databases": {
-      "value": [
-        {
-          "capacity": 0,
-          "collation": "SQL_Latin1_General_CP1_CI_AS",
-          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-          "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "diagnosticLogsRetentionInDays": 7,
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-          "elasticPoolId": "<elasticPoolId>",
-          "licenseType": "LicenseIncluded",
-          "maxSizeBytes": 34359738368,
-          "name": "<<namePrefix>>-sqlscomdb-001",
-          "skuName": "ElasticPool",
-          "skuTier": "GeneralPurpose"
-        }
-      ]
-    },
     "elasticPools": {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "<<namePrefix>>-sqlscom-ep-001",
           "skuCapacity": 10,
-          "skuName": "GP_Gen5",
-          "skuTier": "GeneralPurpose"
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "firewallRules": {
-      "value": [
-        {
-          "endIpAddress": "0.0.0.0",
-          "name": "AllowAllWindowsAzureIps",
-          "startIpAddress": "0.0.0.0"
+          "skuTier": "GeneralPurpose",
+          "name": "<<namePrefix>>-sqlscom-ep-001",
+          "skuName": "GP_Gen5"
         }
       ]
     },
     "keys": {
       "value": [
         {
-          "name": "<name>",
           "serverKeyType": "AzureKeyVault",
+          "name": "<name>",
           "uri": "<uri>"
-        }
-      ]
-    },
-    "location": {
-      "value": "<location>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "primaryUserAssignedIdentityId": {
-      "value": "<primaryUserAssignedIdentityId>"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
-            ]
-          },
-          "service": "sqlServer",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
     "securityAlertPolicies": {
       "value": [
         {
-          "emailAccountAdmins": true,
+          "state": "Enabled",
           "name": "Default",
-          "state": "Enabled"
+          "emailAccountAdmins": true
         }
       ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>",
+        "name": "default"
+      }
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "sqlServer",
+          "subnetResourceId": "<subnetResourceId>",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          }
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
     },
     "virtualNetworkRules": {
       "value": [
@@ -648,17 +626,39 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
       ]
     },
-    "vulnerabilityAssessmentsObj": {
-      "value": {
-        "emailSubscriptionAdmins": true,
-        "name": "default",
-        "recurringScansEmails": [
-          "test1@contoso.com",
-          "test2@contoso.com"
-        ],
-        "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
-      }
+    "databases": {
+      "value": [
+        {
+          "diagnosticLogsRetentionInDays": 7,
+          "skuName": "ElasticPool",
+          "maxSizeBytes": 34359738368,
+          "skuTier": "GeneralPurpose",
+          "elasticPoolId": "<elasticPoolId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "name": "<<namePrefix>>-sqlscomdb-001",
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "capacity": 0,
+          "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "licenseType": "LicenseIncluded",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "firewallRules": {
+      "value": [
+        {
+          "endIpAddress": "0.0.0.0",
+          "name": "AllowAllWindowsAzureIps",
+          "startIpAddress": "0.0.0.0"
+        }
+      ]
+    },
+    "location": {
+      "value": "<location>"
     }
   }
 }
@@ -680,20 +680,20 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-sqlspe'
     // Non-required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
+        service: 'sqlServer'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
   }
 }
 ```
@@ -715,27 +715,27 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": "<<namePrefix>>-sqlspe"
     },
     // Non-required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "sqlServer",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "sqlServer",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
     }
   }
 }

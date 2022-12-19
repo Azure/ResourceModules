@@ -386,145 +386,37 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     // Required parameters
     name: '<<namePrefix>>aacom001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    disableLocalAuth: true
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    gallerySolutions: [
-      {
-        name: 'Updates'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
-      }
-    ]
-    jobSchedules: [
-      {
-        runbookName: 'TestRunbook'
-        scheduleName: 'TestSchedule'
-      }
-    ]
-    linkedWorkspaceResourceId: '<linkedWorkspaceResourceId>'
-    lock: 'CanNotDelete'
-    modules: [
-      {
-        name: 'PSWindowsUpdate'
-        uri: 'https://www.powershellgallery.com/api/v2/package'
-        version: 'latest'
-      }
-    ]
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'Webhook'
-        subnetResourceId: '<subnetResourceId>'
-      }
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'DSCAndHybridWorker'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    runbooks: [
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    privateEndpoints: [
       {
-        description: 'Test runbook'
-        name: 'TestRunbook'
-        runbookType: 'PowerShell'
-        uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
-        version: '1.0.0.0'
-      }
-    ]
-    schedules: [
-      {
-        advancedSchedule: {}
-        expiryTime: '9999-12-31T13:00'
-        frequency: 'Minute'
-        interval: 15
-        name: 'TestSchedule'
-        startTime: ''
-        timeZone: 'Europe/Berlin'
-      }
-    ]
-    softwareUpdateConfigurations: [
-      {
-        excludeUpdates: [
-          '123456'
-        ]
-        frequency: 'Month'
-        includeUpdates: [
-          '654321'
-        ]
-        interval: 1
-        maintenanceWindow: 'PT4H'
-        monthlyOccurrences: [
-          {
-            day: 'Friday'
-            occurrence: 3
-          }
-        ]
-        name: 'Windows_ZeroDay'
-        operatingSystem: 'Windows'
-        rebootSetting: 'IfRequired'
-        scopeByTags: {
-          Update: [
-            'Automatic-Wave1'
+        service: 'Webhook'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
           ]
         }
-        startTime: '22:00'
-        updateClassifications: [
-          'Critical'
-          'Definition'
-          'FeaturePack'
-          'Security'
-          'ServicePack'
-          'Tools'
-          'UpdateRollup'
-          'Updates'
-        ]
+        subnetResourceId: '<subnetResourceId>'
       }
       {
-        excludeUpdates: [
-          'icacls'
-        ]
-        frequency: 'OneTime'
-        includeUpdates: [
-          'kernel'
-        ]
-        maintenanceWindow: 'PT4H'
-        name: 'Linux_ZeroDay'
-        operatingSystem: 'Linux'
-        rebootSetting: 'IfRequired'
-        startTime: '22:00'
-        updateClassifications: [
-          'Critical'
-          'Other'
-          'Security'
-        ]
+        service: 'DSCAndHybridWorker'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     variables: [
       {
         description: 'TestStringDescription'
@@ -553,6 +445,114 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         value: '\'TestEncryptedValue\''
       }
     ]
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    modules: [
+      {
+        uri: 'https://www.powershellgallery.com/api/v2/package'
+        version: 'latest'
+        name: 'PSWindowsUpdate'
+      }
+    ]
+    gallerySolutions: [
+      {
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+        name: 'Updates'
+      }
+    ]
+    lock: 'CanNotDelete'
+    systemAssignedIdentity: true
+    diagnosticLogsRetentionInDays: 7
+    schedules: [
+      {
+        frequency: 'Minute'
+        startTime: ''
+        advancedSchedule: {}
+        name: 'TestSchedule'
+        interval: 15
+        timeZone: 'Europe/Berlin'
+        expiryTime: '9999-12-31T13:00'
+      }
+    ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    runbooks: [
+      {
+        description: 'Test runbook'
+        name: 'TestRunbook'
+        runbookType: 'PowerShell'
+        version: '1.0.0.0'
+        uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
+      }
+    ]
+    disableLocalAuth: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    jobSchedules: [
+      {
+        scheduleName: 'TestSchedule'
+        runbookName: 'TestRunbook'
+      }
+    ]
+    softwareUpdateConfigurations: [
+      {
+        maintenanceWindow: 'PT4H'
+        frequency: 'Month'
+        rebootSetting: 'IfRequired'
+        name: 'Windows_ZeroDay'
+        monthlyOccurrences: [
+          {
+            day: 'Friday'
+            occurrence: 3
+          }
+        ]
+        scopeByTags: {
+          Update: [
+            'Automatic-Wave1'
+          ]
+        }
+        excludeUpdates: [
+          '123456'
+        ]
+        includeUpdates: [
+          '654321'
+        ]
+        interval: 1
+        operatingSystem: 'Windows'
+        updateClassifications: [
+          'Critical'
+          'Definition'
+          'FeaturePack'
+          'Security'
+          'ServicePack'
+          'Tools'
+          'UpdateRollup'
+          'Updates'
+        ]
+        startTime: '22:00'
+      }
+      {
+        maintenanceWindow: 'PT4H'
+        frequency: 'OneTime'
+        rebootSetting: 'IfRequired'
+        name: 'Linux_ZeroDay'
+        excludeUpdates: [
+          'icacls'
+        ]
+        includeUpdates: [
+          'kernel'
+        ]
+        operatingSystem: 'Linux'
+        startTime: '22:00'
+        updateClassifications: [
+          'Critical'
+          'Other'
+          'Security'
+        ]
+      }
+    ]
+    linkedWorkspaceResourceId: '<linkedWorkspaceResourceId>'
   }
 }
 ```
@@ -574,182 +574,44 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       "value": "<<namePrefix>>aacom001"
     },
     // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "disableLocalAuth": {
-      "value": true
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "gallerySolutions": {
-      "value": [
-        {
-          "name": "Updates",
-          "product": "OMSGallery",
-          "publisher": "Microsoft"
-        }
-      ]
-    },
-    "jobSchedules": {
-      "value": [
-        {
-          "runbookName": "TestRunbook",
-          "scheduleName": "TestSchedule"
-        }
-      ]
-    },
-    "linkedWorkspaceResourceId": {
-      "value": "<linkedWorkspaceResourceId>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "modules": {
-      "value": [
-        {
-          "name": "PSWindowsUpdate",
-          "uri": "https://www.powershellgallery.com/api/v2/package",
-          "version": "latest"
-        }
-      ]
-    },
     "privateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
           "service": "Webhook",
-          "subnetResourceId": "<subnetResourceId>"
-        },
-        {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
           },
+          "subnetResourceId": "<subnetResourceId>"
+        },
+        {
           "service": "DSCAndHybridWorker",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          },
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "runbooks": {
-      "value": [
-        {
-          "description": "Test runbook",
-          "name": "TestRunbook",
-          "runbookType": "PowerShell",
-          "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
-          "version": "1.0.0.0"
-        }
-      ]
-    },
-    "schedules": {
-      "value": [
-        {
-          "advancedSchedule": {},
-          "expiryTime": "9999-12-31T13:00",
-          "frequency": "Minute",
-          "interval": 15,
-          "name": "TestSchedule",
-          "startTime": "",
-          "timeZone": "Europe/Berlin"
-        }
-      ]
-    },
-    "softwareUpdateConfigurations": {
-      "value": [
-        {
-          "excludeUpdates": [
-            "123456"
-          ],
-          "frequency": "Month",
-          "includeUpdates": [
-            "654321"
-          ],
-          "interval": 1,
-          "maintenanceWindow": "PT4H",
-          "monthlyOccurrences": [
-            {
-              "day": "Friday",
-              "occurrence": 3
-            }
-          ],
-          "name": "Windows_ZeroDay",
-          "operatingSystem": "Windows",
-          "rebootSetting": "IfRequired",
-          "scopeByTags": {
-            "Update": [
-              "Automatic-Wave1"
-            ]
-          },
-          "startTime": "22:00",
-          "updateClassifications": [
-            "Critical",
-            "Definition",
-            "FeaturePack",
-            "Security",
-            "ServicePack",
-            "Tools",
-            "UpdateRollup",
-            "Updates"
-          ]
-        },
-        {
-          "excludeUpdates": [
-            "icacls"
-          ],
-          "frequency": "OneTime",
-          "includeUpdates": [
-            "kernel"
-          ],
-          "maintenanceWindow": "PT4H",
-          "name": "Linux_ZeroDay",
-          "operatingSystem": "Linux",
-          "rebootSetting": "IfRequired",
-          "startTime": "22:00",
-          "updateClassifications": [
-            "Critical",
-            "Other",
-            "Security"
-          ]
-        }
-      ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
     },
     "variables": {
       "value": [
@@ -780,6 +642,144 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           "value": "\"TestEncryptedValue\""
         }
       ]
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "modules": {
+      "value": [
+        {
+          "uri": "https://www.powershellgallery.com/api/v2/package",
+          "version": "latest",
+          "name": "PSWindowsUpdate"
+        }
+      ]
+    },
+    "gallerySolutions": {
+      "value": [
+        {
+          "product": "OMSGallery",
+          "publisher": "Microsoft",
+          "name": "Updates"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "schedules": {
+      "value": [
+        {
+          "frequency": "Minute",
+          "startTime": "",
+          "advancedSchedule": {},
+          "name": "TestSchedule",
+          "interval": 15,
+          "timeZone": "Europe/Berlin",
+          "expiryTime": "9999-12-31T13:00"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "runbooks": {
+      "value": [
+        {
+          "description": "Test runbook",
+          "name": "TestRunbook",
+          "runbookType": "PowerShell",
+          "version": "1.0.0.0",
+          "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1"
+        }
+      ]
+    },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "jobSchedules": {
+      "value": [
+        {
+          "scheduleName": "TestSchedule",
+          "runbookName": "TestRunbook"
+        }
+      ]
+    },
+    "softwareUpdateConfigurations": {
+      "value": [
+        {
+          "maintenanceWindow": "PT4H",
+          "frequency": "Month",
+          "rebootSetting": "IfRequired",
+          "name": "Windows_ZeroDay",
+          "monthlyOccurrences": [
+            {
+              "day": "Friday",
+              "occurrence": 3
+            }
+          ],
+          "scopeByTags": {
+            "Update": [
+              "Automatic-Wave1"
+            ]
+          },
+          "excludeUpdates": [
+            "123456"
+          ],
+          "includeUpdates": [
+            "654321"
+          ],
+          "interval": 1,
+          "operatingSystem": "Windows",
+          "updateClassifications": [
+            "Critical",
+            "Definition",
+            "FeaturePack",
+            "Security",
+            "ServicePack",
+            "Tools",
+            "UpdateRollup",
+            "Updates"
+          ],
+          "startTime": "22:00"
+        },
+        {
+          "maintenanceWindow": "PT4H",
+          "frequency": "OneTime",
+          "rebootSetting": "IfRequired",
+          "name": "Linux_ZeroDay",
+          "excludeUpdates": [
+            "icacls"
+          ],
+          "includeUpdates": [
+            "kernel"
+          ],
+          "operatingSystem": "Linux",
+          "startTime": "22:00",
+          "updateClassifications": [
+            "Critical",
+            "Other",
+            "Security"
+          ]
+        }
+      ]
+    },
+    "linkedWorkspaceResourceId": {
+      "value": "<linkedWorkspaceResourceId>"
     }
   }
 }
@@ -801,8 +801,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     // Required parameters
     name: '<<namePrefix>>aaencr001'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKKeyName: '<cMKKeyName>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     userAssignedIdentities: {
@@ -829,11 +829,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       "value": "<<namePrefix>>aaencr001"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"

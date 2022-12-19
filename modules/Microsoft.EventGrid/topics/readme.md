@@ -270,38 +270,38 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     name: '<<namePrefix>>egtcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundIpRules: [
       {
-        action: 'Allow'
         ipMask: '40.74.28.0/23'
+        action: 'Allow'
       }
     ]
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     privateEndpoints: [
       {
+        service: 'topic'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'topic'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
   }
 }
 ```
@@ -326,55 +326,55 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
+    "inboundIpRules": {
+      "value": [
+        {
+          "ipMask": "40.74.28.0/23",
+          "action": "Allow"
+        }
+      ]
+    },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
     },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "lock": {
+      "value": "CanNotDelete"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "inboundIpRules": {
+    "roleAssignments": {
       "value": [
         {
-          "action": "Allow",
-          "ipMask": "40.74.28.0/23"
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
         }
       ]
     },
-    "lock": {
-      "value": "CanNotDelete"
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "topic",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
           },
-          "service": "topic",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
     }
   }
 }
@@ -441,18 +441,18 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>egtpe001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
+        service: 'topic'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'topic'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -474,21 +474,21 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
       "value": "<<namePrefix>>egtpe001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "topic",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
           },
-          "service": "topic",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

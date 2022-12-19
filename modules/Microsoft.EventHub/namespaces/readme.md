@@ -39,7 +39,7 @@ This module deploys an event hub namespace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Event Hub namespace. |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Event Hub namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, ApplicationMetricsLogs, ArchiveLogs, AutoScaleLogs, CustomerManagedKeyUserLogs, EventHubVNetConnectionEvent, KafkaCoordinatorLogs, KafkaUserErrorLogs, OperationalLogs, RuntimeAuditLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -318,6 +318,44 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>ehncom001'
     // Non-required parameters
+    lock: 'CanNotDelete'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    networkRuleSets: {
+      trustedServiceAccessEnabled: false
+      ipRules: [
+        {
+          ipMask: '10.10.10.10'
+          action: 'Allow'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: '<subnetResourceId>'
+        }
+      ]
+      defaultAction: 'Deny'
+    }
+    privateEndpoints: [
+      {
+        service: 'namespace'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -335,17 +373,35 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
     eventHubs: [
       {
         name: '<<namePrefix>>-az-evh-x-001'
       }
       {
+        captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+        captureDescriptionDestinationBlobContainer: 'eventhub'
+        captureDescriptionSkipEmptyArchives: true
+        messageRetentionInDays: 1
+        captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+        captureDescriptionIntervalInSeconds: 300
+        captureDescriptionSizeLimitInBytes: 314572800
+        captureDescriptionEnabled: true
+        status: 'Active'
+        consumerGroups: [
+          {
+            name: 'custom'
+            userMetadata: 'customMetadata'
+          }
+        ]
         authorizationRules: [
           {
             name: 'RootManageSharedAccessKey'
@@ -363,77 +419,21 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
             ]
           }
         ]
-        captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
-        captureDescriptionDestinationBlobContainer: 'eventhub'
-        captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-        captureDescriptionDestinationStorageAccountResourceId: '<captureDescriptionDestinationStorageAccountResourceId>'
-        captureDescriptionEnabled: true
-        captureDescriptionEncoding: 'Avro'
-        captureDescriptionIntervalInSeconds: 300
-        captureDescriptionSizeLimitInBytes: 314572800
-        captureDescriptionSkipEmptyArchives: true
-        consumerGroups: [
-          {
-            name: 'custom'
-            userMetadata: 'customMetadata'
-          }
-        ]
-        messageRetentionInDays: 1
-        name: '<<namePrefix>>-az-evh-x-002'
         partitionCount: 2
+        name: '<<namePrefix>>-az-evh-x-002'
+        captureDescriptionEncoding: 'Avro'
+        captureDescriptionDestinationStorageAccountResourceId: '<captureDescriptionDestinationStorageAccountResourceId>'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
             principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
           }
         ]
-        status: 'Active'
       }
     ]
-    lock: 'CanNotDelete'
-    networkRuleSets: {
-      defaultAction: 'Deny'
-      ipRules: [
-        {
-          action: 'Allow'
-          ipMask: '10.10.10.10'
-        }
-      ]
-      trustedServiceAccessEnabled: false
-      virtualNetworkRules: [
-        {
-          ignoreMissingVnetServiceEndpoint: true
-          subnetResourceId: '<subnetResourceId>'
-        }
-      ]
-    }
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'namespace'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -455,6 +455,66 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>ehncom001"
     },
     // Non-required parameters
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "networkRuleSets": {
+      "value": {
+        "trustedServiceAccessEnabled": false,
+        "ipRules": [
+          {
+            "ipMask": "10.10.10.10",
+            "action": "Allow"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnetResourceId": "<subnetResourceId>"
+          }
+        ],
+        "defaultAction": "Deny"
+      }
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "namespace",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
     "authorizationRules": {
       "value": [
         {
@@ -474,23 +534,16 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
     },
     "eventHubs": {
       "value": [
@@ -498,6 +551,21 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           "name": "<<namePrefix>>-az-evh-x-001"
         },
         {
+          "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
+          "captureDescriptionDestinationBlobContainer": "eventhub",
+          "captureDescriptionSkipEmptyArchives": true,
+          "messageRetentionInDays": 1,
+          "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
+          "captureDescriptionIntervalInSeconds": 300,
+          "captureDescriptionSizeLimitInBytes": 314572800,
+          "captureDescriptionEnabled": true,
+          "status": "Active",
+          "consumerGroups": [
+            {
+              "name": "custom",
+              "userMetadata": "customMetadata"
+            }
+          ],
           "authorizationRules": [
             {
               "name": "RootManageSharedAccessKey",
@@ -515,89 +583,21 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
               ]
             }
           ],
-          "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
-          "captureDescriptionDestinationBlobContainer": "eventhub",
-          "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
-          "captureDescriptionDestinationStorageAccountResourceId": "<captureDescriptionDestinationStorageAccountResourceId>",
-          "captureDescriptionEnabled": true,
-          "captureDescriptionEncoding": "Avro",
-          "captureDescriptionIntervalInSeconds": 300,
-          "captureDescriptionSizeLimitInBytes": 314572800,
-          "captureDescriptionSkipEmptyArchives": true,
-          "consumerGroups": [
-            {
-              "name": "custom",
-              "userMetadata": "customMetadata"
-            }
-          ],
-          "messageRetentionInDays": 1,
-          "name": "<<namePrefix>>-az-evh-x-002",
           "partitionCount": 2,
+          "name": "<<namePrefix>>-az-evh-x-002",
+          "captureDescriptionEncoding": "Avro",
+          "captureDescriptionDestinationStorageAccountResourceId": "<captureDescriptionDestinationStorageAccountResourceId>",
           "roleAssignments": [
             {
+              "roleDefinitionIdOrName": "Reader",
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
+              "principalType": "ServicePrincipal"
             }
-          ],
-          "status": "Active"
+          ]
         }
       ]
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "networkRuleSets": {
-      "value": {
-        "defaultAction": "Deny",
-        "ipRules": [
-          {
-            "action": "Allow",
-            "ipMask": "10.10.10.10"
-          }
-        ],
-        "trustedServiceAccessEnabled": false,
-        "virtualNetworkRules": [
-          {
-            "ignoreMissingVnetServiceEndpoint": true,
-            "subnetResourceId": "<subnetResourceId>"
-          }
-        ]
-      }
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -664,18 +664,18 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>ehnpe001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
+        service: 'namespace'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -697,21 +697,21 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>ehnpe001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "namespace",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
           },
-          "service": "namespace",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

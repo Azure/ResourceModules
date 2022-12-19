@@ -225,32 +225,32 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
     name: '<<namePrefix>>wsfcom001'
     sku: {
       capacity: '1'
+      size: 'S1'
       family: 'S'
       name: 'S1'
-      size: 'S1'
       tier: 'Standard'
     }
     // Non-required parameters
+    tags: {
+      Role: 'DeploymentValidation'
+      Environment: 'Non-Prod'
+    }
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
   }
 }
 ```
@@ -274,13 +274,19 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
     "sku": {
       "value": {
         "capacity": "1",
+        "size": "S1",
         "family": "S",
         "name": "S1",
-        "size": "S1",
         "tier": "Standard"
       }
     },
     // Non-required parameters
+    "tags": {
+      "value": {
+        "Role": "DeploymentValidation",
+        "Environment": "Non-Prod"
+      }
+    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -290,34 +296,28 @@ module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }

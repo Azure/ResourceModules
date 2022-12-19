@@ -47,7 +47,7 @@ This module deploys a service bus namespace resource.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
+| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
@@ -365,63 +365,14 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>sbncom001'
     // Non-required parameters
-    authorizationRules: [
-      {
-        name: 'RootManageSharedAccessKey'
-        rights: [
-          'Listen'
-          'Manage'
-          'Send'
-        ]
-      }
-      {
-        name: 'AnotherKey'
-        rights: [
-          'Listen'
-          'Send'
-        ]
-      }
-    ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
-    networkRuleSets: {
-      defaultAction: 'Deny'
-      ipRules: [
-        {
-          action: 'Allow'
-          ipMask: '10.0.1.0/32'
-        }
-        {
-          action: 'Allow'
-          ipMask: '10.0.2.0/32'
-        }
-      ]
-      trustedServiceAccessEnabled: true
-      virtualNetworkRules: [
-        {
-          subnet: {
-            id: '<id>'
-            ignoreMissingVnetServiceEndpoint: true
-          }
-        }
-      ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
     }
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'namespace'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    skuName: 'Premium'
     queues: [
       {
         authorizationRules: [
@@ -444,29 +395,39 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         name: '<<namePrefix>>sbncomq001'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
             principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
           }
         ]
       }
     ]
+    tags: {
+      test: 'true'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    skuName: 'Premium'
-    systemAssignedIdentity: true
-    tags: {
-      test: 'true'
-    }
+    privateEndpoints: [
+      {
+        service: 'namespace'
+        subnetResourceId: '<subnetResourceId>'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+      }
+    ]
     topics: [
       {
         authorizationRules: [
@@ -489,18 +450,57 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         name: '<<namePrefix>>sbncomt001'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
             principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
           }
         ]
       }
     ]
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
+    lock: 'CanNotDelete'
+    networkRuleSets: {
+      trustedServiceAccessEnabled: true
+      ipRules: [
+        {
+          ipMask: '10.0.1.0/32'
+          action: 'Allow'
+        }
+        {
+          ipMask: '10.0.2.0/32'
+          action: 'Allow'
+        }
+      ]
+      virtualNetworkRules: [
+        {
+          subnet: {
+            ignoreMissingVnetServiceEndpoint: true
+            id: '<id>'
+          }
+        }
+      ]
+      defaultAction: 'Deny'
     }
+    systemAssignedIdentity: true
+    diagnosticLogsRetentionInDays: 7
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+      {
+        name: 'AnotherKey'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
   }
 }
 ```
@@ -522,82 +522,25 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>sbncom001"
     },
     // Non-required parameters
-    "authorizationRules": {
-      "value": [
-        {
-          "name": "RootManageSharedAccessKey",
-          "rights": [
-            "Listen",
-            "Manage",
-            "Send"
-          ]
-        },
-        {
-          "name": "AnotherKey",
-          "rights": [
-            "Listen",
-            "Send"
-          ]
-        }
-      ]
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "networkRuleSets": {
-      "value": {
-        "defaultAction": "Deny",
-        "ipRules": [
-          {
-            "action": "Allow",
-            "ipMask": "10.0.1.0/32"
-          },
-          {
-            "action": "Allow",
-            "ipMask": "10.0.2.0/32"
-          }
-        ],
-        "trustedServiceAccessEnabled": true,
-        "virtualNetworkRules": [
-          {
-            "subnet": {
-              "id": "<id>",
-              "ignoreMissingVnetServiceEndpoint": true
-            }
-          }
-        ]
-      }
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
+    "skuName": {
+      "value": "Premium"
     },
     "queues": {
       "value": [
@@ -622,37 +565,47 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
           "name": "<<namePrefix>>sbncomq001",
           "roleAssignments": [
             {
+              "roleDefinitionIdOrName": "Reader",
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
+              "principalType": "ServicePrincipal"
             }
           ]
         }
       ]
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "Premium"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "tags": {
       "value": {
         "test": "true"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "namespace",
+          "subnetResourceId": "<subnetResourceId>",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
     },
     "topics": {
       "value": [
@@ -677,20 +630,67 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
           "name": "<<namePrefix>>sbncomt001",
           "roleAssignments": [
             {
+              "roleDefinitionIdOrName": "Reader",
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
+              "principalType": "ServicePrincipal"
             }
           ]
         }
       ]
     },
-    "userAssignedIdentities": {
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "networkRuleSets": {
       "value": {
-        "<managedIdentityResourceId>": {}
+        "trustedServiceAccessEnabled": true,
+        "ipRules": [
+          {
+            "ipMask": "10.0.1.0/32",
+            "action": "Allow"
+          },
+          {
+            "ipMask": "10.0.2.0/32",
+            "action": "Allow"
+          }
+        ],
+        "virtualNetworkRules": [
+          {
+            "subnet": {
+              "ignoreMissingVnetServiceEndpoint": true,
+              "id": "<id>"
+            }
+          }
+        ],
+        "defaultAction": "Deny"
       }
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "authorizationRules": {
+      "value": [
+        {
+          "name": "RootManageSharedAccessKey",
+          "rights": [
+            "Listen",
+            "Manage",
+            "Send"
+          ]
+        },
+        {
+          "name": "AnotherKey",
+          "rights": [
+            "Listen",
+            "Send"
+          ]
+        }
+      ]
     }
   }
 }
@@ -712,6 +712,19 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>sbnencr001'
     // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'
@@ -729,42 +742,29 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         ]
       }
     ]
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    skuName: 'Premium'
     networkRuleSets: {
-      defaultAction: 'Deny'
+      trustedServiceAccessEnabled: true
       ipRules: [
         {
-          action: 'Allow'
           ipMask: '10.0.1.0/32'
+          action: 'Allow'
         }
         {
-          action: 'Allow'
           ipMask: '10.0.2.0/32'
+          action: 'Allow'
         }
       ]
-      trustedServiceAccessEnabled: true
       virtualNetworkRules: [
         {
           subnet: {
-            id: '<id>'
             ignoreMissingVnetServiceEndpoint: true
+            id: '<id>'
           }
         }
       ]
+      defaultAction: 'Deny'
     }
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    skuName: 'Premium'
     systemAssignedIdentity: false
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -790,6 +790,29 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>sbnencr001"
     },
     // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "authorizationRules": {
       "value": [
         {
@@ -809,55 +832,32 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
       ]
     },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "skuName": {
+      "value": "Premium"
     },
     "networkRuleSets": {
       "value": {
-        "defaultAction": "Deny",
+        "trustedServiceAccessEnabled": true,
         "ipRules": [
           {
-            "action": "Allow",
-            "ipMask": "10.0.1.0/32"
+            "ipMask": "10.0.1.0/32",
+            "action": "Allow"
           },
           {
-            "action": "Allow",
-            "ipMask": "10.0.2.0/32"
+            "ipMask": "10.0.2.0/32",
+            "action": "Allow"
           }
         ],
-        "trustedServiceAccessEnabled": true,
         "virtualNetworkRules": [
           {
             "subnet": {
-              "id": "<id>",
-              "ignoreMissingVnetServiceEndpoint": true
+              "ignoreMissingVnetServiceEndpoint": true,
+              "id": "<id>"
             }
           }
-        ]
+        ],
+        "defaultAction": "Deny"
       }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "skuName": {
-      "value": "Premium"
     },
     "systemAssignedIdentity": {
       "value": false
@@ -932,18 +932,18 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>sbnpe001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
+        service: 'namespace'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'namespace'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     skuName: 'Premium'
   }
 }
@@ -966,21 +966,21 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       "value": "<<namePrefix>>sbnpe001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "namespace",
+          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
-          },
-          "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
+          }
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "skuName": {
       "value": "Premium"

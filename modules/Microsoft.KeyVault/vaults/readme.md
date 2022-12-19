@@ -395,9 +395,28 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-kvvcom'
   params: {
     name: '<<namePrefix>>kvvcom002'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    keys: [
+      {
+        name: 'keyName'
+        attributesNbf: 10000
+        attributesExp: 1702648632
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+      }
+    ]
     accessPolicies: [
       {
-        objectId: '<objectId>'
+        tenantId: '<tenantId>'
         permissions: {
           keys: [
             'get'
@@ -408,107 +427,88 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             'all'
           ]
         }
-        tenantId: '<tenantId>'
+        objectId: '<objectId>'
       }
       {
         objectId: '<objectId>'
         permissions: {
+          secrets: [
+            'all'
+          ]
           certificates: [
             'backup'
             'create'
             'delete'
           ]
-          secrets: [
-            'all'
-          ]
         }
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    tags: {
+      Role: 'DeploymentValidation'
+      Environment: 'Non-Prod'
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
-    enableRbacAuthorization: false
-    keys: [
+    roleAssignments: [
       {
-        attributesExp: 1702648632
-        attributesNbf: 10000
-        name: 'keyName'
-        roleAssignments: [
-          {
-            principalIds: [
-              '<managedIdentityPrincipalId>'
-            ]
-            principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
-          }
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
       }
     ]
-    lock: 'CanNotDelete'
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      ipRules: [
-        {
-          value: '40.74.28.0/23'
-        }
-      ]
-      virtualNetworkRules: [
-        {
-          id: '<id>'
-          ignoreMissingVnetServiceEndpoint: false
-        }
-      ]
-    }
     privateEndpoints: [
       {
+        service: 'vault'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'vault'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
+    networkAcls: {
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      virtualNetworkRules: [
+        {
+          ignoreMissingVnetServiceEndpoint: false
+          id: '<id>'
+        }
+      ]
+    }
+    enableRbacAuthorization: false
     secrets: {
       secureList: [
         {
           attributesExp: 1702648632
-          attributesNbf: 10000
-          contentType: 'Something'
           name: 'secretName'
           roleAssignments: [
             {
+              roleDefinitionIdOrName: 'Reader'
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
               principalType: 'ServicePrincipal'
-              roleDefinitionIdOrName: 'Reader'
             }
           ]
+          attributesNbf: 10000
           value: 'secretValue'
+          contentType: 'Something'
         }
       ]
     }
+    lock: 'CanNotDelete'
+    diagnosticLogsRetentionInDays: 7
     softDeleteRetentionInDays: 7
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
   }
 }
 ```
@@ -528,10 +528,37 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>kvvcom002"
     },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "keyName",
+          "attributesNbf": 10000,
+          "attributesExp": 1702648632,
+          "roleAssignments": [
+            {
+              "roleDefinitionIdOrName": "Reader",
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal"
+            }
+          ]
+        }
+      ]
+    },
     "accessPolicies": {
       "value": [
         {
-          "objectId": "<objectId>",
+          "tenantId": "<tenantId>",
           "permissions": {
             "keys": [
               "get",
@@ -542,37 +569,28 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               "all"
             ]
           },
-          "tenantId": "<tenantId>"
+          "objectId": "<objectId>"
         },
         {
           "objectId": "<objectId>",
           "permissions": {
+            "secrets": [
+              "all"
+            ],
             "certificates": [
               "backup",
               "create",
               "delete"
-            ],
-            "secrets": [
-              "all"
             ]
           }
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "tags": {
+      "value": {
+        "Role": "DeploymentValidation",
+        "Environment": "Non-Prod"
+      }
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -580,101 +598,83 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "enablePurgeProtection": {
       "value": false
     },
-    "enableRbacAuthorization": {
-      "value": false
-    },
-    "keys": {
+    "roleAssignments": {
       "value": [
         {
-          "attributesExp": 1702648632,
-          "attributesNbf": 10000,
-          "name": "keyName",
-          "roleAssignments": [
-            {
-              "principalIds": [
-                "<managedIdentityPrincipalId>"
-              ],
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ]
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
         }
       ]
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "networkAcls": {
-      "value": {
-        "bypass": "AzureServices",
-        "defaultAction": "Deny",
-        "ipRules": [
-          {
-            "value": "40.74.28.0/23"
-          }
-        ],
-        "virtualNetworkRules": [
-          {
-            "id": "<id>",
-            "ignoreMissingVnetServiceEndpoint": false
-          }
-        ]
-      }
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "vault",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "vault",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
+    "networkAcls": {
+      "value": {
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
+        "bypass": "AzureServices",
+        "defaultAction": "Deny",
+        "virtualNetworkRules": [
+          {
+            "ignoreMissingVnetServiceEndpoint": false,
+            "id": "<id>"
+          }
+        ]
+      }
+    },
+    "enableRbacAuthorization": {
+      "value": false
     },
     "secrets": {
       "value": {
         "secureList": [
           {
             "attributesExp": 1702648632,
-            "attributesNbf": 10000,
-            "contentType": "Something",
             "name": "secretName",
             "roleAssignments": [
               {
+                "roleDefinitionIdOrName": "Reader",
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
-                "principalType": "ServicePrincipal",
-                "roleDefinitionIdOrName": "Reader"
+                "principalType": "ServicePrincipal"
               }
             ],
-            "value": "secretValue"
+            "attributesNbf": 10000,
+            "value": "secretValue",
+            "contentType": "Something"
           }
         ]
       }
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
     "softDeleteRetentionInDays": {
       "value": 7
     },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
-      }
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
     }
   }
 }
@@ -745,23 +745,23 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>kvvpe001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: false
+    tags: {
+      Role: 'DeploymentValidation'
+      Environment: 'Non-Prod'
+    }
     privateEndpoints: [
       {
+        service: 'vault'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'vault'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
   }
 }
 ```
@@ -783,30 +783,30 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": "<<namePrefix>>kvvpe001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enablePurgeProtection": {
-      "value": false
+    "tags": {
+      "value": {
+        "Role": "DeploymentValidation",
+        "Environment": "Non-Prod"
+      }
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "vault",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "vault",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
-      }
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
     }
   }
 }

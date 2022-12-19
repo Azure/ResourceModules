@@ -374,68 +374,68 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>dffcom001'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     gitConfigureLater: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    managedVirtualNetworkName: 'default'
+    managedPrivateEndpoints: [
+      {
+        privateLinkResourceId: '<privateLinkResourceId>'
+        fqdns: [
+          '<storageAccountBlobEndpoint>'
+        ]
+        groupId: 'blob'
+        name: '<name>'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    privateEndpoints: [
+      {
+        service: 'dataFactory'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    lock: 'CanNotDelete'
+    cMKKeyName: '<cMKKeyName>'
     integrationRuntimes: [
       {
-        managedVirtualNetworkName: 'default'
-        name: 'AutoResolveIntegrationRuntime'
         type: 'Managed'
         typeProperties: {
           computeProperties: {
             location: 'AutoResolve'
           }
         }
+        managedVirtualNetworkName: 'default'
+        name: 'AutoResolveIntegrationRuntime'
       }
       {
         name: 'TestRuntime'
         type: 'SelfHosted'
       }
     ]
-    lock: 'CanNotDelete'
-    managedPrivateEndpoints: [
-      {
-        fqdns: [
-          '<storageAccountBlobEndpoint>'
-        ]
-        groupId: 'blob'
-        name: '<name>'
-        privateLinkResourceId: '<privateLinkResourceId>'
-      }
-    ]
-    managedVirtualNetworkName: 'default'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSResourceId>'
-          ]
-        }
-        service: 'dataFactory'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
+    diagnosticLogsRetentionInDays: 7
   }
 }
 ```
@@ -457,47 +457,34 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
       "value": "<<namePrefix>>dffcom001"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
     },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "gitConfigureLater": {
-      "value": true
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     },
     "integrationRuntimes": {
       "value": [
         {
-          "managedVirtualNetworkName": "default",
-          "name": "AutoResolveIntegrationRuntime",
           "type": "Managed",
           "typeProperties": {
             "computeProperties": {
               "location": "AutoResolve"
             }
-          }
+          },
+          "managedVirtualNetworkName": "default",
+          "name": "AutoResolveIntegrationRuntime"
         },
         {
           "name": "TestRuntime",
@@ -505,55 +492,68 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         }
       ]
     },
-    "lock": {
-      "value": "CanNotDelete"
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
     },
-    "managedPrivateEndpoints": {
-      "value": [
-        {
-          "fqdns": [
-            "<storageAccountBlobEndpoint>"
-          ],
-          "groupId": "blob",
-          "name": "<name>",
-          "privateLinkResourceId": "<privateLinkResourceId>"
-        }
-      ]
+    "gitConfigureLater": {
+      "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "managedVirtualNetworkName": {
       "value": "default"
     },
-    "privateEndpoints": {
+    "managedPrivateEndpoints": {
       "value": [
         {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
-            ]
-          },
-          "service": "dataFactory",
-          "subnetResourceId": "<subnetResourceId>"
+          "privateLinkResourceId": "<privateLinkResourceId>",
+          "fqdns": [
+            "<storageAccountBlobEndpoint>"
+          ],
+          "groupId": "blob",
+          "name": "<name>"
         }
       ]
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "dataFactory",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
     },
     "systemAssignedIdentity": {
       "value": true
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
     }
   }
 }

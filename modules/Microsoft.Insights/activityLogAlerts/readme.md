@@ -433,19 +433,19 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
     ]
     name: '<<namePrefix>>ialacom001'
     // Non-required parameters
-    actions: [
-      {
-        actionGroupId: '<actionGroupId>'
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    actions: [
+      {
+        actionGroupId: '<actionGroupId>'
       }
     ]
     scopes: [
@@ -488,24 +488,24 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       "value": "<<namePrefix>>ialacom001"
     },
     // Non-required parameters
-    "actions": {
+    "roleAssignments": {
       "value": [
         {
-          "actionGroupId": "<actionGroupId>"
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
         }
       ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "roleAssignments": {
+    "actions": {
       "value": [
         {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "actionGroupId": "<actionGroupId>"
         }
       ]
     },

@@ -311,43 +311,43 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     // Required parameters
     name: '<<namePrefix>>acccom001'
     // Non-required parameters
-    createMode: 'Default'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    softDeleteRetentionInDays: 1
+    enablePurgeProtection: false
     disableLocalAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: false
+    systemAssignedIdentity: true
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     keyValues: [
       {
         contentType: 'contentType'
-        name: 'keyName'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
             principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
           }
         ]
+        name: 'keyName'
         value: 'valueName'
       }
     ]
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     lock: 'CanNotDelete'
+    createMode: 'Default'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    softDeleteRetentionInDays: 1
-    systemAssignedIdentity: true
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
   }
 }
 ```
@@ -369,23 +369,14 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
       "value": "<<namePrefix>>acccom001"
     },
     // Non-required parameters
-    "createMode": {
-      "value": "Default"
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+    "softDeleteRetentionInDays": {
+      "value": 1
     },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "enablePurgeProtection": {
+      "value": false
     },
     "disableLocalAuth": {
       "value": false
@@ -393,46 +384,55 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "enablePurgeProtection": {
-      "value": false
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "keyValues": {
       "value": [
         {
           "contentType": "contentType",
-          "name": "keyName",
           "roleAssignments": [
             {
+              "roleDefinitionIdOrName": "Reader",
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
+              "principalType": "ServicePrincipal"
             }
           ],
+          "name": "keyName",
           "value": "valueName"
         }
       ]
     },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "createMode": {
+      "value": "Default"
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
     },
-    "softDeleteRetentionInDays": {
-      "value": 1
-    },
-    "systemAssignedIdentity": {
-      "value": true
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -500,21 +500,21 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     name: '<<namePrefix>>accpe001'
     // Non-required parameters
     createMode: 'Default'
-    disableLocalAuth: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enablePurgeProtection: false
     privateEndpoints: [
       {
+        service: 'configurationStores'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'configurationStores'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    disableLocalAuth: false
+    enablePurgeProtection: false
     softDeleteRetentionInDays: 1
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -539,30 +539,30 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     "createMode": {
       "value": "Default"
     },
-    "disableLocalAuth": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enablePurgeProtection": {
-      "value": false
-    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "configurationStores",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "configurationStores",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
+    "disableLocalAuth": {
+      "value": false
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
     "softDeleteRetentionInDays": {
       "value": 1
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

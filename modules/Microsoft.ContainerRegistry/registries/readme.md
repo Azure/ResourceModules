@@ -369,61 +369,61 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>crrcom001'
     // Non-required parameters
-    acrAdminUserEnabled: false
-    acrSku: 'Premium'
-    azureADAuthenticationAsArmPolicyStatus: 'enabled'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    exportPolicyStatus: 'enabled'
     lock: 'CanNotDelete'
-    networkRuleSetIpRules: [
-      {
-        action: 'Allow'
-        value: '40.74.28.0/23'
-      }
-    ]
     privateEndpoints: [
       {
+        service: 'registry'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'registry'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     quarantinePolicyStatus: 'enabled'
+    acrAdminUserEnabled: false
+    trustPolicyStatus: 'enabled'
     replications: [
       {
-        location: 'northeurope'
         name: 'northeurope'
+        location: 'northeurope'
       }
     ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    softDeletePolicyDays: 7
-    softDeletePolicyStatus: 'disabled'
-    systemAssignedIdentity: true
-    trustPolicyStatus: 'enabled'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    azureADAuthenticationAsArmPolicyStatus: 'enabled'
+    diagnosticLogsRetentionInDays: 7
     webhooks: [
       {
         name: '<<namePrefix>>acrx001webhook'
         serviceUri: 'https://www.contoso.com/webhook'
+      }
+    ]
+    networkRuleSetIpRules: [
+      {
+        value: '40.74.28.0/23'
+        action: 'Allow'
+      }
+    ]
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    softDeletePolicyDays: 7
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    acrSku: 'Premium'
+    softDeletePolicyStatus: 'disabled'
+    systemAssignedIdentity: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    exportPolicyStatus: 'enabled'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
       }
     ]
   }
@@ -447,29 +447,76 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       "value": "<<namePrefix>>crrcom001"
     },
     // Non-required parameters
-    "acrAdminUserEnabled": {
-      "value": false
-    },
-    "acrSku": {
-      "value": "Premium"
-    },
-    "azureADAuthenticationAsArmPolicyStatus": {
-      "value": "enabled"
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    "lock": {
+      "value": "CanNotDelete"
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
     },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "quarantinePolicyStatus": {
+      "value": "enabled"
+    },
+    "acrAdminUserEnabled": {
+      "value": false
+    },
+    "softDeletePolicyStatus": {
+      "value": "disabled"
+    },
+    "trustPolicyStatus": {
+      "value": "enabled"
+    },
+    "replications": {
+      "value": [
+        {
+          "name": "northeurope",
+          "location": "northeurope"
+        }
+      ]
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "azureADAuthenticationAsArmPolicyStatus": {
+      "value": "enabled"
+    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
+    },
+    "webhooks": {
+      "value": [
+        {
+          "name": "<<namePrefix>>acrx001webhook",
+          "serviceUri": "https://www.contoso.com/webhook"
+        }
+      ]
+    },
+    "networkRuleSetIpRules": {
+      "value": [
+        {
+          "value": "40.74.28.0/23",
+          "action": "Allow"
+        }
+      ]
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
     },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "softDeletePolicyDays": {
+      "value": 7
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "acrSku": {
+      "value": "Premium"
+    },
+    "systemAssignedIdentity": {
+      "value": true
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -477,74 +524,27 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     "exportPolicyStatus": {
       "value": "enabled"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "networkRuleSetIpRules": {
+    "roleAssignments": {
       "value": [
         {
-          "action": "Allow",
-          "value": "40.74.28.0/23"
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
         }
       ]
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "registry",
+          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
-          },
-          "service": "registry",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "quarantinePolicyStatus": {
-      "value": "enabled"
-    },
-    "replications": {
-      "value": [
-        {
-          "location": "northeurope",
-          "name": "northeurope"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "softDeletePolicyDays": {
-      "value": 7
-    },
-    "softDeletePolicyStatus": {
-      "value": "disabled"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "trustPolicyStatus": {
-      "value": "enabled"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
-    "webhooks": {
-      "value": [
-        {
-          "name": "<<namePrefix>>acrx001webhook",
-          "serviceUri": "https://www.contoso.com/webhook"
+          }
         }
       ]
     }
@@ -568,15 +568,15 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>crrencr001'
     // Non-required parameters
-    acrSku: 'Premium'
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     publicNetworkAccess: 'Disabled'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    cMKKeyName: '<cMKKeyName>'
+    acrSku: 'Premium'
   }
 }
 ```
@@ -598,11 +598,8 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       "value": "<<namePrefix>>crrencr001"
     },
     // Non-required parameters
-    "acrSku": {
-      "value": "Premium"
-    },
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
+    "publicNetworkAccess": {
+      "value": "Disabled"
     },
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
@@ -613,13 +610,16 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "publicNetworkAccess": {
-      "value": "Disabled"
-    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "acrSku": {
+      "value": "Premium"
     }
   }
 }
@@ -687,18 +687,18 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     name: '<<namePrefix>>crrpe001'
     // Non-required parameters
     acrSku: 'Premium'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
+        service: 'registry'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'registry'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -723,21 +723,21 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     "acrSku": {
       "value": "Premium"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "registry",
+          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
-          },
-          "service": "registry",
-          "subnetResourceId": "<subnetResourceId>"
+          }
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

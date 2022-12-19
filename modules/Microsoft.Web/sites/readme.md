@@ -421,17 +421,101 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     name: '<<namePrefix>>wsfacom001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
-    appInsightId: '<appInsightId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    privateEndpoints: [
+      {
+        service: 'sites'
+        subnetResourceId: '<subnetResourceId>'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+      }
+    ]
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+      FUNCTIONS_WORKER_RUNTIME: 'dotnet'
       EASYAUTH_SECRET: '<EASYAUTH_SECRET>'
       FUNCTIONS_EXTENSION_VERSION: '~4'
-      FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+    }
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    appInsightId: '<appInsightId>'
+    siteConfig: {
+      alwaysOn: true
+      use32BitWorkerProcess: false
+    }
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    lock: 'CanNotDelete'
+    setAzureWebJobsDashboard: true
+    storageAccountId: '<storageAccountId>'
+    keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticLogsRetentionInDays: 7
+    systemAssignedIdentity: true
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
     }
     authSettingV2Configuration: {
+      login: {
+        nonce: {
+          nonceExpirationInterval: '00:05:00'
+          validateNonce: true
+        }
+        preserveUrlFragmentsForLogins: false
+        routes: {}
+        allowedExternalRedirectUrls: [
+          'string'
+        ]
+        cookieExpiration: {
+          convention: 'FixedTime'
+          timeToExpiration: '08:00:00'
+        }
+        tokenStore: {
+          tokenRefreshExtensionHours: 72
+          azureBlobStorage: {}
+          enabled: true
+          fileSystem: {}
+        }
+      }
       globalValidation: {
         requireAuthentication: true
         unauthenticatedClientAction: 'Return401'
+      }
+      identityProviders: {
+        azureActiveDirectory: {
+          login: {
+            disableWWWAuthenticate: false
+          }
+          enabled: true
+          registration: {
+            clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
+            openIdIssuer: '<openIdIssuer>'
+            clientSecretSettingName: 'EASYAUTH_SECRET'
+          }
+          validation: {
+            allowedAudiences: [
+              'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
+            ]
+            jwtClaimChecks: {}
+            defaultAuthorizationPolicy: {
+              allowedPrincipals: {}
+            }
+          }
+        }
+      }
+      platform: {
+        runtimeVersion: '~1'
+        enabled: true
       }
       httpSettings: {
         forwardProxy: {
@@ -442,92 +526,8 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           apiPrefix: '/.auth'
         }
       }
-      identityProviders: {
-        azureActiveDirectory: {
-          enabled: true
-          login: {
-            disableWWWAuthenticate: false
-          }
-          registration: {
-            clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
-            clientSecretSettingName: 'EASYAUTH_SECRET'
-            openIdIssuer: '<openIdIssuer>'
-          }
-          validation: {
-            allowedAudiences: [
-              'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
-            ]
-            defaultAuthorizationPolicy: {
-              allowedPrincipals: {}
-            }
-            jwtClaimChecks: {}
-          }
-        }
-      }
-      login: {
-        allowedExternalRedirectUrls: [
-          'string'
-        ]
-        cookieExpiration: {
-          convention: 'FixedTime'
-          timeToExpiration: '08:00:00'
-        }
-        nonce: {
-          nonceExpirationInterval: '00:05:00'
-          validateNonce: true
-        }
-        preserveUrlFragmentsForLogins: false
-        routes: {}
-        tokenStore: {
-          azureBlobStorage: {}
-          enabled: true
-          fileSystem: {}
-          tokenRefreshExtensionHours: 72
-        }
-      }
-      platform: {
-        enabled: true
-        runtimeVersion: '~1'
-      }
     }
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
-    lock: 'CanNotDelete'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'sites'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    setAzureWebJobsDashboard: true
-    siteConfig: {
-      alwaysOn: true
-      use32BitWorkerProcess: false
-    }
-    storageAccountId: '<storageAccountId>'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -555,22 +555,134 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
-    "appInsightId": {
-      "value": "<appInsightId>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "sites",
+          "subnetResourceId": "<subnetResourceId>",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
     },
     "appSettingsKeyValuePairs": {
       "value": {
         "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet",
         "EASYAUTH_SECRET": "<EASYAUTH_SECRET>",
-        "FUNCTIONS_EXTENSION_VERSION": "~4",
-        "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+        "FUNCTIONS_EXTENSION_VERSION": "~4"
+      }
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "appInsightId": {
+      "value": "<appInsightId>"
+    },
+    "siteConfig": {
+      "value": {
+        "alwaysOn": true,
+        "use32BitWorkerProcess": false
+      }
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "setAzureWebJobsDashboard": {
+      "value": true
+    },
+    "storageAccountId": {
+      "value": "<storageAccountId>"
+    },
+    "keyVaultAccessIdentityResourceId": {
+      "value": "<keyVaultAccessIdentityResourceId>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
       }
     },
     "authSettingV2Configuration": {
       "value": {
+        "login": {
+          "nonce": {
+            "nonceExpirationInterval": "00:05:00",
+            "validateNonce": true
+          },
+          "preserveUrlFragmentsForLogins": false,
+          "routes": {},
+          "allowedExternalRedirectUrls": [
+            "string"
+          ],
+          "cookieExpiration": {
+            "convention": "FixedTime",
+            "timeToExpiration": "08:00:00"
+          },
+          "tokenStore": {
+            "tokenRefreshExtensionHours": 72,
+            "azureBlobStorage": {},
+            "enabled": true,
+            "fileSystem": {}
+          }
+        },
         "globalValidation": {
           "requireAuthentication": true,
           "unauthenticatedClientAction": "Return401"
+        },
+        "identityProviders": {
+          "azureActiveDirectory": {
+            "login": {
+              "disableWWWAuthenticate": false
+            },
+            "enabled": true,
+            "registration": {
+              "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+              "openIdIssuer": "<openIdIssuer>",
+              "clientSecretSettingName": "EASYAUTH_SECRET"
+            },
+            "validation": {
+              "allowedAudiences": [
+                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+              ],
+              "jwtClaimChecks": {},
+              "defaultAuthorizationPolicy": {
+                "allowedPrincipals": {}
+              }
+            }
+          }
+        },
+        "platform": {
+          "runtimeVersion": "~1",
+          "enabled": true
         },
         "httpSettings": {
           "forwardProxy": {
@@ -580,123 +692,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "routes": {
             "apiPrefix": "/.auth"
           }
-        },
-        "identityProviders": {
-          "azureActiveDirectory": {
-            "enabled": true,
-            "login": {
-              "disableWWWAuthenticate": false
-            },
-            "registration": {
-              "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
-              "clientSecretSettingName": "EASYAUTH_SECRET",
-              "openIdIssuer": "<openIdIssuer>"
-            },
-            "validation": {
-              "allowedAudiences": [
-                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
-              ],
-              "defaultAuthorizationPolicy": {
-                "allowedPrincipals": {}
-              },
-              "jwtClaimChecks": {}
-            }
-          }
-        },
-        "login": {
-          "allowedExternalRedirectUrls": [
-            "string"
-          ],
-          "cookieExpiration": {
-            "convention": "FixedTime",
-            "timeToExpiration": "08:00:00"
-          },
-          "nonce": {
-            "nonceExpirationInterval": "00:05:00",
-            "validateNonce": true
-          },
-          "preserveUrlFragmentsForLogins": false,
-          "routes": {},
-          "tokenStore": {
-            "azureBlobStorage": {},
-            "enabled": true,
-            "fileSystem": {},
-            "tokenRefreshExtensionHours": 72
-          }
-        },
-        "platform": {
-          "enabled": true,
-          "runtimeVersion": "~1"
         }
       }
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "keyVaultAccessIdentityResourceId": {
-      "value": "<keyVaultAccessIdentityResourceId>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "sites",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "setAzureWebJobsDashboard": {
-      "value": true
-    },
-    "siteConfig": {
-      "value": {
-        "alwaysOn": true,
-        "use32BitWorkerProcess": false
-      }
-    },
-    "storageAccountId": {
-      "value": "<storageAccountId>"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -717,9 +717,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   params: {
     // Required parameters
     kind: 'functionapp'
-    name: '<<namePrefix>>wsfamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
+    name: '<<namePrefix>>wsfamin001'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     siteConfig: {
       alwaysOn: true
@@ -744,13 +744,13 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "kind": {
       "value": "functionapp"
     },
-    "name": {
-      "value": "<<namePrefix>>wsfamin001"
-    },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>wsfamin001"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -777,37 +777,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wswa'
   params: {
     // Required parameters
-    kind: 'app'
-    name: '<<namePrefix>>wswa001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    kind: 'app'
+    name: '<<namePrefix>>wswa001'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    httpsOnly: true
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'sites'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     siteConfig: {
       alwaysOn: true
       metadata: [
@@ -817,10 +791,36 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
       ]
     }
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     systemAssignedIdentity: true
+    httpsOnly: true
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    privateEndpoints: [
+      {
+        service: 'sites'
+        subnetResourceId: '<subnetResourceId>'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
   }
 }
 ```
@@ -838,60 +838,18 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "serverFarmResourceId": {
+      "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
     "kind": {
       "value": "app"
     },
     "name": {
       "value": "<<namePrefix>>wswa001"
     },
-    "serverFarmResourceId": {
-      "value": "<serverFarmResourceId>"
-    },
-    // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "httpsOnly": {
-      "value": true
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "sites",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     },
     "siteConfig": {
       "value": {
@@ -904,13 +862,55 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         ]
       }
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "httpsOnly": {
+      "value": true
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "sites",
+          "subnetResourceId": "<subnetResourceId>",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -930,10 +930,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wswamin'
   params: {
     // Required parameters
-    kind: 'app'
-    name: '<<namePrefix>>wswamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
+    name: '<<namePrefix>>wswamin001'
+    kind: 'app'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -952,16 +952,16 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "kind": {
-      "value": "app"
-    },
-    "name": {
-      "value": "<<namePrefix>>wswamin001"
-    },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>wswamin001"
+    },
+    "kind": {
+      "value": "app"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }

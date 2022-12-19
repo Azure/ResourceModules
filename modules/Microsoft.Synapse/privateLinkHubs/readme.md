@@ -258,26 +258,26 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>splhcom001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
+        service: 'Web'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'Web'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
       {
         principalIds: [
@@ -307,33 +307,33 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
       "value": "<<namePrefix>>splhcom001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "Web",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "Web",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         },
         {
           "principalIds": [

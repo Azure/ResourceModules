@@ -62,13 +62,13 @@ The following module usage examples are retrieved from the content of the files 
 module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idscom'
   params: {
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     name: '<<namePrefix>>idscom001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticLogsRetentionInDays: 7
   }
 }
 ```
@@ -85,26 +85,26 @@ module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep'
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "name": {
+      "value": "<<namePrefix>>idscom001"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "name": {
-      "value": "<<namePrefix>>idscom001"
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
     }
   }
 }

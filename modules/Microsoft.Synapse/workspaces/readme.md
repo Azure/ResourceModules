@@ -327,33 +327,35 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
-    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swcom001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogCategoriesToEnable: [
-      'BuiltinSqlReqsEnded'
-      'GatewayApiRequests'
-      'IntegrationActivityRuns'
-      'IntegrationPipelineRuns'
-      'IntegrationTriggerRuns'
-      'SynapseRbacOperations'
-    ]
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticLogCategoriesToEnable: [
+      'SynapseRbacOperations'
+      'GatewayApiRequests'
+      'BuiltinSqlReqsEnded'
+      'IntegrationPipelineRuns'
+      'IntegrationActivityRuns'
+      'IntegrationTriggerRuns'
+    ]
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     initialWorkspaceAdminObjectID: '<initialWorkspaceAdminObjectID>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     privateEndpoints: [
       {
+        service: 'SQL'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'SQL'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
@@ -364,9 +366,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
   }
 }
 ```
@@ -384,57 +384,59 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
-    },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
-    "name": {
-      "value": "<<namePrefix>>swcom001"
+    "defaultDataLakeStorageAccountName": {
+      "value": "<defaultDataLakeStorageAccountName>"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
     // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogCategoriesToEnable": {
-      "value": [
-        "BuiltinSqlReqsEnded",
-        "GatewayApiRequests",
-        "IntegrationActivityRuns",
-        "IntegrationPipelineRuns",
-        "IntegrationTriggerRuns",
-        "SynapseRbacOperations"
-      ]
+    "name": {
+      "value": "<<namePrefix>>swcom001"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
     },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "SynapseRbacOperations",
+        "GatewayApiRequests",
+        "BuiltinSqlReqsEnded",
+        "IntegrationPipelineRuns",
+        "IntegrationActivityRuns",
+        "IntegrationTriggerRuns"
+      ]
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "initialWorkspaceAdminObjectID": {
       "value": "<initialWorkspaceAdminObjectID>"
     },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "SQL",
+          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
-          },
-          "service": "SQL",
-          "subnetResourceId": "<subnetResourceId>"
+          }
         }
       ]
     },
@@ -448,10 +450,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
         }
       ]
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -471,16 +471,16 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swensa'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swensa001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    name: '<<namePrefix>>swensa001'
     cMKKeyName: '<cMKKeyName>'
+    encryptionActivateWorkspace: true
+    encryption: true
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUseSystemAssignedIdentity: true
-    encryption: true
-    encryptionActivateWorkspace: true
   }
 }
 ```
@@ -498,32 +498,32 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
-    },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
-    },
-    "name": {
-      "value": "<<namePrefix>>swensa001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
     // Non-required parameters
+    "defaultDataLakeStorageAccountName": {
+      "value": "<defaultDataLakeStorageAccountName>"
+    },
+    "name": {
+      "value": "<<namePrefix>>swensa001"
+    },
     "cMKKeyName": {
       "value": "<cMKKeyName>"
     },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUseSystemAssignedIdentity": {
+    "encryptionActivateWorkspace": {
       "value": true
     },
     "encryption": {
       "value": true
     },
-    "encryptionActivateWorkspace": {
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUseSystemAssignedIdentity": {
       "value": true
     }
   }
@@ -545,14 +545,14 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
-    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swenua001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     encryption: true
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKKeyName: '<cMKKeyName>'
   }
 }
 ```
@@ -573,9 +573,6 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "defaultDataLakeStorageAccountName": {
       "value": "<defaultDataLakeStorageAccountName>"
     },
-    "defaultDataLakeStorageFilesystem": {
-      "value": "<defaultDataLakeStorageFilesystem>"
-    },
     "name": {
       "value": "<<namePrefix>>swenua001"
     },
@@ -583,17 +580,20 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
       "value": "synwsadmin"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
+    "defaultDataLakeStorageFilesystem": {
+      "value": "<defaultDataLakeStorageFilesystem>"
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
     "encryption": {
       "value": true
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
     }
   }
 }
@@ -613,11 +613,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swmanv'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
-    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swmanv001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
+    name: '<<namePrefix>>swmanv001'
+    defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
     allowedAadTenantIdsForLinking: [
       '<tenantId>'
     ]
@@ -640,19 +640,19 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
-    },
-    "defaultDataLakeStorageFilesystem": {
-      "value": "<defaultDataLakeStorageFilesystem>"
-    },
-    "name": {
-      "value": "<<namePrefix>>swmanv001"
-    },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
     // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>swmanv001"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "<defaultDataLakeStorageFilesystem>"
+    },
+    "defaultDataLakeStorageAccountName": {
+      "value": "<defaultDataLakeStorageAccountName>"
+    },
     "allowedAadTenantIdsForLinking": {
       "value": [
         "<tenantId>"
@@ -682,10 +682,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-swmin'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swmin001'
     sqlAdministratorLogin: 'synwsadmin'
+    name: '<<namePrefix>>swmin001'
+    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
   }
 }
 ```
@@ -703,17 +703,17 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
-    },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
     },
     "name": {
       "value": "<<namePrefix>>swmin001"
     },
-    "sqlAdministratorLogin": {
-      "value": "synwsadmin"
+    "defaultDataLakeStorageAccountName": {
+      "value": "<defaultDataLakeStorageAccountName>"
     }
   }
 }

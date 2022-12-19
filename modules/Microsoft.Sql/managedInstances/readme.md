@@ -298,46 +298,56 @@ The following module usage examples are retrieved from the content of the files 
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmicom'
     subnetId: '<subnetId>'
-    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    administratorLogin: 'adminUserName'
+    name: '<<namePrefix>>-sqlmicom'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    skuTier: 'GeneralPurpose'
+    skuName: 'GP_Gen5'
+    hardwareFamily: 'Gen5'
+    lock: 'CanNotDelete'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    servicePrincipal: 'SystemAssigned'
+    encryptionProtectorObj: {
+      serverKeyType: 'AzureKeyVault'
+      serverKeyName: '<serverKeyName>'
+    }
+    licenseType: 'LicenseIncluded'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     databases: [
       {
-        backupLongTermRetentionPolicies: {
+        backupShortTermRetentionPolicies: {
           name: 'default'
         }
-        backupShortTermRetentionPolicies: {
+        backupLongTermRetentionPolicies: {
           name: 'default'
         }
         name: '<<namePrefix>>-sqlmicom-db-001'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    dnsZonePartner: ''
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    encryptionProtectorObj: {
-      serverKeyName: '<serverKeyName>'
-      serverKeyType: 'AzureKeyVault'
-    }
-    hardwareFamily: 'Gen5'
     keys: [
       {
-        name: '<name>'
         serverKeyType: 'AzureKeyVault'
+        name: '<name>'
         uri: '<uri>'
       }
     ]
-    licenseType: 'LicenseIncluded'
-    lock: 'CanNotDelete'
-    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
-    proxyOverride: 'Proxy'
-    publicDataEndpointEnabled: false
+    dnsZonePartner: ''
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    storageSizeInGB: 32
+    systemAssignedIdentity: true
+    vulnerabilityAssessmentsObj: {
+      emailSubscriptionAdmins: true
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+      name: 'default'
+    }
     roleAssignments: [
       {
         principalIds: [
@@ -346,30 +356,20 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    diagnosticLogsRetentionInDays: 7
     securityAlertPoliciesObj: {
-      emailAccountAdmins: true
-      name: 'default'
       state: 'Enabled'
-    }
-    servicePrincipal: 'SystemAssigned'
-    skuName: 'GP_Gen5'
-    skuTier: 'GeneralPurpose'
-    storageSizeInGB: 32
-    systemAssignedIdentity: true
-    timezoneId: 'UTC'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
+      name: 'default'
+      emailAccountAdmins: true
     }
     vCores: 4
-    vulnerabilityAssessmentsObj: {
-      emailSubscriptionAdmins: true
-      name: 'default'
-      recurringScansEmails: [
-        'test1@contoso.com'
-        'test2@contoso.com'
-      ]
-      recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+    proxyOverride: 'Proxy'
+    timezoneId: 'UTC'
+    publicDataEndpointEnabled: false
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -387,87 +387,99 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "subnetId": {
+      "value": "<subnetId>"
+    },
     "administratorLogin": {
       "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
     },
     "name": {
       "value": "<<namePrefix>>-sqlmicom"
     },
-    "subnetId": {
-      "value": "<subnetId>"
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
     },
-    "collation": {
-      "value": "SQL_Latin1_General_CP1_CI_AS"
+    "skuTier": {
+      "value": "GeneralPurpose"
+    },
+    "skuName": {
+      "value": "GP_Gen5"
+    },
+    "hardwareFamily": {
+      "value": "Gen5"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "servicePrincipal": {
+      "value": "SystemAssigned"
+    },
+    "encryptionProtectorObj": {
+      "value": {
+        "serverKeyType": "AzureKeyVault",
+        "serverKeyName": "<serverKeyName>"
+      }
+    },
+    "licenseType": {
+      "value": "LicenseIncluded"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "databases": {
       "value": [
         {
-          "backupLongTermRetentionPolicies": {
+          "backupShortTermRetentionPolicies": {
             "name": "default"
           },
-          "backupShortTermRetentionPolicies": {
+          "backupLongTermRetentionPolicies": {
             "name": "default"
           },
           "name": "<<namePrefix>>-sqlmicom-db-001"
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "dnsZonePartner": {
-      "value": ""
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "encryptionProtectorObj": {
-      "value": {
-        "serverKeyName": "<serverKeyName>",
-        "serverKeyType": "AzureKeyVault"
-      }
-    },
-    "hardwareFamily": {
-      "value": "Gen5"
-    },
     "keys": {
       "value": [
         {
-          "name": "<name>",
           "serverKeyType": "AzureKeyVault",
+          "name": "<name>",
           "uri": "<uri>"
         }
       ]
     },
-    "licenseType": {
-      "value": "LicenseIncluded"
+    "dnsZonePartner": {
+      "value": ""
     },
-    "lock": {
-      "value": "CanNotDelete"
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
     },
-    "primaryUserAssignedIdentityId": {
-      "value": "<primaryUserAssignedIdentityId>"
+    "storageSizeInGB": {
+      "value": 32
     },
-    "proxyOverride": {
-      "value": "Proxy"
+    "systemAssignedIdentity": {
+      "value": true
     },
-    "publicDataEndpointEnabled": {
-      "value": false
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>",
+        "name": "default"
+      }
     },
     "roleAssignments": {
       "value": [
@@ -479,49 +491,37 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         }
       ]
     },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
     "securityAlertPoliciesObj": {
       "value": {
-        "emailAccountAdmins": true,
+        "state": "Enabled",
         "name": "default",
-        "state": "Enabled"
-      }
-    },
-    "servicePrincipal": {
-      "value": "SystemAssigned"
-    },
-    "skuName": {
-      "value": "GP_Gen5"
-    },
-    "skuTier": {
-      "value": "GeneralPurpose"
-    },
-    "storageSizeInGB": {
-      "value": 32
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "timezoneId": {
-      "value": "UTC"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
+        "emailAccountAdmins": true
       }
     },
     "vCores": {
       "value": 4
     },
-    "vulnerabilityAssessmentsObj": {
+    "proxyOverride": {
+      "value": "Proxy"
+    },
+    "timezoneId": {
+      "value": "UTC"
+    },
+    "publicDataEndpointEnabled": {
+      "value": false
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "collation": {
+      "value": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "userAssignedIdentities": {
       "value": {
-        "emailSubscriptionAdmins": true,
-        "name": "default",
-        "recurringScansEmails": [
-          "test1@contoso.com",
-          "test2@contoso.com"
-        ],
-        "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
+        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -542,11 +542,11 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
   params: {
     // Required parameters
-    administratorLogin: 'adminUserName'
-    administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmimin'
     subnetId: '<subnetId>'
     // Non-required parameters
+    administratorLogin: 'adminUserName'
+    name: '<<namePrefix>>-sqlmimin'
+    administratorLoginPassword: '<administratorLoginPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -565,19 +565,19 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "administratorLogin": {
-      "value": "adminUserName"
-    },
-    "administratorLoginPassword": {
-      "value": "<administratorLoginPassword>"
-    },
-    "name": {
-      "value": "<<namePrefix>>-sqlmimin"
-    },
     "subnetId": {
       "value": "<subnetId>"
     },
     // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "name": {
+      "value": "<<namePrefix>>-sqlmimin"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }

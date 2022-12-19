@@ -180,54 +180,54 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   name: '${uniqueString(deployment().name)}-test-isqrcom'
   params: {
     // Required parameters
+    name: '<<namePrefix>>isqrcom001'
     criterias: {
       allOf: [
         {
+          timeAggregation: 'Average'
+          operator: 'GreaterThan'
           dimensions: [
             {
-              name: 'Computer'
               operator: 'Include'
+              name: 'Computer'
               values: [
                 '*'
               ]
             }
             {
-              name: 'InstanceName'
               operator: 'Include'
+              name: 'InstanceName'
               values: [
                 '*'
               ]
             }
           ]
-          metricMeasureColumn: 'AggregatedValue'
-          operator: 'GreaterThan'
-          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
           threshold: 0
-          timeAggregation: 'Average'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          metricMeasureColumn: 'AggregatedValue'
         }
       ]
     }
-    name: '<<namePrefix>>isqrcom001'
     scopes: [
       '<logAnalyticsWorkspaceResourceId>'
     ]
     // Non-required parameters
     alertDescription: 'My sample Alert'
     autoMitigate: false
+    suppressForMinutes: 'PT5M'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    evaluationFrequency: 'PT5M'
-    queryTimeRange: 'PT5M'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'
+    evaluationFrequency: 'PT5M'
+    queryTimeRange: 'PT5M'
   }
 }
 ```
@@ -245,37 +245,37 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "name": {
+      "value": "<<namePrefix>>isqrcom001"
+    },
     "criterias": {
       "value": {
         "allOf": [
           {
+            "timeAggregation": "Average",
+            "operator": "GreaterThan",
             "dimensions": [
               {
-                "name": "Computer",
                 "operator": "Include",
+                "name": "Computer",
                 "values": [
                   "*"
                 ]
               },
               {
-                "name": "InstanceName",
                 "operator": "Include",
+                "name": "InstanceName",
                 "values": [
                   "*"
                 ]
               }
             ],
-            "metricMeasureColumn": "AggregatedValue",
-            "operator": "GreaterThan",
-            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
             "threshold": 0,
-            "timeAggregation": "Average"
+            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+            "metricMeasureColumn": "AggregatedValue"
           }
         ]
       }
-    },
-    "name": {
-      "value": "<<namePrefix>>isqrcom001"
     },
     "scopes": {
       "value": [
@@ -289,30 +289,30 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     "autoMitigate": {
       "value": false
     },
+    "suppressForMinutes": {
+      "value": "PT5M"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "windowSize": {
+      "value": "PT5M"
     },
     "evaluationFrequency": {
       "value": "PT5M"
     },
     "queryTimeRange": {
-      "value": "PT5M"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "suppressForMinutes": {
-      "value": "PT5M"
-    },
-    "windowSize": {
       "value": "PT5M"
     }
   }

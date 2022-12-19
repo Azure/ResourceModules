@@ -176,23 +176,23 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-wccom'
   params: {
     // Required parameters
-    displayName: 'azuremonitorlogs'
     name: 'azuremonitor'
     // Non-required parameters
-    connectionApi: {
-      id: '<id>'
-    }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    displayName: 'azuremonitorlogs'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    connectionApi: {
+      id: '<id>'
+    }
   }
 }
 ```
@@ -210,34 +210,34 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "displayName": {
-      "value": "azuremonitorlogs"
-    },
     "name": {
       "value": "azuremonitor"
     },
     // Non-required parameters
+    "displayName": {
+      "value": "azuremonitorlogs"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "connectionApi": {
       "value": {
         "id": "<id>"
       }
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     }
   }
 }

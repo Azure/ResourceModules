@@ -440,19 +440,20 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csacom'
   params: {
     // Required parameters
-    kind: 'Face'
     name: '<<namePrefix>>csacom001'
     // Non-required parameters
-    customSubDomainName: '<<namePrefix>>xdomain'
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    kind: 'Face'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    customSubDomainName: '<<namePrefix>>xdomain'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
+    systemAssignedIdentity: true
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     networkAcls: {
-      defaultAction: 'Deny'
       ipRules: [
         {
           value: '40.74.28.0/23'
@@ -460,36 +461,35 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       ]
       virtualNetworkRules: [
         {
-          id: '<id>'
           ignoreMissingVnetServiceEndpoint: false
+          id: '<id>'
         }
       ]
+      defaultAction: 'Deny'
     }
+    lock: 'CanNotDelete'
     privateEndpoints: [
       {
+        service: 'account'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'account'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    sku: 'S0'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    sku: 'S0'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
   }
 }
 ```
@@ -507,27 +507,18 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "kind": {
-      "value": "Face"
-    },
     "name": {
       "value": "<<namePrefix>>csacom001"
     },
     // Non-required parameters
-    "customSubDomainName": {
-      "value": "<<namePrefix>>xdomain"
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+    "kind": {
+      "value": "Face"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+    "customSubDomainName": {
+      "value": "<<namePrefix>>xdomain"
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
@@ -535,12 +526,22 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "lock": {
-      "value": "CanNotDelete"
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     },
     "networkAcls": {
       "value": {
-        "defaultAction": "Deny",
         "ipRules": [
           {
             "value": "40.74.28.0/23"
@@ -548,46 +549,45 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         ],
         "virtualNetworkRules": [
           {
-            "id": "<id>",
-            "ignoreMissingVnetServiceEndpoint": false
+            "ignoreMissingVnetServiceEndpoint": false,
+            "id": "<id>"
           }
-        ]
+        ],
+        "defaultAction": "Deny"
       }
+    },
+    "lock": {
+      "value": "CanNotDelete"
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "account",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
           },
-          "service": "account",
           "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
     "sku": {
       "value": "S0"
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
     },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -612,10 +612,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    publicNetworkAccess: 'Enabled'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     sku: 'S0'
+    publicNetworkAccess: 'Enabled'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -649,17 +649,17 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
     },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "publicNetworkAccess": {
-      "value": "Enabled"
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
     },
     "sku": {
       "value": "S0"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     },
     "userAssignedIdentities": {
       "value": {
@@ -684,9 +684,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-csamin'
   params: {
     // Required parameters
-    kind: 'SpeechServices'
     name: '<<namePrefix>>csamin001'
     // Non-required parameters
+    kind: 'SpeechServices'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -705,13 +705,13 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "kind": {
-      "value": "SpeechServices"
-    },
     "name": {
       "value": "<<namePrefix>>csamin001"
     },
     // Non-required parameters
+    "kind": {
+      "value": "SpeechServices"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
@@ -737,23 +737,23 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     name: '<<namePrefix>>csaspeech001'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>speechdomain'
+    systemAssignedIdentity: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    sku: 'S0'
     privateEndpoints: [
       {
+        service: 'account'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'account'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    sku: 'S0'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -781,32 +781,32 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "customSubDomainName": {
       "value": "<<namePrefix>>speechdomain"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "account",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "sku": {
-      "value": "S0"
-    },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "sku": {
+      "value": "S0"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "account",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     }
   }
 }

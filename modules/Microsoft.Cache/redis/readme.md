@@ -351,36 +351,36 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>crcom001'
     // Non-required parameters
-    capacity: 2
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticSettingsName: 'redisdiagnostics'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableNonSslPort: true
-    lock: 'CanNotDelete'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     minimumTlsVersion: '1.2'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    skuName: 'Premium'
+    publicNetworkAccess: 'Enabled'
+    tags: {
+      resourceType: 'Redis Cache'
+    }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    redisVersion: '6'
+    enableNonSslPort: true
     privateEndpoints: [
       {
+        service: 'redisCache'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'redisCache'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    publicNetworkAccess: 'Enabled'
-    redisVersion: '6'
     shardCount: 1
-    skuName: 'Premium'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    lock: 'CanNotDelete'
+    diagnosticSettingsName: 'redisdiagnostics'
     systemAssignedIdentity: true
-    tags: {
-      resourceType: 'Redis Cache'
-    }
+    diagnosticLogsRetentionInDays: 7
+    capacity: 2
   }
 }
 ```
@@ -402,71 +402,71 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
       "value": "<<namePrefix>>crcom001"
     },
     // Non-required parameters
-    "capacity": {
-      "value": 2
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticSettingsName": {
-      "value": "redisdiagnostics"
-    },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "enableNonSslPort": {
-      "value": true
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "minimumTlsVersion": {
-      "value": "1.2"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
-            ]
-          },
-          "service": "redisCache",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "redisVersion": {
-      "value": "6"
-    },
-    "shardCount": {
-      "value": 1
     },
     "skuName": {
       "value": "Premium"
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "minimumTlsVersion": {
+      "value": "1.2"
     },
     "tags": {
       "value": {
         "resourceType": "Redis Cache"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "redisVersion": {
+      "value": "6"
+    },
+    "enableNonSslPort": {
+      "value": true
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "redisCache",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "shardCount": {
+      "value": 1
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "diagnosticSettingsName": {
+      "value": "redisdiagnostics"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "capacity": {
+      "value": 2
     }
   }
 }

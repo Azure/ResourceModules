@@ -292,26 +292,26 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-egstcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstcom001'
-    source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
+    name: '<<namePrefix>>egstcom001'
+    source: '<source>'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
   }
 }
 ```
@@ -329,16 +329,16 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "topicType": {
+      "value": "Microsoft.Storage.StorageAccounts"
+    },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>egstcom001"
     },
     "source": {
       "value": "<source>"
     },
-    "topicType": {
-      "value": "Microsoft.Storage.StorageAccounts"
-    },
-    // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -348,11 +348,16 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -360,16 +365,11 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
     }
   }
 }
@@ -389,10 +389,10 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-egstmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstmin001'
-    source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
+    name: '<<namePrefix>>egstmin001'
+    source: '<source>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -411,16 +411,16 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "topicType": {
+      "value": "Microsoft.Storage.StorageAccounts"
+    },
+    // Non-required parameters
     "name": {
       "value": "<<namePrefix>>egstmin001"
     },
     "source": {
       "value": "<source>"
     },
-    "topicType": {
-      "value": "Microsoft.Storage.StorageAccounts"
-    },
-    // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }

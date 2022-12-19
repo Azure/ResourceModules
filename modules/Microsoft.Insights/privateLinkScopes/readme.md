@@ -260,31 +260,31 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
     // Required parameters
     name: '<<namePrefix>>iplscom001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    scopedResources: [
+      {
+        name: 'scoped1'
+        linkedResourceId: '<linkedResourceId>'
+      }
+    ]
     privateEndpoints: [
       {
+        service: 'azuremonitor'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'azuremonitor'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    scopedResources: [
-      {
-        linkedResourceId: '<linkedResourceId>'
-        name: 'scoped1'
       }
     ]
   }
@@ -308,38 +308,38 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
       "value": "<<namePrefix>>iplscom001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "scopedResources": {
+      "value": [
+        {
+          "name": "scoped1",
+          "linkedResourceId": "<linkedResourceId>"
+        }
+      ]
     },
     "privateEndpoints": {
       "value": [
         {
+          "service": "azuremonitor",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "azuremonitor",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "scopedResources": {
-      "value": [
-        {
-          "linkedResourceId": "<linkedResourceId>",
-          "name": "scoped1"
+          "principalType": "ServicePrincipal"
         }
       ]
     }

@@ -376,25 +376,20 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-srswpscom-001'
     // Non-required parameters
-    capacity: 2
-    clientCertEnabled: false
-    disableAadAuth: false
-    disableLocalAuth: true
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    location: '<location>'
+    resourceLogConfigurationsToEnable: [
+      'ConnectivityLogs'
+    ]
     lock: 'CanNotDelete'
+    disableLocalAuth: true
+    location: '<location>'
+    systemAssignedIdentity: true
+    clientCertEnabled: false
+    capacity: 2
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    tags: {
+      purpose: 'test'
+    }
     networkAcls: {
-      defaultAction: 'Allow'
-      privateEndpoints: [
-        {
-          allow: []
-          deny: [
-            'ServerConnection'
-            'Trace'
-          ]
-          name: 'pe-<<namePrefix>>-srswpscom-001'
-        }
-      ]
       publicNetwork: {
         allow: []
         deny: [
@@ -402,21 +397,20 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
           'Trace'
         ]
       }
-    }
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSResourceId>'
+      privateEndpoints: [
+        {
+          allow: []
+          name: 'pe-<<namePrefix>>-srswpscom-001'
+          deny: [
+            'ServerConnection'
+            'Trace'
           ]
         }
-        service: 'webpubsub'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
-    resourceLogConfigurationsToEnable: [
-      'ConnectivityLogs'
-    ]
+      ]
+      defaultAction: 'Allow'
+    }
+    disableAadAuth: false
+    sku: 'Standard_S1'
     roleAssignments: [
       {
         principalIds: [
@@ -425,11 +419,17 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    sku: 'Standard_S1'
-    systemAssignedIdentity: true
-    tags: {
-      purpose: 'test'
-    }
+    privateEndpoints: [
+      {
+        service: 'webpubsub'
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
   }
 }
 ```
@@ -451,66 +451,64 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": "<<namePrefix>>-srswpscom-001"
     },
     // Non-required parameters
-    "capacity": {
-      "value": 2
-    },
-    "clientCertEnabled": {
-      "value": false
-    },
-    "disableAadAuth": {
-      "value": false
-    },
-    "disableLocalAuth": {
-      "value": true
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "location": {
-      "value": "<location>"
+    "resourceLogConfigurationsToEnable": {
+      "value": [
+        "ConnectivityLogs"
+      ]
     },
     "lock": {
       "value": "CanNotDelete"
     },
+    "disableLocalAuth": {
+      "value": true
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "clientCertEnabled": {
+      "value": false
+    },
+    "capacity": {
+      "value": 2
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "tags": {
+      "value": {
+        "purpose": "test"
+      }
+    },
     "networkAcls": {
       "value": {
-        "defaultAction": "Allow",
-        "privateEndpoints": [
-          {
-            "allow": [],
-            "deny": [
-              "ServerConnection",
-              "Trace"
-            ],
-            "name": "pe-<<namePrefix>>-srswpscom-001"
-          }
-        ],
         "publicNetwork": {
           "allow": [],
           "deny": [
             "RESTAPI",
             "Trace"
           ]
-        }
+        },
+        "privateEndpoints": [
+          {
+            "allow": [],
+            "name": "pe-<<namePrefix>>-srswpscom-001",
+            "deny": [
+              "ServerConnection",
+              "Trace"
+            ]
+          }
+        ],
+        "defaultAction": "Allow"
       }
     },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSResourceId>"
-            ]
-          },
-          "service": "webpubsub",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
+    "disableAadAuth": {
+      "value": false
     },
-    "resourceLogConfigurationsToEnable": {
-      "value": [
-        "ConnectivityLogs"
-      ]
+    "sku": {
+      "value": "Standard_S1"
     },
     "roleAssignments": {
       "value": [
@@ -522,16 +520,18 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         }
       ]
     },
-    "sku": {
-      "value": "Standard_S1"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "tags": {
-      "value": {
-        "purpose": "test"
-      }
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "webpubsub",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     }
   }
 }
@@ -598,18 +598,18 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>-srswpspe-001'
     // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
+        service: 'webpubsub'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSResourceId>'
           ]
         }
-        service: 'webpubsub'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     sku: 'Standard_S1'
   }
 }
@@ -632,21 +632,21 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
       "value": "<<namePrefix>>-srswpspe-001"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "webpubsub",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSResourceId>"
             ]
           },
-          "service": "webpubsub",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "sku": {
       "value": "Standard_S1"

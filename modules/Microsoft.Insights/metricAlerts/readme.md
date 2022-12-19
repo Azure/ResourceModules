@@ -401,34 +401,34 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
     // Required parameters
     criterias: [
       {
+        timeAggregation: 'Average'
         criterionType: 'StaticThresholdCriterion'
         metricName: 'Percentage CPU'
-        metricNamespace: 'microsoft.compute/virtualmachines'
+        threshold: '90'
         name: 'HighCPU'
         operator: 'GreaterThan'
-        threshold: '90'
-        timeAggregation: 'Average'
+        metricNamespace: 'microsoft.compute/virtualmachines'
       }
     ]
     name: '<<namePrefix>>imacom001'
     // Non-required parameters
-    actions: [
-      '<actionGroupResourceId>'
-    ]
-    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    targetResourceType: 'microsoft.compute/virtualmachines'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
-    targetResourceRegion: 'westeurope'
-    targetResourceType: 'microsoft.compute/virtualmachines'
+    alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
     windowSize: 'PT15M'
+    actions: [
+      '<actionGroupResourceId>'
+    ]
+    targetResourceRegion: 'westeurope'
   }
 }
 ```
@@ -449,13 +449,13 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
     "criterias": {
       "value": [
         {
+          "timeAggregation": "Average",
           "criterionType": "StaticThresholdCriterion",
           "metricName": "Percentage CPU",
-          "metricNamespace": "microsoft.compute/virtualmachines",
+          "threshold": "90",
           "name": "HighCPU",
           "operator": "GreaterThan",
-          "threshold": "90",
-          "timeAggregation": "Average"
+          "metricNamespace": "microsoft.compute/virtualmachines"
         }
       ]
     },
@@ -463,13 +463,8 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       "value": "<<namePrefix>>imacom001"
     },
     // Non-required parameters
-    "actions": {
-      "value": [
-        "<actionGroupResourceId>"
-      ]
-    },
-    "alertCriteriaType": {
-      "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    "targetResourceType": {
+      "value": "microsoft.compute/virtualmachines"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -477,22 +472,27 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
+      ]
+    },
+    "alertCriteriaType": {
+      "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+    },
+    "windowSize": {
+      "value": "PT15M"
+    },
+    "actions": {
+      "value": [
+        "<actionGroupResourceId>"
       ]
     },
     "targetResourceRegion": {
       "value": "westeurope"
-    },
-    "targetResourceType": {
-      "value": "microsoft.compute/virtualmachines"
-    },
-    "windowSize": {
-      "value": "PT15M"
     }
   }
 }

@@ -255,40 +255,40 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-bbacom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>bbacom001'
     storageAccountId: '<storageAccountId>'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
+    name: '<<namePrefix>>bbacom001'
+    storageAccessIdentity: '<storageAccessIdentity>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    poolAllocationMode: 'BatchService'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
+    storageAuthenticationMode: 'BatchAccountManagedIdentity'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     lock: 'CanNotDelete'
-    poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
+        service: 'batchAccount'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        roleAssignments: [
-          {
-            principalIds: [
-              '<managedIdentityPrincipalId>'
-            ]
-            principalType: 'ServicePrincipal'
-            roleDefinitionIdOrName: 'Reader'
-          }
-        ]
-        service: 'batchAccount'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    storageAccessIdentity: '<storageAccessIdentity>'
-    storageAuthenticationMode: 'BatchAccountManagedIdentity'
-    systemAssignedIdentity: true
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
   }
 }
 ```
@@ -306,24 +306,21 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "<<namePrefix>>bbacom001"
-    },
     "storageAccountId": {
       "value": "<storageAccountId>"
     },
     // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    "name": {
+      "value": "<<namePrefix>>bbacom001"
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
+    "storageAccessIdentity": {
+      "value": "<storageAccessIdentity>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+    "poolAllocationMode": {
+      "value": "BatchService"
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
@@ -331,42 +328,45 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "poolAllocationMode": {
-      "value": "BatchService"
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "roleAssignments": [
-            {
-              "principalIds": [
-                "<managedIdentityPrincipalId>"
-              ],
-              "principalType": "ServicePrincipal",
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
-          "service": "batchAccount",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "storageAccessIdentity": {
-      "value": "<storageAccessIdentity>"
+    "systemAssignedIdentity": {
+      "value": true
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
     },
-    "systemAssignedIdentity": {
-      "value": true
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "batchAccount",
+          "roleAssignments": [
+            {
+              "roleDefinitionIdOrName": "Reader",
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal"
+            }
+          ],
+          "subnetResourceId": "<subnetResourceId>",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -391,21 +391,21 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    storageAccessIdentity: '<storageAccessIdentity>'
     poolAllocationMode: 'BatchService'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    storageAuthenticationMode: 'BatchAccountManagedIdentity'
     privateEndpoints: [
       {
+        service: 'batchAccount'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'batchAccount'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    storageAccessIdentity: '<storageAccessIdentity>'
-    storageAuthenticationMode: 'BatchAccountManagedIdentity'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -439,30 +439,30 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "storageAccessIdentity": {
+      "value": "<storageAccessIdentity>"
     },
     "poolAllocationMode": {
       "value": "BatchService"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "storageAuthenticationMode": {
+      "value": "BatchAccountManagedIdentity"
+    },
     "privateEndpoints": {
       "value": [
         {
+          "service": "batchAccount",
+          "subnetResourceId": "<subnetResourceId>",
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
               "<privateDNSZoneResourceId>"
             ]
-          },
-          "service": "batchAccount",
-          "subnetResourceId": "<subnetResourceId>"
+          }
         }
       ]
-    },
-    "storageAccessIdentity": {
-      "value": "<storageAccessIdentity>"
-    },
-    "storageAuthenticationMode": {
-      "value": "BatchAccountManagedIdentity"
     },
     "userAssignedIdentities": {
       "value": {

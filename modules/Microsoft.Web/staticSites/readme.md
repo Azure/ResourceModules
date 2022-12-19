@@ -345,47 +345,47 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>wsscom001'
     // Non-required parameters
-    allowConfigFileUpdates: true
-    appSettings: {
-      foo: 'bar'
-      setting: 1
+    linkedBackend: {
+      resourceId: '<resourceId>'
     }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enterpriseGradeCdnStatus: 'Disabled'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
+    stagingEnvironmentPolicy: 'Enabled'
+    allowConfigFileUpdates: true
     functionAppSettings: {
       foo: 'bar'
       setting: 1
     }
-    linkedBackend: {
-      resourceId: '<resourceId>'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    appSettings: {
+      foo: 'bar'
+      setting: 1
     }
     lock: 'CanNotDelete'
+    sku: 'Standard'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
     privateEndpoints: [
       {
+        service: 'staticSites'
+        subnetResourceId: '<subnetResourceId>'
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
             '<privateDNSZoneResourceId>'
           ]
         }
-        service: 'staticSites'
-        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    sku: 'Standard'
-    stagingEnvironmentPolicy: 'Enabled'
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -407,20 +407,25 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
       "value": "<<namePrefix>>wsscom001"
     },
     // Non-required parameters
-    "allowConfigFileUpdates": {
-      "value": true
-    },
-    "appSettings": {
+    "linkedBackend": {
       "value": {
-        "foo": "bar",
-        "setting": 1
+        "resourceId": "<resourceId>"
       }
+    },
+    "enterpriseGradeCdnStatus": {
+      "value": "Disabled"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "enterpriseGradeCdnStatus": {
-      "value": "Disabled"
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "stagingEnvironmentPolicy": {
+      "value": "Enabled"
+    },
+    "allowConfigFileUpdates": {
+      "value": true
     },
     "functionAppSettings": {
       "value": {
@@ -428,51 +433,46 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         "setting": 1
       }
     },
-    "linkedBackend": {
+    "userAssignedIdentities": {
       "value": {
-        "resourceId": "<resourceId>"
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "appSettings": {
+      "value": {
+        "foo": "bar",
+        "setting": 1
       }
     },
     "lock": {
       "value": "CanNotDelete"
     },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "staticSites",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
+    "sku": {
+      "value": "Standard"
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
     },
-    "sku": {
-      "value": "Standard"
-    },
-    "stagingEnvironmentPolicy": {
-      "value": "Enabled"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
+    "privateEndpoints": {
+      "value": [
+        {
+          "service": "staticSites",
+          "subnetResourceId": "<subnetResourceId>",
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSZoneResourceId>"
+            ]
+          }
+        }
+      ]
     }
   }
 }

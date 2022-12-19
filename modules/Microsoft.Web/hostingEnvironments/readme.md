@@ -32,7 +32,7 @@ This module deploys an app service environment.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `clusterSettings` | array | `[System.Management.Automation.OrderedHashtable]` |  | Custom settings for changing the behavior of the App Service Environment. |
+| `clusterSettings` | array | `[System.Collections.Hashtable]` |  | Custom settings for changing the behavior of the App Service Environment. |
 | `dedicatedHostCount` | int | `-1` |  | The Dedicated Host Count. Is not supported by ASEv2. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -222,33 +222,33 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-test-whasev2'
   params: {
     // Required parameters
-    name: '<<namePrefix>>whasev2001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
+    name: '<<namePrefix>>whasev2001'
+    multiSize: 'Standard_D1_V2'
+    diagnosticLogsRetentionInDays: 7
     clusterSettings: [
       {
         name: 'DisableTls1.0'
         value: '1'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'ASEv2'
     diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipsslAddressCount: 2
-    kind: 'ASEv2'
-    multiSize: 'Standard_D1_V2'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
   }
 }
 ```
@@ -266,13 +266,19 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "<<namePrefix>>whasev2001"
-    },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>whasev2001"
+    },
+    "multiSize": {
+      "value": "Standard_D1_V2"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
     "clusterSettings": {
       "value": [
         {
@@ -281,14 +287,14 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "ASEv2"
     },
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
@@ -296,28 +302,22 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "ipsslAddressCount": {
       "value": 2
-    },
-    "kind": {
-      "value": "ASEv2"
-    },
-    "multiSize": {
-      "value": "Standard_D1_V2"
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -340,28 +340,28 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     name: '<<namePrefix>>whasev3001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    lock: 'CanNotDelete'
+    diagnosticLogsRetentionInDays: 7
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     clusterSettings: [
       {
         name: 'DisableTls1.0'
         value: '1'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
   }
 }
 ```
@@ -386,6 +386,35 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal"
+        }
+      ]
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
     "clusterSettings": {
       "value": [
         {
@@ -394,37 +423,8 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         }
       ]
     },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     }
   }
 }

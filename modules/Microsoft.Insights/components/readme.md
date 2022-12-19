@@ -173,17 +173,17 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-iccom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iccom001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
+    name: '<<namePrefix>>iccom001'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
         principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
       }
     ]
   }
@@ -203,24 +203,24 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "<<namePrefix>>iccom001"
-    },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
     },
     // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>iccom001"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "roleAssignments": {
       "value": [
         {
+          "roleDefinitionIdOrName": "Reader",
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
+          "principalType": "ServicePrincipal"
         }
       ]
     }
@@ -242,9 +242,9 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-icmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>icmin001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
+    name: '<<namePrefix>>icmin001'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -263,13 +263,13 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "name": {
-      "value": "<<namePrefix>>icmin001"
-    },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
     },
     // Non-required parameters
+    "name": {
+      "value": "<<namePrefix>>icmin001"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }

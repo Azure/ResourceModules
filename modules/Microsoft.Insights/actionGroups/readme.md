@@ -14,7 +14,7 @@ This module deploys an Action Group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 | `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters
@@ -255,22 +255,9 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-iagcom'
   params: {
     // Required parameters
-    groupShortName: 'agiagcom001'
     name: '<<namePrefix>>iagcom001'
     // Non-required parameters
-    emailReceivers: [
-      {
-        emailAddress: 'test.user@testcompany.com'
-        name: 'TestUser_-EmailAction-'
-        useCommonAlertSchema: true
-      }
-      {
-        emailAddress: 'test.user2@testcompany.com'
-        name: 'TestUser2'
-        useCommonAlertSchema: true
-      }
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    groupShortName: 'agiagcom001'
     roleAssignments: [
       {
         principalIds: [
@@ -279,11 +266,24 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    emailReceivers: [
+      {
+        emailAddress: 'test.user@testcompany.com'
+        useCommonAlertSchema: true
+        name: 'TestUser_-EmailAction-'
+      }
+      {
+        emailAddress: 'test.user2@testcompany.com'
+        useCommonAlertSchema: true
+        name: 'TestUser2'
+      }
+    ]
     smsReceivers: [
       {
-        countryCode: '1'
-        name: 'TestUser_-SMSAction-'
         phoneNumber: '2345678901'
+        name: 'TestUser_-SMSAction-'
+        countryCode: '1'
       }
     ]
   }
@@ -303,29 +303,12 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "groupShortName": {
-      "value": "agiagcom001"
-    },
     "name": {
       "value": "<<namePrefix>>iagcom001"
     },
     // Non-required parameters
-    "emailReceivers": {
-      "value": [
-        {
-          "emailAddress": "test.user@testcompany.com",
-          "name": "TestUser_-EmailAction-",
-          "useCommonAlertSchema": true
-        },
-        {
-          "emailAddress": "test.user2@testcompany.com",
-          "name": "TestUser2",
-          "useCommonAlertSchema": true
-        }
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
+    "groupShortName": {
+      "value": "agiagcom001"
     },
     "roleAssignments": {
       "value": [
@@ -337,12 +320,29 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "emailReceivers": {
+      "value": [
+        {
+          "emailAddress": "test.user@testcompany.com",
+          "useCommonAlertSchema": true,
+          "name": "TestUser_-EmailAction-"
+        },
+        {
+          "emailAddress": "test.user2@testcompany.com",
+          "useCommonAlertSchema": true,
+          "name": "TestUser2"
+        }
+      ]
+    },
     "smsReceivers": {
       "value": [
         {
-          "countryCode": "1",
+          "phoneNumber": "2345678901",
           "name": "TestUser_-SMSAction-",
-          "phoneNumber": "2345678901"
+          "countryCode": "1"
         }
       ]
     }
@@ -364,9 +364,9 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-iagmin'
   params: {
     // Required parameters
-    groupShortName: 'agiagmin001'
     name: '<<namePrefix>>iagmin001'
     // Non-required parameters
+    groupShortName: 'agiagmin001'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -385,13 +385,13 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "groupShortName": {
-      "value": "agiagmin001"
-    },
     "name": {
       "value": "<<namePrefix>>iagmin001"
     },
     // Non-required parameters
+    "groupShortName": {
+      "value": "agiagmin001"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
