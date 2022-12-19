@@ -119,15 +119,16 @@ param nicConfigurations array
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed.')
 @allowed([
-  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param pipdiagnosticLogCategoriesToEnable array = [
-  'allLogs'
+  'DDoSProtectionNotifications'
+  'DDoSMitigationFlowLogs'
+  'DDoSMitigationReports'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -645,7 +646,7 @@ module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/p
   ]
 }
 
-resource vm_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+resource vm_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${vm.name}-${lock}-lock'
   properties: {
     level: any(lock)
