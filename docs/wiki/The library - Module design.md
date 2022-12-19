@@ -86,7 +86,7 @@ Modules in the repository are structured based on their main resource provider (
 
 Resources like `Microsoft.Sql/servers` may have dedicated templates for child resources such as `Microsoft.Sql/servers/databases`. In these cases, we recommend to create a subfolder named after the child resource, so that the path to the child resource folder is consistent with its resource type. In the given example, we would have a `databases` subfolder in the `servers` parent folder.
 
-```
+```txt
 Microsoft.Sql
 └─ servers [module]
   └─ databases [child-module/resource]
@@ -254,7 +254,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
 
 ### Diagnostic Settings
 
-The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
+The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed.  However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
 
 <details>
 <summary>Details</summary>
@@ -277,12 +277,13 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   <LogsIfAny>
 ])
 param diagnosticLogCategoriesToEnable array = [
-  <LogsIfAny>
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -483,7 +484,7 @@ While exceptions might be needed, the following guidance should be followed as m
 
 - When deploying more than one resource of the same referenced module is needed, we leverage loops using integer index and items in an array as per [Bicep loop syntax](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops#loop-syntax). In this case, we also use `-${index}` as a suffix of the deployment name to avoid race condition:
 
-  ```
+  ```bicep
   module symbolic_name 'path/to/referenced/module/deploy.bicep' = [for (<item>, <index>) in <collection>: {
     name: '<deploymentName>-${index}'
     ...
@@ -492,32 +493,32 @@ While exceptions might be needed, the following guidance should be followed as m
 
   > **Example**: for the `roleAssignment` deployment in the Key Vault `secrets` template
   >
-  > ```
+  > ```bicep
   >   module secret_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   >     name: '${deployment().name}-Rbac-${index}'
   > ```
 
 - For referenced resources of the top-level resource inside the top-level template use the following naming structure:
 
-  ```
+  ```bicep
   '${uniqueString(deployment().name, location)}-<topLevelResourceType>-<referencedResourceType>'
   ```
 
   > **Example**: for the `tableServices` deployment inside the `storageAccount` template
   >
-  > ```
+  > ```bicep
   > name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   > ```
 
 - In the referenced resource template use the following naming structure:
 
-  ```
+  ```bicep
   '${deployment().name}-<referencedResourceType>[-${index}]'
   ```
 
   > **Example**: for the `tables` deployment in the `tableServices` template
   >
-  > ```
+  > ```bicep
   > name: '${deployment().name}-Table-${index}'
   > ```
 
@@ -563,16 +564,16 @@ Module test files follow these general guidelines:
 
 In addition, they follow these file-type-specific guidelines:
 
-  - Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
-  - Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters are used to deploy the module.
-  - Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file. The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario. The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
-  - Parameters
-    - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements. As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`)
-    - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
-    - Each file should also provide a `location` parameter that may default to the deployments default location
-  - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
-  - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
-  - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
+- Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
+- Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters are used to deploy the module.
+- Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file. The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario. The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
+- Parameters
+  - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements. As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`)
+  - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
+  - Each file should also provide a `location` parameter that may default to the deployments default location
+- It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
+- References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
+- If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
     <details>
     <summary>Example (for a resource group level resource)</summary>

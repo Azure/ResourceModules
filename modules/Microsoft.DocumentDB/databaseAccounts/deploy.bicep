@@ -94,8 +94,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DataPlaneRequests'
   'MongoRequests'
   'QueryRuntimeStatistics'
@@ -107,15 +108,7 @@ param diagnosticEventHubName string = ''
   'TableApiRequests'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'DataPlaneRequests'
-  'MongoRequests'
-  'QueryRuntimeStatistics'
-  'PartitionKeyStatistics'
-  'PartitionKeyRUConsumption'
-  'ControlPlaneRequests'
-  'CassandraRequests'
-  'GremlinRequests'
-  'TableApiRequests'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -172,7 +165,7 @@ param backupRetentionIntervalInHours int = 8
 @description('Optional. Enum to indicate type of backup residency. Only applies to periodic backup type.')
 param backupStorageRedundancy string = 'Local'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -180,6 +173,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
