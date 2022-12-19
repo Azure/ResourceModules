@@ -35,8 +35,8 @@ function Set-ApiSpecsFile {
 
     # Install and or import module
     if (-not (Get-Module 'AzureAPICrawler' -ListAvailable)) {
-        if ($PSCmdlet.ShouldProcess("Module 'AzureAPICrawler with version [0.2.0]'", 'Install')) {
-            $null = Install-Module 'AzureAPICrawler' -Scope 'CurrentUser' -Repository 'PSGallery' -RequiredVersion '0.2.0' -Force
+        if ($PSCmdlet.ShouldProcess("Module 'AzureAPICrawler with version [$ModuleVersion]'", 'Install')) {
+            $null = Install-Module 'AzureAPICrawler' -Scope 'CurrentUser' -Repository 'PSGallery' -RequiredVersion $ModuleVersion -Force
         }
     }
 
@@ -44,7 +44,7 @@ function Set-ApiSpecsFile {
 
     # Fetch data
     $getInputObject = @{
-        IncludePreview = $true
+        IncludePreview = $IncludePreview
         Verbose        = $true
     }
     $res = Get-AzureApiSpecsVersionList @getInputObject
