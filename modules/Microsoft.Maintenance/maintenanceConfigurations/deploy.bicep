@@ -82,7 +82,7 @@ resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfiguratio
   }
 }
 
-resource maintenanceConfiguration_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource maintenanceConfiguration_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${maintenanceConfiguration.name}-${lock}-lock'
   properties: {
     level: any(lock)

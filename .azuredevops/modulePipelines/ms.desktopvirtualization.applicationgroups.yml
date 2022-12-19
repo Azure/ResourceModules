@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.DesktopVirtualization/applicationgroups/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

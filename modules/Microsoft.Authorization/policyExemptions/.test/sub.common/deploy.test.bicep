@@ -88,7 +88,6 @@ module testDeployment '../../subscription/deploy.bicep' = {
     metadata: {
       category: 'Security'
     }
-    subscriptionId: subscription().subscriptionId
     assignmentScopeValidation: 'Default'
     description: 'My description'
     resourceSelectors: [

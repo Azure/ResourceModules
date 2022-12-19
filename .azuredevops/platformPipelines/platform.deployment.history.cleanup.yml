@@ -1,4 +1,4 @@
-name: '.Platform - Remove Deployments'
+name: '.Platform - Clean up deployment history'
 
 parameters:
   - name: handleSubscriptionScope
@@ -10,7 +10,7 @@ parameters:
     type: boolean
     default: true # Note: This requires your service principal to have permissions on the management group scope.
   - name: maxDeploymentRetentionInDays
-    displayName: The number of days to keep deployments with status [running] or [failed]
+    displayName: The number of days to keep deployments with status [failed] # 'Running' are always excluded
     type: number
     default: 14
 
@@ -64,7 +64,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-SubscriptionDeploymentHistory.ps1')
 
             $functionInput = @{
               SubscriptionId               = '$(ARM_SUBSCRIPTION_ID)'
@@ -74,7 +74,7 @@ jobs:
             Write-Verbose 'Invoke task with' -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Clear-SubscriptionDeployment @functionInput
+            Clear-SubscriptionDeploymentHistory @functionInput
 
   - job: Remove_ManagementGroup_Deployments
     condition: and(succeeded(), eq('${{ parameters.handleManagementGroupScope }}', 'true'))
@@ -112,7 +112,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'deploymentRemoval' 'Clear-ManagementGroupDeploymentHistory.ps1')
 
             $functionInput = @{
               ManagementGroupId            = '$(ARM_MGMTGROUP_ID)'
@@ -122,4 +122,4 @@ jobs:
             Write-Verbose 'Invoke task with' -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Clear-ManagementGroupDeployment @functionInput
+            Clear-ManagementGroupDeploymentHistory @functionInput

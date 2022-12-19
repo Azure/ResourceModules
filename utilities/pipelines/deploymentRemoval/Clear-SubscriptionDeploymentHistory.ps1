@@ -1,13 +1,13 @@
 ﻿
 <#
 .SYNOPSIS
-Bulk delete all deployments on the given management group scope
+Bulk delete all deployments on the given subscription scope
 
 .DESCRIPTION
-Bulk delete all deployments on the given management group scope
+Bulk delete all deployments on the given subscription scope
 
-.PARAMETER ManagementGroupId
-Mandatory. The Resource ID of the Management Group to remove the deployments from.
+.PARAMETER subscriptionId
+Optional. The ID of the subscription to remove the deployments from. Defaults to the current context.
 
 .PARAMETER DeploymentStatusToExclude
 Optional. The status to exlude from removals. Can be multiple. By default, we exclude any deployment that is in state 'running' or 'failed'.
@@ -16,22 +16,22 @@ Optional. The status to exlude from removals. Can be multiple. By default, we ex
 Optional. The time to keep deployments with a status to exclude. In other words, if a deployment is in a status to exclude, but older than the threshold, it will be deleted.
 
 .EXAMPLE
-Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId'
+Clear-SubscriptionDeploymentHistory -subscriptionId '11111111-1111-1111-1111-111111111111'
 
-Bulk remove all 'non-running' & 'non-failed' deployments from the Management Group with ID 'MyManagementGroupId'
+Bulk remove all 'non-running' & 'non-failed' deployments from the subscription with ID '11111111-1111-1111-1111-111111111111'
 
 .EXAMPLE
-Clear-ManagementGroupDeployment -ManagementGroupId 'MyManagementGroupId' -DeploymentStatusToExclude @('running')
+Clear-SubscriptionDeploymentHistory -subscriptionId '11111111-1111-1111-1111-111111111111' -DeploymentStatusToExclude @('running')
 
-Bulk remove all 'non-running' deployments from the Management Group with ID 'MyManagementGroupId'
+Bulk remove all 'non-running' deployments from the subscription with ID '11111111-1111-1111-1111-111111111111'
 #>
-function Clear-ManagementGroupDeployment {
+function Clear-SubscriptionDeploymentHistory {
 
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory = $true)]
-        [string] $ManagementGroupId,
+        [Parameter(Mandatory = $false)]
+        [string] $subscriptionId = (Get-AzContext).Subscription.Id,
 
         [Parameter(Mandatory = $false)]
         [string[]] $DeploymentStatusToExclude = @('running', 'failed'),
@@ -46,9 +46,13 @@ function Clear-ManagementGroupDeployment {
     # Load used functions
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'sharedScripts' 'Split-Array.ps1')
 
+    # Setting context explicitely in case the principal has permissions on multiple
+    Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+    $null = Set-AzContext -Subscription $subscriptionId
+
     $getInputObject = @{
         Method  = 'GET'
-        Uri     = "https://management.azure.com/providers/Microsoft.Management/managementGroups/$ManagementGroupId/providers/Microsoft.Resources/deployments/?api-version=2021-04-01"
+        Uri     = "https://management.azure.com/subscriptions/$subscriptionId/providers/Microsoft.Resources/deployments?api-version=2020-06-01"
         Headers = @{
             Authorization = 'Bearer {0}' -f (Get-AzAccessToken).Token
         }
@@ -59,7 +63,7 @@ function Clear-ManagementGroupDeployment {
         throw ('Fetching deployments failed with error [{0}]' -f ($reponse | Out-String))
     }
 
-    Write-Verbose ('Found [{0}] deployments in management group [{1}]' -f $response.value.Count, $ManagementGroupId) -Verbose
+    Write-Verbose ('Found [{0}] deployments in subscription [{1}]' -f $response.value.Count, $subscriptionId) -Verbose
 
     $relevantDeployments = $response.value | Where-Object {
         $_.properties.provisioningState -notin $DeploymentStatusToExclude -or
@@ -70,7 +74,7 @@ function Clear-ManagementGroupDeployment {
     Write-Verbose ('Filtering [{0}] deployments out as they are in state [{1}] or newer than [{2}] days ({3})' -f ($response.value.Count - $relevantDeployments.Count), ($DeploymentStatusToExclude -join '/'), $maxDeploymentRetentionInDays, $deploymentThreshold.ToString('yyyy-MM-dd')) -Verbose
 
     if (-not $relevantDeployments) {
-        Write-Verbose 'No deployments found' -Verbose
+        Write-Verbose ('No deployments for subscription [{0}] found' -f $subscriptionId) -Verbose
         return
     }
 
@@ -81,7 +85,7 @@ function Clear-ManagementGroupDeployment {
         $relevantDeploymentChunks = $rawDeploymentChunks
     }
 
-    Write-Verbose ('Triggering the removal of [{0}] deployments from management group [{1}]' -f $relevantDeployments.Count, $ManagementGroupId) -Verbose
+    Write-Verbose ('Triggering the removal of [{0}] deployments from subscription [{1}]' -f $relevantDeployments.Count, $subscriptionId) -Verbose
 
     foreach ($deployments in $relevantDeploymentChunks) {
 
@@ -91,7 +95,7 @@ function Clear-ManagementGroupDeployment {
                 requestHeaderDetails = @{
                     commandName = 'HubsExtension.Microsoft.Resources/deployments.BulkDelete.execute'
                 }
-                url                  = '/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Resources/deployments/{1}?api-version=2019-08-01' -f $ManagementGroupId, $_.name
+                url                  = '/subscriptions/{0}/providers/Microsoft.Resources/deployments/{1}?api-version=2019-08-01' -f $subscriptionId, $_.name
             }
         }
 
@@ -108,7 +112,7 @@ function Clear-ManagementGroupDeployment {
             }
             Body    = @{
                 requests = $requests
-            } | ConvertTo-Json -Depth 4
+            } | ConvertTo-Json -Depth 4 -EnumsAsStrings
         }
         if ($PSCmdlet.ShouldProcess(('Removal of [{0}] deployments' -f $requests.Count), 'Request')) {
             $null = Invoke-RestMethod @removeInputObject

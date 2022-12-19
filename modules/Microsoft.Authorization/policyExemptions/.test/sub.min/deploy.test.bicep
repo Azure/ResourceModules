@@ -37,6 +37,5 @@ module testDeployment '../../subscription/deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
-    subscriptionId: subscription().subscriptionId
   }
 }

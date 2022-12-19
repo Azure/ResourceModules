@@ -42,5 +42,6 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
+    principalType: 'ServicePrincipal'
   }
 }

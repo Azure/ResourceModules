@@ -452,7 +452,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 output name string = roleAssignment.name
 
 @sys.description('The resource ID of the Role Assignment.')
-output resourceId string = az.resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output resourceId string = roleAssignment.id
 
 @sys.description('The name of the resource group the role assignment was applied at.')
 output resourceGroupName string = resourceGroup().name

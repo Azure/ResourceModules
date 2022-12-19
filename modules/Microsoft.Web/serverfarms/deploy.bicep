@@ -151,7 +151,7 @@ resource appServicePlan_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
   scope: appServicePlan
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${appServicePlan.name}-${lock}-lock'
   properties: {
     level: any(lock)

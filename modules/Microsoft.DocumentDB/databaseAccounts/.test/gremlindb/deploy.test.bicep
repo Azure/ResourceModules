@@ -83,14 +83,18 @@ module testDeployment '../../deploy.bicep' = {
       {
         graphs: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'car_collection'
             partitionKeyPaths: [
               '/car_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'truck_collection'
             partitionKeyPaths: [
               '/truck_id'
@@ -102,14 +106,18 @@ module testDeployment '../../deploy.bicep' = {
       {
         collections: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bike_collection'
             partitionKeyPaths: [
               '/bike_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bicycle_collection'
             partitionKeyPaths: [
               '/bicycle_id'

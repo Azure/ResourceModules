@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Authorization/policySetDefinitions/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

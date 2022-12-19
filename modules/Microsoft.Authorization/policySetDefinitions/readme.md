@@ -190,7 +190,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managementGroupId: '<managementGroupId>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -264,9 +263,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
     },
     "metadata": {
       "value": {
@@ -420,7 +416,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         name: 'ARM'
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -498,9 +493,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "name": "ARM"
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -535,7 +527,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -573,9 +564,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }

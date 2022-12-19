@@ -40,11 +40,11 @@ function Remove-ResourceListInner {
 
             if ($alreadyProcessed) {
                 # Skipping
-                Write-Verbose ('Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resourceName, $resource.type) -Verbose
+                Write-Verbose ('[/] Skipping resource [{0}] of type [{1}] as a parent resource was already processed' -f $resourceName, $resource.type) -Verbose
                 [array]$processedResources += $resource.resourceId
                 [array]$resourcesToRetry = $resourcesToRetry | Where-Object { $_.resourceId -notmatch $resource.resourceId }
             } else {
-                Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resourceName, $resource.type) -Verbose
+                Write-Verbose ('[-] Removing resource [{0}] of type [{1}]' -f $resourceName, $resource.type) -Verbose
                 try {
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
                         Invoke-ResourceRemoval -Type $resource.type -ResourceId $resource.resourceId
@@ -107,7 +107,7 @@ function Remove-ResourceList {
 
     do {
         if ($PSCmdlet.ShouldProcess(("[{0}] Resource(s) with a maximum of [$removalRetryLimit] attempts." -f (($resourcesToRetry -is [array]) ? $resourcesToRetry.Count : 1)), 'Remove')) {
-            $resourcesToRetry = Remove-ResourceListInner -ResourcesToRemove $resourcesToRetry -Verbose
+            $resourcesToRetry = Remove-ResourceListInner -ResourcesToRemove $resourcesToRetry
         } else {
             Remove-ResourceListInner -ResourcesToRemove $resourcesToRemove -WhatIf
         }
