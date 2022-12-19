@@ -286,7 +286,7 @@ param enableAutomaticUpdates bool = true
 ])
 param patchMode string = ''
 
-@description('Optional. VM guest patching assessment mode. Allowed values are \'AutomaticByPlatform\', \'ImageDefault\'. Set it to \'AutomaticByPlatform\' to enable automatically check for updates every 24 hours.')
+@description('Optional. VM guest patching assessment mode. Set it to \'AutomaticByPlatform\' to enable automatically check for updates every 24 hours.')
 @allowed([
   'AutomaticByPlatform'
   'ImageDefault'
