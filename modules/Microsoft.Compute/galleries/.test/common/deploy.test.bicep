@@ -60,7 +60,7 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-${serviceShort}-appd-001'
       }
       {
-        name: '<<namePrefix>>-az-appd-x-001'
+        name: '<<namePrefix>>-appd-002'
         supportedOSType: 'Windows'
         roleAssignments: [
           {

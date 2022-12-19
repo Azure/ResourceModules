@@ -26,12 +26,13 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Shared Image Gallery. |
+| `name` | string | Name of the Azure Compute Gallery. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Applications to create. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
@@ -174,6 +175,24 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgcom001'
     // Non-required parameters
+    applications: [
+      {
+        name: '<<namePrefix>>-cgcom-appd-001'
+      }
+      {
+        name: '<<namePrefix>>-appd-002'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        supportedOSType: 'Windows'
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -206,6 +225,26 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgcom001"
     },
     // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-cgcom-appd-001"
+        },
+        {
+          "name": "<<namePrefix>>-appd-002",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "supportedOSType": "Windows"
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
