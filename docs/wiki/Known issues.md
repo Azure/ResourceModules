@@ -7,6 +7,7 @@ This section provides an overview of the most impactful limitations and known is
 - [Module specific](#module-specific)
   - [Microsoft.AAD/DomainServices](#microsoftaaddomainservices)
   - [Microsoft.Management/managementGroups](#microsoftmanagementmanagementgroups)
+  - [Microsoft.RecoveryServices/vaults](#microsoftrecoveryservicesvaults)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
@@ -40,6 +41,14 @@ Including RBAC capabilities has been tested setting the scope to the previously 
 A related issue has been opened to the Bicep board [#6832](https://github.com/Azure/bicep/issues/6832).
 
 Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
+
+## Microsoft.RecoveryServices/vaults
+
+The Recovery Services Vaults module does not currently validate the identity property (system or user assigned identity).
+
+The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
+
+A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
 
 ---
 

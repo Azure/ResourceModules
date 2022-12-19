@@ -45,7 +45,7 @@ resource privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
 }
 
 // Resource Lock
-resource privateLinkHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateLinkHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateLinkHub.name}-${lock}-lock'
   properties: {
     level: any(lock)

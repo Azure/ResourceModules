@@ -106,7 +106,7 @@ resource connection 'Microsoft.Network/connections@2021-08-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: any(lock)

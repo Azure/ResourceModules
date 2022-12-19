@@ -63,6 +63,5 @@ module testDeployment '../../subscription/deploy.bicep' = {
         name: 'ARM'
       }
     ]
-    subscriptionId: subscription().subscriptionId
   }
 }

@@ -47,7 +47,5 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
-    resourceGroupName: resourceGroup.name
-    subscriptionId: subscription().subscriptionId
   }
 }

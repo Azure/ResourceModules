@@ -453,7 +453,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 output name string = roleAssignment.name
 
 @sys.description('The resource ID of the Role Assignment.')
-output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output resourceId string = roleAssignment.id
 
 @sys.description('The scope this Role Assignment applies to.')
-output scope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+output scope string = az.resourceId('Microsoft.Management/managementGroups', managementGroupId)

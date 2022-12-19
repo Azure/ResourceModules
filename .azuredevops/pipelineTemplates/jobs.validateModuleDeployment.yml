@@ -34,7 +34,6 @@
 ##   | jobDisplayName                  | ''                                   | The display name of the job.                                                                              | 'Deploy module'                                       |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy.                                                                         | 'c:/KeyVault'                                         |
 ##   | location                        | '$(location)'                        | The location to deploy resources to.                                                                      | 'EastUs2'                                             |
-##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments.                     | 'validation-rg'                                       |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection.               | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'                |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments.      | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'                |
 ##   | azurePowerShellVersion          | '$(azurePowerShellVersion)'          | Used for configuring the Azure PowerShellModules Version, one of the example values.                      | 'latestVersion' or 'OtherVersion'                     |
@@ -55,7 +54,6 @@ parameters:
   customTokens: ''
   modulePath: '$(modulePath)'
   location: '$(location)'
-  resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   # Azure PowerShell Version parameters
@@ -150,7 +148,6 @@ jobs:
 
             # Add enforced tokens
             $ConvertTokensInputs.Tokens += @{
-              resourceGroupName = '${{ parameters.resourceGroupName }}'
               subscriptionId    = '${{ parameters.subscriptionId }}'
               managementGroupId = '${{ parameters.managementGroupId }}'
               tenantId          = '$(ARM_TENANT_ID)'
@@ -199,7 +196,6 @@ jobs:
 
             # Fetching parameters
             $location = '${{ parameters.location }}'
-            $resourceGroupName = '${{ parameters.resourceGroupName }}'
             $subscriptionId = '${{ parameters.subscriptionId }}'
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
@@ -221,7 +217,6 @@ jobs:
             $functionInput = @{
                 TemplateFilePath     = $moduleTestFilePath
                 Location             = $location
-                ResourceGroupName    = $resourceGroupName
                 SubscriptionId       = $subscriptionId
                 ManagementGroupId    = $managementGroupId
                 AdditionalParameters = @{}
@@ -256,7 +251,6 @@ jobs:
 
             # Fetching parameters
             $location = '${{ parameters.location }}'
-            $resourceGroupName = '${{ parameters.resourceGroupName }}'
             $subscriptionId = '${{ parameters.subscriptionId }}'
             $managementGroupId = '${{ parameters.managementGroupId }}'
 
@@ -279,7 +273,6 @@ jobs:
             $functionInput = @{
                 TemplateFilePath     = $moduleTestFilePath
                 Location             = $location
-                ResourceGroupName    = $resourceGroupName
                 SubscriptionId       = $subscriptionId
                 ManagementGroupId    = $managementGroupId
                 doNotThrow           = $true
@@ -300,20 +293,20 @@ jobs:
             $res = New-TemplateDeployment @functionInput -Verbose
 
             # Get deployment name
-            $deploymentName = $res.deploymentName
-            Write-Verbose "Deployment name: $deploymentName" -Verbose
-            Write-Host "##vso[task.setvariable variable=deploymentName]$deploymentName"
-            Write-Host "##vso[task.setvariable variable=deploymentName;isOutput=true]$deploymentName"
+            $deploymentNames = $res.DeploymentNames | ConvertTo-Json -Compress
+            Write-Verbose "Deployment name(s) [$deploymentNames]" -Verbose
+            Write-Host "##vso[task.setvariable variable=deploymentNames]$deploymentNames"
+            Write-Host "##vso[task.setvariable variable=deploymentNames;isOutput=true]$deploymentNames"
 
             # Populate further outputs
-            $deploymentOutputHash=@{}
+            $deploymentOutputHashTable=@{}
 
             foreach ($outputKey in $res.deploymentOutput.Keys) {
               Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-              $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+              $deploymentOutputHashTable.add($outputKey,$res.deploymentOutput[$outputKey].Value)
             }
 
-            $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+            $deploymentOutput = $deploymentOutputHashTable | ConvertTo-Json -Compress -Depth 100
             Write-Verbose "Deployment output: $deploymentOutput" -Verbose
 
             if ($res.ContainsKey('exception')) {
@@ -325,7 +318,7 @@ jobs:
       #------------------
       - task: AzurePowerShell@5
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentName'],'')), not(startsWith(variables['deploymentName'], 'variables[' )))
+        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentNames'],'')), not(startsWith(variables['deploymentNames'], 'variables[' )))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -339,11 +332,9 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
-              ResourceGroupName = '${{ parameters.resourceGroupName }}'
               SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
-              deploymentName    = '$(deploymentName)'
-              Verbose           = $true
+              DeploymentNames   = '$(deploymentNames)' | ConvertFrom-Json
             }
 
             Write-Verbose 'Invoke task with' -Verbose

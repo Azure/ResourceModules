@@ -24,6 +24,7 @@ trigger:
       - '/modules/Microsoft.Web/serverfarms/*'
       - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

@@ -803,7 +803,7 @@ function ConvertTo-FormattedBicep {
         [string[]] $RequiredParametersList = @()
     )
 
-    # Remove 'value' parameter property, if any (e.g. when dealing with a classic parameter file)
+    # [0/5] Remove 'value' parameter property, if any (e.g. when dealing with a classic parameter file)
     $JSONParametersWithoutValue = @{}
     foreach ($parameterName in $JSONParameters.psbase.Keys) {
         $keysOnLevel = $JSONParameters[$parameterName].Keys
@@ -814,13 +814,13 @@ function ConvertTo-FormattedBicep {
         }
     }
 
-    # [1/4] Order parameters recursively
+    # [1/5] Order parameters recursively
     if ($JSONParametersWithoutValue.Keys.Count -gt 0) {
         $orderedJSONParameters = Get-OrderedParametersJSON -ParametersJSON ($JSONParametersWithoutValue | ConvertTo-Json -Depth 99) -RequiredParametersList $RequiredParametersList
     } else {
         $orderedJSONParameters = @{}
     }
-    # [2/4] Remove any JSON specific formatting
+    # [2/5] Remove any JSON specific formatting
     $templateParameterObject = $orderedJSONParameters | ConvertTo-Json -Depth 99
     if ($templateParameterObject -ne '{}') {
         $contentInBicepFormat = $templateParameterObject -replace "'", "\'" # Update any [ "field": "[[concat('tags[', parameters('tagName'), ']')]"] to [ "field": "[[concat(\'tags[\', parameters(\'tagName\'), \']\')]"]
@@ -830,16 +830,28 @@ function ConvertTo-FormattedBicep {
         $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
         $bicepParamsArray = $contentInBicepFormat -split '\n'
         $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+
+        # [3/5] Format 'getSecret' references
+        $bicepParamsArray = $bicepParamsArray | ForEach-Object {
+            if ($_ -match ".+: '(\w+)\.getSecret\(\\'([0-9a-zA-Z-<>]+)\\'\)'") {
+                # e.g. change [pfxCertificate: 'kv1.getSecret(\'<certSecretName>\')'] to [pfxCertificate: kv1.getSecret('<certSecretName>')]
+                "{0}: {1}.getSecret('{2}')" -f ($_ -split ':')[0], $matches[1], $matches[2]
+            } else {
+                $_
+            }
+        }
+    } else {
+        $bicepParamsArray = @()
     }
 
-    # [3/4] Format params with indent
+    # [4/5] Format params with indent
     $bicepParams = ($bicepParamsArray | ForEach-Object { "  $_" } | Out-String).TrimEnd()
 
-    # [4/4]  Add comment where required & optional parameters start
+    # [5/5]  Add comment where required & optional parameters start
     $splitInputObject = @{
         BicepParams            = $bicepParams
         RequiredParametersList = $RequiredParametersList
-        AllParametersList      = $JSONParametersWithoutValue.Keys
+        AllParametersList      = $JSONParameters.Keys
     }
     $commentedBicepParams = Add-BicepParameterTypeComment @splitInputObject
 
@@ -1208,33 +1220,15 @@ function Set-DeploymentExamplesSection {
                     }
                 }
 
-                # [3/5] Remove the 'value' property from each parameter
-                #      If we're handling a classic ARM-JSON parameter file that includes replacing all 'references' with the link to one of the 'existing' Key Vault resources
-                if ((ConvertFrom-Json $rawContent -Depth 99).'$schema' -like '*deploymentParameters*') {
-                    # If handling a classic parameter file
-                    $JSONParameters = (ConvertFrom-Json $rawContent -Depth 99 -AsHashtable -NoEnumerate).parameters
-                    $JSONParametersWithoutValue = @{}
-                    foreach ($parameterName in $JSONParameters.psbase.Keys) {
-                        $keysOnLevel = $JSONParameters[$parameterName].Keys
-                        if ($keysOnLevel.count -eq 1 -and $keysOnLevel -eq 'value') {
-                            $JSONParametersWithoutValue[$parameterName] = $JSONParameters[$parameterName]['value']
-                        } else {
-                            # replace key vault references
-                            $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameterName }
-                            $JSONParametersWithoutValue[$parameterName] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
-                        }
-                    }
-                } else {
-                    # If handling a test deployment file
-                    $JSONParametersWithoutValue = @{}
-                    foreach ($parameter in $JSONParametersHashTable.Keys) {
-                        $JSONParametersWithoutValue[$parameter] = $JSONParametersHashTable.$parameter.value
-                    }
+                # [3/5] Replace all 'references' with the link to one of the 'existing' Key Vault resources
+                foreach ($parameterName in ($JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' })) {
+                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameterName }
+                    $JSONParametersHashTable[$parameterName] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
                 }
 
                 # [4/5] Convert the JSON parameters to a Bicep parameters block
                 $conversionInputObject = @{
-                    JSONParameters         = $JSONParametersWithoutValue
+                    JSONParameters         = $JSONParametersHashTable
                     RequiredParametersList = $null -ne $RequiredParametersList ? $RequiredParametersList : @()
                 }
                 $bicepExample = ConvertTo-FormattedBicep @conversionInputObject

@@ -11,13 +11,13 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
-@description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
@@ -101,16 +101,15 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'JobLogs'
   'JobStreams'
   'DscNodeStatus'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'JobLogs'
-  'JobStreams'
-  'DscNodeStatus'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -126,7 +125,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 var enableReferencedModulesTelemetry = false
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -134,6 +133,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -350,7 +360,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
   ]
 }]
 
-resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource automationAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${automationAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

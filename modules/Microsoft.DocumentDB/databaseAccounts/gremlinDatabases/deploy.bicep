@@ -77,7 +77,7 @@ module gremlinDatabase_gremlinGraphs 'graphs/deploy.bicep' = [for graph in graph
     gremlinDatabaseName: name
     databaseAccountName: databaseAccountName
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    automaticIndexing: contains(graph, 'automaticIndexing') ? graph.automaticIndexing : true
+    indexingPolicy: contains(graph, 'indexingPolicy') ? graph.indexingPolicy : true
     partitionKeyPaths: !empty(graph.partitionKeyPaths) ? graph.partitionKeyPaths : []
   }
 }]
