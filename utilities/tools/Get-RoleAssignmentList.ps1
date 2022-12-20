@@ -79,11 +79,11 @@ function Get-RoleAssignmentList {
         if ("$ProviderNamespace/$ResourceType" -ne 'Microsoft.Authorization/RoleAssignments') {
             foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
                 if ($role.Name -match '\s') {
-                    $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+                    $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f $role.Name, $role.Id
                 } else {
-                    $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+                    $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f $role.Name, $role.Id
                 }
-                $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $role.Name, $role.Id
+                $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')]`"," -f $role.Name, $role.Id
             }
         } else {
             # different output format for the 'Microsoft.Authorization/RoleAssignments' module
