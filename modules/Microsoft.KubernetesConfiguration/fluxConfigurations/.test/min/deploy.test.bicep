@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'kcfcmin'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -28,7 +31,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    clusterName: 'dep-carml-aks-${serviceShort}'
+    clusterName: 'dep-<<namePrefix>>-aks-${serviceShort}'
     clusterExtensionName: '<<namePrefix>>${serviceShort}001'
     clusterNodeResourceGroupName: 'nodes-${resourceGroupName}'
   }
@@ -42,6 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     clusterName: resourceGroupResources.outputs.clusterName
     namespace: 'flux-system'

@@ -50,15 +50,17 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
+
   'VMProtectionAlerts'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'VMProtectionAlerts'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -72,7 +74,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -80,6 +82,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -91,7 +104,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var dnsServers_var = {
+var dnsServersVar = {
   dnsServers: array(dnsServers)
 }
 
@@ -122,7 +135,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
       addressPrefixes: addressPrefixes
     }
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
-    dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
+    dhcpOptions: !empty(dnsServers) ? dnsServersVar : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
     subnets: [for subnet in subnets: {
       name: subnet.name
@@ -133,15 +146,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
         delegations: contains(subnet, 'delegations') ? subnet.delegations : []
         ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
         natGateway: contains(subnet, 'natGatewayId') ? {
-          'id': subnet.natGatewayId
+          id: subnet.natGatewayId
         } : null
         networkSecurityGroup: contains(subnet, 'networkSecurityGroupId') ? {
-          'id': subnet.networkSecurityGroupId
+          id: subnet.networkSecurityGroupId
         } : null
         privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
         privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
         routeTable: contains(subnet, 'routeTableId') ? {
-          'id': subnet.routeTableId
+          id: subnet.routeTableId
         } : null
         serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
         serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
@@ -213,7 +226,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
   }
 }]
 
-resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualNetwork_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetwork.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -265,3 +278,6 @@ output subnetResourceIds array = [for subnet in subnets: az.resourceId('Microsof
 
 @description('The location the resource was deployed into.')
 output location string = virtualNetwork.location
+
+@description('The Diagnostic Settings of the virtual network.')
+output diagnosticsLogs array = diagnosticsLogs

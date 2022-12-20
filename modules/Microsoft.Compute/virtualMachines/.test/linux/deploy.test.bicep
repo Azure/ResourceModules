@@ -11,7 +11,10 @@ param resourceGroupName string = 'ms.compute.virtualMachines-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cvmlindef'
+param serviceShort string = 'cvmlincom'
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
 
 // =========== //
 // Deployments //
@@ -30,7 +33,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
+    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
@@ -60,22 +63,18 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-// resource sshKey 'Microsoft.Compute/sshPublicKeys@2022-03-01' existing = {
-//   name: sshKeyName
-//   scope: resourceGroup
-// }
-
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}'
     location: location
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'UbuntuServer'
       publisher: 'Canonical'
-      sku: '18.04-LTS'
+      offer: '0001-com-ubuntu-server-focal'
+      sku: '20_04-lts-gen2' // Note: 22.04 does not support OMS extension
       version: 'latest'
     }
     nicConfigurations: [
@@ -98,10 +97,11 @@ module testDeployment '../../deploy.bicep' = {
               publicIpNameSuffix: '-pip-01'
               roleAssignments: [
                 {
+                  roleDefinitionIdOrName: 'Reader'
                   principalIds: [
                     resourceGroupResources.outputs.managedIdentityPrincipalId
                   ]
-                  roleDefinitionIdOrName: 'Reader'
+                  principalType: 'ServicePrincipal'
                 }
               ]
             }
@@ -111,10 +111,11 @@ module testDeployment '../../deploy.bicep' = {
         nicSuffix: '-nic-01'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
       }
@@ -132,8 +133,8 @@ module testDeployment '../../deploy.bicep' = {
     vmSize: 'Standard_B12ms'
     availabilityZone: 1
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: last(split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))
-    backupVaultResourceGroup: (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))[4]
+    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
+    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -171,12 +172,12 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}); echo "$value"'
+      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -202,16 +203,17 @@ module testDeployment '../../deploy.bicep' = {
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKey
+        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true

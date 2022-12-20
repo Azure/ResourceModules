@@ -1,4 +1,4 @@
-# VirtualNetworkPeering
+# VirtualNetworkPeering `[Microsoft.Network/virtualNetwork/virtualNetworkPeerings-multiRemoteVnets]`
 
 This template deploys Virtual Network Peering.
 
@@ -7,25 +7,29 @@ This template deploys Virtual Network Peering.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/virtualNetworkPeerings) |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `localVnetName` | string | The Name of the Virtual Network to add the peering to. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `peeringConfigurations` | array | `[]` | Optional. The list of remote networks to peering peer with, including the configuration. |
+
 
 ### Parameter Usage: `peeringConfigurations`
 
@@ -75,7 +79,7 @@ peeringConfigurations: [
 | `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings. |
 | `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings. |
 | `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings. |
-| `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings |
-| `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings |
-| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings |
 
+## Cross-referenced modules
+
+_None_

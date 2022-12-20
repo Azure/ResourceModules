@@ -52,30 +52,49 @@ function Get-RoleAssignmentList {
 
         $relevantRoles = [System.Collections.ArrayList]@()
 
-        # Filter Action based
-        $relevantRoles += $roleDefinitions | Where-Object {
-            $_.Actions -like "$ProviderNamespace/$ResourceType/*" -or
-            $_.Actions -like "$ProviderNamespace/`**" -or
-            $_.Actions -like '`**'
-        }
+        # No role filtering for the [Microsoft.Authorization/RoleAssignments] module
+        # selecting only relevant roles for all other modules
+        if ("$ProviderNamespace/$ResourceType" -eq 'Microsoft.Authorization/RoleAssignments') {
+            # No filter
+            $relevantRoles = $roleDefinitions
+        } else {
+            # Filter Action based
+            $relevantRoles += $roleDefinitions | Where-Object {
+                $_.Actions -like "$ProviderNamespace/$ResourceType/*" -or
+                $_.Actions -like "$ProviderNamespace/`**" -or
+                $_.Actions -like '`**'
+            }
 
-        # Filter Data Action based
-        $relevantRoles += $roleDefinitions | Where-Object {
-            $_.DataActions -like "$ProviderNamespace/$ResourceType/*" -or
-            $_.DataActions -like "$ProviderNamespace/`**" -or
-            $_.DataActions -like '`**'
+            # Filter Data Action based
+            $relevantRoles += $roleDefinitions | Where-Object {
+                $_.DataActions -like "$ProviderNamespace/$ResourceType/*" -or
+                $_.DataActions -like "$ProviderNamespace/`**" -or
+                $_.DataActions -like '`**'
+            }
         }
 
         # (Bicep-only) To comply with Bicep Linter Rule prefer-unquoted-property-names, remove quotes from role names not containing spaces
         $resBicep = [System.Collections.ArrayList]@()
         $resArm = [System.Collections.ArrayList]@()
-        foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
-            if ($role.Name -match '\s') {
-                $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
-            } else {
-                $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f $role.Name, $role.Id
+        if ("$ProviderNamespace/$ResourceType" -ne 'Microsoft.Authorization/RoleAssignments') {
+            foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
+                if ($role.Name -match '\s') {
+                    $resBicep += "'{0}': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f $role.Name, $role.Id
+                } else {
+                    $resBicep += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f $role.Name, $role.Id
+                }
+                $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')]`"," -f $role.Name, $role.Id
             }
-            $resArm += "`"{0}`": `"[subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')]`"," -f $role.Name, $role.Id
+        } else {
+            # different output format for the 'Microsoft.Authorization/RoleAssignments' module
+            foreach ($role in $relevantRoles | Sort-Object -Property 'Name' -Unique) {
+                if ($role.Name -match '\s') {
+                    $resBicep += "'{0}': '/providers/Microsoft.Authorization/roleDefinitions/{1}'" -f $role.Name, $role.Id
+                } else {
+                    $resBicep += "{0}: '/providers/Microsoft.Authorization/roleDefinitions/{1}'" -f $role.Name, $role.Id
+                }
+                $resArm += "`"{0}`": `"/providers/Microsoft.Authorization/roleDefinitions/{1}`"" -f $role.Name, $role.Id
+            }
         }
 
         # Return arrays

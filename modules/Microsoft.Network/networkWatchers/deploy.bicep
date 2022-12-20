@@ -25,7 +25,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -49,7 +49,7 @@ resource networkWatcher 'Microsoft.Network/networkWatchers@2021-08-01' = {
   properties: {}
 }
 
-resource networkWatcher_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkWatcher_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${networkWatcher.name}-${lock}-lock'
   properties: {
     level: any(lock)

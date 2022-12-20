@@ -11,11 +11,14 @@ param resourceGroupName string = 'ms.compute.virtualMachines-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cvmwindef'
+param serviceShort string = 'cvmwincom'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
 param password string = newGuid()
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
 
 // =========== //
 // Deployments //
@@ -34,7 +37,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     location: location
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'adp-<<namePrefix>>-asg-${serviceShort}'
+    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
@@ -67,13 +70,14 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
-      offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
-      sku: '2019-Datacenter'
+      offer: 'WindowsServer'
+      sku: '2019-datacenter'
       version: 'latest'
     }
     nicConfigurations: [
@@ -96,10 +100,11 @@ module testDeployment '../../deploy.bicep' = {
               publicIpNameSuffix: '-pip-01'
               roleAssignments: [
                 {
+                  roleDefinitionIdOrName: 'Reader'
                   principalIds: [
                     resourceGroupResources.outputs.managedIdentityPrincipalId
                   ]
-                  roleDefinitionIdOrName: 'Reader'
+                  principalType: 'ServicePrincipal'
                 }
               ]
             }
@@ -109,10 +114,11 @@ module testDeployment '../../deploy.bicep' = {
         nicSuffix: '-nic-01'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
       }
@@ -131,8 +137,8 @@ module testDeployment '../../deploy.bicep' = {
     adminPassword: password
     availabilityZone: 2
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: last(split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))
-    backupVaultResourceGroup: (split(resourceGroupResources.outputs.recoveryServicesVaultResourceId, '/'))[4]
+    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
+    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
     dataDisks: [
       {
         caching: 'None'
@@ -187,12 +193,12 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${last(split(resourceGroupResources.outputs.storageAccountCSEFileUrl, '/'))}"'
+      commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${resourceGroupResources.outputs.storageAccountCSEFileName}"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
     }
-    extensionDiskEncryptionConfig: {
+    extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
@@ -219,10 +225,11 @@ module testDeployment '../../deploy.bicep' = {
     proximityPlacementGroupResourceId: resourceGroupResources.outputs.proximityPlacementGroupResourceId
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true

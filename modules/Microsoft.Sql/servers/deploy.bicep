@@ -17,6 +17,9 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
+@description('Conditional. The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty.')
+param primaryUserAssignedIdentityId string = ''
+
 @allowed([
   ''
   'CanNotDelete'
@@ -31,11 +34,14 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The databases to create in the server.')
 param databases array = []
+
+@description('Optional. The Elastic Pools to create in the server.')
+param elasticPools array = []
 
 @description('Optional. The firewall rules to create in the server.')
 param firewallRules array = []
@@ -45,6 +51,9 @@ param virtualNetworkRules array = []
 
 @description('Optional. The security alert policies to create in the server.')
 param securityAlertPolicies array = []
+
+@description('Optional. The keys to configure.')
+param keys array = []
 
 @description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
@@ -92,7 +101,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
+resource server 'Microsoft.Sql/servers@2022-05-01-preview' = {
   location: location
   name: name
   tags: tags
@@ -110,11 +119,12 @@ resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
     } : null
     version: '12.0'
     minimalTlsVersion: minimalTlsVersion
+    primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource server_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -167,7 +177,34 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     tags: contains(database, 'tags') ? database.tags : {}
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+    diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
+    elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    server_elasticPools // Enables us to add databases to existing elastic pools
+  ]
+}]
+
+module server_elasticPools 'elasticPools/deploy.bicep' = [for (elasticPool, index) in elasticPools: {
+  name: '${uniqueString(deployment().name, location)}-SQLServer-ElasticPool-${index}'
+  params: {
+    name: elasticPool.name
+    serverName: server.name
+    databaseMaxCapacity: contains(elasticPool, 'databaseMaxCapacity') ? elasticPool.databaseMaxCapacity : 2
+    databaseMinCapacity: contains(elasticPool, 'databaseMinCapacity') ? elasticPool.databaseMinCapacity : 0
+    highAvailabilityReplicaCount: contains(elasticPool, 'highAvailabilityReplicaCount') ? elasticPool.highAvailabilityReplicaCount : -1
+    licenseType: contains(elasticPool, 'licenseType') ? elasticPool.licenseType : 'LicenseIncluded'
+    maintenanceConfigurationId: contains(elasticPool, 'maintenanceConfigurationId') ? elasticPool.maintenanceConfigurationId : ''
+    maxSizeBytes: contains(elasticPool, 'maxSizeBytes') ? elasticPool.maxSizeBytes : 34359738368
+    minCapacity: contains(elasticPool, 'minCapacity') ? elasticPool.minCapacity : 0
+    skuCapacity: contains(elasticPool, 'skuCapacity') ? elasticPool.skuCapacity : 2
+    skuName: contains(elasticPool, 'skuName') ? elasticPool.skuName : 'GP_Gen5'
+    skuTier: contains(elasticPool, 'skuTier') ? elasticPool.skuTier : 'GeneralPurpose'
+    zoneRedundant: contains(elasticPool, 'zoneRedundant') ? elasticPool.zoneRedundant : false
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: contains(elasticPool, 'location') ? elasticPool.location : server.location
+    tags: contains(elasticPool, 'tags') ? elasticPool.tags : {}
   }
 }]
 
@@ -244,6 +281,17 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
     server_securityAlertPolicies
   ]
 }
+
+module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
+  name: '${uniqueString(deployment().name, location)}-Sql-Key-${index}'
+  params: {
+    name: key.name
+    serverName: server.name
+    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+    uri: contains(key, 'uri') ? key.uri : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 @description('The name of the deployed SQL server.')
 output name string = server.name

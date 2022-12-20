@@ -14,7 +14,7 @@ This module deploys a Service Fabric Cluster.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ServiceFabric/clusters` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters) |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
@@ -43,7 +43,7 @@ This module deploys a Service Fabric Cluster.
 | `clientCertificateThumbprints` | array | `[]` |  | The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
 | `clusterCodeVersion` | string | `''` |  | The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | The storage account information for storing Service Fabric diagnostic logs. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventStoreServiceEnabled` | bool | `False` |  | Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | The list of custom fabric settings to configure the cluster. |
 | `infrastructureServiceManager` | bool | `False` |  | Indicates if infrastructure service manager is enabled. |
@@ -276,6 +276,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       x509StoreName: 'My'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -327,6 +328,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
         "x509StoreName": "My"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -402,7 +406,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     azureActiveDirectory: {
       clientApplication: '<clientApplication>'
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
-      tenantId: '<<tenantId>>'
+      tenantId: '<tenantId>'
     }
     certificateCommonNames: {
       commonNames: [
@@ -442,6 +446,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       storageAccountName: '<storageAccountName>'
       tableEndpoint: '<tableEndpoint>'
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     fabricSettings: [
       {
         name: 'Security'
@@ -597,7 +602,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       "value": {
         "clientApplication": "<clientApplication>",
         "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
-        "tenantId": "<<tenantId>>"
+        "tenantId": "<tenantId>"
       }
     },
     "certificateCommonNames": {
@@ -645,6 +650,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "storageAccountName": "<storageAccountName>",
         "tableEndpoint": "<tableEndpoint>"
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "fabricSettings": {
       "value": [
@@ -769,6 +777,8 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       }
     ]
     reliabilityLevel: 'None'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -813,6 +823,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "reliabilityLevel": {
       "value": "None"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

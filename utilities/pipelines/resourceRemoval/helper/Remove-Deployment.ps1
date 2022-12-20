@@ -21,8 +21,8 @@ Optional. The maximum times to retry the search for resources via their removal 
 .PARAMETER SearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
-.PARAMETER DeploymentName
-Optional. The deployment name to use for the removal
+.PARAMETER DeploymentNames
+Optional. The deployment names to use for the removal
 
 .PARAMETER TemplateFilePath
 Mandatory. The path to the deployment file
@@ -31,9 +31,9 @@ Mandatory. The path to the deployment file
 Optional. The order of resource types to apply for deletion
 
 .EXAMPLE
-Remove-Deployment -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
+Remove-Deployment -DeploymentNames @('KeyVault-t1','KeyVault-t2') -TemplateFilePath 'C:/deploy.json'
 
-Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
+Remove all resources deployed via the with deployment names 'KeyVault-t1' & 'KeyVault-t2'
 #>
 function Remove-Deployment {
 
@@ -46,7 +46,7 @@ function Remove-Deployment {
         [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $true)]
-        [string] $DeploymentName,
+        [string[]] $DeploymentNames,
 
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
@@ -69,7 +69,6 @@ function Remove-Deployment {
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentTargetResourceList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-OrderedResourcesList.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNameList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Remove-ResourceList.ps1')
     }
 
@@ -88,17 +87,24 @@ function Remove-Deployment {
 
         # Fetch deployments
         # =================
-        $deploymentsInputObject = @{
-            Name  = $deploymentName
-            Scope = $deploymentScope
+        $deployedTargetResources = @()
+
+        foreach ($deploymentName in $DeploymentNames) {
+            $deploymentsInputObject = @{
+                Name  = $deploymentName
+                Scope = $deploymentScope
+            }
+            if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+                $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
+            }
+            if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+                $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
+            }
+            $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject
         }
-        if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
-            $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
-        }
-        if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
-            $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
-        }
-        [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
+
+        [array] $deployedTargetResources = $deployedTargetResources | Select-Object -Unique
+
         Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
 
         # Pre-Filter & order items
@@ -115,20 +121,32 @@ function Remove-Deployment {
             return
         }
 
-        # Filter all dependency resources
-        # ===============================
-        $dependencyResourceNames = Get-DependencyResourceNameList
+        # Filter resources
+        # ================
 
+        # Resource IDs in the below list are ignored by the removal
         $resourceIdsToIgnore = @(
             '/subscriptions/{0}/resourceGroups/NetworkWatcherRG' -f $azContext.Subscription.Id
         )
 
-        if ($resourcesToIgnore = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -in $dependencyResourceNames -or $_.resourceId -in $resourceIdsToIgnore }) {
+        # Resource IDs starting with a prefix in the below list are ignored by the removal
+        $resourceIdPrefixesToIgnore = @(
+            '/subscriptions/{0}/providers/Microsoft.Security/autoProvisioningSettings/' -f $azContext.Subscription.Id
+            '/subscriptions/{0}/providers/Microsoft.Security/deviceSecurityGroups/' -f $azContext.Subscription.Id
+            '/subscriptions/{0}/providers/Microsoft.Security/iotSecuritySolutions/' -f $azContext.Subscription.Id
+            '/subscriptions/{0}/providers/Microsoft.Security/pricings/' -f $azContext.Subscription.Id
+            '/subscriptions/{0}/providers/Microsoft.Security/securityContacts/' -f $azContext.Subscription.Id
+            '/subscriptions/{0}/providers/Microsoft.Security/workspaceSettings/' -f $azContext.Subscription.Id
+        )
+        [regex] $ignorePrefix_regex = '(?i)^(' + (($resourceIdPrefixesToIgnore | ForEach-Object { [regex]::escape($_) }) –join '|') + ')'
+
+
+        if ($resourcesToIgnore = $resourcesToRemove | Where-Object { $_.resourceId -in $resourceIdsToIgnore -or $_.resourceId -match $ignorePrefix_regex }) {
             Write-Verbose 'Resources excluded from removal:' -Verbose
             $resourcesToIgnore | ForEach-Object { Write-Verbose ('- Ignore [{0}]' -f $_.resourceId) -Verbose }
         }
 
-        [array] $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames -and $_.resourceId -notin $resourceIdsToIgnore }
+        [array] $resourcesToRemove = $resourcesToRemove | Where-Object { $_.resourceId -notin $resourceIdsToIgnore -and $_.resourceId -notmatch $ignorePrefix_regex }
         Write-Verbose ('Total number of deployments after filtering all dependency resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Order resources
@@ -140,7 +158,7 @@ function Remove-Deployment {
         # ================
         if ($resourcesToRemove.Count -gt 0) {
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
-                Remove-ResourceList -ResourcesToRemove $resourcesToRemove -Verbose
+                Remove-ResourceList -ResourcesToRemove $resourcesToRemove
             }
         } else {
             Write-Verbose 'Found [0] resources to remove'

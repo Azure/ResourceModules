@@ -69,7 +69,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var containerSettings = {
@@ -117,7 +117,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-resource deploymentScript_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource deploymentScript_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${deploymentScript.name}-${lock}-lock'
   properties: {
     level: any(lock)

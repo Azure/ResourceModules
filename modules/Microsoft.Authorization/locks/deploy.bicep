@@ -10,7 +10,7 @@ param level string
 @description('Optional. The decription attached to the lock.')
 param notes string = level == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.')
@@ -19,7 +19,7 @@ param resourceGroupName string = ''
 @description('Optional. Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription.')
 param subscriptionId string = subscription().id
 
-@sys.description('Optional. Location for all resources.')
+@description('Optional. Location for all resources.')
 param location string = deployment().location
 
 var enableReferencedModulesTelemetry = false
@@ -44,6 +44,7 @@ module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empt
     name: '${subscription().displayName}-${level}-lock'
     level: level
     notes: notes
+    // owners: owners // Not intended to be applied by users (ref https://github.com/Azure/azure-cli/issues/22528)
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -55,6 +56,7 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !emp
     name: '${resourceGroupName}-${level}-lock'
     level: level
     notes: notes
+    // owners: owners // Not intended to be applied by users (ref https://github.com/Azure/azure-cli/issues/22528)
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }

@@ -35,7 +35,7 @@ This module deploys a scheduled query rule.
 | `alertDescription` | string | `''` |  | The description of the scheduled query rule. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
 | `enabled` | bool | `True` |  | The flag which indicates whether this scheduled query rule is enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `evaluationFrequency` | string | `''` |  | How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
 | `kind` | string | `'LogAlert'` | `[LogAlert, LogToMetric]` | Indicates the type of scheduled query rule. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -201,7 +201,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           ]
           metricMeasureColumn: 'AggregatedValue'
           operator: 'GreaterThan'
-          query: '<query>'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
           threshold: 0
           timeAggregation: 'Average'
         }
@@ -214,6 +214,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     // Non-required parameters
     alertDescription: 'My sample Alert'
     autoMitigate: false
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     evaluationFrequency: 'PT5M'
     queryTimeRange: 'PT5M'
     roleAssignments: [
@@ -221,6 +222,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -265,7 +267,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
             ],
             "metricMeasureColumn": "AggregatedValue",
             "operator": "GreaterThan",
-            "query": "<query>",
+            "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
             "threshold": 0,
             "timeAggregation": "Average"
           }
@@ -287,6 +289,9 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     "autoMitigate": {
       "value": false
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "evaluationFrequency": {
       "value": "PT5M"
     },
@@ -299,6 +304,7 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -34,7 +34,7 @@ This module deploys API Management Subscriptions.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` | Determines whether tracing can be enabled. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ownerId` | string | `''` | User (user ID path) for whom subscription is being created in form /users/{userId}. |
 | `primaryKey` | string | `''` | Primary subscription key. If not specified during request key will be generated automatically. |
 | `scope` | string | `'/apis'` | Scope type to choose between a product, "allAPIs" or a specific API. Scope like "/products/{productId}" or "/apis" or "/apis/{apiId}". |

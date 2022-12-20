@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'sfccom'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -41,6 +44,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
     tags: {
@@ -58,7 +62,7 @@ module testDeployment '../../deploy.bicep' = {
     azureActiveDirectory: {
       clientApplication: resourceGroupResources.outputs.managedIdentityPrincipalId
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
-      tenantId: '<<tenantId>>'
+      tenantId: tenant().tenantId
     }
     certificateCommonNames: {
       commonNames: [
@@ -88,15 +92,15 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
-        'isAdmin': false
+        isAdmin: false
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.blob.${environment().suffixes.storage}/'
+      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.queue.${environment().suffixes.storage}/'
-      storageAccountName: last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))
-      tableEndpoint: 'https://${last(split(resourceGroupResources.outputs.storageAccountResourceId, '/'))}.table.${environment().suffixes.storage}/'
+      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.queue.${environment().suffixes.storage}/'
+      storageAccountName: resourceGroupResources.outputs.storageAccountName
+      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {

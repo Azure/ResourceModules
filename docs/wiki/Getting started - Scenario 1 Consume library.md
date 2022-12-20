@@ -1,9 +1,9 @@
 In case you want to simply consume the modules of the library to build a solution, you only have to perform a few simple steps:
 
-- [1. Download the library](#1-download-the-library)
-- [2. (Optional) Convert library to ARM](#2-optional-convert-library-to-arm)
-- [3. Test and publish modules](#3-test-and-publish-modules)
-- [4. Build a solution](#4-build-a-solution)
+1. [Download the library](#1-download-the-library)
+1. [(Optional) Convert library to ARM](#2-optional-convert-library-to-arm)
+1. [Test and publish modules](#3-test-and-publish-modules)
+1. [Build a solution](#4-build-a-solution)
 
 # 1. Download the library
 

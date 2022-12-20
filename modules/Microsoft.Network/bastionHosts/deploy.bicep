@@ -69,21 +69,22 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Optional. The name of bastion logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'BastionAuditLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'BastionAuditLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -92,16 +93,27 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
+
 var enableTunneling = skuType == 'Standard' ? true : null
 
-var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
+var scaleUnitsVar = skuType == 'Basic' ? 2 : scaleUnits
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureBastionSubnet for different uses cases:
 // 1. Use existing public ip
 // 2. Use new public ip created in this module
 // 3. Do not use a public ip if isCreateDefaultPublicIP is false
-var subnet_var = {
+var subnetVar = {
   subnet: {
     id: '${vNetId}/subnets/AzureBastionSubnet' // The subnet name must be AzureBastionSubnet
   }
@@ -121,7 +133,7 @@ var ipConfigurations = [
   {
     name: 'IpConfAzureBastionSubnet'
     //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    properties: union(subnetVar, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
   }
 ]
 
@@ -170,8 +182,8 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-var bastionproperties_var = skuType == 'Standard' ? {
-  scaleUnits: scaleUnits_var
+var bastionpropertiesVar = skuType == 'Standard' ? {
+  scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
   enableTunneling: enableTunneling
   disableCopyPaste: disableCopyPaste
@@ -179,7 +191,7 @@ var bastionproperties_var = skuType == 'Standard' ? {
   enableIpConnect: enableIpConnect
   enableShareableLink: enableShareableLink
 } : {
-  scaleUnits: scaleUnits_var
+  scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
 }
 
@@ -190,10 +202,10 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   sku: {
     name: skuType
   }
-  properties: bastionproperties_var
+  properties: bastionpropertiesVar
 }
 
-resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource azureBastion_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${azureBastion.name}-${lock}-lock'
   properties: {
     level: any(lock)

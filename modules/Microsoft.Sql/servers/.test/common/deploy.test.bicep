@@ -17,6 +17,9 @@ param serviceShort string = 'sqlscom'
 @secure()
 param password string = newGuid()
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -32,6 +35,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
@@ -60,8 +64,10 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
     lock: 'CanNotDelete'
+    primaryUserAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     location: location
@@ -71,6 +77,7 @@ module testDeployment '../../deploy.bicep' = {
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
+        principalType: 'ServicePrincipal'
       }
     ]
     vulnerabilityAssessmentsObj: {
@@ -83,14 +90,23 @@ module testDeployment '../../deploy.bicep' = {
       ]
       vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     }
+    elasticPools: [
+      {
+        name: '<<namePrefix>>-${serviceShort}-ep-001'
+        skuName: 'GP_Gen5'
+        skuTier: 'GeneralPurpose'
+        skuCapacity: 10
+        // Pre-existing 'public' configuration
+        maintenanceConfigurationId: '${subscription().id}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_WestEurope_DB_1'
+      }
+    ]
     databases: [
       {
         name: '<<namePrefix>>-${serviceShort}db-001'
         collation: 'SQL_Latin1_General_CP1_CI_AS'
-        skuTier: 'BusinessCritical'
-        skuName: 'BC_Gen5'
-        skuCapacity: 12
-        skuFamily: 'Gen5'
+        skuTier: 'GeneralPurpose'
+        skuName: 'ElasticPool'
+        capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
         diagnosticLogsRetentionInDays: 7
@@ -98,6 +114,7 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/<<namePrefix>>-${serviceShort}/elasticPools/<<namePrefix>>-${serviceShort}-ep-001'
       }
     ]
     firewallRules: [
@@ -114,9 +131,16 @@ module testDeployment '../../deploy.bicep' = {
         emailAccountAdmins: true
       }
     ]
+    keys: [
+      {
+        name: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+        serverKeyType: 'AzureKeyVault'
+        uri: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
+      }
+    ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentitResourceId}': {}
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
     privateEndpoints: [
       {
@@ -138,3 +162,4 @@ module testDeployment '../../deploy.bicep' = {
     ]
   }
 }
+

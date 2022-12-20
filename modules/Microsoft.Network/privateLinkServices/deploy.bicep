@@ -36,7 +36,7 @@ param loadBalancerFrontendIpConfigurations array = []
 @description('Optional. The visibility list of the private link service.')
 param visibility object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
@@ -69,7 +69,7 @@ resource privateLinkService 'Microsoft.Network/privateLinkServices@2022-01-01' =
   }
 }
 
-resource privateLinkService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateLinkService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateLinkService.name}-${lock}-lock'
   properties: {
     level: any(lock)

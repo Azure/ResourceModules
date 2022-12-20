@@ -122,7 +122,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -142,12 +142,13 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'PostgreSQLLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'PostgreSQLLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -161,7 +162,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -169,6 +170,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -234,7 +246,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
   }
 }
 
-resource flexibleServer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource flexibleServer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${flexibleServer.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -276,6 +288,9 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
     endIpAddress: firewallRule.endIpAddress
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    flexibleServer_databases
+  ]
 }]
 
 module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
@@ -287,6 +302,9 @@ module flexibleServer_configurations 'configurations/deploy.bicep' = [for (confi
     value: contains(configuration, 'value') ? configuration.value : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    flexibleServer_firewallRules
+  ]
 }]
 
 resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {

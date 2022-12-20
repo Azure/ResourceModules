@@ -78,27 +78,25 @@ param backupLongTermRetentionPoliciesObj object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'SQLInsights'
   'QueryStoreRuntimeStatistics'
   'QueryStoreWaitStatistics'
   'Errors'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'SQLInsights'
-  'QueryStoreRuntimeStatistics'
-  'QueryStoreWaitStatistics'
-  'Errors'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -106,6 +104,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var enableReferencedModulesTelemetry = false
 
@@ -144,7 +153,7 @@ resource database 'Microsoft.Sql/managedInstances/databases@2022-02-01-preview' 
   }
 }
 
-resource database_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource database_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${last(split(database.name, '/'))}-${lock}-lock'
   properties: {
     level: any(lock)

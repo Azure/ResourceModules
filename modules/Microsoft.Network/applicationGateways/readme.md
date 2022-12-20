@@ -14,7 +14,7 @@ This module deploys Network ApplicationGateways.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/applicationGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/applicationGateways) |
@@ -40,13 +40,13 @@ This module deploys Network ApplicationGateways.
 | `customErrorConfigurations` | array | `[]` |  | Custom error configurations of the application gateway resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayFirewallLog, ApplicationGatewayPerformanceLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayFirewallLog, ApplicationGatewayPerformanceLog]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, ApplicationGatewayAccessLog, ApplicationGatewayFirewallLog, ApplicationGatewayPerformanceLog]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFips` | bool | `False` |  | Whether FIPS is enabled on the application gateway resource. |
 | `enableHttp2` | bool | `False` |  | Whether HTTP2 is enabled on the application gateway resource. |
 | `enableRequestBuffering` | bool | `False` |  | Enable request buffering. |
@@ -287,7 +287,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           pickHostNameFromBackendAddress: false
           port: 80
           probe: {
-            id: '${appGWExpectedResourceID}/probes/privateVmHttpSettingProbe'
+            id: '<id>'
           }
           protocol: 'Http'
           requestTimeout: 30
@@ -299,6 +299,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableHttp2: true
     frontendIPConfigurations: [
       {
@@ -362,16 +363,16 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'public443'
         properties: {
           frontendIPConfiguration: {
-            id: '${appGWExpectedResourceID}/frontendIPConfigurations/public'
+            id: '<id>'
           }
           frontendPort: {
-            id: '${appGWExpectedResourceID}/frontendPorts/port443'
+            id: '<id>'
           }
           hostNames: []
           protocol: 'https'
           requireServerNameIndication: false
           sslCertificate: {
-            id: '${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+            id: '<id>'
           }
         }
       }
@@ -379,16 +380,16 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'private4433'
         properties: {
           frontendIPConfiguration: {
-            id: '${appGWExpectedResourceID}/frontendIPConfigurations/private'
+            id: '<id>'
           }
           frontendPort: {
-            id: '${appGWExpectedResourceID}/frontendPorts/port4433'
+            id: '<id>'
           }
           hostNames: []
           protocol: 'https'
           requireServerNameIndication: false
           sslCertificate: {
-            id: '${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+            id: '<id>'
           }
         }
       }
@@ -396,10 +397,10 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'httpRedirect80'
         properties: {
           frontendIPConfiguration: {
-            id: '${appGWExpectedResourceID}/frontendIPConfigurations/public'
+            id: '<id>'
           }
           frontendPort: {
-            id: '${appGWExpectedResourceID}/frontendPorts/port80'
+            id: '<id>'
           }
           hostNames: []
           protocol: 'Http'
@@ -410,10 +411,10 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'httpRedirect8080'
         properties: {
           frontendIPConfiguration: {
-            id: '${appGWExpectedResourceID}/frontendIPConfigurations/private'
+            id: '<id>'
           }
           frontendPort: {
-            id: '${appGWExpectedResourceID}/frontendPorts/port8080'
+            id: '<id>'
           }
           hostNames: []
           protocol: 'Http'
@@ -452,11 +453,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           redirectType: 'Permanent'
           requestRoutingRules: [
             {
-              id: '${appGWExpectedResourceID}/requestRoutingRules/httpRedirect80-public443'
+              id: '<id>'
             }
           ]
           targetListener: {
-            id: '${appGWExpectedResourceID}/httpListeners/public443'
+            id: '<id>'
           }
         }
       }
@@ -468,11 +469,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           redirectType: 'Permanent'
           requestRoutingRules: [
             {
-              id: '${appGWExpectedResourceID}/requestRoutingRules/httpRedirect8080-private4433'
+              id: '<id>'
             }
           ]
           targetListener: {
-            id: '${appGWExpectedResourceID}/httpListeners/private4433'
+            id: '<id>'
           }
         }
       }
@@ -482,13 +483,13 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting'
         properties: {
           backendAddressPool: {
-            id: '${appGWExpectedResourceID}/backendAddressPools/appServiceBackendPool'
+            id: '<id>'
           }
           backendHttpSettings: {
-            id: '${appGWExpectedResourceID}/backendHttpSettingsCollection/appServiceBackendHttpsSetting'
+            id: '<id>'
           }
           httpListener: {
-            id: '${appGWExpectedResourceID}/httpListeners/public443'
+            id: '<id>'
           }
           priority: 200
           ruleType: 'Basic'
@@ -498,13 +499,13 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'private4433-privateVmHttpSetting-privateVmHttpSetting'
         properties: {
           backendAddressPool: {
-            id: '${appGWExpectedResourceID}/backendAddressPools/privateVmBackendPool'
+            id: '<id>'
           }
           backendHttpSettings: {
-            id: '${appGWExpectedResourceID}/backendHttpSettingsCollection/privateVmHttpSetting'
+            id: '<id>'
           }
           httpListener: {
-            id: '${appGWExpectedResourceID}/httpListeners/private4433'
+            id: '<id>'
           }
           priority: 250
           ruleType: 'Basic'
@@ -514,11 +515,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'httpRedirect80-public443'
         properties: {
           httpListener: {
-            id: '${appGWExpectedResourceID}/httpListeners/httpRedirect80'
+            id: '<id>'
           }
           priority: 300
           redirectConfiguration: {
-            id: '${appGWExpectedResourceID}/redirectConfigurations/httpRedirect80'
+            id: '<id>'
           }
           ruleType: 'Basic'
         }
@@ -527,11 +528,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         name: 'httpRedirect8080-private4433'
         properties: {
           httpListener: {
-            id: '${appGWExpectedResourceID}/httpListeners/httpRedirect8080'
+            id: '<id>'
           }
           priority: 350
           redirectConfiguration: {
-            id: '${appGWExpectedResourceID}/redirectConfigurations/httpRedirect8080'
+            id: '<id>'
           }
           ruleType: 'Basic'
         }
@@ -542,6 +543,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -631,7 +633,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "pickHostNameFromBackendAddress": false,
             "port": 80,
             "probe": {
-              "id": "${appGWExpectedResourceID}/probes/privateVmHttpSettingProbe"
+              "id": "<id>"
             },
             "protocol": "Http",
             "requestTimeout": 30
@@ -653,6 +655,9 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
     },
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "enableHttp2": {
       "value": true
@@ -726,16 +731,16 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "public443",
           "properties": {
             "frontendIPConfiguration": {
-              "id": "${appGWExpectedResourceID}/frontendIPConfigurations/public"
+              "id": "<id>"
             },
             "frontendPort": {
-              "id": "${appGWExpectedResourceID}/frontendPorts/port443"
+              "id": "<id>"
             },
             "hostNames": [],
             "protocol": "https",
             "requireServerNameIndication": false,
             "sslCertificate": {
-              "id": "${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate"
+              "id": "<id>"
             }
           }
         },
@@ -743,16 +748,16 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "private4433",
           "properties": {
             "frontendIPConfiguration": {
-              "id": "${appGWExpectedResourceID}/frontendIPConfigurations/private"
+              "id": "<id>"
             },
             "frontendPort": {
-              "id": "${appGWExpectedResourceID}/frontendPorts/port4433"
+              "id": "<id>"
             },
             "hostNames": [],
             "protocol": "https",
             "requireServerNameIndication": false,
             "sslCertificate": {
-              "id": "${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate"
+              "id": "<id>"
             }
           }
         },
@@ -760,10 +765,10 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "httpRedirect80",
           "properties": {
             "frontendIPConfiguration": {
-              "id": "${appGWExpectedResourceID}/frontendIPConfigurations/public"
+              "id": "<id>"
             },
             "frontendPort": {
-              "id": "${appGWExpectedResourceID}/frontendPorts/port80"
+              "id": "<id>"
             },
             "hostNames": [],
             "protocol": "Http",
@@ -774,10 +779,10 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "httpRedirect8080",
           "properties": {
             "frontendIPConfiguration": {
-              "id": "${appGWExpectedResourceID}/frontendIPConfigurations/private"
+              "id": "<id>"
             },
             "frontendPort": {
-              "id": "${appGWExpectedResourceID}/frontendPorts/port8080"
+              "id": "<id>"
             },
             "hostNames": [],
             "protocol": "Http",
@@ -822,11 +827,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "redirectType": "Permanent",
             "requestRoutingRules": [
               {
-                "id": "${appGWExpectedResourceID}/requestRoutingRules/httpRedirect80-public443"
+                "id": "<id>"
               }
             ],
             "targetListener": {
-              "id": "${appGWExpectedResourceID}/httpListeners/public443"
+              "id": "<id>"
             }
           }
         },
@@ -838,11 +843,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "redirectType": "Permanent",
             "requestRoutingRules": [
               {
-                "id": "${appGWExpectedResourceID}/requestRoutingRules/httpRedirect8080-private4433"
+                "id": "<id>"
               }
             ],
             "targetListener": {
-              "id": "${appGWExpectedResourceID}/httpListeners/private4433"
+              "id": "<id>"
             }
           }
         }
@@ -854,13 +859,13 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting",
           "properties": {
             "backendAddressPool": {
-              "id": "${appGWExpectedResourceID}/backendAddressPools/appServiceBackendPool"
+              "id": "<id>"
             },
             "backendHttpSettings": {
-              "id": "${appGWExpectedResourceID}/backendHttpSettingsCollection/appServiceBackendHttpsSetting"
+              "id": "<id>"
             },
             "httpListener": {
-              "id": "${appGWExpectedResourceID}/httpListeners/public443"
+              "id": "<id>"
             },
             "priority": 200,
             "ruleType": "Basic"
@@ -870,13 +875,13 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "private4433-privateVmHttpSetting-privateVmHttpSetting",
           "properties": {
             "backendAddressPool": {
-              "id": "${appGWExpectedResourceID}/backendAddressPools/privateVmBackendPool"
+              "id": "<id>"
             },
             "backendHttpSettings": {
-              "id": "${appGWExpectedResourceID}/backendHttpSettingsCollection/privateVmHttpSetting"
+              "id": "<id>"
             },
             "httpListener": {
-              "id": "${appGWExpectedResourceID}/httpListeners/private4433"
+              "id": "<id>"
             },
             "priority": 250,
             "ruleType": "Basic"
@@ -886,11 +891,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "httpRedirect80-public443",
           "properties": {
             "httpListener": {
-              "id": "${appGWExpectedResourceID}/httpListeners/httpRedirect80"
+              "id": "<id>"
             },
             "priority": 300,
             "redirectConfiguration": {
-              "id": "${appGWExpectedResourceID}/redirectConfigurations/httpRedirect80"
+              "id": "<id>"
             },
             "ruleType": "Basic"
           }
@@ -899,11 +904,11 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "name": "httpRedirect8080-private4433",
           "properties": {
             "httpListener": {
-              "id": "${appGWExpectedResourceID}/httpListeners/httpRedirect8080"
+              "id": "<id>"
             },
             "priority": 350,
             "redirectConfiguration": {
-              "id": "${appGWExpectedResourceID}/redirectConfigurations/httpRedirect8080"
+              "id": "<id>"
             },
             "ruleType": "Basic"
           }
@@ -916,6 +921,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
