@@ -13,7 +13,7 @@ param level string
 @description('Optional. The decription attached to the lock.')
 param notes string = level == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -28,11 +28,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lock 'Microsoft.Authorization/locks@2017-04-01' = {
+resource lock 'Microsoft.Authorization/locks@2020-05-01' = {
   name: name
   properties: {
     level: level
     notes: notes
+    // owners: owners // Not intended to be applied by users (ref https://github.com/Azure/azure-cli/issues/22528)
   }
 }
 

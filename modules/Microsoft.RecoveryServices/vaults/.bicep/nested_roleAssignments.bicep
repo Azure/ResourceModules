@@ -21,7 +21,7 @@ param principalType string = ''
 @sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
-@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container"')
+@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName] StringEqualsIgnoreCase "foo_storage_container".')
 param condition string = ''
 
 @sys.description('Optional. Version of the condition.')
@@ -56,7 +56,7 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-04-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' existing = {
   name: last(split(resourceId, '/'))
 }
 

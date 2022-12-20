@@ -57,6 +57,29 @@ Run a Test-Az*Deployment using a specific parameter-template combination with th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    ModuleTestFilePath          = 'C:\Microsoft.Network\routeTables\.test\common\deploy.test.bicep'
+    PesterTest                 = $false
+    DeploymentTest             = $false
+    ValidationTest             = $true
+    ValidateOrDeployParameters = @{
+        Location          = 'westeurope'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
+        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
+        RemoveDeployment  = $false
+    }
+    AdditionalTokens           = @{
+        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+    }
+}
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
+
+Run a Test-Az*Deployment using a test file with the provided tokens
+
+.EXAMPLE
+
+$TestModuleLocallyInput = @{
+    TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
     PesterTest                 = $true
     DeploymentTest             = $false
     ValidationTest             = $true

@@ -66,7 +66,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource msiRGContrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${resourceGroup().id}-${location}-${managedIdentity.id}-ResourceGroup-Contributor-RoleAssignment')
+  name: guid(resourceGroup().id, 'Contributor', managedIdentity.id)
   scope: resourceGroup()
   properties: {
     principalId: managedIdentity.properties.principalId
@@ -254,7 +254,7 @@ resource storageUpload 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
   }
   properties: {
-    azPowerShellVersion: '3.0'
+    azPowerShellVersion: '9.0'
     retentionInterval: 'P1D'
     arguments: '-StorageAccountName "${storageAccount.name}" -ResourceGroupName "${resourceGroup().name}" -ContainerName "${storageAccount::blobService::container.name}" -FileName "${storageAccountCSEFileName}"'
     scriptContent: loadTextContent('../.scripts/Set-BlobContent.ps1')
@@ -275,7 +275,7 @@ resource sshDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' 
     }
   }
   properties: {
-    azPowerShellVersion: '6.2.1'
+    azPowerShellVersion: '9.0'
     retentionInterval: 'P1D'
     arguments: '-SSHKeyName "${sshKeyName}" -ResourceGroupName "${resourceGroup().name}"'
     scriptContent: loadTextContent('../.scripts/New-SSHKey.ps1')
@@ -308,8 +308,11 @@ output managedIdentityResourceId string = managedIdentity.id
 @description('The resource ID of the created Load Balancer Backend Pool.')
 output loadBalancerBackendPoolResourceId string = loadBalancer.properties.backendAddressPools[0].id
 
-@description('The resource ID of the created Recovery Services Vault.')
-output recoveryServicesVaultResourceId string = recoveryServicesVault.id
+@description('The name of the created Recovery Services Vault.')
+output recoveryServicesVaultName string = recoveryServicesVault.name
+
+@description('The name of the Resource Group, the Recovery Services Vault was created in.')
+output recoveryServicesVaultResourceGroupName string = resourceGroup().name
 
 @description('The name of the Backup Policy created in the Backup Recovery Vault.')
 output recoveryServicesVaultBackupPolicyName string = backupPolicyName
@@ -326,11 +329,11 @@ output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVers
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
 
-@description('The URL of the Custom Script Extension in the created Storage Account')
+@description('The URL of the Custom Script Extension in the created Storage Account.')
 output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
 
-@description('The resource ID of the created SSH Key')
-output SSHKeyResourceID string = sshKey.id
+@description('The name of the Custom Script Extension in the created Storage Account.')
+output storageAccountCSEFileName string = storageAccountCSEFileName
 
-@description('The Public Key of the created SSH Key')
-output SSHKey string = sshKey.properties.publicKey
+@description('The Public Key of the created SSH Key.')
+output SSHKeyPublicKey string = sshKey.properties.publicKey

@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.Network/publicIPPrefixes/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

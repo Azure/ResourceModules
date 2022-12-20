@@ -16,6 +16,9 @@ param serviceShort string = 'csaencr'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // =========== //
 // Deployments //
 // =========== //
@@ -46,17 +49,12 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     kind: 'SpeechServices'
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: resourceGroupResources.outputs.managedIdentityClientId
-        keyName: resourceGroupResources.outputs.keyVaultKeyName
-        keyVaultUri: resourceGroupResources.outputs.keyVaultUri
-        keyversion: resourceGroupResources.outputs.keyVaultKeyVersion
-      }
-    }
+    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+    cMKKeyName: resourceGroupResources.outputs.keyVaultKeyName
+    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
     userAssignedIdentities: {

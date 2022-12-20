@@ -14,9 +14,10 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/galleries` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries) |
+| `Microsoft.Compute/galleries` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries) |
+| `Microsoft.Compute/galleries/applications` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/applications) |
 | `Microsoft.Compute/galleries/images` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries/images) |
 
 ## Parameters
@@ -25,13 +26,14 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Shared Image Gallery. |
+| `name` | string | Name of the Azure Compute Gallery. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Applications to create. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -173,12 +175,32 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgcom001'
     // Non-required parameters
+    applications: [
+      {
+        name: '<<namePrefix>>-cgcom-appd-001'
+      }
+      {
+        name: '<<namePrefix>>-appd-002'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        supportedOSType: 'Windows'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -203,6 +225,29 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgcom001"
     },
     // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-cgcom-appd-001"
+        },
+        {
+          "name": "<<namePrefix>>-appd-002",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "supportedOSType": "Windows"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -212,6 +257,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -236,6 +282,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>cgimages001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
         name: '<<namePrefix>>-cgimages-imgd-001'
@@ -256,6 +303,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -296,6 +344,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": "<<namePrefix>>cgimages001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "images": {
       "value": [
         {
@@ -317,6 +368,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],

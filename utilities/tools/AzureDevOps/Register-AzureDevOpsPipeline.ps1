@@ -74,12 +74,12 @@ $inputObject = @{
     OrganizationName      = 'Contoso'
     ProjectName           = 'CICD'
     SourceRepositoryType  = 'tfsgit'
-    SourceRepository      = 'Azure/ResourceModules'
+    SourceRepository      = 'CICD-DefaultRepo'
     AzureDevOpsPAT        = '<Placeholder>'
 }
 Register-AzureDevOpsPipeline @inputObject
 
-Register all pipelines in a DevOps repository with default values in a the target project
+Register all pipelines in a DevOps repository 'CICD-DefaultRepo' of project [Contoso/CICD] with default values in a the target project
 
 .NOTES
 You'll need the 'azure-devops' extension to run this function: `az extension add --upgrade -n azure-devops`
