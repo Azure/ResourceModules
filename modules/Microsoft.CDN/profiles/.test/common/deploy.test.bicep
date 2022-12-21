@@ -53,7 +53,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // Test Execution //
 // ============== //
 
-module testExecution '../../deploy.bicep' = {
+module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-testExecution'
   params: {
