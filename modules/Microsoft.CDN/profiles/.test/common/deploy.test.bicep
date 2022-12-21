@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
       queryStringCachingBehavior: 'IgnoreQueryString'
       origins: [
         {
-          name: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
+          name: 'dep-<<namePrefix>>-cdn-endpoint01'
           properties: {
             hostName: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
             httpPort: 80

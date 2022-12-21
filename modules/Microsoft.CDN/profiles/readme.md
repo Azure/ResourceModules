@@ -203,7 +203,7 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
       originHostHeader: '<originHostHeader>'
       origins: [
         {
-          name: '<name>'
+          name: 'dep-<<namePrefix>>-cdn-endpoint01'
           properties: {
             enabled: true
             hostName: '<hostName>'
@@ -263,7 +263,7 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
         "originHostHeader": "<originHostHeader>",
         "origins": [
           {
-            "name": "<name>",
+            "name": "dep-<<namePrefix>>-cdn-endpoint01",
             "properties": {
               "enabled": true,
               "hostName": "<hostName>",
