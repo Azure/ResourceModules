@@ -441,6 +441,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
           deleteOption: contains(nicConfiguration, 'deleteOption') ? nicConfiguration.deleteOption : 'Delete'
           primary: index == 0 ? true : false
         }
+        #disable-next-line use-resource-id-functions
         id: az.resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
       }]
     }
