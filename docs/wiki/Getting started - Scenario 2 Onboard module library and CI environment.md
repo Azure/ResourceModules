@@ -389,9 +389,9 @@ Finally, the elements described above must further be configured in the followin
 
 ### Microsoft.ContainerInstance/containerGroup
 
-To successfully run the Customer-Managed-Keys encryption test `encr/deploy.test.bicep` of the Container Instance module, you need to register a Service Principal instance of the `Azure Container Instance Service` Azure application in your test Tenant using the command `New-AzADServicePrincipal -ApplicationId '6bb8e274-af5d-4df2-98a3-4fd78b4cafd9'`. For further information, please refer to the [offical docs](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci).
+To successfully run the Customer-Managed-Keys encryption test `encr/deploy.test.bicep` of the Container Instance module, you need to register a Service Principal instance of the `Azure Container Instance Service` Azure application in your test Tenant using the command `New-AzADServicePrincipal -ApplicationId '6bb8e274-af5d-4df2-98a3-4fd78b4cafd9'`. For further information, please refer to the official[docs](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci).
 
-Once the Service Principal was created, please update the `properties/principalId` of the `keyPermissions` deployment in the dependencies file `modules/Microsoft.ContainerInstance/containerGroups/.test/encr/dependencies.bicep` with its object ID. You can fetch the object ID using the command `(Get-AzADServicePrincipal -DisplayName 'Azure Container Instance Service').Id`.
+Once the Service Principal is created, please update the `properties/principalId` of the `keyPermissions` deployment in the dependencies file `modules/Microsoft.ContainerInstance/containerGroups/.test/encr/dependencies.bicep` with its object ID. You can fetch the object ID using the command `(Get-AzADServicePrincipal -DisplayName 'Azure Container Instance Service').Id`.
 
 # 5. (Optional) Convert library to ARM
 
