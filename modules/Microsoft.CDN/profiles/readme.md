@@ -1,7 +1,6 @@
 # CDN Profiles `[Microsoft.CDN/profiles]`
 
 This module deploys CDN Profiles.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -43,10 +42,6 @@ This module deploys CDN Profiles.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Endpoint tags. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 

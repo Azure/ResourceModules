@@ -1,7 +1,6 @@
 # CDN Profiles Endpoint `[Microsoft.CDN/profiles/endpoint]`
 
 This module deploys CDN Profiles Endpoint.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -35,10 +34,6 @@ This module deploys CDN Profiles Endpoint.
 | `location` | string | `[resourceGroup().location]` | Resource location. |
 | `tags` | object | `{object}` | Endpoint tags. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `tags`
 
