@@ -14,7 +14,7 @@ param location string = deployment().location
 param serviceShort string = 'cicgecr'
 
 @description('Generated. Used as a basis for unique resource names.')
-param baseTime string = utcNow('u')
+param baseTime string = 'alsehr2112222' // utcNow('u')
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
