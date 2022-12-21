@@ -40,44 +40,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-// resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//   name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
-//   scope: keyVault::key
-//   properties: {
-//     principalId: managedIdentity.properties.principalId
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
-//     principalType: 'ServicePrincipal'
-//   }
-// }
-
+// Ref: https://learn.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key Vault Crypto User')
+  name: guid('msi-${keyVault::key.id}-${location}-Azure Container Instance Service-Key Vault Crypto User')
   scope: keyVault
   properties: {
-    principalId: managedIdentity.properties.principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-    principalType: 'ServicePrincipal'
-  }
-}
-
-// resource keyPermissions_2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-//   name: guid('msi-${keyVault::key.id}-${location}-6bb8e274-af5d-4df2-98a3-4fd78b4cafd9-Key-Reader-RoleAssignment')
-//   scope: keyVault::key
-//   properties: {
-//     principalId: '6bb8e274-af5d-4df2-98a3-4fd78b4cafd9'
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
-//     principalType: 'ServicePrincipal'
-//   }
-// }
-
-resource keyPermissions_2 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  // name: guid('msi-${keyVault::key.id}-${location}-6bb8e274-af5d-4df2-98a3-4fd78b4cafd9-Key Vault Crypto User')
-  name: guid('msi-${keyVault::key.id}-${location}-8b659b68-1eb9-4ea5-ab00-a6a182520436-4fd78b4cafd9-Key Vault Crypto User')
-  scope: keyVault
-  properties: {
-    // principalId: '6bb8e274-af5d-4df2-98a3-4fd78b4cafd9' // AppId
-    principalId: '8b659b68-1eb9-4ea5-ab00-a6a182520436' // Obj Id
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
+    principalId: '8b659b68-1eb9-4ea5-ab00-a6a182520436' // 'Azure Container Instance Service' Service Principal Object Id
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User. Allows Keys: get, list, wrap key, unwrap key
     principalType: 'ServicePrincipal'
   }
 }
