@@ -110,6 +110,7 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
+@description('Optional. Enable public network access to the vault. If false, access is restricted to Azure resources only.')
 param enablePublicNetworkAccess bool = false
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
