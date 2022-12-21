@@ -106,6 +106,7 @@ module profile_Endpoint 'endpoint/deploy.bicep' = if (!empty(endpointProperties)
     location: location
     profileName: profile.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    
   }
 }
 
