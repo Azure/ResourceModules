@@ -1,4 +1,4 @@
-name: 'CDN: profiles'
+name: 'CDN: Profiles'
 
 on:
   workflow_dispatch:
