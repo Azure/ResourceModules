@@ -17,38 +17,18 @@ param count int = 1
 param sourceResourceId string = ''
 
 @description('Optional. Whether to enable auto-scaler.')
-@allowed([
-  true
-  false
-])
 param enableAutoScaling bool = false
 
 @description('Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption. For security reasons, this setting should be enabled.')
-@allowed([
-  true
-  false
-])
 param enableEncryptionAtHost bool = false
 
 @description('Optional. See Add a FIPS-enabled node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details.')
-@allowed([
-  true
-  false
-])
 param enableFIPS bool = false
 
-@description('Optional. Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). The default is false.')
-@allowed([
-  true
-  false
-])
+@description('Optional. Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).')
 param enableNodePublicIP bool = false
 
 @description('Optional. Whether to enable UltraSSD.')
-@allowed([
-  true
-  false
-])
 param enableUltraSSD bool = false
 
 @description('Optional. GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.')

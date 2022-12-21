@@ -19,10 +19,11 @@ This module deploys a SQL server.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.Sql/servers` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers) |
+| `Microsoft.Sql/servers` | [2022-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers) |
 | `Microsoft.Sql/servers/databases` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/databases) |
 | `Microsoft.Sql/servers/elasticPools` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/elasticPools) |
 | `Microsoft.Sql/servers/firewallRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/firewallRules) |
+| `Microsoft.Sql/servers/keys` | [2022-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/keys) |
 | `Microsoft.Sql/servers/securityAlertPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/securityAlertPolicies) |
 | `Microsoft.Sql/servers/virtualNetworkRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/virtualNetworkRules) |
 | `Microsoft.Sql/servers/vulnerabilityAssessments` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/vulnerabilityAssessments) |
@@ -42,6 +43,7 @@ This module deploys a SQL server.
 | `administratorLogin` | string | `''` | The administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
 | `administratorLoginPassword` | secureString | `''` | The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
 | `administrators` | object | `{object}` | The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
+| `primaryUserAssignedIdentityId` | string | `''` | The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty. |
 
 **Optional parameters**
 
@@ -51,6 +53,7 @@ This module deploys a SQL server.
 | `elasticPools` | _[elasticPools](elasticPools/readme.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
+| `keys` | _[keys](keys/readme.md)_ array | `[]` |  | The keys to configure. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimalTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Minimal TLS version allowed. |
@@ -415,9 +418,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-sqlscom'
   params: {
-    // Required parameters
     name: '<<namePrefix>>-sqlscom'
-    // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
@@ -454,8 +455,16 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         startIpAddress: '0.0.0.0'
       }
     ]
+    keys: [
+      {
+        name: '<name>'
+        serverKeyType: 'AzureKeyVault'
+        uri: '<uri>'
+      }
+    ]
     location: '<location>'
     lock: 'CanNotDelete'
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -485,7 +494,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '<managedIdentitResourceId>': {}
+      '<managedIdentityResourceId>': {}
     }
     virtualNetworkRules: [
       {
@@ -520,11 +529,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
       "value": "<<namePrefix>>-sqlscom"
     },
-    // Non-required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
@@ -573,11 +580,23 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
       ]
     },
+    "keys": {
+      "value": [
+        {
+          "name": "<name>",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "<uri>"
+        }
+      ]
+    },
     "location": {
       "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
     },
     "privateEndpoints": {
       "value": [
@@ -617,7 +636,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "<managedIdentitResourceId>": {}
+        "<managedIdentityResourceId>": {}
       }
     },
     "virtualNetworkRules": {

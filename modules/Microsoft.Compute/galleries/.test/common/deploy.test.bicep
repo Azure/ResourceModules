@@ -55,5 +55,23 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    applications: [
+      {
+        name: '<<namePrefix>>-${serviceShort}-appd-001'
+      }
+      {
+        name: '<<namePrefix>>-appd-002'
+        supportedOSType: 'Windows'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+      }
+    ]
   }
 }

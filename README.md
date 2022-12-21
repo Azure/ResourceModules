@@ -167,6 +167,10 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 * [Azure Resource Manager][AzureResourceManager]
 * [Bicep][Bicep]
 
+## Telemetry
+
+Modules provided in this library have telemetry enabled by default. To learn more about this feature, please refer to the [Telemetry article](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20design#telemetry) in the wiki.
+
 <!-- References -->
 
 <!-- Local -->
@@ -178,7 +182,6 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
 [PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
-[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
 
 <!-- External -->
 [Bicep]: <https://github.com/Azure/bicep>
