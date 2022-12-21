@@ -55,7 +55,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-testExecution'
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: 'dep-<<namePrefix>>-cdn-${serviceShort}'
     location: location
@@ -69,34 +69,34 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticSettingsName: 'cdnprofilediagnostics'
     endpointProperties: {
-        originHostHeader: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
-        contentTypesToCompress: [
-          'text/plain'
-          'text/html'
-          'text/css'
-          'text/javascript'
-          'application/x-javascript'
-          'application/javascript'
-          'application/json'
-          'application/xml'
-        ]
-        isCompressionEnabled: true
-        isHttpAllowed: true
-        isHttpsAllowed: true
-        queryStringCachingBehavior: 'IgnoreQueryString'
-        origins: [
-          {
-            name: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
-            properties: {
-              hostName: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
-              httpPort: 80
-              httpsPort: 443
-              enabled: true
-            }
+      originHostHeader: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
+      contentTypesToCompress: [
+        'text/plain'
+        'text/html'
+        'text/css'
+        'text/javascript'
+        'application/x-javascript'
+        'application/javascript'
+        'application/json'
+        'application/xml'
+      ]
+      isCompressionEnabled: true
+      isHttpAllowed: true
+      isHttpsAllowed: true
+      queryStringCachingBehavior: 'IgnoreQueryString'
+      origins: [
+        {
+          name: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
+          properties: {
+            hostName: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
+            httpPort: 80
+            httpsPort: 443
+            enabled: true
           }
-        ]
-        originGroups: []
-        geoFilters: []
-      }
+        }
+      ]
+      originGroups: []
+      geoFilters: []
     }
   }
+}
