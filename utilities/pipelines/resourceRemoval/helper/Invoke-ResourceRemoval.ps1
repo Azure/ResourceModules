@@ -129,9 +129,9 @@ function Invoke-ResourceRemoval {
         'Microsoft.OperationalInsights/workspaces' {
             $resourceGroupName = $resourceId.Split('/')[4]
             $resourceName = Split-Path $resourceId -Leaf
+            # Force delete workspace (cannot be recovered)
             if ($PSCmdlet.ShouldProcess("Log Analytics Workspace [$resourceName]", 'Remove')) {
                 $null = Remove-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Force -ForceDelete
-                # Get-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName | Remove-AzOperationalInsightsWorkspace -Force -ForceDelete
             }
             break
         }
