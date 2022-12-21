@@ -359,7 +359,192 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 2: Encr</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cicgecr'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+      {
+        name: '<<namePrefix>>-az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>cicgecr001'
+    // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+    lock: 'CanNotDelete'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "<<namePrefix>>-az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>cicgecr001"
+    },
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
 
 <details>
 
