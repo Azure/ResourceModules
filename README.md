@@ -8,15 +8,9 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 ## Status
 
-<a href="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml">
-  <img alt="Super Linter" src="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml/badge.svg" />
-</a>
-<a href="https://github.com/Azure/ResourceModules/issues">
-  <img alt="Issues" src="https://img.shields.io/github/issues/Azure/ResourceModules?color=0088ff" />
-</a>
-<a href="https://github.com/Azure/ResourceModules/pulls">
-  <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/ResourceModules?color=0088ff" />
-</a>
+[![.Platform: Linter](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml)
+
+[![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml)
 
 ## Get started
 
@@ -173,6 +167,10 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 * [Azure Resource Manager][AzureResourceManager]
 * [Bicep][Bicep]
 
+## Telemetry
+
+Modules provided in this library have telemetry enabled by default. To learn more about this feature, please refer to the [Telemetry article](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20design#telemetry) in the wiki.
+
 <!-- References -->
 
 <!-- Local -->
@@ -184,7 +182,6 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
 [PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
-[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
 
 <!-- External -->
 [Bicep]: <https://github.com/Azure/bicep>

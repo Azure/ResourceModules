@@ -15,7 +15,7 @@ param tags object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @allowed([
@@ -280,7 +280,7 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 }
 
 // Service Fabric cluster resource lock
-resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
     level: any(lock)

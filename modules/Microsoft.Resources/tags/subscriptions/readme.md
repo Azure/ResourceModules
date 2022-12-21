@@ -13,7 +13,7 @@ This module deploys Resources Tags on a subscription scope.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/tags) |
+| `Microsoft.Resources/tags` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/tags) |
 
 ## Parameters
 
@@ -21,7 +21,7 @@ This module deploys Resources Tags on a subscription scope.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `name` | string | `'default'` | The name of the tags resource. |
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |

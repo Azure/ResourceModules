@@ -69,7 +69,7 @@ Invoke the function with the default path. Returns an object such as:
         "resourceReferences": [
             "Microsoft.Resources/deployments@2021-04-01",
             "Microsoft.Compute/availabilitySets@2021-07-01",
-            "Microsoft.Authorization/locks@2017-04-01",
+            "Microsoft.Authorization/locks@2020-05-01",
             "Microsoft.Compute/availabilitySets@2021-04-01",
             "Microsoft.Authorization/roleAssignments@2020-10-01-preview"
         ]

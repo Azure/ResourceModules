@@ -24,7 +24,7 @@ trigger:
       - '/modules/Microsoft.Compute/availabilitySets/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:

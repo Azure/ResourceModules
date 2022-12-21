@@ -82,7 +82,7 @@ param privateEndpoints array = []
 param tags object = {}
 
 // PID
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Role Assignments
@@ -107,8 +107,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
   'AppServiceAppLogs'
@@ -142,7 +143,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 // =========== //
 // Variables   //
 // =========== //
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -150,6 +151,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -199,7 +211,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
       id: appServiceEnvironmentId
     } : null
     storageAccountRequired: storageAccountRequired
-    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId: null
+    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
   }
@@ -228,7 +240,7 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
   properties: {
     level: any(lock)

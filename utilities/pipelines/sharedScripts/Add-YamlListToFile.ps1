@@ -63,12 +63,14 @@ function Add-YamlListToFile {
 
         # Process List (Hashtable)
         $KeyValuePair = $InputFileContent | ConvertFrom-Yaml | Select-Object -ExpandProperty $ListName
-        Write-Verbose ('Found [{0}] Key-Value pairs in List [{1}]' -f $KeyValuePair.Count, $ListName) -Verbose
+        Write-Verbose ('Found [{0}] Key-Value pairs' -f $KeyValuePair.Count) -Verbose
+
         if (-not $KeyValuePair) {
             throw "No key-value pairs found in List: $ListName"
         }
         # Process key value pairs in the list
-        foreach ($Key in $KeyValuePair.Keys.split(' ')) {
+        foreach ($Key in ($KeyValuePair.Keys.split(' ') | Sort-Object)) {
+            Write-Verbose ('Setting environment variable [{0}] with value [{1}]' -f $Key, $KeyValuePair[$Key]) -Verbose
             Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $OutputFilePath -Encoding utf-8 -Append
         }
     }

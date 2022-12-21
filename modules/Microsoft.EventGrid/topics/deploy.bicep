@@ -49,17 +49,17 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DeliveryFailures'
   'PublishFailures'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'DeliveryFailures'
-  'PublishFailures'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -75,7 +75,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 var enableReferencedModulesTelemetry = false
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -83,6 +83,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -116,7 +127,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   }
 }
 
-resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource topic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${topic.name}-${lock}-lock'
   properties: {
     level: any(lock)

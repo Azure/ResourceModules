@@ -19,24 +19,12 @@ param secrets object = {}
 param keys array = []
 
 @description('Optional. Specifies if the vault is enabled for deployment by script or compute.')
-@allowed([
-  true
-  false
-])
 param enableVaultForDeployment bool = true
 
 @description('Optional. Specifies if the vault is enabled for a template deployment.')
-@allowed([
-  true
-  false
-])
 param enableVaultForTemplateDeployment bool = true
 
 @description('Optional. Specifies if the azure platform has access to the vault for enabling disk encryption scenarios.')
-@allowed([
-  true
-  false
-])
 param enableVaultForDiskEncryption bool = true
 
 @description('Optional. Switch to enable/disable Key Vault\'s soft delete feature.')
@@ -106,17 +94,17 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AuditEvent'
   'AzurePolicyEvaluationDetails'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AuditEvent'
-  'AzurePolicyEvaluationDetails'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -133,7 +121,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 // =========== //
 // Variables   //
 // =========== //
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -141,6 +129,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -207,7 +206,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   }
 }
 
-resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource keyVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${keyVault.name}-${lock}-lock'
   properties: {
     level: any(lock)

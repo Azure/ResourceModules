@@ -6,20 +6,14 @@ This section provides an overview of the most impactful limitations and known is
 
 - [Module specific](#module-specific)
   - [Microsoft.AAD/DomainServices](#microsoftaaddomainservices)
-  - [Microsoft.KubernetesConfiguration/extensions](#microsoftkubernetesconfigurationextensions)
-  - [Microsoft.KubernetesConfiguration/fluxConfigurations](#microsoftkubernetesconfigurationfluxconfigurations)
   - [Microsoft.Management/managementGroups](#microsoftmanagementmanagementgroups)
-  - [Microsoft.Network/vpnGateways](#microsoftnetworkvpngateways)
-  - [Microsoft.Network/virtualHubs](#microsoftnetworkvirtualhubs)
-  - [Microsoft.Network/vpnSites](#microsoftnetworkvpnsites)
-  - [Microsoft.Network/connections](#microsoftnetworkconnections)
+  - [Microsoft.RecoveryServices/vaults](#microsoftrecoveryservicesvaults)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
     - [Limited module test file set](#limited-module-test-file-set)
     - [Limited job execution time](#limited-job-execution-time)
   - [Publishing](#publishing)
-  - [Dependencies pipeline](#dependencies-pipeline)
 
 ---
 
@@ -38,19 +32,6 @@ Therefore, the module was manually tested in a dedicated environment.
 
 For the general prerequisites, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
-## Microsoft.KubernetesConfiguration/extensions
-
-The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.KubernetesConfiguration/fluxConfigurations
-
-The module has a dependency on
-
-- a pre-existing AKS cluster (managed cluster)
-- a pre-existing Kubernetes Configuration extension deployment
-
-which we don't have deployed using the dependencies pipeline for cost reasons.
-
 ## Microsoft.Management/managementGroups
 
 The Management Group module does not currently include the role assignments extension resource.
@@ -61,21 +42,13 @@ A related issue has been opened to the Bicep board [#6832](https://github.com/Az
 
 Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
 
-## Microsoft.Network/vpnGateways
+## Microsoft.RecoveryServices/vaults
 
-The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependencies pipeline for cost reasons.
+The Recovery Services Vaults module does not currently validate the identity property (system or user assigned identity).
 
-## Microsoft.Network/virtualHubs
+The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.Network/vpnSites
-
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.Network/connections
-
-The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependencies pipeline for cost reasons.
+A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
 
 ---
 
@@ -108,15 +81,5 @@ For modules that can take more than 6 hours to deploy, this restriction applies.
 ## Publishing
 
 This section outlines known issues that currently affect the CI environment publishing step.
-
-## Dependencies pipeline
-
-The dependencies pipeline currently fails on the Disk Encryption Set resource creation when deployed more than once.
-
-In the majority of cases you will only need to run the dependencies pipeline just once, as a prerequisite before using the module pipelines. It is then possible you will not experience this problem.
-
-> **Workaround**: In case you need to rerun the dependencies pipeline on top of existing resources created by the first run, please delete the Disk Encription Set resource before the rerun.
-
-Further details are tracked in issue [#1727](https://github.com/Azure/ResourceModules/issues/1727).
 
 ---

@@ -14,7 +14,7 @@ This module deploys a recovery service vault.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
@@ -48,13 +48,13 @@ This module deploys a recovery service vault.
 | `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | The storage configuration for the Azure Recovery Service Vault. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, allLogs, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Health]` | `[Health]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
@@ -1173,6 +1173,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     monitoringSettings: {
       azureMonitorAlertSettings: {
@@ -1213,10 +1214,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       immutabilitySettings: {
         state: 'Unlocked'
       }
-    }
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1498,6 +1495,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -1550,14 +1550,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "state": "Unlocked"
         }
       }
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -1579,6 +1571,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     // Required parameters
     name: '<name>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     replicationFabrics: [
       {
         location: 'NorthEurope'
@@ -1655,6 +1648,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       "value": "<name>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "replicationFabrics": {
       "value": [
         {
@@ -1731,7 +1727,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rsvmin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>rsvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -1748,8 +1747,13 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>rsvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

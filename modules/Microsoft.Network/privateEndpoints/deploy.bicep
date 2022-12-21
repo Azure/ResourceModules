@@ -45,7 +45,7 @@ param customDnsConfigs array = []
 @description('Optional. Manual PrivateLink Service Connections.')
 param manualPrivateLinkServiceConnections array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -96,7 +96,7 @@ module privateEndpoint_privateDnsZoneGroup 'privateDnsZoneGroups/deploy.bicep' =
   }
 }
 
-resource privateEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateEndpoint_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateEndpoint.name}-${lock}-lock'
   properties: {
     level: any(lock)

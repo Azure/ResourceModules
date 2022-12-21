@@ -1,5 +1,5 @@
 @minLength(1)
-@description('Required. Name of the Azure Shared Image Gallery.')
+@description('Required. Name of the Azure Compute Gallery.')
 param name string
 
 @description('Optional. Location for all resources.')
@@ -7,6 +7,9 @@ param location string = resourceGroup().location
 
 @description('Optional. Description of the Azure Shared Image Gallery.')
 param galleryDescription string = ''
+
+@description('Optional. Applications to create.')
+param applications array = []
 
 @description('Optional. Images to create.')
 param images array = []
@@ -25,7 +28,7 @@ param roleAssignments array = []
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -42,7 +45,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
+resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   name: name
   location: location
   tags: tags
@@ -52,7 +55,7 @@ resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource gallery_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${gallery.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -71,6 +74,25 @@ module gallery_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
     resourceId: gallery.id
+  }
+}]
+
+// Applications
+module galleries_applications 'applications/deploy.bicep' = [for (application, index) in applications: {
+  name: '${uniqueString(deployment().name, location)}-Gallery-Application-${index}'
+  params: {
+    name: application.name
+    galleryName: gallery.name
+    supportedOSType: contains(application, 'supportOSType') ? application.supportedOSType : 'Windows'
+    applicationDefinitionDescription: contains(application, 'applicationDefinitionDescription') ? application.applicationDefinitionDescription : ''
+    eula: contains(application, 'eula') ? application.eula : ''
+    privacyStatementUri: contains(application, 'privacyStatementUri') ? application.privacyStatementUri : ''
+    releaseNoteUri: contains(application, 'releaseNoteUri') ? application.releaseNoteUri : ''
+    endOfLifeDate: contains(application, 'endOfLifeDate') ? application.endOfLifeDate : ''
+    roleAssignments: contains(application, 'roleAssignments') ? application.roleAssignments : []
+    customActions: contains(application, 'customActions') ? application.customActions : []
+    tags: contains(application, 'tags') ? application.tags : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

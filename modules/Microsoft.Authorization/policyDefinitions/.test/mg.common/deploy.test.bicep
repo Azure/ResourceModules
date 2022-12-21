@@ -6,6 +6,9 @@ targetScope = 'managementGroup'
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'apdmgcom'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -13,6 +16,7 @@ param serviceShort string = 'apdmgcom'
 module testDeployment '../../managementGroup/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     policyRule: {
       if: {
@@ -45,7 +49,6 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     }
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
-    managementGroupId: last(split(managementGroup().id, '/'))
     metadata: {
       category: 'Security'
     }

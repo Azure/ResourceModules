@@ -55,7 +55,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules.')
@@ -225,7 +225,7 @@ module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inbou
   ]
 }]
 
-resource loadBalancer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource loadBalancer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${loadBalancer.name}-${lock}-lock'
   properties: {
     level: any(lock)

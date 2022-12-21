@@ -83,7 +83,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The event hubs to deploy into this namespace.')
@@ -92,8 +92,9 @@ param eventHubs array = []
 @description('Optional. The disaster recovery config for this namespace.')
 param disasterRecoveryConfig object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ArchiveLogs'
   'OperationalLogs'
   'AutoScaleLogs'
@@ -105,15 +106,7 @@ param disasterRecoveryConfig object = {}
   'ApplicationMetricsLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ArchiveLogs'
-  'OperationalLogs'
-  'AutoScaleLogs'
-  'KafkaCoordinatorLogs'
-  'KafkaUserErrorLogs'
-  'EventHubVNetConnectionEvent'
-  'CustomerManagedKeyUserLogs'
-  'RuntimeAuditLogs'
-  'ApplicationMetricsLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -129,7 +122,7 @@ var maximumThroughputUnitsVar = !isAutoInflateEnabled ? 0 : maximumThroughputUni
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -137,6 +130,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -206,7 +210,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.
   }
 }
 
-module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'eventHubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -286,7 +290,7 @@ module eventHubNamespace_roleAssignments '.bicep/nested_roleAssignments.bicep' =
   }
 }]
 
-resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${eventHubNamespace.name}-${lock}-lock'
   properties: {
     level: any(lock)

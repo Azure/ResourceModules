@@ -33,7 +33,7 @@ With this module you can create policy set definitions across the management gro
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | The description name of the Set Definition (Initiative). |
 | `displayName` | string | `''` | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
@@ -189,7 +189,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    managementGroupId: '<managementGroupId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -261,8 +261,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "displayName": {
       "value": "[DisplayName] This policy set definition is deployed at management group scope"
     },
-    "managementGroupId": {
-      "value": "<managementGroupId>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "metadata": {
       "value": {
@@ -311,6 +311,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
       }
     ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -344,6 +346,10 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
         }
       ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -397,6 +403,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -409,7 +416,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         name: 'ARM'
       }
     ]
-    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -469,6 +475,9 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "displayName": {
       "value": "[DisplayName] This policy set definition is deployed at subscription scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "metadata": {
       "value": {
         "category": "Security",
@@ -484,9 +493,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "name": "ARM"
         }
       ]
-    },
-    "subscriptionId": {
-      "value": "<subscriptionId>"
     }
   }
 }
@@ -520,7 +526,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       }
     ]
     // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -556,8 +562,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       ]
     },
     // Non-required parameters
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -31,7 +31,7 @@ param zones array = []
 @description('Optional. Describes colocation status of the Proximity Placement Group.')
 param colocationStatus object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Specifies the user intent of the proximity placement group.')
@@ -61,7 +61,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

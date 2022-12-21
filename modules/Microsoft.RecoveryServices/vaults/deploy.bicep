@@ -4,7 +4,7 @@ param name string
 @description('Optional. The storage configuration for the Azure Recovery Service Vault.')
 param backupStorageConfig object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
@@ -68,8 +68,9 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AzureBackupReport'
   'CoreAzureBackup'
   'AddonAzureBackupJobs'
@@ -86,20 +87,7 @@ param tags object = {}
   'AzureSiteRecoveryProtectedDiskDataChurn'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AzureBackupReport'
-  'CoreAzureBackup'
-  'AddonAzureBackupJobs'
-  'AddonAzureBackupAlerts'
-  'AddonAzureBackupPolicy'
-  'AddonAzureBackupStorage'
-  'AddonAzureBackupProtectedInstance'
-  'AzureSiteRecoveryJobs'
-  'AzureSiteRecoveryEvents'
-  'AzureSiteRecoveryReplicatedItems'
-  'AzureSiteRecoveryReplicationStats'
-  'AzureSiteRecoveryRecoveryPoints'
-  'AzureSiteRecoveryReplicationDataUploadRate'
-  'AzureSiteRecoveryProtectedDiskDataChurn'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -122,7 +110,7 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -130,6 +118,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -267,7 +266,7 @@ module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource rsv_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
     level: any(lock)

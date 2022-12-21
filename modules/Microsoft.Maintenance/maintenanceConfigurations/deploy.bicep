@@ -5,7 +5,7 @@
 @description('Required. Maintenance Configuration Name.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Gets or sets extensionProperties of the maintenanceConfiguration.')
@@ -82,7 +82,7 @@ resource maintenanceConfiguration 'Microsoft.Maintenance/maintenanceConfiguratio
   }
 }
 
-resource maintenanceConfiguration_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource maintenanceConfiguration_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${maintenanceConfiguration.name}-${lock}-lock'
   properties: {
     level: any(lock)
