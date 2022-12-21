@@ -110,6 +110,8 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
+param enablePublicNetworkAccess bool = false
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
@@ -173,6 +175,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
   properties: {
     monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
     securitySettings: !empty(securitySettings) ? securitySettings : null
+    publicNetworkAccess: enablePublicNetworkAccess ? 'Enabled' : 'Disabled'
   }
 }
 

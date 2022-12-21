@@ -1174,6 +1174,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePublicNetworkAccess: true
     lock: 'CanNotDelete'
     monitoringSettings: {
       azureMonitorAlertSettings: {
@@ -1497,6 +1498,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "enablePublicNetworkAccess": {
+      "value": true
     },
     "lock": {
       "value": "CanNotDelete"
