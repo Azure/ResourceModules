@@ -32,6 +32,7 @@ This module deploys an AVD Scaling Plan.
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Autoscale]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
@@ -41,7 +42,6 @@ This module deploys an AVD Scaling Plan.
 | `hostPoolReferences` | array | `[]` |  | An array of references to hostpools. |
 | `hostPoolType` | string | `'Pooled'` | `[Pooled]` | The type of hostpool where this scaling plan should be applied. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `logsToEnable` | array | `[Autoscale]` | `[Autoscale]` | The name of logs that will be streamed. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scalingplanDescription` | string | `[parameters('name')]` |  | Description of the scaling plan. |
 | `schedules` | array | `[System.Management.Automation.OrderedHashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |

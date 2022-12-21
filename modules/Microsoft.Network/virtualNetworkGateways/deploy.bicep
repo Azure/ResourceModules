@@ -106,20 +106,20 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param publicIpdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -127,11 +127,7 @@ param publicIpdiagnosticLogCategoriesToEnable array = [
   'P2SDiagnosticLog'
 ])
 param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
-  'GatewayDiagnosticLog'
-  'TunnelDiagnosticLog'
-  'RouteDiagnosticLog'
-  'IKEDiagnosticLog'
-  'P2SDiagnosticLog'
+  'allLogs'
 ]
 
 @description('Optional. Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided.')
@@ -155,7 +151,7 @@ param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
 // ================//
 
 // Diagnostic Variables
-var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+var virtualNetworkGatewayDiagnosticsLogsSpecified = [for category in filter(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -164,7 +160,18 @@ var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewa
   }
 }]
 
-var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesToEnable: {
+var virtualNetworkGatewayDiagnosticsLogs = contains(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : virtualNetworkGatewayDiagnosticsLogsSpecified
+
+var publicIpDiagnosticsLogsSpecified = [for category in filter(publicIpdiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -172,6 +179,17 @@ var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesTo
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var publicIpDiagnosticsLogs = contains(publicIpdiagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : publicIpDiagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric

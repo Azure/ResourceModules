@@ -76,7 +76,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
@@ -85,11 +85,12 @@ param cMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
-@description('Optional. User assigned identity to use when fetching the customer managed key.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ActivityRuns'
   'PipelineRuns'
   'TriggerRuns'
@@ -101,15 +102,7 @@ param cMKUserAssignedIdentityResourceId string = ''
   'SSISIntegrationRuntimeLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ActivityRuns'
-  'PipelineRuns'
-  'TriggerRuns'
-  'SSISPackageEventMessages'
-  'SSISPackageExecutableStatistics'
-  'SSISPackageEventMessageContext'
-  'SSISPackageExecutionComponentPhases'
-  'SSISPackageExecutionDataStatistics'
-  'SSISIntegrationRuntimeLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -123,7 +116,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -131,6 +124,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric

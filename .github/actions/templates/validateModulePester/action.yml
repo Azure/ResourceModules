@@ -123,12 +123,18 @@ runs:
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
+        $testContainerData = @{
+          moduleFolderPaths              = $moduleFolderPaths
+          tokenConfiguration             = $tokenConfiguration
+          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
+        }
+
+        Write-Verbose 'Invoke test with' -Verbose
+        Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
+
         Invoke-Pester -Configuration @{
           Run        = @{
-              Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-              moduleFolderPaths  = $moduleFolderPaths
-              tokenConfiguration = $tokenConfiguration
-            }
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
           }
           TestResult = @{
             TestSuiteName = 'Module Tests'

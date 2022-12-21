@@ -126,16 +126,15 @@ param nicConfigurations array
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param pipdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')

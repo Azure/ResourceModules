@@ -18,7 +18,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way, e.g.:
   - readme.md file exists
-  - template file (either deploy.json or deploy.bicep) exists
+  - template file (either `deploy.json` or `deploy.bicep`) exists
   - compliance with file naming convention
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters, e.g.:
   - template file (or the built bicep template) converts from JSON and has all expected properties
@@ -53,6 +53,14 @@ In this phase, Pester analyzes the API version of each resource type deployed by
 In particular, each resource's API version is compared with those currently available on Azure. This test has a certain level of tolerance (does not enforce the latest version): the API version in use should be one of the 5 latest versions available (including preview versions) or one of the the 5 latest non-preview versions.
 
 This test also leverages the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.
+
+To test the API versions, the test leverages the file `utilities/src/apiSpecsList.json` file as a reference for all API versions available for any used Provider Namespace & Resource Type.
+
+> **NOTE:** If this file does not exist, the API tests will be skipped.
+
+> **NOTE:** This functionality has a dependency on the [AzureAPICrawler](https://www.powershellgallery.com/packages/AzureAPICrawler) PowerShell module.
+
+The pipeline `platform.apiSpecs.yml` updates this file using the script `utilities/tools/platform/Set-ApiSpecsFile.ps1` and, once registered, runs on a weekly schedule. Upon execution, the script installs & imports the `AzureAPICrawler` module, fetches all available API versions for all Resource Types via the module and updates the JSON file according to the latest information.
 
 # Verify the static validation of your module locally
 
