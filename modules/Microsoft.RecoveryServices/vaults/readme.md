@@ -55,6 +55,7 @@ This module deploys a recovery service vault.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enablePublicNetworkAccess` | bool | `False` |  | Enable public network access to the vault. If false, access is restricted to Azure resources only. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
