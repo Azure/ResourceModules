@@ -126,6 +126,15 @@ function Invoke-ResourceRemoval {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
             break
         }
+        'Microsoft.OperationalInsights/workspaces' {
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+            Write-Verbose ('resourceGroupName [{0}]' -f $resourceGroupName) -Verbose
+            Write-Verbose ('resourceName [{0}]' -f $resourceName) -Verbose
+            # Remove-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -ForceDelete
+            Get-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName | Remove-AzOperationalInsightsWorkspace -Force -ForceDelete
+        }
+
         ### CODE LOCATION: Add custom removal action here
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
