@@ -42,7 +42,7 @@ resource profileName_endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = if
 
 resource profile_EndpointOrigins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = if (!empty(endpointProperties.origins)){
   parent: profileName_endpoint
-  name: endpointProperties.origins[0].name
+  name: replace(endpointProperties.origins[0].name, '.', '-')
   properties: {
     hostName: endpointProperties.origins[0].properties.hostName
   }
