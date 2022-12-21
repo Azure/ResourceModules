@@ -25,7 +25,6 @@ This module deploys CDN Profiles Endpoint.
 | :-- | :-- | :-- |
 | `endpointName` | string | Name of the endpoint under the profile which is unique globally. |
 | `endpointProperties` | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
-| `location` | string | Resource location. |
 | `profileName` | string | Name of the CDN profile which is unique within the resource group. |
 
 **Optional parameters**
@@ -33,6 +32,7 @@ This module deploys CDN Profiles Endpoint.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `location` | string | `[resourceGroup().location]` | Resource location. |
 | `tags` | object | `{object}` | Endpoint tags. |
 
 
@@ -87,8 +87,8 @@ tags: {
 | :-- | :-- | :-- |
 | `endpointProperties` | object | The properties of the endpoint. |
 | `location` | string | The location the resource was deployed into. |
-| `Name` | string | The resource name. |
-| `resorucreGroupName` | string | The name of the resource group the Redis cache was created in. |
+| `name` | string | The resource name. |
+| `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
 | `resourceId` | string | The resource ID. |
 
 ## Cross-referenced modules

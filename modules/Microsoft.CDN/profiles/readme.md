@@ -28,7 +28,6 @@ This module deploys CDN Profiles.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `location` | string |  | Resource location. |
 | `name` | string |  | Name of the CDN profile which is unique within the resource group. |
 | `sku` | string | `[Custom_Akamai, Custom_ChinaCdn, Custom_Microsoft, Custom_Microsoft_AzureFrontDoor, Custom_Verizon, Premium_Akamai, Premium_ChinaCdn, Premium_Microsoft, Premium_Microsoft_AzureFrontDoor, Premium_Verizon, Standard_Akamai, Standard_ChinaCdn, Standard_Microsoft, Standard_Microsoft_AzureFrontDoor, Standard_Verizon]` | The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile. |
 
@@ -47,6 +46,7 @@ This module deploys CDN Profiles.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `endpointName` | string | `''` |  | Name of the endpoint under the profile which is unique globally. |
 | `endpointProperties` | object | `{object}` |  | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
+| `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `profileProperties` | object | `{object}` |  | Profile properties. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -162,7 +162,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | Resource location of the CDN profile. |
-| `Name` | string | Name of the CDN profile. |
+| `name` | string | Name of the CDN profile. |
 | `profileType` | string | Type of the CDN profile. |
 | `resourceGroupName` | string | Resource group of the CDN profile. |
 | `resourceId` | string | Resource ID of the CDN profile. |
@@ -189,7 +189,6 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cdnprof'
   params: {
     // Required parameters
-    location: '<location>'
     name: 'dep-<<namePrefix>>-cdn-cdnprof'
     sku: 'Standard_Verizon'
     // Non-required parameters
@@ -230,6 +229,7 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
       ]
       queryStringCachingBehavior: 'IgnoreQueryString'
     }
+    location: '<location>'
     profileProperties: {}
   }
 }
@@ -248,9 +248,6 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "location": {
-      "value": "<location>"
-    },
     "name": {
       "value": "dep-<<namePrefix>>-cdn-cdnprof"
     },
@@ -310,6 +307,9 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
         ],
         "queryStringCachingBehavior": "IgnoreQueryString"
       }
+    },
+    "location": {
+      "value": "<location>"
     },
     "profileProperties": {
       "value": {}

@@ -4,8 +4,8 @@ param profileName string
 @description('Required. Name of the endpoint under the profile which is unique globally.')
 param endpointName string
 
-@description('Required. Resource location.')
-param location string
+@description('Optional. Resource location.')
+param location string = resourceGroup().location
 
 @description('Required. Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).')
 param endpointProperties object
@@ -49,13 +49,13 @@ resource profile_EndpointOrigins 'Microsoft.Cdn/profiles/endpoints/origins@2021-
 }
 
 @description('The resource name.')
-output Name string = profileName_endpoint.name
+output name string = profileName_endpoint.name
 
 @description('The resource ID.')
 output resourceId string = profileName_endpoint.id
 
 @description('The name of the resource group the Redis cache was created in.')
-output resorucreGroupName string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = profileName_endpoint.location

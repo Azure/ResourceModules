@@ -1,8 +1,8 @@
 @description('Required. Name of the CDN profile which is unique within the resource group.')
 param name string
 
-@description('Required. Resource location.')
-param location string
+@description('Optional. Resource location.')
+param location string = resourceGroup().location
 
 @allowed([
   'Standard_Verizon'
@@ -192,7 +192,7 @@ module profile_Endpoint 'endpoint/deploy.bicep' = if (!empty(endpointProperties)
 }
 
 @description('Name of the CDN profile.')
-output Name string = profile.name
+output name string = profile.name
 
 @description('Resource ID of the CDN profile.')
 output resourceId string = profile.id
