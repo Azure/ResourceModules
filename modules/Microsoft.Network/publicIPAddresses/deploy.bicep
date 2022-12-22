@@ -155,7 +155,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   }
   zones: zones
   properties: {
-    dnsSettings: !empty(domainNameLabel) || !empty(fqdn) || !empty(reverseFqdn) ? {
+    dnsSettings: !empty(domainNameLabel) ? {
       domainNameLabel: domainNameLabel
       fqdn: fqdn
       reverseFqdn: reverseFqdn
