@@ -159,6 +159,8 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
+    enableAutomaticUpdates: true
+    patchMode: 'AutomaticByPlatform'
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
