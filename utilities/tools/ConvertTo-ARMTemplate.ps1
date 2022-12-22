@@ -100,12 +100,12 @@ function ConvertTo-ARMTemplate {
         $expectedJSONFilePath = Join-Path (Split-Path $_ -Parent) ('{0}.json' -f (Split-Path $_ -LeafBase))
         if (-not (Test-Path $expectedJSONFilePath)) {
             Write-Verbose "Building template [$_]"
-            az bicep build --file $_
+            bicep build $_
         } else {
             Write-Verbose "Template [$expectedJSONFilePath] already existing"
         }
     }
-    if ($PSCmdlet.ShouldProcess(('Bicep [{0}] Templates' -f ($BicepFilesToConvert.count)), 'az bicep build')) {
+    if ($PSCmdlet.ShouldProcess(('Bicep [{0}] Templates' -f ($BicepFilesToConvert.count)), 'bicep build')) {
         if ($RunSynchronous) {
             $BicepFilesToConvert | ForEach-Object $buildScriptBlock
         } else {
