@@ -59,6 +59,13 @@ param roleAssignments array = []
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. Specify if public network access should be enabled or disabled.')
+param publicNetworkAccess string = 'Enabled'
+
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
@@ -161,7 +168,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-30-preview' = {
   name: name
   location: location
   tags: tags
@@ -173,6 +180,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   properties: {
     monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
     securitySettings: !empty(securitySettings) ? securitySettings : null
+    publicNetworkAccess: !empty(publicNetworkAccess) ? publicNetworkAccess : null
   }
 }
 
