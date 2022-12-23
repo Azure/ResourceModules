@@ -69,6 +69,7 @@ This module deploys a recovery service vault.
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
+
 ### Parameter Usage: `backupStorageConfig`
 
 <details>

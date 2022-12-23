@@ -65,6 +65,7 @@ This module deploys an event hub namespace.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `False` |  | Switch to make the Event Hub Namespace zone redundant. |
 
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
