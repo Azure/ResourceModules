@@ -89,6 +89,6 @@ module testDeployment '../../deploy.bicep' = {
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
-    stagingResourceGroup: ''
+    stagingResourceGroup: '<<namePrefix>>${serviceShort}001-rg'
   }
 }
