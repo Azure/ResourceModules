@@ -172,26 +172,6 @@ var virtualNetworkGatewayDiagnosticsLogs = contains(virtualNetworkGatewaydiagnos
   }
 ] : virtualNetworkGatewayDiagnosticsLogsSpecified
 
-var publicIpDiagnosticsLogsSpecified = [for category in filter(publicIpdiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
-  category: category
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var publicIpDiagnosticsLogs = contains(publicIpdiagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-] : publicIpDiagnosticsLogsSpecified
-
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
@@ -332,7 +312,7 @@ module publicIPAddress'../publicIPAddresses/deploy.bicep' = [for (virtualGateway
   name: virtualGatewayPublicIpName
   params :{
     name: virtualGatewayPublicIpName
-    diagnosticLogCategoriesToEnable: publicIpDiagnosticsLogs
+    diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
