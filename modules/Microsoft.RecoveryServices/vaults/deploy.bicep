@@ -110,8 +110,13 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
-@description('Optional. Enable public network access to the vault. If false, access is restricted to Azure resources only.')
-param enablePublicNetworkAccess bool = false
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -176,7 +181,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
   properties: {
     monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
     securitySettings: !empty(securitySettings) ? securitySettings : null
-    publicNetworkAccess: enablePublicNetworkAccess ? 'Enabled' : 'Disabled'
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
   }
 }
 
