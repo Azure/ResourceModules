@@ -180,7 +180,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         name: '<<namePrefix>>-cgcom-appd-001'
       }
       {
-        name: '<<namePrefix>>-appd-002'
+        name: '<<namePrefix>>-cgcom-appd-002'
         roleAssignments: [
           {
             principalIds: [
@@ -231,7 +231,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "name": "<<namePrefix>>-cgcom-appd-001"
         },
         {
-          "name": "<<namePrefix>>-appd-002",
+          "name": "<<namePrefix>>-cgcom-appd-002",
           "roleAssignments": [
             {
               "principalIds": [

@@ -2841,7 +2841,8 @@
       "2021-08-01-preview",
       "2021-09-01",
       "2021-12-01-preview",
-      "2022-02-01-preview"
+      "2022-02-01-preview",
+      "2022-12-01"
     ],
     "registries/agentPools": [
       "2019-06-01-preview"
@@ -2890,7 +2891,8 @@
       "2021-08-01-preview",
       "2021-09-01",
       "2021-12-01-preview",
-      "2022-02-01-preview"
+      "2022-02-01-preview",
+      "2022-12-01"
     ],
     "registries/replications": [
       "2017-06-01-preview",
@@ -2902,7 +2904,8 @@
       "2021-08-01-preview",
       "2021-09-01",
       "2021-12-01-preview",
-      "2022-02-01-preview"
+      "2022-02-01-preview",
+      "2022-12-01"
     ],
     "registries/scopeMaps": [
       "2019-05-01-preview",
@@ -2910,7 +2913,8 @@
       "2021-06-01-preview",
       "2021-08-01-preview",
       "2021-12-01-preview",
-      "2022-02-01-preview"
+      "2022-02-01-preview",
+      "2022-12-01"
     ],
     "registries/taskRuns": [
       "2019-06-01-preview"
@@ -2926,7 +2930,8 @@
       "2021-06-01-preview",
       "2021-08-01-preview",
       "2021-12-01-preview",
-      "2022-02-01-preview"
+      "2022-02-01-preview",
+      "2022-12-01"
     ],
     "registries/webhooks": [
       "2017-06-01-preview",
@@ -2938,7 +2943,8 @@
       "2021-08-01-preview",
       "2021-09-01",
       "2021-12-01-preview",
-      "2022-02-01-preview"
+      "2022-02-01-preview",
+      "2022-12-01"
     ]
   },
   "Microsoft.ContainerRegistry.Admin": {
@@ -14199,6 +14205,17 @@
     ],
     "virtualMachines": [
       "2019-04-01"
+    ]
+  },
+  "Microsoft.VoiceServices": {
+    "communicationsGateways": [
+      "2022-12-01-preview"
+    ],
+    "communicationsGateways/contacts": [
+      "2022-12-01-preview"
+    ],
+    "communicationsGateways/testLines": [
+      "2022-12-01-preview"
     ]
   },
   "Microsoft.Web": {

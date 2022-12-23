@@ -1,4 +1,4 @@
-# Application `[Microsoft.Compute/galleries/application]`
+# Application `[Microsoft.Compute/galleries/applications]`
 
 This module deploys an Application in a Azure Compute Gallery.
 
@@ -34,17 +34,18 @@ This module deploys an Application in a Azure Compute Gallery.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applicationDefinitionDescription` | string | `''` |  | The description of this gallery Application resource. This property is updatable. |
-| `customActions` | object | `{object}` |  | A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application. |
+| `applicationDefinitionDescription` | string | `''` |  | The description of this gallery Application Definition resource. This property is updatable. |
+| `customActions` | array | `[]` |  | A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `endOfLife` | string | `''` |  | The end of life date of the gallery Application. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
-| `eula` | string | `''` |  | The Eula agreement for the gallery Application. Has to be a valid URL. |
+| `endOfLifeDate` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
+| `eula` | string | `''` |  | The Eula agreement for the gallery Application Definition. Has to be a valid URL. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `privacyStatementUri` | string | `''` |  | The privacy statement uri. Has to be a valid URL. |
 | `releaseNoteUri` | string | `''` |  | The release note uri. Has to be a valid URL. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `supportedOSType` | string | `'Windows'` | `[Linux, Windows]` | Supported OS type of the application. |
+| `supportedOSType` | string | `'Windows'` | `[Linux, Windows]` | This property allows you to specify the supported type of the OS that application is built for. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -144,6 +145,8 @@ tags: {
 ```
 
 </details>
+<p>
+
 <p>
 ### Parameter Usage: `customActions`
 
