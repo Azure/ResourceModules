@@ -43,7 +43,7 @@ This module deploys an Application in a Azure Compute Gallery.
 | `privacyStatementUri` | string | `''` |  | The privacy statement uri. Has to be a valid URL. |
 | `releaseNoteUri` | string | `''` |  | The release note uri. Has to be a valid URL. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `supportedOSType` | string | `'Windows'` | `[Linux, Windows]` | This property allows you to specify the supported type of the OS that application is built for. |
+| `supportedOSType` | string | `'Windows'` | `[Linux, Windows]` | This property allows you to specify the Operating System type that supports this application. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
 
 

@@ -11,7 +11,7 @@ param location string = resourceGroup().location
 @minLength(1)
 param galleryName string
 
-@description('Optional. OS type of the image to be created.')
+@description('Optional. Operating System type of the image to be created.')
 @allowed([
   'Windows'
   'Linux'

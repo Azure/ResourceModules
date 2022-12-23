@@ -23,7 +23,7 @@ param privacyStatementUri string = ''
 @description('Optional. The release note uri. Has to be a valid URL.')
 param releaseNoteUri string = ''
 
-@description('Optional. This property allows you to specify the supported type of the OS that application is built for.')
+@description('Optional. This property allows you to specify the Operating System type that supports this application.')
 @allowed([
   'Windows'
   'Linux'
