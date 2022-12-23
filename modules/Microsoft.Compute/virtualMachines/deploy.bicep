@@ -82,7 +82,7 @@ param licenseType string = ''
 @description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
-@description('Optional. Enables system assigned managed identity on the resource.')
+@description('Optional. Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = True')
 param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
@@ -171,6 +171,10 @@ param extensionDomainJoinConfig object = {
   enabled: false
 }
 
+@description('Optional. The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.')
+param extensionAadJoinConfig object = {
+  enabled: false
+}
 @description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionAntiMalwareConfig object = {
   enabled: false
@@ -350,7 +354,18 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+/* Determine Identity Type.
+  First, we determine if the System-Assigned Managed Identity should be enabled.
+    If AADJoin Extension is enabled then we automatically add SystemAssigned to the identityType because AADJoin requires the System-Assigned Managed Identity.
+    If the AADJoin Extension is not enabled then we add SystemAssigned to the identityType only if the value of the systemAssignedIdentity parameter is true.
+  Second, we determine if User Assigned Identities are assigned to the VM via the userAssignedIdentities parameter.
+  Third, we take the outcome of these two values and determine the identityType
+    If the System Identity and User Identities are assigned then the identityType is 'SystemAssigned,UserAssigned'
+    If only the system Identity is assigned then the identityType is 'SystemAssigned'
+    If only user managed Identities are assigned, then the identityType is 'UserAssigned'
+    Finally, if no identities are assigned, then the identityType is 'none'.
+*/
+var identityType = (extensionAadJoinConfig.enabled ? true : systemAssignedIdentity) ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -502,6 +517,19 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
     configurationProfile: configurationProfile
   }
   scope: vm
+}
+module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VM-AADLogin'
+  params: {
+    virtualMachineName: vm.name
+    name: 'AADLogin'
+    publisher: 'Microsoft.Azure.ActiveDirectory'
+    type: osType == 'Windows' ? 'AADLoginForWindows' : 'AADSSHLoginforLinux'
+    typeHandlerVersion: contains(extensionAadJoinConfig, 'typeHandlerVersion') ? extensionAadJoinConfig.typeHandlerVersion : '1.0'
+    autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
+    settings: extensionAadJoinConfig.settings
+  }
 }
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
@@ -660,6 +688,7 @@ module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/p
   }
   scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [
+    vm_aadJoinExtension
     vm_domainJoinExtension
     vm_microsoftMonitoringAgentExtension
     vm_microsoftAntiMalwareExtension
