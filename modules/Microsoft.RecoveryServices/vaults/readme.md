@@ -69,7 +69,6 @@ This module deploys a recovery service vault.
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
-
 ### Parameter Usage: `backupStorageConfig`
 
 <details>
@@ -857,7 +856,7 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing only mandatory fields
         {
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>", // e.g. vault, registry, blob
+            "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
 }
