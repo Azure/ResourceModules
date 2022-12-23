@@ -102,17 +102,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var dnsConfig = !empty(dnsNameServers) ? {
-  nameServers: dnsNameServers
-  searchDomains: dnsSearchDomains
-} : null
-
-var subnetIds = !empty(subnetId) ? [
-  {
-    id: subnetId
-  }
-] : null
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -142,7 +131,6 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
   tags: tags
   properties: union({
       containers: containers
-      dnsConfig: dnsConfig
       encryptionProperties: !empty(cMKKeyName) ? {
         keyName: cMKKeyName
         keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
@@ -159,10 +147,17 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
         ports: ipAddressPorts
       }
       sku: sku
-      subnetIds: subnetIds
+      subnetIds: !empty(subnetId) ? [
+        {
+          id: subnetId
+        }
+      ] : null
       volumes: volumes
     }, !empty(dnsNameServers) ? {
-      dnsConfig: dnsConfig
+      dnsConfig: {
+        nameServers: dnsNameServers
+        searchDomains: dnsSearchDomains
+      }
     } : {})
 }
 
