@@ -42,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
+resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   name: name
   location: location
   tags: tags
