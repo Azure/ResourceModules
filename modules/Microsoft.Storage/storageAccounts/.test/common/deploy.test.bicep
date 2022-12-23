@@ -101,7 +101,6 @@ module testDeployment '../../deploy.bicep' = {
         hasSharedKey: false
         hasSshKey: true
         hasSshPassword: false
-        homeDirectory:'avdscripts'
         permissionScopes: [
           {
             permissions: 'r'

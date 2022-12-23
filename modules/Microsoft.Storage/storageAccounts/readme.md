@@ -473,7 +473,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         hasSharedKey: false
         hasSshKey: true
         hasSshPassword: false
-        homeDirectory: 'avdscripts'
         name: 'testuser'
         permissionScopes: [
           {
@@ -684,7 +683,6 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "hasSharedKey": false,
           "hasSshKey": true,
           "hasSshPassword": false,
-          "homeDirectory": "avdscripts",
           "name": "testuser",
           "permissionScopes": [
             {
