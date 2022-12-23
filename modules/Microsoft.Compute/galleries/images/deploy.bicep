@@ -54,7 +54,10 @@ param minRecommendedMemory int = 4
 @maxValue(4000)
 param maxRecommendedMemory int = 16
 
-@description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2. If the Security Type (via the securityType paramater) of the image definition is specified, the hyperVGeneration will automatically be set to "V2".')
+@description('''Optional. The hypervisor generation of the Virtual Machine. Can be either V1 or V2.
+* If not specified, then the hyperVGeneration is determined by the securityType parameter.
+* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.
+''')
 @allowed([
   ''
   'V1'
