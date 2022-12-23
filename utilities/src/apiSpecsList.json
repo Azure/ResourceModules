@@ -2046,7 +2046,7 @@
     ]
   },
   "Microsoft.Cdn": {
-    "cdnWebApplicationFirewallPolicies": [
+    "CdnWebApplicationFirewallPolicies": [
       "2019-06-15",
       "2019-06-15-preview",
       "2020-03-31",
@@ -3337,7 +3337,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/bandwidthSchedules": [
       "2019-03-01",
@@ -3352,21 +3353,24 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/diagnosticProactiveLogCollectionSettings": [
       "2021-02-01",
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/diagnosticRemoteSupportSettings": [
       "2021-02-01",
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/orders": [
       "2019-03-01",
@@ -3381,7 +3385,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/roles": [
       "2019-03-01",
@@ -3396,7 +3401,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/roles/addons": [
       "2020-09-01",
@@ -3407,7 +3413,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/roles/monitoringConfig": [
       "2020-09-01",
@@ -3418,7 +3425,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/shares": [
       "2019-03-01",
@@ -3433,7 +3441,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/storageAccountCredentials": [
       "2019-03-01",
@@ -3448,7 +3457,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/storageAccounts": [
       "2019-08-01",
@@ -3461,7 +3471,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/storageAccounts/containers": [
       "2019-08-01",
@@ -3474,7 +3485,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/triggers": [
       "2019-03-01",
@@ -3489,7 +3501,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/users": [
       "2019-03-01",
@@ -3504,7 +3517,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ]
   },
   "Microsoft.Databricks": {
@@ -3868,7 +3882,7 @@
       "2018-06-01-privatepreview"
     ]
   },
-  "Microsoft.DBForMySql": {
+  "Microsoft.DBforMySQL": {
     "flexibleServers": [
       "2020-07-01-preview",
       "2020-07-01-privatepreview",
@@ -3905,7 +3919,7 @@
       "2017-12-01-preview",
       "2018-06-01-privatepreview"
     ],
-    "servers/administrators": [
+    "servers/Administrators": [
       "2017-12-01",
       "2017-12-01-preview",
       "2018-06-01-privatepreview"
@@ -6026,7 +6040,7 @@
       "2016-05-01"
     ]
   },
-  "Microsoft.Insights": {
+  "microsoft.insights": {
     "actionGroups": [
       "2017-04-01",
       "2018-03-01",
@@ -7952,7 +7966,7 @@
       "2020-04-01-preview",
       "2022-07-01"
     ],
-    "dnsZones": [
+    "dnszones": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -7960,7 +7974,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/A": [
+    "dnszones/A": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -7968,7 +7982,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/AAAA": [
+    "dnszones/AAAA": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -7982,7 +7996,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/CNAME": [
+    "dnszones/CNAME": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -7990,7 +8004,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/MX": [
+    "dnszones/MX": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -7998,7 +8012,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/NS": [
+    "dnszones/NS": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8006,7 +8020,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/PTR": [
+    "dnszones/PTR": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8014,7 +8028,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/SOA": [
+    "dnszones/SOA": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8022,7 +8036,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/SRV": [
+    "dnszones/SRV": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8030,7 +8044,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnsZones/TXT": [
+    "dnszones/TXT": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -11204,17 +11218,17 @@
       "2018-01-01-preview",
       "2021-11-01"
     ],
-    "namespaces/AuthorizationRules": [
+    "namespaces/authorizationRules": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
     ],
-    "namespaces/HybridConnections": [
+    "namespaces/hybridConnections": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
     ],
-    "namespaces/HybridConnections/authorizationRules": [
+    "namespaces/hybridConnections/authorizationRules": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
@@ -11227,12 +11241,12 @@
       "2018-01-01-preview",
       "2021-11-01"
     ],
-    "namespaces/WcfRelays": [
+    "namespaces/wcfRelays": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
     ],
-    "namespaces/WcfRelays/authorizationRules": [
+    "namespaces/wcfRelays/authorizationRules": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
