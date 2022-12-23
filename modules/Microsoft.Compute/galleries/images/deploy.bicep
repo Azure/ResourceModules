@@ -64,6 +64,7 @@ param maxRecommendedMemory int = 16
   'V2'
 ])
 param hyperVGeneration string = ''
+
 @description('Optional. The security type of the image. Requires a hyperVGeneration V2.')
 @allowed([
   'TrustedLaunch'
