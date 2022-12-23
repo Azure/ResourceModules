@@ -2,13 +2,16 @@
 // Parameters       //
 // ================ //
 // General
-@description('Required. Name of the site.')
+@description('Required. Name of the slot.')
 param name string
+
+@description('Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment.')
+param appName string
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Required. Type of site to deploy.')
+@description('Required. Type of slot to deploy.')
 @allowed([
   'functionapp' // function app windows os
   'functionapp,linux' // function app linux os
@@ -18,10 +21,10 @@ param location string = resourceGroup().location
 ])
 param kind string
 
-@description('Required. The resource ID of the app service plan to use for the site.')
-param serverFarmResourceId string
+@description('Optional. The resource ID of the app service plan to use for the slot.')
+param serverFarmResourceId string = ''
 
-@description('Optional. Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests.')
+@description('Optional. Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests.')
 param httpsOnly bool = true
 
 @description('Optional. If client affinity is enabled.')
@@ -45,7 +48,7 @@ param storageAccountRequired bool = false
 @description('Optional. Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.')
 param virtualNetworkSubnetId string = ''
 
-// Site Config
+// slot Config
 @description('Optional. The site config object.')
 param siteConfig object = {}
 
@@ -74,19 +77,15 @@ param authSettingV2Configuration object = {}
 param lock string = ''
 
 // Private Endpoints
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for private endpoints.')
 param privateEndpoints array = []
-
-// List of slots
-@description('Optional. Configuration for deployment slots for an app.')
-param slots array = []
 
 // Tags
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
 // PID
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Role Assignments
@@ -141,7 +140,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+param diagnosticSettingsName string = 'slot-${name}-diagnosticSettings'
 
 // =========== //
 // Variables   //
@@ -174,6 +173,13 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
+// ================== //
+// Existing resources //
+// ================== //
+resource app 'Microsoft.Web/sites@2021-03-01' existing = {
+  name: appName
+}
+
 // =========== //
 // Deployments //
 // =========== //
@@ -189,8 +195,9 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource app 'Microsoft.Web/sites@2021-03-01' = {
+resource slot 'Microsoft.Web/sites/slots@2022-03-01' = {
   name: name
+  parent: app
   location: location
   kind: kind
   tags: tags
@@ -209,9 +216,10 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
   }
 }
 
-module app_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSettingsKeyValuePairs)) {
+module slot_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSettingsKeyValuePairs)) {
   name: '${uniqueString(deployment().name, location)}-Site-Config-AppSettings'
   params: {
+    slotName: slot.name
     appName: app.name
     kind: kind
     storageAccountId: storageAccountId
@@ -222,9 +230,10 @@ module app_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSetting
   }
 }
 
-module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(authSettingV2Configuration)) {
+module slot_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(authSettingV2Configuration)) {
   name: '${uniqueString(deployment().name, location)}-Site-Config-AuthSettingsV2'
   params: {
+    slotName: slot.name
     appName: app.name
     kind: kind
     authSettingV2Configuration: authSettingV2Configuration
@@ -232,54 +241,16 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
   }
 }
 
-@batchSize(1)
-module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
-  name: '${uniqueString(deployment().name, location)}-Site-Slot-${index}'
-  params: {
-    name: slot.name
-    appName: name
-    location: location
-    kind: kind
-    serverFarmResourceId: serverFarmResourceId
-    httpsOnly: contains(slot, 'httpsOnly') ? slot.httpsOnly : httpsOnly
-    appServiceEnvironmentId: !empty(appServiceEnvironmentId) ? appServiceEnvironmentId : ''
-    clientAffinityEnabled: contains(slot, 'clientAffinityEnabled') ? slot.clientAffinityEnabled : clientAffinityEnabled
-    systemAssignedIdentity: contains(slot, 'systemAssignedIdentity') ? slot.systemAssignedIdentity : systemAssignedIdentity
-    userAssignedIdentities: contains(slot, 'userAssignedIdentities') ? slot.userAssignedIdentities : userAssignedIdentities
-    keyVaultAccessIdentityResourceId: contains(slot, 'keyVaultAccessIdentityResourceId') ? slot.keyVaultAccessIdentityResourceId : !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
-    storageAccountRequired: contains(slot, 'storageAccountRequired') ? slot.storageAccountRequired : storageAccountRequired
-    virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
-    siteConfig: contains(slot, 'siteConfig') ? slot.siteConfig : siteConfig
-    storageAccountId: contains(slot, 'storageAccountId') ? slot.storageAccountId : storageAccountId
-    appInsightId: contains(slot, 'appInsightId') ? slot.appInsightId : appInsightId
-    setAzureWebJobsDashboard: contains(slot, 'setAzureWebJobsDashboard') ? slot.setAzureWebJobsDashboard : setAzureWebJobsDashboard
-    authSettingV2Configuration: contains(slot, 'authSettingV2Configuration') ? slot.authSettingV2Configuration : authSettingV2Configuration
-    enableDefaultTelemetry: contains(slot, 'enableDefaultTelemetry') ? slot.enableDefaultTelemetry : enableDefaultTelemetry
-    diagnosticLogsRetentionInDays: contains(slot, 'diagnosticLogsRetentionInDays') ? slot.diagnosticLogsRetentionInDays : diagnosticLogsRetentionInDays
-    diagnosticStorageAccountId: contains(slot, 'diagnosticStorageAccountId') ? slot.diagnosticStorageAccountId : diagnosticStorageAccountId
-    diagnosticWorkspaceId: contains(slot, 'diagnosticWorkspaceId') ? slot.diagnosticWorkspaceId : diagnosticWorkspaceId
-    diagnosticEventHubAuthorizationRuleId: contains(slot, 'diagnosticEventHubAuthorizationRuleId') ? slot.diagnosticEventHubAuthorizationRuleId : diagnosticEventHubAuthorizationRuleId
-    diagnosticEventHubName: contains(slot, 'diagnosticEventHubName') ? slot.diagnosticEventHubName : diagnosticEventHubName
-    diagnosticLogCategoriesToEnable: contains(slot, 'diagnosticLogCategoriesToEnable') ? slot.diagnosticLogCategoriesToEnable : diagnosticLogCategoriesToEnable
-    diagnosticMetricsToEnable: contains(slot, 'diagnosticMetricsToEnable') ? slot.diagnosticMetricsToEnable : diagnosticMetricsToEnable
-    roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
-    appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
-    lock: contains(slot, 'lock') ? slot.lock : lock
-    privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
-    tags: tags
-  }
-}]
-
-resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${app.name}-${lock}-lock'
+resource slot_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${slot.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: app
+  scope: slot
 }
 
-resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
+resource slot_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -289,30 +260,28 @@ resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: app
+  scope: slot
 }
 
-module app_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module slot_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Site-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: app.id
+    resourceId: slot.id
   }
 }]
 
-module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module slot_privateEndpoints '../../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(app.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: app.id
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(slot.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: slot.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
@@ -328,20 +297,17 @@ module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
 // =========== //
 // Outputs     //
 // =========== //
-@description('The name of the site.')
-output name string = app.name
+@description('The name of the slot.')
+output name string = slot.name
 
-@description('The resource ID of the site.')
-output resourceId string = app.id
+@description('The resource ID of the slot.')
+output resourceId string = slot.id
 
-@description('The resource group the site was deployed into.')
+@description('The resource group the slot was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && (contains(slot, 'identity') ? contains(slot.identity, 'principalId') : false) ? slot.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
-output location string = app.location
-
-@description('Default hostname of the app.')
-output defaultHostname string = app.properties.defaultHostName
+output location string = slot.location
