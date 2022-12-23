@@ -73,6 +73,7 @@ This module deploys different kinds of cognitive services resources
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userOwnedStorage` | array | `[]` |  | The storage accounts for this resource. |
 
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:

@@ -78,6 +78,7 @@ This module deploys an Azure Automation Account.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | List of variables to be created in the automation account. |
 
+
 ### Parameter Usage: `encryption`
 
 Prerequisites:
