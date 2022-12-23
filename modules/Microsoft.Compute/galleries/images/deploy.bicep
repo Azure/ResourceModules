@@ -56,10 +56,11 @@ param maxRecommendedMemory int = 16
 
 @description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2. If the Security Type (via the securityType paramater) of the image definition is specified, the hyperVGeneration will automatically be set to "V2".')
 @allowed([
+  ''
   'V1'
   'V2'
 ])
-param hyperVGeneration string = 'V1'
+param hyperVGeneration string = ''
 
 @description('Optional. The security type of the image. Requires a hyperVGeneration V2.')
 @allowed([
@@ -141,7 +142,7 @@ resource image 'Microsoft.Compute/galleries/images@2022-03-03' = {
         max: maxRecommendedMemory
       }
     }
-    hyperVGeneration: !empty(securityType) ? 'V2' : hyperVGeneration
+    hyperVGeneration: !empty(hyperVGeneration) ? hyperVGeneration : (!empty(securityType) ? 'V2' : 'V1')
     features: !empty(securityType) ? [
       {
         name: 'SecurityType'
