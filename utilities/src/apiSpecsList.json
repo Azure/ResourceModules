@@ -3337,7 +3337,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/bandwidthSchedules": [
       "2019-03-01",
@@ -3352,21 +3353,24 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/diagnosticProactiveLogCollectionSettings": [
       "2021-02-01",
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/diagnosticRemoteSupportSettings": [
       "2021-02-01",
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/orders": [
       "2019-03-01",
@@ -3381,7 +3385,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/roles": [
       "2019-03-01",
@@ -3396,7 +3401,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/roles/addons": [
       "2020-09-01",
@@ -3407,7 +3413,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/roles/monitoringConfig": [
       "2020-09-01",
@@ -3418,7 +3425,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/shares": [
       "2019-03-01",
@@ -3433,7 +3441,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/storageAccountCredentials": [
       "2019-03-01",
@@ -3448,7 +3457,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/storageAccounts": [
       "2019-08-01",
@@ -3461,7 +3471,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/storageAccounts/containers": [
       "2019-08-01",
@@ -3474,7 +3485,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/triggers": [
       "2019-03-01",
@@ -3489,7 +3501,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ],
     "dataBoxEdgeDevices/users": [
       "2019-03-01",
@@ -3504,7 +3517,8 @@
       "2021-06-01",
       "2021-06-01-preview",
       "2022-03-01",
-      "2022-04-01-preview"
+      "2022-04-01-preview",
+      "2022-12-01-preview"
     ]
   },
   "Microsoft.Databricks": {
