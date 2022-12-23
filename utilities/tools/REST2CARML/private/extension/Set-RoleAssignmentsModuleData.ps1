@@ -75,7 +75,7 @@ function Set-RoleAssignmentsModuleData {
         } else {
             $roleAssignmentList = [System.Collections.ArrayList]@()
             foreach ($role in $RelevantRoles | Sort-Object -Property 'Name' -Unique) {
-                $roleAssignmentList += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','{1}')" -f ($role.Name -match '\s+' ? ("'{0}'" -f $role.Name) : $role.Name), $role.Id
+                $roleAssignmentList += "{0}: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '{1}')" -f ($role.Name -match '\s+' ? ("'{0}'" -f $role.Name) : $role.Name), $role.Id
             }
         }
 

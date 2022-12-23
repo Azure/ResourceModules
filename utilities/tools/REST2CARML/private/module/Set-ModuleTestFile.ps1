@@ -31,8 +31,8 @@ function Set-ModuleTestFile {
         # -------------------
         ## .test files
         @(
-            (Join-Path $moduleRootPath '.test' 'common' 'deploy.bicep')
-            (Join-Path $moduleRootPath '.test' 'min' 'deploy.bicep')
+            (Join-Path $moduleRootPath '.test' 'common' 'deploy.test.bicep')
+            (Join-Path $moduleRootPath '.test' 'min' 'deploy.test.bicep')
         ) | ForEach-Object {
             if (-not (Test-Path $_)) {
                 if ($PSCmdlet.ShouldProcess(('File [{0}]' -f ($_ -replace ($script:repoRoot -replace '\\', '\\'), '')), 'Create')) {
