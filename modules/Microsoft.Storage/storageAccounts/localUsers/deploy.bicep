@@ -45,7 +45,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 }
 
-resource localUsers 'Microsoft.Storage/storageAccounts/localUsers@2021-09-01' = {
+resource localUsers 'Microsoft.Storage/storageAccounts/localUsers@2022-05-01' = {
   name: name
   parent : storageAccount
   properties: {
