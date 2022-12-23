@@ -119,16 +119,15 @@ param nicConfigurations array
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param pipdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -158,9 +157,6 @@ param backupVaultResourceGroup string = resourceGroup().name
 
 @description('Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.')
 param backupPolicyName string = 'DefaultPolicy'
-
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
 
 // Child resources
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
@@ -198,8 +194,8 @@ param extensionNetworkWatcherAgentConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
-param extensionDiskEncryptionConfig object = {
+@description('Optional. The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys.')
+param extensionAzureDiskEncryptionConfig object = {
   enabled: false
 }
 
@@ -253,7 +249,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Generated. Do not provide a value! This date value is used to generate a registration token.')
@@ -276,8 +272,25 @@ param disablePasswordAuthentication bool = false
 @description('Optional. Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.')
 param provisionVMAgent bool = true
 
-@description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
+@description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. When patchMode is set to Manual, this parameter must be set to false. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
+
+@description('Optional. VM guest patching orchestration mode. \'AutomaticByOS\' & \'Manual\' are for Windows only, \'ImageDefault\' for Linux only. Refer to \'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching\'')
+@allowed([
+  'AutomaticByPlatform'
+  'AutomaticByOS'
+  'Manual'
+  'ImageDefault'
+  ''
+])
+param patchMode string = ''
+
+@description('Optional. VM guest patching assessment mode. Set it to \'AutomaticByPlatform\' to enable automatically check for updates every 24 hours.')
+@allowed([
+  'AutomaticByPlatform'
+  'ImageDefault'
+])
+param patchAssessmentMode string = 'ImageDefault'
 
 @description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.')
 param timeZone string = ''
@@ -309,11 +322,19 @@ var linuxConfiguration = {
     publicKeys: publicKeysFormatted
   }
   provisionVMAgent: provisionVMAgent
+  patchSettings: (provisionVMAgent && (patchMode =~ 'AutomaticByPlatform' || patchMode =~ 'ImageDefault')) ? {
+    patchMode: patchMode
+    assessmentMode: patchAssessmentMode
+  } : null
 }
 
 var windowsConfiguration = {
   provisionVMAgent: provisionVMAgent
   enableAutomaticUpdates: enableAutomaticUpdates
+  patchSettings: (provisionVMAgent && (patchMode =~ 'AutomaticByPlatform' || patchMode =~ 'AutomaticByOS' || patchMode =~ 'Manual')) ? {
+    patchMode: patchMode
+    assessmentMode: patchAssessmentMode
+  } : null
   timeZone: empty(timeZone) ? null : timeZone
   additionalUnattendContent: empty(additionalUnattendContent) ? null : additionalUnattendContent
   winRM: !empty(winRM) ? {
@@ -406,7 +427,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
-          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
+          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? {
+            id: osDisk.managedDisk.diskEncryptionSet.id
+          } : null
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
@@ -418,9 +441,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         caching: contains(dataDisk, 'caching') ? dataDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
-          diskEncryptionSet: {
-            id: enableServerSideEncryption ? dataDisk.managedDisk.diskEncryptionSet.id : null
-          }
+          diskEncryptionSet: contains(dataDisk.managedDisk, 'diskEncryptionSet') ? {
+            id: dataDisk.managedDisk.diskEncryptionSet.id
+          } : null
         }
       }]
     }
@@ -604,18 +627,18 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
   ]
 }
 
-module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskEncryptionConfig.enabled) {
-  name: '${uniqueString(deployment().name, location)}-VM-DiskEncryption'
+module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+  name: '${uniqueString(deployment().name, location)}-VM-AzureDiskEncryption'
   params: {
     virtualMachineName: vm.name
-    name: 'DiskEncryption'
+    name: 'AzureDiskEncryption'
     publisher: 'Microsoft.Azure.Security'
     type: osType == 'Windows' ? 'AzureDiskEncryption' : 'AzureDiskEncryptionForLinux'
-    typeHandlerVersion: contains(extensionDiskEncryptionConfig, 'typeHandlerVersion') ? extensionDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
-    autoUpgradeMinorVersion: contains(extensionDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionDiskEncryptionConfig.autoUpgradeMinorVersion : true
-    enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
-    forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
-    settings: extensionDiskEncryptionConfig.settings
+    typeHandlerVersion: contains(extensionAzureDiskEncryptionConfig, 'typeHandlerVersion') ? extensionAzureDiskEncryptionConfig.typeHandlerVersion : (osType == 'Windows' ? '2.2' : '1.1')
+    autoUpgradeMinorVersion: contains(extensionAzureDiskEncryptionConfig, 'autoUpgradeMinorVersion') ? extensionAzureDiskEncryptionConfig.autoUpgradeMinorVersion : true
+    enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
+    forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
+    settings: extensionAzureDiskEncryptionConfig.settings
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
@@ -647,7 +670,7 @@ module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/p
   ]
 }
 
-resource vm_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vm_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vm.name}-${lock}-lock'
   properties: {
     level: any(lock)

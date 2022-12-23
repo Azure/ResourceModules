@@ -32,7 +32,7 @@ This template deploys a disk encryption set.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionType` | string | `'EncryptionAtRestWithPlatformAndCustomerKeys'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
 | `keyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
@@ -167,7 +167,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -175,18 +175,20 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DiskEncryptionSets'
+  name: '${uniqueString(deployment().name)}-test-cdescom'
   params: {
     // Required parameters
-    keyName: 'keyEncryptionKey'
-    keyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-    name: '<<namePrefix>>-az-des-x-001'
+    keyName: '<keyName>'
+    keyVaultResourceId: '<keyVaultResourceId>'
+    name: '<<namePrefix>>cdescom001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -208,21 +210,25 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
   "parameters": {
     // Required parameters
     "keyName": {
-      "value": "keyEncryptionKey"
+      "value": "<keyName>"
     },
     "keyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+      "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-des-x-001"
+      "value": "<<namePrefix>>cdescom001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

@@ -14,7 +14,7 @@ This module deploys Authorization Locks.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 
 ## Parameters
 
@@ -28,7 +28,7 @@ This module deploys Authorization Locks.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location for all resources. |
 | `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
@@ -54,7 +54,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Rg</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -62,13 +62,14 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module locks './Microsoft.Authorization/locks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Locks'
+  name: '${uniqueString(deployment().name)}-test-alcom'
   params: {
     // Required parameters
     level: 'CanNotDelete'
     // Non-required parameters
-    resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    resourceGroupName: '<resourceGroupName>'
+    subscriptionId: '<subscriptionId>'
   }
 }
 ```
@@ -90,11 +91,14 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
-      "value": "adp-<<namePrefix>>-az-locks-rg-001"
+      "value": "<resourceGroupName>"
     },
     "subscriptionId": {
-      "value": "<<subscriptionId>>"
+      "value": "<subscriptionId>"
     }
   }
 }

@@ -14,10 +14,10 @@ This module deploys a Virtual Hub.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Network/virtualHubs` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs) |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubRouteTables) |
-| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubVirtualNetworkConnections) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Network/virtualHubs` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/virtualHubs) |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/virtualHubs/hubRouteTables) |
+| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Parameters
 
@@ -35,7 +35,7 @@ This module deploys a Virtual Hub.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
 | `azureFirewallId` | string | `''` |  | Resource ID of the Azure Firewall to link to. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expressRouteGatewayId` | string | `''` |  | Resource ID of the Express Route Gateway to link to. |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
@@ -130,6 +130,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     name: '<<namePrefix>>-nvhcom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubRouteTables: [
       {
         name: 'routeTable1'
@@ -141,12 +142,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         remoteVirtualNetworkId: '<remoteVirtualNetworkId>'
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
+            id: '<id>'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1'
+                id: '<id>'
               }
             ]
             labels: [
@@ -184,6 +185,9 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       "value": "<virtualWanId>"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "hubRouteTables": {
       "value": [
         {
@@ -198,12 +202,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
           "remoteVirtualNetworkId": "<remoteVirtualNetworkId>",
           "routingConfiguration": {
             "associatedRouteTable": {
-              "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
+              "id": "<id>"
             },
             "propagatedRouteTables": {
               "ids": [
                 {
-                  "id": "${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-nvhcom/hubRouteTables/routeTable1"
+                  "id": "<id>"
                 }
               ],
               "labels": [
@@ -238,6 +242,8 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     addressPrefix: '10.0.0.0/16'
     name: '<<namePrefix>>-nvhmin'
     virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -263,6 +269,10 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

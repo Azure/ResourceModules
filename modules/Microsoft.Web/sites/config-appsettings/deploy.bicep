@@ -6,9 +6,11 @@ param appName string
 
 @description('Required. Type of site to deploy.')
 @allowed([
-  'functionapp'
-  'functionapp,linux'
-  'app'
+  'functionapp' // function app windows os
+  'functionapp,linux' // function app linux os
+  'functionapp,workflowapp' // logic app workflow
+  'functionapp,workflowapp,linux' // logic app docker container
+  'app' // normal web app
 ])
 param kind string
 
@@ -24,7 +26,7 @@ param setAzureWebJobsDashboard bool = contains(kind, 'functionapp') ? true : fal
 @description('Optional. The app settings key-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING.')
 param appSettingsKeyValuePairs object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // =========== //

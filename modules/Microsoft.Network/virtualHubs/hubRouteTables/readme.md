@@ -13,7 +13,7 @@ This module deploys virtual hub route tables.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualHubs/hubRouteTables) |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/virtualHubs/hubRouteTables) |
 
 ## Parameters
 
@@ -33,7 +33,7 @@ This module deploys virtual hub route tables.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `labels` | array | `[]` | List of labels associated with this route table. |
 | `routes` | array | `[]` | List of all routes. |
 

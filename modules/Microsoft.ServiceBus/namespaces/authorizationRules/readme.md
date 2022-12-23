@@ -33,7 +33,7 @@ This module deploys authorization rules for a service bus namespace
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
 
 

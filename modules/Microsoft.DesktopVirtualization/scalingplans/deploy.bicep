@@ -91,22 +91,49 @@ param diagnosticEventHubName string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'Autoscale'
 ])
-param logsToEnable array = [
-  'Autoscale'
+param diagnosticLogCategoriesToEnable array = [
+  'allLogs'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = {
   name: name

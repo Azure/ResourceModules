@@ -14,7 +14,7 @@ This module deploys Network Interfaces.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/networkInterfaces` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkInterfaces) |
@@ -41,7 +41,7 @@ This module deploys Network Interfaces.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource identifier of log analytics. |
 | `dnsServers` | array | `[]` |  | List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in dnsServers collection. |
 | `enableAcceleratedNetworking` | bool | `False` |  | If the network interface is accelerated networking enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableIPForwarding` | bool | `False` |  | Indicates whether IP forwarding is enabled on this network interface. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -191,7 +191,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -199,99 +199,48 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
-  params: {
-    // Required parameters
-    ipConfigurations: [
-      {
-        name: 'ipconfig01'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-      }
-    ]
-    name: '<<namePrefix>>-az-nic-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "ipConfigurations": {
-      "value": [
-        {
-          "name": "ipconfig01",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
-        }
-      ]
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-nic-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-NetworkInterfaces'
+  name: '${uniqueString(deployment().name)}-test-nnicom'
   params: {
     // Required parameters
     ipConfigurations: [
       {
         applicationSecurityGroups: [
           {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+            id: '<id>'
           }
         ]
         loadBalancerBackendAddressPools: [
           {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers'
+            id: '<id>'
           }
         ]
         name: 'ipconfig01'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        subnetResourceId: '<subnetResourceId>'
       }
       {
         applicationSecurityGroups: [
           {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+            id: '<id>'
           }
         ]
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>-az-nic-x-001'
+    name: '<<namePrefix>>nnicom001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -317,45 +266,48 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         {
           "applicationSecurityGroups": [
             {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+              "id": "<id>"
             }
           ],
           "loadBalancerBackendAddressPools": [
             {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
+              "id": "<id>"
             }
           ],
           "name": "ipconfig01",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          "subnetResourceId": "<subnetResourceId>"
         },
         {
           "applicationSecurityGroups": [
             {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+              "id": "<id>"
             }
           ],
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-nic-x-001"
+      "value": "<<namePrefix>>nnicom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -364,11 +316,71 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-nnimin'
+  params: {
+    // Required parameters
+    ipConfigurations: [
+      {
+        name: 'ipconfig01'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    name: '<<namePrefix>>nnimin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "ipconfig01",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>nnimin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

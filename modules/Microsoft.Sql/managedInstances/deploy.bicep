@@ -113,7 +113,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -143,6 +143,15 @@ param encryptionProtectorObj object = {}
 @description('Optional. The administrator configuration.')
 param administratorsObj object = {}
 
+@allowed([
+  'None'
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. Minimal TLS version allowed.')
+param minimalTlsVersion string = '1.2'
+
 @description('Optional. The storage account type used to store backups for this database.')
 @allowed([
   'Geo'
@@ -152,14 +161,14 @@ param administratorsObj object = {}
 ])
 param requestedBackupStorageRedundancy string = 'Geo'
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ResourceUsageStats'
   'SQLSecurityAuditEvents'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ResourceUsageStats'
-  'SQLSecurityAuditEvents'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -173,7 +182,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -181,6 +190,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -245,10 +265,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' = {
     servicePrincipal: {
       type: servicePrincipal
     }
+    minimalTlsVersion: minimalTlsVersion
   }
 }
 
-resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource managedInstance_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedInstance.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -360,6 +381,9 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    managedInstance_keys
+  ]
 }
 
 module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(administratorsObj)) {

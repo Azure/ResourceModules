@@ -14,7 +14,7 @@ This template deploys a public IP prefix.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/publicIPPrefixes` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPPrefixes) |
 
@@ -31,7 +31,7 @@ This template deploys a public IP prefix.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -158,7 +158,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -166,18 +166,20 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PublicIPPrefixes'
+  name: '${uniqueString(deployment().name)}-test-npipcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pippfx-x-001'
+    name: '<<namePrefix>>npipcom001'
     prefixLength: 28
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -199,12 +201,15 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pippfx-x-001"
+      "value": "<<namePrefix>>npipcom001"
     },
     "prefixLength": {
       "value": 28
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -212,11 +217,61 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-npipmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>npipmin001'
+    prefixLength: 28
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>npipmin001"
+    },
+    "prefixLength": {
+      "value": 28
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

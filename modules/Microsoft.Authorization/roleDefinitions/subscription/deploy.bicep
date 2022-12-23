@@ -27,7 +27,7 @@ param assignableScopes array = []
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -68,4 +68,4 @@ output name string = roleDefinition.name
 output scope string = subscription().id
 
 @sys.description('The resource ID of the Role Definition.')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+output resourceId string = roleDefinition.id

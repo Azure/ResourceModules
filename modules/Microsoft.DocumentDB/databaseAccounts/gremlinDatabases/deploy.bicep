@@ -22,7 +22,7 @@ param maxThroughput int = 4000
 @description('Optional. Request Units per second (for example 10000). Cannot be set together with `maxThroughput`.')
 param throughput int = -1
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -77,7 +77,7 @@ module gremlinDatabase_gremlinGraphs 'graphs/deploy.bicep' = [for graph in graph
     gremlinDatabaseName: name
     databaseAccountName: databaseAccountName
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    automaticIndexing: contains(graph, 'automaticIndexing') ? graph.automaticIndexing : true
+    indexingPolicy: contains(graph, 'indexingPolicy') ? graph.indexingPolicy : true
     partitionKeyPaths: !empty(graph.partitionKeyPaths) ? graph.partitionKeyPaths : []
   }
 }]

@@ -15,12 +15,12 @@ This module deploys different kinds of cognitive services resources
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.CognitiveServices/accounts` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2021-10-01/accounts) |
+| `Microsoft.CognitiveServices/accounts` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2022-10-01/accounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -35,6 +35,8 @@ This module deploys different kinds of cognitive services resources
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
@@ -44,17 +46,19 @@ This module deploys different kinds of cognitive services resources
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
 | `apiProperties` | object | `{object}` |  | The API properties for special APIs. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit, RequestResponse]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryption` | object | `{object}` |  | Properties to configure encryption. |
+| `dynamicThrottlingEnabled` | bool | `False` |  | The flag to enable dynamic throttling. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
@@ -94,7 +98,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -130,7 +144,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -138,6 +151,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -333,7 +356,6 @@ tags: {
 
 </details>
 
-
 <details>
 
 <summary>Bicep format</summary>
@@ -425,7 +447,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Encr</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -433,145 +455,22 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Accounts'
-  params: {
-    // Required parameters
-    kind: 'SpeechServices'
-    name: '<<namePrefix>>-az-cgs-encr-001'
-    // Non-required parameters
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: '5d395e10-82b1-4c41-bb5b-a27757e9f725'
-        keyName: 'keyEncryptionKey'
-        keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
-        keyversion: '4570a207ec394a0bbbe4fc9adc663a51'
-      }
-    }
-    publicNetworkAccess: 'Enabled'
-    sku: 'S0'
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "kind": {
-      "value": "SpeechServices"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-cgs-encr-001"
-    },
-    // Non-required parameters
-    "encryption": {
-      "value": {
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-          "identityClientId": "5d395e10-82b1-4c41-bb5b-a27757e9f725",
-          "keyName": "keyEncryptionKey",
-          "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
-          "keyversion": "4570a207ec394a0bbbe4fc9adc663a51"
-        }
-      }
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "sku": {
-      "value": "S0"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Accounts'
-  params: {
-    // Required parameters
-    kind: 'SpeechServices'
-    name: '<<namePrefix>>-az-cgs-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "kind": {
-      "value": "SpeechServices"
-    },
-    "name": {
-      "value": "<<namePrefix>>-az-cgs-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Accounts'
+  name: '${uniqueString(deployment().name)}-test-csacom'
   params: {
     // Required parameters
     kind: 'Face'
-    name: '<<namePrefix>>-az-cgs-x-001'
+    name: '<<namePrefix>>csacom001'
     // Non-required parameters
     customSubDomainName: '<<namePrefix>>xdomain'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     networkAcls: {
-      defaultAction: 'deny'
+      defaultAction: 'Deny'
       ipRules: [
         {
           value: '40.74.28.0/23'
@@ -579,8 +478,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
-          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -588,25 +487,26 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com'
+            '<privateDNSZoneResourceId>'
           ]
         }
         service: 'account'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     sku: 'S0'
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -629,33 +529,36 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "Face"
     },
     "name": {
-      "value": "<<namePrefix>>-az-cgs-x-001"
+      "value": "<<namePrefix>>csacom001"
     },
     // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>xdomain"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
     },
     "networkAcls": {
       "value": {
-        "defaultAction": "deny",
+        "defaultAction": "Deny",
         "ipRules": [
           {
             "value": "40.74.28.0/23"
@@ -663,8 +566,8 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         ],
         "virtualNetworkRules": [
           {
-            "action": "Allow",
-            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
           }
         ]
       }
@@ -674,11 +577,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "account",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -686,8 +589,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -700,7 +604,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
@@ -710,7 +614,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Speech</h3>
+<h3>Example 2: Encr</h3>
 
 <details>
 
@@ -718,28 +622,20 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Accounts'
+  name: '${uniqueString(deployment().name)}-test-csaencr'
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '<<namePrefix>>-az-cgs-speech-001'
+    name: '<<namePrefix>>csaencr001'
     // Non-required parameters
-    customSubDomainName: '<<namePrefix>>speechdomain'
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com'
-          ]
-        }
-        service: 'account'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-      }
-    ]
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    publicNetworkAccess: 'Enabled'
     sku: 'S0'
-    systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -762,22 +658,160 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "<<namePrefix>>-az-cgs-speech-001"
+      "value": "<<namePrefix>>csaencr001"
+    },
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    },
+    "sku": {
+      "value": "S0"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-csamin'
+  params: {
+    // Required parameters
+    kind: 'SpeechServices'
+    name: '<<namePrefix>>csamin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "name": {
+      "value": "<<namePrefix>>csamin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Speech</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-csaspeech'
+  params: {
+    // Required parameters
+    kind: 'SpeechServices'
+    name: '<<namePrefix>>csaspeech001'
+    // Non-required parameters
+    customSubDomainName: '<<namePrefix>>speechdomain'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSZoneResourceId>'
+          ]
+        }
+        service: 'account'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    sku: 'S0'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "SpeechServices"
+    },
+    "name": {
+      "value": "<<namePrefix>>csaspeech001"
     },
     // Non-required parameters
     "customSubDomainName": {
       "value": "<<namePrefix>>speechdomain"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.cognitiveservices.azure.com"
+              "<privateDNSZoneResourceId>"
             ]
           },
           "service": "account",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -789,7 +823,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }

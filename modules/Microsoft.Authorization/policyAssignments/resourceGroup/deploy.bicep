@@ -56,7 +56,7 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment. If not provided, will use the current scope for deployment.')
 param resourceGroupName string = resourceGroup().name
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -71,7 +71,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-var identity_var = identity == 'SystemAssigned' ? {
+var identityVar = identity == 'SystemAssigned' ? {
   type: identity
 } : identity == 'UserAssigned' ? {
   type: identity
@@ -93,7 +93,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
     enforcementMode: enforcementMode
     notScopes: !empty(notScopes) ? notScopes : []
   }
-  identity: identity_var
+  identity: identityVar
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity == 'SystemAssigned') {
@@ -112,7 +112,7 @@ output name string = policyAssignment.name
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
 @sys.description('Policy Assignment resource ID.')
-output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+output resourceId string = policyAssignment.id
 
 @sys.description('The name of the resource group the policy was assigned to.')
 output resourceGroupName string = resourceGroup().name

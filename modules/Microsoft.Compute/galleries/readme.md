@@ -14,9 +14,10 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/galleries` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries) |
+| `Microsoft.Compute/galleries` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries) |
+| `Microsoft.Compute/galleries/applications` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/applications) |
 | `Microsoft.Compute/galleries/images` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries/images) |
 
 ## Parameters
@@ -25,13 +26,14 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Shared Image Gallery. |
+| `name` | string | Name of the Azure Compute Gallery. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Applications to create. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -160,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Images</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -168,14 +170,122 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
+  name: '${uniqueString(deployment().name)}-test-cgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azsigweuimages001'
+    name: '<<namePrefix>>cgcom001'
     // Non-required parameters
+    applications: [
+      {
+        name: '<<namePrefix>>-cgcom-appd-001'
+      }
+      {
+        name: '<<namePrefix>>-cgcom-appd-002'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        supportedOSType: 'Windows'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>cgcom001"
+    },
+    // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-cgcom-appd-001"
+        },
+        {
+          "name": "<<namePrefix>>-cgcom-appd-002",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "supportedOSType": "Windows"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Images</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-cgimages'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>cgimages001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-x-003'
+        name: '<<namePrefix>>-cgimages-imgd-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -191,8 +301,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -230,13 +341,16 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azsigweuimages001"
+      "value": "<<namePrefix>>cgimages001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "images": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-imgd-x-003"
+          "name": "<<namePrefix>>-cgimages-imgd-001"
         },
         {
           "hyperVGeneration": "V1",
@@ -252,8 +366,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -271,69 +386,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "osType": "Linux",
           "publisher": "canonical",
           "sku": "20_04-lts-gen2"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>azsigweux001'
-    // Non-required parameters
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<<deploymentSpId>>'
-        ]
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>azsigweux001"
-    },
-    // Non-required parameters
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<<deploymentSpId>>"
-          ],
-          "roleDefinitionIdOrName": "Reader"
         }
       ]
     }

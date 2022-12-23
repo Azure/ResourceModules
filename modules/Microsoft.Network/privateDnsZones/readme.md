@@ -14,7 +14,7 @@ This template deploys a private DNS zone.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/privateDnsZones` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones) |
 | `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
@@ -39,19 +39,19 @@ This template deploys a private DNS zone.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `a` | _[a](a/readme.md)_ array | `[]` |  | Array of A records. |
-| `aaaa` | _[aaaa](aaaa/readme.md)_ array | `[]` |  | Array of AAAA records. |
-| `cname` | _[cname](cname/readme.md)_ array | `[]` |  | Array of CNAME records. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `a` | _[A](A/readme.md)_ array | `[]` |  | Array of A records. |
+| `aaaa` | _[AAAA](AAAA/readme.md)_ array | `[]` |  | Array of AAAA records. |
+| `cname` | _[CNAME](CNAME/readme.md)_ array | `[]` |  | Array of CNAME records. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` |  | The location of the PrivateDNSZone. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Array of MX records. |
-| `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Array of PTR records. |
+| `mx` | _[MX](MX/readme.md)_ array | `[]` |  | Array of MX records. |
+| `ptr` | _[PTR](PTR/readme.md)_ array | `[]` |  | Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `soa` | _[soa](soa/readme.md)_ array | `[]` |  | Array of SOA records. |
-| `srv` | _[srv](srv/readme.md)_ array | `[]` |  | Array of SRV records. |
+| `soa` | _[SOA](SOA/readme.md)_ array | `[]` |  | Array of SOA records. |
+| `srv` | _[SRV](SRV/readme.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `txt` | _[txt](txt/readme.md)_ array | `[]` |  | Array of TXT records. |
+| `txt` | _[TXT](TXT/readme.md)_ array | `[]` |  | Array of TXT records. |
 | `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
 
@@ -175,7 +175,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -183,49 +183,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateDnsZones'
-  params: {
-    name: '<<namePrefix>>-az-privdns-x-001.com'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-privdns-x-001.com"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateDnsZones'
+  name: '${uniqueString(deployment().name)}-test-npdzcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-privdns-x-002.com'
+    name: '<<namePrefix>>npdzcom001.com'
     // Non-required parameters
-    A: [
+    a: [
       {
         aRecords: [
           {
@@ -236,15 +199,16 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
         ttl: 3600
       }
     ]
-    AAAA: [
+    aaaa: [
       {
         aaaaRecords: [
           {
@@ -255,7 +219,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ttl: 3600
       }
     ]
-    CNAME: [
+    cname: [
       {
         cnameRecord: {
           cname: 'test'
@@ -264,16 +228,18 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
         ttl: 3600
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    MX: [
+    mx: [
       {
         mxRecords: [
           {
@@ -285,15 +251,16 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
         ttl: 3600
       }
     ]
-    PTR: [
+    ptr: [
       {
         name: 'PTR_contoso'
         ptrRecords: [
@@ -304,8 +271,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -315,19 +283,21 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    SOA: [
+    soa: [
       {
         name: '@'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -343,14 +313,15 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ttl: 3600
       }
     ]
-    SRV: [
+    srv: [
       {
         name: 'SRV_contoso'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -365,14 +336,15 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ttl: 3600
       }
     ]
-    TXT: [
+    txt: [
       {
         name: 'TXT_test'
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -389,7 +361,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
     virtualNetworkLinks: [
       {
         registrationEnabled: true
-        virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+        virtualNetworkResourceId: '<virtualNetworkResourceId>'
       }
     ]
   }
@@ -410,10 +382,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-privdns-x-002.com"
+      "value": "<<namePrefix>>npdzcom001.com"
     },
     // Non-required parameters
-    "A": {
+    "a": {
       "value": [
         {
           "aRecords": [
@@ -425,8 +397,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -434,7 +407,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
-    "AAAA": {
+    "aaaa": {
       "value": [
         {
           "aaaaRecords": [
@@ -447,7 +420,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
-    "CNAME": {
+    "cname": {
       "value": [
         {
           "cnameRecord": {
@@ -457,8 +430,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -466,10 +440,13 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
-    "MX": {
+    "mx": {
       "value": [
         {
           "mxRecords": [
@@ -482,8 +459,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -491,7 +469,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
-    "PTR": {
+    "ptr": {
       "value": [
         {
           "name": "PTR_contoso",
@@ -503,8 +481,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -516,21 +495,23 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
-    "SOA": {
+    "soa": {
       "value": [
         {
           "name": "@",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -547,15 +528,16 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
-    "SRV": {
+    "srv": {
       "value": [
         {
           "name": "SRV_contoso",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -571,15 +553,16 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         }
       ]
     },
-    "TXT": {
+    "txt": {
       "value": [
         {
           "name": "TXT_test",
           "roleAssignments": [
             {
               "principalIds": [
-                "<<deploymentSpId>>"
+                "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ],
@@ -598,9 +581,54 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
       "value": [
         {
           "registrationEnabled": true,
-          "virtualNetworkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
+          "virtualNetworkResourceId": "<virtualNetworkResourceId>"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-npdzmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>npdzmin001.com'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>npdzmin001.com"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -3,15 +3,18 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
-@description('Optional. The name of the resource group to deploy for testing purposes')
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.keyvault.vaults-${serviceShort}-rg'
 
-@description('Optional. The location to deploy resources to')
+@description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'kvvcom'
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
 
 // =========== //
 // Deployments //
@@ -39,10 +42,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}03'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}01'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}01'
     location: location
   }
 }
@@ -55,7 +58,8 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    enableDefaultTelemetry: enableDefaultTelemetry
+    name: '<<namePrefix>>${serviceShort}002'
     accessPolicies: [
       {
         objectId: resourceGroupResources.outputs.managedIdentityPrincipalId
@@ -90,6 +94,8 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    // Only for testing purposes
+    enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
       {
@@ -98,10 +104,11 @@ module testDeployment '../../deploy.bicep' = {
         name: 'keyName'
         roleAssignments: [
           {
+            roleDefinitionIdOrName: 'Reader'
             principalIds: [
               resourceGroupResources.outputs.managedIdentityPrincipalId
             ]
-            roleDefinitionIdOrName: 'Reader'
+            principalType: 'ServicePrincipal'
           }
         ]
       }
@@ -110,11 +117,15 @@ module testDeployment '../../deploy.bicep' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: resourceGroupResources.outputs.subnetResourceId
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -131,10 +142,11 @@ module testDeployment '../../deploy.bicep' = {
     ]
     roleAssignments: [
       {
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
           resourceGroupResources.outputs.managedIdentityPrincipalId
         ]
-        roleDefinitionIdOrName: 'Reader'
+        principalType: 'ServicePrincipal'
       }
     ]
     secrets: {
@@ -146,10 +158,11 @@ module testDeployment '../../deploy.bicep' = {
           name: 'secretName'
           roleAssignments: [
             {
+              roleDefinitionIdOrName: 'Reader'
               principalIds: [
                 resourceGroupResources.outputs.managedIdentityPrincipalId
               ]
-              roleDefinitionIdOrName: 'Reader'
+              principalType: 'ServicePrincipal'
             }
           ]
           value: 'secretValue'
@@ -157,5 +170,9 @@ module testDeployment '../../deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

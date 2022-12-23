@@ -27,22 +27,22 @@ param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 @description('Optional. Double encryption using a customer-managed key.')
 param encryption bool = false
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
 @description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param cMKUserAssignedIdentityResourceId bool = false
+param cMKUseSystemAssignedIdentity bool = false
 
 @description('Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
-param encryptionUserAssignedIdentity string = ''
+param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
 param encryptionActivateWorkspace bool = false
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @maxLength(90)
@@ -112,8 +112,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'SynapseRbacOperations'
   'GatewayApiRequests'
   'BuiltinSqlReqsEnded'
@@ -122,20 +123,15 @@ param diagnosticEventHubName string = ''
   'IntegrationTriggerRuns'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'SynapseRbacOperations'
-  'GatewayApiRequests'
-  'BuiltinSqlReqsEnded'
-  'IntegrationPipelineRuns'
-  'IntegrationActivityRuns'
-  'IntegrationTriggerRuns'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 // Variables
-var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(encryptionUserAssignedIdentity) ? {
-    '${encryptionUserAssignedIdentity}': {}
+var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(cMKUserAssignedIdentityResourceId) ? {
+    '${cMKUserAssignedIdentityResourceId}': {}
   } : {})
 
 var identityType = !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
@@ -145,7 +141,7 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentitiesUnion) ? userAssignedIdentitiesUnion : null
 }
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -153,6 +149,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var enableReferencedModulesTelemetry = false
 
@@ -196,8 +203,8 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     encryption: encryption ? {
       cmk: {
         kekIdentity: {
-          userAssignedIdentity: !empty(encryptionUserAssignedIdentity) ? encryptionUserAssignedIdentity : null
-          useSystemAssignedIdentity: cMKUserAssignedIdentityResourceId ? true : false
+          userAssignedIdentity: !empty(cMKUserAssignedIdentityResourceId) ? cMKUserAssignedIdentityResourceId : null
+          useSystemAssignedIdentity: cMKUseSystemAssignedIdentity
         }
         key: {
           keyVaultUrl: cMKKeyVaultKey.properties.keyUri
@@ -226,7 +233,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
 module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-rbac'
   params: {
-    workspaceIdentity: workspace.identity.principalId
+    workspaceIndentityPrincipalId: workspace.identity.principalId
     keyvaultName: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.name : ''
     usesRbacAuthorization: !empty(cMKKeyVaultResourceId) ? cMKKeyVault.properties.enableRbacAuthorization : true
   }
@@ -248,7 +255,7 @@ module workspace_key './keys/deploy.bicep' = if (encryptionActivateWorkspace) {
 }
 
 // Resource Lock
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -285,6 +292,9 @@ module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

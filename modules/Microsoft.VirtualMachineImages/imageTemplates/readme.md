@@ -14,7 +14,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.VirtualMachineImages/imageTemplates` | [2020-02-14](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates) |
 
@@ -34,7 +34,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `buildTimeoutInMinutes` | int | `0` |  | Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `imageReplicationRegions` | array | `[]` |  | List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -274,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -282,7 +282,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ImageTemplates'
+  name: '${uniqueString(deployment().name)}-test-vmicom'
   params: {
     // Required parameters
     customizationSteps: [
@@ -298,26 +298,28 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>-az-imgt-x-001'
-    userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+    name: '<<namePrefix>>vmicom001'
+    userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 0
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-az-mi-x-001'
+    managedImageName: '<<namePrefix>>-mi-vmicom-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+    sigImageDefinitionId: '<sigImageDefinitionId>'
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-az-umi-x-001'
-    userMsiResourceGroup: 'validation-rg'
+    unManagedImageName: '<<namePrefix>>-umi-vmicom-001'
+    userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
 }
@@ -354,14 +356,17 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>-az-imgt-x-001"
+      "value": "<<namePrefix>>vmicom001"
     },
     "userMsiName": {
-      "value": "adp-<<namePrefix>>-az-msi-x-001"
+      "value": "<userMsiName>"
     },
     // Non-required parameters
     "buildTimeoutInMinutes": {
       "value": 0
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "imageReplicationRegions": {
       "value": []
@@ -370,7 +375,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "CanNotDelete"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-az-mi-x-001"
+      "value": "<<namePrefix>>-mi-vmicom-001"
     },
     "osDiskSizeGB": {
       "value": 127
@@ -379,23 +384,24 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
     "sigImageDefinitionId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001"
+      "value": "<sigImageDefinitionId>"
     },
     "subnetId": {
       "value": ""
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-az-umi-x-001"
+      "value": "<<namePrefix>>-umi-vmicom-001"
     },
     "userMsiResourceGroup": {
-      "value": "validation-rg"
+      "value": "<userMsiResourceGroup>"
     },
     "vmSize": {
       "value": "Standard_D2s_v3"

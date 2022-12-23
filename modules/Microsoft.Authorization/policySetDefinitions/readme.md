@@ -33,7 +33,7 @@ With this module you can create policy set definitions across the management gro
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | The description name of the Set Definition (Initiative). |
 | `displayName` | string | `''` | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
@@ -144,7 +144,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg Min</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -152,75 +152,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
+  name: '${uniqueString(deployment().name)}-test-apsdmgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-mg-min-policySet'
-    policyDefinitions: [
-      {
-        parameters: {
-          listOfAllowedLocations: {
-            value: [
-              'australiaeast'
-            ]
-          }
-        }
-        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-mg-min-policySet"
-    },
-    "policyDefinitions": {
-      "value": [
-        {
-          "parameters": {
-            "listOfAllowedLocations": {
-              "value": [
-                "australiaeast"
-              ]
-            }
-          },
-          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-policySet'
+    name: '<<namePrefix>>apsdmgcom001'
     policyDefinitions: [
       {
         groupNames: [
@@ -254,7 +189,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at management group scope'
     displayName: '[DisplayName] This policy set definition is deployed at management group scope'
-    managementGroupId: '<<managementGroupId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -285,7 +220,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-mg-policySet"
+      "value": "<<namePrefix>>apsdmgcom001"
     },
     "policyDefinitions": {
       "value": [
@@ -326,8 +261,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "displayName": {
       "value": "[DisplayName] This policy set definition is deployed at management group scope"
     },
-    "managementGroupId": {
-      "value": "<<managementGroupId>>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "metadata": {
       "value": {
@@ -352,7 +287,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 </details>
 <p>
 
-<h3>Example 3: Sub Min</h3>
+<h3>Example 2: Mg.Min</h3>
 
 <details>
 
@@ -360,10 +295,10 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
+  name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-min-policySet'
+    name: '<<namePrefix>>apsdmgmin001'
     policyDefinitions: [
       {
         parameters: {
@@ -377,7 +312,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       }
     ]
     // Non-required parameters
-    subscriptionId: '<<subscriptionId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -396,7 +331,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-min-policySet"
+      "value": "<<namePrefix>>apsdmgmin001"
     },
     "policyDefinitions": {
       "value": [
@@ -413,8 +348,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
       ]
     },
     // Non-required parameters
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -423,7 +358,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 </details>
 <p>
 
-<h3>Example 4: Sub</h3>
+<h3>Example 3: Sub.Common</h3>
 
 <details>
 
@@ -431,10 +366,10 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 
 ```bicep
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicySetDefinitions'
+  name: '${uniqueString(deployment().name)}-test-apsdsubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-policySet'
+    name: '<<namePrefix>>apsdsubcom001'
     policyDefinitions: [
       {
         groupNames: [
@@ -468,6 +403,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     // Non-required parameters
     description: '[Description] This policy set definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
       version: '1'
@@ -480,7 +416,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
         name: 'ARM'
       }
     ]
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -499,7 +434,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-policySet"
+      "value": "<<namePrefix>>apsdsubcom001"
     },
     "policyDefinitions": {
       "value": [
@@ -540,6 +475,9 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
     "displayName": {
       "value": "[DisplayName] This policy set definition is deployed at subscription scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "metadata": {
       "value": {
         "category": "Security",
@@ -555,9 +493,77 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           "name": "ARM"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apsdsubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>apsdsubmin001'
+    policyDefinitions: [
+      {
+        parameters: {
+          listOfAllowedLocations: {
+            value: [
+              'australiaeast'
+            ]
+          }
+        }
+        policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>apsdsubmin001"
     },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+    "policyDefinitions": {
+      "value": [
+        {
+          "parameters": {
+            "listOfAllowedLocations": {
+              "value": [
+                "australiaeast"
+              ]
+            }
+          },
+          "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

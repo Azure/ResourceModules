@@ -8,7 +8,7 @@ param name string
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Custom properties of the API Management service.')
@@ -109,12 +109,13 @@ param diagnosticWorkspaceId string = ''
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
 param zones array = []
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'GatewayLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'GatewayLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -155,7 +156,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 var enableReferencedModulesTelemetry = false
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -163,6 +164,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -364,7 +376,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
   }
 }]
 
-module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
+module portalSettings_resource 'portalSettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
@@ -419,7 +431,7 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   }
 }]
 
-resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
     level: any(lock)

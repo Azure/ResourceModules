@@ -8,15 +8,9 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 ## Status
 
-<a href="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml">
-  <img alt="Super Linter" src="https://github.com/Azure/ResourceModules/actions/workflows/linter.yml/badge.svg" />
-</a>
-<a href="https://github.com/Azure/ResourceModules/issues">
-  <img alt="Issues" src="https://img.shields.io/github/issues/Azure/ResourceModules?color=0088ff" />
-</a>
-<a href="https://github.com/Azure/ResourceModules/pulls">
-  <img alt="Pull requests" src="https://img.shields.io/github/issues-pr/Azure/ResourceModules?color=0088ff" />
-</a>
+[![.Platform: Linter](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml)
+
+[![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml)
 
 ## Get started
 
@@ -39,7 +33,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [App Configuration](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.AppConfiguration/configurationStores) | [!['AppConfiguration: ConfigurationStores'](https://github.com/Azure/ResourceModules/workflows/AppConfiguration:%20ConfigurationStores/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.appconfiguration.configurationstores.yml) |
 | [App Service Environments](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Web/hostingEnvironments) | [!['Web: HostingEnvironments'](https://github.com/Azure/ResourceModules/workflows/Web:%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |
 | [App Service Plans](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Web/serverfarms) | [!['Web: Serverfarms'](https://github.com/Azure/ResourceModules/workflows/Web:%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |
-| [Application Gateway WebApp Firewall Policy](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies) | [!['Network: ApplicationGatewayWebApplicationFirewallPolicies'](https://github.com/Azure/ResourceModules/workflows/Network:%20ApplicationGatewayWebApplicationFirewallPolicies/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml) |
+| [Application Gateway WebApp Firewall Policies](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies) | [!['Network: ApplicationGatewayWebApplicationFirewallPolicies'](https://github.com/Azure/ResourceModules/workflows/Network:%20ApplicationGatewayWebApplicationFirewallPolicies/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml) |
 | [Application Insights](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Insights/components) | [!['Insights: Components'](https://github.com/Azure/ResourceModules/workflows/Insights:%20Components/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.components.yml) |
 | [Application Security Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/applicationSecurityGroups) | [!['Network: ApplicationSecurityGroups'](https://github.com/Azure/ResourceModules/workflows/Network:%20ApplicationSecurityGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationsecuritygroups.yml) |
 | [Authorization Locks](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Authorization/locks) | [!['Authorization: Locks'](https://github.com/Azure/ResourceModules/workflows/Authorization:%20Locks/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.locks.yml) |
@@ -91,10 +85,12 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [Log Analytics Workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.OperationalInsights/workspaces) | [!['OperationalInsights: Workspaces'](https://github.com/Azure/ResourceModules/workflows/OperationalInsights:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationalinsights.workspaces.yml) |
 | [Logic Apps](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Logic/workflows) | [!['Logic: Workflows'](https://github.com/Azure/ResourceModules/workflows/Logic:%20Workflows/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.logic.workflows.yml) |
 | [Machine Learning Workspaces](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.MachineLearningServices/workspaces) | [!['MachineLearningServices: Workspaces'](https://github.com/Azure/ResourceModules/workflows/MachineLearningServices:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.machinelearningservices.workspaces.yml) |
+| [Maintenance Configurations](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Maintenance/maintenanceConfigurations) | [!['Maintenance: MaintenanceConfigurations'](https://github.com/Azure/ResourceModules/workflows/Maintenance:%20MaintenanceConfigurations/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.maintenance.maintenanceconfigurations.yml) |
 | [Management Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Management/managementGroups) | [!['Management: ManagementGroups'](https://github.com/Azure/ResourceModules/workflows/Management:%20ManagementGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.management.managementgroups.yml) |
 | [Metric Alerts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Insights/metricAlerts) | [!['Insights: MetricAlerts'](https://github.com/Azure/ResourceModules/workflows/Insights:%20MetricAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.metricalerts.yml) |
 | [NAT Gateways](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/natGateways) | [!['Network: NatGateways'](https://github.com/Azure/ResourceModules/workflows/Network:%20NatGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml) |
 | [Network Application Gateways](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/applicationGateways) | [!['Network: ApplicationGateways'](https://github.com/Azure/ResourceModules/workflows/Network:%20ApplicationGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationgateways.yml) |
+| [Network DnsResolvers](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/dnsResolvers) | [!['Network: DNS Resolvers'](https://github.com/Azure/ResourceModules/workflows/Network:%20DNS%20Resolvers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.dnsresolvers.yml) |
 | [Network Interface](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/networkInterfaces) | [!['Network: NetworkInterfaces'](https://github.com/Azure/ResourceModules/workflows/Network:%20NetworkInterfaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkinterfaces.yml) |
 | [Network PrivateLinkServices](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/privateLinkServices) | [!['Network: PrivateLinkServices'](https://github.com/Azure/ResourceModules/workflows/Network:%20PrivateLinkServices/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privatelinkservices.yml) |
 | [Network Security Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/networkSecurityGroups) | [!['Network: NetworkSecurityGroups'](https://github.com/Azure/ResourceModules/workflows/Network:%20NetworkSecurityGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networksecuritygroups.yml) |
@@ -171,6 +167,10 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 * [Azure Resource Manager][AzureResourceManager]
 * [Bicep][Bicep]
 
+## Telemetry
+
+Modules provided in this library have telemetry enabled by default. To learn more about this feature, please refer to the [Telemetry article](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20design#telemetry) in the wiki.
+
 <!-- References -->
 
 <!-- Local -->
@@ -182,7 +182,6 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
 [PowershellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
-[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png
 
 <!-- External -->
 [Bicep]: <https://github.com/Azure/bicep>

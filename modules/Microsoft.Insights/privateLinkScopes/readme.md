@@ -14,12 +14,12 @@ This module deploys an Azure Monitor Private Link Scope.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `microsoft.insights/privateLinkScopes` | [2019-10-17-preview](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-10-17-preview/privateLinkScopes) |
 | `Microsoft.Insights/privateLinkScopes/scopedResources` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-07-01-preview/privateLinkScopes/scopedResources) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -33,7 +33,7 @@ This module deploys an Azure Monitor Private Link Scope.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` |  | The location of the private link scope. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -125,7 +125,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -161,7 +171,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -169,6 +178,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -247,7 +266,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -255,71 +274,35 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkScopes'
-  params: {
-    name: '<<namePrefix>>-az-pls-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-pls-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkScopes'
+  name: '${uniqueString(deployment().name)}-test-iplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pls-x-001'
+    name: '<<namePrefix>>iplscom001'
     // Non-required parameters
-    lock: 'CanNotDelete'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'azuremonitor'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     scopedResources: [
       {
-        linkedResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        linkedResourceId: '<linkedResourceId>'
         name: 'scoped1'
       }
     ]
@@ -341,22 +324,22 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pls-x-001"
+      "value": "<<namePrefix>>iplscom001"
     },
     // Non-required parameters
-    "lock": {
-      "value": "CanNotDelete"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.monitor.azure.com"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "azuremonitor",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
     },
@@ -364,8 +347,9 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -373,10 +357,55 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
     "scopedResources": {
       "value": [
         {
-          "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+          "linkedResourceId": "<linkedResourceId>",
           "name": "scoped1"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-iplsmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>iplsmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>iplsmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
