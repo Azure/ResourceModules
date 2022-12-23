@@ -45,6 +45,24 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    applications: [
+      {
+        name: '<<namePrefix>>-${serviceShort}-appd-001'
+      }
+      {
+        name: '<<namePrefix>>-${serviceShort}-appd-002'
+        supportedOSType: 'Windows'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+      }
+    ]
     images: [
       {
         name: '<<namePrefix>>-${serviceShort}-imgd-001'
