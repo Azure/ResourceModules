@@ -82,7 +82,7 @@ param licenseType string = ''
 @description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
-@description('Optional. Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = True')
+@description('Optional. Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True".')
 param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
