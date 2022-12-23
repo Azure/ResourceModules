@@ -58,7 +58,6 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    publicNetworkAccess: 'Enabled'
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     backupConfig: {
