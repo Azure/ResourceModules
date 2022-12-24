@@ -55,7 +55,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `publisher` | string | `'MicrosoftWindowsServer'` |  | The name of the gallery Image Definition publisher. |
 | `releaseNoteUri` | string | `''` |  | The release note uri. Has to be a valid URL. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityType` | string |  | `[ConfidentialVM, ConfidentialVMSupported, TrustedLaunch]` | The security type of the image. Requires a hyperVGeneration V2. |
+| `securityType` | string | `'Standard'` | `[ConfidentialVM, ConfidentialVMSupported, Standard, TrustedLaunch]` | The security type of the image. Requires a hyperVGeneration V2. |
 | `sku` | string | `'2019-Datacenter'` |  | The name of the gallery Image Definition SKU. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
 
