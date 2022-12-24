@@ -175,6 +175,7 @@ param extensionDomainJoinConfig object = {
 param extensionAadJoinConfig object = {
   enabled: false
 }
+
 @description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionAntiMalwareConfig object = {
   enabled: false
