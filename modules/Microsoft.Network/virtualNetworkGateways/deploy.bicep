@@ -314,6 +314,7 @@ module publicIPAddress'../publicIPAddresses/deploy.bicep' = [for (virtualGateway
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
+    diagnosticSettingsName: publicIpDiagnosticSettingsName
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
