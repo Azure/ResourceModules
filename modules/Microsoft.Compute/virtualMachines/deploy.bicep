@@ -519,6 +519,7 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
   }
   scope: vm
 }
+
 module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-AADLogin'
   params: {
@@ -529,7 +530,7 @@ module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfi
     typeHandlerVersion: contains(extensionAadJoinConfig, 'typeHandlerVersion') ? extensionAadJoinConfig.typeHandlerVersion : '1.0'
     autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
-    settings: extensionAadJoinConfig.settings
+    settings: contains(extensionAadJoinConfig, 'settings') ? extensionAadJoinConfig.settings : null
   }
 }
 
