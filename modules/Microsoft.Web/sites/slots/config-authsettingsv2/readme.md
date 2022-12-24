@@ -23,7 +23,7 @@ This module deploys the auth settings v2.
 | :-- | :-- | :-- | :-- |
 | `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
 | `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
-| `slotName` | string |  | Slot name to be configured |
+| `slotName` | string |  | Slot name to be configured. |
 
 **Conditional parameters**
 

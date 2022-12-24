@@ -234,7 +234,7 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
 
 @batchSize(1)
 module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
-  name: '${uniqueString(deployment().name, location)}-Site-Slot-${index}'
+  name: '${uniqueString(deployment().name, location)}-Slot-${slot.name}'
   params: {
     name: slot.name
     appName: name
@@ -246,9 +246,9 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     clientAffinityEnabled: contains(slot, 'clientAffinityEnabled') ? slot.clientAffinityEnabled : clientAffinityEnabled
     systemAssignedIdentity: contains(slot, 'systemAssignedIdentity') ? slot.systemAssignedIdentity : systemAssignedIdentity
     userAssignedIdentities: contains(slot, 'userAssignedIdentities') ? slot.userAssignedIdentities : userAssignedIdentities
-    keyVaultAccessIdentityResourceId: contains(slot, 'keyVaultAccessIdentityResourceId') ? slot.keyVaultAccessIdentityResourceId : !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
+    keyVaultAccessIdentityResourceId: contains(slot, 'keyVaultAccessIdentityResourceId') ? slot.keyVaultAccessIdentityResourceId : keyVaultAccessIdentityResourceId
     storageAccountRequired: contains(slot, 'storageAccountRequired') ? slot.storageAccountRequired : storageAccountRequired
-    virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
+    virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : virtualNetworkSubnetId
     siteConfig: contains(slot, 'siteConfig') ? slot.siteConfig : siteConfig
     storageAccountId: contains(slot, 'storageAccountId') ? slot.storageAccountId : storageAccountId
     appInsightId: contains(slot, 'appInsightId') ? slot.appInsightId : appInsightId
@@ -268,6 +268,9 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
     tags: tags
   }
+  dependsOn: [
+    app
+  ]
 }]
 
 resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
@@ -334,11 +337,20 @@ output name string = app.name
 @description('The resource ID of the site.')
 output resourceId string = app.id
 
+@description('The list of the slots.')
+output slots array = [for (slot, index) in slots: app_slots[index].name]
+
+@description('The list of the slot resource ids.')
+output slotResourceIds array = [for (slot, index) in slots: app_slots[index].outputs.resourceId]
+
 @description('The resource group the site was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''
+
+@description('The principal ID of the system assigned identity of slots.')
+output slotSystemAssignedPrincipalId array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location

@@ -22,7 +22,7 @@ This module deploys the app settings.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
-| `slotName` | string |  | Slot name to be configured |
+| `slotName` | string |  | Slot name to be configured. |
 
 **Conditional parameters**
 

@@ -1,7 +1,7 @@
 // ================ //
 // Parameters       //
 // ================ //
-@description('Required. Slot name to be configured')
+@description('Required. Slot name to be configured.')
 param slotName string
 
 @description('Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment.')

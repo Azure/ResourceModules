@@ -210,14 +210,14 @@ resource slot 'Microsoft.Web/sites/slots@2022-03-01' = {
       id: appServiceEnvironmentId
     } : null
     storageAccountRequired: storageAccountRequired
-    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
+    keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : any(null)
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
   }
 }
 
 module slot_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSettingsKeyValuePairs)) {
-  name: '${uniqueString(deployment().name, location)}-Site-Config-AppSettings'
+  name: '${uniqueString(deployment().name, location)}-Slot-${name}-Config-AppSettings'
   params: {
     slotName: slot.name
     appName: app.name
@@ -231,7 +231,7 @@ module slot_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSettin
 }
 
 module slot_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(authSettingV2Configuration)) {
-  name: '${uniqueString(deployment().name, location)}-Site-Config-AuthSettingsV2'
+  name: '${uniqueString(deployment().name, location)}-Slot-${name}-Config-AuthSettingsV2'
   params: {
     slotName: slot.name
     appName: app.name
@@ -264,7 +264,7 @@ resource slot_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
 }
 
 module slot_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Site-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Slot-${name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -275,13 +275,13 @@ module slot_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, i
 }]
 
 module slot_privateEndpoints '../../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-Slot-${name}-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      privateEndpoint.service
+      '${privateEndpoint.service}-${name}'
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(slot.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: slot.id
+    serviceResourceId: app.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
