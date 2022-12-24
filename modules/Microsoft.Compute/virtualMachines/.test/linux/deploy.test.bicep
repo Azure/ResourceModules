@@ -130,7 +130,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_D2_v4'
+    vmSize: 'Standard_DS2_v2'
     availabilityZone: 1
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
     backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName

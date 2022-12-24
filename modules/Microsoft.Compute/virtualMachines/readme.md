@@ -1108,7 +1108,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_D2_v4'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     availabilityZone: 1
     backupPolicyName: '<backupPolicyName>'
@@ -1295,7 +1295,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Linux"
     },
     "vmSize": {
-      "value": "Standard_D2_v4"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "availabilityZone": {
@@ -1503,7 +1503,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
@@ -1572,7 +1572,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Linux"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "configurationProfile": {
@@ -1813,7 +1813,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_D2_v4'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     availabilityZone: 2
@@ -2013,7 +2013,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_D2_v4"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
@@ -2354,7 +2354,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -2413,7 +2413,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
@@ -2474,7 +2474,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     dataDisks: [
@@ -2547,7 +2547,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
