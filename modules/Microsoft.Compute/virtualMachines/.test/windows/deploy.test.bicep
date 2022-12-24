@@ -133,7 +133,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_B4ms'
     adminPassword: password
     availabilityZone: 2
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName

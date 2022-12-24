@@ -1108,7 +1108,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_B4ms'
     // Non-required parameters
     availabilityZone: 1
     backupPolicyName: '<backupPolicyName>'
@@ -1295,7 +1295,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Linux"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_B4ms"
     },
     // Non-required parameters
     "availabilityZone": {
@@ -1813,7 +1813,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_B4ms'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     availabilityZone: 2
@@ -2013,7 +2013,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_B4ms"
     },
     // Non-required parameters
     "adminPassword": {
