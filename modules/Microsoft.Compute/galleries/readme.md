@@ -196,7 +196,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
-        name: '<<namePrefix>>-cgcom-imgd-001'
+        name: '<<namePrefix>>-az-imgd-ws-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -204,7 +204,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-x-001'
+        name: '<<namePrefix>>-az-imgd-ws-002'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -226,7 +226,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-x-002'
+        name: '<<namePrefix>>-az-imgd-wdtl-002'
         offer: 'WindowsDesktop'
         osState: 'Generalized'
         osType: 'Windows'
@@ -249,7 +249,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 1
-        name: '<<namePrefix>>-az-imgd-x-002'
+        name: '<<namePrefix>>-az-imgd-us-001'
         offer: '0001-com-ubuntu-server-focal'
         osState: 'Generalized'
         osType: 'Linux'
@@ -314,7 +314,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
     "images": {
       "value": [
         {
-          "name": "<<namePrefix>>-cgcom-imgd-001"
+          "name": "<<namePrefix>>-az-imgd-ws-001"
         },
         {
           "hyperVGeneration": "V1",
@@ -322,7 +322,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "maxRecommendedvCPUs": 8,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-x-001",
+          "name": "<<namePrefix>>-az-imgd-ws-002",
           "offer": "WindowsServer",
           "osState": "Generalized",
           "osType": "Windows",
@@ -344,7 +344,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "maxRecommendedvCPUs": 4,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-x-002",
+          "name": "<<namePrefix>>-az-imgd-wdtl-002",
           "offer": "WindowsDesktop",
           "osState": "Generalized",
           "osType": "Windows",
@@ -367,7 +367,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           "maxRecommendedvCPUs": 4,
           "minRecommendedMemory": 4,
           "minRecommendedvCPUs": 1,
-          "name": "<<namePrefix>>-az-imgd-x-002",
+          "name": "<<namePrefix>>-az-imgd-us-001",
           "offer": "0001-com-ubuntu-server-focal",
           "osState": "Generalized",
           "osType": "Linux",
