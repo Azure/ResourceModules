@@ -10,6 +10,9 @@ param diskEncryptionSetName string
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
+@description('Required. The name of the Storage Account to create and to copy the VHD into.')
+param storageAccountName string
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
@@ -68,6 +71,19 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     }
 }
 
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+    name: storageAccountName
+    location: location
+    kind: 'StorageV2'
+    sku: {
+        name: 'Standard_LRS'
+    }
+    properties: {
+        allowBlobPublicAccess: false
+        publicNetworkAccess: 'Disabled'
+    }
+}
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
@@ -76,3 +92,6 @@ output managedIdentityResourceId string = managedIdentity.id
 
 @description('The resource ID of the created Disk Encryption Set.')
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
+
+@description('The resource ID of the created Storage Account.')
+output storageAccountResourceId string = storageAccount.id

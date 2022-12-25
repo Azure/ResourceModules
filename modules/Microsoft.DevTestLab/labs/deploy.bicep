@@ -1,4 +1,4 @@
-@description('Required. The name of the DevTest Lab.')
+@description('Required. The name of the lab.')
 param name string
 
 @description('Optional. Location for all Resources.')
@@ -28,6 +28,9 @@ param extendedProperties object = {}
 @description('Optional. Type of storage used by the lab. It can be either Premium or Standard. Default is Premium.')
 param labStorageType string = 'Premium'
 
+@description('Optional. The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used.')
+param artifactsStorageAccount string = ''
+
 @description('Optional. The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user.')
 param mandatoryArtifactsResourceIdsLinux array = []
 
@@ -35,12 +38,11 @@ param mandatoryArtifactsResourceIdsLinux array = []
 param mandatoryArtifactsResourceIdsWindows array = []
 
 @allowed([
-  ''
   'Enabled'
   'Disabled'
 ])
-@description('Optional. The setting to enable usage of premium data disks. When its value is "Enabled", creation of standard or premium data disks is allowed. When its value is "Disabled", only creation of standard data disks is allowed.')
-param premiumDataDisks string = ''
+@description('Optional. The setting to enable usage of premium data disks. When its value is "Enabled", creation of standard or premium data disks is allowed. When its value is "Disabled", only creation of standard data disks is allowed. Default is "Disabled".')
+param premiumDataDisks string = 'Disabled'
 
 @description('Optional. The properties of any lab support message associated with this lab.')
 param support object = {}
@@ -87,6 +89,11 @@ param encryptionDiskEncryptionSetId string = ''
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. Virtual networks to create for the lab.')
+param virtualNetworks array = []
+
+var enableReferencedModulesTelemetry = false
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -112,6 +119,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
   tags: tags
   identity: identity
   properties: {
+    artifactsStorageAccount: artifactsStorageAccount
     announcement: announcement
     environmentPermission: environmentPermission
     extendedProperties: extendedProperties
@@ -131,3 +139,30 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
     }
   }
 }
+
+module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork, index) in virtualNetworks: {
+  name: '${uniqueString(deployment().name, location)}-Lab-VirtualNetwork-${index}'
+  params: {
+    name: virtualNetwork.name
+    labName: lab.name
+    location: location
+    tags: tags
+    description: contains(virtualNetwork, 'description') ? virtualNetwork.description : ''
+    externalProviderResourceId: virtualNetwork.externalProviderResourceId
+    allowedSubnets: contains(virtualNetwork, 'allowedSubnets') ? virtualNetwork.allowedSubnets : []
+    subnetOverrides: contains(virtualNetwork, 'subnetOverrides') ? virtualNetwork.subnetOverrides : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+@description('The resource group the lab was deployed into.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The resource ID of the lab.')
+output resourceId string = lab.id
+
+@description('The name of the lab.')
+output name string = lab.name
+
+@description('The location the resource was deployed into.')
+output location string = lab.location
