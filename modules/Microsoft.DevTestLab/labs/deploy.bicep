@@ -98,6 +98,9 @@ param policies array = []
 @description('Optional. Schedules to create for the lab.')
 param schedules array = []
 
+@description('Optional. Artifact sources to create for the lab.')
+param artifactSources array = []
+
 var enableReferencedModulesTelemetry = false
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
@@ -197,6 +200,25 @@ module lab_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedu
     notificationSettingsWebhookUrl: contains(schedule, 'notificationSettingsWebhookUrl') ? schedule.notificationSettingsWebhookUrl : ''
     notificationSettingsNotificationLocale: contains(schedule, 'notificationSettingsNotificationLocale') ? schedule.notificationSettingsNotificationLocale : 'en'
     notificationSettingsTimeInMinutes: contains(schedule, 'notificationSettingsTimeInMinutes') ? schedule.notificationSettingsTimeInMinutes : 30
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource, index) in artifactSources: {
+  name: '${uniqueString(deployment().name, location)}-Lab-ArtifactSources-${index}'
+  params: {
+    labName: lab.name
+    name: artifactSource.name
+    location: location
+    tags: tags
+    displayName: contains(artifactSource, 'displayName') ? artifactSource.displayName : artifactSource.name
+    branchRef: contains(artifactSource, 'branchRef') ? artifactSource.branchRef : ''
+    folderPath: contains(artifactSource, 'folderPath') ? artifactSource.folderPath : ''
+    armTemplateFolderPath: contains(artifactSource, 'armTemplateFolderPath') ? artifactSource.armTemplateFolderPath : ''
+    //securityToken: contains(artifactSource, 'armTemplateFolderPath') ? artifactSource.armTemplateFolderPath : ''
+    sourceType: contains(artifactSource, 'sourceType') ? artifactSource.sourceType : ''
+    status: contains(artifactSource, 'status') ? artifactSource.status : 'Enabled'
+    uri: artifactSource.uri
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

@@ -84,6 +84,41 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     }
 }
 
+@description('Required. The name of the Virtual Network to create.')
+param virtualNetworkName string
+
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+    name: virtualNetworkName
+    location: location
+    properties: {
+        addressSpace: {
+            addressPrefixes: [
+                '10.0.0.0/24'
+            ]
+        }
+        subnets: [
+            {
+                name: 'defaultSubnet'
+                properties: {
+                    addressPrefix: '10.0.0.0/24'
+                }
+            }
+        ]
+    }
+}
+
+@description('The name of the created Virtual Network.')
+output virtualNetworkName string = virtualNetwork.name
+
+@description('The resource ID of the created Virtual Network.')
+output virtualNetworkResourceId string = virtualNetwork.id
+
+@description('The name of the created Virtual Network Subnet.')
+output subnetName string = virtualNetwork.properties.subnets[0].name
+
+@description('The resource ID of the created Virtual Network Subnet.')
+output subnetResourceId string = virtualNetwork.properties.subnets[0].id
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 

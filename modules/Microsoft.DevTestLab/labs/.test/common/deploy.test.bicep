@@ -39,6 +39,7 @@ module resourceGroupResources 'dependencies.bicep' = {
     keyVaultName: 'dep-carml-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     diskEncryptionSetName: 'dep-carml-des-${serviceShort}'
     storageAccountName: 'depcarmlsa${serviceShort}'
+    virtualNetworkName: 'dep-carml-vnet-${serviceShort}'
   }
 }
 
@@ -80,5 +81,152 @@ module testDeployment '../../deploy.bicep' = {
     encryptionDiskEncryptionSetId: resourceGroupResources.outputs.diskEncryptionSetResourceId
     premiumDataDisks: 'Enabled'
     artifactsStorageAccount: resourceGroupResources.outputs.storageAccountResourceId
+    virtualNetworks: [
+      {
+        name: resourceGroupResources.outputs.virtualNetworkName
+        externalProviderResourceId: resourceGroupResources.outputs.virtualNetworkResourceId
+        description: 'lab virtual network description'
+        allowedSubnets: [
+          {
+            labSubnetName: resourceGroupResources.outputs.subnetName
+            resourceId: resourceGroupResources.outputs.subnetResourceId
+            allowPublicIp: 'Allow'
+          }
+        ]
+        subnetOverrides: [
+          {
+            labSubnetName: resourceGroupResources.outputs.subnetName
+            resourceId: resourceGroupResources.outputs.subnetResourceId
+            useInVmCreationPermission: 'Allow'
+            usePublicIpAddressPermission: 'Allow'
+            sharedPublicIpAddressConfiguration: {
+              allowedPorts: [
+                {
+                  transportProtocol: 'Tcp'
+                  backendPort: 3389
+                }
+                {
+                  transportProtocol: 'Tcp'
+                  backendPort: 22
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+    policies: [
+      {
+        name: resourceGroupResources.outputs.subnetName
+        evaluatorType: 'MaxValuePolicy'
+        factData: resourceGroupResources.outputs.subnetResourceId
+        factName: 'UserOwnedLabVmCountInSubnet'
+        threshold: '1'
+      }
+      {
+        name: 'MaxVmsAllowedPerUser'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabVmCount'
+        threshold: '2'
+      }
+      {
+        name: 'MaxPremiumVmsAllowedPerUser'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabPremiumVmCount'
+        status: 'Disabled'
+        threshold: '1'
+      }
+      {
+        name: 'MaxVmsAllowedPerLab'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabVmCount'
+        threshold: '3'
+      }
+      {
+        name: 'MaxPremiumVmsAllowedPerLab'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabPremiumVmCount'
+        threshold: '2'
+      }
+      {
+        name: 'AllowedVmSizesInLab'
+        evaluatorType: 'AllowedValuesPolicy'
+        factData: ''
+        factName: 'LabVmSize'
+        threshold: ' ${string('["Basic_A0","Basic_A1"]')}'
+        status: 'Enabled'
+      }
+      {
+        name: 'ScheduleEditPermission'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'ScheduleEditPermission'
+        threshold: ' ${string('["None","Modify"]')}'
+      }
+      {
+        name: 'GalleryImage'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'GalleryImage'
+        threshold: ' ${string('["{\\"offer\\":\\"WindowsServer\\",\\"publisher\\":\\"MicrosoftWindowsServer\\",\\"sku\\":\\"2019-Datacenter-smalldisk\\",\\"osType\\":\\"Windows\\",\\"version\\":\\"latest\\"}","{\\"offer\\":\\"WindowsServer\\",\\"publisher\\":\\"MicrosoftWindowsServer\\",\\"sku\\":\\"2022-datacenter-smalldisk\\",\\"osType\\":\\"Windows\\",\\"version\\":\\"latest\\"}"]')}'
+      }
+      {
+        name: 'EnvironmentTemplate'
+        description: 'Public Environment Policy'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'EnvironmentTemplate'
+        threshold: ' ${string('[""]')}'
+      }
+    ]
+    schedules: [
+      {
+        name: 'LabVmsShutdown'
+        taskType: 'LabVmsShutdownTask'
+        status: 'Enabled'
+        timeZoneId: 'AUS Eastern Standard Time'
+        dailyRecurrence: {
+          time: '0000'
+        }
+        notificationSettingsStatus: 'Enabled'
+        notificationSettingsEmailRecipient: 'mail@contosodtlmail.com'
+        notificationSettingsWebhookUrl: 'https://webhook.contosotest.com'
+        notificationSettingsNotificationLocale: 'en'
+        notificationSettingsTimeInMinutes: 30
+      }
+      {
+        name: 'LabVmAutoStart'
+        taskType: 'LabVmsStartupTask'
+        status: 'Enabled'
+        timeZoneId: 'AUS Eastern Standard Time'
+        weeklyRecurrence: {
+          time: '0700'
+          weekdays: [
+            'Monday'
+            'Tuesday'
+            'Wednesday'
+            'Thursday'
+            'Friday'
+          ]
+        }
+      }
+    ]
+    artifactSources: [
+      {
+        name: 'Public Repo'
+        displayName: 'Public Artifact Repo'
+        status: 'Disabled'
+        uri: 'https://github.com/Azure/azure-devtestlab.git'
+        sourceType: 'GitHub'
+        branchRef: 'master'
+        folderPath: '/Artifacts'
+      }
+      {
+        name: 'Public Environment Repo'
+        displayName: 'Public Environment Repo'
+        status: 'Disabled'
+        uri: 'https://github.com/Azure/azure-devtestlab.git'
+        sourceType: 'GitHub'
+        branchRef: 'master'
+        armTemplateFolderPath: '/Environments'
+      }
+    ]
   }
 }
