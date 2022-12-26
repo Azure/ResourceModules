@@ -92,6 +92,9 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Virtual networks to create for the lab.')
 param virtualNetworks array = []
 
+@description('Optional. Policies to create for the lab.')
+param policies array = []
+
 var enableReferencedModulesTelemetry = false
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
@@ -143,14 +146,31 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
 module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork, index) in virtualNetworks: {
   name: '${uniqueString(deployment().name, location)}-Lab-VirtualNetwork-${index}'
   params: {
-    name: virtualNetwork.name
     labName: lab.name
+    name: virtualNetwork.name
+    externalProviderResourceId: virtualNetwork.externalProviderResourceId
     location: location
     tags: tags
     description: contains(virtualNetwork, 'description') ? virtualNetwork.description : ''
-    externalProviderResourceId: virtualNetwork.externalProviderResourceId
     allowedSubnets: contains(virtualNetwork, 'allowedSubnets') ? virtualNetwork.allowedSubnets : []
     subnetOverrides: contains(virtualNetwork, 'subnetOverrides') ? virtualNetwork.subnetOverrides : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module lab_policies 'policySets/policies/deploy.bicep' = [for (policy, index) in policies: {
+  name: '${uniqueString(deployment().name, location)}-Lab-PolicySets-Policy-${index}'
+  params: {
+    labName: lab.name
+    name: policy.name
+    location: location
+    tags: tags
+    description: contains(policy, 'description') ? policy.description : ''
+    evaluatorType: policy.evaluatorType
+    factData: contains(policy, 'factData') ? policy.factData : ''
+    factName: policy.factName
+    status: contains(policy, 'status') ? policy.status : 'Enabled'
+    threshold: policy.threshold
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

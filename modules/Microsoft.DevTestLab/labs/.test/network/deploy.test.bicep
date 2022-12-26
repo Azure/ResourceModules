@@ -85,5 +85,66 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
+    policies: [
+      {
+        name: resourceGroupResources.outputs.subnetName
+        evaluatorType: 'MaxValuePolicy'
+        factData: resourceGroupResources.outputs.subnetResourceId
+        factName: 'UserOwnedLabVmCountInSubnet'
+        threshold: '1'
+      }
+      {
+        name: 'MaxVmsAllowedPerUser'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabVmCount'
+        threshold: '2'
+      }
+      {
+        name: 'MaxPremiumVmsAllowedPerUser'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'UserOwnedLabPremiumVmCount'
+        status: 'Disabled'
+        threshold: '1'
+      }
+      {
+        name: 'MaxVmsAllowedPerLab'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabVmCount'
+        threshold: '3'
+      }
+      {
+        name: 'MaxPremiumVmsAllowedPerLab'
+        evaluatorType: 'MaxValuePolicy'
+        factName: 'LabPremiumVmCount'
+        threshold: '2'
+      }
+      {
+        name: 'AllowedVmSizesInLab'
+        evaluatorType: 'AllowedValuesPolicy'
+        factData: ''
+        factName: 'LabVmSize'
+        threshold: ' ${string('["Basic_A0","Basic_A1"]')}'
+        status: 'Enabled'
+      }
+      {
+        name: 'ScheduleEditPermission'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'ScheduleEditPermission'
+        threshold: ' ${string('["None"]')}'
+      }
+      {
+        name: 'GalleryImage'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'GalleryImage'
+        threshold: ' ${string('["{\\"offer\\":\\"WindowsServer\\",\\"publisher\\":\\"MicrosoftWindowsServer\\",\\"sku\\":\\"2019-Datacenter-smalldisk\\",\\"osType\\":\\"Windows\\",\\"version\\":\\"latest\\"}","{\\"offer\\":\\"WindowsServer\\",\\"publisher\\":\\"MicrosoftWindowsServer\\",\\"sku\\":\\"2022-datacenter-smalldisk\\",\\"osType\\":\\"Windows\\",\\"version\\":\\"latest\\"}"]')}'
+      }
+      {
+        name: 'EnvironmentTemplate'
+        description: 'Public Environment Policy'
+        evaluatorType: 'AllowedValuesPolicy'
+        factName: 'EnvironmentTemplate'
+        threshold: ' ${string('[""]')}'
+      }
+    ]
   }
 }
