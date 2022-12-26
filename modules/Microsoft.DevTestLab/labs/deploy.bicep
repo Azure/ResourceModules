@@ -95,6 +95,9 @@ param virtualNetworks array = []
 @description('Optional. Policies to create for the lab.')
 param policies array = []
 
+@description('Optional. Schedules to create for the lab.')
+param schedules array = []
+
 var enableReferencedModulesTelemetry = false
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
@@ -171,6 +174,29 @@ module lab_policies 'policySets/policies/deploy.bicep' = [for (policy, index) in
     factName: policy.factName
     status: contains(policy, 'status') ? policy.status : 'Enabled'
     threshold: policy.threshold
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module lab_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+  name: '${uniqueString(deployment().name, location)}-Lab-Schedules-${index}'
+  params: {
+    labName: lab.name
+    name: schedule.name
+    location: location
+    tags: tags
+    taskType: schedule.taskType
+    dailyRecurrence: contains(schedule, 'dailyRecurrence') ? schedule.dailyRecurrence : {}
+    hourlyRecurrence: contains(schedule, 'hourlyRecurrence') ? schedule.hourlyRecurrence : {}
+    weeklyRecurrence: contains(schedule, 'weeklyRecurrence') ? schedule.weeklyRecurrence : {}
+    status: contains(schedule, 'status') ? schedule.status : 'Enabled'
+    targetResourceId: contains(schedule, 'targetResourceId') ? schedule.targetResourceId : ''
+    timeZoneId: contains(schedule, 'timeZoneId') ? schedule.timeZoneId : 'Pacific Standard time'
+    notificationSettingsStatus: contains(schedule, 'notificationSettingsStatus') ? schedule.notificationSettingsStatus : 'Disabled'
+    notificationSettingsEmailRecipient: contains(schedule, 'notificationSettingsEmailRecipient') ? schedule.notificationSettingsEmailRecipient : ''
+    notificationSettingsWebhookUrl: contains(schedule, 'notificationSettingsWebhookUrl') ? schedule.notificationSettingsWebhookUrl : ''
+    notificationSettingsNotificationLocale: contains(schedule, 'notificationSettingsNotificationLocale') ? schedule.notificationSettingsNotificationLocale : 'en'
+    notificationSettingsTimeInMinutes: contains(schedule, 'notificationSettingsTimeInMinutes') ? schedule.notificationSettingsTimeInMinutes : 30
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

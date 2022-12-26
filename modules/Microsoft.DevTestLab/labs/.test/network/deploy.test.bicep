@@ -130,7 +130,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'ScheduleEditPermission'
         evaluatorType: 'AllowedValuesPolicy'
         factName: 'ScheduleEditPermission'
-        threshold: ' ${string('["None"]')}'
+        threshold: ' ${string('["None","Modify"]')}'
       }
       {
         name: 'GalleryImage'
@@ -144,6 +144,38 @@ module testDeployment '../../deploy.bicep' = {
         evaluatorType: 'AllowedValuesPolicy'
         factName: 'EnvironmentTemplate'
         threshold: ' ${string('[""]')}'
+      }
+    ]
+    schedules: [
+      {
+        name: 'LabVmsShutdown'
+        taskType: 'LabVmsShutdownTask'
+        status: 'Enabled'
+        timeZoneId: 'AUS Eastern Standard Time'
+        dailyRecurrence: {
+          time: '0000'
+        }
+        notificationSettingsStatus: 'Enabled'
+        notificationSettingsEmailRecipient: 'mail@contosodtlmail.com'
+        notificationSettingsWebhookUrl: 'https://webhook.contosotest.com'
+        notificationSettingsNotificationLocale: 'en'
+        notificationSettingsTimeInMinutes: 30
+      }
+      {
+        name: 'LabVmAutoStart'
+        taskType: 'LabVmsStartupTask'
+        status: 'Enabled'
+        timeZoneId: 'AUS Eastern Standard Time'
+        weeklyRecurrence: {
+          time: '0700'
+          weekdays: [
+            'Monday'
+            'Tuesday'
+            'Wednesday'
+            'Thursday'
+            'Friday'
+          ]
+        }
       }
     ]
   }

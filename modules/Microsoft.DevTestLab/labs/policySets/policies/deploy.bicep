@@ -89,11 +89,11 @@ resource policy 'Microsoft.DevTestLab/labs/policysets/policies@2018-10-15-previe
   }
 }
 
-@sys.description('The name of the virtual network.')
+@sys.description('The name of the policy.')
 output name string = policy.name
 
-@sys.description('The resource ID of the virtual network.')
+@sys.description('The resource ID of the policy.')
 output resourceId string = policy.id
 
-@sys.description('The name of the resource group the key was created in.')
+@sys.description('The name of the resource group the policy was created in.')
 output resourceGroupName string = resourceGroup().name

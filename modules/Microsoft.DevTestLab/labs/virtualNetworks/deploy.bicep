@@ -60,5 +60,5 @@ output name string = virtualNetwork.name
 @sys.description('The resource ID of the virtual network.')
 output resourceId string = virtualNetwork.id
 
-@sys.description('The name of the resource group the key was created in.')
+@sys.description('The name of the resource group the virtual network was created in.')
 output resourceGroupName string = resourceGroup().name
