@@ -41,6 +41,16 @@ module resourceGroupResources 'dependencies.bicep' = {
   }
 }
 
+// required for the Azure Image Builder service to assign the list of User Assigned Identities to the Build VM.
+resource msi_managedIdentityOperatorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscription().id, 'ManagedIdentityContributor', '<<namePrefix>>')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f1a07417-d97a-45cb-824c-7a7467783830') // Managed Identity Operator
+    principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -83,6 +93,9 @@ module testDeployment '../../deploy.bicep' = {
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
     userMsiName: resourceGroupResources.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
+    userAssignedIdentities: [
+      resourceGroupResources.outputs.managedIdentityResourceId
+    ]
     vmSize: 'Standard_D2s_v3'
   }
 }
