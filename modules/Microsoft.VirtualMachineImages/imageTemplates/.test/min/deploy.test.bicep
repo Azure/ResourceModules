@@ -54,7 +54,7 @@ module testDeployment '../../deploy.bicep' = {
     imageSource: {
       offer: 'Windows-10'
       publisher: 'MicrosoftWindowsDesktop'
-      sku: 'win10-22h2-avd'
+      sku: 'win10-22h2-ent'
       type: 'PlatformImage'
       version: 'latest'
     }
@@ -64,15 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     lock: ''
     managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
     osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
+    roleAssignments: []
     sigImageDefinitionId: ''
     subnetId: ''
     unManagedImageName: ''

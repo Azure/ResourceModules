@@ -49,7 +49,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     customizationSteps: [
       {
-        restartTimeout: '30m'
+        restartTimeout: '15m'
         type: 'WindowsRestart'
       }
     ]
@@ -60,24 +60,16 @@ module testDeployment '../../deploy.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
-    buildTimeoutInMinutes: 0
+    buildTimeoutInMinutes: 120
     imageReplicationRegions: []
-    lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
+    lock: ''
+    managedImageName: ''
     osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
+    roleAssignments: []
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
+    unManagedImageName: ''
+    userMsiName: resourceGroupResources.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }

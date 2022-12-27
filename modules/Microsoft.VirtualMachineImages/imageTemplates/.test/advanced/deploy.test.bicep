@@ -53,7 +53,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     customizationSteps: [
       {
-        restartTimeout: '30m'
+        restartTimeout: '10m'
         type: 'WindowsRestart'
       }
     ]
@@ -64,8 +64,7 @@ module testDeployment '../../deploy.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
-    buildTimeoutInMinutes: 0
+    buildTimeoutInMinutes: 60
     imageReplicationRegions: []
     lock: 'CanNotDelete'
     osDiskSizeGB: 127
@@ -81,6 +80,8 @@ module testDeployment '../../deploy.bicep' = {
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
     subnetId: resourceGroupResources.outputs.subnetId
     stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
+    unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
+    userMsiName: resourceGroupResources.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }

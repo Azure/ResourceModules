@@ -288,7 +288,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     // Required parameters
     customizationSteps: [
       {
-        restartTimeout: '30m'
+        restartTimeout: '10m'
         type: 'WindowsRestart'
       }
     ]
@@ -302,7 +302,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     name: '<<namePrefix>>vmiadv001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
-    buildTimeoutInMinutes: 0
+    buildTimeoutInMinutes: 60
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: 'CanNotDelete'
@@ -319,6 +319,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     sigImageDefinitionId: '<sigImageDefinitionId>'
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
+    unManagedImageName: '<<namePrefix>>-umi-vmiadv-001'
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
@@ -341,7 +342,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "customizationSteps": {
       "value": [
         {
-          "restartTimeout": "30m",
+          "restartTimeout": "10m",
           "type": "WindowsRestart"
         }
       ]
@@ -363,7 +364,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     },
     // Non-required parameters
     "buildTimeoutInMinutes": {
-      "value": 0
+      "value": 60
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -397,6 +398,9 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "subnetId": {
       "value": "<subnetId>"
     },
+    "unManagedImageName": {
+      "value": "<<namePrefix>>-umi-vmiadv-001"
+    },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
     },
@@ -423,7 +427,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     // Required parameters
     customizationSteps: [
       {
-        restartTimeout: '30m'
+        restartTimeout: '15m'
         type: 'WindowsRestart'
       }
     ]
@@ -437,24 +441,16 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     name: '<<namePrefix>>vmicom001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
-    buildTimeoutInMinutes: 0
+    buildTimeoutInMinutes: 120
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
-    lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-mi-vmicom-001'
+    lock: ''
+    managedImageName: ''
     osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
+    roleAssignments: []
     sigImageDefinitionId: '<sigImageDefinitionId>'
     subnetId: ''
-    unManagedImageName: '<<namePrefix>>-umi-vmicom-001'
+    unManagedImageName: ''
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
@@ -477,7 +473,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "customizationSteps": {
       "value": [
         {
-          "restartTimeout": "30m",
+          "restartTimeout": "15m",
           "type": "WindowsRestart"
         }
       ]
@@ -499,7 +495,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     },
     // Non-required parameters
     "buildTimeoutInMinutes": {
-      "value": 0
+      "value": 120
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -508,24 +504,16 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": []
     },
     "lock": {
-      "value": "CanNotDelete"
+      "value": ""
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmicom-001"
+      "value": ""
     },
     "osDiskSizeGB": {
       "value": 127
     },
     "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
+      "value": []
     },
     "sigImageDefinitionId": {
       "value": "<sigImageDefinitionId>"
@@ -534,7 +522,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": ""
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-umi-vmicom-001"
+      "value": ""
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
@@ -569,7 +557,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     imageSource: {
       offer: 'Windows-10'
       publisher: 'MicrosoftWindowsDesktop'
-      sku: 'win10-22h2-avd'
+      sku: 'win10-22h2-ent'
       type: 'PlatformImage'
       version: 'latest'
     }
@@ -582,15 +570,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     lock: ''
     managedImageName: '<<namePrefix>>-mi-vmimin-001'
     osDiskSizeGB: 127
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
+    roleAssignments: []
     sigImageDefinitionId: ''
     stagingResourceGroup: ''
     subnetId: ''
@@ -626,7 +606,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": {
         "offer": "Windows-10",
         "publisher": "MicrosoftWindowsDesktop",
-        "sku": "win10-22h2-avd",
+        "sku": "win10-22h2-ent",
         "type": "PlatformImage",
         "version": "latest"
       }
@@ -657,15 +637,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": 127
     },
     "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
+      "value": []
     },
     "sigImageDefinitionId": {
       "value": ""
