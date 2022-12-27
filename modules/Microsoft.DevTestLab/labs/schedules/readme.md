@@ -4,13 +4,10 @@ This module deploys DevTestLab Labs Schedules.
 
 ## Navigation
 
-- [DevTestLab Labs Schedules `[Microsoft.DevTestLab/labs/schedules]`](#devtestlab-labs-schedules-microsoftdevtestlablabsschedules)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -48,6 +45,7 @@ This module deploys DevTestLab Labs Schedules.
 | `targetResourceId` | string | `''` |  | The resource ID to which the schedule belongs. |
 | `timeZoneId` | string | `'Pacific Standard time'` |  | The time zone ID (e.g. Pacific Standard time). |
 | `weeklyRecurrence` | object | `{object}` |  | If the schedule will occur only some days of the week, specify the weekly recurrence. |
+
 
 ### Parameter Usage: `tags`
 

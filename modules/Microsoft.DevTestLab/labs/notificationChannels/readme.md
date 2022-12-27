@@ -4,13 +4,10 @@ This module deploys DevTestLab Labs NotificationChannels.
 
 ## Navigation
 
-- [DevTestLab Labs NotificationChannels `[Microsoft.DevTestLab/labs/notificationChannels]`](#devtestlab-labs-notificationchannels-microsoftdevtestlablabsnotificationchannels)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -44,6 +41,7 @@ This module deploys DevTestLab Labs NotificationChannels.
 | `location` | string | `[resourceGroup().location]` | Location for all Resources. |
 | `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en". |
 | `tags` | object | `{object}` | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 

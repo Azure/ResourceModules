@@ -4,13 +4,10 @@ This module deploys DevTestLab Labs ArtifactSources.
 
 ## Navigation
 
-- [DevTestLab Labs ArtifactSources `[Microsoft.DevTestLab/labs/artifactSources]`](#devtestlab-labs-artifactsources-microsoftdevtestlablabsartifactsources)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -46,6 +43,12 @@ This module deploys DevTestLab Labs ArtifactSources.
 | `securityToken` | secureString | `''` |  | The security token to authenticate to the artifact source. |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled". |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+
+**The artifact source's type parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
 
 ### Parameter Usage: `tags`
 

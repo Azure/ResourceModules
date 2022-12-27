@@ -4,16 +4,11 @@ This module deploys DevTestLab Labs.
 
 ## Navigation
 
-- [DevTestLab Labs `[Microsoft.DevTestLab/labs]`](#devtestlab-labs-microsoftdevtestlablabs)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `roleAssignments`](#parameter-usage-roleassignments)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-    - [Parameter Usage: `userAssignedIdentities`](#parameter-usage-userassignedidentities)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
-  - [Deployment examples](#deployment-examples)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -72,6 +67,7 @@ This module deploys DevTestLab Labs.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `virtualNetworks` | _[virtualNetworks](virtualNetworks/readme.md)_ array | `[]` |  | Virtual networks to create for the lab. |
 | `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
+
 
 ### Parameter Usage: `roleAssignments`
 

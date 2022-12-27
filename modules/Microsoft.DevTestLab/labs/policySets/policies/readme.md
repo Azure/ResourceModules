@@ -4,13 +4,10 @@ This module deploys DevTestLab Labs PolicySets Policies.
 
 ## Navigation
 
-- [DevTestLab Labs PolicySets Policies `[Microsoft.DevTestLab/labs/policySets/policies]`](#devtestlab-labs-policysets-policies-microsoftdevtestlablabspolicysetspolicies)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -46,6 +43,7 @@ This module deploys DevTestLab Labs PolicySets Policies.
 | `policySetName` | string | `'default'` |  | The name of the parent policy set. |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the policy. Default is "Enabled". |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 

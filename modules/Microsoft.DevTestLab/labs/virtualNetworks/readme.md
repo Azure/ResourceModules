@@ -4,13 +4,10 @@ This module deploys DevTestLab Labs VirtualNetworks.
 
 ## Navigation
 
-- [DevTestLab Labs VirtualNetworks `[Microsoft.DevTestLab/labs/virtualNetworks]`](#devtestlab-labs-virtualnetworks-microsoftdevtestlablabsvirtualnetworks)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -43,6 +40,7 @@ This module deploys DevTestLab Labs VirtualNetworks.
 | `location` | string | `[resourceGroup().location]` | Location for all Resources. |
 | `subnetOverrides` | array | `[]` | The subnet overrides of the virtual network. |
 | `tags` | object | `{object}` | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 
