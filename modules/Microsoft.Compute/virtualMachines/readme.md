@@ -1048,7 +1048,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlincom'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       offer: '0001-com-ubuntu-server-focal'
       publisher: 'Canonical'
@@ -1191,7 +1191,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     publicKeys: [
       {
         keyData: '<keyData>'
-        path: '/home/localAdminUser/.ssh/authorized_keys'
+        path: '/home/localAdministrator/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
@@ -1225,7 +1225,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "localAdministrator"
     },
     "imageReference": {
       "value": {
@@ -1434,7 +1434,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": [
         {
           "keyData": "<keyData>",
-          "path": "/home/localAdminUser/.ssh/authorized_keys"
+          "path": "/home/localAdministrator/.ssh/authorized_keys"
         }
       ]
     },
@@ -1753,7 +1753,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwincom'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'VMAdmin'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1943,7 +1943,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "VMAdmin"
     },
     "imageReference": {
       "value": {
@@ -2208,7 +2208,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwinatmg'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -2258,7 +2258,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "localAdministrator"
     },
     "imageReference": {
       "value": {
@@ -2446,7 +2446,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwincmk'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'VMAdministrator'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -2509,7 +2509,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "VMAdministrator"
     },
     "imageReference": {
       "value": {

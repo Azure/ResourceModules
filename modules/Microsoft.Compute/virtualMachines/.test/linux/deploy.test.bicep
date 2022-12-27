@@ -70,7 +70,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}'
     location: location
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       publisher: 'Canonical'
       offer: '0001-com-ubuntu-server-focal'
@@ -209,7 +209,7 @@ module testDeployment '../../deploy.bicep' = {
     publicKeys: [
       {
         keyData: resourceGroupResources.outputs.SSHKeyPublicKey
-        path: '/home/localAdminUser/.ssh/authorized_keys'
+        path: '/home/localAdministrator/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
