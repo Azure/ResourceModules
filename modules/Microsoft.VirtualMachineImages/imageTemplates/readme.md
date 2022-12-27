@@ -46,9 +46,9 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `unManagedImageName` | string | `''` |  | Name of the unmanaged image that will be created in the AIB resourcegroup. |
-| `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.<p> |
 | `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Resource group of the user assigned identity. |
 | `vmSize` | string | `'Standard_D2s_v3'` |  | Specifies the size for the VM. |
+| `vmUserAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.<p> |
 
 **Generated parameters**
 
@@ -263,11 +263,11 @@ You can specify multiple user assigned identities to a resource by providing add
 <summary>Parameter JSON format</summary>
 
 ```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
+"vmUserAssignedIdentities": {
+    "value": [
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001",
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002"
+    ]
 }
 ```
 
@@ -278,10 +278,10 @@ You can specify multiple user assigned identities to a resource by providing add
 <summary>Bicep format</summary>
 
 ```bicep
-userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
-}
+vmUserAssignedIdentities: [
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001'
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002'
+]
 ```
 
 </details>
@@ -316,7 +316,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
+module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-vmitadv'
   params: {
     // Required parameters
@@ -354,11 +354,11 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
     unManagedImageName: '<<namePrefix>>-umi-vmitadv-001'
-    userAssignedIdentities: [
-      '<managedIdentityResourceId>'
-    ]
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
+    vmUserAssignedIdentities: [
+      '<managedIdentityResourceId>'
+    ]
   }
 }
 ```
@@ -438,16 +438,16 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "unManagedImageName": {
       "value": "<<namePrefix>>-umi-vmitadv-001"
     },
-    "userAssignedIdentities": {
-      "value": [
-        "<managedIdentityResourceId>"
-      ]
-    },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
     },
     "vmSize": {
       "value": "Standard_D2s_v3"
+    },
+    "vmUserAssignedIdentities": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
     }
   }
 }
@@ -463,7 +463,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
+module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-vmitcom'
   params: {
     // Required parameters
@@ -586,7 +586,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 <summary>via Bicep module</summary>
 
 ```bicep
-module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
+module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-vmitmin'
   params: {
     // Required parameters

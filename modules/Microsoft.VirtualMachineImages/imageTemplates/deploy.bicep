@@ -7,11 +7,6 @@ param userMsiName string
 @description('Optional. Resource group of the user assigned identity.')
 param userMsiResourceGroup string = resourceGroup().name
 
-@description('''Optional. List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.
-Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.
-''')
-param userAssignedIdentities array = []
-
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
@@ -28,6 +23,11 @@ param osDiskSizeGB int = 128
 
 @description('Optional. Resource ID of an already existing subnet, e.g. \'/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>\'. If no value is provided, a new VNET will be created in the target Resource Group.')
 param subnetId string = ''
+
+@description('''Optional. List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.
+Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.
+''')
+param vmUserAssignedIdentities array = []
 
 @description('Required. Image source definition in object format.')
 param imageSource object
@@ -161,7 +161,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
     vmProfile: {
       vmSize: vmSize
       osDiskSizeGB: osDiskSizeGB
-      userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : []
+      userAssignedIdentities: !empty(vmUserAssignedIdentities) ? vmUserAssignedIdentities : []
       vnetConfig: !empty(subnetId) ? vnetConfig : null
     }
     source: imageSource
