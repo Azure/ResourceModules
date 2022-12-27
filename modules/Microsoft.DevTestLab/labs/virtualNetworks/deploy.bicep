@@ -54,11 +54,11 @@ resource virtualNetwork 'Microsoft.DevTestLab/labs/virtualnetworks@2018-10-15-pr
   }
 }
 
-@sys.description('The name of the virtual network.')
+@sys.description('The name of the lab virtual network.')
 output name string = virtualNetwork.name
 
-@sys.description('The resource ID of the virtual network.')
+@sys.description('The resource ID of the lab virtual network.')
 output resourceId string = virtualNetwork.id
 
-@sys.description('The name of the resource group the virtual network was created in.')
+@sys.description('The name of the resource group the lab virtual network was created in.')
 output resourceGroupName string = resourceGroup().name

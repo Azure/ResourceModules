@@ -70,7 +70,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: labName
 
   resource policySets 'policysets@2018-10-15-preview' existing = {
-    name: 'default'
+    name: policySetName
   }
 }
 

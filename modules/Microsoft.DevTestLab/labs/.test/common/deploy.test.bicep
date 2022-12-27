@@ -53,17 +53,38 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'carml${serviceShort}001'
+    location: resourceGroup.location
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    tags: {
+      resourceType: 'DevTest Lab'
+      labName: '<<namePrefix>>${serviceShort}001'
+    }
     announcement: {
       enabled: 'Enabled'
       expirationDate: '2025-12-30T13:00:00.000Z'
       markdown: 'DevTest Lab announcement text. <br> New line. It also supports Markdown'
       title: 'DevTest announcement title'
     }
+    environmentPermission: 'Contributor'
+    extendedProperties: {
+      RdpConnectionType: '7'
+    }
+    labStorageType: 'Premium'
+    artifactsStorageAccount: resourceGroupResources.outputs.storageAccountResourceId
+    premiumDataDisks: 'Enabled'
     support: {
       enabled: 'Enabled'
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
-    systemAssignedIdentity: true
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
@@ -72,15 +93,10 @@ module testDeployment '../../deploy.bicep' = {
     }
     vmCreationResourceGroupId: resourceGroup.id
     browserConnect: 'Enabled'
-    extendedProperties: {
-      RdpConnectionType: '7'
-    }
     disableAutoUpgradeCseMinorVersion: true
     isolateLabResources: 'Enabled'
     encryptionType: 'EncryptionAtRestWithCustomerKey'
     encryptionDiskEncryptionSetId: resourceGroupResources.outputs.diskEncryptionSetResourceId
-    premiumDataDisks: 'Enabled'
-    artifactsStorageAccount: resourceGroupResources.outputs.storageAccountResourceId
     virtualNetworks: [
       {
         name: resourceGroupResources.outputs.virtualNetworkName

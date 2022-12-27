@@ -51,12 +51,12 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' existing = {
+resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(databaseAccount.id, principalId, roleDefinitionIdOrName)
+  name: guid(lab.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -66,5 +66,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
-  scope: databaseAccount
+  scope: lab
 }]

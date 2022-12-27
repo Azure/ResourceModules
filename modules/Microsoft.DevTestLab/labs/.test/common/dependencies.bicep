@@ -10,8 +10,11 @@ param diskEncryptionSetName string
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
-@description('Required. The name of the Storage Account to create and to copy the VHD into.')
+@description('Required. The name of the Storage Account to create.')
 param storageAccountName string
+
+@description('Required. The name of the Virtual Network to create.')
+param virtualNetworkName string
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
@@ -62,7 +65,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
 }
 
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
+    name: guid('msi-${keyVault.id}-${location}-${diskEncryptionSet.id}-KeyVault-Key-Read-RoleAssignment')
     scope: keyVault
     properties: {
         principalId: diskEncryptionSet.identity.principalId
@@ -83,9 +86,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         publicNetworkAccess: 'Disabled'
     }
 }
-
-@description('Required. The name of the Virtual Network to create.')
-param virtualNetworkName string
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName

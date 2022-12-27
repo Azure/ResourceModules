@@ -74,7 +74,7 @@ resource artifactsource 'Microsoft.DevTestLab/labs/artifactsources@2018-10-15-pr
     branchRef: !empty(branchRef) ? branchRef : null
     folderPath: !empty(folderPath) ? folderPath : null
     armTemplateFolderPath: !empty(armTemplateFolderPath) ? armTemplateFolderPath : null
-    //securityToken: !empty(securityToken) ? securityToken : null
+    securityToken: !empty(securityToken) ? securityToken : null
     sourceType: !empty(sourceType) ? sourceType : null
     status: status
     uri: uri

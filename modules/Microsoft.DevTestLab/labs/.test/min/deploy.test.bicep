@@ -35,7 +35,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    name: '<<namePrefix>>${serviceShort}001'
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'carml${serviceShort}001'
   }
 }

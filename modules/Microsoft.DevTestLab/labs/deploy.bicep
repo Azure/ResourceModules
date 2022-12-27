@@ -4,6 +4,17 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
+@allowed([
+  ''
+  'CanNotDelete'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = ''
+
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+param roleAssignments array = []
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -47,9 +58,6 @@ param premiumDataDisks string = 'Disabled'
 @description('Optional. The properties of any lab support message associated with this lab.')
 param support object = {}
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
@@ -86,9 +94,6 @@ param encryptionType string = 'EncryptionAtRestWithPlatformKey'
 @description('Conditional. The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey".')
 param encryptionDiskEncryptionSetId string = ''
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = true
-
 @description('Optional. Virtual networks to create for the lab.')
 param virtualNetworks array = []
 
@@ -101,14 +106,10 @@ param schedules array = []
 @description('Optional. Artifact sources to create for the lab.')
 param artifactSources array = []
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 var enableReferencedModulesTelemetry = false
-
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
-
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -126,7 +127,10 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
   name: name
   location: location
   tags: tags
-  identity: identity
+  identity: {
+    type: !empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
+  }
   properties: {
     artifactsStorageAccount: artifactsStorageAccount
     announcement: announcement
@@ -147,6 +151,15 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
       diskEncryptionSetId: !empty(encryptionDiskEncryptionSetId) ? encryptionDiskEncryptionSetId : null
     }
   }
+}
+
+resource lab_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${lab.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: lab
 }
 
 module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork, index) in virtualNetworks: {
@@ -215,13 +228,31 @@ module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource
     branchRef: contains(artifactSource, 'branchRef') ? artifactSource.branchRef : ''
     folderPath: contains(artifactSource, 'folderPath') ? artifactSource.folderPath : ''
     armTemplateFolderPath: contains(artifactSource, 'armTemplateFolderPath') ? artifactSource.armTemplateFolderPath : ''
-    //securityToken: contains(artifactSource, 'armTemplateFolderPath') ? artifactSource.armTemplateFolderPath : ''
     sourceType: contains(artifactSource, 'sourceType') ? artifactSource.sourceType : ''
     status: contains(artifactSource, 'status') ? artifactSource.status : 'Enabled'
     uri: artifactSource.uri
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
+
+module lab_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
+    resourceId: lab.id
+  }
+}]
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = lab.identity.principalId
+
+@description('The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates.')
+output uniqueIdentifier string = lab.properties.uniqueIdentifier
 
 @description('The resource group the lab was deployed into.')
 output resourceGroupName string = resourceGroup().name
