@@ -4,9 +4,6 @@ param labName string
 @sys.description('Required. The name of the notification channel.')
 param name string
 
-@sys.description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -29,7 +26,7 @@ param notificationLocale string = 'en'
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {
@@ -47,7 +44,6 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
 resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@2018-09-15' = {
   name: name
   parent: lab
-  location: location
   tags: tags
   properties: {
     description: description
@@ -66,6 +62,3 @@ output resourceId string = notificationChannel.id
 
 @sys.description('The name of the resource group the notification channel was created in.')
 output resourceGroupName string = resourceGroup().name
-
-@sys.description('The location the notification channel was deployed into.')
-output location string = notificationChannel.location

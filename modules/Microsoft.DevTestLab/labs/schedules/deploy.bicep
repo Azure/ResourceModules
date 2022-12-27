@@ -15,9 +15,6 @@ param name string
 @sys.description('Required. The task type of the schedule (e.g. LabVmsShutdownTask, LabVmsStartupTask).')
 param taskType string
 
-@sys.description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -57,7 +54,7 @@ param notificationSettingsTimeInMinutes int = 30
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {
@@ -75,7 +72,6 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
 resource schedule 'Microsoft.DevTestLab/labs/schedules@2018-09-15' = {
   name: name
   parent: lab
-  location: location
   tags: tags
   properties: {
     taskType: taskType
@@ -100,6 +96,3 @@ output resourceId string = schedule.id
 
 @sys.description('The name of the resource group the schedule was created in.')
 output resourceGroupName string = resourceGroup().name
-
-@sys.description('The location the schedule was deployed into.')
-output location string = schedule.location

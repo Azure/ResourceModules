@@ -7,9 +7,6 @@ param name string
 @sys.description('Required. The resource ID of the virtual network.')
 param externalProviderResourceId string
 
-@sys.description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -26,7 +23,7 @@ param subnetOverrides array = []
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {
@@ -44,7 +41,6 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
 resource virtualNetwork 'Microsoft.DevTestLab/labs/virtualnetworks@2018-09-15' = {
   name: name
   parent: lab
-  location: location
   tags: tags
   properties: {
     description: description
@@ -62,6 +58,3 @@ output resourceId string = virtualNetwork.id
 
 @sys.description('The name of the resource group the lab virtual network was created in.')
 output resourceGroupName string = resourceGroup().name
-
-@sys.description('The location the virtual network was deployed into.')
-output location string = virtualNetwork.location

@@ -38,7 +38,6 @@ This module deploys DevTestLab Labs NotificationChannels.
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | Description of notification. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all Resources. |
 | `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en". |
 | `tags` | object | `{object}` | Tags of the resource. |
 
@@ -88,7 +87,6 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the notification channel was deployed into. |
 | `name` | string | The name of the notification channel. |
 | `resourceGroupName` | string | The name of the resource group the notification channel was created in. |
 | `resourceId` | string | The resource ID of the notification channel. |

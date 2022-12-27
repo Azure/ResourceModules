@@ -37,7 +37,6 @@ This module deploys DevTestLab Labs Schedules.
 | `dailyRecurrence` | object | `{object}` |  | If the schedule will occur once each day of the week, specify the daily recurrence. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hourlyRecurrence` | object | `{object}` |  | If the schedule will occur multiple times a day, specify the hourly recurrence. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `notificationSettingsStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | If notifications are enabled for this schedule (i.e. Enabled, Disabled). Default is "Disabled". |
 | `notificationSettingsTimeInMinutes` | int | `30` |  | Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes. |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the schedule (i.e. Enabled, Disabled). Default is "Enabled". |
@@ -92,7 +91,6 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the schedule was deployed into. |
 | `name` | string | The name of the schedule. |
 | `resourceGroupName` | string | The name of the resource group the schedule was created in. |
 | `resourceId` | string | The resource ID of the schedule. |

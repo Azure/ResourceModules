@@ -39,7 +39,6 @@ This module deploys DevTestLab Labs ArtifactSources.
 | `branchRef` | string | `''` |  | The artifact source's branch reference (e.g. main or master). |
 | `displayName` | string | `[parameters('name')]` |  | The artifact source's display name. Default is the name of the artifact source. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `securityToken` | secureString | `''` |  | The security token to authenticate to the artifact source. |
 | `sourceType` | string | `''` | `['', GitHub, StorageAccount, VsoGit]` | The artifact source's type. |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled". |
@@ -91,7 +90,6 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the artifact source was deployed into. |
 | `name` | string | The name of the artifact source. |
 | `resourceGroupName` | string | The name of the resource group the artifact source was created in. |
 | `resourceId` | string | The resource ID of the artifact source. |

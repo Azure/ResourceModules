@@ -4,9 +4,6 @@ param labName string
 @sys.description('Required. The name of the artifact source.')
 param name string
 
-@sys.description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -49,7 +46,7 @@ param uri string
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {
@@ -67,7 +64,6 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
 resource artifactsource 'Microsoft.DevTestLab/labs/artifactsources@2018-09-15' = {
   name: name
   parent: lab
-  location: location
   tags: tags
   properties: {
     displayName: displayName
@@ -89,6 +85,3 @@ output resourceId string = artifactsource.id
 
 @sys.description('The name of the resource group the artifact source was created in.')
 output resourceGroupName string = resourceGroup().name
-
-@description('The location the artifact source was deployed into.')
-output location string = artifactsource.location

@@ -37,7 +37,6 @@ This module deploys DevTestLab Labs VirtualNetworks.
 | `allowedSubnets` | array | `[]` | The allowed subnets of the virtual network. |
 | `description` | string | `''` | The description of the virtual network. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `[resourceGroup().location]` | Location for all Resources. |
 | `subnetOverrides` | array | `[]` | The subnet overrides of the virtual network. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
@@ -87,7 +86,6 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the virtual network was deployed into. |
 | `name` | string | The name of the lab virtual network. |
 | `resourceGroupName` | string | The name of the resource group the lab virtual network was created in. |
 | `resourceId` | string | The resource ID of the lab virtual network. |

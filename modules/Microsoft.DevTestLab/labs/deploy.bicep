@@ -128,7 +128,6 @@ module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork
   params: {
     labName: lab.name
     name: virtualNetwork.name
-    location: location
     tags: tags
     externalProviderResourceId: virtualNetwork.externalProviderResourceId
     description: contains(virtualNetwork, 'description') ? virtualNetwork.description : ''
@@ -143,7 +142,6 @@ module lab_policies 'policySets/policies/deploy.bicep' = [for (policy, index) in
   params: {
     labName: lab.name
     name: policy.name
-    location: location
     tags: tags
     description: contains(policy, 'description') ? policy.description : ''
     evaluatorType: policy.evaluatorType
@@ -160,7 +158,6 @@ module lab_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedu
   params: {
     labName: lab.name
     name: schedule.name
-    location: location
     tags: tags
     taskType: schedule.taskType
     dailyRecurrence: contains(schedule, 'dailyRecurrence') ? schedule.dailyRecurrence : {}
@@ -180,7 +177,6 @@ module lab_notificationChannels 'notificationChannels/deploy.bicep' = [for (noti
   params: {
     labName: lab.name
     name: notificationChannel.name
-    location: location
     tags: tags
     description: contains(notificationChannel, 'description') ? notificationChannel.description : ''
     events: notificationChannel.events
@@ -196,7 +192,6 @@ module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource
   params: {
     labName: lab.name
     name: artifactSource.name
-    location: location
     tags: tags
     displayName: contains(artifactSource, 'displayName') ? artifactSource.displayName : artifactSource.name
     branchRef: contains(artifactSource, 'branchRef') ? artifactSource.branchRef : ''

@@ -39,7 +39,6 @@ This module deploys DevTestLab Labs PolicySets Policies.
 | `description` | string | `''` |  | The description of the policy. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `factData` | string | `''` |  | The fact data of the policy. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `policySetName` | string | `'default'` |  | The name of the parent policy set. |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the policy. Default is "Enabled". |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -90,7 +89,6 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the policy was deployed into. |
 | `name` | string | The name of the policy. |
 | `resourceGroupName` | string | The name of the resource group the policy was created in. |
 | `resourceId` | string | The resource ID of the policy. |

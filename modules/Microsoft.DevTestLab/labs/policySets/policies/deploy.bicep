@@ -7,9 +7,6 @@ param policySetName string = 'default'
 @sys.description('Required. The name of the policy.')
 param name string
 
-@sys.description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -55,7 +52,7 @@ param threshold string
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {
@@ -77,7 +74,6 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
 resource policy 'Microsoft.DevTestLab/labs/policysets/policies@2018-09-15' = {
   name: name
   parent: lab::policySets
-  location: location
   tags: tags
   properties: {
     description: description
@@ -97,6 +93,3 @@ output resourceId string = policy.id
 
 @sys.description('The name of the resource group the policy was created in.')
 output resourceGroupName string = resourceGroup().name
-
-@sys.description('The location the policy was deployed into.')
-output location string = policy.location
