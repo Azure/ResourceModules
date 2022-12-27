@@ -17,7 +17,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     }
     subnets: [
       {
-        name: 'default-subnet'
+        name: 'defaultSubnet'
         properties: {
 
           addressPrefix: addressPrefix

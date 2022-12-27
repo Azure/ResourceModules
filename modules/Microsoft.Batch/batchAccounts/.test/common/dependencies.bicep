@@ -10,6 +10,8 @@ param managedIdentityName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
+var addressPrefix = '10.0.0.0/16'
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     name: storageAccountName
     location: location
@@ -25,14 +27,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-                '10.0.0.0/24'
+                addressPrefix
             ]
         }
         subnets: [
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: '10.0.0.0/24'
+                    addressPrefix: addressPrefix
                 }
             }
         ]
