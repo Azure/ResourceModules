@@ -39,7 +39,7 @@ param unManagedImageName string = ''
 @description('Optional. Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>.')
 param sigImageDefinitionId string = ''
 
-@description('''Optional. The staging resource group id in the same subscription as the image template that will be used to build the image.
+@description('''Optional. Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.
 If this field is empty, a resource group with a random name will be created.
 If the resource group specified in this field doesn\'t exist, it will be created with the same name.
 If the resource group specified exists, it must be empty and in the same region as the image template.
