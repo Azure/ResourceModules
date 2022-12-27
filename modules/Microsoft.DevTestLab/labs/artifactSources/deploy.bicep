@@ -32,7 +32,7 @@ param securityToken string = ''
   'StorageAccount'
   'VsoGit'
 ])
-@sys.description('The artifact source\'s type.')
+@sys.description('Optional. The artifact source\'s type.')
 param sourceType string = ''
 
 @allowed([
@@ -89,3 +89,6 @@ output resourceId string = artifactsource.id
 
 @sys.description('The name of the resource group the artifact source was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the artifact source was deployed into.')
+output location string = artifactsource.location

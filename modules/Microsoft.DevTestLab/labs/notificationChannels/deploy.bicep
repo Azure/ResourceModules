@@ -66,3 +66,6 @@ output resourceId string = notificationChannel.id
 
 @sys.description('The name of the resource group the notification channel was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The location the notification channel was deployed into.')
+output location string = notificationChannel.location

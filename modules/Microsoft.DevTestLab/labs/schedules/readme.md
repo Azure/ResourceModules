@@ -92,6 +92,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the schedule was deployed into. |
 | `name` | string | The name of the schedule. |
 | `resourceGroupName` | string | The name of the resource group the schedule was created in. |
 | `resourceId` | string | The resource ID of the schedule. |

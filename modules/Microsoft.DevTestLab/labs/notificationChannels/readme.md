@@ -88,6 +88,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the notification channel was deployed into. |
 | `name` | string | The name of the notification channel. |
 | `resourceGroupName` | string | The name of the resource group the notification channel was created in. |
 | `resourceId` | string | The resource ID of the notification channel. |

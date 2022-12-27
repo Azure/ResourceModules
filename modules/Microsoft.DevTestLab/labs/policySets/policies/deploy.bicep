@@ -97,3 +97,6 @@ output resourceId string = policy.id
 
 @sys.description('The name of the resource group the policy was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The location the policy was deployed into.')
+output location string = policy.location
