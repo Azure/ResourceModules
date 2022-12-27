@@ -283,7 +283,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmiadv'
+  name: '${uniqueString(deployment().name)}-test-vmitadv'
   params: {
     // Required parameters
     customizationSteps: [
@@ -299,7 +299,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmiadv001'
+    name: '<<namePrefix>>vmitadv001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 60
@@ -319,7 +319,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     sigImageDefinitionId: '<sigImageDefinitionId>'
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
-    unManagedImageName: '<<namePrefix>>-umi-vmiadv-001'
+    unManagedImageName: '<<namePrefix>>-umi-vmitadv-001'
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
@@ -357,7 +357,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmiadv001"
+      "value": "<<namePrefix>>vmitadv001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -399,7 +399,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "<subnetId>"
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-umi-vmiadv-001"
+      "value": "<<namePrefix>>-umi-vmitadv-001"
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
@@ -422,7 +422,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmicom'
+  name: '${uniqueString(deployment().name)}-test-vmitcom'
   params: {
     // Required parameters
     customizationSteps: [
@@ -438,7 +438,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmicom001'
+    name: '<<namePrefix>>vmitcom001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 120
@@ -488,7 +488,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmicom001"
+      "value": "<<namePrefix>>vmitcom001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -545,7 +545,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmimin'
+  name: '${uniqueString(deployment().name)}-test-vmitmin'
   params: {
     // Required parameters
     customizationSteps: [
@@ -561,14 +561,14 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmimin001'
+    name: '<<namePrefix>>vmitmin001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 0
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: ''
-    managedImageName: '<<namePrefix>>-mi-vmimin-001'
+    managedImageName: '<<namePrefix>>-mi-vmitmin-001'
     osDiskSizeGB: 127
     roleAssignments: []
     sigImageDefinitionId: ''
@@ -612,7 +612,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmimin001"
+      "value": "<<namePrefix>>vmitmin001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -631,7 +631,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": ""
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmimin-001"
+      "value": "<<namePrefix>>-mi-vmitmin-001"
     },
     "osDiskSizeGB": {
       "value": 127

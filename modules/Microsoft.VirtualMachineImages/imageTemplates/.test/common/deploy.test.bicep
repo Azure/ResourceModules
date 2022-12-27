@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${servi
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'vmicom'
+param serviceShort string = 'vmitcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true

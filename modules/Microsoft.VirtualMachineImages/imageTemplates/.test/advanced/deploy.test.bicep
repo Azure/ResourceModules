@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${servi
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'vmiadv'
+param serviceShort string = 'vmitadv'
 
 @description('Optional. The staging resource group name in the same location and subscription as the image template. Must not exist.')
 param stagingResourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${serviceShort}-staging-rg'
