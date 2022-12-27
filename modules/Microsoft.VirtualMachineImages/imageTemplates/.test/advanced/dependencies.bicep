@@ -10,6 +10,9 @@ param sigImageDefinitionName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+@description('Optional. The name of the Virtual Network to create.')
+param virtualNetworkName string
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
   location: location
@@ -28,11 +31,11 @@ resource galleryImageDefinition 'Microsoft.Compute/galleries/images@2022-03-03' 
   parent: gallery
   properties: {
     architecture: 'x64'
-    hyperVGeneration: 'V1'
+    hyperVGeneration: 'V2'
     identifier: {
-      offer: 'Windows-10'
+      offer: 'Windows-11'
       publisher: 'MicrosoftWindowsDesktop'
-      sku: 'Win10-AVD-g1'
+      sku: 'Win11-AVD-g2'
     }
     osState: 'Generalized'
     osType: 'Windows'
@@ -58,6 +61,27 @@ resource msi_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01'
   }
 }
 
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+  name: virtualNetworkName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/24'
+      ]
+    }
+    subnets: [
+      {
+        name: 'defaultSubnet'
+        properties: {
+          addressPrefix: '10.0.0.0/24'
+          privateLinkServiceNetworkPolicies: 'Disabled'
+        }
+      }
+    ]
+  }
+}
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
@@ -66,3 +90,6 @@ output managedIdentityName string = managedIdentity.name
 
 @description('The resource ID of the created Image Definition.')
 output sigImageDefinitionId string = galleryImageDefinition.id
+
+@description('The subnet resource id of the defaultSubnet of the created Virtual Network.')
+output subnetId string = '${virtualNetwork.id}/subnets/defaultSubnet'

@@ -39,6 +39,15 @@ param unManagedImageName string = ''
 @description('Optional. Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>.')
 param sigImageDefinitionId string = ''
 
+@description('''Optional. The staging resource group id in the same subscription as the image template that will be used to build the image.
+If this field is empty, a resource group with a random name will be created.
+If the resource group specified in this field doesn\'t exist, it will be created with the same name.
+If the resource group specified exists, it must be empty and in the same region as the image template.
+The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,
+but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.
+''')
+param stagingResourceGroup string = ''
+
 @description('Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment\'s location will be taken as a default value.')
 param imageReplicationRegions array = []
 
@@ -132,7 +141,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14' = {
+resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14' = {
   name: '${name}-${baseTime}'
   location: location
   tags: tags
@@ -152,6 +161,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
     source: imageSource
     customize: customizationSteps
     distribute: distribute
+    stagingResourceGroup: !empty(stagingResourceGroup) ? stagingResourceGroup : ''
   }
 }
 
