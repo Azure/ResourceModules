@@ -34,12 +34,12 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-carml-msi-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-carml-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    diskEncryptionSetName: 'dep-carml-des-${serviceShort}'
-    storageAccountName: 'depcarmlsa${serviceShort}'
-    virtualNetworkName: 'dep-carml-vnet-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
@@ -52,7 +52,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'carml${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     location: resourceGroup.location
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -202,9 +202,6 @@ module testDeployment '../../deploy.bicep' = {
           time: '0000'
         }
         notificationSettingsStatus: 'Enabled'
-        notificationSettingsEmailRecipient: 'mail@contosodtlmail.com'
-        notificationSettingsWebhookUrl: 'https://webhook.contosotest.com'
-        notificationSettingsNotificationLocale: 'en'
         notificationSettingsTimeInMinutes: 30
       }
       {
@@ -222,6 +219,20 @@ module testDeployment '../../deploy.bicep' = {
             'Friday'
           ]
         }
+      }
+    ]
+    notificationChannels: [
+      {
+        name: 'AutoShutdown'
+        description: 'Integration configured for auto-shutdown'
+        events: [
+          {
+            eventName: 'AutoShutdown'
+          }
+        ]
+        emailRecipient: 'mail@contosodtlmail.com'
+        webhookUrl: 'https://webhook.contosotest.com'
+        notificationLocale: 'en'
       }
     ]
     artifactSources: [

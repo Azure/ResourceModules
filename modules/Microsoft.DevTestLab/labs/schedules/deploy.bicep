@@ -50,28 +50,11 @@ param timeZoneId string = 'Pacific Standard time'
 @sys.description('Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled). Default is "Disabled".')
 param notificationSettingsStatus string = 'Disabled'
 
-@sys.description('Conditional. The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "notificationSettingsStatus" is set to "Enabled" and "notificationSettingsWebhookUrl" is empty.')
-param notificationSettingsEmailRecipient string = ''
-
-@sys.description('Conditional. The webhook URL to which the notification will be sent. Required if "notificationSettingsStatus" is set to "Enabled" and "notificationSettingsWebhookUrl" is empty.')
-param notificationSettingsWebhookUrl string = ''
-
-@sys.description('Optional. The locale to use when sending a notification (fallback for unsupported languages is EN). Optional if "notificationSettingsStatus" is set to "Enabled". Default is "en".')
-param notificationSettingsNotificationLocale string = 'en'
-
-@sys.description('Optional. Time in minutes before event at which notification will be sent. Default is "30". Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes.')
+@sys.description('Optional. Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes.')
 param notificationSettingsTimeInMinutes int = 30
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
-
-var notificationSettings = notificationSettingsStatus == 'Enabled' ? {
-  status: notificationSettingsStatus
-  emailRecipient: notificationSettingsEmailRecipient
-  webhookUrl: notificationSettingsWebhookUrl
-  notificationLocale: notificationSettingsNotificationLocale
-  timeInMinutes: notificationSettingsTimeInMinutes
-} : {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -102,7 +85,10 @@ resource schedule 'Microsoft.DevTestLab/labs/schedules@2018-10-15-preview' = {
     status: status
     targetResourceId: !empty(targetResourceId) ? targetResourceId : null
     timeZoneId: timeZoneId
-    notificationSettings: notificationSettings
+    notificationSettings: notificationSettingsStatus == 'Enabled' ? {
+      status: notificationSettingsStatus
+      timeInMinutes: notificationSettingsTimeInMinutes
+    } : {}
   }
 }
 

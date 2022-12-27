@@ -103,6 +103,9 @@ param policies array = []
 @description('Optional. Schedules to create for the lab.')
 param schedules array = []
 
+@description('Conditional. Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled.')
+param notificationChannels array = []
+
 @description('Optional. Artifact sources to create for the lab.')
 param artifactSources array = []
 
@@ -167,9 +170,9 @@ module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork
   params: {
     labName: lab.name
     name: virtualNetwork.name
-    externalProviderResourceId: virtualNetwork.externalProviderResourceId
     location: location
     tags: tags
+    externalProviderResourceId: virtualNetwork.externalProviderResourceId
     description: contains(virtualNetwork, 'description') ? virtualNetwork.description : ''
     allowedSubnets: contains(virtualNetwork, 'allowedSubnets') ? virtualNetwork.allowedSubnets : []
     subnetOverrides: contains(virtualNetwork, 'subnetOverrides') ? virtualNetwork.subnetOverrides : []
@@ -209,10 +212,23 @@ module lab_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedu
     targetResourceId: contains(schedule, 'targetResourceId') ? schedule.targetResourceId : ''
     timeZoneId: contains(schedule, 'timeZoneId') ? schedule.timeZoneId : 'Pacific Standard time'
     notificationSettingsStatus: contains(schedule, 'notificationSettingsStatus') ? schedule.notificationSettingsStatus : 'Disabled'
-    notificationSettingsEmailRecipient: contains(schedule, 'notificationSettingsEmailRecipient') ? schedule.notificationSettingsEmailRecipient : ''
-    notificationSettingsWebhookUrl: contains(schedule, 'notificationSettingsWebhookUrl') ? schedule.notificationSettingsWebhookUrl : ''
-    notificationSettingsNotificationLocale: contains(schedule, 'notificationSettingsNotificationLocale') ? schedule.notificationSettingsNotificationLocale : 'en'
     notificationSettingsTimeInMinutes: contains(schedule, 'notificationSettingsTimeInMinutes') ? schedule.notificationSettingsTimeInMinutes : 30
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module lab_notificationChannels 'notificationChannels/deploy.bicep' = [for (notificationChannel, index) in notificationChannels: {
+  name: '${uniqueString(deployment().name, location)}-Lab-NotificationChannels-${index}'
+  params: {
+    labName: lab.name
+    name: notificationChannel.name
+    location: location
+    tags: tags
+    description: contains(notificationChannel, 'description') ? notificationChannel.description : ''
+    events: notificationChannel.events
+    emailRecipient: contains(notificationChannel, 'emailRecipient') ? notificationChannel.emailRecipient : ''
+    webhookUrl: contains(notificationChannel, 'webhookUrl') ? notificationChannel.webhookUrl : ''
+    notificationLocale: contains(notificationChannel, 'notificationLocale') ? notificationChannel.notificationLocale : 'en'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
