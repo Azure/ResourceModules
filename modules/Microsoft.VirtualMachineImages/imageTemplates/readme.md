@@ -254,7 +254,7 @@ roleAssignments: [
 </details>
 <p>
 
-### Parameter Usage: `userAssignedIdentities`
+### Parameter Usage: `vmUserAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
 
