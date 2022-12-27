@@ -36,7 +36,7 @@ This module deploys DevTestLab Labs ArtifactSources.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `branchRef` | string | `''` |  | The artifact source's branch reference (E.g. main or master) |
+| `branchRef` | string | `''` |  | The artifact source's branch reference (e.g. main or master). |
 | `displayName` | string | `[parameters('name')]` |  | The artifact source's display name. Default is the name of the artifact source. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |

@@ -13,7 +13,7 @@ param tags object = {}
 @sys.description('Optional. The artifact source\'s display name. Default is the name of the artifact source.')
 param displayName string = name
 
-@sys.description('Optional. The artifact source\'s branch reference (E.g. main or master)')
+@sys.description('Optional. The artifact source\'s branch reference (e.g. main or master).')
 param branchRef string = ''
 
 @sys.description('Conditional. The folder containing artifacts. At least one folder path is required. Required if "armTemplateFolderPath" is empty.')
