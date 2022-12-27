@@ -13,7 +13,7 @@ This module deploys DevTestLab Labs VirtualNetworks.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DevTestLab/labs/virtualnetworks` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs/virtualnetworks) |
+| `Microsoft.DevTestLab/labs/virtualnetworks` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/virtualnetworks) |
 
 ## Parameters
 
