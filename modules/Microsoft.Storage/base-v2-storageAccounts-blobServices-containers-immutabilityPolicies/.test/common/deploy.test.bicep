@@ -44,7 +44,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    containerName: resourceGroupResources.outputs.storageAccountContainerName
+    containerName: last(split(resourceGroupResources.outputs.storageAccountContainerName, '/'))
     storageAccountName: resourceGroupResources.outputs.storageAccountName
     enableDefaultTelemetry: enableDefaultTelemetry
   }
