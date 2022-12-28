@@ -40,12 +40,12 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-// module testDeployment '../../deploy.bicep' = {
-//   scope: resourceGroup
-//   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-//   params: {
-//     containerName: resourceGroupResources.outputs.storageAccountContainerName
-//     storageAccountName: resourceGroupResources.outputs.storageAccountName
-//     enableDefaultTelemetry: enableDefaultTelemetry
-//   }
-// }
+module testDeployment '../../deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  params: {
+    containerName: resourceGroupResources.outputs.storageAccountContainerName
+    storageAccountName: resourceGroupResources.outputs.storageAccountName
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}

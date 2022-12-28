@@ -34,19 +34,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
   name: storageAccountName
+}
 
-  resource blobServices 'blobServices@2021-09-01' existing = {
-    name: blobServicesName
+resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-09-01' existing = {
+  name: blobServicesName
+  parent: storageAccount
+}
 
-    resource container 'containers@2021-09-01' existing = {
-      name: containerName
-    }
-  }
+resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' existing = {
+  name: containerName
+  parent: blobServices
 }
 
 resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2021-09-01' = {
   name: name
-  parent: storageAccount::blobServices::container
+  parent: container
   properties: {
     immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
     allowProtectedAppendWrites: allowProtectedAppendWrites
