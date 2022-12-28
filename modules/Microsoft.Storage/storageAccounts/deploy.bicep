@@ -321,7 +321,7 @@ module storageAccount_localUsers 'localUsers/deploy.bicep' = [ for (localUser, i
   params: {
     storageAccountName: storageAccount.name
     name: localUser.name
-    hasSharedKey: contains(localUser,'hasSharedKey') ? localUser.hasSharedKey : []
+    hasSharedKey: contains(localUser,'hasSharedKey') ? localUser.hasSharedKey : false
     hasSshKey: contains(localUser,'hasSshPassword') ? localUser.hasSshPassword: true
     hasSshPassword: contains(localUser,'hasSshPassword') ? localUser.hasSshPassword: false
     homeDirectory: contains(localUser,'homeDirectory') ? localUser.homeDirectory : ''
