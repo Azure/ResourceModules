@@ -236,8 +236,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
-    isSftpEnabled: enableSftp ? enableSftp : null
-    isNfsV3Enabled: enableNfsV3 ? enableNfsV3 : null
+    isSftpEnabled: enableSftp
+    isNfsV3Enabled: enableNfsV3
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
