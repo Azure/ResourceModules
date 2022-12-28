@@ -24,7 +24,7 @@ This module deploys Storage StorageAccounts LocalUsers.
 | :-- | :-- | :-- |
 | `hasSshKey` | bool | Indicates whether ssh key exists. Set it to false to remove existing SSH key. |
 | `hasSshPassword` | bool | Indicates whether ssh password exists. Set it to false to remove existing SSH password. |
-| `name` | string | The local user name to be used for SFTP Authentication. |
+| `name` | string | The local username to be used for SFTP Authentication. |
 | `permissionScopes` | array | The permission scopes of the local user. |
 
 **Conditional parameters**

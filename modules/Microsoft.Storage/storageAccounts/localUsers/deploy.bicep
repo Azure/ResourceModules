@@ -2,7 +2,7 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Required. The local user name to be used for SFTP Authentication.')
+@description('Required. The local username to be used for SFTP Authentication.')
 param name string
 
 @description('Optional. Indicates whether shared key exists. Set it to false to remove existing shared key.')
