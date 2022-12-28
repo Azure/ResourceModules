@@ -14,7 +14,7 @@
     "moduleAliases": {
         "br": {
             "carml": {
-                "registry": "adpsxxazacrx001.azurecr.io",
+                "registry": "adpcarmlacrtest002.azurecr.io",
                 "modulePath": "bicep/modules"
             }
         }
