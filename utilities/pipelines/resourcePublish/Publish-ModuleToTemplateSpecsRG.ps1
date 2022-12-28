@@ -27,11 +27,11 @@ Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
+Publish-ModuleToTemplateSpecsRG -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a template spec in resource group 'artifacts-rg'.
 #>
-function Publish-ModuleToTemplateSpec {
+function Publish-ModuleToTemplateSpecsRG {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -53,12 +53,12 @@ function Publish-ModuleToTemplateSpec {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        # Load helper functions
+        . (Join-Path $PSScriptRoot 'Get-TemplateSpecsName.ps1')
     }
 
     process {
-        $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
-        $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
-
         #############################
         ##    EVALUATE RESOURCES   ##
         #############################
@@ -67,6 +67,9 @@ function Publish-ModuleToTemplateSpec {
                 New-AzResourceGroup -Name $TemplateSpecsRgName -Location $TemplateSpecsRgLocation
             }
         }
+
+        # Get a valid Template Specs name
+        $templateSpecIdentifier = Get-TemplateSpecsName -TemplateFilePath $TemplateFilePath
 
         ################################
         ##    Create template spec    ##

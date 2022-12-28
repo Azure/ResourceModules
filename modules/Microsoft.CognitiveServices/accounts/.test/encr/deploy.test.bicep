@@ -52,15 +52,9 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     kind: 'SpeechServices'
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: resourceGroupResources.outputs.managedIdentityClientId
-        keyName: resourceGroupResources.outputs.keyVaultKeyName
-        keyVaultUri: resourceGroupResources.outputs.keyVaultUri
-        keyversion: resourceGroupResources.outputs.keyVaultKeyVersion
-      }
-    }
+    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+    cMKKeyName: resourceGroupResources.outputs.keyVaultKeyName
+    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
     userAssignedIdentities: {
