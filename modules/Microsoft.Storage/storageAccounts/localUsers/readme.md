@@ -22,7 +22,6 @@ This module deploys Storage StorageAccounts LocalUsers.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `hasSharedKey` | bool | Indicates whether shared key exists. Set it to false to remove existing shared key. |
 | `hasSshKey` | bool | Indicates whether ssh key exists. Set it to false to remove existing SSH key. |
 | `hasSshPassword` | bool | Indicates whether ssh password exists. Set it to false to remove existing SSH password. |
 | `name` | string | The local user name to be used for SFTP Authentication. |
@@ -39,8 +38,9 @@ This module deploys Storage StorageAccounts LocalUsers.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `hasSharedKey` | bool | `False` | Indicates whether shared key exists. Set it to false to remove existing shared key. |
 | `homeDirectory` | string | `''` | The local user home directory. |
-| `sshAuthorizedKeys` | array |  | The local user ssh authorized keys for SFTP. |
+| `sshAuthorizedKeys` | array | `[]` | The local user ssh authorized keys for SFTP. |
 
 
 ## Outputs

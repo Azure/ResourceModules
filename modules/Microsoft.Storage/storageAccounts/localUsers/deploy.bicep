@@ -5,8 +5,8 @@ param storageAccountName string
 @description('Required. The local user name to be used for SFTP Authentication.')
 param name string
 
-@description('Required. Indicates whether shared key exists. Set it to false to remove existing shared key.')
-param hasSharedKey bool 
+@description('Optional. Indicates whether shared key exists. Set it to false to remove existing shared key.')
+param hasSharedKey bool = false
 
 @description('Required. Indicates whether ssh key exists. Set it to false to remove existing SSH key.')
 param hasSshKey bool
@@ -21,7 +21,7 @@ param homeDirectory string = ''
 param permissionScopes array
 
 @description('Optional. The local user ssh authorized keys for SFTP.')
-param sshAuthorizedKeys array
+param sshAuthorizedKeys array = []
 
 
 
@@ -54,7 +54,7 @@ resource localUsers 'Microsoft.Storage/storageAccounts/localUsers@2022-05-01' = 
     hasSshPassword: hasSshPassword
     homeDirectory: homeDirectory
     permissionScopes: permissionScopes
-    sshAuthorizedKeys: sshAuthorizedKeys
+    sshAuthorizedKeys: empty(sshAuthorizedKeys) ? null : sshAuthorizedKeys
   }
 }
 

@@ -321,12 +321,13 @@ module storageAccount_localUsers 'localUsers/deploy.bicep' = [ for (localUser, i
   params: {
     storageAccountName: storageAccount.name
     name: localUser.name
-    hasSharedKey: localUser.hasSharedKey
-    hasSshKey: localUser.hasSshKey
-    hasSshPassword: localUser.hasSshPassword
-    homeDirectory: localUser.homeDirectory
-    permissionScopes: localUser.permissionScopes
-    sshAuthorizedKeys: localUser.sshAuthorizedKeys
+    hasSharedKey: contains(localUser,'hasSharedKey') ? localUser.hasSharedKey : []
+    hasSshKey: contains(localUser,'hasSshPassword') ? localUser.hasSshPassword: true
+    hasSshPassword: contains(localUser,'hasSshPassword') ? localUser.hasSshPassword: false
+    homeDirectory: contains(localUser,'homeDirectory') ? localUser.homeDirectory : ''
+    permissionScopes: contains(localUser,'permissionScopes') ? localUser.permissionScopes: []
+    sshAuthorizedKeys: contains(localUser,'sshAuthorizedKeys') ? localUser.sshAuthorizedKeys : []
+    enableDefaultTelemetry:enableReferencedModulesTelemetry
      }
 }]
 
