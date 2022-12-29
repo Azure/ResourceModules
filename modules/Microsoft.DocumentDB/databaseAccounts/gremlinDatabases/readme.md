@@ -13,8 +13,8 @@ This module deploys a GremlinDB within a CosmosDB account.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases) |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases/graphs) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases/graphs) |
 
 ## Parameters
 
