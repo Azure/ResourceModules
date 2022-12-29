@@ -2,6 +2,8 @@
 
 This module deploys DevTestLab Labs VirtualNetworks.
 
+Lab virtual machines must be deployed into a virtual network. This resource type allows configuring the virtual network and subnet settings used for the lab virtual machines.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)

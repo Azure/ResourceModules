@@ -2,6 +2,8 @@
 
 This module deploys DevTestLab Labs NotificationChannels.
 
+Notification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)

@@ -2,6 +2,8 @@
 
 This module deploys DevTestLab Labs PolicySets Policies.
 
+DevTest lab policies are used to modify the lab settings like only allowing certain VM Size SKUs, marketplace image types, number of VMs allowed per user and other settings.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)

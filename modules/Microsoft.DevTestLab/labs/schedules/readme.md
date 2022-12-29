@@ -2,6 +2,8 @@
 
 This module deploys DevTestLab Labs Schedules.
 
+Lab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)

@@ -2,6 +2,8 @@
 
 This module deploys DevTestLab Labs ArtifactSources.
 
+An artifact source allows you to create custom artifacts for the VMs in the lab, or  use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
