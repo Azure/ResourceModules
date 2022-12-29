@@ -24,7 +24,7 @@ param tags object = {}
 @sys.description('Optional. A description of the network manager.')
 param description string = ''
 
-@sys.description('Required. Scope Access. String array containing any of \'Connectivity\'\'SecurityAdmin\'. The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs.')
+@sys.description('Required. Scope Access. String array containing any of "Connectivity", "SecurityAdmin". The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs.')
 param networkManagerScopeAccesses array
 
 @sys.description('Required. Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this virtual network manager instance can manage.')

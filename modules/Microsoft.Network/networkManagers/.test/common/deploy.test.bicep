@@ -31,6 +31,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
+    managedIdentityName: 'dep-carml-msi-${serviceShort}'
     virtualNetworkHubName: 'dep-carml-vnetHub-${serviceShort}'
     virtualNetworkSpoke1Name: 'dep-carml-vnetSpoke1-${serviceShort}'
     virtualNetworkSpoke2Name: 'dep-carml-vnetSpoke2-${serviceShort}'
@@ -48,6 +49,16 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'carml${serviceShort}001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
     networkManagerScopeAccesses: [
       'Connectivity'
       'SecurityAdmin'
@@ -79,7 +90,7 @@ module testDeployment '../../deploy.bicep' = {
         description: 'hubSpokeConnectivity description'
         connectivityTopology: 'HubAndSpoke'
         hubs: [
-          {
+          { //TODO: test if we can use multiple hubs
             resourceId: resourceGroupResources.outputs.virtualNetworkHubId
             resourceType: 'Microsoft.Network/virtualNetworks'
           }

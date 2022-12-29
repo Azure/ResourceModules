@@ -1,3 +1,6 @@
+@description('Required. The name of the Managed Identity to create.')
+param managedIdentityName string
+
 @description('Required. The name of the Hub Virtual Network to create.')
 param virtualNetworkHubName string
 
@@ -9,6 +12,11 @@ param virtualNetworkSpoke2Name string
 
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
+
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityName
+  location: location
+}
 
 resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkHubName
@@ -69,6 +77,9 @@ resource virtualNetworkSpoke2 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     ]
   }
 }
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Hub Virtual Network.')
 output virtualNetworkHubId string = virtualNetworkHub.id
