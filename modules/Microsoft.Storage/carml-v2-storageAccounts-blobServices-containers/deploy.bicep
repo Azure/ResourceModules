@@ -42,14 +42,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1' = {
+module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1.0' = {
   name: '${deployment().name}-Container'
   params: {
     storageAccountName: storageAccountName
     blobServicesName: blobServicesName
-    containerName: name
-    immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
-    allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
+    name: name
+    publicAccess: publicAccess
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -75,15 +74,15 @@ module container_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: container.id
+    resourceId: container.outputs.resourceId
   }
 }]
 
 @description('The name of the deployed container.')
-output name string = container.name
+output name string = container.outputs.name
 
 @description('The resource ID of the deployed container.')
-output resourceId string = container.id
+output resourceId string = container.outputs.resourceId
 
 @description('The resource group of the deployed container.')
 output resourceGroupName string = resourceGroup().name
