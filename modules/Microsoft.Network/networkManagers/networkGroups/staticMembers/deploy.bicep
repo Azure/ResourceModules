@@ -7,7 +7,7 @@ param networkGroupName string
 @description('Required. The name of the static member.')
 param name string
 
-@description('Required. Resource Id of the virtual network.')
+@description('Required. Resource ID of the virtual network.')
 param resourceId string
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')

@@ -23,7 +23,7 @@ Static membership allows you to explicitly add virtual networks to a group by ma
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the static member. |
-| `resourceId` | string | Resource Id of the virtual network. |
+| `resourceId` | string | Resource ID of the virtual network. |
 
 **Conditional parameters**
 
