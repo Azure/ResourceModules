@@ -67,15 +67,15 @@ If you are not using a local repository, you'll also need to publish the modules
 <details>
 <summary>Modules publishing in Template Spec</summary>
 
-The preferred method to publish modules to template-specs is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
+The preferred method to publish modules to template-specs is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToTemplateSpecsRG.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
 To publish a module by running the script:
  1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
  1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
- 1. Load the script `'Publish-ModuleToTemplateSpec.ps1'` executing:
+ 1. Load the script `'Publish-ModuleToTemplateSpecsRG.ps1'` executing:
 
         ```PowerShell
-        . .\Publish-ModuleToTemplateSpec.ps1
+        . .\Publish-ModuleToTemplateSpecsRG.ps1
         ```
  1. Run the script for the modules you need to publish, using the opportune parameters:
      - TemplateFilePath = the absolute path of the module to be published
@@ -87,9 +87,9 @@ To publish a module by running the script:
     To publish the Keyvault module with version 0.4.740 on a Template Spec that will be created in the resource group 'artifact-rg' you can execute the following example:
 
          ```PowerShell
-        Publish-ModuleToTemplateSpec -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
+        Publish-ModuleToTemplateSpecsRG -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
-    As the modules to be published are more than one a script that calls the `'Publish-ModuleToTemplateSpec'` function for each of the modules can be created.
+    As the modules to be published are more than one a script that calls the `'Publish-ModuleToTemplateSpecsRG'` function for each of the modules can be created.
 
  1. Update your master template in order to use the new version of the published modules.
 
@@ -132,15 +132,15 @@ To publish a module by running the script:
 <details>
 <summary>Modules publishing to Azure DevOps artifact feed</summary>
 
-The preferred method to publish modules to Azure DevOps artifact feed is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToUniversalArtifactFeed.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToUniversalArtifactFeed.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
+The preferred method to publish modules to Azure DevOps artifact feed is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToUniversalArtifactsFeed.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToUniversalArtifactsFeed.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
 To publish a module by running the script:
  1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
  1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
- 1. Load the script `'Publish-ModuleToUniversalArtifactFeed.ps1'` executing:
+ 1. Load the script `'Publish-ModuleToUniversalArtifactsFeed.ps1'` executing:
 
         ```PowerShell
-        . .\Publish-ModuleToUniversalArtifactFeed.ps1
+        . .\Publish-ModuleToUniversalArtifactsFeed.ps1
         ```
  1. Run the script for the modules you need to publish, using the opportune parameters:
      - TemplateFilePath = the absolute path of the module to be published.
@@ -152,9 +152,9 @@ To publish a module by running the script:
     To publish the Keyvault module with version 0.4.740 on an artifact feed called 'Artifacts', in the project 'IaC' on organization 'fabrikam' you can execute the following command:
 
          ```PowerShell
-        Publish-ModuleToUniversalArtifactFeed -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
+        Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
         ```
-    As the modules to be published are more than one a script that calls the `'Publish-ModuleToUniversalArtifactFeed'` function for each of the modules can be created.
+    As the modules to be published are more than one a script that calls the `'Publish-ModuleToUniversalArtifactsFeed'` function for each of the modules can be created.
 
  1. Update your master template in order to use the new version of the published modules.
 
