@@ -47,6 +47,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | :-- | :-- | :-- | :-- |
 | `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
+| `enableHierarchicalNamespace` | bool | `False` | If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true. |
 
 **Optional parameters**
 
@@ -65,11 +66,10 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. |
 | `enableNfsV3` | bool | `False` |  | If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `enableSftp` | bool | `False` |  | If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
-| `localUsers` | _[localUsers](localUsers/readme.md)_ array | `[]` |  | Details of local users to be added for SFTP authentication. |
+| `localUsers` | _[localUsers](localUsers/readme.md)_ array | `[]` |  | Local users to deploy for SFTP authentication. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managementPolicyRules` | array | `[]` |  | The Storage Account ManagementPolicies Rules. |

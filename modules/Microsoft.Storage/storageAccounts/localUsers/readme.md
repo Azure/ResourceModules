@@ -1,7 +1,6 @@
-# Storage StorageAccounts LocalUsers `[Microsoft.Storage/storageAccounts/localUsers]`
+# StorageAccounts LocalUsers `[Microsoft.Storage/storageAccounts/localUsers]`
 
-This module deploys Storage StorageAccounts LocalUsers.
-// TODO: Replace Resource and fill in description
+This module deploys LocalUsers used for SFTP authentication.
 
 ## Navigation
 
@@ -22,9 +21,9 @@ This module deploys Storage StorageAccounts LocalUsers.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `hasSshKey` | bool | Indicates whether ssh key exists. Set it to false to remove existing SSH key. |
-| `hasSshPassword` | bool | Indicates whether ssh password exists. Set it to false to remove existing SSH password. |
-| `name` | string | The local username to be used for SFTP Authentication. |
+| `hasSshKey` | bool | Indicates whether SSH key exists. Set it to false to remove existing SSH key. |
+| `hasSshPassword` | bool | Indicates whether SSH password exists. Set it to false to remove existing SSH password. |
+| `name` | string | The name of the local user used for SFTP Authentication. |
 | `permissionScopes` | array | The permission scopes of the local user. |
 
 **Conditional parameters**
@@ -40,16 +39,16 @@ This module deploys Storage StorageAccounts LocalUsers.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hasSharedKey` | bool | `False` | Indicates whether shared key exists. Set it to false to remove existing shared key. |
 | `homeDirectory` | string | `''` | The local user home directory. |
-| `sshAuthorizedKeys` | array | `[]` | The local user ssh authorized keys for SFTP. |
+| `sshAuthorizedKeys` | array | `[]` | The local user SSH authorized keys for SFTP. |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the local user created for SFTP Authentication. |
-| `resourceGroupName` | string | The resource group of the deployed management policy. |
-| `resourceId` | string | The resource ID of the local user resource created. |
+| `name` | string | The name of the deployed local user. |
+| `resourceGroupName` | string | The resource group of the deployed local user. |
+| `resourceId` | string | The resource ID of the deployed local user. |
 
 ## Cross-referenced modules
 

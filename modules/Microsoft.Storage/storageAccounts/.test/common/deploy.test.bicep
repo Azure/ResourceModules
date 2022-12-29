@@ -94,7 +94,7 @@ module testDeployment '../../deploy.bicep' = {
         }
       ]
     }
-    localUsers:[
+    localUsers: [
       {
         storageAccountName: '<<namePrefix>>${serviceShort}001'
         name: 'testuser'
@@ -112,7 +112,6 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
 
-    
     blobServices: {
       diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId

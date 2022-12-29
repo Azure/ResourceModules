@@ -82,13 +82,13 @@ param allowBlobPublicAccess bool = false
 @description('Optional. Set the minimum TLS version on request to storage.')
 param minimumTlsVersion string = 'TLS1_2'
 
-@description('Optional. If true, enables Hierarchical Namespace for the storage account.')
+@description('Conditional. If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true.')
 param enableHierarchicalNamespace bool = false
 
 @description('Optional. If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true.')
 param enableSftp bool = false
 
-@description('Optional. Details of local users to be added for SFTP authentication.')
+@description('Optional. Local users to deploy for SFTP authentication.')
 param localUsers array = []
 
 @description('Optional. If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true.')
@@ -319,19 +319,19 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
 }
 
 // SFTP user settings
-module storageAccount_localUsers 'localUsers/deploy.bicep' = [ for (localUser, index) in localUsers: {
+module storageAccount_localUsers 'localUsers/deploy.bicep' = [for (localUser, index) in localUsers: {
   name: '${uniqueString(deployment().name, location)}-Storage-LocalUsers-${index}'
   params: {
     storageAccountName: storageAccount.name
     name: localUser.name
-    hasSharedKey: contains(localUser,'hasSharedKey') ? localUser.hasSharedKey : false
-    hasSshKey: contains(localUser,'hasSshPassword') ? localUser.hasSshPassword: true
-    hasSshPassword: contains(localUser,'hasSshPassword') ? localUser.hasSshPassword: false
-    homeDirectory: contains(localUser,'homeDirectory') ? localUser.homeDirectory : ''
-    permissionScopes: contains(localUser,'permissionScopes') ? localUser.permissionScopes: []
-    sshAuthorizedKeys: contains(localUser,'sshAuthorizedKeys') ? localUser.sshAuthorizedKeys : []
-    enableDefaultTelemetry:enableReferencedModulesTelemetry
-     }
+    hasSharedKey: contains(localUser, 'hasSharedKey') ? localUser.hasSharedKey : false
+    hasSshKey: contains(localUser, 'hasSshPassword') ? localUser.hasSshPassword : true
+    hasSshPassword: contains(localUser, 'hasSshPassword') ? localUser.hasSshPassword : false
+    homeDirectory: contains(localUser, 'homeDirectory') ? localUser.homeDirectory : ''
+    permissionScopes: contains(localUser, 'permissionScopes') ? localUser.permissionScopes : []
+    sshAuthorizedKeys: contains(localUser, 'sshAuthorizedKeys') ? localUser.sshAuthorizedKeys : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
 }]
 
 // Containers
