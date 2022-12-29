@@ -30,7 +30,7 @@ type roleAssignment = {
   roleDefinitionIdOrName: string
   principalIds: string[]
   description?: string
-  principalType?: 'ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device'
+  principalType?: 'ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | ''
   condition?: string
   conditionVersion?: string
   delegatedManagedIdentityResourceId?: string
