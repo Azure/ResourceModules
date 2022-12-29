@@ -30,7 +30,7 @@ Connectivity configurations define hub-and-spoke or mesh topologies applied to o
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `hubs` | array | List of hub items. This will create peerings between the specified hub and the virtual networks in the network group specified. Required when connectivityTopology is of type "HubAndSpoke". |
+| `hubs` | array | List of hub items. This will create peerings between the specified hub and the virtual networks in the network group specified. Required if connectivityTopology is of type "HubAndSpoke". |
 | `networkManagerName` | string | The name of the parent network manager. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
