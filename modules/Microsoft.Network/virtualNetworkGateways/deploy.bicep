@@ -308,7 +308,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // Public IPs
 @batchSize(1)
-module publicIPAddress'../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
   name: virtualGatewayPublicIpName
   params :{
     name: virtualGatewayPublicIpName
