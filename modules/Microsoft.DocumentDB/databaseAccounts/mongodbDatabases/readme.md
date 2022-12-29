@@ -13,8 +13,8 @@ This module deploys a MongoDB within a CosmosDB account.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases) |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections) |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/mongodbDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/mongodbDatabases/collections) |
 
 ## Parameters
 
