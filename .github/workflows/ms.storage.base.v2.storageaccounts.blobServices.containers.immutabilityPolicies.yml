@@ -121,8 +121,8 @@ jobs:
   ##################
   job_publish_module:
     name: 'Publishing'
-    if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).prerelease }}
-    # github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/users/erikag/pgDraft_v2' || github.event.inputs.prerelease == 'true'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/users/erikag/pgDraft_v2' || github.event.inputs.prerelease == 'true'
+    # ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).prerelease }}
     runs-on: ubuntu-20.04
     needs:
       - job_module_deploy_validation
