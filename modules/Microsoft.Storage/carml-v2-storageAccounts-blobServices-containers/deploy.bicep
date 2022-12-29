@@ -72,11 +72,14 @@ module immutabilityPolicy 'br/carml:microsoft.storage.base-v2-storageaccounts-bl
   params: {
     storageAccountName: storageAccountName
     blobServicesName: blobServicesName
-    containerName: container.outputs.name
+    containerName: name // OR containerName: last(split(container.outputs.name, '/')) and removing dependsOn
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
+  dependsOn: [
+    container
+  ]
 }
 
 module container_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
