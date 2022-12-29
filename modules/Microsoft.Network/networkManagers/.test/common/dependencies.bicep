@@ -18,20 +18,25 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
+var addressPrefixHub = '10.0.0.0/16'
+var addressPrefixSpoke1 = '172.16.0.0/12'
+var addressPrefixSpoke2 = '192.168.0.0/16'
+var subnetName = 'defaultSubnet'
+
 resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkHubName
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        addressPrefixHub
       ]
     }
     subnets: [
       {
-        name: 'default'
+        name: subnetName
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: addressPrefixHub
         }
       }
     ]
@@ -44,14 +49,14 @@ resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '172.16.0.0/12'
+        addressPrefixSpoke1
       ]
     }
     subnets: [
       {
-        name: 'default'
+        name: subnetName
         properties: {
-          addressPrefix: '172.16.0.0/24'
+          addressPrefix: addressPrefixSpoke1
         }
       }
     ]
@@ -64,14 +69,14 @@ resource virtualNetworkSpoke2 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '192.168.0.0/16'
+        addressPrefixSpoke2
       ]
     }
     subnets: [
       {
-        name: 'default'
+        name: subnetName
         properties: {
-          addressPrefix: '192.168.0.0/24'
+          addressPrefix: addressPrefixSpoke2
         }
       }
     ]
