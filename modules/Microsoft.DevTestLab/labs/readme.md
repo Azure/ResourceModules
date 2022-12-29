@@ -226,10 +226,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dtlcom'
+  name: '${uniqueString(deployment().name)}-test-dtllcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dtlcom001'
+    name: '<<namePrefix>>dtllcom001'
     // Non-required parameters
     announcement: {
       enabled: 'Enabled'
@@ -387,7 +387,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
     tags: {
-      labName: '<<namePrefix>>dtlcom001'
+      labName: '<<namePrefix>>dtllcom001'
       resourceType: 'DevTest Lab'
     }
     userAssignedIdentities: {
@@ -445,7 +445,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dtlcom001"
+      "value": "<<namePrefix>>dtllcom001"
     },
     // Non-required parameters
     "announcement": {
@@ -635,7 +635,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "labName": "<<namePrefix>>dtlcom001",
+        "labName": "<<namePrefix>>dtllcom001",
         "resourceType": "DevTest Lab"
       }
     },
@@ -695,10 +695,10 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
 
 ```bicep
 module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dtlmin'
+  name: '${uniqueString(deployment().name)}-test-dtllmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dtlmin001'
+    name: '<<namePrefix>>dtllmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -719,7 +719,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dtlmin001"
+      "value": "<<namePrefix>>dtllmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
