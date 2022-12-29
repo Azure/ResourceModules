@@ -90,7 +90,7 @@ module testDeployment '../../deploy.bicep' = {
         description: 'hubSpokeConnectivity description'
         connectivityTopology: 'HubAndSpoke'
         hubs: [
-          { //TODO: test if we can use multiple hubs
+          {
             resourceId: resourceGroupResources.outputs.virtualNetworkHubId
             resourceType: 'Microsoft.Network/virtualNetworks'
           }
