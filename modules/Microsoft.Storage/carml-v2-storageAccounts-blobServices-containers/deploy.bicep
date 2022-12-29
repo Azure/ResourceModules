@@ -8,8 +8,8 @@ param blobServicesName string = 'default'
 @description('Required. The name of the storage container to deploy.')
 param name string
 
-@description('Optional. Name of the immutable policy.')
-param immutabilityPolicyName string = 'default'
+// @description('Optional. Name of the immutable policy.')
+// param immutabilityPolicyName string = 'default'
 
 @allowed([
   'Container'
@@ -42,12 +42,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1' {
+module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1' = {
   name: '${deployment().name}-Container'
   params: {
-    storageAccountName: storageAccount.name
-    blobServicesName: storageAccount::blobServices.name
-    containerName: container.name
+    storageAccountName: storageAccountName
+    blobServicesName: blobServicesName
+    containerName: name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -55,11 +55,11 @@ module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservice
 }
 
 module immutabilityPolicy 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers-immutabilitypolicies:0.1' = if (!empty(immutabilityPolicyProperties)) {
-  name: immutabilityPolicyName
+  name: '${deployment().name}-ImmutabilityPolicy'
   params: {
-    storageAccountName: storageAccount.name
-    blobServicesName: storageAccount::blobServices.name
-    containerName: container.name
+    storageAccountName: storageAccountName
+    blobServicesName: blobServicesName
+    containerName: name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
