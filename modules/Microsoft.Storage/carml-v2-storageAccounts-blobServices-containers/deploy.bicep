@@ -42,33 +42,29 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
-  name: storageAccountName
-
-  resource blobServices 'blobServices@2021-09-01' existing = {
-    name: blobServicesName
+module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1' {
+  name: '${deployment().name}-Container'
+  params: {
+    storageAccountName: storageAccount.name
+    blobServicesName: storageAccount::blobServices.name
+    containerName: container.name
+    immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
+    allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = {
-  name: name
-  parent: storageAccount::blobServices
-  properties: {
-    publicAccess: publicAccess
+module immutabilityPolicy 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers-immutabilitypolicies:0.1' = if (!empty(immutabilityPolicyProperties)) {
+  name: immutabilityPolicyName
+  params: {
+    storageAccountName: storageAccount.name
+    blobServicesName: storageAccount::blobServices.name
+    containerName: container.name
+    immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
+    allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
-
-// module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immutabilityPolicyProperties)) {
-//   name: immutabilityPolicyName
-//   params: {
-//     storageAccountName: storageAccount.name
-//     blobServicesName: storageAccount::blobServices.name
-//     containerName: container.name
-//     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
-//     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
-//     enableDefaultTelemetry: enableReferencedModulesTelemetry
-//   }
-// }
 
 module container_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
