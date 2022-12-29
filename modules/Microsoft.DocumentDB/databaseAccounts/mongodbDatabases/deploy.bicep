@@ -30,11 +30,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' existing = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
   name: databaseAccountName
 }
 
-resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2021-07-01-preview' = {
+resource mongodbDatabase 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases@2022-08-15' = {
   name: name
   parent: databaseAccount
   tags: tags

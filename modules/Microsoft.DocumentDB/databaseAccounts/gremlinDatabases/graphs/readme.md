@@ -13,7 +13,7 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases/graphs) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases/graphs) |
 
 ## Parameters
 

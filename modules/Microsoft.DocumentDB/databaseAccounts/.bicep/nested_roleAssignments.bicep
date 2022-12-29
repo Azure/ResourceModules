@@ -54,7 +54,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' existing = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
   name: last(split(resourceId, '/'))
 }
 
