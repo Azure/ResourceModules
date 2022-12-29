@@ -2,7 +2,7 @@
 param networkManagerName string
 
 @maxLength(64)
-@sys.description('Required. The name of the network group. A network group is a collection of same-type network resources that you can associate with network manager configurations. You can add same-type network resources after you create the network group.')
+@sys.description('Required. The name of the network group.')
 param name string
 
 @maxLength(500)

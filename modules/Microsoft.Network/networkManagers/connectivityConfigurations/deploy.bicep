@@ -2,7 +2,7 @@
 param networkManagerName string
 
 @maxLength(64)
-@sys.description('Required. The name of the connectivity configuration. Connectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.')
+@sys.description('Required. The name of the connectivity configuration.')
 param name string
 
 @maxLength(500)

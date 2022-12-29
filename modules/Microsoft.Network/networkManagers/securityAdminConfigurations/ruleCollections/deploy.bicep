@@ -5,7 +5,7 @@ param networkManagerName string
 param securityAdminConfigurationName string
 
 @maxLength(64)
-@sys.description('Required. The name of the admin rule collection. A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.')
+@sys.description('Required. The name of the admin rule collection.')
 param name string
 
 @maxLength(500)

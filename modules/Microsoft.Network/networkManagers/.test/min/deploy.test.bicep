@@ -36,14 +36,13 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'carml${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     networkManagerScopeAccesses: [
       'Connectivity'
-      'SecurityAdmin'
     ]
     networkManagerScopes: {
-      subscriptions: [
-        subscription().id
+      managementGroups: [
+        '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
       ]
     }
   }

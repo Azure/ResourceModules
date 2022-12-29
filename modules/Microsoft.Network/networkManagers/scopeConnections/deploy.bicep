@@ -9,7 +9,7 @@ param name string
 @sys.description('Optional. A description of the scope connection.')
 param description string = ''
 
-@sys.description('Required. Create a cross-tenant connection to manage a resource from another tenant. Enter the subscription or management group resource ID that you want to add to this network manager\'s scope.')
+@sys.description('Required. Enter the subscription or management group resource ID that you want to add to this network manager\'s scope.')
 param resourceId string
 
 @sys.description('Required. Tenant ID of the subscription or management group that you want to manage.')

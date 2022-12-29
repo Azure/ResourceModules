@@ -4,7 +4,7 @@ param networkManagerName string
 @description('Conditional. The name of the parent network group. Required if the template is used in a standalone deployment.')
 param networkGroupName string
 
-@description('Required. The name of the static member. Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.')
+@description('Required. The name of the static member.')
 param name string
 
 @description('Required. Resource Id of the virtual network.')
