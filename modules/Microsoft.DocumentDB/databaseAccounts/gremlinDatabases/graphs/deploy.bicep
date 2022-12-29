@@ -31,15 +31,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' existing = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
   name: databaseAccountName
 
-  resource gremlinDatabase 'gremlinDatabases@2022-02-15-preview' existing = {
+  resource gremlinDatabase 'gremlinDatabases@2022-08-15' existing = {
     name: gremlinDatabaseName
   }
 }
 
-resource gremlinGraph 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs@2022-02-15-preview' = {
+resource gremlinGraph 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs@2022-08-15' = {
   name: name
   tags: tags
   parent: databaseAccount::gremlinDatabase
