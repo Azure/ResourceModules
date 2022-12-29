@@ -72,7 +72,7 @@ module immutabilityPolicy 'br/carml:microsoft.storage.base-v2-storageaccounts-bl
   params: {
     storageAccountName: storageAccountName
     blobServicesName: blobServicesName
-    containerName: name
+    containerName: container.outputs.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
