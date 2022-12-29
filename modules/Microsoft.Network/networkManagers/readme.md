@@ -192,7 +192,7 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-nnmcom'
   params: {
     // Required parameters
-    name: 'carmlnnmcom001'
+    name: '<<namePrefix>>nnmcom001'
     networkManagerScopeAccesses: [
       'Connectivity'
       'SecurityAdmin'
@@ -363,7 +363,7 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "carmlnnmcom001"
+      "value": "<<namePrefix>>nnmcom001"
     },
     "networkManagerScopeAccesses": {
       "value": [

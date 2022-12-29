@@ -31,10 +31,10 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    managedIdentityName: 'dep-carml-msi-${serviceShort}'
-    virtualNetworkHubName: 'dep-carml-vnetHub-${serviceShort}'
-    virtualNetworkSpoke1Name: 'dep-carml-vnetSpoke1-${serviceShort}'
-    virtualNetworkSpoke2Name: 'dep-carml-vnetSpoke2-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    virtualNetworkHubName: 'dep-<<namePrefix>>-vnetHub-${serviceShort}'
+    virtualNetworkSpoke1Name: 'dep-<<namePrefix>>-vnetSpoke1-${serviceShort}'
+    virtualNetworkSpoke2Name: 'dep-<<namePrefix>>-vnetSpoke2-${serviceShort}'
     location: location
   }
 }
@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'carml${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -99,7 +99,7 @@ module testDeployment '../../deploy.bicep' = {
         isGlobal: 'True'
         appliesToGroups: [
           {
-            networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,carml${serviceShort}001,/networkGroups/network-group-spokes')
+            networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
             useHubGateway: 'False'
             groupConnectivity: 'None'
             isGlobal: 'False'
@@ -114,7 +114,7 @@ module testDeployment '../../deploy.bicep' = {
         isGlobal: 'True'
         appliesToGroups: [
           {
-            networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,carml${serviceShort}001,/networkGroups/network-group-spokes')
+            networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
             useHubGateway: 'False'
             groupConnectivity: 'None'
             isGlobal: 'False'
@@ -143,7 +143,7 @@ module testDeployment '../../deploy.bicep' = {
             description: 'test-rule-collection-description'
             appliesToGroups: [
               {
-                networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,carml${serviceShort}001,/networkGroups/network-group-spokes')
+                networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
               }
             ]
             rules: [
@@ -176,7 +176,7 @@ module testDeployment '../../deploy.bicep' = {
             description: 'test-rule-collection-description'
             appliesToGroups: [
               {
-                networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,carml${serviceShort}001,/networkGroups/network-group-spokes')
+                networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
               }
             ]
             rules: [
