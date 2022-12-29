@@ -189,5 +189,5 @@ output storageAccountResourceId string = storageAccount.id
 @description('The URL of the Custom Script Extension in the created Storage Account')
 output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageAccount::blobService::container.name}/${storageAccountCSEFileName}'
 
-@description('The Public Key of the created SSH Key')
+@description('The Public Key of the created SSH Key.')
 output SSHKeyPublicKey string = sshKey.properties.publicKey

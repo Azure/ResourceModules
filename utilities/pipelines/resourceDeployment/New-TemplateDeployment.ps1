@@ -217,6 +217,7 @@ function New-TemplateDeploymentInner {
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
         [bool]$Stoploop = $false
         [int]$retryCount = 1
+        $usedDeploymentNames = @()
 
         do {
             # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
@@ -225,6 +226,7 @@ function New-TemplateDeploymentInner {
             } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
             Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
+            $usedDeploymentNames += $deploymentName
             $DeploymentInputs['DeploymentName'] = $deploymentName
 
             try {
@@ -301,8 +303,8 @@ function New-TemplateDeploymentInner {
                         }
 
                         return @{
-                            DeploymentName = $deploymentName
-                            Exception      = $exceptionMessage
+                            DeploymentNames = $usedDeploymentNames
+                            Exception       = $exceptionMessage
                         }
                     } else {
                         throw $PSitem.Exception.Message
@@ -322,8 +324,8 @@ function New-TemplateDeploymentInner {
         Write-Verbose '------' -Verbose
         Write-Verbose ($res | Out-String) -Verbose
         return @{
-            deploymentName   = $deploymentName
-            deploymentOutput = $res.Outputs
+            DeploymentNames  = $usedDeploymentNames
+            DeploymentOutput = $res.Outputs
         }
     }
 

@@ -27,8 +27,6 @@ function Invoke-ResourceRemoval {
         [string] $Type
     )
 
-    Write-Verbose ('Removing resource [{0}]' -f $resourceId) -Verbose
-
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
             $parentResourceId = $resourceId.Split('/providers/{0}' -f $type)[0]
@@ -128,6 +126,16 @@ function Invoke-ResourceRemoval {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
             break
         }
+        'Microsoft.OperationalInsights/workspaces' {
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+            # Force delete workspace (cannot be recovered)
+            if ($PSCmdlet.ShouldProcess("Log Analytics Workspace [$resourceName]", 'Remove')) {
+                $null = Remove-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Force -ForceDelete
+            }
+            break
+        }
+
         ### CODE LOCATION: Add custom removal action here
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'

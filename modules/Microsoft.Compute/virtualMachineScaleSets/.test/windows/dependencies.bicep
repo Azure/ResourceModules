@@ -159,7 +159,7 @@ output storageAccountResourceId string = storageAccount.id
 @description('The URL of the Custom Script Extension in the created Storage Account')
 output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageAccount::blobService::container.name}/${storageAccountCSEFileName}'
 
-@description('The name of the Custom Script Extension in the created Storage Account')
+@description('The name of the Custom Script Extension in the created Storage Account.')
 output storageAccountCSEFileName string = storageAccountCSEFileName
 
 @description('The resource ID of the created Proximity Placement Group.')

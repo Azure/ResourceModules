@@ -34,6 +34,9 @@ env:
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   ###########################
   #   Initialize pipeline   #
@@ -145,3 +148,4 @@ jobs:
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+          publishLatest: '${{ env.publishLatest }}'
