@@ -64,6 +64,9 @@ module testDeployment '../../deploy.bicep' = {
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
     lock: 'CanNotDelete'
+    enableHierarchicalNamespace: true
+    enableSftp: true
+    enableNfsV3: true
     privateEndpoints: [
       {
         service: 'blob'
@@ -91,6 +94,24 @@ module testDeployment '../../deploy.bicep' = {
         }
       ]
     }
+    localUsers: [
+      {
+        storageAccountName: '<<namePrefix>>${serviceShort}001'
+        name: 'testuser'
+        hasSharedKey: false
+        hasSshKey: true
+        hasSshPassword: false
+        homeDirectory: 'avdscripts'
+        permissionScopes: [
+          {
+            permissions: 'r'
+            service: 'blob'
+            resourceName: 'avdscripts'
+          }
+        ]
+      }
+    ]
+
     blobServices: {
       diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
