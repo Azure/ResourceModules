@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'vmitadv'
 
+@description('Optional. The version of the Azure Compute Gallery Image Definition to be added.')
+param sigImageVersion string = utcNow('yyyy.MM.dd')
+
 @description('Optional. The staging resource group name in the same location and subscription as the image template. Must not exist.')
 param stagingResourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${serviceShort}-staging-rg'
 
@@ -88,7 +91,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
-    sigImageVersion: '10.20.30'
+    sigImageVersion: sigImageVersion
     subnetId: resourceGroupResources.outputs.subnetId
     stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
