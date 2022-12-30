@@ -172,13 +172,16 @@ function Get-TemplateParametersContent {
         # Add child module references
         foreach ($childIdentifier in ($linkedChildren.Keys | Sort-Object)) {
             $childResourceType = ($childIdentifier -split '/')[-1]
-            $parametersToAdd += @{
-                level       = 0
-                name        = $childResourceType
-                type        = 'array'
-                default     = @()
-                description = "The $childResourceType to create as part of the $resourceTypeSingular."
-                required    = $false
+            # Add only if not already exists in the primary parameters
+            if (($parametersToAdd | Where-Object { $_.name -eq $childResourceType }).Count -eq 0) {
+                $parametersToAdd += @{
+                    level       = 0
+                    name        = $childResourceType
+                    type        = 'array'
+                    default     = @()
+                    description = "The $childResourceType to create as part of the $resourceTypeSingular."
+                    required    = $false
+                }
             }
         }
 
