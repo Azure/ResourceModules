@@ -42,6 +42,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `osDiskSizeGB` | int | `128` |  | Specifies the size of OS disk. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sigImageDefinitionId` | string | `''` |  | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
+| `sigImageVersion` | string | `''` |  | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
 | `stagingResourceGroup` | string | `''` |  | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.<p>If this field is empty, a resource group with a random name will be created.<p>If the resource group specified in this field doesn\'t exist, it will be created with the same name.<p>If the resource group specified exists, it must be empty and in the same region as the image template.<p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,<p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.<p> |
 | `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -316,7 +317,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bicep' = {
+module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-vmitadv'
   params: {
     // Required parameters
@@ -351,6 +352,7 @@ module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bi
       }
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
+    sigImageVersion: '10.20.30'
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
     unManagedImageName: '<<namePrefix>>-umi-vmitadv-001'
@@ -429,6 +431,9 @@ module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bi
     "sigImageDefinitionId": {
       "value": "<sigImageDefinitionId>"
     },
+    "sigImageVersion": {
+      "value": "10.20.30"
+    },
     "stagingResourceGroup": {
       "value": "<stagingResourceGroup>"
     },
@@ -463,7 +468,7 @@ module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bi
 <summary>via Bicep module</summary>
 
 ```bicep
-module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bicep' = {
+module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-vmitcom'
   params: {
     // Required parameters
@@ -586,7 +591,7 @@ module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bi
 <summary>via Bicep module</summary>
 
 ```bicep
-module ImageTemplates './Microsoft.VirtualMachineImages/ImageTemplates/deploy.bicep' = {
+module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-vmitmin'
   params: {
     // Required parameters

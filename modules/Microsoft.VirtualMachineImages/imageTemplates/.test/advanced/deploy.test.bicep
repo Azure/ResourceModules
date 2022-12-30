@@ -88,6 +88,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
+    sigImageVersion: '10.20.30'
     subnetId: resourceGroupResources.outputs.subnetId
     stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'

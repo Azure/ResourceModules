@@ -44,6 +44,9 @@ param unManagedImageName string = ''
 @description('Optional. Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>.')
 param sigImageDefinitionId string = ''
 
+@description('Optional. Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., \'1.1.1\' or \'10.1.2\').')
+param sigImageVersion string = ''
+
 @description('''Optional. Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.
 If this field is empty, a resource group with a random name will be created.
 If the resource group specified in this field doesn\'t exist, it will be created with the same name.
@@ -99,7 +102,7 @@ var managedImage = {
 var conditionalManagedImage = empty(managedImageName) ? [] : array(managedImage)
 var sharedImage = {
   type: 'SharedImage'
-  galleryImageId: sigImageDefinitionId
+  galleryImageId: empty(sigImageVersion) ? sigImageDefinitionId : '${sigImageDefinitionId}/${sigImageVersion}'
   runOutputName: !empty(sigImageDefinitionId) ? '${last(split(sigImageDefinitionId, '/'))}-SharedImage' : 'SharedImage'
   artifactTags: {
     sourceType: imageSource.type
