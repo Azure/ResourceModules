@@ -51,7 +51,7 @@ resource profile_EndpointOrigins 'Microsoft.Cdn/profiles/endpoints/origins@2021-
   }
 }
 
-@description('The resource name.')
+@description('The name of the endpoint.')
 output name string = profileName_endpoint.name
 
 @description('The resource ID of the endpoint.')
