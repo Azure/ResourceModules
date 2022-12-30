@@ -129,13 +129,13 @@ function Get-TemplateOutputContent {
         }
 
         # If the main resource has a location property, an output should be returned too
-        if ($ModuleData.parametersToAdd.name -contains 'location' -and $ModuleData.parametersToAdd['location'].defaultValue -ne 'global') {
+        if ($ModuleData.parameters.name -contains 'location' -and $ModuleData.parameters['location'].defaultValue -ne 'global') {
             $defaultOutputs += @{
                 name    = 'location'
                 type    = 'string'
                 content = @(
                     "@description('The location the resource was deployed into.')"
-                    '{0}.location' -f $resourceTypeSingular
+                    'output location string = {0}.location' -f $resourceTypeSingular
                 )
             }
         }
