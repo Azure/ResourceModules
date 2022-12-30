@@ -24,9 +24,9 @@ function Get-TargetScope {
     switch ($UrlPath) {
         { $PSItem -like '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/*' } { return 'resourceGroup' }
         { $PSItem -like '/subscriptions/{subscriptionId}/*' } { return 'subscription' }
-        { $PSItem -like 'providers/Microsoft.Management/managementGroups/*' } { return 'managementGroup' }
-    }
-    Default {
-        throw 'Unable to detect target scope'
+        { $PSItem -like '/providers/Microsoft.Management/managementGroups/*' } { return 'managementGroup' }
+        Default {
+            throw 'Unable to detect target scope'
+        }
     }
 }
