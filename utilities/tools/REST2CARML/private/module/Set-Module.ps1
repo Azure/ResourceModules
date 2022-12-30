@@ -134,7 +134,7 @@ function Set-Module {
                 }
             } else {
                 if ($PSCmdlet.ShouldProcess(('File [{0}].' -f (Split-Path $supportFilePath -Leaf)), 'Update')) {
-                    $null = Set-Content -Path $supportFilePath -Value $fileDefinition.fileContent
+                    $null = Set-Content -Path $supportFilePath -Value $fileDefinition.fileContent -NoNewline # -NoNewLine added to achieve the same behavior on file creation and update
                 }
             }
         }
