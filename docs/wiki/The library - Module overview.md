@@ -16,7 +16,7 @@ This section provides an overview of the library's feature set.
 | 1 | MS.Batch<p>batchAccounts |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 239 |
 | 2 | MS.Consumption<p>budgets |  |  |  |  |  |  |  | 89 |
 | 3 | MS.ServiceFabric<p>clusters | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1] | 281 |
-| 4 | MS.Storage<p>storageAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:5, L2:4, L3:1] | 346 |
+| 4 | MS.Storage<p>storageAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:6, L2:4, L3:1] | 369 |
 | 5 | MS.Authorization<p>roleAssignments |  |  |  |  |  |  | [L1:3] | 104 |
 | 6 | MS.Authorization<p>roleDefinitions |  |  |  |  |  |  | [L1:3] | 91 |
 | 7 | MS.Authorization<p>policyExemptions |  |  |  |  |  |  | [L1:3] | 111 |
@@ -124,7 +124,7 @@ This section provides an overview of the library's feature set.
 | 109 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 167 |
 | 110 | MS.Maintenance<p>maintenanceConfigurations | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 101 |
 | 111 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
-| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 158 | 19252 |
+| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 159 | 19275 |
 
 ## Legend
 
