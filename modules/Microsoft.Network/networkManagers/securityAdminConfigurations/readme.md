@@ -22,10 +22,10 @@ A security admin configuration contains a set of rule collections. Each rule col
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `applyOnNetworkIntentPolicyBasedServices` | array | `[None]` | Enum list of network intent policy based services. String array containing any of: "All", "AllowRulesOnly" or "None". Default is "None". |
-| `name` | string |  | The name of the security admin configuration. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `applyOnNetworkIntentPolicyBasedServices` | array | `[None]` | `[All, AllowRulesOnly, None]` | Enum list of network intent policy based services. Default is "None". |
+| `name` | string |  |  | The name of the security admin configuration. |
 
 **Conditional parameters**
 
