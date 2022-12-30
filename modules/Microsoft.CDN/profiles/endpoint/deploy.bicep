@@ -57,7 +57,7 @@ output name string = profileName_endpoint.name
 @description('The resource ID of the endpoint.')
 output resourceId string = profileName_endpoint.id
 
-@description('The name of the resource group the Redis cache was created in.')
+@description('The name of the resource group the endpoint was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
