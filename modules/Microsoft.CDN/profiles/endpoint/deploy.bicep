@@ -54,7 +54,7 @@ resource profile_EndpointOrigins 'Microsoft.Cdn/profiles/endpoints/origins@2021-
 @description('The resource name.')
 output name string = profileName_endpoint.name
 
-@description('The resource ID.')
+@description('The resource ID of the endpoint.')
 output resourceId string = profileName_endpoint.id
 
 @description('The name of the resource group the Redis cache was created in.')
