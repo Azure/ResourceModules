@@ -102,7 +102,7 @@ var managedImage = {
 var conditionalManagedImage = empty(managedImageName) ? [] : array(managedImage)
 var sharedImage = {
   type: 'SharedImage'
-  galleryImageId: empty(sigImageVersion) ? sigImageDefinitionId : '${sigImageDefinitionId}/${sigImageVersion}'
+  galleryImageId: empty(sigImageVersion) ? sigImageDefinitionId : '${sigImageDefinitionId}/versions/${sigImageVersion}'
   runOutputName: !empty(sigImageDefinitionId) ? '${last(split(sigImageDefinitionId, '/'))}-SharedImage' : 'SharedImage'
   artifactTags: {
     sourceType: imageSource.type
