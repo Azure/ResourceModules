@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Required. The name of the Storage Account to create.')
-param storageaccountname string
+param storageAccountName string
 
 module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
     name: storageaccountname
