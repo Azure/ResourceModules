@@ -126,8 +126,8 @@ module testDeployment '../../deploy.bicep' = {
       {
         name: 'scope-connection-test'
         description: 'description of the scope connection'
-        resourceId: '/subscriptions/<<subscriptionId>>'
-        tenantid: '<<tenantId>>'
+        resourceId: subscription().id
+        tenantid: tenant().tenantId
       }
     ]
     securityAdminConfigurations: [

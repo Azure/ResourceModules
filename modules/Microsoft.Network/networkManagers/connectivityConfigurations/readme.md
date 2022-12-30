@@ -43,10 +43,6 @@ Connectivity configurations define hub-and-spoke or mesh topologies applied to o
 | `isGlobal` | string | `'False'` | `[False, True]` | Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions. Default is "False". |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

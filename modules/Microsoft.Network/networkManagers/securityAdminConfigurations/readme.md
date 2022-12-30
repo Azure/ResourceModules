@@ -42,10 +42,6 @@ A security admin configuration contains a set of rule collections. Each rule col
 | `ruleCollections` | _[ruleCollections](ruleCollections/readme.md)_ array | `[]` | A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

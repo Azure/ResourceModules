@@ -57,9 +57,366 @@ Azure Virtual Network Manager is a management service that enables you to group,
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `<networkManagerScopeAccesses>`
 
-// TODO: Fill in Parameter usage
+Features are scope access that you allow the Azure Virtual Network Manager to manage. Azure Virtual Network Manager currently has two feature scopes, which are `Connectivity` and `SecurityAdmin`. You can enable both feature scopes on the same Virtual Network Manager instance.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"networkManagerScopeAccesses": {
+    "value": [
+      "Connectivity"
+      "SecurityAdmin"
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkManagerScopeAccesses: [
+  'Connectivity'
+  'SecurityAdmin'
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `<networkManagerScopes>`
+
+Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this virtual network manager instance can manage.
+
+**Note**: You can't create multiple Azure Virtual Network Manager instances with an overlapping scope of the same hierarchy and the same features selected.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"networkManagerScopes": {
+    "value": {
+      "subscriptions": [
+        "/subscriptions/<subscriptionId>"
+      ],
+      "managementGroups": [
+        "/providers/Microsoft.Management/managementGroups/<managementGroupId>"
+      ]
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkManagerScopes: {
+  subscriptions: [
+    '/subscriptions/<subscriptionId>'
+  ]
+  managementGroups: [
+    '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
+  ]
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `<networkGroups>`
+
+A network group is global container that includes a set of virtual network resources from any region. Then, configurations are applied to target the network group, which applies the configuration to all members of the group. The two types are group memberships are static and dynamic memberships. Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks, and is available as a child module, while dynamic membership is defined through Azure policy. See [How Azure Policy works with Network Groups](https://learn.microsoft.com/en-us/azure/virtual-network-manager/concept-azure-policy-integration) for more details.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"networkGroups": {
+  "value": [
+    {
+      "name": "network-group-test",
+      "description": "network-group-test description",
+      "staticMembers": [
+        {
+          "name": "vnet1",
+          "resourceId": "<vnet1ResourceId>"
+        },
+        {
+          "name": "vnet2",
+          "resourceId": "<vnet1ResourceId>"
+        }
+      ]
+    }
+  ]
+},
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkGroups: [
+  {
+    name: 'network-group-test'
+    description: 'network-group-test description'
+    staticMembers: [
+      {
+        name: 'vnet1'
+        resourceId: '<vnet1ResourceId>'
+      }
+      {
+        name: 'vnet2'
+        resourceId: '<vnet2ResourceId>'
+      }
+    ]
+  }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `<connectivityConfigurations>`
+
+Connectivity configurations allow you to create different network topologies based on your network needs. You have two topologies to choose from, a mesh network and a hub and spoke. Connectivities between virtual networks are defined within the configuration settings.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"connectivityConfigurations": {
+  "value": [
+    {
+      "name": "hubSpokeConnectivity",
+      "description": "hubSpokeConnectivity description",
+      "connectivityTopology": "HubAndSpoke",
+      "hubs": [
+        {
+          "resourceId": "<hubVnetResourceId>",
+          "resourceType": "Microsoft.Network/virtualNetworks"
+        }
+      ],
+      "deleteExistingPeering": "True",
+      "isGlobal": "True",
+      "appliesToGroups": [
+        {
+          "networkGroupId": "<networkGroupResourceId>",
+          "useHubGateway": "False",
+          "groupConnectivity": "None",
+          "isGlobal": "False"
+        }
+      ]
+    },
+    {
+      "name": "MeshConnectivity",
+      "description": "MeshConnectivity description",
+      "connectivityTopology": "Mesh",
+      "deleteExistingPeering": "True",
+      "isGlobal": "True",
+      "appliesToGroups": [
+        {
+          "networkGroupId": "<networkGroupResourceId>",
+          "useHubGateway": "False",
+          "groupConnectivity": "None",
+          "isGlobal": "False"
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+connectivityConfigurations: [
+  {
+    name: 'hubSpokeConnectivity'
+    description: 'hubSpokeConnectivity description'
+    connectivityTopology: 'HubAndSpoke'
+    hubs: [
+      {
+        resourceId: '<hubVnetResourceId>'
+        resourceType: 'Microsoft.Network/virtualNetworks'
+      }
+    ]
+    deleteExistingPeering: 'True'
+    isGlobal: 'True'
+    appliesToGroups: [
+      {
+        networkGroupId: '<networkGroupResourceId>'
+        useHubGateway: 'False'
+        groupConnectivity: 'None'
+        isGlobal: 'False'
+      }
+    ]
+  }
+  {
+    name: 'MeshConnectivity'
+    description: 'MeshConnectivity description'
+    connectivityTopology: 'Mesh'
+    deleteExistingPeering: 'True'
+    isGlobal: 'True'
+    appliesToGroups: [
+      {
+        networkGroupId: '<networkGroupResourceId>'
+        useHubGateway: 'False'
+        groupConnectivity: 'None'
+        isGlobal: 'False'
+      }
+    ]
+  }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `<scopeConnections>`
+
+Scope Connections to create for the network manager. Allows network manager to manage resources from another tenant. Supports management groups or subscriptions from another tenant.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"scopeConnections": {
+  "value": [
+    {
+      "name": "scope-connection-test",
+      "description": "description of the scope connection",
+      "resourceId": "/subscriptions/<subscriptionId>", // or "/providers/Microsoft.Management/managementGroups/<managementGroupId>"
+      "tenantid": "<tenantId>"
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+scopeConnections: [
+  {
+    name: 'scope-connection-test'
+    description: 'description of the scope connection'
+    resourceId: '/subscriptions/<subscriptionId>', // or '/providers/Microsoft.Management/managementGroups/<managementGroupId>'
+    tenantid: t'<tenantId>'
+  }
+]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `<securityAdminConfigurations>`
+
+Azure Virtual Network Manager provides two different types of configurations you can deploy across your virtual networks, one of them being a SecurityAdmin configuration. A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. You then associate the rule collection with the network groups that you want to apply the security admin rules to.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"securityAdminConfigurations": {
+  "value": [
+    {
+      "name": "test-security-admin-config",
+      "description": "description of the security admin config",
+      "applyOnNetworkIntentPolicyBasedServices": [
+        "AllowRulesOnly"
+      ],
+      "ruleCollections": [
+        {
+          "name": "test-rule-collection-1",
+          "description": "test-rule-collection-description",
+          "appliesToGroups": [
+            {
+              "networkGroupId": "<networkGroupResourceId>"
+            }
+          ],
+          "rules": [
+            {
+              "name": "test-inbound-allow-rule-1",
+              "description": "test-inbound-allow-rule-1-description",
+              "access": "Allow",
+              "direction": "Inbound",
+              "priority": 150,
+              "protocol": "Tcp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+securityAdminConfigurations: [
+  {
+    name: 'test-security-admin-config'
+    description: 'description of the security admin config'
+    applyOnNetworkIntentPolicyBasedServices: [
+      'AllowRulesOnly'
+    ]
+    ruleCollections: [
+      {
+        name: 'test-rule-collection-1'
+        description: 'test-rule-collection-description'
+        appliesToGroups: [
+          {
+            networkGroupId: '<networkGroupResourceId>'
+          }
+        ]
+        rules: [
+          {
+            name: 'test-inbound-allow-rule-1'
+            description: 'test-inbound-allow-rule-1-description'
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 150
+            protocol: 'Tcp'
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+</details>
+<p>
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -272,8 +629,8 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
       {
         description: 'description of the scope connection'
         name: 'scope-connection-test'
-        resourceId: '/subscriptions/<<subscriptionId>>'
-        tenantid: '<<tenantId>>'
+        resourceId: '<resourceId>'
+        tenantid: '<tenantid>'
       }
     ]
     securityAdminConfigurations: [
@@ -459,8 +816,8 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
         {
           "description": "description of the scope connection",
           "name": "scope-connection-test",
-          "resourceId": "/subscriptions/<<subscriptionId>>",
-          "tenantid": "<<tenantId>>"
+          "resourceId": "<resourceId>",
+          "tenantid": "<tenantid>"
         }
       ]
     },

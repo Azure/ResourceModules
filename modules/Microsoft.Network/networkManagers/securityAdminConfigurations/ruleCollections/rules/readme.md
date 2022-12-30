@@ -50,10 +50,6 @@ A security admin configuration contains a set of rule collections. Each rule col
 | `sourcesAddressPrefixType` | string | `''` | `['', IPPrefix, ServiceTag]` | The source filter can be an IP Address or a service tag. It specifies the incoming traffic from a specific source IP addresses range that will be allowed or denied by this rule. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |

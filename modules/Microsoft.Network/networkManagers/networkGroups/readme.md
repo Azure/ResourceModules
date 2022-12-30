@@ -40,10 +40,6 @@ A network group is a collection of same-type network resources that you can asso
 | `staticMembers` | _[staticMembers](staticMembers/readme.md)_ array | `[]` | Static Members to create for the network group. Contains virtual networks to add to the network group. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
