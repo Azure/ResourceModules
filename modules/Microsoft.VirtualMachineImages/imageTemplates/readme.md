@@ -352,7 +352,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     ]
     sigImageDefinitionId: '<sigImageDefinitionId>'
-    sigImageVersion: '10.20.30'
+    sigImageVersion: '<sigImageVersion>'
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
     unManagedImageName: '<<namePrefix>>-umi-vmitadv-001'
@@ -432,7 +432,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "<sigImageDefinitionId>"
     },
     "sigImageVersion": {
-      "value": "10.20.30"
+      "value": "<sigImageVersion>"
     },
     "stagingResourceGroup": {
       "value": "<stagingResourceGroup>"
