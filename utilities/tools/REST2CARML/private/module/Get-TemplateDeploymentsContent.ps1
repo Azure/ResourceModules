@@ -258,7 +258,7 @@ function Get-TemplateDeploymentsContent {
         # - Existing parent resources (as they are regenerated above anyways)
         if ($existingTemplateContent.resources.count -gt 0) {
             $preExistingExtraResources = $existingTemplateContent.resources | Where-Object {
-                $_.name -notIn $ModuleData.resources.name + @('defaultTelemetry') + @($resourceTypeSingular) -and $_.content[0] -notlike '* existing = {'
+                $_.name -notIn @($ModuleData.resources.name) + @('defaultTelemetry') + @($resourceTypeSingular) -and $_.content[0] -notlike '* existing = {'
             }
             foreach ($resource in $preExistingExtraResources) {
                 $templateContent += $resource.content
