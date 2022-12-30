@@ -179,7 +179,11 @@ function Get-TemplateDeploymentsContent {
             $telemetryTemplate = $telemetryTemplate -replace ', location', ''
         }
         $templateContent += $telemetryTemplate
-        $templateContent += ''
+
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
 
         # Add 'existing' parents (if any)
         # -------------------------------
@@ -212,7 +216,11 @@ function Get-TemplateDeploymentsContent {
             $existingResourceIndent -= 4
             $templateContent += "$(' ' * $existingResourceIndent)}"
         }
-        $templateContent += ''
+
+        # Add a space in between the new section and the previous one in case no space exists
+        if (-not [String]::IsNullOrEmpty($templateContent[-1])) {
+            $templateContent += ''
+        }
 
         # Add primary resource
         # --------------------
@@ -234,18 +242,20 @@ function Get-TemplateDeploymentsContent {
             }
         }
 
-        $templateContent += '  properties: {'
-        foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' } | Sort-Object -Property 'name')) {
-            if ($matchingExistingResource.nestedElements.name -notcontains $parameter.name) {
-                $templateContent += '    {0}: {0}' -f $parameter.name
-            } else {
-                $existingProperty = $matchingExistingResource.nestedElements | Where-Object { $_.name -eq $parameter.name }
-                $templateContent += $existingProperty.content
+        if (($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' }).Count -gt 0) {
+            $templateContent += '  properties: {'
+            foreach ($parameter in ($ModuleData.parameters | Where-Object { $_.level -eq 1 -and $_.Parent -eq 'properties' } | Sort-Object -Property 'name')) {
+                if ($matchingExistingResource.nestedElements.name -notcontains $parameter.name) {
+                    $templateContent += '    {0}: {0}' -f $parameter.name
+                } else {
+                    $existingProperty = $matchingExistingResource.nestedElements | Where-Object { $_.name -eq $parameter.name }
+                    $templateContent += $existingProperty.content
+                }
             }
+            $templateContent += '  }'
         }
 
         $templateContent += @(
-            '  }'
             '}'
             ''
         )
