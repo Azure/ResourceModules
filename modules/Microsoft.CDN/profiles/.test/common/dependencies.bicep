@@ -1,7 +1,7 @@
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Virtual Network to create.')
+@description('Required. The name of the Storage Account to create.')
 param storageaccountname string
 
 module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
