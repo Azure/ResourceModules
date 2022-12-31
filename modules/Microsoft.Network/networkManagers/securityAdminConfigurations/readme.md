@@ -24,7 +24,7 @@ A security admin configuration contains a set of rule collections. Each rule col
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applyOnNetworkIntentPolicyBasedServices` | array | `[None]` | `[All, AllowRulesOnly, None]` | Enum list of network intent policy based services. Default is "None". |
+| `applyOnNetworkIntentPolicyBasedServices` | array | `[None]` | `[All, AllowRulesOnly, None]` | Enum list of network intent policy based services. |
 | `name` | string |  |  | The name of the security admin configuration. |
 
 **Conditional parameters**

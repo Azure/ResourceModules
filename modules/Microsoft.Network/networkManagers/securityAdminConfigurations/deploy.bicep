@@ -14,7 +14,7 @@ param description string = ''
   'All'
   'AllowRulesOnly'
 ])
-@sys.description('Required. Enum list of network intent policy based services. Default is "None".')
+@sys.description('Required. Enum list of network intent policy based services.')
 param applyOnNetworkIntentPolicyBasedServices array = [ 'None' ]
 
 @sys.description('Optional. A security admin configuration contains a set of rule collections that are applied to network groups. Each rule collection contains one or more security admin rules.')
