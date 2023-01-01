@@ -15,7 +15,7 @@ DevTest lab policies are used to modify the lab settings like only allowing cert
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DevTestLab/labs/policysets/policies` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/policysets/policies) |
+| `Microsoft.DevTestLab/labs/policysets/policies` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs/policysets/policies) |
 
 ## Parameters
 

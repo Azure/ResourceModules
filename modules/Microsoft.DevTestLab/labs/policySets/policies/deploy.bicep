@@ -63,15 +63,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
+resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: labName
 
-  resource policySets 'policysets@2018-09-15' existing = {
+  resource policySets 'policysets@2018-10-15-preview' existing = {
     name: policySetName
   }
 }
 
-resource policy 'Microsoft.DevTestLab/labs/policysets/policies@2018-09-15' = {
+resource policy 'Microsoft.DevTestLab/labs/policysets/policies@2018-10-15-preview' = {
   name: name
   parent: lab::policySets
   tags: tags

@@ -15,7 +15,7 @@ An artifact source allows you to create custom artifacts for the VMs in the lab,
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DevTestLab/labs/artifactsources` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/artifactsources) |
+| `Microsoft.DevTestLab/labs/artifactsources` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs/artifactsources) |
 
 ## Parameters
 

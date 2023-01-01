@@ -37,11 +37,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
+resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: labName
 }
 
-resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@2018-09-15' = {
+resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@2018-10-15-preview' = {
   name: name
   parent: lab
   tags: tags
@@ -49,7 +49,7 @@ resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@201
     description: description
     events: events
     emailRecipient: emailRecipient
-    webHookUrl: webhookUrl
+    webhookUrl: webhookUrl
     notificationLocale: notificationLocale
   }
 }

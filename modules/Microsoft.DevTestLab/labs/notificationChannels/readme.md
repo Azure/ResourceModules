@@ -15,7 +15,7 @@ Notification channels are used by the schedule resource type in order to send no
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DevTestLab/labs/notificationchannels` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/notificationchannels) |
+| `Microsoft.DevTestLab/labs/notificationchannels` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs/notificationchannels) |
 
 ## Parameters
 

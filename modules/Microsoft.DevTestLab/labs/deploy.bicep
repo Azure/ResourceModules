@@ -39,6 +39,9 @@ param extendedProperties object = {}
 @description('Optional. Type of storage used by the lab. It can be either Premium or Standard. Default is Premium.')
 param labStorageType string = 'Premium'
 
+@description('Optional. The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used.')
+param artifactsStorageAccount string = ''
+
 @description('Optional. The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user.')
 param mandatoryArtifactsResourceIdsLinux array = []
 
@@ -60,6 +63,36 @@ param userAssignedIdentities object = {}
 
 @description('Optional. The ID(s) to assign to the virtual machines associated with this lab.')
 param managementIdentities object = {}
+
+@description('Optional. Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab.')
+param vmCreationResourceGroupId string = resourceGroup().id
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. Enable browser connect on virtual machines if the lab\'s VNETs have configured Azure Bastion. Default is "Disabled".')
+param browserConnect string = 'Disabled'
+
+@description('Optional. Disable auto upgrade custom script extension minor version. Default is false.')
+param disableAutoUpgradeCseMinorVersion bool = false
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. Enable lab resources isolation from the public internet. Default is "Enabled".')
+param isolateLabResources string = 'Enabled'
+
+@allowed([
+  'EncryptionAtRestWithPlatformKey'
+  'EncryptionAtRestWithCustomerKey'
+])
+@description('Optional. Specify how OS and data disks created as part of the lab are encrypted. Default is "EncryptionAtRestWithPlatformKey".')
+param encryptionType string = 'EncryptionAtRestWithPlatformKey'
+
+@description('Conditional. The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey".')
+param encryptionDiskEncryptionSetId string = ''
 
 @description('Optional. Virtual networks to create for the lab.')
 param virtualNetworks array = []
@@ -93,15 +126,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lab 'Microsoft.DevTestLab/labs@2018-09-15' = {
+resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
   name: name
   location: location
   tags: tags
   identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+    type: !empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
   }
   properties: {
+    artifactsStorageAccount: artifactsStorageAccount
     announcement: announcement
     environmentPermission: environmentPermission
     extendedProperties: extendedProperties
@@ -111,6 +145,14 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' = {
     premiumDataDisks: premiumDataDisks
     support: support
     managementIdentities: managementIdentities
+    vmCreationResourceGroupId: vmCreationResourceGroupId
+    browserConnect: browserConnect
+    disableAutoUpgradeCseMinorVersion: disableAutoUpgradeCseMinorVersion
+    isolateLabResources: isolateLabResources
+    encryption: {
+      type: encryptionType
+      diskEncryptionSetId: !empty(encryptionDiskEncryptionSetId) ? encryptionDiskEncryptionSetId : null
+    }
   }
 }
 
@@ -216,6 +258,9 @@ module lab_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
     resourceId: lab.id
   }
 }]
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = lab.identity.principalId
 
 @description('The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates.')
 output uniqueIdentifier string = lab.properties.uniqueIdentifier
