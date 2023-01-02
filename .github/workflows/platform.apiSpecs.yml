@@ -26,7 +26,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'AzureAPICrawler' '.github' 'scripts' 'Set-EnvironmentOnAgent.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
           # Define PS modules to install on the runner
           $Modules = @(
