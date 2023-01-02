@@ -43,12 +43,15 @@ module resourceGroupResources 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
+var networkManagerName = '<<namePrefix>>${serviceShort}001'
+var networkManagerExpecetedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/networkManagers/${networkManagerName}'
+
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
+    name: networkManagerName
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -99,7 +102,7 @@ module testDeployment '../../deploy.bicep' = {
         isGlobal: 'True'
         appliesToGroups: [
           {
-            networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
+            networkGroupId: '${networkManagerExpecetedResourceID}/networkGroups/network-group-spokes'
             useHubGateway: 'False'
             groupConnectivity: 'None'
             isGlobal: 'False'
@@ -114,7 +117,7 @@ module testDeployment '../../deploy.bicep' = {
         isGlobal: 'True'
         appliesToGroups: [
           {
-            networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
+            networkGroupId: '${networkManagerExpecetedResourceID}/networkGroups/network-group-spokes'
             useHubGateway: 'False'
             groupConnectivity: 'None'
             isGlobal: 'False'
@@ -143,7 +146,7 @@ module testDeployment '../../deploy.bicep' = {
             description: 'test-rule-collection-description'
             appliesToGroups: [
               {
-                networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
+                networkGroupId: '${networkManagerExpecetedResourceID}/networkGroups/network-group-spokes'
               }
             ]
             rules: [
@@ -176,7 +179,7 @@ module testDeployment '../../deploy.bicep' = {
             description: 'test-rule-collection-description'
             appliesToGroups: [
               {
-                networkGroupId: concat(resourceGroup.id, '/providers/Microsoft.Network/networkManagers/,<<namePrefix>>${serviceShort}001,/networkGroups/network-group-spokes')
+                networkGroupId: '${networkManagerExpecetedResourceID}/networkGroups/network-group-spokes'
               }
             ]
             rules: [
