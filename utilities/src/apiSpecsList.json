@@ -2046,7 +2046,7 @@
     ]
   },
   "Microsoft.Cdn": {
-    "CdnWebApplicationFirewallPolicies": [
+    "cdnWebApplicationFirewallPolicies": [
       "2019-06-15",
       "2019-06-15-preview",
       "2020-03-31",
@@ -3898,7 +3898,7 @@
       "2018-06-01-privatepreview"
     ]
   },
-  "Microsoft.DBforMySQL": {
+  "Microsoft.DBForMySql": {
     "flexibleServers": [
       "2020-07-01-preview",
       "2020-07-01-privatepreview",
@@ -3935,7 +3935,7 @@
       "2017-12-01-preview",
       "2018-06-01-privatepreview"
     ],
-    "servers/Administrators": [
+    "servers/administrators": [
       "2017-12-01",
       "2017-12-01-preview",
       "2018-06-01-privatepreview"
@@ -6067,7 +6067,7 @@
       "2016-05-01"
     ]
   },
-  "microsoft.insights": {
+  "Microsoft.Insights": {
     "actionGroups": [
       "2017-04-01",
       "2018-03-01",
@@ -7993,7 +7993,7 @@
       "2020-04-01-preview",
       "2022-07-01"
     ],
-    "dnszones": [
+    "dnsZones": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8001,7 +8001,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/A": [
+    "dnsZones/A": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8009,7 +8009,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/AAAA": [
+    "dnsZones/AAAA": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8023,7 +8023,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/CNAME": [
+    "dnsZones/CNAME": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8031,7 +8031,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/MX": [
+    "dnsZones/MX": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8039,7 +8039,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/NS": [
+    "dnsZones/NS": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8047,7 +8047,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/PTR": [
+    "dnsZones/PTR": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8055,7 +8055,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/SOA": [
+    "dnsZones/SOA": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8063,7 +8063,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/SRV": [
+    "dnsZones/SRV": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -8071,7 +8071,7 @@
       "2018-03-01-preview",
       "2018-05-01"
     ],
-    "dnszones/TXT": [
+    "dnsZones/TXT": [
       "2015-05-04-preview",
       "2016-04-01",
       "2017-09-01",
@@ -11245,17 +11245,17 @@
       "2018-01-01-preview",
       "2021-11-01"
     ],
-    "namespaces/authorizationRules": [
+    "namespaces/AuthorizationRules": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
     ],
-    "namespaces/hybridConnections": [
+    "namespaces/HybridConnections": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
     ],
-    "namespaces/hybridConnections/authorizationRules": [
+    "namespaces/HybridConnections/authorizationRules": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
@@ -11268,12 +11268,12 @@
       "2018-01-01-preview",
       "2021-11-01"
     ],
-    "namespaces/wcfRelays": [
+    "namespaces/WcfRelays": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
     ],
-    "namespaces/wcfRelays/authorizationRules": [
+    "namespaces/WcfRelays/authorizationRules": [
       "2016-07-01",
       "2017-04-01",
       "2021-11-01"
