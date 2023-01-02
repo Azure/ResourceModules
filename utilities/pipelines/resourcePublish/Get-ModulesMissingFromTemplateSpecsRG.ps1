@@ -81,7 +81,7 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         # Get all children
         $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
 
-        if (-not (Get-AzResourceGroup -ResourceGroupName 'artifacts-rg')) {
+        if (-not (Get-AzResourceGroup -ResourceGroupName $TemplateSpecsRGName)) {
             $missingTemplatePaths = $availableModuleTemplatePaths
         } else {
             # Test all children against Resource Group
