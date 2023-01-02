@@ -223,7 +223,7 @@ module lab_notificationChannels 'notificationChannels/deploy.bicep' = [for (noti
     description: contains(notificationChannel, 'description') ? notificationChannel.description : ''
     events: notificationChannel.events
     emailRecipient: contains(notificationChannel, 'emailRecipient') ? notificationChannel.emailRecipient : ''
-    webhookUrl: contains(notificationChannel, 'webhookUrl') ? notificationChannel.webhookUrl : ''
+    webHookUrl: contains(notificationChannel, 'webhookUrl') ? notificationChannel.webhookUrl : ''
     notificationLocale: contains(notificationChannel, 'notificationLocale') ? notificationChannel.notificationLocale : 'en'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }

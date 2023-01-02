@@ -69,7 +69,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: labName
 }
 
-resource schedule 'Microsoft.DevTestLab/labs/schedules@2018-10-15-preview' = {
+resource schedule 'Microsoft.DevTestLab/labs/schedules@2018-09-15' = {
   name: name
   parent: lab
   tags: tags

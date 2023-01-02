@@ -38,7 +38,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: labName
 }
 
-resource virtualNetwork 'Microsoft.DevTestLab/labs/virtualnetworks@2018-10-15-preview' = {
+resource virtualNetwork 'Microsoft.DevTestLab/labs/virtualnetworks@2018-09-15' = {
   name: name
   parent: lab
   tags: tags

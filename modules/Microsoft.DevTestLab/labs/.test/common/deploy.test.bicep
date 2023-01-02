@@ -231,8 +231,17 @@ module testDeployment '../../deploy.bicep' = {
           }
         ]
         emailRecipient: 'mail@contosodtlmail.com'
-        webhookUrl: 'https://webhook.contosotest.com'
+        webHookUrl: 'https://webhook.contosotest.com'
         notificationLocale: 'en'
+      }
+      {
+        name: 'costThreshold'
+        events: [
+          {
+            eventName: 'Cost'
+          }
+        ]
+        webHookUrl: 'https://webhook.contosotest.com'
       }
     ]
     artifactSources: [

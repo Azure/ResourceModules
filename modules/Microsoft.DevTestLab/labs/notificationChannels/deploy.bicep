@@ -13,11 +13,11 @@ param description string = ''
 @sys.description('Required. The list of event for which this notification is enabled.')
 param events array = []
 
-@sys.description('Conditional. The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webhookUrl" is empty.')
+@sys.description('Conditional. The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty.')
 param emailRecipient string = ''
 
 @sys.description('Conditional. The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty.')
-param webhookUrl string = ''
+param webHookUrl string = ''
 
 @sys.description('Optional. The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en".')
 param notificationLocale string = 'en'
@@ -41,7 +41,7 @@ resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' existing = {
   name: labName
 }
 
-resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@2018-10-15-preview' = {
+resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@2018-09-15' = {
   name: name
   parent: lab
   tags: tags
@@ -49,7 +49,7 @@ resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@201
     description: description
     events: events
     emailRecipient: emailRecipient
-    webhookUrl: webhookUrl
+    webHookUrl: webHookUrl
     notificationLocale: notificationLocale
   }
 }

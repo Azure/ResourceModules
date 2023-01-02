@@ -15,7 +15,7 @@ Notification channels are used by the schedule resource type in order to send no
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DevTestLab/labs/notificationchannels` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs/notificationchannels) |
+| `Microsoft.DevTestLab/labs/notificationchannels` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/notificationchannels) |
 
 ## Parameters
 
@@ -30,9 +30,9 @@ Notification channels are used by the schedule resource type in order to send no
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `emailRecipient` | string | `''` | The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webhookUrl" is empty. |
+| `emailRecipient` | string | `''` | The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty. |
 | `labName` | string |  | The name of the parent lab. Required if the template is used in a standalone deployment. |
-| `webhookUrl` | string | `''` | The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty. |
+| `webHookUrl` | string | `''` | The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty. |
 
 **Optional parameters**
 
