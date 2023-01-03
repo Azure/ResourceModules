@@ -30,6 +30,7 @@ This module deploys CDN Profiles Endpoint Origins.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `profileName` | string | `'default'` | The name of the CDN profile. Default to "default". |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`

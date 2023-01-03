@@ -19,7 +19,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+@description('Optional. The name of the CDN profile. Default to "default".')
+param profileName string = 'default'
+
+resource profile 'Microsoft.Cdn/profiles@2021-06-01' existing = {
+  name: profileName
+}
+
 resource endpoint 'Microsoft.Cdn/profiles/endpoints@2021-06-01' existing = {
+  parent: profile
   name: endpointName
 }
 

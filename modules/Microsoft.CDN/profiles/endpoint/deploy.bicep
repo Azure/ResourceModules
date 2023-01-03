@@ -43,7 +43,8 @@ resource endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = if (!empty(end
 module profile_EndpointOrigin 'origins/deploy.bicep' = {
   name: '${endpointName}-origins'
   params: {
-    endpointName: endpoint.name
+    profileName: profile.name
+    endpointName: endpointName
     originsProperties: endpointProperties.origins
   }
 }
