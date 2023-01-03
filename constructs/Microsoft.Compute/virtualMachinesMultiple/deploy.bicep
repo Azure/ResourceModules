@@ -178,6 +178,11 @@ param extensionDomainJoinConfig object = {
   enabled: false
 }
 
+@description('Optional. The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.')
+param extensionAadJoinConfig object = {
+  enabled: false
+}
+
 @description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionAntiMalwareConfig object = {
   enabled: false
@@ -336,6 +341,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     extensionCustomScriptProtectedSetting: extensionCustomScriptProtectedSetting
     extensionDependencyAgentConfig: extensionDependencyAgentConfig
     extensionAzureDiskEncryptionConfig: extensionAzureDiskEncryptionConfig
+    extensionAadJoinConfig: extensionAadJoinConfig
     extensionDomainJoinConfig: extensionDomainJoinConfig
     extensionDomainJoinPassword: extensionDomainJoinPassword
     extensionDSCConfig: extensionDSCConfig
