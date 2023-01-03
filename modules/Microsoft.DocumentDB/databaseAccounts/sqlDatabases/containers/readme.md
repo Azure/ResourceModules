@@ -11,7 +11,7 @@
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/sqlDatabases/containers) |
+| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/sqlDatabases/containers) |
 
 ## Parameters
 
