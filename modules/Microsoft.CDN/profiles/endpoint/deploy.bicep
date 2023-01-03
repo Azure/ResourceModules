@@ -32,7 +32,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource profileName_endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = if (!empty(endpointName)){
+resource profile_endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = if (!empty(endpointName)) {
   parent: profile
   name: endpointName
   location: location
@@ -40,28 +40,25 @@ resource profileName_endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = if
   tags: tags
 }
 
-resource profile_EndpointOrigins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = if (!empty(endpointProperties.origins)){
-  parent: profileName_endpoint
-  name: endpointProperties.origins[0].name
-  properties: {
-    hostName: endpointProperties.origins[0].properties.hostName
-    httpPort: endpointProperties.origins[0].properties.httpPort
-    enabled: endpointProperties.origins[0].properties.enabled
-    httpsPort: endpointProperties.origins[0].properties.httpsPort
+module profile_EndpointOrigin 'origins/deploy.bicep' = {
+  name: '${endpointName}-origins'
+  params: {
+    endpointName: profile_endpoint.name
+    originsProperties: endpointProperties.origins
   }
 }
 
 @description('The name of the endpoint.')
-output name string = profileName_endpoint.name
+output name string = profile_endpoint.name
 
 @description('The resource ID of the endpoint.')
-output resourceId string = profileName_endpoint.id
+output resourceId string = profile_endpoint.id
 
 @description('The name of the resource group the endpoint was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = profileName_endpoint.location
+output location string = profile_endpoint.location
 
 @description('The properties of the endpoint.')
-output endpointProperties object = profileName_endpoint.properties
+output endpointProperties object = profile_endpoint.properties

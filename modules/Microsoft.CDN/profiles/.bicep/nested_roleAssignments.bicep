@@ -58,7 +58,7 @@ resource cdnProfile 'Microsoft.Cdn/profiles@2021-06-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(redisCache.id, principalId, roleDefinitionIdOrName)
+  name: guid(cdnProfile.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

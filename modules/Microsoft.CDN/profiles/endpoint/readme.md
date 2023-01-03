@@ -82,9 +82,9 @@ tags: {
 | :-- | :-- | :-- |
 | `endpointProperties` | object | The properties of the endpoint. |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The resource name. |
-| `resourceGroupName` | string | The name of the resource group the Redis cache was created in. |
-| `resourceId` | string | The resource ID. |
+| `name` | string | The name of the endpoint. |
+| `resourceGroupName` | string | The name of the resource group the endpoint was created in. |
+| `resourceId` | string | The resource ID of the endpoint. |
 
 ## Cross-referenced modules
 

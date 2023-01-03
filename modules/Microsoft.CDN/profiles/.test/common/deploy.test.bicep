@@ -31,7 +31,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    storageaccountname: 'dep<<namePrefix>>cdnstore${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>cdnstore${serviceShort}'
   }
 }
 
