@@ -1,5 +1,5 @@
 @description('Required. Object containing endpoint origin properties.')
-param originsProperties array
+param originProperties object
 
 @description('Required. The name of the CDN Endpoint.')
 param endpointName string
@@ -23,7 +23,7 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2021-06-01' existing = {
   name: endpointName
 }
 
-resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = [for (originProperties, index) in originsProperties: {
+resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = {
   parent: endpoint
   name: originProperties.name
   properties: {
@@ -32,13 +32,13 @@ resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = [for (o
     enabled: originProperties.properties.enabled
     httpsPort: originProperties.properties.httpsPort
   }
-}]
+}
 
 @description('The name of the endpoint.')
-output name string = origins[0].name
+output name string = origins.name
 
 @description('The resource ID of the endpoint.')
-output resourceId string = origins[0].id
+output resourceId string = origins.id
 
 @description('The name of the resource group the endpoint was created in.')
 output resourceGroupName string = resourceGroup().name
