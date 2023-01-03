@@ -23,22 +23,22 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2021-06-01' existing = {
   name: endpointName
 }
 
-resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = [for originProperties in originsProperties: {
+resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = {
   parent: endpoint
-  name: originProperties.name
+  name: originsProperties[0].name
   properties: {
-    hostName: originProperties.properties.hostName
-    httpPort: originProperties.properties.httpPort
-    enabled: originProperties.properties.enabled
-    httpsPort: originProperties.properties.httpsPort
+    hostName: originsProperties[0].properties.hostName
+    httpPort: originsProperties[0].properties.httpPort
+    enabled: originsProperties[0].properties.enabled
+    httpsPort: originsProperties[0].properties.httpsPort
   }
-}]
+}
 
 @description('The name of the endpoint.')
-output name string = origins[0].name
+output name string = origins.name
 
 @description('The resource ID of the endpoint.')
-output resourceId string = origins[0].id
+output resourceId string = origins.id
 
 @description('The name of the resource group the endpoint was created in.')
 output resourceGroupName string = resourceGroup().name
