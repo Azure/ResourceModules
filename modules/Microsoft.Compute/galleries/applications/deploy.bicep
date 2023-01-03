@@ -40,7 +40,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery Application.')
-param customActions object = {}
+param customActions array = []
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -64,7 +64,7 @@ resource application 'Microsoft.Compute/galleries/applications@2022-03-03' = {
   location: location
   tags: tags
   properties: {
-    customActions: !empty(customActions) ? [ customActions ] : null
+    customActions: !empty(customActions) ? customActions : null
     description: applicationDefinitionDescription
     endOfLifeDate: endOfLifeDate
     eula: eula
