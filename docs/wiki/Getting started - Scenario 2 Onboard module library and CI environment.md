@@ -329,7 +329,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `vstsFeedName` | `'ResourceModules'` | The name of the Azure DevOps universal packages feed to publish to. |
+| `vstsFeedName` | `'carml'` | The name of the Azure DevOps universal packages feed to publish to. |
 | `vstsFeedProject` | `'$(System.TeamProject)'` | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
 | `vstsFeedToken` | `'$(System.AccessToken)'` | The token used to publish universal packages into the feed above. |
 | `artifactsFeedDoPublish` | `'true'` | A central switch to enable/disable publishing to Universal packages. |
@@ -354,14 +354,16 @@ This section will explain what is required to publish the modules to [Azure Arti
 
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
-   > Note: The default feed name is `ResourceModules` as configured in the [`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+   > **Note:** The official guidance to set up a feed can be found [here](https://learn.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops#create-public-feeds). The default feed name is `carml` as configured in the [`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+   >
+   > **Note:** It's also very important that the feed's 'Permissions' (Artifact Feed -> Feed settings -> Permissions) are set up so that the project's 'Build Service' has at least the role 'Contributor' to be able to publish artifacts ([ref](https://learn.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#permissions-table)).
 1. An Azure DevOps project to host the artifact feed
-   > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
+   > **Note:** There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
 
-Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
+Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1).
 
 </details>
 

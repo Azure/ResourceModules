@@ -73,7 +73,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
-    adminUsername: 'localAdminUser'
+    adminUsername: 'VMAdmin'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
@@ -133,7 +133,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     adminPassword: password
     availabilityZone: 2
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
@@ -212,6 +212,9 @@ module testDeployment '../../deploy.bicep' = {
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
+    }
+    extensionAadJoinConfig: {
+      enabled: true
     }
     extensionDSCConfig: {
       enabled: true

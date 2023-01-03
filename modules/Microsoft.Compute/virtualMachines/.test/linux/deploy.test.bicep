@@ -70,7 +70,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}'
     location: location
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       publisher: 'Canonical'
       offer: '0001-com-ubuntu-server-focal'
@@ -130,7 +130,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     availabilityZone: 1
     backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
     backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
@@ -192,6 +192,9 @@ module testDeployment '../../deploy.bicep' = {
         VolumeType: 'All'
       }
     }
+    extensionAadJoinConfig: {
+      enabled: true
+    }
     extensionDSCConfig: {
       enabled: false
     }
@@ -206,7 +209,7 @@ module testDeployment '../../deploy.bicep' = {
     publicKeys: [
       {
         keyData: resourceGroupResources.outputs.SSHKeyPublicKey
-        path: '/home/localAdminUser/.ssh/authorized_keys'
+        path: '/home/localAdministrator/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
