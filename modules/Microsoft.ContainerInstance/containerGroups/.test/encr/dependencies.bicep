@@ -45,7 +45,7 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('msi-${keyVault::key.id}-${location}-Azure Container Instance Service-Key Vault Crypto User')
   scope: keyVault
   properties: {
-    principalId: '8b659b68-1eb9-4ea5-ab00-a6a182520436' // 'Azure Container Instance Service' Service Principal Object Id
+    principalId: '8b659b68-1eb9-4ea5-ab00-a6a182520436' // Replace with your tenant 'Azure Container Instance Service' Service Principal Object Id
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User. Allows Keys: get, list, wrap key, unwrap key
     principalType: 'ServicePrincipal'
   }
