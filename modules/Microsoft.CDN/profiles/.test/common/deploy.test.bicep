@@ -68,7 +68,7 @@ module testDeployment '../../deploy.bicep' = {
         {
           name: 'dep-<<namePrefix>>-cdn-endpoint01'
           properties: {
-            hostName: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
+            hostName: '${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}'
             httpPort: 80
             httpsPort: 443
             enabled: true
