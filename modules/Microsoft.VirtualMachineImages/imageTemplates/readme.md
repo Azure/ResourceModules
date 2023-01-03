@@ -469,7 +469,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmitcom'
+  name: '${uniqueString(deployment().name)}-test-vmiitcom'
   params: {
     // Required parameters
     customizationSteps: [
@@ -485,13 +485,13 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmitcom001'
+    name: '<<namePrefix>>vmiitcom001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 120
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
-    lock: ''
+    lock: 'CanNotDelete'
     managedImageName: ''
     osDiskSizeGB: 127
     roleAssignments: []
@@ -535,7 +535,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmitcom001"
+      "value": "<<namePrefix>>vmiitcom001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -551,7 +551,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": []
     },
     "lock": {
-      "value": ""
+      "value": "CanNotDelete"
     },
     "managedImageName": {
       "value": ""

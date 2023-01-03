@@ -29,7 +29,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(resourceGroupName, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
