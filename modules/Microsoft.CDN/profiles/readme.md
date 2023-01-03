@@ -196,15 +196,17 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
       isHttpsAllowed: true
       originGroups: []
       originHostHeader: '<originHostHeader>'
-      origins: {
-        name: 'dep-<<namePrefix>>-cdn-endpoint01'
-        properties: {
-          enabled: true
-          hostName: '<hostName>'
-          httpPort: 80
-          httpsPort: 443
+      origins: [
+        {
+          name: 'dep-<<namePrefix>>-cdn-endpoint01'
+          properties: {
+            enabled: true
+            hostName: '<hostName>'
+            httpPort: 80
+            httpsPort: 443
+          }
         }
-      }
+      ]
       queryStringCachingBehavior: 'IgnoreQueryString'
     }
     location: '<location>'
@@ -254,15 +256,17 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
         "isHttpsAllowed": true,
         "originGroups": [],
         "originHostHeader": "<originHostHeader>",
-        "origins": {
-          "name": "dep-<<namePrefix>>-cdn-endpoint01",
-          "properties": {
-            "enabled": true,
-            "hostName": "<hostName>",
-            "httpPort": 80,
-            "httpsPort": 443
+        "origins": [
+          {
+            "name": "dep-<<namePrefix>>-cdn-endpoint01",
+            "properties": {
+              "enabled": true,
+              "hostName": "<hostName>",
+              "httpPort": 80,
+              "httpsPort": 443
+            }
           }
-        },
+        ],
         "queryStringCachingBehavior": "IgnoreQueryString"
       }
     },

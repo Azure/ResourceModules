@@ -23,7 +23,7 @@ This module deploys CDN Profiles Endpoint Origins.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `endpointName` | string | The name of the CDN Endpoint. |
-| `originProperties` | object | Object containing endpoint origin properties. |
+| `originsProperties` | array | Object containing endpoint origin properties. |
 
 **Optional parameters**
 

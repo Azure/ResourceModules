@@ -44,7 +44,7 @@ module profile_EndpointOrigin 'origins/deploy.bicep' = {
   name: '${endpointName}-origins'
   params: {
     endpointName: endpoint.name
-    originProperties: endpointProperties.origins
+    originsProperties: endpointProperties.origins
   }
 }
 
