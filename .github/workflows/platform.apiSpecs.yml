@@ -11,8 +11,9 @@ env:
 
 jobs:
   job_update_api_specs_file:
-    runs-on: ubuntu-20.04
     name: "Update file"
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-20.04
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
