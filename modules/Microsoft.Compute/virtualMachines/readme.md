@@ -23,7 +23,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/networkInterfaces` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkInterfaces) |
 | `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems) |
 
 ## Parameters
 
@@ -68,6 +68,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableEvictionPolicy` | bool | `False` |  | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
+| `extensionAadJoinConfig` | object | `{object}` |  | The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionAzureDiskEncryptionConfig` | object | `{object}` |  | The configuration for the [Azure Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed. Restrictions: Cannot be enabled on disks that have encryption at host enabled. Managed disks encrypted using Azure Disk Encryption cannot be encrypted using customer-managed keys. |
 | `extensionCustomScriptConfig` | object | `{object}` |  | The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -87,7 +88,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `nicdiagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `nicDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the NIC diagnostic setting, if deployed. |
 | `patchAssessmentMode` | string | `'ImageDefault'` | `[AutomaticByPlatform, ImageDefault]` | VM guest patching assessment mode. Set it to 'AutomaticByPlatform' to enable automatically check for updates every 24 hours. |
-| `patchMode` | string | `''` | `['', AutomaticByOS, AutomaticByPlatform, ImageDefault, Manual]` | VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows only, 'ImageDefault' for Linux only. Refer to 'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching' |
+| `patchMode` | string | `''` | `['', AutomaticByOS, AutomaticByPlatform, ImageDefault, Manual]` | VM guest patching orchestration mode. 'AutomaticByOS' & 'Manual' are for Windows only, 'ImageDefault' for Linux only. Refer to 'https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching'. |
 | `pipdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `pipdiagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `pipDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the PIP diagnostic setting, if deployed. |
@@ -99,7 +100,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `sasTokenValidityLength` | string | `'PT8H'` |  | SAS token validity length to use to download files from storage accounts. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
 | `secureBootEnabled` | bool | `False` |  | Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | `securityType` | string | `''` |  | Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. The system-assigned managed identity will automatically be enabled if extensionAadJoinConfig.enabled = "True". |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeZone` | string | `''` |  | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
 | `ultraSSDEnabled` | bool | `False` |  | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
@@ -1047,7 +1048,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmlincom'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       offer: '0001-com-ubuntu-server-focal'
       publisher: 'Canonical'
@@ -1107,7 +1108,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     availabilityZone: 1
     backupPolicyName: '<backupPolicyName>'
@@ -1142,6 +1143,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
+    extensionAadJoinConfig: {
+      enabled: true
+    }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
@@ -1187,7 +1191,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     publicKeys: [
       {
         keyData: '<keyData>'
-        path: '/home/localAdminUser/.ssh/authorized_keys'
+        path: '/home/localAdministrator/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
@@ -1221,7 +1225,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "localAdministrator"
     },
     "imageReference": {
       "value": {
@@ -1291,7 +1295,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Linux"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "availabilityZone": {
@@ -1354,6 +1358,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "encryptionAtHost": {
       "value": false
+    },
+    "extensionAadJoinConfig": {
+      "value": {
+        "enabled": true
+      }
     },
     "extensionAzureDiskEncryptionConfig": {
       "value": {
@@ -1425,7 +1434,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": [
         {
           "keyData": "<keyData>",
-          "path": "/home/localAdminUser/.ssh/authorized_keys"
+          "path": "/home/localAdministrator/.ssh/authorized_keys"
         }
       ]
     },
@@ -1494,7 +1503,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     disablePasswordAuthentication: true
@@ -1563,7 +1572,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Linux"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "configurationProfile": {
@@ -1635,7 +1644,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     disablePasswordAuthentication: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1703,7 +1712,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Linux"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "disablePasswordAuthentication": {
@@ -1744,7 +1753,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwincom'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'VMAdmin'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -1804,7 +1813,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     availabilityZone: 2
@@ -1839,6 +1848,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
+    extensionAadJoinConfig: {
+      enabled: true
+    }
     extensionAntiMalwareConfig: {
       enabled: true
       settings: {
@@ -1931,7 +1943,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "VMAdmin"
     },
     "imageReference": {
       "value": {
@@ -2001,7 +2013,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
@@ -2064,6 +2076,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "encryptionAtHost": {
       "value": false
+    },
+    "extensionAadJoinConfig": {
+      "value": {
+        "enabled": true
+      }
     },
     "extensionAntiMalwareConfig": {
       "value": {
@@ -2191,7 +2208,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwinatmg'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -2216,7 +2233,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
@@ -2241,7 +2258,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "localAdministrator"
     },
     "imageReference": {
       "value": {
@@ -2276,7 +2293,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
@@ -2337,7 +2354,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -2396,7 +2413,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
@@ -2429,7 +2446,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-cvmwincmk'
   params: {
     // Required parameters
-    adminUsername: 'localAdminUser'
+    adminUsername: 'VMAdministrator'
     imageReference: {
       offer: 'WindowsServer'
       publisher: 'MicrosoftWindowsServer'
@@ -2457,7 +2474,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     // Non-required parameters
     adminPassword: '<adminPassword>'
     dataDisks: [
@@ -2492,7 +2509,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "adminUsername": {
-      "value": "localAdminUser"
+      "value": "VMAdministrator"
     },
     "imageReference": {
       "value": {
@@ -2530,7 +2547,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": "Windows"
     },
     "vmSize": {
-      "value": "Standard_B12ms"
+      "value": "Standard_DS2_v2"
     },
     // Non-required parameters
     "adminPassword": {
