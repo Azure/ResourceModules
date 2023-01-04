@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${servi
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'vmitmin'
+param serviceShort string = 'vmiitmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -58,7 +58,6 @@ module testDeployment '../../deploy.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
     buildTimeoutInMinutes: 0
     imageReplicationRegions: []
     lock: ''
@@ -66,11 +65,12 @@ module testDeployment '../../deploy.bicep' = {
     osDiskSizeGB: 127
     roleAssignments: []
     sigImageDefinitionId: ''
+    stagingResourceGroup: ''
     subnetId: ''
     unManagedImageName: ''
-    userMsiResourceGroup: resourceGroupName
     userAssignedIdentities: []
-    stagingResourceGroup: ''
+    userMsiName: resourceGroupResources.outputs.managedIdentityName
+    userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }
 }

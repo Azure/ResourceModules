@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${servi
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'vmitadv'
+param serviceShort string = 'vmiitcom'
 
 @description('Optional. The version of the Azure Compute Gallery Image Definition to be added.')
 param sigImageVersion string = utcNow('yyyy.MM.dd')
@@ -80,6 +80,7 @@ module testDeployment '../../deploy.bicep' = {
     buildTimeoutInMinutes: 60
     imageReplicationRegions: []
     lock: 'CanNotDelete'
+    managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
@@ -95,11 +96,11 @@ module testDeployment '../../deploy.bicep' = {
     subnetId: resourceGroupResources.outputs.subnetId
     stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
-    userMsiResourceGroup: resourceGroupName
     userAssignedIdentities: [
       resourceGroupResources.outputs.managedIdentityResourceId
     ]
+    userMsiName: resourceGroupResources.outputs.managedIdentityName
+    userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }
 }
