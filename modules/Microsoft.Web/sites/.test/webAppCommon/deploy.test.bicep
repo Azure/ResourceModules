@@ -107,6 +107,9 @@ module testDeployment '../../deploy.bicep' = {
           ]
         }
       }
+      {
+        name: 'slot2'
+      }
     ]
     privateEndpoints: [
       {
