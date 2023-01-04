@@ -629,14 +629,14 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   params: {
     // Required parameters
     addressPrefixes: [
-      '10.0.0.0/24'
+      '10.1.0.0/24'
     ]
     name: '<<namePrefix>>nvnpeer001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subnets: [
       {
-        addressPrefix: '10.0.0.0/26'
+        addressPrefix: '10.1.0.0/26'
         name: 'GatewaySubnet'
       }
     ]
@@ -672,7 +672,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     // Required parameters
     "addressPrefixes": {
       "value": [
-        "10.0.0.0/24"
+        "10.1.0.0/24"
       ]
     },
     "name": {
@@ -685,7 +685,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "subnets": {
       "value": [
         {
-          "addressPrefix": "10.0.0.0/26",
+          "addressPrefix": "10.1.0.0/26",
           "name": "GatewaySubnet"
         }
       ]
