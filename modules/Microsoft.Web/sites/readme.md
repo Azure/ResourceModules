@@ -893,6 +893,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           ]
         }
       }
+      {
+        name: 'slot2'
+      }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
@@ -1019,6 +1022,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
               }
             ]
           }
+        },
+        {
+          "name": "slot2"
         }
       ]
     },
