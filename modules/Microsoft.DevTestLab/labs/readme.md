@@ -20,6 +20,7 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DevTestLab/labs` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs) |
 | `Microsoft.DevTestLab/labs/artifactsources` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/artifactsources) |
+| `Microsoft.DevTestLab/labs/costs` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/costs) |
 | `Microsoft.DevTestLab/labs/notificationchannels` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/notificationchannels) |
 | `Microsoft.DevTestLab/labs/policysets/policies` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/policysets/policies) |
 | `Microsoft.DevTestLab/labs/schedules` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/schedules) |
@@ -48,6 +49,7 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `artifactSources` | _[artifactSources](artifactSources/readme.md)_ array | `[]` |  | Artifact sources to create for the lab. |
 | `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
 | `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. Default is "Disabled". |
+| `costs` | _[costs](costs/readme.md)_ object | `{object}` |  | Costs to create for the lab. |
 | `disableAutoUpgradeCseMinorVersion` | bool | `False` |  | Disable auto upgrade custom script extension minor version. Default is false. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionType` | string | `'EncryptionAtRestWithPlatformKey'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]` | Specify how OS and data disks created as part of the lab are encrypted. Default is "EncryptionAtRestWithPlatformKey". |
@@ -267,6 +269,13 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
     ]
     artifactsStorageAccount: '<artifactsStorageAccount>'
     browserConnect: 'Enabled'
+    costs: {
+      cycleType: 'CalendarMonth'
+      status: 'Enabled'
+      target: 450
+      thresholdValue100DisplayOnChart: 'Enabled'
+      thresholdValue100SendNotificationWhenExceeded: 'Enabled'
+    }
     disableAutoUpgradeCseMinorVersion: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionDiskEncryptionSetId: '<encryptionDiskEncryptionSetId>'
@@ -291,7 +300,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
             eventName: 'AutoShutdown'
           }
         ]
-        name: 'AutoShutdown'
+        name: 'autoShutdown'
         notificationLocale: 'en'
         webHookUrl: 'https://webhook.contosotest.com'
       }
@@ -508,6 +517,15 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
     "browserConnect": {
       "value": "Enabled"
     },
+    "costs": {
+      "value": {
+        "cycleType": "CalendarMonth",
+        "status": "Enabled",
+        "target": 450,
+        "thresholdValue100DisplayOnChart": "Enabled",
+        "thresholdValue100SendNotificationWhenExceeded": "Enabled"
+      }
+    },
     "disableAutoUpgradeCseMinorVersion": {
       "value": true
     },
@@ -555,7 +573,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
               "eventName": "AutoShutdown"
             }
           ],
-          "name": "AutoShutdown",
+          "name": "autoShutdown",
           "notificationLocale": "en",
           "webHookUrl": "https://webhook.contosotest.com"
         },

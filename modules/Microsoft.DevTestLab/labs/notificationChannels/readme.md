@@ -21,10 +21,10 @@ Notification channels are used by the schedule resource type in order to send no
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `events` | array | The list of event for which this notification is enabled. |
-| `name` | string | The name of the notification channel. |
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `events` | array |  | The list of event for which this notification is enabled. |
+| `name` | string | `[autoshutdown, costThreshold]` | The name of the notification channel. |
 
 **Conditional parameters**
 

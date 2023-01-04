@@ -109,6 +109,9 @@ param notificationChannels array = []
 @description('Optional. Artifact sources to create for the lab.')
 param artifactSources array = []
 
+@description('Optional. Costs to create for the lab.')
+param costs object = {}
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -245,6 +248,31 @@ module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
+
+module lab_costs 'costs/deploy.bicep' = if (!empty(costs)) {
+  name: '${uniqueString(deployment().name, location)}-Lab-Costs'
+  params: {
+    labName: lab.name
+    tags: tags
+    currencyCode: contains(costs, 'currencyCode') ? costs.currencyCode : 'USD'
+    cycleType: costs.cycleType
+    cycleStartDateTime: contains(costs, 'cycleStartDateTime') ? costs.cycleStartDateTime : ''
+    cycleEndDateTime: contains(costs, 'cycleEndDateTime') ? costs.cycleEndDateTime : ''
+    status: contains(costs, 'status') ? costs.status : 'Enabled'
+    target: contains(costs, 'target') ? costs.target : 0
+    thresholdValue25DisplayOnChart: contains(costs, 'thresholdValue25DisplayOnChart') ? costs.thresholdValue25DisplayOnChart : 'Disabled'
+    thresholdValue25SendNotificationWhenExceeded: contains(costs, 'thresholdValue25SendNotificationWhenExceeded') ? costs.thresholdValue25SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue50DisplayOnChart: contains(costs, 'thresholdValue50DisplayOnChart') ? costs.thresholdValue50DisplayOnChart : 'Disabled'
+    thresholdValue50SendNotificationWhenExceeded: contains(costs, 'thresholdValue50SendNotificationWhenExceeded') ? costs.thresholdValue50SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue75DisplayOnChart: contains(costs, 'thresholdValue75DisplayOnChart') ? costs.thresholdValue75DisplayOnChart : 'Disabled'
+    thresholdValue75SendNotificationWhenExceeded: contains(costs, 'thresholdValue75SendNotificationWhenExceeded') ? costs.thresholdValue75SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue100DisplayOnChart: contains(costs, 'thresholdValue100DisplayOnChart') ? costs.thresholdValue100DisplayOnChart : 'Disabled'
+    thresholdValue100SendNotificationWhenExceeded: contains(costs, 'thresholdValue100SendNotificationWhenExceeded') ? costs.thresholdValue100SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue125DisplayOnChart: contains(costs, 'thresholdValue125DisplayOnChart') ? costs.thresholdValue125DisplayOnChart : 'Disabled'
+    thresholdValue125SendNotificationWhenExceeded: contains(costs, 'thresholdValue125SendNotificationWhenExceeded') ? costs.thresholdValue125SendNotificationWhenExceeded : 'Disabled'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
 
 module lab_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'

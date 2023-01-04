@@ -223,7 +223,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     notificationChannels: [
       {
-        name: 'AutoShutdown'
+        name: 'autoShutdown'
         description: 'Integration configured for auto-shutdown'
         events: [
           {
@@ -264,5 +264,12 @@ module testDeployment '../../deploy.bicep' = {
         armTemplateFolderPath: '/Environments'
       }
     ]
+    costs: {
+      status: 'Enabled'
+      cycleType: 'CalendarMonth'
+      target: 450
+      thresholdValue100DisplayOnChart: 'Enabled'
+      thresholdValue100SendNotificationWhenExceeded: 'Enabled'
+    }
   }
 }
