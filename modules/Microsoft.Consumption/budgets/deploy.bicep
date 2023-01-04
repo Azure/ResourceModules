@@ -82,7 +82,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
+resource budget 'Microsoft.Consumption/budgets@2021-10-01' = {
   name: name
   properties: {
     category: category
