@@ -2,7 +2,7 @@
 param labName string
 
 @allowed([
-  'autoshutdown'
+  'autoShutdown'
   'costThreshold'
 ])
 @sys.description('Required. The name of the notification channel.')
