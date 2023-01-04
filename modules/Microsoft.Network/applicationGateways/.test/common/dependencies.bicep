@@ -16,7 +16,7 @@ param keyVaultName string
 @description('Required. The name of the Deployment Script to create for the Certificate generation.')
 param certDeploymentScriptName string
 
-var CertName = 'applicationGatewaySslCertificate'
+var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
@@ -24,14 +24,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-                '10.0.0.0/24'
+                addressPrefix
             ]
         }
         subnets: [
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: '10.0.0.0/24'
+                    addressPrefix: addressPrefix
                 }
             }
         ]
@@ -96,7 +96,7 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01'
     properties: {
         azPowerShellVersion: '8.0'
         retentionInterval: 'P1D'
-        arguments: '-KeyVaultName "${keyVault.name}" -CertName "${CertName}"'
+        arguments: '-KeyVaultName "${keyVault.name}" -CertName "applicationGatewaySslCertificate"'
         scriptContent: loadTextContent('../.scripts/New-Certificate.ps1')
     }
 }

@@ -572,6 +572,7 @@ In addition, they follow these file-type-specific guidelines:
   - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
   - Each file should also provide a `location` parameter that may default to the deployments default location
 - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
+- Further, for any test file, the usage of variables should be reduced to the absolute minimum. In other words: You should only use variables if you must use them in more than one place. The idea is to keep the test files as simple as possible
 - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
 - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
@@ -660,7 +661,7 @@ In addition, they follow these file-type-specific guidelines:
 
 # Telemetry
 
-## Overview 
+## Overview
 
 Microsoft uses the approach detailed in this section to identify the deployments of the Bicep and ARM JSON templates of the CARML library. Microsoft collects this information to provide the best experiences with their products and to operate their business. Telemetry data is captured through the built-in mechanisms of the Azure platform; therefore, it never leaves the platform, providing only Microsoft with access. Deployments are identified through a specific GUID (Globally Unique ID), indicating that the code originated from the CARML library. The data is collected and governed by Microsoft's privacy policies, located at the [Trust Center](https://www.microsoft.com/en-us/trust-center).
 
