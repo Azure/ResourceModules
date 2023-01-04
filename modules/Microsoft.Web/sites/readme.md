@@ -844,215 +844,43 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
       ]
     }
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "kind": {
-      "value": "app"
-    },
-    "name": {
-      "value": "<<namePrefix>>wswa001"
-    },
-    "serverFarmResourceId": {
-      "value": "<serverFarmResourceId>"
-    },
-    // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "httpsOnly": {
-      "value": true
-    },
-    "privateEndpoints": {
-      "value": [
-        {
-          "privateDnsZoneGroup": {
-            "privateDNSResourceIds": [
-              "<privateDNSZoneResourceId>"
-            ]
-          },
-          "service": "sites",
-          "subnetResourceId": "<subnetResourceId>"
-        }
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "siteConfig": {
-      "value": {
-        "alwaysOn": true,
-        "metadata": [
-          {
-            "name": "CURRENT_STACK",
-            "value": "dotnetcore"
-          }
-        ]
-      }
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 4: Webappmin</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswamin'
-  params: {
-    // Required parameters
-    kind: 'app'
-    name: '<<namePrefix>>wswamin001'
-    serverFarmResourceId: '<serverFarmResourceId>'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "kind": {
-      "value": "app"
-    },
-    "name": {
-      "value": "<<namePrefix>>wswamin001"
-    },
-    "serverFarmResourceId": {
-      "value": "<serverFarmResourceId>"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 5: Webappslots</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswa'
-  params: {
-    // Required parameters
-    kind: 'app'
-    name: '<<namePrefix>>wswa001'
-    serverFarmResourceId: '<serverFarmResourceId>'
-    // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    httpsOnly: true
-    privateEndpoints: [
-      {
-        privateDnsZoneGroup: {
-          privateDNSResourceIds: [
-            '<privateDNSZoneResourceId>'
-          ]
-        }
-        service: 'sites'
-        subnetResourceId: '<subnetResourceId>'
-      }
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    siteConfig: {
-      alwaysOn: true
-      metadata: [
-        {
-          name: 'CURRENT_STACK'
-          value: 'dotnetcore'
-        }
-      ]
-    }
     slots: [
       {
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         name: 'slot1'
+        privateEndpoints: [
+          {
+            privateDnsZoneGroup: {
+              privateDNSResourceIds: [
+                '<privateDNSZoneResourceId>'
+              ]
+            }
+            service: 'sites'
+            subnetResourceId: '<subnetResourceId>'
+          }
+        ]
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        siteConfig: {
+          alwaysOn: true
+          metadata: [
+            {
+              name: 'CURRENT_STACK'
+              value: 'dotnetcore'
+            }
+          ]
+        }
       }
     ]
     systemAssignedIdentity: true
@@ -1145,7 +973,41 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "slots": {
       "value": [
         {
-          "name": "slot1"
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "name": "slot1",
+          "privateEndpoints": [
+            {
+              "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [
+                  "<privateDNSZoneResourceId>"
+                ]
+              },
+              "service": "sites",
+              "subnetResourceId": "<subnetResourceId>"
+            }
+          ],
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "siteConfig": {
+            "alwaysOn": true,
+            "metadata": [
+              {
+                "name": "CURRENT_STACK",
+                "value": "dotnetcore"
+              }
+            ]
+          }
         }
       ]
     },
@@ -1156,6 +1018,59 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Webappmin</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module sites './Microsoft.Web/sites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-wswamin'
+  params: {
+    // Required parameters
+    kind: 'app'
+    name: '<<namePrefix>>wswamin001'
+    serverFarmResourceId: '<serverFarmResourceId>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "kind": {
+      "value": "app"
+    },
+    "name": {
+      "value": "<<namePrefix>>wswamin001"
+    },
+    "serverFarmResourceId": {
+      "value": "<serverFarmResourceId>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

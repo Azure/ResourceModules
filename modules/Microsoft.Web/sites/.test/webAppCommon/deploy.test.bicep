@@ -69,6 +69,45 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     httpsOnly: true
+    slots: [
+      {
+        name: 'slot1'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        privateEndpoints: [
+          {
+            service: 'sites'
+            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+            privateDnsZoneGroup: {
+              privateDNSResourceIds: [
+                resourceGroupResources.outputs.privateDNSZoneResourceId
+              ]
+            }
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        siteConfig: {
+          alwaysOn: true
+          metadata: [
+            {
+              name: 'CURRENT_STACK'
+              value: 'dotnetcore'
+            }
+          ]
+        }
+      }
+    ]
     privateEndpoints: [
       {
         service: 'sites'
