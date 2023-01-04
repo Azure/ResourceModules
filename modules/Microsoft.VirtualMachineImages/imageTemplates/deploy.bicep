@@ -27,7 +27,7 @@ param subnetId string = ''
 @description('''Optional. List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.
 Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.
 ''')
-param vmUserAssignedIdentities array = []
+param userAssignedIdentities array = []
 
 @description('Required. Image source definition in object format.')
 param imageSource object
@@ -164,13 +164,13 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
     vmProfile: {
       vmSize: vmSize
       osDiskSizeGB: osDiskSizeGB
-      userAssignedIdentities: !empty(vmUserAssignedIdentities) ? vmUserAssignedIdentities : []
+      userAssignedIdentities: userAssignedIdentities
       vnetConfig: !empty(subnetId) ? vnetConfig : null
     }
     source: imageSource
     customize: customizationSteps
     distribute: distribute
-    stagingResourceGroup: !empty(stagingResourceGroup) ? stagingResourceGroup : ''
+    stagingResourceGroup: stagingResourceGroup
   }
 }
 

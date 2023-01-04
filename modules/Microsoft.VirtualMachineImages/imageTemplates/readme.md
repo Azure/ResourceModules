@@ -47,9 +47,9 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `unManagedImageName` | string | `''` |  | Name of the unmanaged image that will be created in the AIB resourcegroup. |
+| `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.<p> |
 | `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Resource group of the user assigned identity. |
 | `vmSize` | string | `'Standard_D2s_v3'` |  | Specifies the size for the VM. |
-| `vmUserAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.<p> |
 
 **Generated parameters**
 
@@ -288,6 +288,39 @@ vmUserAssignedIdentities: [
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -310,7 +343,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Advanced</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -461,130 +494,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 </details>
 <p>
 
-<h3>Example 2: Common</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmiitcom'
-  params: {
-    // Required parameters
-    customizationSteps: [
-      {
-        restartTimeout: '15m'
-        type: 'WindowsRestart'
-      }
-    ]
-    imageSource: {
-      offer: 'Windows-10'
-      publisher: 'MicrosoftWindowsDesktop'
-      sku: 'win10-22h2-avd'
-      type: 'PlatformImage'
-      version: 'latest'
-    }
-    name: '<<namePrefix>>vmiitcom001'
-    userMsiName: '<userMsiName>'
-    // Non-required parameters
-    buildTimeoutInMinutes: 120
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    imageReplicationRegions: []
-    lock: 'CanNotDelete'
-    managedImageName: ''
-    osDiskSizeGB: 127
-    roleAssignments: []
-    sigImageDefinitionId: '<sigImageDefinitionId>'
-    subnetId: ''
-    unManagedImageName: ''
-    userMsiResourceGroup: '<userMsiResourceGroup>'
-    vmSize: 'Standard_D2s_v3'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "customizationSteps": {
-      "value": [
-        {
-          "restartTimeout": "15m",
-          "type": "WindowsRestart"
-        }
-      ]
-    },
-    "imageSource": {
-      "value": {
-        "offer": "Windows-10",
-        "publisher": "MicrosoftWindowsDesktop",
-        "sku": "win10-22h2-avd",
-        "type": "PlatformImage",
-        "version": "latest"
-      }
-    },
-    "name": {
-      "value": "<<namePrefix>>vmiitcom001"
-    },
-    "userMsiName": {
-      "value": "<userMsiName>"
-    },
-    // Non-required parameters
-    "buildTimeoutInMinutes": {
-      "value": 120
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "imageReplicationRegions": {
-      "value": []
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "managedImageName": {
-      "value": ""
-    },
-    "osDiskSizeGB": {
-      "value": 127
-    },
-    "roleAssignments": {
-      "value": []
-    },
-    "sigImageDefinitionId": {
-      "value": "<sigImageDefinitionId>"
-    },
-    "subnetId": {
-      "value": ""
-    },
-    "unManagedImageName": {
-      "value": ""
-    },
-    "userMsiResourceGroup": {
-      "value": "<userMsiResourceGroup>"
-    },
-    "vmSize": {
-      "value": "Standard_D2s_v3"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Min</h3>
+<h3>Example 2: Min</h3>
 
 <details>
 
