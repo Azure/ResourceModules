@@ -97,7 +97,7 @@ module testDeployment '../../deploy.bicep' = {
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
     userMsiName: resourceGroupResources.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
-    vmUserAssignedIdentities: [
+    userAssignedIdentities: [
       resourceGroupResources.outputs.managedIdentityResourceId
     ]
     vmSize: 'Standard_D2s_v3'

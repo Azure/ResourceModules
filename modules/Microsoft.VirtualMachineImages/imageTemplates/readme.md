@@ -389,11 +389,11 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
     unManagedImageName: '<<namePrefix>>-umi-vmitadv-001'
-    userMsiResourceGroup: '<userMsiResourceGroup>'
-    vmSize: 'Standard_D2s_v3'
-    vmUserAssignedIdentities: [
+    userAssignedIdentities: [
       '<managedIdentityResourceId>'
     ]
+    userMsiResourceGroup: '<userMsiResourceGroup>'
+    vmSize: 'Standard_D2s_v3'
   }
 }
 ```
@@ -476,16 +476,16 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     "unManagedImageName": {
       "value": "<<namePrefix>>-umi-vmitadv-001"
     },
+    "userAssignedIdentities": {
+      "value": [
+        "<managedIdentityResourceId>"
+      ]
+    },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
     },
     "vmSize": {
       "value": "Standard_D2s_v3"
-    },
-    "vmUserAssignedIdentities": {
-      "value": [
-        "<managedIdentityResourceId>"
-      ]
     }
   }
 }
@@ -532,6 +532,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     stagingResourceGroup: ''
     subnetId: ''
     unManagedImageName: ''
+    userAssignedIdentities: []
     userMsiResourceGroup: '<userMsiResourceGroup>'
     vmSize: 'Standard_D2s_v3'
   }
@@ -607,6 +608,9 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     },
     "unManagedImageName": {
       "value": ""
+    },
+    "userAssignedIdentities": {
+      "value": []
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"

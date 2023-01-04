@@ -69,6 +69,7 @@ module testDeployment '../../deploy.bicep' = {
     subnetId: ''
     unManagedImageName: ''
     userMsiResourceGroup: resourceGroupName
+    userAssignedIdentities: []
     stagingResourceGroup: ''
     vmSize: 'Standard_D2s_v3'
   }
