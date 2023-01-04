@@ -25,7 +25,7 @@ param announcement object = {}
   'Contributor'
   'Reader'
 ])
-@description('Optional. The access rights to be granted to the user when provisioning an environment. Default is "Reader".')
+@description('Optional. The access rights to be granted to the user when provisioning an environment.')
 param environmentPermission string = 'Reader'
 
 @description('Optional. Extended properties of the lab used for experimental features.')
@@ -36,8 +36,11 @@ param extendedProperties object = {}
   'StandardSSD'
   'Premium'
 ])
-@description('Optional. Type of storage used by the lab. It can be either Premium or Standard. Default is Premium.')
+@description('Optional. Type of storage used by the lab. It can be either Premium or Standard.')
 param labStorageType string = 'Premium'
+
+@description('Optional. The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used.')
+param artifactsStorageAccount string = ''
 
 @description('Optional. The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts specified by the user.')
 param mandatoryArtifactsResourceIdsLinux array = []
@@ -61,6 +64,36 @@ param userAssignedIdentities object = {}
 @description('Optional. The ID(s) to assign to the virtual machines associated with this lab.')
 param managementIdentities object = {}
 
+@description('Optional. Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab.')
+param vmCreationResourceGroupId string = resourceGroup().id
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. Enable browser connect on virtual machines if the lab\'s VNETs have configured Azure Bastion.')
+param browserConnect string = 'Disabled'
+
+@description('Optional. Disable auto upgrade custom script extension minor version.')
+param disableAutoUpgradeCseMinorVersion bool = false
+
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Optional. Enable lab resources isolation from the public internet.')
+param isolateLabResources string = 'Enabled'
+
+@allowed([
+  'EncryptionAtRestWithPlatformKey'
+  'EncryptionAtRestWithCustomerKey'
+])
+@description('Optional. Specify how OS and data disks created as part of the lab are encrypted.')
+param encryptionType string = 'EncryptionAtRestWithPlatformKey'
+
+@description('Conditional. The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey".')
+param encryptionDiskEncryptionSetId string = ''
+
 @description('Optional. Virtual networks to create for the lab.')
 param virtualNetworks array = []
 
@@ -75,6 +108,9 @@ param notificationChannels array = []
 
 @description('Optional. Artifact sources to create for the lab.')
 param artifactSources array = []
+
+@description('Optional. Costs to create for the lab.')
+param costs object = {}
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -93,15 +129,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource lab 'Microsoft.DevTestLab/labs@2018-09-15' = {
+resource lab 'Microsoft.DevTestLab/labs@2018-10-15-preview' = {
   name: name
   location: location
   tags: tags
   identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+    type: !empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
   }
   properties: {
+    artifactsStorageAccount: artifactsStorageAccount
     announcement: announcement
     environmentPermission: environmentPermission
     extendedProperties: extendedProperties
@@ -111,6 +148,14 @@ resource lab 'Microsoft.DevTestLab/labs@2018-09-15' = {
     premiumDataDisks: premiumDataDisks
     support: support
     managementIdentities: managementIdentities
+    vmCreationResourceGroupId: vmCreationResourceGroupId
+    browserConnect: browserConnect
+    disableAutoUpgradeCseMinorVersion: disableAutoUpgradeCseMinorVersion
+    isolateLabResources: isolateLabResources
+    encryption: {
+      type: encryptionType
+      diskEncryptionSetId: !empty(encryptionDiskEncryptionSetId) ? encryptionDiskEncryptionSetId : null
+    }
   }
 }
 
@@ -181,7 +226,7 @@ module lab_notificationChannels 'notificationChannels/deploy.bicep' = [for (noti
     description: contains(notificationChannel, 'description') ? notificationChannel.description : ''
     events: notificationChannel.events
     emailRecipient: contains(notificationChannel, 'emailRecipient') ? notificationChannel.emailRecipient : ''
-    webhookUrl: contains(notificationChannel, 'webhookUrl') ? notificationChannel.webhookUrl : ''
+    webHookUrl: contains(notificationChannel, 'webhookUrl') ? notificationChannel.webhookUrl : ''
     notificationLocale: contains(notificationChannel, 'notificationLocale') ? notificationChannel.notificationLocale : 'en'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -204,6 +249,31 @@ module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource
   }
 }]
 
+module lab_costs 'costs/deploy.bicep' = if (!empty(costs)) {
+  name: '${uniqueString(deployment().name, location)}-Lab-Costs'
+  params: {
+    labName: lab.name
+    tags: tags
+    currencyCode: contains(costs, 'currencyCode') ? costs.currencyCode : 'USD'
+    cycleType: costs.cycleType
+    cycleStartDateTime: contains(costs, 'cycleStartDateTime') ? costs.cycleStartDateTime : ''
+    cycleEndDateTime: contains(costs, 'cycleEndDateTime') ? costs.cycleEndDateTime : ''
+    status: contains(costs, 'status') ? costs.status : 'Enabled'
+    target: contains(costs, 'target') ? costs.target : 0
+    thresholdValue25DisplayOnChart: contains(costs, 'thresholdValue25DisplayOnChart') ? costs.thresholdValue25DisplayOnChart : 'Disabled'
+    thresholdValue25SendNotificationWhenExceeded: contains(costs, 'thresholdValue25SendNotificationWhenExceeded') ? costs.thresholdValue25SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue50DisplayOnChart: contains(costs, 'thresholdValue50DisplayOnChart') ? costs.thresholdValue50DisplayOnChart : 'Disabled'
+    thresholdValue50SendNotificationWhenExceeded: contains(costs, 'thresholdValue50SendNotificationWhenExceeded') ? costs.thresholdValue50SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue75DisplayOnChart: contains(costs, 'thresholdValue75DisplayOnChart') ? costs.thresholdValue75DisplayOnChart : 'Disabled'
+    thresholdValue75SendNotificationWhenExceeded: contains(costs, 'thresholdValue75SendNotificationWhenExceeded') ? costs.thresholdValue75SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue100DisplayOnChart: contains(costs, 'thresholdValue100DisplayOnChart') ? costs.thresholdValue100DisplayOnChart : 'Disabled'
+    thresholdValue100SendNotificationWhenExceeded: contains(costs, 'thresholdValue100SendNotificationWhenExceeded') ? costs.thresholdValue100SendNotificationWhenExceeded : 'Disabled'
+    thresholdValue125DisplayOnChart: contains(costs, 'thresholdValue125DisplayOnChart') ? costs.thresholdValue125DisplayOnChart : 'Disabled'
+    thresholdValue125SendNotificationWhenExceeded: contains(costs, 'thresholdValue125SendNotificationWhenExceeded') ? costs.thresholdValue125SendNotificationWhenExceeded : 'Disabled'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
 module lab_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
@@ -216,6 +286,9 @@ module lab_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
     resourceId: lab.id
   }
 }]
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = lab.identity.principalId
 
 @description('The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates.')
 output uniqueIdentifier string = lab.properties.uniqueIdentifier
