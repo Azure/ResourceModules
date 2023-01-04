@@ -53,7 +53,7 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `disableAutoUpgradeCseMinorVersion` | bool | `False` |  | Disable auto upgrade custom script extension minor version. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionType` | string | `'EncryptionAtRestWithPlatformKey'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]` | Specify how OS and data disks created as part of the lab are encrypted. |
-| `environmentPermission` | string | `'Reader'` | `[Contributor, Reader]` | The access rights to be granted to the user when provisioning an environment. Default is "Reader". |
+| `environmentPermission` | string | `'Reader'` | `[Contributor, Reader]` | The access rights to be granted to the user when provisioning an environment. |
 | `extendedProperties` | object | `{object}` |  | Extended properties of the lab used for experimental features. |
 | `isolateLabResources` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable lab resources isolation from the public internet. |
 | `labStorageType` | string | `'Premium'` | `[Premium, Standard, StandardSSD]` | Type of storage used by the lab. It can be either Premium or Standard. |

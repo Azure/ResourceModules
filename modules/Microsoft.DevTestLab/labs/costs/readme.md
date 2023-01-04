@@ -39,7 +39,7 @@ Manage lab costs by setting a spending target that can be viewed in the Monthly 
 | :-- | :-- | :-- | :-- | :-- |
 | `currencyCode` | string | `'USD'` |  | The currency code of the cost. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Target cost status. Default is "Enabled". |
+| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Target cost status. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `target` | int | `0` |  | Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds. |
 | `thresholdValue100DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts. |

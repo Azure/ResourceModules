@@ -25,7 +25,7 @@ param announcement object = {}
   'Contributor'
   'Reader'
 ])
-@description('Optional. The access rights to be granted to the user when provisioning an environment. Default is "Reader".')
+@description('Optional. The access rights to be granted to the user when provisioning an environment.')
 param environmentPermission string = 'Reader'
 
 @description('Optional. Extended properties of the lab used for experimental features.')

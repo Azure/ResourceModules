@@ -21,7 +21,7 @@ param cycleEndDateTime string = ''
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target cost status. Default is "Enabled".')
+@sys.description('Optional. Target cost status.')
 param status string = 'Enabled'
 
 @sys.description('Optional. Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds.')

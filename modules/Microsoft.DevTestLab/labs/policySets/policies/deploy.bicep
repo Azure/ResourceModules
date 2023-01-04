@@ -42,7 +42,7 @@ param factName string
   'Disabled'
   'Enabled'
 ])
-@sys.description('Optional. The status of the policy. Default is "Enabled".')
+@sys.description('Optional. The status of the policy.')
 param status string = 'Enabled'
 
 @sys.description('Required. The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of values for AllowedValuesPolicy).')

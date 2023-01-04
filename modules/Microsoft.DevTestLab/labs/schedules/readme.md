@@ -39,9 +39,9 @@ Lab schedules are used to modify the settings for auto-shutdown, auto-start for 
 | `dailyRecurrence` | object | `{object}` |  | If the schedule will occur once each day of the week, specify the daily recurrence. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hourlyRecurrence` | object | `{object}` |  | If the schedule will occur multiple times a day, specify the hourly recurrence. |
-| `notificationSettingsStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | If notifications are enabled for this schedule (i.e. Enabled, Disabled). Default is "Disabled". |
+| `notificationSettingsStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | If notifications are enabled for this schedule (i.e. Enabled, Disabled). |
 | `notificationSettingsTimeInMinutes` | int | `30` |  | Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes. |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the schedule (i.e. Enabled, Disabled). Default is "Enabled". |
+| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the schedule (i.e. Enabled, Disabled). |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `targetResourceId` | string | `''` |  | The resource ID to which the schedule belongs. |
 | `timeZoneId` | string | `'Pacific Standard time'` |  | The time zone ID (e.g. Pacific Standard time). |
