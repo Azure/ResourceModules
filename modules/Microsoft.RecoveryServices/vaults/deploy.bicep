@@ -110,6 +110,14 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
@@ -161,7 +169,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
   name: name
   location: location
   tags: tags
@@ -173,6 +181,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   properties: {
     monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
     securitySettings: !empty(securitySettings) ? securitySettings : null
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
   }
 }
 
