@@ -26,14 +26,14 @@ param hubs array = []
   'True'
   'False'
 ])
-@sys.description('Optional. Flag if need to remove current existing peerings. If set to "True", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type "HubAndSpoke". Default is "False".')
+@sys.description('Optional. Flag if need to remove current existing peerings. If set to "True", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type "HubAndSpoke".')
 param deleteExistingPeering string = 'False'
 
 @allowed([
   'True'
   'False'
 ])
-@sys.description('Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions. Default is "False".')
+@sys.description('Optional. Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions.')
 param isGlobal string = 'False'
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')

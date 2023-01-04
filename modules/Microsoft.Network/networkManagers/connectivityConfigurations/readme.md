@@ -37,10 +37,10 @@ Connectivity configurations define hub-and-spoke or mesh topologies applied to o
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `deleteExistingPeering` | string | `'False'` | `[False, True]` | Flag if need to remove current existing peerings. If set to "True", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type "HubAndSpoke". Default is "False". |
+| `deleteExistingPeering` | string | `'False'` | `[False, True]` | Flag if need to remove current existing peerings. If set to "True", all peerings on virtual networks in selected network groups will be removed and replaced with the peerings defined by this configuration. Optional when connectivityTopology is of type "HubAndSpoke". |
 | `description` | string | `''` |  | A description of the connectivity configuration. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `isGlobal` | string | `'False'` | `[False, True]` | Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions. Default is "False". |
+| `isGlobal` | string | `'False'` | `[False, True]` | Flag if global mesh is supported. By default, mesh connectivity is applied to virtual networks within the same region. If set to "True", a global mesh enables connectivity across regions. |
 
 
 ## Outputs
