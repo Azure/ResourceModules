@@ -56,7 +56,7 @@ This section provides an overview of the library's feature set.
 | 41 | MS.Web<p>hostingEnvironments | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 175 |
 | 42 | MS.Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 43 | MS.Web<p>connections | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 89 |
-| 44 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:2] | 271 |
+| 44 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3, L2:2] | 317 |
 | 45 | MS.Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
 | 46 | MS.ManagedServices<p>registrationDefinitions |  |  |  |  |  |  |  | 60 |
 | 47 | MS.KubernetesConfiguration<p>extensions |  |  |  |  |  |  |  | 63 |
@@ -124,7 +124,7 @@ This section provides an overview of the library's feature set.
 | 109 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 167 |
 | 110 | MS.Maintenance<p>maintenanceConfigurations | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 101 |
 | 111 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
-| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 160 | 19342 |
+| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19388 |
 
 ## Legend
 
