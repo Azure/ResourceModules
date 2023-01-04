@@ -1,6 +1,10 @@
 @sys.description('Conditional. The name of the parent lab. Required if the template is used in a standalone deployment.')
 param labName string
 
+@allowed([
+  'autoShutdown'
+  'costThreshold'
+])
 @sys.description('Required. The name of the notification channel.')
 param name string
 
@@ -13,13 +17,13 @@ param description string = ''
 @sys.description('Required. The list of event for which this notification is enabled.')
 param events array = []
 
-@sys.description('Conditional. The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webhookUrl" is empty.')
+@sys.description('Conditional. The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty.')
 param emailRecipient string = ''
 
 @sys.description('Conditional. The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty.')
-param webhookUrl string = ''
+param webHookUrl string = ''
 
-@sys.description('Optional. The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en".')
+@sys.description('Optional. The locale to use when sending a notification (fallback for unsupported languages is EN).')
 param notificationLocale string = 'en'
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
@@ -49,7 +53,7 @@ resource notificationChannel 'Microsoft.DevTestLab/labs/notificationchannels@201
     description: description
     events: events
     emailRecipient: emailRecipient
-    webHookUrl: webhookUrl
+    webHookUrl: webHookUrl
     notificationLocale: notificationLocale
   }
 }

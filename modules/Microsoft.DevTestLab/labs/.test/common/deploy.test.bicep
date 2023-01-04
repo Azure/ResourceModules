@@ -13,6 +13,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'dtllcom'
 
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -32,6 +35,10 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
@@ -72,6 +79,7 @@ module testDeployment '../../deploy.bicep' = {
       RdpConnectionType: '7'
     }
     labStorageType: 'Premium'
+    artifactsStorageAccount: resourceGroupResources.outputs.storageAccountResourceId
     premiumDataDisks: 'Enabled'
     support: {
       enabled: 'Enabled'
@@ -83,6 +91,12 @@ module testDeployment '../../deploy.bicep' = {
     managementIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
+    vmCreationResourceGroupId: resourceGroup.id
+    browserConnect: 'Enabled'
+    disableAutoUpgradeCseMinorVersion: true
+    isolateLabResources: 'Enabled'
+    encryptionType: 'EncryptionAtRestWithCustomerKey'
+    encryptionDiskEncryptionSetId: resourceGroupResources.outputs.diskEncryptionSetResourceId
     virtualNetworks: [
       {
         name: resourceGroupResources.outputs.virtualNetworkName
@@ -209,7 +223,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     notificationChannels: [
       {
-        name: 'AutoShutdown'
+        name: 'autoShutdown'
         description: 'Integration configured for auto-shutdown'
         events: [
           {
@@ -217,8 +231,17 @@ module testDeployment '../../deploy.bicep' = {
           }
         ]
         emailRecipient: 'mail@contosodtlmail.com'
-        webhookUrl: 'https://webhook.contosotest.com'
+        webHookUrl: 'https://webhook.contosotest.com'
         notificationLocale: 'en'
+      }
+      {
+        name: 'costThreshold'
+        events: [
+          {
+            eventName: 'Cost'
+          }
+        ]
+        webHookUrl: 'https://webhook.contosotest.com'
       }
     ]
     artifactSources: [
@@ -241,5 +264,12 @@ module testDeployment '../../deploy.bicep' = {
         armTemplateFolderPath: '/Environments'
       }
     ]
+    costs: {
+      status: 'Enabled'
+      cycleType: 'CalendarMonth'
+      target: 450
+      thresholdValue100DisplayOnChart: 'Enabled'
+      thresholdValue100SendNotificationWhenExceeded: 'Enabled'
+    }
   }
 }
