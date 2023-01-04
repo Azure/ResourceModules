@@ -98,7 +98,7 @@ module profile_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment
   }
 }]
 
-module profile_Endpoint 'endpoint/deploy.bicep' = if (!empty(endpointProperties)){
+module profile_Endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties)) {
   name: '${uniqueString(deployment().name, location)}-Endpoint'
   params: {
     endpointName: !empty(endpointName) ? endpointName : '${profile.name}-endpoint'
@@ -106,7 +106,7 @@ module profile_Endpoint 'endpoint/deploy.bicep' = if (!empty(endpointProperties)
     location: location
     profileName: profile.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    
+
   }
 }
 
@@ -124,5 +124,3 @@ output profileType string = profile.type
 
 @description('Resource location of the CDN profile.')
 output location string = profile.location
-
-

@@ -1,4 +1,4 @@
-# CDN Profiles Endpoint Origins `[Microsoft.CDN/profiles/endpoint/origins]`
+# CDN Profiles Endpoint Origins `[Microsoft.CDN/profiles/endpoints/origins]`
 
 This module deploys CDN Profiles Endpoint Origins.
 // TODO: Replace Resource and fill in description
