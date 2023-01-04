@@ -31,7 +31,7 @@ param weeklyRecurrence object = {}
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. The status of the schedule (i.e. Enabled, Disabled). Default is "Enabled".')
+@sys.description('Optional. The status of the schedule (i.e. Enabled, Disabled).')
 param status string = 'Enabled'
 
 @sys.description('Optional. The resource ID to which the schedule belongs.')
@@ -44,7 +44,7 @@ param timeZoneId string = 'Pacific Standard time'
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled). Default is "Disabled".')
+@sys.description('Optional. If notifications are enabled for this schedule (i.e. Enabled, Disabled).')
 param notificationSettingsStatus string = 'Disabled'
 
 @sys.description('Optional. Time in minutes before event at which notification will be sent. Optional if "notificationSettingsStatus" is set to "Enabled". Default is 30 minutes.')

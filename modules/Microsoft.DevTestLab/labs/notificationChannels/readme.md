@@ -21,18 +21,18 @@ Notification channels are used by the schedule resource type in order to send no
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `events` | array | The list of event for which this notification is enabled. |
-| `name` | string | The name of the notification channel. |
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `events` | array |  | The list of event for which this notification is enabled. |
+| `name` | string | `[autoShutdown, costThreshold]` | The name of the notification channel. |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `emailRecipient` | string | `''` | The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webhookUrl" is empty. |
+| `emailRecipient` | string | `''` | The email recipient to send notifications to (can be a list of semi-colon separated email addresses). Required if "webHookUrl" is empty. |
 | `labName` | string |  | The name of the parent lab. Required if the template is used in a standalone deployment. |
-| `webhookUrl` | string | `''` | The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty. |
+| `webHookUrl` | string | `''` | The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty. |
 
 **Optional parameters**
 
@@ -40,7 +40,7 @@ Notification channels are used by the schedule resource type in order to send no
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | Description of notification. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en". |
+| `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
