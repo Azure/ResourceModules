@@ -48,15 +48,15 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `announcement` | object | `{object}` |  | The properties of any lab announcement associated with this lab. |
 | `artifactSources` | _[artifactSources](artifactSources/readme.md)_ array | `[]` |  | Artifact sources to create for the lab. |
 | `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
-| `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. Default is "Disabled". |
+| `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
 | `costs` | _[costs](costs/readme.md)_ object | `{object}` |  | Costs to create for the lab. |
-| `disableAutoUpgradeCseMinorVersion` | bool | `False` |  | Disable auto upgrade custom script extension minor version. Default is false. |
+| `disableAutoUpgradeCseMinorVersion` | bool | `False` |  | Disable auto upgrade custom script extension minor version. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionType` | string | `'EncryptionAtRestWithPlatformKey'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]` | Specify how OS and data disks created as part of the lab are encrypted. Default is "EncryptionAtRestWithPlatformKey". |
+| `encryptionType` | string | `'EncryptionAtRestWithPlatformKey'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]` | Specify how OS and data disks created as part of the lab are encrypted. |
 | `environmentPermission` | string | `'Reader'` | `[Contributor, Reader]` | The access rights to be granted to the user when provisioning an environment. Default is "Reader". |
 | `extendedProperties` | object | `{object}` |  | Extended properties of the lab used for experimental features. |
-| `isolateLabResources` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable lab resources isolation from the public internet. Default is "Enabled". |
-| `labStorageType` | string | `'Premium'` | `[Premium, Standard, StandardSSD]` | Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. |
+| `isolateLabResources` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable lab resources isolation from the public internet. |
+| `labStorageType` | string | `'Premium'` | `[Premium, Standard, StandardSSD]` | Type of storage used by the lab. It can be either Premium or Standard. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managementIdentities` | object | `{object}` |  | The ID(s) to assign to the virtual machines associated with this lab. |

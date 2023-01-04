@@ -37,21 +37,21 @@ Manage lab costs by setting a spending target that can be viewed in the Monthly 
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `currencyCode` | string | `'USD'` |  | The currency code of the cost. Default is "USD". |
+| `currencyCode` | string | `'USD'` |  | The currency code of the cost. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Target cost status. Default is "Enabled". |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `target` | int | `0` |  | Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds. Default is 0. |
-| `thresholdValue100DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled". |
-| `thresholdValue100SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled". |
-| `thresholdValue125DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled". |
-| `thresholdValue125SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled". |
-| `thresholdValue25DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled". |
-| `thresholdValue25SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled". |
-| `thresholdValue50DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled". |
-| `thresholdValue50SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled". |
-| `thresholdValue75DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled". |
-| `thresholdValue75SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled". |
+| `target` | int | `0` |  | Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds. |
+| `thresholdValue100DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| `thresholdValue100SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| `thresholdValue125DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| `thresholdValue125SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| `thresholdValue25DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| `thresholdValue25SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| `thresholdValue50DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| `thresholdValue50SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
+| `thresholdValue75DisplayOnChart` | string | `'Disabled'` | `[Disabled, Enabled]` | Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts. |
+| `thresholdValue75SendNotificationWhenExceeded` | string | `'Disabled'` | `[Disabled, Enabled]` | Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. |
 
 
 ### Parameter Usage: `tags`

@@ -40,7 +40,7 @@ Notification channels are used by the schedule resource type in order to send no
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | Description of notification. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en". |
+| `notificationLocale` | string | `'en'` | The locale to use when sending a notification (fallback for unsupported languages is EN). |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
