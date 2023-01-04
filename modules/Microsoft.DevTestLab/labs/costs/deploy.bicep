@@ -24,80 +24,80 @@ param cycleEndDateTime string = ''
 @sys.description('Optional. Target cost status. Default is "Enabled".')
 param status string = 'Enabled'
 
-@sys.description('Optional. Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds. Default is 0.')
+@sys.description('Optional. Lab target cost (e.g. 100). The target cost will appear in the "Cost trend" chart to allow tracking lab spending relative to the target cost for the current reporting cycleSetting the target cost to 0 will disable all thresholds.')
 param target int = 0
 
-@sys.description('Optional. The currency code of the cost. Default is "USD".')
+@sys.description('Optional. The currency code of the cost.')
 param currencyCode string = 'USD'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled".')
+@sys.description('Optional. Target Cost threshold at 25% display on chart. Indicates whether this threshold will be displayed on cost charts.')
 param thresholdValue25DisplayOnChart string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled".')
+@sys.description('Optional. Target cost threshold at 25% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.')
 param thresholdValue25SendNotificationWhenExceeded string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled".')
+@sys.description('Optional. Target Cost threshold at 50% display on chart. Indicates whether this threshold will be displayed on cost charts.')
 param thresholdValue50DisplayOnChart string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled".')
+@sys.description('Optional. Target cost threshold at 50% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.')
 param thresholdValue50SendNotificationWhenExceeded string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled".')
+@sys.description('Optional. Target Cost threshold at 75% display on chart. Indicates whether this threshold will be displayed on cost charts.')
 param thresholdValue75DisplayOnChart string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled".')
+@sys.description('Optional. Target cost threshold at 75% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.')
 param thresholdValue75SendNotificationWhenExceeded string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled".')
+@sys.description('Optional. Target Cost threshold at 100% display on chart. Indicates whether this threshold will be displayed on cost charts.')
 param thresholdValue100DisplayOnChart string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled".')
+@sys.description('Optional. Target cost threshold at 100% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.')
 param thresholdValue100SendNotificationWhenExceeded string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts. Default is "Disabled".')
+@sys.description('Optional. Target Cost threshold at 125% display on chart. Indicates whether this threshold will be displayed on cost charts.')
 param thresholdValue125DisplayOnChart string = 'Disabled'
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@sys.description('Optional. Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded. Default is "Disabled".')
+@sys.description('Optional. Target cost threshold at 125% send notification when exceeded. Indicates whether notifications will be sent when this threshold is exceeded.')
 param thresholdValue125SendNotificationWhenExceeded string = 'Disabled'
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')

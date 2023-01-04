@@ -36,7 +36,7 @@ param extendedProperties object = {}
   'StandardSSD'
   'Premium'
 ])
-@description('Optional. Type of storage used by the lab. It can be either Premium or Standard. Default is Premium.')
+@description('Optional. Type of storage used by the lab. It can be either Premium or Standard.')
 param labStorageType string = 'Premium'
 
 @description('Optional. The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used.')
@@ -71,24 +71,24 @@ param vmCreationResourceGroupId string = resourceGroup().id
   'Enabled'
   'Disabled'
 ])
-@description('Optional. Enable browser connect on virtual machines if the lab\'s VNETs have configured Azure Bastion. Default is "Disabled".')
+@description('Optional. Enable browser connect on virtual machines if the lab\'s VNETs have configured Azure Bastion.')
 param browserConnect string = 'Disabled'
 
-@description('Optional. Disable auto upgrade custom script extension minor version. Default is false.')
+@description('Optional. Disable auto upgrade custom script extension minor version.')
 param disableAutoUpgradeCseMinorVersion bool = false
 
 @allowed([
   'Enabled'
   'Disabled'
 ])
-@description('Optional. Enable lab resources isolation from the public internet. Default is "Enabled".')
+@description('Optional. Enable lab resources isolation from the public internet.')
 param isolateLabResources string = 'Enabled'
 
 @allowed([
   'EncryptionAtRestWithPlatformKey'
   'EncryptionAtRestWithCustomerKey'
 ])
-@description('Optional. Specify how OS and data disks created as part of the lab are encrypted. Default is "EncryptionAtRestWithPlatformKey".')
+@description('Optional. Specify how OS and data disks created as part of the lab are encrypted.')
 param encryptionType string = 'EncryptionAtRestWithPlatformKey'
 
 @description('Conditional. The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey".')

@@ -23,7 +23,7 @@ param emailRecipient string = ''
 @sys.description('Conditional. The webhook URL to which the notification will be sent. Required if "emailRecipient" is empty.')
 param webHookUrl string = ''
 
-@sys.description('Optional. The locale to use when sending a notification (fallback for unsupported languages is EN). Default is "en".')
+@sys.description('Optional. The locale to use when sending a notification (fallback for unsupported languages is EN).')
 param notificationLocale string = 'en'
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
