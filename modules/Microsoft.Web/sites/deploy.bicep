@@ -237,7 +237,7 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
   name: '${uniqueString(deployment().name, location)}-Slot-${slot.name}'
   params: {
     name: slot.name
-    appName: name
+    appName: app.name
     location: location
     kind: kind
     serverFarmResourceId: serverFarmResourceId
@@ -254,7 +254,7 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     appInsightId: contains(slot, 'appInsightId') ? slot.appInsightId : appInsightId
     setAzureWebJobsDashboard: contains(slot, 'setAzureWebJobsDashboard') ? slot.setAzureWebJobsDashboard : setAzureWebJobsDashboard
     authSettingV2Configuration: contains(slot, 'authSettingV2Configuration') ? slot.authSettingV2Configuration : authSettingV2Configuration
-    enableDefaultTelemetry: contains(slot, 'enableDefaultTelemetry') ? slot.enableDefaultTelemetry : enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     diagnosticLogsRetentionInDays: contains(slot, 'diagnosticLogsRetentionInDays') ? slot.diagnosticLogsRetentionInDays : diagnosticLogsRetentionInDays
     diagnosticStorageAccountId: contains(slot, 'diagnosticStorageAccountId') ? slot.diagnosticStorageAccountId : diagnosticStorageAccountId
     diagnosticWorkspaceId: contains(slot, 'diagnosticWorkspaceId') ? slot.diagnosticWorkspaceId : diagnosticWorkspaceId
@@ -268,9 +268,6 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
     tags: tags
   }
-  dependsOn: [
-    app
-  ]
 }]
 
 resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
@@ -350,7 +347,7 @@ output resourceGroupName string = resourceGroup().name
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''
 
 @description('The principal ID of the system assigned identity of slots.')
-output slotSystemAssignedPrincipalId array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedPrincipalId]
+output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location
