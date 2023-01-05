@@ -1214,7 +1214,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    publicNetworkAccess: 'Enabled'
     replicationAlertSettings: {
       customEmailAddresses: [
         'test.user@testcompany.com'
@@ -1544,9 +1543,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
     },
     "replicationAlertSettings": {
       "value": {
