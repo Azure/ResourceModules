@@ -24,5 +24,5 @@ module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bice
 @description('The resource ID of the created Virtual Network Subnet.')
 output storageAccountResourceId string = storageAccount.outputs.resourceId
 
-@description('The name of the created storage acount.')
+@description('The name of the created Storage Account.')
 output storageAccountName string = storageAccount.outputs.name
