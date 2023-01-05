@@ -26,6 +26,9 @@ param access string
 @sys.description('Optional. List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.')
 param destinationPortRanges array = []
 
+@sys.description('Optional. The CIDR or source IP ranges. Used when defining multiple destination address prefixes or service tags. If not empty, it takes precedence over destinationsAddressPrefix and destinationsAddressPrefixType properties.')
+param destinations array = []
+
 @allowed([
   ''
   'IPPrefix'
@@ -62,6 +65,9 @@ param protocol string
 
 @sys.description('Optional. List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.')
 param sourcePortRanges array = []
+
+@sys.description('Optional. The CIDR or source IP ranges. Used when defining multiple source address prefixes or service tags. If not empty, it takes precedence over sourcesAddressPrefix and sourcesAddressPrefixType properties.')
+param sources array = []
 
 @allowed([
   ''
@@ -109,22 +115,22 @@ resource rule 'Microsoft.Network/networkManagers/securityAdminConfigurations/rul
     access: access
     description: description
     destinationPortRanges: destinationPortRanges
-    destinations: !empty(destinationsAddressPrefix) && !empty(destinationsAddressPrefixType) ? [
+    destinations: !empty(destinationsAddressPrefix) && !empty(destinationsAddressPrefixType) && empty(destinations) ? [
       {
         addressPrefix: destinationsAddressPrefix
         addressPrefixType: destinationsAddressPrefixType
       }
-    ] : []
+    ] : destinations
     direction: direction
     priority: priority
     protocol: protocol
     sourcePortRanges: sourcePortRanges
-    sources: !empty(sourcesAddressPrefix) && !empty(sourcesAddressPrefixType) ? [
+    sources: !empty(sourcesAddressPrefix) && !empty(sourcesAddressPrefixType) && empty(sources) ? [
       {
         addressPrefix: sourcesAddressPrefix
         addressPrefixType: sourcesAddressPrefixType
       }
-    ] : []
+    ] : sources
   }
 }
 

@@ -197,6 +197,34 @@ module testDeployment '../../deploy.bicep' = {
                 priority: 250
                 protocol: 'Tcp'
               }
+              {
+                name: 'test-inbound-allow-rule-4'
+                description: 'test-inbound-allow-rule-4-description'
+                access: 'Allow'
+                direction: 'Inbound'
+                sources: [
+                  {
+                    addressPrefix: '10.0.0.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                  {
+                    addressPrefix: '100.100.100.100'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+                destinations: [
+                  {
+                    addressPrefix: '172.16.0.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                  {
+                    addressPrefix: '172.16.1.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+                priority: 260
+                protocol: 'Tcp'
+              }
             ]
           }
         ]

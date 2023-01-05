@@ -697,6 +697,34 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
                 priority: 250
                 protocol: 'Tcp'
               }
+              {
+                access: 'Allow'
+                description: 'test-inbound-allow-rule-4-description'
+                destinations: [
+                  {
+                    addressPrefix: '172.16.0.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                  {
+                    addressPrefix: '172.16.1.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+                direction: 'Inbound'
+                name: 'test-inbound-allow-rule-4'
+                priority: 260
+                protocol: 'Tcp'
+                sources: [
+                  {
+                    addressPrefix: '10.0.0.0/24'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                  {
+                    addressPrefix: '100.100.100.100'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -885,6 +913,34 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
                   "name": "test-inbound-allow-rule-3",
                   "priority": 250,
                   "protocol": "Tcp"
+                },
+                {
+                  "access": "Allow",
+                  "description": "test-inbound-allow-rule-4-description",
+                  "destinations": [
+                    {
+                      "addressPrefix": "172.16.0.0/24",
+                      "addressPrefixType": "IPPrefix"
+                    },
+                    {
+                      "addressPrefix": "172.16.1.0/24",
+                      "addressPrefixType": "IPPrefix"
+                    }
+                  ],
+                  "direction": "Inbound",
+                  "name": "test-inbound-allow-rule-4",
+                  "priority": 260,
+                  "protocol": "Tcp",
+                  "sources": [
+                    {
+                      "addressPrefix": "10.0.0.0/24",
+                      "addressPrefixType": "IPPrefix"
+                    },
+                    {
+                      "addressPrefix": "100.100.100.100",
+                      "addressPrefixType": "IPPrefix"
+                    }
+                  ]
                 }
               ]
             }

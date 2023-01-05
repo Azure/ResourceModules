@@ -62,12 +62,14 @@ module securityAdminConfigurations_rules 'rules/deploy.bicep' = [for (rule, inde
     access: rule.access
     description: contains(rule, 'description') ? rule.description : ''
     destinationPortRanges: contains(rule, 'destinationPortRanges') ? rule.destinationPortRanges : []
+    destinations: contains(rule, 'destinations') ? rule.destinations : []
     destinationsAddressPrefix: contains(rule, 'destinationsAddressPrefix') ? rule.destinationsAddressPrefix : ''
     destinationsAddressPrefixType: contains(rule, 'destinationsAddressPrefixType') ? rule.destinationsAddressPrefixType : ''
     direction: rule.direction
     priority: rule.priority
     protocol: rule.protocol
     sourcePortRanges: contains(rule, 'sourcePortRanges') ? rule.sourcePortRanges : []
+    sources: contains(rule, 'sources') ? rule.sources : []
     sourcesAddressPrefix: contains(rule, 'sourcesAddressPrefix') ? rule.sourcesAddressPrefix : ''
     sourcesAddressPrefixType: contains(rule, 'sourcesAddressPrefixType') ? rule.sourcesAddressPrefixType : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
