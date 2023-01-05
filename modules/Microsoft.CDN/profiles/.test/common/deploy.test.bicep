@@ -32,6 +32,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     storageAccountName: 'dep<<namePrefix>>cdnstore${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -45,6 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: 'dep-<<namePrefix>>-test-${serviceShort}'
     location: location
+    lock: 'CanNotDelete'
     profileProperties: {}
     sku: 'Standard_Verizon'
     enableDefaultTelemetry: enableDefaultTelemetry

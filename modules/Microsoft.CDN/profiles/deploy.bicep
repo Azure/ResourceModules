@@ -24,8 +24,8 @@ param location string = resourceGroup().location
 @description('Required. The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.')
 param sku string
 
-@description('Optional. Profile properties.')
-param profileProperties object = {}
+@description('Optional. Send and receive timeout on forwarding request to the origin.')
+param originResponseTimeoutSeconds int = 60
 
 @description('Optional. Name of the endpoint under the profile which is unique globally.')
 param endpointName string = ''
@@ -71,7 +71,7 @@ resource profile 'microsoft.Cdn/profiles@2021-06-01' = {
     name: sku
   }
   properties: {
-    originResponseTimeoutSeconds: contains(profileProperties, 'originResponseTimeoutSeconds') ? profileProperties.originResponseTimeoutSeconds : 60
+    originResponseTimeoutSeconds: originResponseTimeoutSeconds
   }
   tags: tags
 }
@@ -98,7 +98,7 @@ module profile_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
   }
 }]
 
-module profile_Endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties)) {
+module profile_endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties)) {
   name: '${uniqueString(deployment().name, location)}-Profile-Endpoint'
   params: {
     endpointName: !empty(endpointName) ? endpointName : '${profile.name}-endpoint'
@@ -106,7 +106,6 @@ module profile_Endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties
     location: location
     profileName: profile.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-
   }
 }
 

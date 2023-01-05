@@ -38,7 +38,7 @@ This module deploys CDN Profiles.
 | `endpointProperties` | object | `{object}` |  | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `profileProperties` | object | `{object}` |  | Profile properties. |
+| `originResponseTimeoutSeconds` | int | `60` |  | Send and receive timeout on forwarding request to the origin. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Endpoint tags. |
 
@@ -210,6 +210,7 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
       queryStringCachingBehavior: 'IgnoreQueryString'
     }
     location: '<location>'
+    lock: 'CanNotDelete'
     profileProperties: {}
   }
 }
@@ -272,6 +273,9 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
     },
     "location": {
       "value": "<location>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
     },
     "profileProperties": {
       "value": {}

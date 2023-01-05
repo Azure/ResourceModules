@@ -24,7 +24,12 @@ This module deploys CDN Profiles Endpoint.
 | :-- | :-- | :-- |
 | `endpointName` | string | Name of the endpoint under the profile which is unique globally. |
 | `endpointProperties` | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
-| `profileName` | string | Name of the CDN profile which is unique within the resource group. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `profileName` | string | The name of the parent CDN profile. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

@@ -1,4 +1,4 @@
-@description('Required. Name of the CDN profile which is unique within the resource group.')
+@description('Conditional. The name of the parent CDN profile. Required if the template is used in a standalone deployment.')
 param profileName string
 
 @description('Required. Name of the endpoint under the profile which is unique globally.')
