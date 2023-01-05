@@ -42,7 +42,7 @@ DevTest lab policies are used to modify the lab settings like only allowing cert
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `factData` | string | `''` |  | The fact data of the policy. |
 | `policySetName` | string | `'default'` |  | The name of the parent policy set. |
-| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the policy. Default is "Enabled". |
+| `status` | string | `'Enabled'` | `[Disabled, Enabled]` | The status of the policy. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 

@@ -77,6 +77,10 @@ param lock string = ''
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+// List of slots
+@description('Optional. Configuration for deployment slots for an app.')
+param slots array = []
+
 // Tags
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -240,6 +244,44 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
   }
 }
 
+@batchSize(1)
+module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
+  name: '${uniqueString(deployment().name, location)}-Slot-${slot.name}'
+  params: {
+    name: slot.name
+    appName: app.name
+    location: location
+    kind: kind
+    serverFarmResourceId: serverFarmResourceId
+    httpsOnly: contains(slot, 'httpsOnly') ? slot.httpsOnly : httpsOnly
+    appServiceEnvironmentId: !empty(appServiceEnvironmentId) ? appServiceEnvironmentId : ''
+    clientAffinityEnabled: contains(slot, 'clientAffinityEnabled') ? slot.clientAffinityEnabled : clientAffinityEnabled
+    systemAssignedIdentity: contains(slot, 'systemAssignedIdentity') ? slot.systemAssignedIdentity : systemAssignedIdentity
+    userAssignedIdentities: contains(slot, 'userAssignedIdentities') ? slot.userAssignedIdentities : userAssignedIdentities
+    keyVaultAccessIdentityResourceId: contains(slot, 'keyVaultAccessIdentityResourceId') ? slot.keyVaultAccessIdentityResourceId : keyVaultAccessIdentityResourceId
+    storageAccountRequired: contains(slot, 'storageAccountRequired') ? slot.storageAccountRequired : storageAccountRequired
+    virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : virtualNetworkSubnetId
+    siteConfig: contains(slot, 'siteConfig') ? slot.siteConfig : siteConfig
+    storageAccountId: contains(slot, 'storageAccountId') ? slot.storageAccountId : storageAccountId
+    appInsightId: contains(slot, 'appInsightId') ? slot.appInsightId : appInsightId
+    setAzureWebJobsDashboard: contains(slot, 'setAzureWebJobsDashboard') ? slot.setAzureWebJobsDashboard : setAzureWebJobsDashboard
+    authSettingV2Configuration: contains(slot, 'authSettingV2Configuration') ? slot.authSettingV2Configuration : authSettingV2Configuration
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    diagnosticLogsRetentionInDays: contains(slot, 'diagnosticLogsRetentionInDays') ? slot.diagnosticLogsRetentionInDays : diagnosticLogsRetentionInDays
+    diagnosticStorageAccountId: contains(slot, 'diagnosticStorageAccountId') ? slot.diagnosticStorageAccountId : diagnosticStorageAccountId
+    diagnosticWorkspaceId: contains(slot, 'diagnosticWorkspaceId') ? slot.diagnosticWorkspaceId : diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: contains(slot, 'diagnosticEventHubAuthorizationRuleId') ? slot.diagnosticEventHubAuthorizationRuleId : diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: contains(slot, 'diagnosticEventHubName') ? slot.diagnosticEventHubName : diagnosticEventHubName
+    diagnosticLogCategoriesToEnable: contains(slot, 'diagnosticLogCategoriesToEnable') ? slot.diagnosticLogCategoriesToEnable : diagnosticLogCategoriesToEnable
+    diagnosticMetricsToEnable: contains(slot, 'diagnosticMetricsToEnable') ? slot.diagnosticMetricsToEnable : diagnosticMetricsToEnable
+    roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
+    appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
+    lock: contains(slot, 'lock') ? slot.lock : lock
+    privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
+    tags: tags
+  }
+}]
+
 resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
   properties: {
@@ -307,11 +349,20 @@ output name string = app.name
 @description('The resource ID of the site.')
 output resourceId string = app.id
 
+@description('The list of the slots.')
+output slots array = [for (slot, index) in slots: app_slots[index].name]
+
+@description('The list of the slot resource ids.')
+output slotResourceIds array = [for (slot, index) in slots: app_slots[index].outputs.resourceId]
+
 @description('The resource group the site was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''
+
+@description('The principal ID of the system assigned identity of slots.')
+output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location

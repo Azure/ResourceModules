@@ -18,8 +18,9 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DevTestLab/labs` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs) |
+| `Microsoft.DevTestLab/labs` | [2018-10-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/labs) |
 | `Microsoft.DevTestLab/labs/artifactsources` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/artifactsources) |
+| `Microsoft.DevTestLab/labs/costs` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/costs) |
 | `Microsoft.DevTestLab/labs/notificationchannels` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/notificationchannels) |
 | `Microsoft.DevTestLab/labs/policysets/policies` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/policysets/policies) |
 | `Microsoft.DevTestLab/labs/schedules` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/schedules) |
@@ -35,9 +36,10 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `notificationChannels` | _[notificationChannels](notificationChannels/readme.md)_ array | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `encryptionDiskEncryptionSetId` | string | `''` | The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey". |
+| `notificationChannels` | _[notificationChannels](notificationChannels/readme.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
 
 **Optional parameters**
 
@@ -45,10 +47,16 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | :-- | :-- | :-- | :-- | :-- |
 | `announcement` | object | `{object}` |  | The properties of any lab announcement associated with this lab. |
 | `artifactSources` | _[artifactSources](artifactSources/readme.md)_ array | `[]` |  | Artifact sources to create for the lab. |
+| `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
+| `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
+| `costs` | _[costs](costs/readme.md)_ object | `{object}` |  | Costs to create for the lab. |
+| `disableAutoUpgradeCseMinorVersion` | bool | `False` |  | Disable auto upgrade custom script extension minor version. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `environmentPermission` | string | `'Reader'` | `[Contributor, Reader]` | The access rights to be granted to the user when provisioning an environment. Default is "Reader". |
+| `encryptionType` | string | `'EncryptionAtRestWithPlatformKey'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]` | Specify how OS and data disks created as part of the lab are encrypted. |
+| `environmentPermission` | string | `'Reader'` | `[Contributor, Reader]` | The access rights to be granted to the user when provisioning an environment. |
 | `extendedProperties` | object | `{object}` |  | Extended properties of the lab used for experimental features. |
-| `labStorageType` | string | `'Premium'` | `[Premium, Standard, StandardSSD]` | Type of storage used by the lab. It can be either Premium or Standard. Default is Premium. |
+| `isolateLabResources` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable lab resources isolation from the public internet. |
+| `labStorageType` | string | `'Premium'` | `[Premium, Standard, StandardSSD]` | Type of storage used by the lab. It can be either Premium or Standard. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managementIdentities` | object | `{object}` |  | The ID(s) to assign to the virtual machines associated with this lab. |
@@ -62,6 +70,7 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `virtualNetworks` | _[virtualNetworks](virtualNetworks/readme.md)_ array | `[]` |  | Virtual networks to create for the lab. |
+| `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -205,6 +214,7 @@ userAssignedIdentities: {
 | `name` | string | The name of the lab. |
 | `resourceGroupName` | string | The resource group the lab was deployed into. |
 | `resourceId` | string | The resource ID of the lab. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `uniqueIdentifier` | string | The unique identifier for the lab. Used to track tags that the lab applies to each resource that it creates. |
 
 ## Cross-referenced modules
@@ -257,11 +267,24 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
         uri: 'https://github.com/Azure/azure-devtestlab.git'
       }
     ]
+    artifactsStorageAccount: '<artifactsStorageAccount>'
+    browserConnect: 'Enabled'
+    costs: {
+      cycleType: 'CalendarMonth'
+      status: 'Enabled'
+      target: 450
+      thresholdValue100DisplayOnChart: 'Enabled'
+      thresholdValue100SendNotificationWhenExceeded: 'Enabled'
+    }
+    disableAutoUpgradeCseMinorVersion: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    encryptionDiskEncryptionSetId: '<encryptionDiskEncryptionSetId>'
+    encryptionType: 'EncryptionAtRestWithCustomerKey'
     environmentPermission: 'Contributor'
     extendedProperties: {
       RdpConnectionType: '7'
     }
+    isolateLabResources: 'Enabled'
     labStorageType: 'Premium'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -277,9 +300,18 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
             eventName: 'AutoShutdown'
           }
         ]
-        name: 'AutoShutdown'
+        name: 'autoShutdown'
         notificationLocale: 'en'
-        webhookUrl: 'https://webhook.contosotest.com'
+        webHookUrl: 'https://webhook.contosotest.com'
+      }
+      {
+        events: [
+          {
+            eventName: 'Cost'
+          }
+        ]
+        name: 'costThreshold'
+        webHookUrl: 'https://webhook.contosotest.com'
       }
     ]
     policies: [
@@ -427,6 +459,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
         ]
       }
     ]
+    vmCreationResourceGroupId: '<vmCreationResourceGroupId>'
   }
 }
 ```
@@ -478,8 +511,32 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
         }
       ]
     },
+    "artifactsStorageAccount": {
+      "value": "<artifactsStorageAccount>"
+    },
+    "browserConnect": {
+      "value": "Enabled"
+    },
+    "costs": {
+      "value": {
+        "cycleType": "CalendarMonth",
+        "status": "Enabled",
+        "target": 450,
+        "thresholdValue100DisplayOnChart": "Enabled",
+        "thresholdValue100SendNotificationWhenExceeded": "Enabled"
+      }
+    },
+    "disableAutoUpgradeCseMinorVersion": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "encryptionDiskEncryptionSetId": {
+      "value": "<encryptionDiskEncryptionSetId>"
+    },
+    "encryptionType": {
+      "value": "EncryptionAtRestWithCustomerKey"
     },
     "environmentPermission": {
       "value": "Contributor"
@@ -488,6 +545,9 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
       "value": {
         "RdpConnectionType": "7"
       }
+    },
+    "isolateLabResources": {
+      "value": "Enabled"
     },
     "labStorageType": {
       "value": "Premium"
@@ -513,9 +573,18 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
               "eventName": "AutoShutdown"
             }
           ],
-          "name": "AutoShutdown",
+          "name": "autoShutdown",
           "notificationLocale": "en",
-          "webhookUrl": "https://webhook.contosotest.com"
+          "webHookUrl": "https://webhook.contosotest.com"
+        },
+        {
+          "events": [
+            {
+              "eventName": "Cost"
+            }
+          ],
+          "name": "costThreshold",
+          "webHookUrl": "https://webhook.contosotest.com"
         }
       ]
     },
@@ -679,6 +748,9 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
           ]
         }
       ]
+    },
+    "vmCreationResourceGroupId": {
+      "value": "<vmCreationResourceGroupId>"
     }
   }
 }
