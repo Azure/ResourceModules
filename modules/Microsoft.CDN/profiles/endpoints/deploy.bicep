@@ -46,17 +46,17 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     profileName: profile.name
     endpointName: name
     name: origin.name
-    hostName: origin.hostName
-    httpPort: !empty(origin.httpPort) ? origin.httpPort : 80
-    httpsPort: !empty(origin.httpsPort) ? origin.httpsPort : 443
-    originHostHeader: !empty(origin.originHostHeader) ? origin.originHostHeader : ''
-    enabled: origin.enabled
-    priority: !empty(origin.priority) ? origin.priority : 1
-    weight: !empty(origin.weight) ? origin.weight : 50
-    privateLinkAlias: !empty(origin.privateLinkAlias) ? origin.privateLinkAlias : ''
-    privateLinkApprovalMessage: !empty(origin.privateLinkApprovalMessage) ? origin.privateLinkApprovalMessage : ''
-    privateLinkLocation: !empty(origin.privateLinkLocation) ? origin.privateLinkLocation : ''
-    privateLinkResourceId: !empty(origin.privateLinkResourceId) ? origin.privateLinkResourceId : ''
+    hostName: origin.properties.hostName
+    httpPort: !empty(origin.properties.httpPort) ? origin.properties.httpPort : 80
+    httpsPort: !empty(origin.properties.httpsPort) ? origin.properties.httpsPort : 443
+    originHostHeader: !empty(origin.properties.originHostHeader) ? origin.properties.originHostHeader : ''
+    enabled: origin.properties.enabled
+    priority: !empty(origin.properties.priority) ? origin.properties.priority : 1
+    weight: !empty(origin.properties.weight) ? origin.properties.weight : 50
+    privateLinkAlias: !empty(origin.properties.privateLinkAlias) ? origin.properties.privateLinkAlias : ''
+    privateLinkApprovalMessage: !empty(origin.properties.privateLinkApprovalMessage) ? origin.properties.privateLinkApprovalMessage : ''
+    privateLinkLocation: !empty(origin.properties.privateLinkLocation) ? origin.properties.privateLinkLocation : ''
+    privateLinkResourceId: !empty(origin.properties.privateLinkResourceId) ? origin.properties.privateLinkResourceId : ''
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
