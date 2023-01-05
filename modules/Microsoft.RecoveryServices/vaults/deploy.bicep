@@ -110,7 +110,7 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled.')
 @allowed([
   'Enabled'
   'Disabled'
@@ -180,8 +180,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
   properties: {
     monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
     securitySettings: !empty(securitySettings) ? securitySettings : null
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
-
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
