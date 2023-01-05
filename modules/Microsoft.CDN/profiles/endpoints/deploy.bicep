@@ -49,7 +49,6 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     hostName: origin.properties.hostName
     httpPort: contains(origin.properties, 'httpPort') ? origin.properties.httpPort : 80
     httpsPort: contains(origin.properties, 'httpsPort') ? origin.properties.httpsPort : 443
-    originHostHeader: contains(origin.properties, 'originHostHeader') ? origin.properties.originHostHeader : null
     enabled: origin.properties.enabled
     priority: contains(origin.properties, 'priority') ? origin.properties.priority : 1
     weight: contains(origin.properties, 'weight') ? origin.properties.weight : 50

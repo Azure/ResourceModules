@@ -19,9 +19,6 @@ param httpPort int = 80
 @description('Optional. The HTTPS port of the origin.')
 param httpsPort int = 443
 
-@description('Optional. The host header value sent to the origin.')
-param originHostHeader string
-
 @description('Optional. The priority of origin in given origin group for load balancing.')
 param priority int = 1
 
@@ -72,7 +69,6 @@ resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = {
     httpPort: httpPort
     enabled: enabled
     httpsPort: httpsPort
-    originHostHeader: originHostHeader
     priority: priority
     privateLinkAlias: privateLinkAlias
     privateLinkLocation: privateLinkLocation

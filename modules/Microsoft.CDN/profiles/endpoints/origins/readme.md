@@ -33,7 +33,6 @@ This module deploys CDN Profiles Endpoint Origins.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `httpPort` | int | `80` | The HTTP port of the origin. |
 | `httpsPort` | int | `443` | The HTTPS port of the origin. |
-| `originHostHeader` | string |  | The host header value sent to the origin. |
 | `priority` | int | `1` | The priority of origin in given origin group for load balancing. |
 | `privateLinkAlias` | string |  | The private link alias of the origin. |
 | `privateLinkApprovalMessage` | string |  | The private link approval message of the origin. |
