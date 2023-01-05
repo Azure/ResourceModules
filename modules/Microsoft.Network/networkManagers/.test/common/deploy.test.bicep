@@ -169,8 +169,12 @@ module testDeployment '../../deploy.bicep' = {
                   '80'
                   '442-445'
                 ]
-                sourcesAddressPrefix: 'AppService.WestEurope'
-                sourcesAddressPrefixType: 'ServiceTag'
+                sources: [
+                  {
+                    addressPrefix: 'AppService.WestEurope'
+                    addressPrefixType: 'ServiceTag'
+                  }
+                ]
               }
             ]
           }
@@ -192,8 +196,12 @@ module testDeployment '../../deploy.bicep' = {
                   '80'
                   '442-445'
                 ]
-                destinationsAddressPrefix: '192.168.20.20'
-                destinationsAddressPrefixType: 'IPPrefix'
+                destinations: [
+                  {
+                    addressPrefix: '192.168.20.20'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
                 priority: 250
                 protocol: 'Tcp'
               }

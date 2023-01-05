@@ -26,19 +26,8 @@ param access string
 @sys.description('Optional. List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.')
 param destinationPortRanges array = []
 
-@sys.description('Optional. The CIDR or source IP ranges. Used when defining multiple destination address prefixes or service tags. If not empty, it takes precedence over destinationsAddressPrefix and destinationsAddressPrefixType properties.')
+@sys.description('Optional. The destnations filter can be an IP Address or a service tag. Each filter contains the properties AddressPrefixType (IPPrefix or ServiceTag) and AddressPrefix (using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64) or a service tag (e.g. AppService.WestEurope)). Combining CIDR and Service tags in one rule filter is not permitted.')
 param destinations array = []
-
-@allowed([
-  ''
-  'IPPrefix'
-  'ServiceTag'
-])
-@sys.description('Optional. The destination filter can be an IP Address or a service tag. It specifies the outgoing traffic for a specific destination IP address range that will be allowed or denied by this rule.')
-param destinationsAddressPrefixType string = ''
-
-@sys.description('Optional. Provide the destination address prefix range using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64), or a service tag (e.g. AppService.WestEurope). You can also provide a comma-separated list of IP addresses or address ranges using either IPv4 or IPv6.')
-param destinationsAddressPrefix string = ''
 
 @allowed([
   'Inbound'
@@ -66,19 +55,8 @@ param protocol string
 @sys.description('Optional. List of destination port ranges. This specifies on which ports traffic will be allowed or denied by this rule. Provide an (*) to allow traffic on any port. Port ranges are between 1-65535.')
 param sourcePortRanges array = []
 
-@sys.description('Optional. The CIDR or source IP ranges. Used when defining multiple source address prefixes or service tags. If not empty, it takes precedence over sourcesAddressPrefix and sourcesAddressPrefixType properties.')
+@sys.description('Optional. The source filter can be an IP Address or a service tag. Each filter contains the properties AddressPrefixType (IPPrefix or ServiceTag) and AddressPrefix (using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64) or a service tag (e.g. AppService.WestEurope)). Combining CIDR and Service tags in one rule filter is not permitted.')
 param sources array = []
-
-@allowed([
-  ''
-  'IPPrefix'
-  'ServiceTag'
-])
-@sys.description('Optional. The source filter can be an IP Address or a service tag. It specifies the incoming traffic from a specific source IP addresses range that will be allowed or denied by this rule.')
-param sourcesAddressPrefixType string = ''
-
-@sys.description('Optional. Provide an address range using CIDR notation (e.g. 192.168.99.0/24 or 2001:1234::/64), or an IP address (e.g. 192.168.99.0 or 2001:1234::), or a service tag (e.g. AppService.WestEurope). You can also provide a comma-separated list of IP addresses or address ranges using either IPv4 or IPv6.')
-param sourcesAddressPrefix string = ''
 
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -115,22 +93,12 @@ resource rule 'Microsoft.Network/networkManagers/securityAdminConfigurations/rul
     access: access
     description: description
     destinationPortRanges: destinationPortRanges
-    destinations: !empty(destinationsAddressPrefix) && !empty(destinationsAddressPrefixType) && empty(destinations) ? [
-      {
-        addressPrefix: destinationsAddressPrefix
-        addressPrefixType: destinationsAddressPrefixType
-      }
-    ] : destinations
+    destinations: destinations
     direction: direction
     priority: priority
     protocol: protocol
     sourcePortRanges: sourcePortRanges
-    sources: !empty(sourcesAddressPrefix) && !empty(sourcesAddressPrefixType) && empty(sources) ? [
-      {
-        addressPrefix: sourcesAddressPrefix
-        addressPrefixType: sourcesAddressPrefixType
-      }
-    ] : sources
+    sources: sources
   }
 }
 

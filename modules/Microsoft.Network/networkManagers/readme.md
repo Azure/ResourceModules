@@ -669,8 +669,12 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
                   '442-445'
                   '80'
                 ]
-                sourcesAddressPrefix: 'AppService.WestEurope'
-                sourcesAddressPrefixType: 'ServiceTag'
+                sources: [
+                  {
+                    addressPrefix: 'AppService.WestEurope'
+                    addressPrefixType: 'ServiceTag'
+                  }
+                ]
               }
             ]
           }
@@ -690,8 +694,12 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
                   '442-445'
                   '80'
                 ]
-                destinationsAddressPrefix: '192.168.20.20'
-                destinationsAddressPrefixType: 'IPPrefix'
+                destinations: [
+                  {
+                    addressPrefix: '192.168.20.20'
+                    addressPrefixType: 'IPPrefix'
+                  }
+                ]
                 direction: 'Inbound'
                 name: 'test-inbound-allow-rule-3'
                 priority: 250
@@ -886,8 +894,12 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
                     "442-445",
                     "80"
                   ],
-                  "sourcesAddressPrefix": "AppService.WestEurope",
-                  "sourcesAddressPrefixType": "ServiceTag"
+                  "sources": [
+                    {
+                      "addressPrefix": "AppService.WestEurope",
+                      "addressPrefixType": "ServiceTag"
+                    }
+                  ]
                 }
               ]
             },
@@ -907,8 +919,12 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
                     "442-445",
                     "80"
                   ],
-                  "destinationsAddressPrefix": "192.168.20.20",
-                  "destinationsAddressPrefixType": "IPPrefix",
+                  "destinations": [
+                    {
+                      "addressPrefix": "192.168.20.20",
+                      "addressPrefixType": "IPPrefix"
+                    }
+                  ],
                   "direction": "Inbound",
                   "name": "test-inbound-allow-rule-3",
                   "priority": 250,
