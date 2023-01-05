@@ -211,7 +211,7 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
     }
     location: '<location>'
     lock: 'CanNotDelete'
-    profileProperties: {}
+    originResponseTimeoutSeconds: 60
   }
 }
 ```
@@ -277,8 +277,8 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "profileProperties": {
-      "value": {}
+    "originResponseTimeoutSeconds": {
+      "value": 60
     }
   }
 }

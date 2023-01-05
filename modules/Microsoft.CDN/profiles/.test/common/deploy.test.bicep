@@ -47,7 +47,7 @@ module testDeployment '../../deploy.bicep' = {
     name: 'dep-<<namePrefix>>-test-${serviceShort}'
     location: location
     lock: 'CanNotDelete'
-    profileProperties: {}
+    originResponseTimeoutSeconds: 60
     sku: 'Standard_Verizon'
     enableDefaultTelemetry: enableDefaultTelemetry
     endpointProperties: {
