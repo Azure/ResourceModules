@@ -22,7 +22,7 @@ module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bice
 }
 
 @description('The resource ID of the created Storage Account.')
-output storageAccountResourceId string = storageAccount.outputs.resourceId
+output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the created Storage Account.')
 output storageAccountName string = storageAccount.outputs.name

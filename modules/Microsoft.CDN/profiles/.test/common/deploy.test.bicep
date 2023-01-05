@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.cdn.profiles-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cdnprof'
+param serviceShort string = 'cdnpcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -43,13 +43,13 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: 'dep-<<namePrefix>>-cdn-${serviceShort}'
+    name: 'dep-<<namePrefix>>-test-${serviceShort}'
     location: location
     profileProperties: {}
     sku: 'Standard_Verizon'
     enableDefaultTelemetry: enableDefaultTelemetry
     endpointProperties: {
-      originHostHeader: '${resourceGroupResources.outputs.storageAccountName}.blob.core.windows.net'
+      originHostHeader: '${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}'
       contentTypesToCompress: [
         'text/plain'
         'text/html'

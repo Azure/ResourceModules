@@ -1,7 +1,7 @@
-@description('Required. Name of the CDN profile which is unique within the resource group.')
+@description('Required. Name of the CDN profile.')
 param name string
 
-@description('Optional. Resource location.')
+@description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
 @allowed([
@@ -64,7 +64,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource profile 'microsoft.cdn/profiles@2021-06-01' = {
+resource profile 'microsoft.Cdn/profiles@2021-06-01' = {
   name: name
   location: location
   sku: {
@@ -85,8 +85,8 @@ resource profile_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lo
   scope: profile
 }
 
-module profile_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
+module profile_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-Profile-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -99,7 +99,7 @@ module profile_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment
 }]
 
 module profile_Endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties)) {
-  name: '${uniqueString(deployment().name, location)}-Endpoint'
+  name: '${uniqueString(deployment().name, location)}-Profile-Endpoint'
   params: {
     endpointName: !empty(endpointName) ? endpointName : '${profile.name}-endpoint'
     endpointProperties: endpointProperties
@@ -110,17 +110,17 @@ module profile_Endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties
   }
 }
 
-@description('Name of the CDN profile.')
+@description('The name of the CDN profile.')
 output name string = profile.name
 
-@description('Resource ID of the CDN profile.')
+@description('The resource ID of the CDN profile.')
 output resourceId string = profile.id
 
-@description('Resource group of the CDN profile.')
+@description('The resource group where the CDN profile is deployed.')
 output resourceGroupName string = resourceGroup().name
 
-@description('Type of the CDN profile.')
+@description('The type of the CDN profile.')
 output profileType string = profile.type
 
-@description('Resource location of the CDN profile.')
+@description('The location the resource was deployed into.')
 output location string = profile.location
