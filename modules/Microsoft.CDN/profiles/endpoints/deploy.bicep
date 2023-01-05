@@ -2,7 +2,7 @@
 param profileName string
 
 @description('Required. Name of the endpoint under the profile which is unique globally.')
-param endpointName string
+param name string
 
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
@@ -32,22 +32,34 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = if (!empty(endpointName)) {
+resource endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = {
   parent: profile
-  name: endpointName
+  name: name
   location: location
   properties: endpointProperties
   tags: tags
 }
 
-module profile_EndpointOrigin 'origins/deploy.bicep' = {
-  name: '${endpointName}-origins'
+module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperties.origins: {
+  name: '${name}-origins-${origin.name}'
   params: {
     profileName: profile.name
-    endpointName: endpointName
-    originsProperties: endpointProperties.origins
+    endpointName: name
+    name: origin.name
+    hostName: origin.hostName
+    httpPort: !empty(origin.httpPort) ? origin.httpPort : 80
+    httpsPort: !empty(origin.httpsPort) ? origin.httpsPort : 443
+    originHostHeader: !empty(origin.originHostHeader) ? origin.originHostHeader : ''
+    enabled: origin.enabled
+    priority: !empty(origin.priority) ? origin.priority : 1
+    weight: !empty(origin.weight) ? origin.weight : 50
+    privateLinkAlias: !empty(origin.privateLinkAlias) ? origin.privateLinkAlias : ''
+    privateLinkApprovalMessage: !empty(origin.privateLinkApprovalMessage) ? origin.privateLinkApprovalMessage : ''
+    privateLinkLocation: !empty(origin.privateLinkLocation) ? origin.privateLinkLocation : ''
+    privateLinkResourceId: !empty(origin.privateLinkResourceId) ? origin.privateLinkResourceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
-}
+}]
 
 @description('The name of the endpoint.')
 output name string = endpoint.name

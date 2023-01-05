@@ -1,11 +1,44 @@
-@description('Required. Object containing endpoint origin properties.')
-param originsProperties array
-
 @description('Required. The name of the CDN Endpoint.')
 param endpointName string
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Required. The name of the origin.')
+param name string
+
+@description('Optional. Whether the origin is enabled for load balancing.')
+param enabled bool = true
+
+@description('Required. The host name of the origin.')
+param hostName string
+
+@description('Optional. The HTTP port of the origin.')
+param httpPort int = 80
+
+@description('Optional. The HTTPS port of the origin.')
+param httpsPort int = 443
+
+@description('Optional. The host header value sent to the origin.')
+param originHostHeader string
+
+@description('Optional. The priority of origin in given origin group for load balancing.')
+param priority int = 1
+
+@description('Optional. The private link alias of the origin.')
+param privateLinkAlias string
+
+@description('Optional. The private link location of the origin.')
+param privateLinkLocation string
+
+@description('Optional. The private link approval message of the origin.')
+param privateLinkApprovalMessage string
+
+@description('Optional. The private link resource ID of the origin.')
+param privateLinkResourceId string
+
+@description('Optional. The weight of the origin used for load balancing.')
+param weight int = 50
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -33,12 +66,19 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2021-06-01' existing = {
 
 resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = {
   parent: endpoint
-  name: originsProperties[0].name
+  name: name
   properties: {
-    hostName: originsProperties[0].properties.hostName
-    httpPort: originsProperties[0].properties.httpPort
-    enabled: originsProperties[0].properties.enabled
-    httpsPort: originsProperties[0].properties.httpsPort
+    hostName: hostName
+    httpPort: httpPort
+    enabled: enabled
+    httpsPort: httpsPort
+    originHostHeader: originHostHeader
+    priority: priority
+    privateLinkAlias: privateLinkAlias
+    privateLinkLocation: privateLinkLocation
+    privateLinkApprovalMessage: privateLinkApprovalMessage
+    privateLinkResourceId: privateLinkResourceId
+    weight: weight
   }
 }
 

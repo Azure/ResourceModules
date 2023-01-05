@@ -22,14 +22,26 @@ This module deploys CDN Profiles Endpoint Origins.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `endpointName` | string | The name of the CDN Endpoint. |
-| `originsProperties` | array | Object containing endpoint origin properties. |
+| `hostName` | string | The host name of the origin. |
+| `name` | string | The name of the origin. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `enabled` | bool | `True` | Whether the origin is enabled for load balancing. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `httpPort` | int | `80` | The HTTP port of the origin. |
+| `httpsPort` | int | `443` | The HTTPS port of the origin. |
+| `originHostHeader` | string |  | The host header value sent to the origin. |
+| `priority` | int | `1` | The priority of origin in given origin group for load balancing. |
+| `privateLinkAlias` | string |  | The private link alias of the origin. |
+| `privateLinkApprovalMessage` | string |  | The private link approval message of the origin. |
+| `privateLinkLocation` | string |  | The private link location of the origin. |
+| `privateLinkResourceId` | string |  | The private link resource ID of the origin. |
 | `profileName` | string | `'default'` | The name of the CDN profile. Default to "default". |
+| `weight` | int | `50` | The weight of the origin used for load balancing. |
+
 
 ## Outputs
 
