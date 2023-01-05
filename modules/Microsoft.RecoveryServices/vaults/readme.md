@@ -60,7 +60,7 @@ This module deploys a recovery service vault.
 | `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. |
 | `replicationAlertSettings` | _[replicationAlertSettings](replicationAlertSettings/readme.md)_ object | `{object}` |  | Replication alert settings. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
@@ -1214,7 +1214,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    publicNetworkAccess: 'Enabled'
     replicationAlertSettings: {
       customEmailAddresses: [
         'test.user@testcompany.com'
@@ -1544,9 +1543,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
     },
     "replicationAlertSettings": {
       "value": {
