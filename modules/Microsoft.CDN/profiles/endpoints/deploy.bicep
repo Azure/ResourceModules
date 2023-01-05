@@ -47,16 +47,16 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     endpointName: name
     name: origin.name
     hostName: origin.properties.hostName
-    httpPort: !empty(origin.properties.httpPort) ? origin.properties.httpPort : 80
-    httpsPort: !empty(origin.properties.httpsPort) ? origin.properties.httpsPort : 443
-    originHostHeader: !empty(origin.properties.originHostHeader) ? origin.properties.originHostHeader : ''
+    httpPort: contains(origin.properties, 'httpPort') ? origin.properties.httpPort : 80
+    httpsPort: contains(origin.properties, 'httpsPort') ? origin.properties.httpsPort : 443
+    originHostHeader: contains(origin.properties, 'originHostHeader') ? origin.properties.originHostHeader : ''
     enabled: origin.properties.enabled
-    priority: !empty(origin.properties.priority) ? origin.properties.priority : 1
-    weight: !empty(origin.properties.weight) ? origin.properties.weight : 50
-    privateLinkAlias: !empty(origin.properties.privateLinkAlias) ? origin.properties.privateLinkAlias : ''
-    privateLinkApprovalMessage: !empty(origin.properties.privateLinkApprovalMessage) ? origin.properties.privateLinkApprovalMessage : ''
-    privateLinkLocation: !empty(origin.properties.privateLinkLocation) ? origin.properties.privateLinkLocation : ''
-    privateLinkResourceId: !empty(origin.properties.privateLinkResourceId) ? origin.properties.privateLinkResourceId : ''
+    priority: contains(origin.properties, 'priority') ? origin.properties.priority : 1
+    weight: contains(origin.properties, 'weight') ? origin.properties.weight : 50
+    privateLinkAlias: contains(origin.properties, 'privateLinkAlias') ? origin.properties.privateLinkAlias : ''
+    privateLinkApprovalMessage: contains(origin.properties, 'privateLinkApprovalMessage') ? origin.properties.privateLinkApprovalMessage : ''
+    privateLinkLocation: contains(origin.properties, 'privateLinkLocation') ? origin.properties.privateLinkLocation : ''
+    privateLinkResourceId: contains(origin.properties, 'privateLinkResourceId') ? origin.properties.privateLinkResourceId : ''
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
