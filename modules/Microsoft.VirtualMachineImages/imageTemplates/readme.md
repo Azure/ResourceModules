@@ -16,7 +16,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.VirtualMachineImages/imageTemplates` | [2022-02-14](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2022-02-14/imageTemplates) |
+| `Microsoft.VirtualMachineImages/imageTemplates` | [2020-02-14](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates) |
 
 ## Parameters
 
@@ -35,6 +35,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | :-- | :-- | :-- | :-- | :-- |
 | `buildTimeoutInMinutes` | int | `0` |  | Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `excludeFromLatest` | bool | `False` |  | Exclude the created Azure Compute Gallery image version from the latest. |
 | `imageReplicationRegions` | array | `[]` |  | List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -42,12 +43,10 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `osDiskSizeGB` | int | `128` |  | Specifies the size of OS disk. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sigImageDefinitionId` | string | `''` |  | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
-| `sigImageVersion` | string | `''` |  | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
-| `stagingResourceGroup` | string | `''` |  | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.<p>If this field is empty, a resource group with a random name will be created.<p>If the resource group specified in this field doesn\'t exist, it will be created with the same name.<p>If the resource group specified exists, it must be empty and in the same region as the image template.<p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,<p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.<p> |
-| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.<p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.<p> |
+| `storageAccountType` | string | `'Standard_LRS'` | `[Standard_LRS, Standard_ZRS]` | Storage account type to be used to store the image in the Azure Compute Gallery. |
+| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `unManagedImageName` | string | `''` |  | Name of the unmanaged image that will be created in the AIB resourcegroup. |
-| `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.<p> |
 | `userMsiResourceGroup` | string | `[resourceGroup().name]` |  | Resource group of the user assigned identity. |
 | `vmSize` | string | `'Standard_D2s_v3'` |  | Specifies the size for the VM. |
 
