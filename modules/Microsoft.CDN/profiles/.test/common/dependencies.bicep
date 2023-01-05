@@ -4,19 +4,18 @@ param location string = resourceGroup().location
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: storageAccountName
-  params: {
-    name: storageAccountName
-    enableDefaultTelemetry: true
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
     allowBlobPublicAccess: false
-    location: location
-    storageAccountSku: 'Standard_LRS'
-    storageAccountKind: 'StorageV2'
     networkAcls: {
-      bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      bypass: 'AzureServices'
     }
   }
 }
@@ -25,4 +24,4 @@ module storageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bice
 output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the created Storage Account.')
-output storageAccountName string = storageAccount.outputs.name
+output storageAccountName string = storageAccount.name
