@@ -49,14 +49,14 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     hostName: origin.properties.hostName
     httpPort: contains(origin.properties, 'httpPort') ? origin.properties.httpPort : 80
     httpsPort: contains(origin.properties, 'httpsPort') ? origin.properties.httpsPort : 443
-    originHostHeader: contains(origin.properties, 'originHostHeader') ? origin.properties.originHostHeader : ''
+    originHostHeader: contains(origin.properties, 'originHostHeader') ? origin.properties.originHostHeader : null
     enabled: origin.properties.enabled
     priority: contains(origin.properties, 'priority') ? origin.properties.priority : 1
     weight: contains(origin.properties, 'weight') ? origin.properties.weight : 50
-    privateLinkAlias: contains(origin.properties, 'privateLinkAlias') ? origin.properties.privateLinkAlias : ''
-    privateLinkApprovalMessage: contains(origin.properties, 'privateLinkApprovalMessage') ? origin.properties.privateLinkApprovalMessage : ''
-    privateLinkLocation: contains(origin.properties, 'privateLinkLocation') ? origin.properties.privateLinkLocation : ''
-    privateLinkResourceId: contains(origin.properties, 'privateLinkResourceId') ? origin.properties.privateLinkResourceId : ''
+    privateLinkAlias: contains(origin.properties, 'privateLinkAlias') ? origin.properties.privateLinkAlias : null
+    privateLinkApprovalMessage: contains(origin.properties, 'privateLinkApprovalMessage') ? origin.properties.privateLinkApprovalMessage : null
+    privateLinkLocation: contains(origin.properties, 'privateLinkLocation') ? origin.properties.privateLinkLocation : null
+    privateLinkResourceId: contains(origin.properties, 'privateLinkResourceId') ? origin.properties.privateLinkResourceId : null
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
