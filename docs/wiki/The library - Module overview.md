@@ -21,7 +21,7 @@ This section provides an overview of the library's feature set.
 | 6 | MS.Authorization<p>roleDefinitions |  |  |  |  |  |  | [L1:3] | 91 |
 | 7 | MS.Authorization<p>policyExemptions |  |  |  |  |  |  | [L1:3] | 111 |
 | 8 | MS.Authorization<p>locks |  |  |  |  |  |  | [L1:2] | 59 |
-| 9 | MS.Authorization<p>policyAssignments |  |  |  |  |  |  | [L1:3] | 130 |
+| 9 | MS.Authorization<p>policyAssignments |  |  |  |  |  |  | [L1:3] | 140 |
 | 10 | MS.Authorization<p>policySetDefinitions |  |  |  |  |  |  | [L1:2] | 73 |
 | 11 | MS.Authorization<p>policyDefinitions |  |  |  |  |  |  | [L1:2] | 83 |
 | 12 | MS.ContainerService<p>managedClusters | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 509 |
@@ -124,7 +124,7 @@ This section provides an overview of the library's feature set.
 | 109 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 167 |
 | 110 | MS.Maintenance<p>maintenanceConfigurations | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 101 |
 | 111 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
-| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19397 |
+| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19407 |
 
 ## Legend
 
