@@ -23,7 +23,7 @@ This section provides an overview of the library's feature set.
 | 8 | MS.Authorization<p>locks |  |  |  |  |  |  | [L1:2] | 59 |
 | 9 | MS.Authorization<p>policyAssignments |  |  |  |  |  |  | [L1:3] | 130 |
 | 10 | MS.Authorization<p>policySetDefinitions |  |  |  |  |  |  | [L1:2] | 73 |
-| 11 | MS.Authorization<p>policyDefinitions |  |  |  |  |  |  | [L1:2] | 82 |
+| 11 | MS.Authorization<p>policyDefinitions |  |  |  |  |  |  | [L1:2] | 83 |
 | 12 | MS.ContainerService<p>managedClusters | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 509 |
 | 13 | MS.Sql<p>managedInstances | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:6, L2:2] | 348 |
 | 14 | MS.Sql<p>servers | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:7] | 272 |
@@ -124,7 +124,7 @@ This section provides an overview of the library's feature set.
 | 109 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 167 |
 | 110 | MS.Maintenance<p>maintenanceConfigurations | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 101 |
 | 111 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
-| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19396 |
+| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19397 |
 
 ## Legend
 
