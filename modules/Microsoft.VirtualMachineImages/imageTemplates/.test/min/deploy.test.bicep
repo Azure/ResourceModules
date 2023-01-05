@@ -58,19 +58,8 @@ module testDeployment '../../deploy.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    buildTimeoutInMinutes: 0
-    imageReplicationRegions: []
-    lock: ''
     managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
-    osDiskSizeGB: 127
-    roleAssignments: []
-    sigImageDefinitionId: ''
-    stagingResourceGroup: ''
-    subnetId: ''
-    unManagedImageName: ''
-    userAssignedIdentities: []
     userMsiName: resourceGroupResources.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
-    vmSize: 'Standard_D2s_v3'
   }
 }

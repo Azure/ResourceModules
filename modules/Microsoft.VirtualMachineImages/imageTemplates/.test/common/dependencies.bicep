@@ -18,6 +18,8 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
+var addressPrefix = '10.0.0.0/24'
+
 resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   name: galleryName
   location: location
@@ -67,14 +69,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/24'
+        addressPrefix
       ]
     }
     subnets: [
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: addressPrefix
           privateLinkServiceNetworkPolicies: 'Disabled'
         }
       }

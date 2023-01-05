@@ -21,7 +21,10 @@ param vmSize string = 'Standard_D2s_v3'
 @description('Optional. Specifies the size of OS disk.')
 param osDiskSizeGB int = 128
 
-@description('Optional. Resource ID of an already existing subnet, e.g. \'/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>\'. If no value is provided, a new VNET will be created in the target Resource Group.')
+@description('''
+Optional. Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.
+If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.
+''')
 param subnetId string = ''
 
 @description('''Optional. List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.

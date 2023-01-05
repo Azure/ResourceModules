@@ -44,7 +44,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | `sigImageDefinitionId` | string | `''` |  | Resource ID of Shared Image Gallery to distribute image to, e.g.: /subscriptions/<subscriptionID>/resourceGroups/<SIG resourcegroup>/providers/Microsoft.Compute/galleries/<SIG name>/images/<image definition>. |
 | `sigImageVersion` | string | `''` |  | Version of the Shared Image Gallery Image. Supports the following Version Syntax: Major.Minor.Build (i.e., '1.1.1' or '10.1.2'). |
 | `stagingResourceGroup` | string | `''` |  | Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.<p>If this field is empty, a resource group with a random name will be created.<p>If the resource group specified in this field doesn\'t exist, it will be created with the same name.<p>If the resource group specified exists, it must be empty and in the same region as the image template.<p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,<p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.<p> |
-| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g. '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>'. If no value is provided, a new VNET will be created in the target Resource Group. |
+| `subnetId` | string | `''` |  | Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.<p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.<p> |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `unManagedImageName` | string | `''` |  | Name of the unmanaged image that will be created in the AIB resourcegroup. |
 | `userAssignedIdentities` | array | `[]` |  | List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.<p>Be aware, the user assigned identity for Azure Image Builder must have the "Managed Identity Operator" role assignment on all the user assigned identities for Azure Image Builder to be able to associate them to the build VM.<p> |
@@ -525,20 +525,9 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     name: '<<namePrefix>>vmiitmin001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
-    buildTimeoutInMinutes: 0
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    imageReplicationRegions: []
-    lock: ''
     managedImageName: '<<namePrefix>>-mi-vmiitmin-001'
-    osDiskSizeGB: 127
-    roleAssignments: []
-    sigImageDefinitionId: ''
-    stagingResourceGroup: ''
-    subnetId: ''
-    unManagedImageName: ''
-    userAssignedIdentities: []
     userMsiResourceGroup: '<userMsiResourceGroup>'
-    vmSize: 'Standard_D2s_v3'
   }
 }
 ```
@@ -580,47 +569,14 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
       "value": "<userMsiName>"
     },
     // Non-required parameters
-    "buildTimeoutInMinutes": {
-      "value": 0
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "imageReplicationRegions": {
-      "value": []
-    },
-    "lock": {
-      "value": ""
     },
     "managedImageName": {
       "value": "<<namePrefix>>-mi-vmiitmin-001"
     },
-    "osDiskSizeGB": {
-      "value": 127
-    },
-    "roleAssignments": {
-      "value": []
-    },
-    "sigImageDefinitionId": {
-      "value": ""
-    },
-    "stagingResourceGroup": {
-      "value": ""
-    },
-    "subnetId": {
-      "value": ""
-    },
-    "unManagedImageName": {
-      "value": ""
-    },
-    "userAssignedIdentities": {
-      "value": []
-    },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"
-    },
-    "vmSize": {
-      "value": "Standard_D2s_v3"
     }
   }
 }
