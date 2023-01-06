@@ -22,8 +22,19 @@ This module deploys CDN Profiles Endpoint Origins.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `endpointName` | string | The name of the CDN Endpoint. |
-| `hostName` | string | The host name of the origin. |
+| `hostName` | string | The hostname of the origin. |
 | `name` | string | The name of the origin. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `originHostHeader` | string |  | The host header value sent to the origin. |
+| `priority` | int | `-1` | The priority of origin in given origin group for load balancing, weight should also be provided. |
+| `privateLinkAlias` | string |  | The private link alias of the origin. privateLinkLocation should also be provided. |
+| `privateLinkLocation` | string |  | The private link location of the origin. privateLinkAlias should also be provided. |
+| `privateLinkResourceId` | string |  | The private link resource ID of the origin. |
+| `weight` | int | `-1` | The weight of the origin used for load balancing, priority should also be provided. |
 
 **Optional parameters**
 
@@ -33,13 +44,7 @@ This module deploys CDN Profiles Endpoint Origins.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `httpPort` | int | `80` | The HTTP port of the origin. |
 | `httpsPort` | int | `443` | The HTTPS port of the origin. |
-| `originHostHeader` | string |  | The host header value sent to the origin. |
-| `priority` | int | `-1` | The priority of origin in given origin group for load balancing. |
-| `privateLinkAlias` | string |  | The private link alias of the origin. |
-| `privateLinkLocation` | string |  | The private link location of the origin. |
-| `privateLinkResourceId` | string |  | The private link resource ID of the origin. |
 | `profileName` | string | `'default'` | The name of the CDN profile. Default to "default". |
-| `weight` | int | `-1` | The weight of the origin used for load balancing. |
 
 
 ## Outputs

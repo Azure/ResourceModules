@@ -10,7 +10,7 @@ param name string
 @description('Optional. Whether the origin is enabled for load balancing.')
 param enabled bool = true
 
-@description('Required. The host name of the origin.')
+@description('Required. The hostname of the origin.')
 param hostName string
 
 @description('Optional. The HTTP port of the origin.')
@@ -19,23 +19,22 @@ param httpPort int = 80
 @description('Optional. The HTTPS port of the origin.')
 param httpsPort int = 443
 
-// Correct Conditions
-@description('Optional. The priority of origin in given origin group for load balancing.')
+@description('Conditional. The priority of origin in given origin group for load balancing, weight should also be provided.')
 param priority int = -1
 
-@description('Optional. The weight of the origin used for load balancing.')
+@description('Conditional. The weight of the origin used for load balancing, priority should also be provided.')
 param weight int = -1
 
-@description('Optional. The private link alias of the origin.')
+@description('Conditional. The private link alias of the origin. privateLinkLocation should also be provided.')
 param privateLinkAlias string
 
-@description('Optional. The private link location of the origin.')
+@description('Conditional. The private link location of the origin. privateLinkAlias should also be provided.')
 param privateLinkLocation string
 
-@description('Optional. The private link resource ID of the origin.')
+@description('Conditional. The private link resource ID of the origin.')
 param privateLinkResourceId string
 
-@description('Optional. The host header value sent to the origin.')
+@description('Conditional. The host header value sent to the origin.')
 param originHostHeader string
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
