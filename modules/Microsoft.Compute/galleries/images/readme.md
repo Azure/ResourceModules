@@ -14,7 +14,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/galleries/images` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries/images) |
+| `Microsoft.Compute/galleries/images` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/images) |
 
 ## Parameters
 
@@ -38,7 +38,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
-| `hyperVGeneration` | string | `'V1'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2. |
+| `hyperVGeneration` | string | `''` | `['', V1, V2]` | The hypervisor generation of the Virtual Machine. Can be either V1 or V2.<p>* If this value is not specified, then it is determined by the securityType parameter.<p>* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.<p> |
 | `imageDefinitionDescription` | string | `''` |  | The description of this gallery Image Definition resource. This property is updatable. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `maxRecommendedMemory` | int | `16` |  | The maximum amount of RAM in GB recommended for this image. |
@@ -55,6 +55,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `publisher` | string | `'MicrosoftWindowsServer'` |  | The name of the gallery Image Definition publisher. |
 | `releaseNoteUri` | string | `''` |  | The release note uri. Has to be a valid URL. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `securityType` | string | `'Standard'` | `[ConfidentialVM, ConfidentialVMSupported, Standard, TrustedLaunch]` | The security type of the image. Requires a hyperVGeneration V2. |
 | `sku` | string | `'2019-Datacenter'` |  | The name of the gallery Image Definition SKU. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
 
