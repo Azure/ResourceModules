@@ -38,7 +38,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
-| `hyperVGeneration` | string | `''` | `['', V1, V2]` | The hypervisor generation of the Virtual Machine. Can be either V1 or V2.<p>* If this value is not specified, then it is determined by the securityType parameter.<p>* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.<p> |
+| `hyperVGeneration` | string | `''` | `['', V1, V2]` | The hypervisor generation of the Virtual Machine.<p>* If this value is not specified, then it is determined by the securityType parameter.<p>* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.<p> |
 | `imageDefinitionDescription` | string | `''` |  | The description of this gallery Image Definition resource. This property is updatable. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `maxRecommendedMemory` | int | `16` |  | The maximum amount of RAM in GB recommended for this image. |
