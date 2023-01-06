@@ -47,11 +47,11 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     endpointName: name
     name: origin.name
     hostName: origin.properties.hostName
-    httpPort: contains(origin.properties, 'httpPort') ? origin.properties.httpPort : 80
-    httpsPort: contains(origin.properties, 'httpsPort') ? origin.properties.httpsPort : 443
+    httpPort: contains(origin.properties, 'httpPort') ? origin.properties.httpPort : null
+    httpsPort: contains(origin.properties, 'httpsPort') ? origin.properties.httpsPort : null
     enabled: origin.properties.enabled
-    priority: contains(origin.properties, 'priority') ? origin.properties.priority : 1
-    weight: contains(origin.properties, 'weight') ? origin.properties.weight : 50
+    priority: contains(origin.properties, 'priority') ? origin.properties.priority : null
+    weight: contains(origin.properties, 'weight') ? origin.properties.weight : null
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
