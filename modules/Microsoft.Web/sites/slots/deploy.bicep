@@ -165,7 +165,7 @@ param cloningInfo object = {}
 @description('Optional. Size of the function container.')
 param containerSize int = -1
 
-@description('Optional. Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt record for verification.')
+@description('Optional. Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification.')
 param customDomainVerificationId string = ''
 
 @description('Optional. Maximum allowed daily memory-time quota (applicable on dynamic apps only).')
