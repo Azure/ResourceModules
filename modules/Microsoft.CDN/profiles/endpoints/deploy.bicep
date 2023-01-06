@@ -52,10 +52,6 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     enabled: origin.properties.enabled
     priority: contains(origin.properties, 'priority') ? origin.properties.priority : 1
     weight: contains(origin.properties, 'weight') ? origin.properties.weight : 50
-    privateLinkAlias: contains(origin.properties, 'privateLinkAlias') ? origin.properties.privateLinkAlias : null
-    privateLinkApprovalMessage: contains(origin.properties, 'privateLinkApprovalMessage') ? origin.properties.privateLinkApprovalMessage : null
-    privateLinkLocation: contains(origin.properties, 'privateLinkLocation') ? origin.properties.privateLinkLocation : null
-    privateLinkResourceId: contains(origin.properties, 'privateLinkResourceId') ? origin.properties.privateLinkResourceId : null
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]

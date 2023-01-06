@@ -22,18 +22,6 @@ param httpsPort int = 443
 @description('Optional. The priority of origin in given origin group for load balancing.')
 param priority int = 1
 
-@description('Optional. The private link alias of the origin.')
-param privateLinkAlias string
-
-@description('Optional. The private link location of the origin.')
-param privateLinkLocation string
-
-@description('Optional. The private link approval message of the origin.')
-param privateLinkApprovalMessage string
-
-@description('Optional. The private link resource ID of the origin.')
-param privateLinkResourceId string
-
 @description('Optional. The weight of the origin used for load balancing.')
 param weight int = 50
 
@@ -70,10 +58,6 @@ resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = {
     enabled: enabled
     httpsPort: httpsPort
     priority: priority
-    privateLinkAlias: privateLinkAlias
-    privateLinkLocation: privateLinkLocation
-    privateLinkApprovalMessage: privateLinkApprovalMessage
-    privateLinkResourceId: privateLinkResourceId
     weight: weight
   }
 }

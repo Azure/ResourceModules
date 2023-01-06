@@ -34,10 +34,6 @@ This module deploys CDN Profiles Endpoint Origins.
 | `httpPort` | int | `80` | The HTTP port of the origin. |
 | `httpsPort` | int | `443` | The HTTPS port of the origin. |
 | `priority` | int | `1` | The priority of origin in given origin group for load balancing. |
-| `privateLinkAlias` | string |  | The private link alias of the origin. |
-| `privateLinkApprovalMessage` | string |  | The private link approval message of the origin. |
-| `privateLinkLocation` | string |  | The private link location of the origin. |
-| `privateLinkResourceId` | string |  | The private link resource ID of the origin. |
 | `profileName` | string | `'default'` | The name of the CDN profile. Default to "default". |
 | `weight` | int | `50` | The weight of the origin used for load balancing. |
 
