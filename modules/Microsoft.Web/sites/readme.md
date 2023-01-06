@@ -50,7 +50,7 @@ This module deploys a web or function app.
 | `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.<p>- ClientCertEnabled: false means ClientCert is ignored.<p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.<p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
 | `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
 | `containerSize` | int | `-1` |  | Size of the function container. |
-| `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt record for verification. |
+| `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
 | `dailyMemoryTimeQuota` | int | `-1` |  | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
