@@ -121,10 +121,10 @@ This section provides an overview of the library's feature set.
 | 106 | MS.OperationsManagement<p>solutions |  |  |  |  |  |  |  | 50 |
 | 107 | MS.Cache<p>redis | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 247 |
 | 108 | MS.Security<p>azureSecurityCenter |  |  |  |  |  |  |  | 217 |
-| 109 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 167 |
+| 109 | MS.VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 197 |
 | 110 | MS.Maintenance<p>maintenanceConfigurations | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 101 |
 | 111 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
-| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19406 |
+| Sum | | 87 | 85 | 96 | 49 | 21 | 2 | 163 | 19436 |
 
 ## Legend
 
