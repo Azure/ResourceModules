@@ -208,6 +208,15 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
         }
       ]
       queryStringCachingBehavior: 'IgnoreQueryString'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<managedIdentityPrincipalId>'
+          ]
+          principalType: 'ServicePrincipal'
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
     }
     location: '<location>'
     lock: 'CanNotDelete'
@@ -268,7 +277,16 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
             }
           }
         ],
-        "queryStringCachingBehavior": "IgnoreQueryString"
+        "queryStringCachingBehavior": "IgnoreQueryString",
+        "roleAssignments": [
+          {
+            "principalIds": [
+              "<managedIdentityPrincipalId>"
+            ],
+            "principalType": "ServicePrincipal",
+            "roleDefinitionIdOrName": "Reader"
+          }
+        ]
       }
     },
     "location": {
