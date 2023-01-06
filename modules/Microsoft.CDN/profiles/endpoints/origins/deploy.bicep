@@ -19,11 +19,24 @@ param httpPort int = 80
 @description('Optional. The HTTPS port of the origin.')
 param httpsPort int = 443
 
+// Correct Conditions
 @description('Optional. The priority of origin in given origin group for load balancing.')
-param priority int = 1
+param priority int = -1
 
 @description('Optional. The weight of the origin used for load balancing.')
-param weight int = 50
+param weight int = -1
+
+@description('Optional. The private link alias of the origin.')
+param privateLinkAlias string
+
+@description('Optional. The private link location of the origin.')
+param privateLinkLocation string
+
+@description('Optional. The private link resource ID of the origin.')
+param privateLinkResourceId string
+
+@description('Optional. The host header value sent to the origin.')
+param originHostHeader string
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -52,14 +65,22 @@ resource endpoint 'Microsoft.Cdn/profiles/endpoints@2021-06-01' existing = {
 resource origins 'Microsoft.Cdn/profiles/endpoints/origins@2021-06-01' = {
   parent: endpoint
   name: name
-  properties: {
-    hostName: hostName
-    httpPort: httpPort
-    enabled: enabled
-    httpsPort: httpsPort
-    priority: priority
-    weight: weight
-  }
+  properties: union({
+      hostName: hostName
+      httpPort: httpPort
+      enabled: enabled
+      httpsPort: httpsPort
+    }, ((priority > 0 || weight > 0) ? {
+      priority: priority
+      weight: weight
+    } : {}), (!empty(privateLinkAlias) && !empty(privateLinkLocation) ? {
+      privateLinkAlias: privateLinkAlias
+      privateLinkLocation: privateLinkLocation
+    } : {}), (!empty(privateLinkResourceId) ? {
+      privateLinkResourceId: privateLinkResourceId
+    } : {}), (!empty(originHostHeader) ? {
+      originHostHeader: originHostHeader
+    } : {}))
 }
 
 @description('The name of the endpoint.')
