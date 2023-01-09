@@ -18,9 +18,8 @@
                 "modulePath": "bicep/modules"
             }
         }
+    },
+    "experimentalFeaturesEnabled": {
+        "userDefinedTypes": true
     }
-    // ,
-    // "experimentalFeaturesEnabled": {
-    //     "userDefinedTypes": true
-    // }
 }
