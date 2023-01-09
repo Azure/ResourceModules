@@ -60,7 +60,7 @@ resource domain 'Microsoft.EventGrid/domains@2022-06-15' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(eventGrid.id, principalId, roleDefinitionIdOrName)
+  name: guid(domain.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
