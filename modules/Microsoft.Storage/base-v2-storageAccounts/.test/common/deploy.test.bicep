@@ -35,7 +35,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    keyVaultName: 'dep<<namePrefix>>kv${serviceShort}${substring(uniqueString(baseTime), 0, 3)}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
