@@ -4,12 +4,10 @@ This module deploys PolicyInsights Remediations ResourceGroup.
 
 ## Navigation
 
-- [PolicyInsights Remediations ResourceGroup `[Microsoft.PolicyInsights/remediations/resourceGroup]`](#policyinsights-remediations-resourcegroup-microsoftpolicyinsightsremediationsresourcegroup)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -38,6 +36,7 @@ This module deploys PolicyInsights Remediations ResourceGroup.
 | `parallelDeployments` | int | `10` | Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the remediation. Can be between 1-30. Higher values will cause the remediation to complete more quickly, but increase the risk of throttling. If not provided, the default parallel deployments value is used. |
 | `policyDefinitionReferenceId` | string | `''` | The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment being remediated assigns a policy set definition. |
 | `resourceCount` | int | `500` | Determines the max number of resources that can be remediated by the remediation job. Can be between 1-50000. If not provided, the default resource count is used. |
+
 
 ## Outputs
 

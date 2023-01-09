@@ -84,9 +84,9 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     policyAssignmentId: policySetAssignment.id
     policyDefinitionReferenceId: policySet.properties.policyDefinitions[0].policyDefinitionReferenceId
-    filtersLocations: [
-      location
-    ]
+    //filtersLocations: [
+    //  location
+    //]
     resourceCount: 10
     resourceDiscoveryMode: 'ExistingNonCompliant'
     parallelDeployments: 1
