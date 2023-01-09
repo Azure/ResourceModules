@@ -58,7 +58,8 @@ module testDeployment '../../deploy.bicep' = {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
     cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKKeyName: 'keyEncryptionKey'
+    cMKKeyName: resourceGroupResources.outputs.keyName
+    // 'keyEncryptionKey'
     // resourceGroupResources.outputs.keyName
     cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
   }
