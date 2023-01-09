@@ -25,4 +25,4 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
 output storageAccountName string = storageAccount.name
 
 @description('The name of the created Storage Account container.')
-output storageAccountContainerName string = storageAccount::blobService::container.name // Note: this is returning storageAccountName/default/containerName
+output storageAccountContainerName string = storageAccount::blobService::container.name // Note: this is returning storageAccountName/default/containerName when experimentalfeature is enabled

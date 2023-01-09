@@ -58,4 +58,4 @@ output managedIdentityResourceId string = managedIdentity.id
 output keyVaultResourceId string = keyVault.id
 
 @description('The name of the created encryption key.')
-output keyName string = keyVault::key.name
+output keyName string = keyVault::key.name // Note: this is returning keyvaultName/keyName when experimentalfeature is enabled
