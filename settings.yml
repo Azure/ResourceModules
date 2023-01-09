@@ -80,7 +80,7 @@ variables:
   ##   Connection settings   ##
   #############################
 
-  serviceConnection: 'skhan-bicep-serviceConnection'
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ################
   ##   Source   ##
@@ -90,6 +90,7 @@ variables:
   vstsProject: '$(System.TeamProject)'
   modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
   pipelineFunctionsPath: 'utilities/pipelines'
+
 
   #############################
   ##   Publishing settings   ##
