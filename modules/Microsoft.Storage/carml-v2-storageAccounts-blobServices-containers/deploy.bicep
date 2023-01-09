@@ -56,7 +56,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1.0' = {
+module container 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices-containers:0.1' = {
   name: '${deployment().name}-Container'
   params: {
     storageAccountName: storageAccountName

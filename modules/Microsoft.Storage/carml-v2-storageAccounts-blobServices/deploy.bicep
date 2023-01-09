@@ -133,7 +133,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 }
 
-module blobServices 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices:0.1.0' = {
+module blobServices 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices:0.1' = {
   name: name
   params: {
     storageAccountName: storageAccount.name
@@ -156,7 +156,7 @@ resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
   // scope: blobServices
 }
 
-module blobServices_container 'br/carml:microsoft.storage.carml-v2-storageaccounts-blobservices-containers:0.1.0' = [for (container, index) in containers: {
+module blobServices_container 'br/carml:microsoft.storage.carml-v2-storageaccounts-blobservices-containers:0.1' = [for (container, index) in containers: {
   name: '${deployment().name}-Container-${index}'
   params: {
     storageAccountName: storageAccount.name
