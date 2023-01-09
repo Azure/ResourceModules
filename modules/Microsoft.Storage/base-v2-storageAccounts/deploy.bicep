@@ -122,7 +122,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
   name: last(split(cMKKeyVaultResourceId, '/'))
-  // scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
@@ -152,14 +152,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         }
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
-      // keyvaultproperties: !empty(cMKKeyName) ? {
-      //   keyname: cMKKeyName
-      //   keyvaulturi: keyVault.properties.vaultUri
-      //   keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
-      // } : null
-      // identity: !empty(cMKKeyName) ? {
-      //   userAssignedIdentity: cMKUserAssignedIdentityResourceId
-      // } : null
+      keyvaultproperties: !empty(cMKKeyName) ? {
+        keyname: cMKKeyName
+        keyvaulturi: keyVault.properties.vaultUri
+        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      } : null
+      identity: !empty(cMKKeyName) ? {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
