@@ -243,9 +243,9 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   tags: tags
   properties: azureSkuName == 'AZFW_VNet' ? {
     threatIntelMode: threatIntelMode
-    firewallPolicy: empty(firewallPolicyId) ? null : {
+    firewallPolicy: !empty(firewallPolicyId) ? {
       id: firewallPolicyId
-    }
+    } : null
     ipConfigurations: ipConfigurations
     sku: {
       name: azureSkuName
@@ -255,17 +255,17 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
   } : {
-    firewallPolicy: empty(firewallPolicyId) ? null : {
+    firewallPolicy: !empty(firewallPolicyId) ? {
       id: firewallPolicyId
-    }
+    } : null
     sku: {
       name: azureSkuName
       tier: azureSkuTier
     }
-    hubIPAddresses: empty(hubIPAddresses) ? null : hubIPAddresses
-    virtualHub: empty(virtualHubId) ? null : {
+    hubIPAddresses: !empty(hubIPAddresses) ? hubIPAddresses : null
+    virtualHub: !empty(virtualHubId) ? {
       id: virtualHubId
-    }
+    } : null
   }
   dependsOn: [
     publicIPAddress
@@ -307,10 +307,10 @@ module azureFirewall_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
   }
 }]
 
-@description('The resource ID of the Azure firewall.')
+@description('The resource ID of the Azure Firewall.')
 output resourceId string = azureFirewall.id
 
-@description('The name of the Azure firewall.')
+@description('The name of the Azure Firewall.')
 output name string = azureFirewall.name
 
 @description('The resource group the Azure firewall was deployed into.')
@@ -319,7 +319,7 @@ output resourceGroupName string = resourceGroup().name
 @description('The private IP of the Azure firewall.')
 output privateIp string = contains(azureFirewall.properties, 'ipConfigurations') ? azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress : ''
 
-@description('The public ipconfiguration object for the AzureFirewallSubnet.')
+@description('The public IP configuration object for the Azure Firewall Subnet.')
 output ipConfAzureFirewallSubnet object = contains(azureFirewall.properties, 'ipConfigurations') ? azureFirewall.properties.ipConfigurations[0] : {}
 
 @description('List of Application Rule Collections.')
