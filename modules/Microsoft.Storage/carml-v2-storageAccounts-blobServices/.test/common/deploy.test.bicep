@@ -61,9 +61,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: 'default'
     storageAccountName: resourceGroupResources.outputs.storageAccountName
-    // diagnosticLogsRetentionInDays: 7
-    // diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    // diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     // diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     // diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     enableDefaultTelemetry: enableDefaultTelemetry

@@ -153,7 +153,6 @@ resource blobServices_diagnosticSettings 'Microsoft.Storage/storageAccounts/blob
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  // scope: blobServices
 }
 
 module blobServices_container 'br/carml:microsoft.storage.carml-v2-storageaccounts-blobservices-containers:0.1' = [for (container, index) in containers: {
