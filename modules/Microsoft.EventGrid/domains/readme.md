@@ -1,7 +1,6 @@
 # EventGrid Domains `[Microsoft.EventGrid/domains]`
 
 This module deploys EventGrid Domains.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
