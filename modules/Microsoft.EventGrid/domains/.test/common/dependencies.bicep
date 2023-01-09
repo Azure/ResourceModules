@@ -7,6 +7,8 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+var addressPrefix = '10.0.0.0/24'
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
