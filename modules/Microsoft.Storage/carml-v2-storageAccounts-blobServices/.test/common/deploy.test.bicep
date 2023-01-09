@@ -43,7 +43,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
+    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
     eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
