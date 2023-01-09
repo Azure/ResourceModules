@@ -65,7 +65,8 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    // diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     enableDefaultTelemetry: enableDefaultTelemetry
     containers: [
       {
