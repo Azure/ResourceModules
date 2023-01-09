@@ -59,31 +59,34 @@ param diagnosticMetricsToEnable array = [
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 // Children
-type immutabilityPolicyProperties = {
-  name?: string
-  immutabilityPeriodSinceCreationInDays?: int
-  allowProtectedAppendWrites?: bool
-}
+// type immutabilityPolicyProperties = {
+//   name?: string
+//   immutabilityPeriodSinceCreationInDays?: int
+//   allowProtectedAppendWrites?: bool
+// }
 
-type roleAssignment = {
-  roleDefinitionIdOrName: string
-  principalIds: string[]
-  description?: string
-  principalType?: 'ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | ''
-  condition?: string
-  conditionVersion?: string
-  delegatedManagedIdentityResourceId?: string
-}
+// type roleAssignment = {
+//   roleDefinitionIdOrName: string
+//   principalIds: string[]
+//   description?: string
+//   principalType?: 'ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | ''
+//   condition?: string
+//   conditionVersion?: string
+//   delegatedManagedIdentityResourceId?: string
+// }
 
-type container = {
-  name: string
-  publicAccess?: 'Container' | 'Blob' | 'None'
-  immutabilityPolicyProperties?: immutabilityPolicyProperties
-  roleAssignments?: roleAssignment[]
-}
+// type container = {
+//   name: string
+//   publicAccess?: 'Container' | 'Blob' | 'None'
+//   immutabilityPolicyProperties?: immutabilityPolicyProperties
+//   roleAssignments?: roleAssignment[]
+// }
+
+// @description('Optional. Blob containers to create.')
+// param containers container[]
 
 @description('Optional. Blob containers to create.')
-param containers container[]
+param containers array = []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
