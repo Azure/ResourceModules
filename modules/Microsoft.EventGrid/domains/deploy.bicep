@@ -129,7 +129,7 @@ resource domain 'Microsoft.EventGrid/domains@2022-06-15' = {
   tags: tags
   properties: {
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(inboundIpRules) ? 'Disabled' : null)
-    inboundIpRules: (empty(inboundIpRules) ? null : inboundIpRules)
+    inboundIpRules: !empty(inboundIpRules) ? inboundIpRules : null
     autoCreateTopicWithFirstSubscription: autoCreateTopicWithFirstSubscription
     autoDeleteTopicWithLastSubscription: autoDeleteTopicWithLastSubscription
   }
