@@ -4,6 +4,8 @@ param location string = resourceGroup().location
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
+var addressPrefix = '10.0.0.0/24'
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
