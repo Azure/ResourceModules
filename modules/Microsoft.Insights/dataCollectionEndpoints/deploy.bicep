@@ -13,7 +13,7 @@ param enableDefaultTelemetry bool = true
   'Linux'
   'Windows'
 ])
-param kind string = ''
+param kind string = 'Linux'
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
