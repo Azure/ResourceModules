@@ -152,14 +152,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         }
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
-      keyvaultproperties: !empty(cMKKeyName) ? {
-        keyname: cMKKeyName
-        keyvaulturi: keyVault.properties.vaultUri
-        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
-      } : null
-      identity: !empty(cMKKeyName) ? {
-        userAssignedIdentity: cMKUserAssignedIdentityResourceId
-      } : null
+      // keyvaultproperties: !empty(cMKKeyName) ? {
+      //   keyname: cMKKeyName
+      //   keyvaulturi: keyVault.properties.vaultUri
+      //   keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      // } : null
+      // identity: !empty(cMKKeyName) ? {
+      //   userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      // } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
