@@ -44,17 +44,11 @@ param storageAccountAccessTier string = 'Hot'
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
 
-@description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
-param privateEndpoints array = []
-
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
 @description('Optional. A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
-
-@description('Optional. Blob service and containers to deploy.')
-param blobServices object = {}
 
 @description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false.')
 param allowBlobPublicAccess bool = false
@@ -82,7 +76,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled.')
 @allowed([
   ''
   'Enabled'
@@ -180,7 +174,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
       ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
+    // publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : null
     azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
   }
 }
