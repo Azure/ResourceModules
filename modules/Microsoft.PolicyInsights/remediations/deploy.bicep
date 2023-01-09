@@ -71,7 +71,7 @@ module remediation_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId)
     location: location
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceId: policyDefinitionReferenceId
-    //filtersLocations: filtersLocations
+    filtersLocations: filtersLocations
     resourceCount: resourceCount
     resourceDiscoveryMode: resourceDiscoveryMode
     parallelDeployments: parallelDeployments
@@ -88,7 +88,7 @@ module remediation_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) 
     location: location
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceId: policyDefinitionReferenceId
-    //filtersLocations: filtersLocations
+    filtersLocations: filtersLocations
     resourceCount: resourceCount
     resourceDiscoveryMode: resourceDiscoveryMode
     parallelDeployments: parallelDeployments
@@ -105,7 +105,7 @@ module remediation_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupNam
     location: location
     policyAssignmentId: policyAssignmentId
     policyDefinitionReferenceId: policyDefinitionReferenceId
-    //filtersLocations: filtersLocations
+    filtersLocations: filtersLocations
     resourceCount: resourceCount
     resourceDiscoveryMode: resourceDiscoveryMode
     parallelDeployments: parallelDeployments
