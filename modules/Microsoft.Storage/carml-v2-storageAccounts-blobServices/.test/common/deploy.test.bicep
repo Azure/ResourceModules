@@ -64,8 +64,8 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    // diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    // diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     enableDefaultTelemetry: enableDefaultTelemetry
     containers: [
       {
