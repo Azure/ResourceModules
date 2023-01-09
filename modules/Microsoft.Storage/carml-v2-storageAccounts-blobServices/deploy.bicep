@@ -133,7 +133,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 }
 
-module blobServices 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices:0.1.1757-prerelease' = {
+module blobServices 'br/carml:microsoft.storage.base-v2-storageaccounts-blobservices:0.1' = {
   name: name
   params: {
     storageAccountName: storageAccount.name
