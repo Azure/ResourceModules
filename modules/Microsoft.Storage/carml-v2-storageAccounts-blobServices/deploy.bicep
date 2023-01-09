@@ -144,7 +144,7 @@ module blobServices 'br/carml:microsoft.storage.base-v2-storageaccounts-blobserv
 }
 
 resource blobServices_diagnosticSettings 'Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings@2021-09-01' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${name}/Microsoft.Insights/${diagnosticSettingsName}'
+  name: '${storageAccount.name}/${name}/Microsoft.Insights/${diagnosticSettingsName}'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
