@@ -184,11 +184,14 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirmgcom'
   params: {
     // Required parameters
-    name: 'koalapirmgcom001'
+    name: '<<namePrefix>>pirmgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     failureThresholdPercentage: '0.5'
+    filtersLocations: [
+      'australiaeast'
+    ]
     location: '<location>'
     parallelDeployments: 1
     policyDefinitionReferenceId: '<policyDefinitionReferenceId>'
@@ -212,7 +215,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "koalapirmgcom001"
+      "value": "<<namePrefix>>pirmgcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -223,6 +226,11 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
     },
     "failureThresholdPercentage": {
       "value": "0.5"
+    },
+    "filtersLocations": {
+      "value": [
+        "australiaeast"
+      ]
     },
     "location": {
       "value": "<location>"
@@ -257,7 +265,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirmgmin'
   params: {
     // Required parameters
-    name: 'koalapirmgmin001'
+    name: '<<namePrefix>>pirmgmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -279,7 +287,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "koalapirmgmin001"
+      "value": "<<namePrefix>>pirmgmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -306,11 +314,14 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirrgcom'
   params: {
     // Required parameters
-    name: 'koalapirrgcom001'
+    name: '<<namePrefix>>pirrgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     failureThresholdPercentage: '0.5'
+    filtersLocations: [
+      'australiaeast'
+    ]
     location: '<location>'
     parallelDeployments: 1
     policyDefinitionReferenceId: '<policyDefinitionReferenceId>'
@@ -334,7 +345,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "koalapirrgcom001"
+      "value": "<<namePrefix>>pirrgcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -345,6 +356,11 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
     },
     "failureThresholdPercentage": {
       "value": "0.5"
+    },
+    "filtersLocations": {
+      "value": [
+        "australiaeast"
+      ]
     },
     "location": {
       "value": "<location>"
@@ -379,7 +395,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirrgmin'
   params: {
     // Required parameters
-    name: 'koalapirrgmin001'
+    name: '<<namePrefix>>pirrgmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -401,7 +417,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "koalapirrgmin001"
+      "value": "<<namePrefix>>pirrgmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -428,11 +444,14 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirsubcom'
   params: {
     // Required parameters
-    name: 'koalapirsubcom001'
+    name: '<<namePrefix>>pirsubcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     failureThresholdPercentage: '0.5'
+    filtersLocations: [
+      'australiaeast'
+    ]
     location: '<location>'
     parallelDeployments: 1
     policyDefinitionReferenceId: '<policyDefinitionReferenceId>'
@@ -456,7 +475,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "koalapirsubcom001"
+      "value": "<<namePrefix>>pirsubcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -467,6 +486,11 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
     },
     "failureThresholdPercentage": {
       "value": "0.5"
+    },
+    "filtersLocations": {
+      "value": [
+        "australiaeast"
+      ]
     },
     "location": {
       "value": "<location>"
@@ -501,7 +525,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirsubmin'
   params: {
     // Required parameters
-    name: 'koalapirsubmin001'
+    name: '<<namePrefix>>pirsubmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -523,7 +547,7 @@ module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "koalapirsubmin001"
+      "value": "<<namePrefix>>pirsubmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"

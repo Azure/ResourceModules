@@ -19,7 +19,7 @@ param enableDefaultTelemetry bool = true
 // General resources
 // =================
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: 'dep-koala-polDef-AuditKvlt-${serviceShort}'
+  name: 'dep-<<namePrefix>>-polDef-AuditKvlt-${serviceShort}'
   properties: {
     policyRule: {
       if: {
@@ -47,7 +47,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 }
 
 resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
-  name: 'dep-koala-polSet-${serviceShort}'
+  name: 'dep-<<namePrefix>>-polSet-${serviceShort}'
   properties: {
     policyDefinitions: [
       {
@@ -64,7 +64,7 @@ resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
 }
 
 resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-koala-psa-${serviceShort}'
+  name: 'dep-<<namePrefix>>-psa-${serviceShort}'
   location: location
   properties: {
     displayName: 'Test case assignment'
@@ -80,13 +80,13 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'koala${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     location: location
     policyAssignmentId: policySetAssignment.id
     policyDefinitionReferenceId: policySet.properties.policyDefinitions[0].policyDefinitionReferenceId
-    //filtersLocations: [
-    //  location
-    //]
+    filtersLocations: [
+      'australiaeast'
+    ]
     resourceCount: 10
     resourceDiscoveryMode: 'ExistingNonCompliant'
     parallelDeployments: 1

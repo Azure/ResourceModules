@@ -19,7 +19,7 @@ param enableDefaultTelemetry bool = true
 // General resources
 // =================
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-koala-psa-${serviceShort}'
+  name: 'dep-<<namePrefix>>-psa-${serviceShort}'
   location: location
   properties: {
     displayName: 'Test case assignment'
@@ -35,7 +35,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'koala${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
   }
 }
