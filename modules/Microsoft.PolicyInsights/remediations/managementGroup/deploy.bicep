@@ -19,7 +19,7 @@ param parallelDeployments int = 10
 @maxValue(50000)
 param resourceCount int = 500
 
-@sys.description('Required. The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.')
+@sys.description('Optional. The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.')
 @allowed([
   'ExistingNonCompliant'
   'ReEvaluateCompliance'
