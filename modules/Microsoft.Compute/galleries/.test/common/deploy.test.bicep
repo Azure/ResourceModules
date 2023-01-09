@@ -46,15 +46,6 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
     applications: [
       {
         name: '<<namePrefix>>-${serviceShort}-appd-001'
@@ -71,6 +62,78 @@ module testDeployment '../../deploy.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
+      }
+    ]
+    images: [
+      {
+        name: '<<namePrefix>>-az-imgd-ws-001'
+      }
+      {
+        hyperVGeneration: 'V1'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-002'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition'
+      }
+      {
+        hyperVGeneration: 'V2'
+        securityType: 'TrustedLaunch'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-wdtl-002'
+        offer: 'WindowsDesktop'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsDesktop'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              resourceGroupResources.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        sku: 'Win11-21H2'
+      }
+      {
+        hyperVGeneration: 'V2'
+        maxRecommendedMemory: 32
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 1
+        name: '<<namePrefix>>-az-imgd-us-001'
+        offer: '0001-com-ubuntu-server-focal'
+        osState: 'Generalized'
+        osType: 'Linux'
+        publisher: 'canonical'
+        sku: '20_04-lts-gen2'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
       }
     ]
   }

@@ -11,7 +11,13 @@ param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${servi
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'vmicom'
+param serviceShort string = 'vmiitcom'
+
+@description('Optional. The version of the Azure Compute Gallery Image Definition to be added.')
+param sigImageVersion string = utcNow('yyyy.MM.dd')
+
+@description('Optional. The staging resource group name in the same location and subscription as the image template. Must not exist.')
+param stagingResourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${serviceShort}-staging-rg'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -34,13 +40,15 @@ module resourceGroupResources 'dependencies.bicep' = {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     sigImageDefinitionName: 'dep-<<namePrefix>>-imgd-${serviceShort}'
     galleryName: 'dep<<namePrefix>>sig${serviceShort}'
+    virtualNetworkName: 'dep<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
-resource msi_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().subscriptionId, 'Contributor', '<<namePrefix>-${serviceShort}')
+// required for the Azure Image Builder service to assign the list of User Assigned Identities to the Build VM.
+resource msi_managedIdentityOperatorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscription().id, 'ManagedIdentityContributor', '<<namePrefix>>')
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f1a07417-d97a-45cb-824c-7a7467783830') // Managed Identity Operator
     principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
     principalType: 'ServicePrincipal'
   }
@@ -58,19 +66,18 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     customizationSteps: [
       {
-        restartTimeout: '30m'
+        restartTimeout: '10m'
         type: 'WindowsRestart'
       }
     ]
     imageSource: {
-      offer: 'Windows-10'
+      offer: 'Windows-11'
       publisher: 'MicrosoftWindowsDesktop'
-      sku: '19h2-evd'
+      sku: 'win11-22h2-avd'
       type: 'PlatformImage'
       version: 'latest'
     }
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
-    buildTimeoutInMinutes: 0
+    buildTimeoutInMinutes: 60
     imageReplicationRegions: []
     lock: 'CanNotDelete'
     managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
@@ -85,8 +92,14 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
-    subnetId: ''
+    sigImageVersion: sigImageVersion
+    subnetId: resourceGroupResources.outputs.subnetId
+    stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
+    userAssignedIdentities: [
+      resourceGroupResources.outputs.managedIdentityResourceId
+    ]
+    userMsiName: resourceGroupResources.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }

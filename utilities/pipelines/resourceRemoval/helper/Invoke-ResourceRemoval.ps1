@@ -135,6 +135,21 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.DevTestLab/labs' {
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+            if ($PSCmdlet.ShouldProcess("DevTestLab Lab [$resourceName]", 'Remove')) {
+                Get-AzResourceLock -ResourceGroupName $resourceGroupName |
+                    Where-Object -FilterScript { $PSItem.properties.notes -eq "Reserved resource locked by '$resourceName' lab." } |
+                    ForEach-Object {
+                        $null = Remove-AzResourceLock -LockId $PSItem.LockId -Force
+                        Write-Verbose "Removed lock [$($PSItem.Name)] created by the DevTest Lab [$resourceName] on resource [$($PSItem.ResourceName)]. Waiting 10 seconds for propagation." -Verbose
+                        Start-Sleep 10
+                    }
+                $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            }
+            break
+        }
 
         ### CODE LOCATION: Add custom removal action here
         Default {

@@ -5,13 +5,13 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.compute.galleries-${serviceShort}-rg'
+param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cgimages'
+param serviceShort string = 'vmiitmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -45,45 +45,21 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    images: [
+    customizationSteps: [
       {
-        name: '<<namePrefix>>-${serviceShort}-imgd-001'
-      }
-      {
-        hyperVGeneration: 'V1'
-        maxRecommendedMemory: 16
-        maxRecommendedvCPUs: 8
-        minRecommendedMemory: 4
-        minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-x-001'
-        offer: 'WindowsServer'
-        osState: 'Generalized'
-        osType: 'Windows'
-        publisher: 'MicrosoftWindowsServer'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-        sku: '2022-datacenter-azure-edition'
-      }
-      {
-        hyperVGeneration: 'V2'
-        maxRecommendedMemory: 32
-        maxRecommendedvCPUs: 4
-        minRecommendedMemory: 4
-        minRecommendedvCPUs: 1
-        name: '<<namePrefix>>-az-imgd-x-002'
-        offer: '0001-com-ubuntu-server-focal'
-        osState: 'Generalized'
-        osType: 'Linux'
-        publisher: 'canonical'
-        sku: '20_04-lts-gen2'
+        restartTimeout: '30m'
+        type: 'WindowsRestart'
       }
     ]
+    imageSource: {
+      offer: 'Windows-10'
+      publisher: 'MicrosoftWindowsDesktop'
+      sku: 'win10-22h2-ent'
+      type: 'PlatformImage'
+      version: 'latest'
+    }
+    managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
+    userMsiName: resourceGroupResources.outputs.managedIdentityName
+    userMsiResourceGroup: resourceGroupName
   }
 }

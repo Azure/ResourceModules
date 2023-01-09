@@ -18,6 +18,7 @@ param description string = ''
   'Microsoft.KeyVault.Data'
   'Microsoft.ContainerService.Data'
   'Microsoft.Kubernetes.Data'
+  'Microsoft.Network.Data'
 ])
 param mode string = 'All'
 
