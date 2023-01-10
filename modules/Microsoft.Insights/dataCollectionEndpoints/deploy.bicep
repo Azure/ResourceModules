@@ -26,6 +26,13 @@ param location string = resourceGroup().location
 ])
 param lock string = ''
 
+@description('The configuration to set whether network access from public internet to the endpoints are allowed.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = 'Disabled'
+
 @description('Optional. Resource tags.')
 param tags object = {}
 
@@ -50,6 +57,11 @@ resource dataCollectionEndpoint 'Microsoft.Insights/dataCollectionEndpoints@2021
   location: location
   name: name
   tags: tags
+  properties: {
+    networkAcls: {
+      publicNetworkAccess: publicNetworkAccess
+    }
+  }
 }
 
 resource dataCollectionEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
