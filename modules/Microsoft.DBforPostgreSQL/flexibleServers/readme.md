@@ -16,10 +16,10 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DBforPostgreSQL/flexibleServers` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers) |
-| `Microsoft.DBforPostgreSQL/flexibleServers/configurations` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers/configurations) |
-| `Microsoft.DBforPostgreSQL/flexibleServers/databases` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers/databases) |
-| `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers/firewallRules) |
+| `Microsoft.DBforPostgreSQL/flexibleServers` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/configurations` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/configurations) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/databases` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/databases) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/firewallRules) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -34,6 +34,14 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `skuName` | string |  | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
 | `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `dataEncryptionPrimaryKeyURI` | string | `''` | Data encryption properties of a server. URI for the key for data encryption for primary server. Required if dataEncryptionType is set to AzureKeyVault. |
+| `dataEncryptionPrimaryUserAssignedIdentityId` | string | `''` | Data encryption properties of a server. Resource Id for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault. |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Must be enabled if using data encryption with customer managed keys using Azure Key Vault. |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -43,6 +51,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `configurations` | _[configurations](configurations/readme.md)_ array | `[]` |  | The configurations to create in the server. |
 | `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. If not provided, will be set to "Default". |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
+| `dataEncryptionType` | string | `'SystemAssigned'` | `[AzureKeyVault, SystemAssigned]` | Data encryption properties of a server. Data encryption type to depict if it is System assigned vs Azure Key vault. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -311,6 +320,39 @@ databases:  [
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -546,7 +588,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfpsfspub002'
+    name: 'colcadfpsfspub002'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -569,6 +611,9 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         name: 'testdb2'
       }
     ]
+    dataEncryptionPrimaryKeyURI: '<dataEncryptionPrimaryKeyURI>'
+    dataEncryptionPrimaryUserAssignedIdentityId: '<dataEncryptionPrimaryUserAssignedIdentityId>'
+    dataEncryptionType: 'AzureKeyVault'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -596,6 +641,9 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     highAvailability: 'SameZone'
     location: '<location>'
     storageSizeGB: 1024
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     version: '14'
   }
 }
@@ -621,7 +669,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfpsfspub002"
+      "value": "colcadfpsfspub002"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -656,6 +704,15 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
           "name": "testdb2"
         }
       ]
+    },
+    "dataEncryptionPrimaryKeyURI": {
+      "value": "<dataEncryptionPrimaryKeyURI>"
+    },
+    "dataEncryptionPrimaryUserAssignedIdentityId": {
+      "value": "<dataEncryptionPrimaryUserAssignedIdentityId>"
+    },
+    "dataEncryptionType": {
+      "value": "AzureKeyVault"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -705,6 +762,11 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "storageSizeGB": {
       "value": 1024
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     },
     "version": {
       "value": "14"
