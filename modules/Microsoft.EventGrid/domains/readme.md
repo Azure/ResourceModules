@@ -52,6 +52,7 @@ This module deploys EventGrid Domains.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -284,10 +285,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtcom'
+  name: '${uniqueString(deployment().name)}-test-egdcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtcom001'
+    name: '<<namePrefix>>egdcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -340,7 +341,7 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtcom001"
+      "value": "<<namePrefix>>egdcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -411,10 +412,10 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
 
 ```bicep
 module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtmin'
+  name: '${uniqueString(deployment().name)}-test-egdmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtmin001'
+    name: '<<namePrefix>>egdmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -435,7 +436,7 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtmin001"
+      "value": "<<namePrefix>>egdmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -456,10 +457,10 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
 
 ```bicep
 module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtpe'
+  name: '${uniqueString(deployment().name)}-test-egdpe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtpe001'
+    name: '<<namePrefix>>egdpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -491,7 +492,7 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egtpe001"
+      "value": "<<namePrefix>>egdpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
