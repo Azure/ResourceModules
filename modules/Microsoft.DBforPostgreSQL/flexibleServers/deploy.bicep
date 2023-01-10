@@ -33,14 +33,14 @@ param availabilityZone string = ''
 
 @minValue(7)
 @maxValue(35)
-@description('Optional. Backup retention days for the server. Default is 7 days.')
+@description('Optional. Backup retention days for the server.')
 param backupRetentionDays int = 7
 
 @allowed([
   'Disabled'
   'Enabled'
 ])
-@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Default is disabled.')
+@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if \'cMKKeyName\' is not empty.')
 param geoRedundantBackup string = 'Disabled'
 
 @allowed([
@@ -55,7 +55,7 @@ param geoRedundantBackup string = 'Disabled'
   8192
   16384
 ])
-@description('Optional. Max storage allowed for a server. Default is 32GB.')
+@description('Optional. Max storage allowed for a server.')
 param storageSizeGB int = 32
 
 @allowed([
@@ -64,7 +64,7 @@ param storageSizeGB int = 32
   '13'
   '14'
 ])
-@description('Optional. PostgreSQL Server version. Default is 13.')
+@description('Optional. PostgreSQL Server version.')
 param version string = '13'
 
 @allowed([
@@ -72,7 +72,7 @@ param version string = '13'
   'SameZone'
   'ZoneRedundant'
 ])
-@description('Optional. The mode for high availability. Default is disabled.')
+@description('Optional. The mode for high availability.')
 param highAvailability string = 'Disabled'
 
 @allowed([
@@ -81,16 +81,31 @@ param highAvailability string = 'Disabled'
   'PointInTimeRestore'
   'Update'
 ])
-@description('Optional. The mode to create a new PostgreSQL server. If not provided, will be set to "Default".')
+@description('Optional. The mode to create a new PostgreSQL server.')
 param createMode string = 'Default'
+
+@description('Conditional. The ID(s) to assign to the resource. Required if \'cMKKeyName\' is not empty.')
+param userAssignedIdentities object = {}
+
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
-@description('Optional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Conditional. Required if "createMode" is set to "PointInTimeRestore".')
 param pointInTimeUTC string = ''
 
-@description('Optional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Conditional. Required if "createMode" is set to "PointInTimeRestore".')
 param sourceServerResourceId string = ''
 
 @description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
@@ -206,13 +221,22 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' = {
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   name: name
   location: location
   tags: tags
   sku: {
     name: skuName
     tier: tier
+  }
+  identity: {
+    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
   }
   properties: {
     administratorLogin: administratorLogin
@@ -223,6 +247,11 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
       geoRedundantBackup: geoRedundantBackup
     }
     createMode: createMode
+    dataEncryption: !empty(cMKKeyName) ? {
+      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
+      type: 'AzureKeyVault'
+    } : null
     highAvailability: {
       mode: highAvailability
       standbyAvailabilityZone: highAvailability == 'SameZone' ? availabilityZone : null
