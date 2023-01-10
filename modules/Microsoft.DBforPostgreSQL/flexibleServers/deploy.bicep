@@ -84,7 +84,7 @@ param highAvailability string = 'Disabled'
 @description('Optional. The mode to create a new PostgreSQL server. If not provided, will be set to "Default".')
 param createMode string = 'Default'
 
-@description('Conditional. The ID(s) to assign to the resource. Must be enabled if using data encryption with customer managed keys using Azure Key Vault.')
+@description('Conditional. The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault.')
 param userAssignedIdentities object = {}
 
 @allowed([
