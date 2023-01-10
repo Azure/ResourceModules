@@ -74,5 +74,15 @@ module testDeployment '../../deploy.bicep' = {
         resourceGroupResources.outputs.privateDNSZoneResourceId
       ]
     }
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }
