@@ -230,10 +230,10 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     name: skuName
     tier: tier
   }
-  identity: !empty(userAssignedIdentities) ? {
-    type: 'UserAssigned'
-    userAssignedIdentities: userAssignedIdentities
-  } : {}
+  identity: {
+    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
+  }
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
