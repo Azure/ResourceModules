@@ -100,13 +100,13 @@ param dataEncryptionPrimaryKeyURI string = ''
 @description('Conditional. Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault.')
 param dataEncryptionPrimaryUserAssignedIdentityId string = ''
 
-@description('Conditional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
+@description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
-@description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Conditional. Required if "createMode" is set to "PointInTimeRestore".')
 param pointInTimeUTC string = ''
 
-@description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Conditional. Required if "createMode" is set to "PointInTimeRestore".')
 param sourceServerResourceId string = ''
 
 @description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
