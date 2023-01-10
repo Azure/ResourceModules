@@ -38,8 +38,8 @@ This module deploys DBforPostgreSQL FlexibleServers.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `dataEncryptionPrimaryKeyURI` | string | `''` | Data encryption properties of a server. URI for the key for data encryption for primary server. Required if dataEncryptionType is set to AzureKeyVault. |
-| `dataEncryptionPrimaryUserAssignedIdentityId` | string | `''` | Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault. |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
 | `pointInTimeUTC` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
 | `sourceServerResourceId` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault. |
@@ -50,10 +50,11 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
 | `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `configurations` | _[configurations](configurations/readme.md)_ array | `[]` |  | The configurations to create in the server. |
 | `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
-| `dataEncryptionType` | string | `'SystemAssigned'` | `[AzureKeyVault, SystemAssigned]` | Data encryption properties of a server. Data encryption type to depict if it is System assigned vs Azure Key vault. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -373,7 +374,136 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Encr</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-dfpsfsenc'
+  params: {
+    // Required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfsenc001'
+    skuName: 'Standard_D2s_v3'
+    tier: 'GeneralPurpose'
+    // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    configurations: [
+      {
+        name: 'log_min_messages'
+        source: 'user-override'
+        value: 'INFO'
+      }
+    ]
+    databases: [
+      {
+        charset: 'UTF8'
+        collation: 'en_US.utf8'
+        name: 'testdb1'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    geoRedundantBackup: 'Disabled'
+    location: '<location>'
+    storageSizeGB: 1024
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    version: '14'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "name": {
+      "value": "<<namePrefix>>dfpsfsenc001"
+    },
+    "skuName": {
+      "value": "Standard_D2s_v3"
+    },
+    "tier": {
+      "value": "GeneralPurpose"
+    },
+    // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
+    "configurations": {
+      "value": [
+        {
+          "name": "log_min_messages",
+          "source": "user-override",
+          "value": "INFO"
+        }
+      ]
+    },
+    "databases": {
+      "value": [
+        {
+          "charset": "UTF8",
+          "collation": "en_US.utf8",
+          "name": "testdb1"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "geoRedundantBackup": {
+      "value": "Disabled"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "storageSizeGB": {
+      "value": 1024
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "version": {
+      "value": "14"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
 
 <details>
 
@@ -434,7 +564,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 </details>
 <p>
 
-<h3>Example 2: Private</h3>
+<h3>Example 3: Private</h3>
 
 <details>
 
@@ -575,7 +705,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 </details>
 <p>
 
-<h3>Example 3: Public</h3>
+<h3>Example 4: Public</h3>
 
 <details>
 
@@ -588,7 +718,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfpsfspub002'
+    name: '<<namePrefix>>dfpsfspub001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -611,9 +741,6 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         name: 'testdb2'
       }
     ]
-    dataEncryptionPrimaryKeyURI: '<dataEncryptionPrimaryKeyURI>'
-    dataEncryptionPrimaryUserAssignedIdentityId: '<dataEncryptionPrimaryUserAssignedIdentityId>'
-    dataEncryptionType: 'AzureKeyVault'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -637,13 +764,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Disabled'
+    geoRedundantBackup: 'Enabled'
     highAvailability: 'SameZone'
     location: '<location>'
     storageSizeGB: 1024
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
     version: '14'
   }
 }
@@ -669,7 +793,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfpsfspub002"
+      "value": "<<namePrefix>>dfpsfspub001"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -704,15 +828,6 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
           "name": "testdb2"
         }
       ]
-    },
-    "dataEncryptionPrimaryKeyURI": {
-      "value": "<dataEncryptionPrimaryKeyURI>"
-    },
-    "dataEncryptionPrimaryUserAssignedIdentityId": {
-      "value": "<dataEncryptionPrimaryUserAssignedIdentityId>"
-    },
-    "dataEncryptionType": {
-      "value": "AzureKeyVault"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -752,7 +867,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "geoRedundantBackup": {
-      "value": "Disabled"
+      "value": "Enabled"
     },
     "highAvailability": {
       "value": "SameZone"
@@ -762,11 +877,6 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "storageSizeGB": {
       "value": 1024
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     },
     "version": {
       "value": "14"

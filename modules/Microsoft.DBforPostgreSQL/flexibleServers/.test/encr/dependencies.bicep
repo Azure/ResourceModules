@@ -7,6 +7,11 @@ param keyVaultName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+    name: managedIdentityName
+    location: location
+}
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     name: keyVaultName
     location: location
@@ -33,13 +38,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
-}
-
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment.')
+    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
     scope: keyVault::key
     properties: {
         principalId: managedIdentity.properties.principalId
@@ -51,5 +51,11 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
-@description('The key Uri with version of the created Key Vault Key.')
-output keyVaultKeyUriWithVersion string = keyVault::key.properties.keyUriWithVersion
+@description('The resource ID of the created Key Vault.')
+output keyVaultResourceId string = keyVault.id
+
+@description('The name of the created encryption key.')
+output keyName string = keyVault::key.name
+
+@description('The name of the Key Vault Encryption Key.')
+output keyVaultEncryptionKeyName string = keyVault::key.name

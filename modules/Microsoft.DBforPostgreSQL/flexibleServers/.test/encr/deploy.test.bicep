@@ -11,11 +11,14 @@ param resourceGroupName string = 'ms.dbforpostgresql.flexibleservers-${serviceSh
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'dfpsfspub'
+param serviceShort string = 'dfpsfsenc'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
 param password string = newGuid()
+
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -31,17 +34,13 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-// Diagnostics
-// ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
+  name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-    location: location
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -59,8 +58,12 @@ module testDeployment '../../deploy.bicep' = {
     administratorLoginPassword: password
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
-    availabilityZone: '2'
-    backupRetentionDays: 20
+    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+    cMKKeyName: resourceGroupResources.outputs.keyName
+    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
+    userAssignedIdentities: {
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    }
     configurations: [
       {
         name: 'log_min_messages'
@@ -74,34 +77,8 @@ module testDeployment '../../deploy.bicep' = {
         collation: 'en_US.utf8'
         name: 'testdb1'
       }
-      {
-        name: 'testdb2'
-      }
     ]
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diagnosticLogsRetentionInDays: 7
-    firewallRules: [
-      {
-        endIpAddress: '0.0.0.0'
-        name: 'AllowAllWindowsAzureIps'
-        startIpAddress: '0.0.0.0'
-      }
-      {
-        endIpAddress: '10.10.10.10'
-        name: 'test-rule1'
-        startIpAddress: '10.10.10.1'
-      }
-      {
-        endIpAddress: '100.100.100.10'
-        name: 'test-rule2'
-        startIpAddress: '100.100.100.1'
-      }
-    ]
-    geoRedundantBackup: 'Enabled'
-    highAvailability: 'SameZone'
+    geoRedundantBackup: 'Disabled'
     location: location
     storageSizeGB: 1024
     version: '14'

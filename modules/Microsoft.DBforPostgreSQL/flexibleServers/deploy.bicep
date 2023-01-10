@@ -87,18 +87,17 @@ param createMode string = 'Default'
 @description('Conditional. The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault.')
 param userAssignedIdentities object = {}
 
-@allowed([
-  'AzureKeyVault'
-  'SystemAssigned'
-])
-@description('Optional. Data encryption properties of a server. Data encryption type to depict if it is System assigned vs Azure Key vault.')
-param dataEncryptionType string = 'SystemAssigned'
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+param cMKKeyVaultResourceId string = ''
 
-@description('Conditional. Data encryption properties of a server. URI for the key for data encryption for primary server. Required if dataEncryptionType is set to AzureKeyVault.')
-param dataEncryptionPrimaryKeyURI string = ''
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
 
-@description('Conditional. Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault.')
-param dataEncryptionPrimaryUserAssignedIdentityId string = ''
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
@@ -222,6 +221,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   name: name
   location: location
@@ -243,10 +247,10 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
       geoRedundantBackup: geoRedundantBackup
     }
     createMode: createMode
-    dataEncryption: dataEncryptionType == 'AzureKeyVault' ? {
-      primaryKeyURI: dataEncryptionPrimaryKeyURI
-      primaryUserAssignedIdentityId: dataEncryptionPrimaryUserAssignedIdentityId
-      type: dataEncryptionType
+    dataEncryption: !empty(cMKKeyName) ? {
+      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
+      type: 'AzureKeyVault'
     } : null
     highAvailability: {
       mode: highAvailability
