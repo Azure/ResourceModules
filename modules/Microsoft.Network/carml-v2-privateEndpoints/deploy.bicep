@@ -13,7 +13,7 @@ type applicationSecurityGroup = {
 }
 
 @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
-param applicationSecurityGroups applicationSecurityGroup[]
+param applicationSecurityGroups applicationSecurityGroup[] = []
 
 @description('Optional. The custom name of the network interface attached to the private endpoint.')
 param customNetworkInterfaceName string = ''
@@ -30,7 +30,7 @@ type ipConfiguration = {
 }
 
 @description('Optional. A list of IP configurations of the private endpoint. This will be used to map to the First Party Service endpoints.')
-param ipConfigurations ipConfiguration[]
+param ipConfigurations ipConfiguration[] = []
 
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
 param groupIds array
