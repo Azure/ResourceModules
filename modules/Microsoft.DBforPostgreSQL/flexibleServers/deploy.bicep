@@ -84,6 +84,22 @@ param highAvailability string = 'Disabled'
 @description('Optional. The mode to create a new PostgreSQL server. If not provided, will be set to "Default".')
 param createMode string = 'Default'
 
+@description('Conditional. The ID(s) to assign to the resource. Must be enabled if using data encryption with customer managed keys using Azure Key Vault.')
+param userAssignedIdentities object = {}
+
+@allowed([
+  'AzureKeyVault'
+  'SystemAssigned'
+])
+@description('Optional. Data encryption properties of a server. Data encryption type to depict if it is System assigned vs Azure Key vault.')
+param dataEncryptionType string = 'SystemAssigned'
+
+@description('Optional. Data encryption properties of a server. URI for the key for data encryption for primary server.')
+param dataEncryptionPrimaryKeyURI string = ''
+
+@description('Optional. Data encryption properties of a server. Resource Id for the User assigned identity to be used for data encryption for primary server.')
+param dataEncryptionPrimaryUserAssignedIdentityId string = ''
+
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
@@ -194,6 +210,12 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var enableReferencedModulesTelemetry = false
 
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: userAssignedIdentities
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -206,7 +228,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' = {
+resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' = {
   name: name
   location: location
   tags: tags
@@ -214,6 +236,7 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
     name: skuName
     tier: tier
   }
+  identity: identity
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
@@ -223,6 +246,11 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-pr
       geoRedundantBackup: geoRedundantBackup
     }
     createMode: createMode
+    dataEncryption: dataEncryptionType == 'AzureKeyVault' ? {
+      primaryKeyURI: !empty(dataEncryptionPrimaryKeyURI) ? dataEncryptionPrimaryKeyURI : null
+      primaryUserAssignedIdentityId: !empty(dataEncryptionPrimaryUserAssignedIdentityId) ? dataEncryptionPrimaryUserAssignedIdentityId : null
+      type: dataEncryptionType
+    } : null
     highAvailability: {
       mode: highAvailability
       standbyAvailabilityZone: highAvailability == 'SameZone' ? availabilityZone : null

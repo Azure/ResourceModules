@@ -11,7 +11,7 @@ param resourceGroupName string = 'ms.dbforpostgresql.flexibleservers-${serviceSh
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'dfpsfsmin'
+param serviceShort string = 'dfpsfsmins'
 
 @description('Optional. The password to leverage for the login.')
 @secure()
@@ -31,6 +31,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module resourceGroupResources 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-paramNested'
+  params: {
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -45,5 +54,11 @@ module testDeployment '../../deploy.bicep' = {
     administratorLoginPassword: password
     skuName: 'Standard_B2s'
     tier: 'Burstable'
+    dataEncryptionType: 'AzureKeyVault'
+    dataEncryptionPrimaryUserAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
+    dataEncryptionPrimaryKeyURI: resourceGroupResources.outputs.keyVaultKeyId
+    userAssignedIdentities: {
+      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+    }
   }
 }
