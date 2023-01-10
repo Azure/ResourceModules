@@ -113,7 +113,7 @@ module testDeployment '../../deploy.bicep' = {
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Enabled'
+    geoRedundantBackup: 'Disabled'
     highAvailability: 'SameZone'
     location: location
     storageSizeGB: 1024

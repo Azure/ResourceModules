@@ -638,7 +638,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Enabled'
+    geoRedundantBackup: 'Disabled'
     highAvailability: 'SameZone'
     location: '<location>'
     storageSizeGB: 1024
@@ -753,7 +753,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "geoRedundantBackup": {
-      "value": "Enabled"
+      "value": "Disabled"
     },
     "highAvailability": {
       "value": "SameZone"
