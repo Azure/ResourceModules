@@ -56,6 +56,3 @@ output keyVaultResourceId string = keyVault.id
 
 @description('The name of the created encryption key.')
 output keyName string = keyVault::key.name
-
-@description('The name of the Key Vault Encryption Key.')
-output keyVaultEncryptionKeyName string = keyVault::key.name
