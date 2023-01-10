@@ -12,7 +12,7 @@ param location string = resourceGroup().location
   'Free'
   'Basic'
   'Standard'
-  'Enterprise'
+  'Premium'
 ])
 param sku string
 

@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
     associatedApplicationInsightsResourceId: resourceGroupResources.outputs.applicationInsightsResourceId
     associatedKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
     associatedStorageAccountResourceId: resourceGroupResources.outputs.storageAccountResourceId
-    sku: 'Basic'
+    sku: 'Premium'
     computes: [
       {
         computeLocation: 'westeurope'

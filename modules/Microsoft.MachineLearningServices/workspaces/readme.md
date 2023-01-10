@@ -32,7 +32,7 @@ This module deploys a Machine Learning Services Workspace.
 | `associatedKeyVaultResourceId` | string |  | The resource ID of the associated Key Vault. |
 | `associatedStorageAccountResourceId` | string |  | The resource ID of the associated Storage Account. |
 | `name` | string |  | The name of the machine learning workspace. |
-| `sku` | string | `[Basic, Enterprise, Free, Standard]` | Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace. |
+| `sku` | string | `[Basic, Free, Premium, Standard]` | Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace. |
 
 **Conditional parameters**
 
@@ -455,7 +455,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
     name: '<<namePrefix>>mlswcom001'
-    sku: 'Basic'
+    sku: 'Premium'
     // Non-required parameters
     computes: [
       {
@@ -550,7 +550,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       "value": "<<namePrefix>>mlswcom001"
     },
     "sku": {
-      "value": "Basic"
+      "value": "Premium"
     },
     // Non-required parameters
     "computes": {
