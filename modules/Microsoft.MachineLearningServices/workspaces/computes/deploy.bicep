@@ -81,7 +81,7 @@ var identity = identityType != 'None' ? {
 // ============================= //
 // Existing resources references //
 // ============================= //
-resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2022-05-01' existing = {
+resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2022-10-01' existing = {
   name: machineLearningWorkspaceName
 }
 
