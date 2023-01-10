@@ -385,9 +385,15 @@ Finally, the elements described above must further be configured in the followin
 
 | File | Parameter | Notes |
 | - | - | - |
-| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
-| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
-| `modules\Microsoft.Web\sites\.test\common\deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
+| `modules/Microsoft.Web/sites/.test/common/deploy.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
+| `modules/Microsoft.Web/sites/.test/common/deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
+| `modules/Microsoft.Web/sites/.test/common/deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
+
+### Microsoft.ContainerInstance/containerGroup
+
+To successfully run the Customer-Managed-Keys encryption test `encr/deploy.test.bicep` of the Container Instance module, you first need to register a Service Principal instance of the `Azure Container Instance Service` Azure application in your test Tenant. This can be achieved, for example, by running the command `New-AzADServicePrincipal -ApplicationId '6bb8e274-af5d-4df2-98a3-4fd78b4cafd9'`. For further information, please refer to the official [docs](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci).
+
+Once the Service Principal is created, please update the `properties/principalId` of the `keyPermissions` deployment in the dependencies file `modules/Microsoft.ContainerInstance/containerGroups/.test/encr/dependencies.bicep` with its object ID. You can fetch the object ID using the command `(Get-AzADServicePrincipal -DisplayName 'Azure Container Instance Service').Id`.
 
 # 5. (Optional) Convert library to ARM
 
