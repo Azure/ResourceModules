@@ -15,7 +15,9 @@ param location string = resourceGroup().location
 @sys.description('Optional. Specifies the sku, also referred as "edition". Required for creating a compute resource.')
 @allowed([
   'Basic'
-  'Enterprise'
+  'Free'
+  'Premium'
+  'Standard'
   ''
 ])
 param sku string = ''
@@ -98,7 +100,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-05-01' = if (deployCompute == true) {
+resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-10-01' = if (deployCompute == true) {
   name: name
   location: location
   tags: empty(resourceId) ? tags : any(null)

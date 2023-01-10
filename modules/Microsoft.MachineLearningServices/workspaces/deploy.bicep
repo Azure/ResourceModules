@@ -206,7 +206,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-05-01' = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
   name: name
   location: location
   tags: tags
