@@ -39,7 +39,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `dataEncryptionPrimaryKeyURI` | string | `''` | Data encryption properties of a server. URI for the key for data encryption for primary server. Required if dataEncryptionType is set to AzureKeyVault. |
-| `dataEncryptionPrimaryUserAssignedIdentityId` | string | `''` | Data encryption properties of a server. Resource Id for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault. |
+| `dataEncryptionPrimaryUserAssignedIdentityId` | string | `''` | Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault. |
 
 **Optional parameters**
@@ -588,7 +588,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: 'colcadfpsfspub002'
+    name: '<<namePrefix>>dfpsfspub002'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -669,7 +669,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "colcadfpsfspub002"
+      "value": "<<namePrefix>>dfpsfspub002"
     },
     "skuName": {
       "value": "Standard_D2s_v3"

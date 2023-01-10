@@ -97,7 +97,7 @@ param dataEncryptionType string = 'SystemAssigned'
 @description('Conditional. Data encryption properties of a server. URI for the key for data encryption for primary server. Required if dataEncryptionType is set to AzureKeyVault.')
 param dataEncryptionPrimaryKeyURI string = ''
 
-@description('Conditional. Data encryption properties of a server. Resource Id for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault.')
+@description('Conditional. Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault.')
 param dataEncryptionPrimaryUserAssignedIdentityId string = ''
 
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')

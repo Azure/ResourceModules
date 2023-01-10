@@ -35,8 +35,8 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    keyVaultName: 'dep-colca-kv-${serviceShort}'
-    managedIdentityName: 'dep-colca-msi-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -46,10 +46,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'depcolcadiasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-colca-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-colca-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-colca-evhns-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'colca${serviceShort}002'
+    name: '<<namePrefix>>${serviceShort}002'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     skuName: 'Standard_D2s_v3'
