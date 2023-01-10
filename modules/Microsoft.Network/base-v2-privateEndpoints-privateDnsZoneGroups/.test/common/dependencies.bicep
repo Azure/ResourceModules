@@ -10,12 +10,6 @@ param keyVaultName string
 @description('Required. The name of the Private Endpoint to create.')
 param privateEndpointName string
 
-// @description('Required. The name of the Managed Identity to create.')
-// param managedIdentityName string
-
-// @description('Required. The name of the Application Security Group to create.')
-// param applicationSecurityGroupName string
-
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -55,16 +49,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
         accessPolicies: []
     }
 }
-
-// resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-05-01' = {
-//     name: applicationSecurityGroupName
-//     location: location
-// }
-
-// resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-//     name: managedIdentityName
-//     location: location
-// }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     name: 'privatelink.vaultcore.azure.net'
@@ -107,14 +91,8 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
 
-// @description('The principal ID of the created Managed Identity.')
-// output managedIdentityPrincipalId string = managedIdentity.properties.principalId
-
 @description('The name of the created Private Enmdpoint.')
 output privateEndpointName string = privateEndpoint.name
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSZoneResourceId string = privateDNSZone.id
-
-// @description('The resource ID of the created Application Security Group.')
-// output applicationSecurityGroupResourceId string = applicationSecurityGroup.id
