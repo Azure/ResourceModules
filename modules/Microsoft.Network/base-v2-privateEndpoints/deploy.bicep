@@ -10,6 +10,7 @@ param serviceResourceId string
 type applicationSecurityGroup = {
   id: string
 }
+
 @description('Optional. Application security groups in which the private endpoint IP configuration is included.')
 param applicationSecurityGroups applicationSecurityGroup[]
 
