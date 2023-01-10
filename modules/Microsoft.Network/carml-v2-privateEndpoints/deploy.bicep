@@ -121,14 +121,13 @@ module privateEndpoint_privateDnsZoneGroup 'br/carml:microsoft.network.base-v2-p
   }
 }
 
-// resource privateEndpoint_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-//   name: '${privateEndpoint.name}-${lock}-lock'
-//   properties: {
-//     level: any(lock)
-//     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-//   }
-//   scope: privateEndpoint
-// }
+resource privateEndpoint_lock 'Microsoft.Network/privateEndpoints/providers/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${privateEndpoint.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+}
 
 module privateEndpoint_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-Rbac-${index}'
