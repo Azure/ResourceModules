@@ -112,7 +112,7 @@ module privateEndpoint 'br/carml:microsoft.network.base-v2-privateendpoints:0.1'
   }
 }
 
-module privateEndpoint_privateDnsZoneGroup 'br/carml:microsoft.network.base-v2-privateendpoints-privatednszonegroups:0.1.1802-prerelease' = if (!empty(privateDnsZoneGroup)) {
+module privateEndpoint_privateDnsZoneGroup 'br/carml:microsoft.network.base-v2-privateendpoints-privatednszonegroups:0.1' = if (!empty(privateDnsZoneGroup)) {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
