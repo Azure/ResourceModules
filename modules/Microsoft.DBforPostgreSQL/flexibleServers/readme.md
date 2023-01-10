@@ -42,7 +42,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
 | `pointInTimeUTC` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
 | `sourceServerResourceId` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault. |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty. |
 
 **Optional parameters**
 
