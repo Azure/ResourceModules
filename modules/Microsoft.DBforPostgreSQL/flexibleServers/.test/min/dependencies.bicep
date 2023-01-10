@@ -51,5 +51,5 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
-@description('The resource ID of the created Key Vault.')
-output keyVaultKeyId string = keyVault::key.id
+@description('The key Uri with version of the created Key Vault Key.')
+output keyVaultKeyUriWithVersion string = keyVault::key.properties.keyUriWithVersion

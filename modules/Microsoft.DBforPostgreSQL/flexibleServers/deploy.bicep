@@ -210,12 +210,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var enableReferencedModulesTelemetry = false
 
-var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: userAssignedIdentities
-} : null
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -236,7 +230,10 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     name: skuName
     tier: tier
   }
-  identity: identity
+  identity: !empty(userAssignedIdentities) ? {
+    type: 'UserAssigned'
+    userAssignedIdentities: userAssignedIdentities
+  } : {}
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
@@ -247,8 +244,8 @@ resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-12-01' =
     }
     createMode: createMode
     dataEncryption: dataEncryptionType == 'AzureKeyVault' ? {
-      primaryKeyURI: !empty(dataEncryptionPrimaryKeyURI) ? dataEncryptionPrimaryKeyURI : null
-      primaryUserAssignedIdentityId: !empty(dataEncryptionPrimaryUserAssignedIdentityId) ? dataEncryptionPrimaryUserAssignedIdentityId : null
+      primaryKeyURI: dataEncryptionPrimaryKeyURI
+      primaryUserAssignedIdentityId: dataEncryptionPrimaryUserAssignedIdentityId
       type: dataEncryptionType
     } : null
     highAvailability: {
