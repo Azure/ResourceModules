@@ -40,6 +40,9 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | :-- | :-- | :-- | :-- |
 | `dataEncryptionPrimaryKeyURI` | string | `''` | Data encryption properties of a server. URI for the key for data encryption for primary server. Required if dataEncryptionType is set to AzureKeyVault. |
 | `dataEncryptionPrimaryUserAssignedIdentityId` | string | `''` | Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault. |
+| `maintenanceWindow` | object | `{object}` | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| `pointInTimeUTC` | string | `''` | Property required if "createMode" is set to "PointInTimeRestore". |
+| `sourceServerResourceId` | string | `''` | Property required if "createMode" is set to "PointInTimeRestore". |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault. |
 
 **Optional parameters**
@@ -47,9 +50,9 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
-| `backupRetentionDays` | int | `7` |  | Backup retention days for the server. Default is 7 days. |
+| `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
 | `configurations` | _[configurations](configurations/readme.md)_ array | `[]` |  | The configurations to create in the server. |
-| `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. If not provided, will be set to "Default". |
+| `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `dataEncryptionType` | string | `'SystemAssigned'` | `[AzureKeyVault, SystemAssigned]` | Data encryption properties of a server. Data encryption type to depict if it is System assigned vs Azure Key vault. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
@@ -63,18 +66,15 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
-| `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Default is disabled. |
-| `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. Default is disabled. |
+| `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if dataEncryptionType is set to AzureKeyVault. |
+| `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `maintenanceWindow` | object | `{object}` |  | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| `pointInTimeUTC` | string | `''` |  | Property required if "createMode" is set to "PointInTimeRestore". |
 | `privateDnsZoneArmResourceId` | string | `''` |  | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sourceServerResourceId` | string | `''` |  | Property required if "createMode" is set to "PointInTimeRestore". |
-| `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. Default is 32GB. |
+| `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `version` | string | `'13'` | `[11, 12, 13, 14]` | PostgreSQL Server version. Default is 13. |
+| `version` | string | `'13'` | `[11, 12, 13, 14]` | PostgreSQL Server version. |
 
 
 ### Parameter Usage: `roleAssignments`

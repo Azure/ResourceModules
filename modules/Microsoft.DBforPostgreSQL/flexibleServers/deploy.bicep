@@ -33,14 +33,14 @@ param availabilityZone string = ''
 
 @minValue(7)
 @maxValue(35)
-@description('Optional. Backup retention days for the server. Default is 7 days.')
+@description('Optional. Backup retention days for the server.')
 param backupRetentionDays int = 7
 
 @allowed([
   'Disabled'
   'Enabled'
 ])
-@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Default is disabled.')
+@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if dataEncryptionType is set to AzureKeyVault.')
 param geoRedundantBackup string = 'Disabled'
 
 @allowed([
@@ -55,7 +55,7 @@ param geoRedundantBackup string = 'Disabled'
   8192
   16384
 ])
-@description('Optional. Max storage allowed for a server. Default is 32GB.')
+@description('Optional. Max storage allowed for a server.')
 param storageSizeGB int = 32
 
 @allowed([
@@ -64,7 +64,7 @@ param storageSizeGB int = 32
   '13'
   '14'
 ])
-@description('Optional. PostgreSQL Server version. Default is 13.')
+@description('Optional. PostgreSQL Server version.')
 param version string = '13'
 
 @allowed([
@@ -72,7 +72,7 @@ param version string = '13'
   'SameZone'
   'ZoneRedundant'
 ])
-@description('Optional. The mode for high availability. Default is disabled.')
+@description('Optional. The mode for high availability.')
 param highAvailability string = 'Disabled'
 
 @allowed([
@@ -81,7 +81,7 @@ param highAvailability string = 'Disabled'
   'PointInTimeRestore'
   'Update'
 ])
-@description('Optional. The mode to create a new PostgreSQL server. If not provided, will be set to "Default".')
+@description('Optional. The mode to create a new PostgreSQL server.')
 param createMode string = 'Default'
 
 @description('Conditional. The ID(s) to assign to the resource. Required if using data encryption with customer managed keys using Azure Key Vault.')
@@ -100,13 +100,13 @@ param dataEncryptionPrimaryKeyURI string = ''
 @description('Conditional. Data encryption properties of a server. Resource ID for the User assigned identity to be used for data encryption for primary server. The identity should have key usage permissions on the Key Vault Key Uri. Required if dataEncryptionType is set to AzureKeyVault.')
 param dataEncryptionPrimaryUserAssignedIdentityId string = ''
 
-@description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
+@description('Conditional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
-@description('Optional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
 param pointInTimeUTC string = ''
 
-@description('Optional. Property required if "createMode" is set to "PointInTimeRestore".')
+@description('Conditional. Property required if "createMode" is set to "PointInTimeRestore".')
 param sourceServerResourceId string = ''
 
 @description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
