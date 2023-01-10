@@ -56,7 +56,7 @@ module testDeployment '../../deploy.bicep' = {
     tier: 'Burstable'
     dataEncryptionType: 'AzureKeyVault'
     dataEncryptionPrimaryUserAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
-    dataEncryptionPrimaryKeyURI: resourceGroupResources.outputs.keyVaultKeyId
+    dataEncryptionPrimaryKeyURI: resourceGroupResources.outputs.keyVaultKeyUriWithVersion
     userAssignedIdentities: {
       '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
     }
