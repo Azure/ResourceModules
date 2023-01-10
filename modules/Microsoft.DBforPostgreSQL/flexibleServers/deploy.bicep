@@ -40,7 +40,7 @@ param backupRetentionDays int = 7
   'Disabled'
   'Enabled'
 ])
-@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if dataEncryptionType is set to AzureKeyVault.')
+@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if \'cMKKeyName\' is not empty.')
 param geoRedundantBackup string = 'Disabled'
 
 @allowed([
