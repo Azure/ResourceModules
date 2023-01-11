@@ -83,10 +83,7 @@ type container = {
 }
 
 @description('Optional. Blob containers to create.')
-param containers container[]
-
-// @description('Optional. Blob containers to create.')
-// param containers array = []
+param containers container[] = []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category

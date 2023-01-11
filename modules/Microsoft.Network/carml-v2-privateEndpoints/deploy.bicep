@@ -122,7 +122,7 @@ module privateEndpoint_privateDnsZoneGroup 'br/carml:microsoft.network.base-v2-p
 }
 
 resource privateEndpoint_lock 'Microsoft.Network/privateEndpoints/providers/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${privateEndpoint.name}-${lock}-lock'
+  name: '${privateEndpoint.name}/Microsoft.Authorization/${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
