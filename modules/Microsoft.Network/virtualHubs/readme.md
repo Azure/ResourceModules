@@ -5,14 +5,11 @@ If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integ
 
 ## Navigation
 
-- [Virtual Hubs `[Microsoft.Network/virtualHubs]`](#virtual-hubs-microsoftnetworkvirtualhubs)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `tags`](#parameter-usage-tags)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
-  - [Deployment examples](#deployment-examples)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -38,7 +35,6 @@ If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integ
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
-| `azureFirewallId` | string | `''` |  | Resource ID of the Azure Firewall to link to. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expressRouteGatewayId` | string | `''` |  | Resource ID of the Express Route Gateway to link to. |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
