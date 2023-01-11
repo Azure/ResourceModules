@@ -101,8 +101,48 @@ param cMKUserAssignedIdentityResourceId string = ''
 param cMKKeyVersion string = ''
 
 // Children
+type immutabilityPolicyProperties = {
+  name?: string
+  immutabilityPeriodSinceCreationInDays?: int
+  allowProtectedAppendWrites?: bool
+}
+
+type roleAssignment = {
+  roleDefinitionIdOrName: string
+  principalIds: string[]
+  description?: string
+  principalType?: 'ServicePrincipal' | 'Group' | 'User' | 'ForeignGroup' | 'Device' | ''
+  condition?: string
+  conditionVersion?: string
+  delegatedManagedIdentityResourceId?: string
+}
+
+type container = {
+  name: string
+  publicAccess?: 'Container' | 'Blob' | 'None'
+  immutabilityPolicyProperties?: immutabilityPolicyProperties
+  roleAssignments?: roleAssignment[]
+}
+
+type blobService = {
+  name?: string
+  deleteRetentionPolicy?: bool
+  deleteRetentionPolicyDays?: int
+  automaticSnapshotPolicyEnabled?: bool
+  diagnosticLogsRetentionInDays?: int
+  diagnosticStorageAccountId?: string
+  diagnosticWorkspaceId?: string
+  diagnosticEventHubAuthorizationRuleId?: string
+  diagnosticEventHubName?: string
+  diagnosticLogCategoriesToEnable?: string[]
+  diagnosticMetricsToEnable?: string[]
+  diagnosticSettingsName?: string
+  containers?: container[]
+  roleAssignments?: roleAssignment[]
+}
+
 @description('Optional. Blob service and containers to deploy.')
-param blobServices object = {}
+param blobServices blobService = {}
 
 // Cross references
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
@@ -146,7 +186,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
-param roleAssignments array = []
+param roleAssignments roleAssignment[] = []
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
