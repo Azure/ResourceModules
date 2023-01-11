@@ -1,13 +1,6 @@
 @description('Required. Name of the Azure Firewall.')
 param name string
 
-@description('Optional. Name of an Azure Firewall SKU.')
-@allowed([
-  'AZFW_VNet'
-  'AZFW_Hub'
-])
-param azureSkuName string = 'AZFW_VNet'
-
 @description('Optional. Tier of an Azure Firewall.')
 @allowed([
   'Standard'
@@ -15,8 +8,8 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
-@description('Required. Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable.')
-param vNetId string
+@description('Conditional. Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty.')
+param vNetId string = ''
 
 @description('Optional. The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet.')
 param azureFirewallSubnetPublicIpId string = ''
@@ -41,6 +34,12 @@ param natRuleCollections array = []
 
 @description('Optional. Resource ID of the Firewall Policy that should be attached.')
 param firewallPolicyId string = ''
+
+@description('Conditional. IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied.')
+param hubIPAddresses object = {}
+
+@description('Conditional. The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty.')
+param virtualHubId string = ''
 
 @allowed([
   'Alert'
@@ -147,6 +146,8 @@ var newPip = {
   } : null
 }
 
+var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
+
 var ipConfigurations = concat([
     {
       name: !empty(azureFirewallSubnetPublicIpId) ? last(split(azureFirewallSubnetPublicIpId, '/')) : publicIPAddress.outputs.name
@@ -200,7 +201,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a public ip address if one is not provided and the flag is true
-module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
+module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
@@ -240,11 +241,11 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
   location: location
   zones: length(zones) == 0 ? null : zones
   tags: tags
-  properties: {
+  properties: azureSkuName == 'AZFW_VNet' ? {
     threatIntelMode: threatIntelMode
-    firewallPolicy: empty(firewallPolicyId) ? null : {
+    firewallPolicy: !empty(firewallPolicyId) ? {
       id: firewallPolicyId
-    }
+    } : null
     ipConfigurations: ipConfigurations
     sku: {
       name: azureSkuName
@@ -253,6 +254,18 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
     applicationRuleCollections: applicationRuleCollections
     natRuleCollections: natRuleCollections
     networkRuleCollections: networkRuleCollections
+  } : {
+    firewallPolicy: !empty(firewallPolicyId) ? {
+      id: firewallPolicyId
+    } : null
+    sku: {
+      name: azureSkuName
+      tier: azureSkuTier
+    }
+    hubIPAddresses: !empty(hubIPAddresses) ? hubIPAddresses : null
+    virtualHub: !empty(virtualHubId) ? {
+      id: virtualHubId
+    } : null
   }
   dependsOn: [
     publicIPAddress
@@ -294,20 +307,20 @@ module azureFirewall_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
   }
 }]
 
-@description('The resource ID of the Azure firewall.')
+@description('The resource ID of the Azure Firewall.')
 output resourceId string = azureFirewall.id
 
-@description('The name of the Azure firewall.')
+@description('The name of the Azure Firewall.')
 output name string = azureFirewall.name
 
 @description('The resource group the Azure firewall was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The private IP of the Azure firewall.')
-output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
+output privateIp string = contains(azureFirewall.properties, 'ipConfigurations') ? azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress : ''
 
-@description('The public ipconfiguration object for the AzureFirewallSubnet.')
-output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
+@description('The public IP configuration object for the Azure Firewall Subnet.')
+output ipConfAzureFirewallSubnet object = contains(azureFirewall.properties, 'ipConfigurations') ? azureFirewall.properties.ipConfigurations[0] : {}
 
 @description('List of Application Rule Collections.')
 output applicationRuleCollections array = applicationRuleCollections
