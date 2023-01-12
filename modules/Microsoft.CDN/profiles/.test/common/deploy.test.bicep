@@ -79,15 +79,15 @@ module testDeployment '../../deploy.bicep' = {
       ]
       originGroups: []
       geoFilters: []
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            resourceGroupResources.outputs.managedIdentityPrincipalId
-          ]
-          principalType: 'ServicePrincipal'
-        }
-      ]
     }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }
