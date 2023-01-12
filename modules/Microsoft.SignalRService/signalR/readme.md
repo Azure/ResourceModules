@@ -26,7 +26,7 @@ This module deploys SignalRService SignalR.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Web PubSub Service resource. |
+| `name` | string | The name of the SignalR Service resource. |
 
 **Optional parameters**
 
@@ -258,9 +258,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The Web PubSub name. |
-| `resourceGroupName` | string | The Web PubSub resource group. |
-| `resourceId` | string | The Web PubSub resource ID. |
+| `name` | string | The SignalR name. |
+| `resourceGroupName` | string | The SignalR resource group. |
+| `resourceId` | string | The SignalR resource ID. |
 
 ## Cross-referenced modules
 
