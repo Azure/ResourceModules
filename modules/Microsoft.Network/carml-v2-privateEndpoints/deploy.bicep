@@ -94,6 +94,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+//Parent
 module privateEndpoint 'br/carml:microsoft.network.base-v2-privateendpoints:0.1' = {
   name: name
   params: {
@@ -112,6 +113,7 @@ module privateEndpoint 'br/carml:microsoft.network.base-v2-privateendpoints:0.1'
   }
 }
 
+// Children
 module privateEndpoint_privateDnsZoneGroup 'br/carml:microsoft.network.base-v2-privateendpoints-privatednszonegroups:0.1' = if (!empty(privateDnsZoneGroup)) {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
@@ -121,6 +123,7 @@ module privateEndpoint_privateDnsZoneGroup 'br/carml:microsoft.network.base-v2-p
   }
 }
 
+// Extensions
 resource privateEndpoint_lock 'Microsoft.Network/privateEndpoints/providers/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateEndpoint.name}/Microsoft.Authorization/${lock}-lock'
   properties: {
