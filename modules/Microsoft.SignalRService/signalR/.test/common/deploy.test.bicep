@@ -52,7 +52,7 @@ module testDeployment '../../deploy.bicep' = {
     disableLocalAuth: true
     location: location
     lock: 'CanNotDelete'
-    kind: 'SignalRService'
+    kind: 'SignalR'
     networkAcls: {
       defaultAction: 'Allow'
       privateEndpoints: [

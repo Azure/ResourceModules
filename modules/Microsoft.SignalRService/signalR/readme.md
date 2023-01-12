@@ -295,7 +295,7 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     disableAadAuth: false
     disableLocalAuth: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    kind: 'SignalRService'
+    kind: 'SignalR'
     location: '<location>'
     lock: 'CanNotDelete'
     networkAcls: {
@@ -381,7 +381,7 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "kind": {
-      "value": "SignalRService"
+      "value": "SignalR"
     },
     "location": {
       "value": "<location>"
