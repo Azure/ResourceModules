@@ -9,6 +9,7 @@ Azure Virtual Network Manager is a management service that enables you to group,
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Considerations](#Considerations)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -531,6 +532,12 @@ tags: {
 
 _None_
 
+## Considerations
+
+There is currently an issue when deploying a network manager instance for a management group scope where the management group ID is a `guid`. For example, if the management group resource ID looks like `/providers/Microsoft.Management/managementGroups/f2857922-1732-4c0d-a8d4-7003b13be520`, then this will fail when the deployment happens via code but succeed if it was created using the Azure Portal. This does not impact management group IDs that use a regular string such as `mg-contoso`.
+
+The workaround is to deploy network manager using the Azure Portal first, before triggering it via code. This has been communicated to the network manager team and waiting on investigation outcomes and the documentation will be updated accordingly.
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -963,71 +970,6 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
           ]
         }
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnmmin'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>nnmmin001'
-    networkManagerScopeAccesses: [
-      'Connectivity'
-    ]
-    networkManagerScopes: {
-      managementGroups: [
-        '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
-      ]
-    }
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>nnmmin001"
-    },
-    "networkManagerScopeAccesses": {
-      "value": [
-        "Connectivity"
-      ]
-    },
-    "networkManagerScopes": {
-      "value": {
-        "managementGroups": [
-          "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>"
-        ]
-      }
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }
