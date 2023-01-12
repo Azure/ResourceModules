@@ -249,7 +249,8 @@ module storageAccount 'br/carml:microsoft.storage.base-v2-storageaccounts:0.1' =
     userAssignedIdentities: userAssignedIdentities
   }
 }
-// // Extensions
+
+// Extensions
 resource storageAccount_diagnosticSettings 'Microsoft.Storage/storageAccounts/blobServices/providers/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${storageAccount.name}/Microsoft.Insights/${diagnosticSettingsName}'
   properties: {
