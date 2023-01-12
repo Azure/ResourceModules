@@ -50,7 +50,7 @@ This module deploys SignalRService SignalR.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'Standard_S1'` | `[Free_F1, Premium_P1, Premium_P2, Premium_P3, Standard_S1, Standard_S2, Standard_S3]` | The SKU of the service. |
 | `tags` | object | `{object}` |  | The tags of the resource. |
-| `upstreamTemplatesToEnable` | array | `[]` |  | Upstream templates to enable. For more information, see https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-howto-upstream-template. |
+| `upstreamTemplatesToEnable` | array | `[]` |  | Upstream templates to enable. For more information, see https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/2022-02-01/signalr?pivots=deployment-language-bicep#upstreamtemplate. |
 
 
 ### Parameter Usage: `privateEndpoints`

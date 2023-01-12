@@ -82,7 +82,7 @@ param resourceLogConfigurationsToEnable array = [
 @description('Optional. Request client certificate during TLS handshake if enabled.')
 param clientCertEnabled bool = false
 
-@description('Optional. Upstream templates to enable. For more information, see https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-howto-upstream-template.')
+@description('Optional. Upstream templates to enable. For more information, see https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/2022-02-01/signalr?pivots=deployment-language-bicep#upstreamtemplate.')
 param upstreamTemplatesToEnable array = []
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
