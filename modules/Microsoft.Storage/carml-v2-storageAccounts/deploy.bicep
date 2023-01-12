@@ -282,32 +282,32 @@ module storageAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
-// Cross references
-module storageAccount_privateEndpoints 'br/carml:microsoft.network.carml-v2-privateendpoints:0.1' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-StorageAccount-PrivateEndpoint-${index}'
-  params: {
-    groupIds: [
-      privateEndpoint.service
-    ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(storageAccount.outputs.resourceId, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: storageAccount.outputs.resourceId
-    subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
-    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
-    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
-    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
-  }
-}]
+// // Cross references
+// module storageAccount_privateEndpoints 'br/carml:microsoft.network.carml-v2-privateendpoints:0.1' = [for (privateEndpoint, index) in privateEndpoints: {
+//   name: '${uniqueString(deployment().name, location)}-StorageAccount-PrivateEndpoint-${index}'
+//   params: {
+//     groupIds: [
+//       privateEndpoint.service
+//     ]
+//     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(storageAccount.outputs.resourceId, '/'))}-${privateEndpoint.service}-${index}'
+//     serviceResourceId: storageAccount.outputs.resourceId
+//     subnetResourceId: privateEndpoint.subnetResourceId
+//     enableDefaultTelemetry: enableReferencedModulesTelemetry
+//     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+//     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+//     privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+//     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+//     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+//     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+//     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+//     ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+//     applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+//     customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+//   }
+// }]
 
-// Containers
-module storageAccount_blobServices 'br/carml:microsoft.storage.carml-v2-storageaccounts-blobservices-containers:0.1' = if (!empty(blobServices)) {
+// Children
+module storageAccount_blobServices 'br/carml:microsoft.storage.carml-v2-storageaccounts-blobservices:0.1' = if (!empty(blobServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
