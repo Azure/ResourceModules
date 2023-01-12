@@ -6,10 +6,10 @@ param name string
 
 @description('Optional. The kind of the service.')
 @allowed([
-  'SignalRService'
+  'SignalR'
   'RawWebSockets'
 ])
-param kind string = 'SignalRService'
+param kind string = 'SignalR'
 
 @description('Optional. The SKU of the service.')
 @allowed([

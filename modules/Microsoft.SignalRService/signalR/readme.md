@@ -39,7 +39,7 @@ This module deploys SignalRService SignalR.
 | `disableLocalAuth` | bool | `False` |  | The disable local auth settings of the resource. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `features` | array | `[System.Management.Automation.OrderedHashtable]` |  | The features settings of the resource, `ServiceMode` is the only required feature. See https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/signalr?pivots=deployment-language-bicep#signalrfeature for more information. |
-| `kind` | string | `'SignalRService'` | `[RawWebSockets, SignalRService]` | The kind of the service. |
+| `kind` | string | `'SignalR'` | `[RawWebSockets, SignalR]` | The kind of the service. |
 | `liveTraceCatagoriesToEnable` | array | `[ConnectivityLogs, MessagingLogs]` | `[ConnectivityLogs, MessagingLogs]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location for the resource. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
