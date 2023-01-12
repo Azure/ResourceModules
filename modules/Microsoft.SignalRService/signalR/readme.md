@@ -33,7 +33,7 @@ This module deploys SignalRService SignalR.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedOrigins` | array | `[*]` |  | The allowed origin settings of the resource. |
-| `capacity` | int | `1` |  | The unit count of the resource. 1 by default. |
+| `capacity` | int | `1` |  | The unit count of the resource. |
 | `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
 | `disableAadAuth` | bool | `False` |  | The disable Azure AD auth settings of the resource. |
 | `disableLocalAuth` | bool | `False` |  | The disable local auth settings of the resource. |

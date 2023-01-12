@@ -23,7 +23,7 @@ param kind string = 'SignalR'
 ])
 param sku string = 'Standard_S1'
 
-@description('Optional. The unit count of the resource. 1 by default.')
+@description('Optional. The unit count of the resource.')
 param capacity int = 1
 
 @description('Optional. The tags of the resource.')
