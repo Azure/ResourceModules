@@ -1,7 +1,7 @@
 @description('Optional. The location for the resource.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Web PubSub Service resource.')
+@description('Required. The name of the SignalR Service resource.')
 param name string
 
 @description('Optional. The kind of the service.')
@@ -159,7 +159,7 @@ resource signalR 'Microsoft.SignalRService/signalR@2022-02-01' = {
 }
 
 module signalR_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-WebPubSub-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-SignalR-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
@@ -202,13 +202,13 @@ module signalR_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment
   }
 }]
 
-@description('The Web PubSub name.')
+@description('The SignalR name.')
 output name string = signalR.name
 
-@description('The Web PubSub resource group.')
+@description('The SignalR resource group.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The Web PubSub resource ID.')
+@description('The SignalR resource ID.')
 output resourceId string = signalR.id
 
 @description('The location the resource was deployed into.')

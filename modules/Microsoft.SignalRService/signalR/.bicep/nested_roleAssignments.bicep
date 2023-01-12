@@ -57,12 +57,12 @@ var builtInRoleNames = {
   'Web PubSub Service Reader (Preview)': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'bfb1c7d2-fb1a-466b-b2ba-aee63b92deaf')
 }
 
-resource webPubSub 'Microsoft.SignalRService/webPubSub@2021-10-01' existing = {
+resource signalR 'Microsoft.SignalRService/signalR@2022-02-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(webPubSub.id, principalId, roleDefinitionIdOrName)
+  name: guid(signalR.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -72,5 +72,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
-  scope: webPubSub
+  scope: signalR
 }]
