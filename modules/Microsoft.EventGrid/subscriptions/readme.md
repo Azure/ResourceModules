@@ -23,7 +23,7 @@ This module deploys EventGrid EventSubscriptions.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `destination` | object | The destination for the event subscription. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#eventsubscriptiondestination-objects for more information). |
-| `eventGridTopicName` | string | Event Grid Topic Name () |
+| `eventGridTopicName` | string | Name of the Event Grid Topic. |
 | `name` | string | The name of the Event Grid Topic. |
 
 **Optional parameters**
@@ -32,7 +32,7 @@ This module deploys EventGrid EventSubscriptions.
 | :-- | :-- | :-- | :-- |
 | `deadLetterDestination` | object | `{object}` | Dead Letter Destination. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterdestination-objects for more information). |
 | `deadLetterWithResourceIdentity` | object | `{object}` | Dead Letter with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterwithresourceidentity-objects for more information). |
-| `deliveryWithResourceIdentity` | object | `{object}` | Delivery with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deliverywithresourceidentity-objects for more information) |
+| `deliveryWithResourceIdentity` | object | `{object}` | Delivery with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deliverywithresourceidentity-objects for more information). |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventDeliverySchema` | string | `'EventGridSchema'` | The event delivery schema for the event subscription. |
 | `expirationTimeUtc` | string | `''` | The expiration time for the event subscription. |
