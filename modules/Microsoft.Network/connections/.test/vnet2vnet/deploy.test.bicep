@@ -33,7 +33,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     primaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-1'
     primaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-1'

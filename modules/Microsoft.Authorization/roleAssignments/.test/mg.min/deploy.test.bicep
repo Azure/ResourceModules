@@ -24,7 +24,7 @@ param enableDefaultTelemetry bool = true
 // =================
 module nestedDependencies 'interim.dependencies.bicep' = {
   scope: subscription('<<subscriptionId>>')
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     resourceGroupName: resourceGroupName
