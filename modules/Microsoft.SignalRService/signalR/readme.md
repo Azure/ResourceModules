@@ -36,7 +36,7 @@ This module deploys SignalRService SignalR.
 | `capacity` | int | `1` |  | The unit count of the resource. |
 | `clientCertEnabled` | bool | `False` |  | Request client certificate during TLS handshake if enabled. |
 | `disableAadAuth` | bool | `False` |  | The disable Azure AD auth settings of the resource. |
-| `disableLocalAuth` | bool | `False` |  | The disable local auth settings of the resource. |
+| `disableLocalAuth` | bool | `True` |  | The disable local auth settings of the resource. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `features` | array | `[System.Management.Automation.OrderedHashtable]` |  | The features settings of the resource, `ServiceMode` is the only required feature. See https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/signalr?pivots=deployment-language-bicep#signalrfeature for more information. |
 | `kind` | string | `'SignalR'` | `[RawWebSockets, SignalR]` | The kind of the service. |

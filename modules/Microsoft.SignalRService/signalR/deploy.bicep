@@ -38,7 +38,7 @@ param allowedOrigins array = [
 param disableAadAuth bool = false
 
 @description('Optional. The disable local auth settings of the resource.')
-param disableLocalAuth bool = false
+param disableLocalAuth bool = true
 
 @description('Optional. The features settings of the resource, `ServiceMode` is the only required feature. See https://learn.microsoft.com/en-us/azure/templates/microsoft.signalrservice/signalr?pivots=deployment-language-bicep#signalrfeature for more information.')
 param features array = [
