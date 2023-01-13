@@ -31,24 +31,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     eventTopicName: 'dep-<<namePrefix>>-evt-${serviceShort}'
     serviceBusName: 'dep-<<namePrefix>>-sb-${serviceShort}'
-    location: location
-  }
-}
-
-// Diagnostics
-// ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-  params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -59,15 +44,15 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicId, '/'))
+    eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicResourceId, '/'))
     destination: {
       endpointType: 'ServiceBusTopic'
       properties: {
-        resourceId: nestedDependencies.outputs.serviceBusTopicId
+        resourceId: nestedDependencies.outputs.serviceBusTopicResourceId
       }
     }
   }
