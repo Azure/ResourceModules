@@ -254,7 +254,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
 
 ### Diagnostic Settings
 
-The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed.  However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
+The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed. However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
 
 <details>
 <summary>Details</summary>
@@ -596,7 +596,7 @@ In addition, they follow these file-type-specific guidelines:
     param serviceShort string = 'asscom'
 
     // =========== //
-    // Deployments //
+    // Dependencies //
     // =========== //
 
     // General resources
@@ -695,4 +695,4 @@ When consuming the modules outside of CARML's pipelines you can either
 
 Though similar in principles, this approach is not to be confused and does not conflict with the usage of CUA IDs that are used to track Customer Usage Attribution of Azure marketplace solutions (partner solutions). The GUID-based telemetry approach described here can coexist and can be used side-by-side with CUA IDs. If you have any partner or customer scenarios that require the addition of CUA IDs, you can customize the modules of this library by adding the required CUA ID deployment while keeping the built-in telemetry solution.
 
-> **Note:** *If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix).*
+> **Note:** _If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix)._

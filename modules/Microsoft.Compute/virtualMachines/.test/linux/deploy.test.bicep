@@ -16,9 +16,9 @@ param serviceShort string = 'cvmlincom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -84,12 +84,12 @@ module testDeployment '../../deploy.bicep' = {
           {
             applicationSecurityGroups: [
               {
-                id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+                id: nestedDependencies.outputs.applicationSecurityGroupResourceId
               }
             ]
             loadBalancerBackendAddressPools: [
               {
-                id: resourceGroupResources.outputs.loadBalancerBackendPoolResourceId
+                id: nestedDependencies.outputs.loadBalancerBackendPoolResourceId
               }
             ]
             name: 'ipconfig01'
@@ -99,13 +99,13 @@ module testDeployment '../../deploy.bicep' = {
                 {
                   roleDefinitionIdOrName: 'Reader'
                   principalIds: [
-                    resourceGroupResources.outputs.managedIdentityPrincipalId
+                    nestedDependencies.outputs.managedIdentityPrincipalId
                   ]
                   principalType: 'ServicePrincipal'
                 }
               ]
             }
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         ]
         nicSuffix: '-nic-01'
@@ -113,7 +113,7 @@ module testDeployment '../../deploy.bicep' = {
           {
             roleDefinitionIdOrName: 'Reader'
             principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
+              nestedDependencies.outputs.managedIdentityPrincipalId
             ]
             principalType: 'ServicePrincipal'
           }
@@ -132,9 +132,9 @@ module testDeployment '../../deploy.bicep' = {
     osType: 'Linux'
     vmSize: 'Standard_DS2_v2'
     availabilityZone: 1
-    backupPolicyName: resourceGroupResources.outputs.recoveryServicesVaultBackupPolicyName
-    backupVaultName: resourceGroupResources.outputs.recoveryServicesVaultName
-    backupVaultResourceGroup: resourceGroupResources.outputs.recoveryServicesVaultResourceGroupName
+    backupPolicyName: nestedDependencies.outputs.recoveryServicesVaultBackupPolicyName
+    backupVaultName: nestedDependencies.outputs.recoveryServicesVaultName
+    backupVaultResourceGroup: nestedDependencies.outputs.recoveryServicesVaultResourceGroupName
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -168,13 +168,13 @@ module testDeployment '../../deploy.bicep' = {
       enabled: true
       fileData: [
         {
-          storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
-          uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
+          storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+          uri: nestedDependencies.outputs.storageAccountCSEFileUrl
         }
       ]
     }
     extensionCustomScriptProtectedSetting: {
-      commandToExecute: 'value=$(./${resourceGroupResources.outputs.storageAccountCSEFileName}); echo "$value"'
+      commandToExecute: 'value=$(./${nestedDependencies.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -183,11 +183,11 @@ module testDeployment '../../deploy.bicep' = {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+        KekVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
-        KeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-        KeyVaultURL: resourceGroupResources.outputs.keyVaultUrl
+        KeyEncryptionKeyURL: nestedDependencies.outputs.keyVaultEncryptionKeyUrl
+        KeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+        KeyVaultURL: nestedDependencies.outputs.keyVaultUrl
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -208,7 +208,7 @@ module testDeployment '../../deploy.bicep' = {
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
+        keyData: nestedDependencies.outputs.SSHKeyPublicKey
         path: '/home/localAdministrator/.ssh/authorized_keys'
       }
     ]
@@ -216,17 +216,17 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
   dependsOn: [
-    resourceGroupResources // Required to leverage `existing` SSH key reference
+    nestedDependencies // Required to leverage `existing` SSH key reference
   ]
 }

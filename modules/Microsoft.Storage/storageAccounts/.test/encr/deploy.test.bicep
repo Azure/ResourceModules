@@ -19,9 +19,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -30,9 +30,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
@@ -57,10 +57,10 @@ module testDeployment '../../deploy.bicep' = {
     privateEndpoints: [
       {
         service: 'blob'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
       }
@@ -75,10 +75,10 @@ module testDeployment '../../deploy.bicep' = {
     }
     systemAssignedIdentity: false
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
-    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKKeyName: resourceGroupResources.outputs.keyName
-    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKKeyName: nestedDependencies.outputs.keyName
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
   }
 }

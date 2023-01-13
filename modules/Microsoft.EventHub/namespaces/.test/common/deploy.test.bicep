@@ -16,9 +16,9 @@ param serviceShort string = 'ehncom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -109,7 +109,7 @@ module testDeployment '../../deploy.bicep' = {
         captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
         captureDescriptionDestinationBlobContainer: 'eventhub'
         captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-        captureDescriptionDestinationStorageAccountResourceId: resourceGroupResources.outputs.storageAccountResourceId
+        captureDescriptionDestinationStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
         captureDescriptionEnabled: true
         captureDescriptionEncoding: 'Avro'
         captureDescriptionIntervalInSeconds: 300
@@ -128,7 +128,7 @@ module testDeployment '../../deploy.bicep' = {
           {
             roleDefinitionIdOrName: 'Reader'
             principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
+              nestedDependencies.outputs.managedIdentityPrincipalId
             ]
             principalType: 'ServicePrincipal'
           }
@@ -149,7 +149,7 @@ module testDeployment '../../deploy.bicep' = {
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
-          subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+          subnetResourceId: nestedDependencies.outputs.subnetResourceId
         }
       ]
     }
@@ -157,25 +157,25 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
         service: 'namespace'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

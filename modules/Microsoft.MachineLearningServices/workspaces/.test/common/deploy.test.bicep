@@ -16,9 +16,9 @@ param serviceShort string = 'mlswcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -63,9 +63,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    associatedApplicationInsightsResourceId: resourceGroupResources.outputs.applicationInsightsResourceId
-    associatedKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    associatedStorageAccountResourceId: resourceGroupResources.outputs.storageAccountResourceId
+    associatedApplicationInsightsResourceId: nestedDependencies.outputs.applicationInsightsResourceId
+    associatedKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    associatedStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     sku: 'Premium'
     computes: [
       {
@@ -92,7 +92,7 @@ module testDeployment '../../deploy.bicep' = {
         // Must be false if `primaryUserAssignedIdentity` is provided
         systemAssignedIdentity: false
         userAssignedIdentities: {
-          '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+          '${nestedDependencies.outputs.managedIdentityResourceId}': {}
         }
       }
     ]
@@ -105,14 +105,14 @@ module testDeployment '../../deploy.bicep' = {
     discoveryUrl: 'http://example.com'
     imageBuildCompute: 'testcompute'
     lock: 'CanNotDelete'
-    primaryUserAssignedIdentity: resourceGroupResources.outputs.managedIdentityResourceId
+    primaryUserAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     privateEndpoints: [
       {
         service: 'amlworkspace'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
       }
@@ -121,14 +121,14 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: false
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

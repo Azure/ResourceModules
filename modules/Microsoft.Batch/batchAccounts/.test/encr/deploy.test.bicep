@@ -19,9 +19,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -30,9 +30,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
@@ -52,25 +52,25 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
-    cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
-    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+    storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     poolAllocationMode: 'BatchService'
     privateEndpoints: [
       {
         service: 'batchAccount'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
       }
     ]
-    storageAccessIdentity: resourceGroupResources.outputs.managedIdentityResourceId
+    storageAccessIdentity: nestedDependencies.outputs.managedIdentityResourceId
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

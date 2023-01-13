@@ -20,9 +20,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,9 +31,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -90,13 +90,13 @@ module testDeployment '../../deploy.bicep' = {
         name: 'testdb2'
       }
     ]
-    delegatedSubnetResourceId: resourceGroupResources.outputs.subnetResourceId
+    delegatedSubnetResourceId: nestedDependencies.outputs.subnetResourceId
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diagnosticLogsRetentionInDays: 7
     geoRedundantBackup: 'Enabled'
-    privateDnsZoneArmResourceId: resourceGroupResources.outputs.privateDNSResourceId
+    privateDnsZoneArmResourceId: nestedDependencies.outputs.privateDNSResourceId
   }
 }
