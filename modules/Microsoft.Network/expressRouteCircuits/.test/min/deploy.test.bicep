@@ -42,3 +42,4 @@ module testDeployment '../../deploy.bicep' = {
     serviceProviderName: 'Equinix'
   }
 }
+}

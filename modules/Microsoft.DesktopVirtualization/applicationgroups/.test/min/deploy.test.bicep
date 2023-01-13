@@ -49,3 +49,4 @@ module testDeployment '../../deploy.bicep' = {
     hostpoolName: nestedDependencies.outputs.hostPoolName
   }
 }
+}

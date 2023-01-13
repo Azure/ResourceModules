@@ -103,3 +103,4 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
     failureThresholdPercentage: '0.5'
   }
 }
+}

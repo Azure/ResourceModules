@@ -52,3 +52,4 @@ module testDeployment '../../deploy.bicep' = {
     ipAddress: '1.2.3.4'
   }
 }
+}

@@ -99,3 +99,4 @@ module testDeployment '../../deploy.bicep' = {
     ]
   }
 }
+}

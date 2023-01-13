@@ -240,3 +240,4 @@ module testDeployment '../../deploy.bicep' = {
     ]
   }
 }
+}

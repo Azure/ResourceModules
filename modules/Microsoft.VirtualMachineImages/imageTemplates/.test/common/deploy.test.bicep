@@ -104,3 +104,4 @@ module testDeployment '../../deploy.bicep' = {
     vmSize: 'Standard_D2s_v3'
   }
 }
+}

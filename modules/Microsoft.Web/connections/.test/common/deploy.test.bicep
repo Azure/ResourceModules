@@ -62,3 +62,4 @@ module testDeployment '../../deploy.bicep' = {
     ]
   }
 }
+}

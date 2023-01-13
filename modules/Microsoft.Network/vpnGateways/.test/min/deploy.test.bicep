@@ -49,3 +49,4 @@ module testDeployment '../../deploy.bicep' = {
     virtualHubResourceId: nestedDependencies.outputs.virtualHubResourceId
   }
 }
+}

@@ -39,3 +39,4 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     policyAssignmentId: policyAssignment.id
   }
 }
+}

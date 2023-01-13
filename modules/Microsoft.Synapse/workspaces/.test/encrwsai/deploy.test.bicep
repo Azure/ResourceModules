@@ -56,3 +56,4 @@ module testDeployment '../../deploy.bicep' = {
     encryptionActivateWorkspace: true
   }
 }
+}

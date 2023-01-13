@@ -60,3 +60,4 @@ module testDeployment '../../deploy.bicep' = {
     version: '0.5.2'
   }
 }
+}

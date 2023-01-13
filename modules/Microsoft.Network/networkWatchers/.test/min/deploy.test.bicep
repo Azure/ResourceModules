@@ -41,3 +41,4 @@ module testDeployment '../../deploy.bicep' = {
     location: testLocation
   }
 }
+}

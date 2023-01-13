@@ -200,3 +200,4 @@ module testDeployment '../../deploy.bicep' = {
     useResourcePermissions: true
   }
 }
+}

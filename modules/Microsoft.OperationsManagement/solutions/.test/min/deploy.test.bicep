@@ -48,3 +48,4 @@ module testDeployment '../../deploy.bicep' = {
     logAnalyticsWorkspaceName: nestedDependencies.outputs.logAnalyticsWorkspaceName
   }
 }
+}

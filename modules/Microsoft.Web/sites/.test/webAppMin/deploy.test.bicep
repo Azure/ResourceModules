@@ -49,3 +49,4 @@ module testDeployment '../../deploy.bicep' = {
     serverFarmResourceId: nestedDependencies.outputs.serverFarmResourceId
   }
 }
+}

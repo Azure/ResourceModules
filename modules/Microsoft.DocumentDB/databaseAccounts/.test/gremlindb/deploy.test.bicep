@@ -140,3 +140,4 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
   }
 }
+}

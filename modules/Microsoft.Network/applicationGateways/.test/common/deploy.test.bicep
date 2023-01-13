@@ -388,3 +388,4 @@ module testDeployment '../../deploy.bicep' = {
     }
   }
 }
+}

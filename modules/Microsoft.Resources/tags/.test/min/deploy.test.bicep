@@ -15,3 +15,4 @@ module testDeployment '../../deploy.bicep' = {
   params: {
   }
 }
+}

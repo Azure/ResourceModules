@@ -47,3 +47,4 @@ module testDeployment '../../deploy.bicep' = {
     tier: 'Burstable'
   }
 }
+}

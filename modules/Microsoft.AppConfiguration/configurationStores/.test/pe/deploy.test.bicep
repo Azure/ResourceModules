@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(80)
 param resourceGroupName string = 'ms.appconfiguration.configurationstores-${serviceShort}-rg'

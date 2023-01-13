@@ -61,3 +61,4 @@ module testDeployment '../../deploy.bicep' = {
     type: 'Basic'
   }
 }
+}

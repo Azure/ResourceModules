@@ -22,3 +22,4 @@ module testDeployment '../../deploy.bicep' = {
     parentId: last(split(managementGroup().id, '/'))
   }
 }
+}

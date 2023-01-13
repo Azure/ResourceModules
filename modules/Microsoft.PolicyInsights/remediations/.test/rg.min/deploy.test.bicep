@@ -49,3 +49,4 @@ module testDeployment '../../resourceGroup/deploy.bicep' = {
     policyAssignmentId: policyAssignment.id
   }
 }
+}

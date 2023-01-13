@@ -100,3 +100,4 @@ module testDeployment '../../deploy.bicep' = {
     privateDnsZoneArmResourceId: nestedDependencies.outputs.privateDNSResourceId
   }
 }
+}

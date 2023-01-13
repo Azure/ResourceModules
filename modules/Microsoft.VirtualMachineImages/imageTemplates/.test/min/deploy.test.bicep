@@ -63,3 +63,4 @@ module testDeployment '../../deploy.bicep' = {
     userMsiResourceGroup: resourceGroupName
   }
 }
+}

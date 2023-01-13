@@ -46,3 +46,4 @@ module testDeployment '../../deploy.bicep' = {
     sqlAdministratorLogin: 'synwsadmin'
   }
 }
+}

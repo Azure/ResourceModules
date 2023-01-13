@@ -40,3 +40,4 @@ module testDeployment '../../deploy.bicep' = {
     allowBlobPublicAccess: false
   }
 }
+}

@@ -48,3 +48,4 @@ module testDeployment '../../deploy.bicep' = {
     vNetId: nestedDependencies.outputs.virtualNetworkResourceId
   }
 }
+}

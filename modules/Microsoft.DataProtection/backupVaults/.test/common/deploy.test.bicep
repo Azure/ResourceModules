@@ -120,3 +120,4 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
   }
 }
+}

@@ -56,3 +56,4 @@ module testDeployment '../../deploy.bicep' = {
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
   }
 }
+}

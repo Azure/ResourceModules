@@ -43,3 +43,4 @@ module testDeployment '../../deploy.bicep' = {
     localGatewayPublicIpAddress: '8.8.8.8'
   }
 }
+}

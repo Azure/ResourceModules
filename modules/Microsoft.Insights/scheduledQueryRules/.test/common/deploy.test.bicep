@@ -93,3 +93,4 @@ module testDeployment '../../deploy.bicep' = {
     windowSize: 'PT5M'
   }
 }
+}

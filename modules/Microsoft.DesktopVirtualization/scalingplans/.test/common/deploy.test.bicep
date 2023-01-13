@@ -82,3 +82,4 @@ module testDeployment '../../deploy.bicep' = {
     scalingplanDescription: 'My Scaling Plan Description'
   }
 }
+}

@@ -57,3 +57,4 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
   }
 }
+}

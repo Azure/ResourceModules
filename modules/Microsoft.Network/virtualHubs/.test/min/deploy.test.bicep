@@ -49,3 +49,4 @@ module testDeployment '../../deploy.bicep' = {
     virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
   }
 }
+}

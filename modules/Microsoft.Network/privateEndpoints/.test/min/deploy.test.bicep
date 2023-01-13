@@ -53,3 +53,4 @@ module testDeployment '../../deploy.bicep' = {
     subnetResourceId: nestedDependencies.outputs.subnetResourceId
   }
 }
+}

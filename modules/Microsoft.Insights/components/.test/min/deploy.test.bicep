@@ -48,3 +48,4 @@ module testDeployment '../../deploy.bicep' = {
     workspaceResourceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
   }
 }
+}

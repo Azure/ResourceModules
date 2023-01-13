@@ -93,3 +93,4 @@ module testDeployment '../../deploy.bicep' = {
     failureThresholdPercentage: '0.5'
   }
 }
+}

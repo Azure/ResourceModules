@@ -39,3 +39,4 @@ module testDeployment '../../subscription/deploy.bicep' = {
     policyAssignmentId: policyAssignment.id
   }
 }
+}

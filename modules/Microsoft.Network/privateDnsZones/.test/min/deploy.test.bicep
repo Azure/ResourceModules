@@ -39,3 +39,4 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001.com'
   }
 }
+}

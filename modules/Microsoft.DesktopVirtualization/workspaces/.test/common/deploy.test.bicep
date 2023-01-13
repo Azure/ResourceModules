@@ -84,3 +84,4 @@ module testDeployment '../../deploy.bicep' = {
     workspaceFriendlyName: 'My first AVD Workspace'
   }
 }
+}

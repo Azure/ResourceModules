@@ -39,3 +39,4 @@ module testDeployment '../../deploy.bicep' = {
     registrationDescription: 'Managed by Lighthouse'
   }
 }
+}

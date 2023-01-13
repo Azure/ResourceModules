@@ -50,3 +50,4 @@ module testDeployment '../../deploy.bicep' = {
     publisher: 'nonmsTestSolutionPublisher'
   }
 }
+}

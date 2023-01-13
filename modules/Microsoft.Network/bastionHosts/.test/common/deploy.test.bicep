@@ -86,3 +86,4 @@ module testDeployment '../../deploy.bicep' = {
     skuType: 'Standard'
   }
 }
+}

@@ -66,3 +66,4 @@ module testDeployment '../../deploy.bicep' = {
     vpnSharedKey: password
   }
 }
+}
