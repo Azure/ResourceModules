@@ -10,20 +10,22 @@ param managedIdentityName string
 @description('Required. The name of the Server Farm to create.')
 param serverFarmName string
 
+var addressPrefix = '10.0.0.0/16'
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
     location: location
     properties: {
         addressSpace: {
             addressPrefixes: [
-                '10.0.0.0/24'
+                addressPrefix
             ]
         }
         subnets: [
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: '10.0.0.0/24'
+                    addressPrefix: addressPrefix
                 }
             }
         ]

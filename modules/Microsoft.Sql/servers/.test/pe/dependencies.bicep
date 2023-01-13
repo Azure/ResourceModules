@@ -4,21 +4,23 @@ param virtualNetworkName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
+var addressPrefix = '10.0.0.0/16'
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkName
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/16'
+        addressPrefix
       ]
     }
     subnets: [
       {
-        name: 'sxx-subnet-pe-01'
+        name: 'defaultSubnet'
         properties: {
 
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: addressPrefix
         }
       }
     ]

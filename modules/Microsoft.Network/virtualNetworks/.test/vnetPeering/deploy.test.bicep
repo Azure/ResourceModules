@@ -46,11 +46,11 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     addressPrefixes: [
-      '10.0.0.0/24'
+      '10.1.0.0/24'
     ]
     subnets: [
       {
-        addressPrefix: '10.0.0.0/26'
+        addressPrefix: '10.1.0.0/26'
         name: 'GatewaySubnet'
       }
     ]

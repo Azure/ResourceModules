@@ -112,6 +112,7 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     minRecommendedMemory: contains(image, 'minRecommendedMemory') ? image.minRecommendedMemory : 4
     maxRecommendedMemory: contains(image, 'maxRecommendedMemory') ? image.maxRecommendedMemory : 16
     hyperVGeneration: contains(image, 'hyperVGeneration') ? image.hyperVGeneration : 'V1'
+    securityType: contains(image, 'securityType') ? image.securityType : 'Standard'
     imageDefinitionDescription: contains(image, 'imageDefinitionDescription') ? image.imageDefinitionDescription : ''
     eula: contains(image, 'eula') ? image.eula : ''
     privacyStatementUri: contains(image, 'privacyStatementUri') ? image.privacyStatementUri : ''

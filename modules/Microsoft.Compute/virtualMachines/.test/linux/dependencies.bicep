@@ -31,9 +31,8 @@ param sshKeyName string
 @description('Optional. The location to deploy to.')
 param location string = resourceGroup().location
 
-var storageContainerName = 'scripts'
 var storageAccountCSEFileName = 'scriptExtensionMasterInstaller.ps1'
-var backupPolicyName = 'backupPolicy'
+var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkName
@@ -41,14 +40,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.0.0/24'
+        addressPrefix
       ]
     }
     subnets: [
       {
         name: 'defaultSubnet'
         properties: {
-          addressPrefix: '10.0.0.0/24'
+          addressPrefix: addressPrefix
         }
       }
     ]
@@ -109,7 +108,7 @@ resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = 
   }
 
   resource backupPolicy 'backupPolicies@2022-03-01' = {
-    name: backupPolicyName
+    name: 'backupPolicy'
     properties: {
       backupManagementType: 'AzureIaasVM'
       instantRPDetails: {}
@@ -238,7 +237,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     name: 'default'
 
     resource container 'containers@2021-09-01' = {
-      name: storageContainerName
+      name: 'scripts'
     }
   }
 }
@@ -315,7 +314,7 @@ output recoveryServicesVaultName string = recoveryServicesVault.name
 output recoveryServicesVaultResourceGroupName string = resourceGroup().name
 
 @description('The name of the Backup Policy created in the Backup Recovery Vault.')
-output recoveryServicesVaultBackupPolicyName string = backupPolicyName
+output recoveryServicesVaultBackupPolicyName string = recoveryServicesVault::backupPolicy.name
 
 @description('The resource ID of the created Key Vault.')
 output keyVaultResourceId string = keyVault.id
@@ -330,7 +329,7 @@ output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVers
 output storageAccountResourceId string = storageAccount.id
 
 @description('The URL of the Custom Script Extension in the created Storage Account.')
-output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
+output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageAccount::blobService::container.name}/${storageAccountCSEFileName}'
 
 @description('The name of the Custom Script Extension in the created Storage Account.')
 output storageAccountCSEFileName string = storageAccountCSEFileName

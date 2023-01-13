@@ -83,7 +83,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     }
     osType: 'Linux'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     disablePasswordAuthentication: true
     publicKeys: [
       {

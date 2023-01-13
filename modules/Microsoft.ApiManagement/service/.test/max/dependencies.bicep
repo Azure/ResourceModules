@@ -11,8 +11,6 @@ param location string = resourceGroup().location
 @secure()
 param customSecret string = newGuid()
 
-var keyVaultSecretName = 'apimclientsecret'
-
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
   location: location
@@ -36,7 +34,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 
   resource secret 'secrets@2022-07-01' = {
-    name: keyVaultSecretName
+    name: 'apimclientsecret'
     properties: {
       value: customSecret
     }
