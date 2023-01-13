@@ -565,7 +565,7 @@ Module test files follow these general guidelines:
 Test folder guidelines:
 
 - Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
-- Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters are used to deploy the module.
+- Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters, i.e., only required parameters, are used to deploy the module.
 - Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file.
 
 Test file (`deploy.test.bicep`) guidelines:
@@ -574,7 +574,7 @@ Test file (`deploy.test.bicep`) guidelines:
 - Parameters
   - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements.
     - As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`).
-    - For the substring we recommend to take the first character any and upper-case character from the resource type identifier amd combine them to one string. Following you can find a few examples for reference:
+    - For the substring, we recommend to take the first character and subsequent upper-case characters from the resource type identifier and combine them into one string. Following you can find a few examples for reference:
       - `Microsoft.DBforPostgreSQL/flexibleServers` with a test folder `common` could be: `dfpsfscom`
       - `Microsoft.Storage/storageAccounts` with a test folder `min` could be: `ssamin`
       > **Note:** If the combination of the `servicesShort` with the rest of a resource name becomes too long, it may be necessary to bend the above recommendations and shorten the name. This can especially happen when deploying resources such as Virtual Machines or Storage Accounts that only allow comparatively short names.
@@ -588,83 +588,7 @@ Test file (`deploy.test.bicep`) guidelines:
     <details>
     <summary>Example (for a resource group level resource)</summary>
 
-    ```Bicep
-    targetScope = 'subscription'
-
-    // ========== //
-    // Parameters //
-    // ========== //
-    @description('Optional. The name of the resource group to deploy for testing purposes')
-    @maxLength(90)
-    param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
-
-    @description('Optional. The location to deploy resources to')
-    param location string = deployment().location
-
-    @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-    param serviceShort string = 'asscom'
-
-    // =========== //
-    // Dependencies //
-    // =========== //
-
-    // General resources
-    // =================
-    resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-      name: resourceGroupName
-      location: location
-    }
-
-    module resourceGroupResources 'dependencies.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-nestedDependencies'
-      params: {
-        managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-      }
-    }
-
-    // Diagnostics
-    // ===========
-    module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-      params: {
-        storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-        logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-        eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-        eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-        location: location
-      }
-    }
-
-    // ============== //
-    // Test Execution //
-    // ============== //
-
-    module testDeployment '../../deploy.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-      params: {
-        name: '<<namePrefix>>az${serviceShort}'
-        lock: 'CanNotDelete'
-        skuName: 'S0'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-        diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-      }
-    }
-    ```
+    https://github.com/Azure/ResourceModules/blob/8edc3fb94e43a08f302a14e4bf0cf560f8c39509/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep?plain=1#L1-L79
 
     </details>
 
