@@ -441,7 +441,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfacom'
+  name: '${uniqueString(deployment().name, location)}-test-wsfacom'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -740,7 +740,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfamin'
+  name: '${uniqueString(deployment().name, location)}-test-wsfamin'
   params: {
     // Required parameters
     kind: 'functionapp'
@@ -801,7 +801,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswa'
+  name: '${uniqueString(deployment().name, location)}-test-wswa'
   params: {
     // Required parameters
     kind: 'app'
@@ -954,7 +954,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswamin'
+  name: '${uniqueString(deployment().name, location)}-test-wswamin'
   params: {
     // Required parameters
     kind: 'app'
@@ -1007,7 +1007,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 
 ```bicep
 module sites './Microsoft.Web/sites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wswa'
+  name: '${uniqueString(deployment().name, location)}-test-wswa'
   params: {
     // Required parameters
     kind: 'app'

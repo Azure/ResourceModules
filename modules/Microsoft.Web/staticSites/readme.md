@@ -359,7 +359,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsscom'
+  name: '${uniqueString(deployment().name, location)}-test-wsscom'
   params: {
     // Required parameters
     name: '<<namePrefix>>wsscom001'
@@ -508,7 +508,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 
 ```bicep
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wssmin'
+  name: '${uniqueString(deployment().name, location)}-test-wssmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>wssmin001'

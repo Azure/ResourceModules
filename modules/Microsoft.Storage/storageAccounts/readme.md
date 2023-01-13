@@ -417,7 +417,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssacom'
+  name: '${uniqueString(deployment().name, location)}-test-ssacom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssacom001'
@@ -834,7 +834,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsencr'
+  name: '${uniqueString(deployment().name, location)}-test-stsencr'
   params: {
     // Required parameters
     name: '<<namePrefix>>stsencr001'
@@ -957,7 +957,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssamin'
+  name: '${uniqueString(deployment().name, location)}-test-ssamin'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssamin001'
@@ -1006,7 +1006,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssanfs'
+  name: '${uniqueString(deployment().name, location)}-test-ssanfs'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssanfs001'
@@ -1141,7 +1141,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssav1'
+  name: '${uniqueString(deployment().name, location)}-test-ssav1'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssav1001'

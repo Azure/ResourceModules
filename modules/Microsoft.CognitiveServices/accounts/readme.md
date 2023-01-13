@@ -455,7 +455,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csacom'
+  name: '${uniqueString(deployment().name, location)}-test-csacom'
   params: {
     // Required parameters
     kind: 'Face'
@@ -622,7 +622,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csaencr'
+  name: '${uniqueString(deployment().name, location)}-test-csaencr'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -699,7 +699,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csamin'
+  name: '${uniqueString(deployment().name, location)}-test-csamin'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -748,7 +748,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csaspeech'
+  name: '${uniqueString(deployment().name, location)}-test-csaspeech'
   params: {
     // Required parameters
     kind: 'SpeechServices'

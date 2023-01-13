@@ -174,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rrgcom'
+  name: '${uniqueString(deployment().name, location)}-test-rrgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>rrgcom001'

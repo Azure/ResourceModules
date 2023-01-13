@@ -369,7 +369,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvncom'
+  name: '${uniqueString(deployment().name, location)}-test-nvncom'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -572,7 +572,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvnmin'
+  name: '${uniqueString(deployment().name, location)}-test-nvnmin'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -625,7 +625,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvnpeer'
+  name: '${uniqueString(deployment().name, location)}-test-nvnpeer'
   params: {
     // Required parameters
     addressPrefixes: [

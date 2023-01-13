@@ -183,7 +183,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nngcom'
+  name: '${uniqueString(deployment().name, location)}-test-nngcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nngcom001'

@@ -374,7 +374,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlsadmin'
+  name: '${uniqueString(deployment().name, location)}-test-sqlsadmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sqlsadmin'
@@ -435,7 +435,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlscom'
+  name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
     name: '<<namePrefix>>-sqlscom'
     administratorLogin: 'adminUserName'
@@ -694,7 +694,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlspe'
+  name: '${uniqueString(deployment().name, location)}-test-sqlspe'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sqlspe'

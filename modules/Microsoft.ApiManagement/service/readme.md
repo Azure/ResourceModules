@@ -76,7 +76,7 @@ This module deploys an API management service.
 | `newGuidValue` | string | `[newGuid()]` |  | Necessary to create a new GUID. |
 | `notificationSenderEmail` | string | `'apimgmt-noreply@mail.windowsazure.com'` |  | The notification sender email address for the service. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Policies. |
-| `portalSettings` | _[portalSettings](portalSettings/readme.md)_ array | `[]` |  | Portal settings. |
+| `portalSettings` | _[portalsettings](portalsettings/readme.md)_ array | `[]` |  | Portal settings. |
 | `products` | _[products](products/readme.md)_ array | `[]` |  | Products. |
 | `restore` | bool | `False` |  | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -292,7 +292,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apiscom'
+  name: '${uniqueString(deployment().name, location)}-test-apiscom'
   params: {
     // Required parameters
     name: '<<namePrefix>>apiscom001'
@@ -421,7 +421,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismax'
+  name: '${uniqueString(deployment().name, location)}-test-apismax'
   params: {
     // Required parameters
     name: '<<namePrefix>>apismax001'
@@ -760,7 +760,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismin'
+  name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
     name: '<<namePrefix>>apismin001'

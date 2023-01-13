@@ -365,7 +365,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crcom'
+  name: '${uniqueString(deployment().name, location)}-test-crcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>crcom001'
@@ -502,7 +502,7 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
 
 ```bicep
 module redis './Microsoft.Cache/redis/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crmin'
+  name: '${uniqueString(deployment().name, location)}-test-crmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>crmin001'
