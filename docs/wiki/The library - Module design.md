@@ -254,7 +254,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
 
 ### Diagnostic Settings
 
-The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed.  However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
+The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed. However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
 
 <details>
 <summary>Details</summary>
@@ -463,7 +463,7 @@ Within a bicep file, use the following conventions:
 
 ## Modules
 
-- Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
+- Module symbolic names are in camel*Snake_Case, following the schema `<mainResourceType>*<referencedResourceType>`e.g.,`storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
 - Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
 - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
   > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20Get%20module%20cross-references).
@@ -579,83 +579,83 @@ In addition, they follow these file-type-specific guidelines:
     <details>
     <summary>Example (for a resource group level resource)</summary>
 
-    ```Bicep
-    targetScope = 'subscription'
+  ```Bicep
+  targetScope = 'subscription'
 
-    // ========== //
-    // Parameters //
-    // ========== //
-    @description('Optional. The name of the resource group to deploy for testing purposes')
-    @maxLength(90)
-    param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
+  // ========== //
+  // Parameters //
+  // ========== //
+  @description('Optional. The name of the resource group to deploy for testing purposes')
+  @maxLength(90)
+  param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
 
-    @description('Optional. The location to deploy resources to')
-    param location string = deployment().location
+  @description('Optional. The location to deploy resources to')
+  param location string = deployment().location
 
-    @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-    param serviceShort string = 'asscom'
+  @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
+  param serviceShort string = 'asscom'
 
-    // =========== //
-    // Deployments //
-    // =========== //
+  // =========== //
+  // Dependencies //
+  // =========== //
 
-    // General resources
-    // =================
-    resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-      name: resourceGroupName
+  // General resources
+  // =================
+  resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+    name: resourceGroupName
+    location: location
+  }
+
+  module resourceGroupResources 'dependencies.bicep' = {
+    scope: resourceGroup
+    name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+    params: {
+      managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    }
+  }
+
+  // Diagnostics
+  // ===========
+  module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+    scope: resourceGroup
+    name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
+    params: {
+      storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+      logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+      eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+      eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
       location: location
     }
+  }
 
-    module resourceGroupResources 'dependencies.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-nestedDependencies'
-      params: {
-        managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-      }
+  // ============== //
+  // Test Execution //
+  // ============== //
+
+  module testDeployment '../../deploy.bicep' = {
+    scope: resourceGroup
+    name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+    params: {
+      name: '<<namePrefix>>az${serviceShort}'
+      lock: 'CanNotDelete'
+      skuName: 'S0'
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            resourceGroupResources.outputs.managedIdentityPrincipalId
+          ]
+          principalType: 'ServicePrincipal'
+        }
+      ]
+      diagnosticLogsRetentionInDays: 7
+      diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+      diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+      diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+      diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     }
-
-    // Diagnostics
-    // ===========
-    module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-      params: {
-        storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-        logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-        eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-        eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-        location: location
-      }
-    }
-
-    // ============== //
-    // Test Execution //
-    // ============== //
-
-    module testDeployment '../../deploy.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-      params: {
-        name: '<<namePrefix>>az${serviceShort}'
-        lock: 'CanNotDelete'
-        skuName: 'S0'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-        diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-      }
-    }
-    ```
+  }
+  ```
 
     </details>
 
@@ -695,4 +695,4 @@ When consuming the modules outside of CARML's pipelines you can either
 
 Though similar in principles, this approach is not to be confused and does not conflict with the usage of CUA IDs that are used to track Customer Usage Attribution of Azure marketplace solutions (partner solutions). The GUID-based telemetry approach described here can coexist and can be used side-by-side with CUA IDs. If you have any partner or customer scenarios that require the addition of CUA IDs, you can customize the modules of this library by adding the required CUA ID deployment while keeping the built-in telemetry solution.
 
-> **Note:** *If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix).*
+> **Note:** _If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix)._

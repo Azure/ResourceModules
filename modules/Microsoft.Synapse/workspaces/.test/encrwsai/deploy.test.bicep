@@ -16,9 +16,9 @@ param serviceShort string = 'swensa'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
