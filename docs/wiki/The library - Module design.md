@@ -670,7 +670,7 @@ Test file (`deploy.test.bicep`) guidelines:
 
 Dependency file (`dependencies.bicep`) guidelines:
 
-- The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
+- The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
 
 # Telemetry
 
