@@ -585,18 +585,16 @@ Test file (`deploy.test.bicep`) guidelines:
 - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
 - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
-    <details>
-    <summary>Example (for a resource group level resource)</summary>
+> :scroll: [Example of test file](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep)
 
-    https://github.com/Azure/ResourceModules/blob/8edc3fb94e43a08f302a14e4bf0cf560f8c39509/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep?plain=1#L1-L79
-
-    </details>
 
 Dependency file (`dependencies.bicep`) guidelines:
 
 - The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
 - Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
-  - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time. You can find a good example of how this can be implemented in the `encr` test of the [Batch-BatchAccounts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr) module.
+  - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
+
+    > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
 
 # Telemetry
 
