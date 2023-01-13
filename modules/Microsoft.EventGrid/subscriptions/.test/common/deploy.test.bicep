@@ -16,9 +16,9 @@ param serviceShort string = 'egescom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -63,11 +63,11 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    eventGridTopicName: last(split(resourceGroupResources.outputs.eventTopicId, '/'))
+    eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicId, '/'))
     destination: {
       endpointType: 'ServiceBusTopic'
       properties: {
-        resourceId: resourceGroupResources.outputs.serviceBusTopicId
+        resourceId: nestedDependencies.outputs.serviceBusTopicId
       }
     }
   }
