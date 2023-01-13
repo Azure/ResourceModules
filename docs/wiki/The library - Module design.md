@@ -581,7 +581,7 @@ Test file (`deploy.test.bicep`) guidelines:
   - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
   - Each file should also provide a `location` parameter that may default to the deployments default location
 - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
-- Further, for any test file, the usage of variables should be reduced to the absolute minimum. In other words: You should only use variables if you must use them in more than one place. The idea is to keep the test files as simple as possible
+- Further, for any test file (including the `dependencies.bicep` file), the usage of variables should be reduced to the absolute minimum. In other words: You should only use variables if you must use them in more than one place. The idea is to keep the test files as simple as possible
 - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
 - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
@@ -672,7 +672,7 @@ Dependency file (`dependencies.bicep`) guidelines:
 
 - The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
 - Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
-  - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time. You can find a good example of how this can be implemented in the `encr` test of the Batch-BatchAccounts module.
+  - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time. You can find a good example of how this can be implemented in the `encr` test of the [Batch-BatchAccounts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr) module.
 
 # Telemetry
 
