@@ -70,14 +70,5 @@ module testDeployment '../../deploy.bicep' = {
         resourceId: resourceGroupResources.outputs.serviceBusTopicId
       }
     }
-    deliveryWithResourceIdentity: {
-      endpointType: 'ServiceBusTopic'
-      properties: {
-        resourceId: resourceGroupResources.outputs.serviceBusTopicId
-        identity: {
-          type: 'SystemAssigned'
-        }
-      }
-    }
   }
 }
