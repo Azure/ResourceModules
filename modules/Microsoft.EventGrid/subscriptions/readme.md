@@ -82,6 +82,15 @@ module subscriptions './Microsoft.EventGrid/subscriptions/deploy.bicep' = {
     eventGridTopicName: '<eventGridTopicName>'
     name: '<<namePrefix>>egescom001'
     // Non-required parameters
+    deliveryWithResourceIdentity: {
+      endpointType: 'ServiceBusTopic'
+      properties: {
+        identity: {
+          type: 'SystemAssigned'
+        }
+        resourceId: '<resourceId>'
+      }
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -115,6 +124,17 @@ module subscriptions './Microsoft.EventGrid/subscriptions/deploy.bicep' = {
       "value": "<<namePrefix>>egescom001"
     },
     // Non-required parameters
+    "deliveryWithResourceIdentity": {
+      "value": {
+        "endpointType": "ServiceBusTopic",
+        "properties": {
+          "identity": {
+            "type": "SystemAssigned"
+          },
+          "resourceId": "<resourceId>"
+        }
+      }
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
