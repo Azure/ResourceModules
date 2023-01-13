@@ -1,4 +1,4 @@
-# EventGrid EventSubscriptions `[Microsoft.EventGrid/eventSubscriptions]`
+# EventGrid EventSubscriptions `[Microsoft.EventGrid/subscriptions]`
 
 This module deploys EventGrid EventSubscriptions.
 
@@ -69,27 +69,20 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egtcom'
+module subscriptions './Microsoft.EventGrid/subscriptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-egescom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egtcom001'
-    // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
+    destination: {
+      endpointType: 'ServiceBusTopic'
+      properties: {
+        resourceId: '<resourceId>'
       }
-    ]
+    }
+    eventGridTopicName: '<eventGridTopicName>'
+    name: '<<namePrefix>>egescom001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -107,38 +100,23 @@ module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "destination": {
+      "value": {
+        "endpointType": "ServiceBusTopic",
+        "properties": {
+          "resourceId": "<resourceId>"
+        }
+      }
+    },
+    "eventGridTopicName": {
+      "value": "<eventGridTopicName>"
+    },
     "name": {
-      "value": "<<namePrefix>>egtcom001"
+      "value": "<<namePrefix>>egescom001"
     },
     // Non-required parameters
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     }
   }
 }
