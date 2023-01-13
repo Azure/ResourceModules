@@ -2023,7 +2023,7 @@
       "2021-06-01",
       "2022-06-01"
     ],
-    "policyDefinitions": [
+    "policydefinitions": [
       "2015-10-01-preview",
       "2015-11-01",
       "2016-04-01",
@@ -4024,8 +4024,7 @@
       "2020-06-02",
       "2021-03-01",
       "2021-05-01-preview",
-      "2022-06-15-preview",
-      "2022-09-15"
+      "2022-06-15-preview"
     ],
     "botServices/channels": [
       "2017-12-01",
@@ -4033,8 +4032,7 @@
       "2020-06-02",
       "2021-03-01",
       "2021-05-01-preview",
-      "2022-06-15-preview",
-      "2022-09-15"
+      "2022-06-15-preview"
     ],
     "botServices/connections": [
       "2017-12-01",
@@ -4042,8 +4040,7 @@
       "2020-06-02",
       "2021-03-01",
       "2021-05-01-preview",
-      "2022-06-15-preview",
-      "2022-09-15"
+      "2022-06-15-preview"
     ],
     "botServices/privateEndpointConnectionProxies": [
       "2021-03-01",
@@ -4066,8 +4063,7 @@
       "2020-06-02",
       "2021-03-01",
       "2021-05-01-preview",
-      "2022-06-15-preview",
-      "2022-09-15"
+      "2022-06-15-preview"
     ],
     "enterpriseChannels": [
       "2018-07-12"
@@ -7822,8 +7818,7 @@
       "2021-09-01",
       "2021-12-01-preview",
       "2022-02-01-preview",
-      "2022-12-01",
-      "2023-01-01-preview"
+      "2022-12-01"
     ],
     "registries/agentPools": [
       "2019-06-01-preview"
@@ -7860,11 +7855,7 @@
       "2021-06-01-preview",
       "2021-08-01-preview",
       "2021-12-01-preview",
-      "2022-02-01-preview",
-      "2023-01-01-preview"
-    ],
-    "registries/credentialSets": [
-      "2023-01-01-preview"
+      "2022-02-01-preview"
     ],
     "registries/connectedRegistries/deactivate": [
       "2020-11-01-preview",
@@ -7883,8 +7874,7 @@
       "2021-06-01-preview",
       "2021-08-01-preview",
       "2021-12-01-preview",
-      "2022-02-01-preview",
-      "2023-01-01-preview"
+      "2022-02-01-preview"
     ],
     "registries/generateCredentials": [
       "2019-05-01-preview",
@@ -7917,8 +7907,7 @@
       "2021-06-01-preview",
       "2021-08-01-preview",
       "2021-12-01-preview",
-      "2022-02-01-preview",
-      "2023-01-01-preview"
+      "2022-02-01-preview"
     ],
     "registries/listBuildSourceUploadUrl": [
       "2018-09-01",
@@ -7957,8 +7946,7 @@
       "2021-06-01-preview",
       "2021-08-01-preview",
       "2021-12-01-preview",
-      "2022-02-01-preview",
-      "2023-01-01-preview"
+      "2022-02-01-preview"
     ],
     "registries/privateEndpointConnectionProxies": [
       "2019-12-01-preview",
@@ -7986,8 +7974,7 @@
       "2021-09-01",
       "2021-12-01-preview",
       "2022-02-01-preview",
-      "2022-12-01",
-      "2023-01-01-preview"
+      "2022-12-01"
     ],
     "registries/privateLinkResources": [
       "2019-12-01-preview",
@@ -8027,8 +8014,7 @@
       "2021-09-01",
       "2021-12-01-preview",
       "2022-02-01-preview",
-      "2022-12-01",
-      "2023-01-01-preview"
+      "2022-12-01"
     ],
     "registries/runs": [
       "2018-09-01",
@@ -8057,8 +8043,7 @@
       "2021-08-01-preview",
       "2021-12-01-preview",
       "2022-02-01-preview",
-      "2022-12-01",
-      "2023-01-01-preview"
+      "2022-12-01"
     ],
     "registries/taskRuns": [
       "2019-06-01-preview"
@@ -8083,8 +8068,7 @@
       "2021-08-01-preview",
       "2021-12-01-preview",
       "2022-02-01-preview",
-      "2022-12-01",
-      "2023-01-01-preview"
+      "2022-12-01"
     ],
     "registries/updatePolicies": [
       "2017-10-01"
