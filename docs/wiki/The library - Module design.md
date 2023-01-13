@@ -671,6 +671,8 @@ Test file (`deploy.test.bicep`) guidelines:
 Dependency file (`dependencies.bicep`) guidelines:
 
 - The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
+- Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
+  - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time. You can find a good example of how this can be implemented in the `encr` test of the Batch-BatchAccounts module.
 
 # Telemetry
 
