@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -108,6 +108,6 @@ module testDeployment '../../subscription/deploy.bicep' = {
       }
     ]
     subscriptionId: subscription().subscriptionId
-    userAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
+    userAssignedIdentityId: nestedDependencies.outputs.managedIdentityResourceId
   }
 }

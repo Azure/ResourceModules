@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -46,17 +46,17 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    virtualNetworkId: resourceGroupResources.outputs.virtualNetworkId
+    virtualNetworkId: nestedDependencies.outputs.virtualNetworkId
     inboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsin-x-001'
-        subnetId: resourceGroupResources.outputs.subnetResourceId_dnsIn
+        subnetId: nestedDependencies.outputs.subnetResourceId_dnsIn
       }
     ]
     outboundEndpoints: [
       {
         name: '<<namePrefix>>-az-pdnsout-x-001'
-        subnetId: resourceGroupResources.outputs.subnetResourceId_dnsOut
+        subnetId: nestedDependencies.outputs.subnetResourceId_dnsOut
       }
     ]
   }

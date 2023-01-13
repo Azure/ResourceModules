@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -47,12 +47,12 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageAccountName: resourceGroupResources.outputs.storageAccountName
-    defaultDataLakeStorageFilesystem: resourceGroupResources.outputs.storageContainerName
+    defaultDataLakeStorageAccountName: nestedDependencies.outputs.storageAccountName
+    defaultDataLakeStorageFilesystem: nestedDependencies.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
-    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
-    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
   }
 }

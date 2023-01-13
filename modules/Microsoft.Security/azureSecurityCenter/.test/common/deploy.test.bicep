@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -44,7 +44,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     scope: '/subscriptions/${subscription().subscriptionId}'
-    workspaceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
+    workspaceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
     securityContactProperties: {
       alertNotifications: 'Off'
       alertsToAdmins: 'Off'

@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -72,7 +72,7 @@ module testDeployment '../../deploy.bicep' = {
         endpoints: [
           {
             name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
-            resourceId: resourceGroupResources.outputs.virtualMachineResourceId
+            resourceId: nestedDependencies.outputs.virtualMachineResourceId
             type: 'AzureVM'
           }
           {
@@ -123,14 +123,14 @@ module testDeployment '../../deploy.bicep' = {
       {
         enabled: false
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.firstNetworkSecurityGroupResourceId
+        targetResourceId: nestedDependencies.outputs.firstNetworkSecurityGroupResourceId
       }
       {
         formatVersion: 1
         name: '<<namePrefix>>-${serviceShort}-fl-001'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.secondNetworkSecurityGroupResourceId
+        targetResourceId: nestedDependencies.outputs.secondNetworkSecurityGroupResourceId
         trafficAnalyticsInterval: 10
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
@@ -139,7 +139,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }

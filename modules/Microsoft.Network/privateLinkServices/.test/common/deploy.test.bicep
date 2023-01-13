@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -55,14 +55,14 @@ module testDeployment '../../deploy.bicep' = {
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: resourceGroupResources.outputs.subnetResourceId
+            id: nestedDependencies.outputs.subnetResourceId
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: resourceGroupResources.outputs.loadBalancerFrontendIpConfigurationResourceId
+        id: nestedDependencies.outputs.loadBalancerFrontendIpConfigurationResourceId
       }
     ]
     autoApproval: {
@@ -83,7 +83,7 @@ module testDeployment '../../deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
       }

@@ -33,7 +33,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -49,7 +49,7 @@ resource msi_managedIdentityOperatorRoleAssignment 'Microsoft.Authorization/role
   name: guid(subscription().id, 'ManagedIdentityContributor', '<<namePrefix>>')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f1a07417-d97a-45cb-824c-7a7467783830') // Managed Identity Operator
-    principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+    principalId: nestedDependencies.outputs.managedIdentityPrincipalId
     principalType: 'ServicePrincipal'
   }
 }
@@ -86,20 +86,20 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
-    sigImageDefinitionId: resourceGroupResources.outputs.sigImageDefinitionId
+    sigImageDefinitionId: nestedDependencies.outputs.sigImageDefinitionId
     sigImageVersion: sigImageVersion
-    subnetId: resourceGroupResources.outputs.subnetId
+    subnetId: nestedDependencies.outputs.subnetId
     stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
     unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
     userAssignedIdentities: [
-      resourceGroupResources.outputs.managedIdentityResourceId
+      nestedDependencies.outputs.managedIdentityResourceId
     ]
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
+    userMsiName: nestedDependencies.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }

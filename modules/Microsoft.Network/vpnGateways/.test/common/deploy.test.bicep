@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    virtualHubResourceId: resourceGroupResources.outputs.virtualHubResourceId
+    virtualHubResourceId: nestedDependencies.outputs.virtualHubResourceId
     bgpSettings: {
       asn: 65515
       peerWeight: 0
@@ -55,8 +55,8 @@ module testDeployment '../../deploy.bicep' = {
       {
         connectionBandwidth: 100
         enableBgp: false
-        name: 'Connection-${last(split(resourceGroupResources.outputs.vpnSiteResourceId, '/'))}'
-        remoteVpnSiteResourceId: resourceGroupResources.outputs.vpnSiteResourceId
+        name: 'Connection-${last(split(nestedDependencies.outputs.vpnSiteResourceId, '/'))}'
+        remoteVpnSiteResourceId: nestedDependencies.outputs.vpnSiteResourceId
         enableInternetSecurity: true
         vpnConnectionProtocolType: 'IKEv2'
         enableRateLimiting: false

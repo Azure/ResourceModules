@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -45,7 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'AzureAutomation'
-    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsWorkspaceName
+    logAnalyticsWorkspaceName: nestedDependencies.outputs.logAnalyticsWorkspaceName
     product: 'OMSGallery'
     publisher: 'Microsoft'
   }

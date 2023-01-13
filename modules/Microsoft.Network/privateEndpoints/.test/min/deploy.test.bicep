@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -49,7 +49,7 @@ module testDeployment '../../deploy.bicep' = {
     groupIds: [
       'vault'
     ]
-    serviceResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+    serviceResourceId: nestedDependencies.outputs.keyVaultResourceId
+    subnetResourceId: nestedDependencies.outputs.subnetResourceId
   }
 }

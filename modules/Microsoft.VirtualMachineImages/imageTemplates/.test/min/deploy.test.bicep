@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -59,7 +59,7 @@ module testDeployment '../../deploy.bicep' = {
       version: 'latest'
     }
     managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
-    userMsiName: resourceGroupResources.outputs.managedIdentityName
+    userMsiName: nestedDependencies.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
   }
 }

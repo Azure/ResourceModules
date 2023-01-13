@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -47,9 +47,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    associatedApplicationInsightsResourceId: resourceGroupResources.outputs.applicationInsightsResourceId
-    associatedKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    associatedStorageAccountResourceId: resourceGroupResources.outputs.storageAccountResourceId
+    associatedApplicationInsightsResourceId: nestedDependencies.outputs.applicationInsightsResourceId
+    associatedKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    associatedStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     sku: 'Basic'
     systemAssignedIdentity: true
   }

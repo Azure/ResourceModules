@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
@@ -72,7 +72,7 @@ module testDeployment '../../deploy.bicep' = {
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: resourceGroupResources.outputs.subnetResourceId
+                id: nestedDependencies.outputs.subnetResourceId
               }
             }
           }
@@ -82,7 +82,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
+        keyData: nestedDependencies.outputs.SSHKeyPublicKey
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]

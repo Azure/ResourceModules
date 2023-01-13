@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
     administrators: {
       azureADOnlyAuthentication: true
       login: 'myspn'
-      sid: resourceGroupResources.outputs.managedIdentityPrincipalId
+      sid: nestedDependencies.outputs.managedIdentityPrincipalId
       principalType: 'Application'
       tenantId: tenant().tenantId
     }
