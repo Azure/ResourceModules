@@ -588,7 +588,7 @@ Test file (`deploy.test.bicep`) guidelines:
     <details>
     <summary>Example (for a resource group level resource)</summary>
 
-    https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep?plain=1
+    https://github.com/Azure/ResourceModules/blob/8edc3fb94e43a08f302a14e4bf0cf560f8c39509/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep?plain=1#L1-L79
 
     </details>
 
