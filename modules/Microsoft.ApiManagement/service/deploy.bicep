@@ -376,7 +376,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
   }
 }]
 
-module portalSettings_resource 'portalSettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
+module portalSettings_resource 'portalSettings/ddeploy.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
