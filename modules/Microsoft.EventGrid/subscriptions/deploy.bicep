@@ -57,15 +57,15 @@ resource eventSubscription 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' =
   name: name
   scope: eventGridTopic
   properties: {
-    deadLetterDestination: !empty(deadLetterDestination) ? deadLetterDestination : {}
-    deadLetterWithResourceIdentity: !empty(deadLetterWithResourceIdentity) ? deadLetterWithResourceIdentity : {}
-    deliveryWithResourceIdentity: !empty(deliveryWithResourceIdentity) ? deliveryWithResourceIdentity : {}
+    deadLetterDestination: !empty(deadLetterDestination) ? deadLetterDestination : null
+    deadLetterWithResourceIdentity: !empty(deadLetterWithResourceIdentity) ? deadLetterWithResourceIdentity : null
+    deliveryWithResourceIdentity: !empty(deliveryWithResourceIdentity) ? deliveryWithResourceIdentity : null
     destination: destination
     eventDeliverySchema: eventDeliverySchema
     expirationTimeUtc: !empty(expirationTimeUtc) ? expirationTimeUtc : ''
     filter: !empty(filter) ? filter : {}
     labels: !empty(labels) ? labels : []
-    retryPolicy: !empty(retryPolicy) ? retryPolicy : {}
+    retryPolicy: !empty(retryPolicy) ? retryPolicy : null
   }
 }
 
