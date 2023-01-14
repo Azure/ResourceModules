@@ -16,9 +16,9 @@ param serviceShort string = 'nvnpeer'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
@@ -46,11 +46,11 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     addressPrefixes: [
-      '10.0.0.0/24'
+      '10.1.0.0/24'
     ]
     subnets: [
       {
-        addressPrefix: '10.0.0.0/26'
+        addressPrefix: '10.1.0.0/26'
         name: 'GatewaySubnet'
       }
     ]
@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
         remotePeeringAllowVirtualNetworkAccess: true
         remotePeeringEnabled: true
         remotePeeringName: 'customName'
-        remoteVirtualNetworkId: resourceGroupResources.outputs.virtualNetworkResourceId
+        remoteVirtualNetworkId: nestedDependencies.outputs.virtualNetworkResourceId
         useRemoteGateways: false
       }
     ]

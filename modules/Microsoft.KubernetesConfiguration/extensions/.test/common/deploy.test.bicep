@@ -16,9 +16,9 @@ param serviceShort string = 'kcecom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     clusterName: 'dep-<<namePrefix>>-aks-${serviceShort}'
     clusterNodeResourceGroupName: 'nodes-${resourceGroupName}'
@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    clusterName: resourceGroupResources.outputs.clusterName
+    clusterName: nestedDependencies.outputs.clusterName
     extensionType: 'microsoft.flux'
     configurationSettings: {
       'image-automation-controller.enabled': 'false'

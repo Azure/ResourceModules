@@ -4,7 +4,7 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
-@description('Optional. The name of the resource group to deploy for a testing purposes.')
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.compute.images-${serviceShort}-rg'
 
@@ -17,9 +17,9 @@ param serviceShort string = 'cdimp'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -28,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
@@ -55,12 +55,12 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
-    sourceUri: resourceGroupResources.outputs.vhdUri
-    storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
+    sourceUri: nestedDependencies.outputs.vhdUri
+    storageAccountId: nestedDependencies.outputs.storageAccountResourceId
   }
 }

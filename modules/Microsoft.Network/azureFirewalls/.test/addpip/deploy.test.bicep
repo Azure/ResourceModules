@@ -16,9 +16,9 @@ param serviceShort string = 'nafaddpip'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     publicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}'
@@ -46,11 +46,11 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    vNetId: resourceGroupResources.outputs.virtualNetworkResourceId
+    vNetId: nestedDependencies.outputs.virtualNetworkResourceId
     additionalPublicIpConfigurations: [
       {
         name: 'ipConfig01'
-        publicIPAddressResourceId: resourceGroupResources.outputs.publicIPResourceId
+        publicIPAddressResourceId: nestedDependencies.outputs.publicIPResourceId
       }
     ]
   }

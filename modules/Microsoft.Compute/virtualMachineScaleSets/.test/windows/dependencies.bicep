@@ -19,8 +19,8 @@ param managedIdentityName string
 @description('Required. The name of the Proximity Placement Group to create.')
 param proximityPlacementGroupName string
 
-var storageContainerName = 'scripts'
 var storageAccountCSEFileName = 'scriptExtensionMasterInstaller.ps1'
+var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     name: virtualNetworkName
@@ -28,14 +28,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-                '10.0.0.0/24'
+                addressPrefix
             ]
         }
         subnets: [
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: '10.0.0.0/24'
+                    addressPrefix: addressPrefix
                 }
             }
         ]
@@ -104,7 +104,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         name: 'default'
 
         resource container 'containers@2021-09-01' = {
-            name: storageContainerName
+            name: 'scripts'
         }
     }
 }
@@ -156,8 +156,8 @@ output keyVaultEncryptionKeyUrl string = keyVault::key.properties.keyUriWithVers
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
 
-@description('The URL of the Custom Script Extension in the created Storage Account.')
-output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageContainerName}/${storageAccountCSEFileName}'
+@description('The URL of the Custom Script Extension in the created Storage Account')
+output storageAccountCSEFileUrl string = '${storageAccount.properties.primaryEndpoints.blob}${storageAccount::blobService::container.name}/${storageAccountCSEFileName}'
 
 @description('The name of the Custom Script Extension in the created Storage Account.')
 output storageAccountCSEFileName string = storageAccountCSEFileName

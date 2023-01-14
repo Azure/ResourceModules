@@ -16,9 +16,9 @@ param serviceShort string = 'nnsgcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
@@ -70,7 +70,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -123,7 +123,7 @@ module testDeployment '../../deploy.bicep' = {
           description: 'Allow inbound access on TCP 8082'
           destinationApplicationSecurityGroups: [
             {
-              id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+              id: nestedDependencies.outputs.applicationSecurityGroupResourceId
             }
           ]
           destinationPortRange: '8082'
@@ -132,7 +132,7 @@ module testDeployment '../../deploy.bicep' = {
           protocol: '*'
           sourceApplicationSecurityGroups: [
             {
-              id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+              id: nestedDependencies.outputs.applicationSecurityGroupResourceId
             }
           ]
           sourcePortRange: '*'

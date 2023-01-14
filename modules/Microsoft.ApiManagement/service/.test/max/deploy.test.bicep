@@ -16,9 +16,9 @@ param serviceShort string = 'apismax'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
@@ -81,10 +81,10 @@ module testDeployment '../../deploy.bicep' = {
     authorizationServers: [
       {
         authorizationEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
-        clientCredentialsKeyVaultId: resourceGroupResources.outputs.keyVaultResourceId
-        clientIdSecretName: resourceGroupResources.outputs.keyVaultSecretName
+        clientCredentialsKeyVaultId: nestedDependencies.outputs.keyVaultResourceId
+        clientIdSecretName: nestedDependencies.outputs.keyVaultSecretName
         clientRegistrationEndpoint: 'http://localhost'
-        clientSecretSecretName: resourceGroupResources.outputs.keyVaultSecretName
+        clientSecretSecretName: nestedDependencies.outputs.keyVaultSecretName
         grantTypes: [
           'authorizationCode'
         ]
@@ -172,7 +172,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -185,7 +185,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }
