@@ -144,6 +144,54 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. To enable client certificate authentication (TLS mutual authentication).')
+param clientCertEnabled bool = false
+
+@description('Optional. Client certificate authentication comma-separated exclusion paths.')
+param clientCertExclusionPaths string = ''
+
+@description('''Optional. This composes with ClientCertEnabled setting.
+- ClientCertEnabled: false means ClientCert is ignored.
+- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.''')
+@allowed([
+  'Optional'
+  'OptionalInteractiveUser'
+  'Required'
+])
+param clientCertMode string = 'Optional'
+
+@description('Optional. If specified during app creation, the app is cloned from a source app.')
+param cloningInfo object = {}
+
+@description('Optional. Size of the function container.')
+param containerSize int = -1
+
+@description('Optional. Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification.')
+param customDomainVerificationId string = ''
+
+@description('Optional. Maximum allowed daily memory-time quota (applicable on dynamic apps only).')
+param dailyMemoryTimeQuota int = -1
+
+@description('Optional. Setting this value to false disables the app (takes the app offline).')
+param enabled bool = true
+
+@description('Optional. Hostname SSL states are used to manage the SSL bindings for app\'s hostnames.')
+param hostNameSslStates array = []
+
+@description('Optional. Hyper-V sandbox.')
+param hyperV bool = false
+
+@description('Optional. Site redundancy mode.')
+@allowed([
+  'ActiveActive'
+  'Failover'
+  'GeoRedundant'
+  'Manual'
+  'None'
+])
+param redundancyMode string = 'None'
+
 // =========== //
 // Variables   //
 // =========== //
@@ -218,6 +266,17 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
     keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
+    clientCertEnabled: clientCertEnabled
+    clientCertExclusionPaths: !empty(clientCertExclusionPaths) ? clientCertExclusionPaths : null
+    clientCertMode: clientCertMode
+    cloningInfo: !empty(cloningInfo) ? cloningInfo : null
+    containerSize: containerSize != -1 ? containerSize : null
+    customDomainVerificationId: !empty(customDomainVerificationId) ? customDomainVerificationId : null
+    dailyMemoryTimeQuota: dailyMemoryTimeQuota != -1 ? dailyMemoryTimeQuota : null
+    enabled: enabled
+    hostNameSslStates: hostNameSslStates
+    hyperV: hyperV
+    redundancyMode: redundancyMode
   }
 }
 
@@ -279,6 +338,21 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     lock: contains(slot, 'lock') ? slot.lock : lock
     privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
     tags: tags
+    clientCertEnabled: contains(slot, 'clientCertEnabled') ? slot.clientCertEnabled : false
+    clientCertExclusionPaths: contains(slot, 'clientCertExclusionPaths') ? slot.clientCertExclusionPaths : ''
+    clientCertMode: contains(slot, 'clientCertMode') ? slot.clientCertMode : 'Optional'
+    cloningInfo: contains(slot, 'cloningInfo') ? slot.cloningInfo : {}
+    containerSize: contains(slot, 'containerSize') ? slot.containerSize : -1
+    customDomainVerificationId: contains(slot, 'customDomainVerificationId') ? slot.customDomainVerificationId : ''
+    dailyMemoryTimeQuota: contains(slot, 'dailyMemoryTimeQuota') ? slot.dailyMemoryTimeQuota : -1
+    enabled: contains(slot, 'enabled') ? slot.enabled : true
+    hostNameSslStates: contains(slot, 'hostNameSslStates') ? slot.hostNameSslStates : []
+    hyperV: contains(slot, 'hyperV') ? slot.hyperV : false
+    publicNetworkAccess: contains(slot, 'publicNetworkAccess') ? slot.publicNetworkAccess : ''
+    redundancyMode: contains(slot, 'redundancyMode') ? slot.redundancyMode : 'None'
+    vnetContentShareEnabled: contains(slot, 'vnetContentShareEnabled') ? slot.vnetContentShareEnabled : false
+    vnetImagePullEnabled: contains(slot, 'vnetImagePullEnabled') ? slot.vnetImagePullEnabled : false
+    vnetRouteAllEnabled: contains(slot, 'vnetRouteAllEnabled') ? slot.vnetRouteAllEnabled : false
   }
 }]
 

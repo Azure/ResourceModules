@@ -26,8 +26,9 @@ param enableDefaultTelemetry bool = true
 // =========== //
 // Existing resources //
 // =========== //
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   name: appName
+
   resource slot 'slots' existing = {
     name: slotName
   }

@@ -23,7 +23,7 @@ param enableDefaultTelemetry bool = true
 // =========== //
 // Existing resources //
 // =========== //
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   name: appName
 }
 
@@ -42,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appSettings 'Microsoft.Web/sites/config@2020-12-01' = {
+resource appSettings 'Microsoft.Web/sites/config@2022-03-01' = {
   name: 'authsettingsV2'
   kind: kind
   parent: app
