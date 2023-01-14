@@ -81,7 +81,7 @@ function Get-ModulesMissingFromTemplateSpecsRG {
         # Get all children
         $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
 
-        if (-not (Get-AzResourceGroup -ResourceGroupName $TemplateSpecsRGName)) {
+        if (-not (Get-AzResourceGroup -ResourceGroupName $TemplateSpecsRGName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
         } else {
             # Test all children against Resource Group
@@ -130,7 +130,7 @@ function Get-ModulesMissingFromTemplateSpecsRG {
             Write-Verbose ('Missing module [{0}] will be considered for publishing with version(s) [{1}]' -f $missingTemplatePath, ($moduleVersionsToPublish.Version -join ', ')) -Verbose
         }
 
-        if ($moduleToPublish.count -eq 0) {
+        if ($modulesToPublish.count -eq 0) {
             Write-Verbose 'No modules missing in the target environment' -Verbose
         }
 
