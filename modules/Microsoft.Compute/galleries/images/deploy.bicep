@@ -54,12 +54,25 @@ param minRecommendedMemory int = 4
 @maxValue(4000)
 param maxRecommendedMemory int = 16
 
-@description('Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. - V1 or V2.')
+@description('''Optional. The hypervisor generation of the Virtual Machine.
+* If this value is not specified, then it is determined by the securityType parameter.
+* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.
+''')
 @allowed([
+  ''
   'V1'
   'V2'
 ])
-param hyperVGeneration string = 'V1'
+param hyperVGeneration string = ''
+
+@description('Optional. The security type of the image. Requires a hyperVGeneration V2.')
+@allowed([
+  'Standard'
+  'TrustedLaunch'
+  'ConfidentialVM'
+  'ConfidentialVMSupported'
+])
+param securityType string = 'Standard'
 
 @description('Optional. The description of this gallery Image Definition resource. This property is updatable.')
 param imageDefinitionDescription string = ''
@@ -106,11 +119,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2021-10-01' existing = {
+resource gallery 'Microsoft.Compute/galleries@2022-03-03' existing = {
   name: galleryName
 }
 
-resource image 'Microsoft.Compute/galleries/images@2021-10-01' = {
+resource image 'Microsoft.Compute/galleries/images@2022-03-03' = {
   name: name
   parent: gallery
   location: location
@@ -133,7 +146,13 @@ resource image 'Microsoft.Compute/galleries/images@2021-10-01' = {
         max: maxRecommendedMemory
       }
     }
-    hyperVGeneration: hyperVGeneration
+    hyperVGeneration: !empty(hyperVGeneration) ? hyperVGeneration : (!empty(securityType) ? 'V2' : 'V1')
+    features: !empty(securityType) && securityType != 'Standard' ? [
+      {
+        name: 'SecurityType'
+        value: securityType
+      }
+    ] : null
     description: imageDefinitionDescription
     eula: eula
     privacyStatementUri: privacyStatementUri

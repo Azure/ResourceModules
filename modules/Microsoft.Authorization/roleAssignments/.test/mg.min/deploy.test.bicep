@@ -16,15 +16,15 @@ param serviceShort string = 'aramgmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
-module resourceGroupResources 'interim.dependencies.bicep' = {
+module nestedDependencies 'interim.dependencies.bicep' = {
   scope: subscription('<<subscriptionId>>')
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     resourceGroupName: resourceGroupName
@@ -40,7 +40,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+    principalId: nestedDependencies.outputs.managedIdentityPrincipalId
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     principalType: 'ServicePrincipal'
   }

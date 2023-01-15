@@ -13,7 +13,7 @@ With this module you can perform policy assignments on a management group level.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
+| `Microsoft.Authorization/policyAssignments` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-06-01/policyAssignments) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
@@ -39,7 +39,9 @@ With this module you can perform policy assignments on a management group level.
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `nonComplianceMessages` | array | `[]` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes. |
+| `overrides` | array | `[]` |  | The policy property value override. Allows changing the effect of a policy definition without modifying the underlying policy definition or using a parameterized effect in the policy definition. |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
+| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. Facilitates safe deployment practices (SDP) by enabling gradual roll out policy assignments based on factors like resource location, resource type, or whether a resource has a location. |
 | `roleDefinitionIds` | array | `[]` |  | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
 

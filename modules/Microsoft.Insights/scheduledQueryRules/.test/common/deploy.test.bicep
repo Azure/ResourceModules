@@ -16,9 +16,9 @@ param serviceShort string = 'isqrcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
@@ -81,13 +81,13 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
     scopes: [
-      resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
+      nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
     ]
     suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'

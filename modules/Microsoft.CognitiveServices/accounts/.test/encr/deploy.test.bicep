@@ -19,9 +19,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -30,9 +30,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -52,13 +52,13 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     kind: 'SpeechServices'
-    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKKeyName: resourceGroupResources.outputs.keyVaultKeyName
-    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKKeyName: nestedDependencies.outputs.keyVaultKeyName
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

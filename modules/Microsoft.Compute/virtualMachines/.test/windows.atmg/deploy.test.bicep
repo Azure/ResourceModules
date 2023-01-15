@@ -20,9 +20,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,7 +31,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -51,7 +51,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
-    adminUsername: 'localAdminUser'
+    adminUsername: 'localAdministrator'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
         ipConfigurations: [
           {
             name: 'ipconfig01'
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         ]
         nicSuffix: '-nic-01'
@@ -76,7 +76,7 @@ module testDeployment '../../deploy.bicep' = {
       }
     }
     osType: 'Windows'
-    vmSize: 'Standard_B12ms'
+    vmSize: 'Standard_DS2_v2'
     adminPassword: password
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   }

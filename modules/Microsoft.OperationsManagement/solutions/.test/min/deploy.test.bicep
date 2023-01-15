@@ -16,9 +16,9 @@ param serviceShort string = 'omsmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
   }
@@ -45,6 +45,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: 'Updates'
-    logAnalyticsWorkspaceName: resourceGroupResources.outputs.logAnalyticsWorkspaceName
+    logAnalyticsWorkspaceName: nestedDependencies.outputs.logAnalyticsWorkspaceName
   }
 }

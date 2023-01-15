@@ -16,9 +16,9 @@ param serviceShort string = 'egstmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
   }
@@ -59,7 +59,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    source: resourceGroupResources.outputs.storageAccountResourceId
+    source: nestedDependencies.outputs.storageAccountResourceId
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
 }

@@ -50,7 +50,7 @@ This module deploys different kinds of cognitive services resources
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit, RequestResponse]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -98,7 +98,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -134,7 +144,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -142,6 +151,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -336,7 +355,6 @@ tags: {
 ```
 
 </details>
-
 
 <details>
 

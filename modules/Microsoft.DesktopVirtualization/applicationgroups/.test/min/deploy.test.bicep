@@ -16,9 +16,9 @@ param serviceShort string = 'dvagmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     hostPoolName: 'dep-<<namePrefix>>-hp-${serviceShort}'
   }
@@ -46,6 +46,6 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     applicationGroupType: 'RemoteApp'
-    hostpoolName: resourceGroupResources.outputs.hostPoolName
+    hostpoolName: nestedDependencies.outputs.hostPoolName
   }
 }

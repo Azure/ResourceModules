@@ -19,17 +19,17 @@ This module deploys a recovery service vault.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2022-09-10](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-09-10/vaults) |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
-| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupPolicies) |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupstorageconfig) |
-| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-08-01/vaults/replicationAlertSettings) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationPolicies) |
+| `Microsoft.RecoveryServices/vaults` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults) |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupconfig) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupPolicies) |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupstorageconfig) |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationAlertSettings) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationPolicies) |
 
 ## Parameters
 
@@ -48,7 +48,7 @@ This module deploys a recovery service vault.
 | `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | The storage configuration for the Azure Recovery Service Vault. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, allLogs, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Health]` | `[Health]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -60,6 +60,7 @@ This module deploys a recovery service vault.
 | `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. |
 | `replicationAlertSettings` | _[replicationAlertSettings](replicationAlertSettings/readme.md)_ object | `{object}` |  | Replication alert settings. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
@@ -835,7 +836,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -871,7 +882,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -879,6 +889,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields

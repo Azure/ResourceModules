@@ -16,9 +16,9 @@ param serviceShort string = 'srswpscom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -76,11 +76,11 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'webpubsub'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     resourceLogConfigurationsToEnable: [
@@ -89,7 +89,7 @@ module testDeployment '../../deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
       }

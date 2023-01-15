@@ -20,6 +20,8 @@
 - [The CI environment](./The%20CI%20environment)
   - [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design)
   - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
+  - [Bicep configuration](./The%20CI%20environment%20-%20Bicep%20configuration)
+  - [Troubleshooting](./The%20CI%20environment%20-%20Troubleshooting)
 - [Interoperability](./Interoperability)
 - [Contribution guide](./Contribution%20guide)
 - [Solution creation](./Solution%20creation)

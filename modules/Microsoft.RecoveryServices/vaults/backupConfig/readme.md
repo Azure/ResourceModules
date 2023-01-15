@@ -13,7 +13,7 @@ This module deploys recovery services vault backup config.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupconfig) |
 
 ## Parameters
 

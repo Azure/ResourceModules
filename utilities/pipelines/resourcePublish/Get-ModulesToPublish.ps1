@@ -380,11 +380,11 @@ function Get-ModulesToPublish {
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
 
-    $ModulesToPublish = [System.Collections.ArrayList]@()
+    $modulesToPublish = [System.Collections.ArrayList]@()
     foreach ($TemplateFileToPublish in $TemplateFilesToPublish) {
         $ModuleVersion = Get-NewModuleVersion -TemplateFilePath $TemplateFileToPublish.FullName -Verbose
 
-        $ModulesToPublish += @{
+        $modulesToPublish += @{
             Version          = $ModuleVersion
             TemplateFilePath = $TemplateFileToPublish.FullName
         }
@@ -392,20 +392,20 @@ function Get-ModulesToPublish {
         if ($ModuleVersion -notmatch 'prerelease') {
 
             # Latest Major,Minor
-            $ModulesToPublish += @{
+            $modulesToPublish += @{
                 Version          = ($ModuleVersion.Split('.')[0..1] -join '.')
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
 
             # Latest Major
-            $ModulesToPublish += @{
+            $modulesToPublish += @{
                 Version          = ($ModuleVersion.Split('.')[0])
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
 
             if ($PublishLatest) {
                 # Absolute latest
-                $ModulesToPublish += @{
+                $modulesToPublish += @{
                     Version          = 'latest'
                     TemplateFilePath = $TemplateFileToPublish.FullName
                 }
@@ -416,7 +416,7 @@ function Get-ModulesToPublish {
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
             $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToPublish.FullName
 
-            $ModulesToPublish += @{
+            $modulesToPublish += @{
                 Version          = $ParentModuleVersion
                 TemplateFilePath = $ParentTemplateFileToPublish.FullName
             }
@@ -424,20 +424,20 @@ function Get-ModulesToPublish {
             if ($ModuleVersion -notmatch 'prerelease') {
 
                 # Latest Major,Minor
-                $ModulesToPublish += @{
+                $modulesToPublish += @{
                     Version          = ($ParentModuleVersion.Split('.')[0..1] -join '.')
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
                 }
 
                 # Latest Major
-                $ModulesToPublish += @{
+                $modulesToPublish += @{
                     Version          = ($ParentModuleVersion.Split('.')[0])
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
                 }
 
                 if ($PublishLatest) {
                     # Absolute latest
-                    $ModulesToPublish += @{
+                    $modulesToPublish += @{
                         Version          = 'latest'
                         TemplateFilePath = $ParentTemplateFileToPublish.FullName
                     }
@@ -446,18 +446,18 @@ function Get-ModulesToPublish {
         }
     }
 
-    $ModulesToPublish = $ModulesToPublish | Sort-Object TemplateFilePath, Version -Descending -Unique
+    $modulesToPublish = $modulesToPublish | Sort-Object TemplateFilePath, Version -Descending -Unique
 
-    if ($ModulesToPublish.count -gt 0) {
+    if ($modulesToPublish.count -gt 0) {
         Write-Verbose 'Publish the following modules:'-Verbose
-        $ModulesToPublish | ForEach-Object {
+        $modulesToPublish | ForEach-Object {
             $RelPath = ($_.TemplateFilePath).Split('/modules/')[-1]
             $RelPath = $RelPath.Split('/deploy.')[0]
             Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
         }
     } else {
-        Write-Verbose 'No modules to publish.'-Verbose
+        Write-Verbose 'No modules with changes found to publish.'-Verbose
     }
 
-    return $ModulesToPublish
+    return $modulesToPublish
 }

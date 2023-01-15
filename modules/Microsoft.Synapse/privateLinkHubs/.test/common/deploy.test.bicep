@@ -16,9 +16,9 @@ param serviceShort string = 'splhcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
@@ -52,24 +52,24 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'Web'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
       {
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
       }

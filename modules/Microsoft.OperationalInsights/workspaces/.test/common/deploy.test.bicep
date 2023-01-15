@@ -16,9 +16,9 @@ param serviceShort string = 'oiwcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
     automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
@@ -166,13 +166,13 @@ module testDeployment '../../deploy.bicep' = {
     linkedServices: [
       {
         name: 'Automation'
-        resourceId: resourceGroupResources.outputs.automationAccountResourceId
+        resourceId: nestedDependencies.outputs.automationAccountResourceId
       }
     ]
     linkedStorageAccounts: [
       {
         name: 'Query'
-        resourceId: resourceGroupResources.outputs.storageAccountResourceId
+        resourceId: nestedDependencies.outputs.storageAccountResourceId
       }
     ]
     lock: 'CanNotDelete'
@@ -188,7 +188,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
+        storageAccountId: nestedDependencies.outputs.storageAccountResourceId
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'

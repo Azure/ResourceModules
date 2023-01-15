@@ -10,6 +10,8 @@ param virtualNetworkName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+var addressPrefix = '10.0.0.0/16'
+
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
   name: networkSecurityGroupName
   location: location
@@ -38,14 +40,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     properties: {
         addressSpace: {
             addressPrefixes: [
-                '10.0.0.0/16'
+                addressPrefix
             ]
         }
         subnets: [
             {
                 name: 'defaultSubnet'
                 properties: {
-                    addressPrefix: '10.0.7.0/24'
+                    addressPrefix: addressPrefix
                     networkSecurityGroup: {
                         id: networkSecurityGroup.id
                     }

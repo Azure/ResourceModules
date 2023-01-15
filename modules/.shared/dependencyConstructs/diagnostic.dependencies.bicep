@@ -18,9 +18,9 @@ param eventHubNamespaceEventHubName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
   location: location

@@ -15,12 +15,16 @@ This module deploys a web or function app.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Web/sites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites) |
-| `Microsoft.Web/sites/config` | [2020-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/config` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/slots` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots) |
+| `Microsoft.Web/sites/slots/config` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
 
@@ -41,23 +45,35 @@ This module deploys a web or function app.
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
+| `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
+| `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
+| `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.<p>- ClientCertEnabled: false means ClientCert is ignored.<p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.<p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
+| `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
+| `containerSize` | int | `-1` |  | Size of the function container. |
+| `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
+| `dailyMemoryTimeQuota` | int | `-1` |  | Maximum allowed daily memory-time quota (applicable on dynamic apps only). |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]` | `[AppServiceAppLogs, AppServiceAuditLogs, AppServiceConsoleLogs, AppServiceHTTPLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]` | `[allLogs, AppServiceAppLogs, AppServiceAuditLogs, AppServiceConsoleLogs, AppServiceHTTPLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
+| `enabled` | bool | `True` |  | Setting this value to false disables the app (takes the app offline). |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `hostNameSslStates` | array | `[]` |  | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
+| `hyperV` | bool | `False` |  | Hyper-V sandbox. |
 | `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `redundancyMode` | string | `'None'` | `[ActiveActive, Failover, GeoRedundant, Manual, None]` | Site redundancy mode. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `siteConfig` | object | `{object}` |  | The site config object. |
+| `slots` | _[slots](slots/readme.md)_ array | `[]` |  | Configuration for deployment slots for an app. |
 | `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 | `storageAccountRequired` | bool | `False` |  | Checks if Customer provided storage account is required. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -190,7 +206,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -226,7 +252,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -234,6 +259,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -389,6 +424,9 @@ userAssignedIdentities: {
 | `name` | string | The name of the site. |
 | `resourceGroupName` | string | The resource group the site was deployed into. |
 | `resourceId` | string | The resource ID of the site. |
+| `slotResourceIds` | array | The list of the slot resource ids. |
+| `slots` | array | The list of the slots. |
+| `slotSystemAssignedPrincipalIds` | array | The principal ID of the system assigned identity of slots. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
@@ -817,6 +855,48 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
       ]
     }
+    slots: [
+      {
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        name: 'slot1'
+        privateEndpoints: [
+          {
+            privateDnsZoneGroup: {
+              privateDNSResourceIds: [
+                '<privateDNSZoneResourceId>'
+              ]
+            }
+            service: 'sites'
+            subnetResourceId: '<subnetResourceId>'
+          }
+        ]
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        siteConfig: {
+          alwaysOn: true
+          metadata: [
+            {
+              name: 'CURRENT_STACK'
+              value: 'dotnetcore'
+            }
+          ]
+        }
+      }
+      {
+        name: 'slot2'
+      }
+    ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -903,6 +983,50 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           }
         ]
       }
+    },
+    "slots": {
+      "value": [
+        {
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "name": "slot1",
+          "privateEndpoints": [
+            {
+              "privateDnsZoneGroup": {
+                "privateDNSResourceIds": [
+                  "<privateDNSZoneResourceId>"
+                ]
+              },
+              "service": "sites",
+              "subnetResourceId": "<subnetResourceId>"
+            }
+          ],
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "siteConfig": {
+            "alwaysOn": true,
+            "metadata": [
+              {
+                "name": "CURRENT_STACK",
+                "value": "dotnetcore"
+              }
+            ]
+          }
+        },
+        {
+          "name": "slot2"
+        }
+      ]
     },
     "systemAssignedIdentity": {
       "value": true
