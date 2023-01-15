@@ -142,6 +142,71 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = 'slot-${name}-diagnosticSettings'
 
+@description('Optional. To enable client certificate authentication (TLS mutual authentication).')
+param clientCertEnabled bool = false
+
+@description('Optional. Client certificate authentication comma-separated exclusion paths.')
+param clientCertExclusionPaths string = ''
+
+@description('''Optional. This composes with ClientCertEnabled setting.
+- ClientCertEnabled: false means ClientCert is ignored.
+- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.''')
+@allowed([
+  'Optional'
+  'OptionalInteractiveUser'
+  'Required'
+])
+param clientCertMode string = 'Optional'
+
+@description('Optional. If specified during app creation, the app is cloned from a source app.')
+param cloningInfo object = {}
+
+@description('Optional. Size of the function container.')
+param containerSize int = -1
+
+@description('Optional. Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification.')
+param customDomainVerificationId string = ''
+
+@description('Optional. Maximum allowed daily memory-time quota (applicable on dynamic apps only).')
+param dailyMemoryTimeQuota int = -1
+
+@description('Optional. Setting this value to false disables the app (takes the app offline).')
+param enabled bool = true
+
+@description('Optional. Hostname SSL states are used to manage the SSL bindings for app\'s hostnames.')
+param hostNameSslStates array = []
+
+@description('Optional. Hyper-V sandbox.')
+param hyperV bool = false
+
+@description('Optional. Allow or block all public traffic.')
+@allowed([
+  'Enabled'
+  'Disabled'
+  ''
+])
+param publicNetworkAccess string = ''
+
+@description('Optional. Site redundancy mode.')
+@allowed([
+  'ActiveActive'
+  'Failover'
+  'GeoRedundant'
+  'Manual'
+  'None'
+])
+param redundancyMode string = 'None'
+
+@description('Optional. To enable accessing content over virtual network.')
+param vnetContentShareEnabled bool = false
+
+@description('Optional. To enable pulling image over Virtual Network.')
+param vnetImagePullEnabled bool = false
+
+@description('Optional. Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.')
+param vnetRouteAllEnabled bool = false
+
 // =========== //
 // Variables   //
 // =========== //
@@ -213,6 +278,21 @@ resource slot 'Microsoft.Web/sites/slots@2022-03-01' = {
     keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : any(null)
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
+    clientCertEnabled: clientCertEnabled
+    clientCertExclusionPaths: !empty(clientCertExclusionPaths) ? clientCertExclusionPaths : null
+    clientCertMode: clientCertMode
+    cloningInfo: !empty(cloningInfo) ? cloningInfo : null
+    containerSize: containerSize != -1 ? containerSize : null
+    customDomainVerificationId: !empty(customDomainVerificationId) ? customDomainVerificationId : null
+    dailyMemoryTimeQuota: dailyMemoryTimeQuota != -1 ? dailyMemoryTimeQuota : null
+    enabled: enabled
+    hostNameSslStates: hostNameSslStates
+    hyperV: hyperV
+    publicNetworkAccess: publicNetworkAccess
+    redundancyMode: redundancyMode
+    vnetContentShareEnabled: vnetContentShareEnabled
+    vnetImagePullEnabled: vnetImagePullEnabled
+    vnetRouteAllEnabled: vnetRouteAllEnabled
   }
 }
 
