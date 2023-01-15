@@ -4,6 +4,7 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.compute.virtualmachinescalesets-${serviceShort}-rg'
 
@@ -180,8 +181,4 @@ module testDeployment '../../deploy.bicep' = {
     vmNamePrefix: 'vmsswinvm'
     vmPriority: 'Regular'
   }
-}
-}
-}
-}
 }

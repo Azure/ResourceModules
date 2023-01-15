@@ -4,6 +4,7 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.containerinstance.containergroups-${serviceShort}-rg'
 
@@ -114,8 +115,4 @@ module testDeployment '../../deploy.bicep' = {
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
   }
-}
-}
-}
-}
 }
