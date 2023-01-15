@@ -40,3 +40,6 @@ module testDeployment '../../deploy.bicep' = {
   }
 }
 }
+}
+}
+}
