@@ -80,10 +80,10 @@ module testDeployment '../../deploy.bicep' = {
         privateEndpoints: [
           {
             service: 'sites'
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
             privateDnsZoneGroup: {
               privateDNSResourceIds: [
-                resourceGroupResources.outputs.privateDNSZoneResourceId
+                nestedDependencies.outputs.privateDNSZoneResourceId
               ]
             }
           }
@@ -92,7 +92,7 @@ module testDeployment '../../deploy.bicep' = {
           {
             roleDefinitionIdOrName: 'Reader'
             principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
+              nestedDependencies.outputs.managedIdentityPrincipalId
             ]
             principalType: 'ServicePrincipal'
           }
