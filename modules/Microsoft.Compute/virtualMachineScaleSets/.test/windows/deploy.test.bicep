@@ -181,3 +181,4 @@ module testDeployment '../../deploy.bicep' = {
     vmPriority: 'Regular'
   }
 }
+}

@@ -115,3 +115,4 @@ module testDeployment '../../deploy.bicep' = {
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
   }
 }
+}
