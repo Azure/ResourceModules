@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.applicationgateways-${serviceShort}-rg'
@@ -387,5 +388,4 @@ module testDeployment '../../deploy.bicep' = {
       ruleSetVersion: '3.0'
     }
   }
-}
 }

@@ -3,6 +3,7 @@ targetScope = 'managementGroup'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'mmgcom'
 
@@ -21,5 +22,4 @@ module testDeployment '../../deploy.bicep' = {
     displayName: 'Test MG'
     parentId: last(split(managementGroup().id, '/'))
   }
-}
 }

@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.kubernetesconfiguration.fluxconfigurations-${serviceShort}-rg'
@@ -61,5 +62,4 @@ module testDeployment '../../deploy.bicep' = {
       url: 'https://github.com/mspnp/aks-baseline'
     }
   }
-}
 }
