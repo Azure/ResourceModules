@@ -16,9 +16,9 @@ param serviceShort string = 'wswa'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -62,20 +62,62 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     kind: 'app'
-    serverFarmResourceId: resourceGroupResources.outputs.serverFarmResourceId
+    serverFarmResourceId: nestedDependencies.outputs.serverFarmResourceId
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     httpsOnly: true
+    slots: [
+      {
+        name: 'slot1'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+        privateEndpoints: [
+          {
+            service: 'sites'
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
+            privateDnsZoneGroup: {
+              privateDNSResourceIds: [
+                nestedDependencies.outputs.privateDNSZoneResourceId
+              ]
+            }
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        siteConfig: {
+          alwaysOn: true
+          metadata: [
+            {
+              name: 'CURRENT_STACK'
+              value: 'dotnetcore'
+            }
+          ]
+        }
+      }
+      {
+        name: 'slot2'
+      }
+    ]
     privateEndpoints: [
       {
         service: 'sites'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
       }
@@ -84,7 +126,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -100,7 +142,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

@@ -16,9 +16,9 @@ param serviceShort string = 'nnmcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +27,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkHubName: 'dep-<<namePrefix>>-vnetHub-${serviceShort}'
@@ -57,7 +57,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -78,11 +78,11 @@ module testDeployment '../../deploy.bicep' = {
         staticMembers: [
           {
             name: 'virtualNetworkSpoke1'
-            resourceId: resourceGroupResources.outputs.virtualNetworkSpoke1Id
+            resourceId: nestedDependencies.outputs.virtualNetworkSpoke1Id
           }
           {
             name: 'virtualNetworkSpoke2'
-            resourceId: resourceGroupResources.outputs.virtualNetworkSpoke2Id
+            resourceId: nestedDependencies.outputs.virtualNetworkSpoke2Id
           }
         ]
       }
@@ -94,7 +94,7 @@ module testDeployment '../../deploy.bicep' = {
         connectivityTopology: 'HubAndSpoke'
         hubs: [
           {
-            resourceId: resourceGroupResources.outputs.virtualNetworkHubId
+            resourceId: nestedDependencies.outputs.virtualNetworkHubId
             resourceType: 'Microsoft.Network/virtualNetworks'
           }
         ]

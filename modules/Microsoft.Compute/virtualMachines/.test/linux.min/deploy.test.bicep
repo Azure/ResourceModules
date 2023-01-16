@@ -16,9 +16,9 @@ param serviceShort string = 'cvmlinmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,7 +27,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -70,7 +70,7 @@ module testDeployment '../../deploy.bicep' = {
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
             }
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         ]
         nicSuffix: '-nic-01'
@@ -87,12 +87,12 @@ module testDeployment '../../deploy.bicep' = {
     disablePasswordAuthentication: true
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
+        keyData: nestedDependencies.outputs.SSHKeyPublicKey
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
   }
   dependsOn: [
-    resourceGroupResources // Required to leverage `existing` SSH key reference
+    nestedDependencies // Required to leverage `existing` SSH key reference
   ]
 }

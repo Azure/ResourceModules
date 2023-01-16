@@ -20,9 +20,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,9 +31,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     primaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-1'
     primaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-1'
@@ -55,12 +55,12 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     virtualNetworkGateway1: {
-      id: resourceGroupResources.outputs.primaryVNETGatewayResourceID
+      id: nestedDependencies.outputs.primaryVNETGatewayResourceID
     }
     enableBgp: false
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
-      id: resourceGroupResources.outputs.secondaryVNETGatewayResourceID
+      id: nestedDependencies.outputs.secondaryVNETGatewayResourceID
     }
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     vpnSharedKey: password
