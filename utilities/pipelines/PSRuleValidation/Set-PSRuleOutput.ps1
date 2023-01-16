@@ -98,7 +98,7 @@ function Set-PSRuleOutput {
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                 $null = Invoke-WebRequest -Uri $PSRuleReferenceUrl
-                $resourceLink = '[' + $content.RuleName + '](' + $PSRuleReferenceUrl + ')'
+                $resourceLink = '[{0}]({1})' -f $content.RuleName, $PSRuleReferenceUrl
             } catch {
                 Write-Warning "Unable to build url for $content.RuleName"
                 $resourceLink = $content.RuleName
