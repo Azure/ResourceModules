@@ -90,7 +90,7 @@ jobs:
             Write-Output '::group::Parse CSV content'
 
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleOutput.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleGitHubOutput.ps1')
 
             # Populate parameter input
             $ParameterInput = @{
@@ -100,7 +100,7 @@ jobs:
             }
 
             # Invoke function
-            $null = Set-PSRuleOutput @ParameterInput
+            $null = Set-PSRuleGitHubOutput @ParameterInput
 
             Write-Output '::endgroup::'
       - name: Output to GitHub job summaries

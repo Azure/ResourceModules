@@ -163,7 +163,7 @@ PSRule allows skipping rules on two levels:
 
 ### Output
 
-To better outline failed rules and allow fixing incompliant resources quickly, the pipeline leverages the script [utilities\pipelines\PSRuleValidation\Set-PSRuleOutput.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/PSRuleValidation/Set-PSRuleOutput.ps1) to aggregate PSRule output into Custom Markdown content and display it to the Actions run summary page.
+To better outline failed rules and allow fixing incompliant resources quickly, the pipeline leverages the script [utilities\pipelines\PSRuleValidation\Set-PSRuleGitHubOutput.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/PSRuleValidation/Set-PSRuleGitHubOutput.ps1) to aggregate PSRule output into Custom Markdown content and display it to the Actions run summary page.
 
 <img src="./media/CIEnvironment/PSRuleSummary.png" alt="PSRule Summary">
 

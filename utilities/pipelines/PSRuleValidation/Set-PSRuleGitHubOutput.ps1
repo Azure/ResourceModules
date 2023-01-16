@@ -15,16 +15,16 @@ Optional. The path to the formatted .md file to be created.
 Optional. Whether to add the detail of passed PSRule to the output markdown file or to limit the list to the failed ones.
 
 .EXAMPLE
-Set-PSRuleOutput -inputFilePath 'C:/PSRule-output.csv'
+Set-PSRuleGitHubOutput -inputFilePath 'C:/PSRule-output.csv'
 
 Generate a markdown file 'output.md' in the current folder, out of the 'C:/PSRule-output.csv' input, listing all passed and failed rules.
 
 .EXAMPLE
-Set-PSRuleOutput -inputFilePath 'C:/PSRule-output.csv' -outputFilePath 'C:/PSRule-output.md' -skipPassedRulesReport
+Set-PSRuleGitHubOutput -inputFilePath 'C:/PSRule-output.csv' -outputFilePath 'C:/PSRule-output.md' -skipPassedRulesReport
 
 Generate a markdown file 'C:/PSRule-output.md', out of the 'C:/PSRule-output.csv' input, listing only the failed rules.
 #>
-function Set-PSRuleOutput {
+function Set-PSRuleGitHubOutput {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
@@ -140,17 +140,17 @@ function Set-PSRuleOutput {
                 $resourceLink = '[{0}]({1})' -f $content.RuleName, $PSRuleReferenceUrl
             } catch {
                 Write-Warning 'Unable to build url for rule [{0}]' -f $content.RuleName)
-                $resourceLink = $content.RuleName
-            }
-            $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
-
+            $resourceLink = $content.RuleName
         }
-        $passContent += [System.Collections.ArrayList]@(
-            '',
-            '</details>',
-            ''
-        )
-        # Append to output
-        Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
+        $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
+
     }
+    $passContent += [System.Collections.ArrayList]@(
+        '',
+        '</details>',
+        ''
+    )
+    # Append to output
+    Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $passContent
+}
 }
