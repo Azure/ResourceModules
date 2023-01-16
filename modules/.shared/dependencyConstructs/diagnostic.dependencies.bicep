@@ -21,6 +21,7 @@ param location string = resourceGroup().location
 // ============ //
 // Dependencies //
 // ============ //
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: storageAccountName
   location: location
