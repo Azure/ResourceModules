@@ -28,7 +28,7 @@ function Set-PSRuleOutput {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [String] $inputFilePath,
+        [String] $InputFilePath,
 
         [Parameter(Mandatory = $false)]
         [string] $outputFilePath = './output.md',
