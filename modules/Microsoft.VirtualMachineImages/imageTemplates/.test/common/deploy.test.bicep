@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.virtualmachineimages.imagetemplates-${serviceShort}-rg'
@@ -103,5 +104,4 @@ module testDeployment '../../deploy.bicep' = {
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
   }
-}
 }
