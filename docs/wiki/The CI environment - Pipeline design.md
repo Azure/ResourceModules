@@ -126,7 +126,7 @@ The purpose of the wiki pipeline is to sync any files from the `docs/wiki` folde
 ## PSRule Pre-Flight validation pipeline
 
 The purpose of the PSRule Pre-Flight validation pipeline is to validate Azure resources deployed by module validation pipeline tests, by leveraging [PSRule for Azure](https://azure.github.io/PSRule.Rules.Azure/about/).
-PSRule for Azure is aligned to the [Azure Well-Architected Framework (WAF)](https://learn.microsoft.com/en-us/azure/architecture/framework/). Tests called rules check the configuration of Azure resources against WAF principles.
+PSRule for Azure is aligned to the [Well-Architected Framework (WAF)](https://learn.microsoft.com/en-us/azure/architecture/framework/). Tests, called _Rules_, check the configuration of Azure resources against WAF principles.
 
 The pipeline, currently only available as a [GitHub workflow](https://github.com/Azure/ResourceModules/blob/main/.github/workflows/platform.librarycheck.psrule.yml), runs weekly on the whole library, providing as output the list of non-compliant resources and corresponding failing rules, if any.
 
