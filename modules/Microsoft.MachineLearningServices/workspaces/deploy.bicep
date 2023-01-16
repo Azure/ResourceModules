@@ -12,7 +12,7 @@ param location string = resourceGroup().location
   'Free'
   'Basic'
   'Standard'
-  'Enterprise'
+  'Premium'
 ])
 param sku string
 
@@ -82,8 +82,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@sys.description('Optional. The name of logs that will be streamed.')
+@sys.description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AmlComputeClusterEvent'
   'AmlComputeClusterNodeEvent'
   'AmlComputeJobEvent'
@@ -91,11 +92,7 @@ param diagnosticEventHubName string = ''
   'AmlRunStatusChangedEvent'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AmlComputeClusterEvent'
-  'AmlComputeClusterNodeEvent'
-  'AmlComputeJobEvent'
-  'AmlComputeCpuGpuUtilization'
-  'AmlRunStatusChangedEvent'
+  'allLogs'
 ]
 
 @sys.description('Optional. The name of metrics that will be streamed.')
@@ -115,7 +112,7 @@ param description string = ''
 @sys.description('Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services.')
 param discoveryUrl string = ''
 
-@sys.description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@sys.description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @sys.description('Optional. The name of the customer managed key to use for encryption.')
@@ -159,7 +156,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
 } : any(null)
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -167,6 +164,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -198,7 +206,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-05-01' = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
   name: name
   location: location
   tags: tags

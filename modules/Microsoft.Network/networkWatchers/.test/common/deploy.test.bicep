@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'NetworkWatcherRG' // Note, this is the default NetworkWatcher resource group. Do not change.
@@ -16,9 +17,9 @@ param serviceShort string = 'nnwcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     firstNetworkSecurityGroupName: 'dep-<<namePrefix>>-nsg-1-${serviceShort}'
@@ -72,7 +73,7 @@ module testDeployment '../../deploy.bicep' = {
         endpoints: [
           {
             name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
-            resourceId: resourceGroupResources.outputs.virtualMachineResourceId
+            resourceId: nestedDependencies.outputs.virtualMachineResourceId
             type: 'AzureVM'
           }
           {
@@ -123,14 +124,14 @@ module testDeployment '../../deploy.bicep' = {
       {
         enabled: false
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.firstNetworkSecurityGroupResourceId
+        targetResourceId: nestedDependencies.outputs.firstNetworkSecurityGroupResourceId
       }
       {
         formatVersion: 1
         name: '<<namePrefix>>-${serviceShort}-fl-001'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
-        targetResourceId: resourceGroupResources.outputs.secondNetworkSecurityGroupResourceId
+        targetResourceId: nestedDependencies.outputs.secondNetworkSecurityGroupResourceId
         trafficAnalyticsInterval: 10
         workspaceResourceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
@@ -139,7 +140,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }

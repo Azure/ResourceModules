@@ -126,16 +126,15 @@ param nicConfigurations array
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param pipdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -176,6 +175,11 @@ param extensionDomainJoinPassword string = ''
 
 @description('Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionDomainJoinConfig object = {
+  enabled: false
+}
+
+@description('Optional. The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.')
+param extensionAadJoinConfig object = {
   enabled: false
 }
 
@@ -337,6 +341,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy
     extensionCustomScriptProtectedSetting: extensionCustomScriptProtectedSetting
     extensionDependencyAgentConfig: extensionDependencyAgentConfig
     extensionAzureDiskEncryptionConfig: extensionAzureDiskEncryptionConfig
+    extensionAadJoinConfig: extensionAadJoinConfig
     extensionDomainJoinConfig: extensionDomainJoinConfig
     extensionDomainJoinPassword: extensionDomainJoinPassword
     extensionDSCConfig: extensionDSCConfig

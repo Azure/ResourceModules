@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.insights.privatelinkscopes-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'iplscom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -50,25 +51,25 @@ module testDeployment '../../deploy.bicep' = {
     scopedResources: [
       {
         name: 'scoped1'
-        linkedResourceId: resourceGroupResources.outputs.logAnalyticsWorkspaceResourceId
+        linkedResourceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
       }
     ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'azuremonitor'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }

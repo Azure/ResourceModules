@@ -82,8 +82,17 @@ param allowBlobPublicAccess bool = false
 @description('Optional. Set the minimum TLS version on request to storage.')
 param minimumTlsVersion string = 'TLS1_2'
 
-@description('Optional. If true, enables Hierarchical Namespace for the storage account.')
+@description('Conditional. If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true.')
 param enableHierarchicalNamespace bool = false
+
+@description('Optional. If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true.')
+param enableSftp bool = false
+
+@description('Optional. Local users to deploy for SFTP authentication.')
+param localUsers array = []
+
+@description('Optional. If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true.')
+param enableNfsV3 bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -135,7 +144,7 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
@@ -227,6 +236,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
+    isSftpEnabled: enableSftp
+    isNfsV3Enabled: enableNfsV3
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
@@ -291,6 +302,9 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 
@@ -303,6 +317,22 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
+
+// SFTP user settings
+module storageAccount_localUsers 'localUsers/deploy.bicep' = [for (localUser, index) in localUsers: {
+  name: '${uniqueString(deployment().name, location)}-Storage-LocalUsers-${index}'
+  params: {
+    storageAccountName: storageAccount.name
+    name: localUser.name
+    hasSharedKey: contains(localUser, 'hasSharedKey') ? localUser.hasSharedKey : false
+    hasSshKey: contains(localUser, 'hasSshPassword') ? localUser.hasSshPassword : true
+    hasSshPassword: contains(localUser, 'hasSshPassword') ? localUser.hasSshPassword : false
+    homeDirectory: contains(localUser, 'homeDirectory') ? localUser.homeDirectory : ''
+    permissionScopes: contains(localUser, 'permissionScopes') ? localUser.permissionScopes : []
+    sshAuthorizedKeys: contains(localUser, 'sshAuthorizedKeys') ? localUser.sshAuthorizedKeys : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 // Containers
 module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blobServices)) {

@@ -36,6 +36,8 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
     - [Token replacement](./The%20CI%20environment%20-%20Token%20replacement)
     - [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update)
   - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
+  - [Bicep configuration](./The%20CI%20environment%20-%20Bicep%20configuration)
+  - [Troubleshooting](./The%20CI%20environment%20-%20Troubleshooting)
 - [Interoperability](./Interoperability)
   - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
   - [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines)
@@ -67,15 +69,15 @@ In next section, you can find an overview of what is in scope and what is out of
 - **Orchestration:** Orchestrated, multi-module solutions, such as workloads or applications. As mentioned earlier, you can leverage modules to assemble and deploy such applications/workloads.
 - **Languages:** Other domain-specific languages (DSL), like _Terraform_.
 
-
 ## Module update frequency
+
 Modules are updated by a group of committed contributors.
 
 # Reporting Issues
 
 ## Bugs
 
-If you find any bugs, please file an issue on the [GitHub Issues][GitHubIssues] page by filling out the provided template with the appropriate information.
+If you find any bugs, please file an issue on the [GitHub Issues][githubissues] page by filling out the provided template with the appropriate information.
 
 > Please search the existing issues before filing new issues to avoid duplicates.
 
@@ -83,7 +85,7 @@ If you are taking the time to mention a problem, even a seemingly minor one, it 
 
 ## Feature requests
 
-If there is a feature you would like to see in here, please file an issue or feature request on the [GitHub Issues][GitHubIssues] page to provide direct feedback.
+If there is a feature you would like to see in here, please file an issue or feature request on the [GitHub Issues][githubissues] page to provide direct feedback.
 
 ---
 
@@ -98,20 +100,22 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 # Learn More
 
-- [PowerShell Documentation][PowerShellDocs]
-- [Microsoft Azure Documentation][MicrosoftAzureDocs]
-- [Azure Resource Manager][AzureResourceManager]
-- [Bicep][Bicep]
-- [GitHubDocs][GitHubDocs]
+- [PowerShell Documentation][powershelldocs]
+- [Microsoft Azure Documentation][microsoftazuredocs]
+- [Azure Resource Manager][azureresourcemanager]
+- [Bicep][bicep]
+- [GitHubDocs][githubdocs]
 
 <!-- References -->
 
 <!-- Local -->
-[GitHubDocs]: <https://docs.github.com/>
-[GitHubIssues]: <https://github.com/Azure/Modules/issues>
-[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
-[Bicep]: <https://github.com/Azure/bicep>
+
+[githubdocs]: https://docs.github.com/
+[githubissues]: https://github.com/Azure/Modules/issues
+[azureresourcemanager]: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview
+[bicep]: https://github.com/Azure/bicep
 
 <!-- Docs -->
-[MicrosoftAzureDocs]: <https://docs.microsoft.com/en-us/azure/>
-[PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
+
+[microsoftazuredocs]: https://docs.microsoft.com/en-us/azure/
+[powershelldocs]: https://docs.microsoft.com/en-us/powershell/

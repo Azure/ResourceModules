@@ -8,6 +8,7 @@ This section provides an overview of the most impactful limitations and known is
   - [Microsoft.AAD/DomainServices](#microsoftaaddomainservices)
   - [Microsoft.Management/managementGroups](#microsoftmanagementmanagementgroups)
   - [Microsoft.RecoveryServices/vaults](#microsoftrecoveryservicesvaults)
+  - [Microsoft.Network/networkManagers](#microsoftnetworknetworkmanagers)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
@@ -49,6 +50,14 @@ The Recovery Services Vaults module does not currently validate the identity pro
 The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
 
 A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
+
+## Microsoft.Network/networkManagers
+
+There is currently an issue when deploying a network manager instance for a management group scope where the management group ID is a `guid`. For example, if the management group resource ID looks like `/providers/Microsoft.Management/managementGroups/f2857922-1732-4c0d-a8d4-7003b13be520`, then this will fail when the deployment happens via code but succeed if it was created using the Azure Portal. This does not impact management group IDs that use a regular string such as `mg-contoso`.
+
+The workaround is to deploy network manager using the Azure Portal first, before triggering it via code. This has been communicated to the network manager team and waiting on investigation outcomes and the documentation will be updated accordingly.
+
+A related issue has been opened in the Bug board [#2551](https://github.com/Azure/ResourceModules/issues/2551) to keep track of the network manager issue.
 
 ---
 

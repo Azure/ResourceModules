@@ -204,7 +204,7 @@ jobs:
 
             # Determine possible parameters depending on file type
             if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-                $moduleTemplateContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $moduleTemplateContent = bicep build $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
             } else {
                 $moduleTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
@@ -259,7 +259,7 @@ jobs:
 
             # Determine possible parameters depending on file type
             if ((Split-Path $moduleTestFilePath -Extension) -eq '.bicep') {
-                $moduleTemplateContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $moduleTemplateContent = bicep build $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
                 $moduleTemplatePossibleParameters = $moduleTemplateContent.parameters.Keys
             } else {
                 $moduleTemplatePossibleParameters = ((Get-Content $moduleTestFilePath -Raw) | ConvertFrom-Json -AsHashtable).parameters.keys
@@ -293,20 +293,20 @@ jobs:
             $res = New-TemplateDeployment @functionInput -Verbose
 
             # Get deployment name
-            $deploymentName = $res.deploymentName
-            Write-Verbose "Deployment name: $deploymentName" -Verbose
-            Write-Host "##vso[task.setvariable variable=deploymentName]$deploymentName"
-            Write-Host "##vso[task.setvariable variable=deploymentName;isOutput=true]$deploymentName"
+            $deploymentNames = $res.DeploymentNames | ConvertTo-Json -Compress
+            Write-Verbose "Deployment name(s) [$deploymentNames]" -Verbose
+            Write-Host "##vso[task.setvariable variable=deploymentNames]$deploymentNames"
+            Write-Host "##vso[task.setvariable variable=deploymentNames;isOutput=true]$deploymentNames"
 
             # Populate further outputs
-            $deploymentOutputHash=@{}
+            $deploymentOutputHashTable=@{}
 
             foreach ($outputKey in $res.deploymentOutput.Keys) {
               Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-              $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+              $deploymentOutputHashTable.add($outputKey,$res.deploymentOutput[$outputKey].Value)
             }
 
-            $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+            $deploymentOutput = $deploymentOutputHashTable | ConvertTo-Json -Compress -Depth 100
             Write-Verbose "Deployment output: $deploymentOutput" -Verbose
 
             if ($res.ContainsKey('exception')) {
@@ -318,7 +318,7 @@ jobs:
       #------------------
       - task: AzurePowerShell@5
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentName'],'')), not(startsWith(variables['deploymentName'], 'variables[' )))
+        condition: and(succeededOrFailed(), eq('${{ parameters.removeDeployment }}', 'True'), not(eq(variables['deploymentNames'],'')), not(startsWith(variables['deploymentNames'], 'variables[' )))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -334,8 +334,7 @@ jobs:
               TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
               SubscriptionId    = '${{ parameters.subscriptionId }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
-              deploymentName    = '$(deploymentName)'
-              Verbose           = $true
+              DeploymentNames   = '$(deploymentNames)' | ConvertFrom-Json
             }
 
             Write-Verbose 'Invoke task with' -Verbose

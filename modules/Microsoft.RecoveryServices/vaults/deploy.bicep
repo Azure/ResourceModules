@@ -68,8 +68,9 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AzureBackupReport'
   'CoreAzureBackup'
   'AddonAzureBackupJobs'
@@ -86,20 +87,7 @@ param tags object = {}
   'AzureSiteRecoveryProtectedDiskDataChurn'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AzureBackupReport'
-  'CoreAzureBackup'
-  'AddonAzureBackupJobs'
-  'AddonAzureBackupAlerts'
-  'AddonAzureBackupPolicy'
-  'AddonAzureBackupStorage'
-  'AddonAzureBackupProtectedInstance'
-  'AzureSiteRecoveryJobs'
-  'AzureSiteRecoveryEvents'
-  'AzureSiteRecoveryReplicatedItems'
-  'AzureSiteRecoveryReplicationStats'
-  'AzureSiteRecoveryRecoveryPoints'
-  'AzureSiteRecoveryReplicationDataUploadRate'
-  'AzureSiteRecoveryProtectedDiskDataChurn'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -122,7 +110,14 @@ param monitoringSettings object = {}
 @description('Optional. Security Settings of the vault.')
 param securitySettings object = {}
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = 'Disabled'
+
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -130,6 +125,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -162,7 +168,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
   name: name
   location: location
   tags: tags
@@ -174,6 +180,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' = {
   properties: {
     monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
     securitySettings: !empty(securitySettings) ? securitySettings : null
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
@@ -306,6 +313,9 @@ module rsv_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

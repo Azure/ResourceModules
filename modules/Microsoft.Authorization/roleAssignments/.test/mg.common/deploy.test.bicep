@@ -3,6 +3,7 @@ targetScope = 'managementGroup'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.authorization.roleassignments-${serviceShort}-rg'
@@ -16,15 +17,15 @@ param serviceShort string = 'aramgcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
-module resourceGroupResources 'interim.dependencies.bicep' = {
+module nestedDependencies 'interim.dependencies.bicep' = {
   scope: subscription('<<subscriptionId>>')
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     resourceGroupName: resourceGroupName
@@ -40,7 +41,7 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    principalId: resourceGroupResources.outputs.managedIdentityPrincipalId
+    principalId: nestedDependencies.outputs.managedIdentityPrincipalId
     roleDefinitionIdOrName: 'Backup Reader'
     description: 'Role Assignment (management group scope)'
     managementGroupId: last(split(managementGroup().id, '/'))

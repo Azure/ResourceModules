@@ -3,8 +3,9 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(80)
+@maxLength(90)
 param resourceGroupName string = 'ms.sql.managedinstances-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
@@ -20,9 +21,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,7 +32,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -70,7 +71,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>-${serviceShort}'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
-    subnetId: resourceGroupResources.outputs.subnetResourceId
+    subnetId: nestedDependencies.outputs.subnetResourceId
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
       {
@@ -90,27 +91,27 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     dnsZonePartner: ''
     encryptionProtectorObj: {
-      serverKeyName: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+      serverKeyName: '${nestedDependencies.outputs.keyVaultName}_${nestedDependencies.outputs.keyVaultKeyName}_${last(split(nestedDependencies.outputs.keyVaultEncryptionKeyUrl, '/'))}'
       serverKeyType: 'AzureKeyVault'
     }
     hardwareFamily: 'Gen5'
     keys: [
       {
-        name: '${resourceGroupResources.outputs.keyVaultName}_${resourceGroupResources.outputs.keyVaultKeyName}_${last(split(resourceGroupResources.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+        name: '${nestedDependencies.outputs.keyVaultName}_${nestedDependencies.outputs.keyVaultKeyName}_${last(split(nestedDependencies.outputs.keyVaultEncryptionKeyUrl, '/'))}'
         serverKeyType: 'AzureKeyVault'
-        uri: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
+        uri: nestedDependencies.outputs.keyVaultEncryptionKeyUrl
       }
     ]
     licenseType: 'LicenseIncluded'
     lock: 'CanNotDelete'
-    primaryUserAssignedIdentityId: resourceGroupResources.outputs.managedIdentityResourceId
+    primaryUserAssignedIdentityId: nestedDependencies.outputs.managedIdentityResourceId
     proxyOverride: 'Proxy'
     publicDataEndpointEnabled: false
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
       }
     ]
@@ -126,7 +127,7 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     timezoneId: 'UTC'
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     vCores: 4
     vulnerabilityAssessmentsObj: {

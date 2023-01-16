@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.datafactory.factories-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'dffcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
@@ -62,9 +63,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
-    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
+    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
@@ -92,11 +93,11 @@ module testDeployment '../../deploy.bicep' = {
     managedPrivateEndpoints: [
       {
         fqdns: [
-          resourceGroupResources.outputs.storageAccountBlobEndpoint
+          nestedDependencies.outputs.storageAccountBlobEndpoint
         ]
         groupId: 'blob'
-        name: '${resourceGroupResources.outputs.storageAccountName}-managed-privateEndpoint'
-        privateLinkResourceId: resourceGroupResources.outputs.storageAccountResourceId
+        name: '${nestedDependencies.outputs.storageAccountName}-managed-privateEndpoint'
+        privateLinkResourceId: nestedDependencies.outputs.storageAccountResourceId
       }
     ]
     managedVirtualNetworkName: 'default'
@@ -104,25 +105,25 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'dataFactory'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.aad.domainservices-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'aaddscom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
@@ -57,7 +58,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // ============== //
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: last(split(resourceGroupResources.outputs.keyVaultResourceId, '/'))
+  name: last(split(nestedDependencies.outputs.keyVaultResourceId, '/'))
   scope: resourceGroup
 }
 
@@ -77,12 +78,12 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     lock: 'CanNotDelete'
-    pfxCertificate: keyVault.getSecret(resourceGroupResources.outputs.certSecretName)
-    pfxCertificatePassword: keyVault.getSecret(resourceGroupResources.outputs.certPWSecretName)
+    pfxCertificate: keyVault.getSecret(nestedDependencies.outputs.certSecretName)
+    pfxCertificatePassword: keyVault.getSecret(nestedDependencies.outputs.certPWSecretName)
     replicaSets: [
       {
         location: 'WestEurope'
-        subnetId: resourceGroupResources.outputs.subnetResourceId
+        subnetId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     sku: 'Standard'

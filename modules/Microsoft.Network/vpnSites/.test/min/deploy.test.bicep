@@ -3,8 +3,9 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(80)
+@maxLength(90)
 param resourceGroupName string = 'ms.network.vpnSites-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
@@ -16,9 +17,9 @@ param serviceShort string = 'nvsmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
   }
@@ -45,10 +46,11 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
-    virtualWanId: resourceGroupResources.outputs.virtualWWANResourceId
+    virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
     addressPrefixes: [
       '10.0.0.0/16'
     ]
     ipAddress: '1.2.3.4'
   }
 }
+
