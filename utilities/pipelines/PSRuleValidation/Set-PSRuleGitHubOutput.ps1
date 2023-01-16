@@ -103,7 +103,7 @@ function Set-PSRuleGitHubOutput {
                 Write-Warning ('Unable to build url for rule [{0}]' -f $content.RuleName)
                 $resourceLink = $content.RuleName
             }
-            $failContent += ('| {0} | {1} | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
+            $failContent += ('| {0} | `{1}` | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
         }
         $failContent += [System.Collections.ArrayList]@(
             '',
@@ -142,7 +142,7 @@ function Set-PSRuleGitHubOutput {
                 Write-Warning 'Unable to build url for rule [{0}]' -f $content.RuleName
                 $resourceLink = $content.RuleName
             }
-            $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
+            $passContent += ('| {0} | `{1}` | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
         }
         $passContent += [System.Collections.ArrayList]@(
