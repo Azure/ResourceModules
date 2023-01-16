@@ -109,4 +109,5 @@ jobs:
             Write-Output '::endgroup::'
       - name: Output to GitHub job summaries
         if: always()
-        run: Get-Content '${{ env.modulesPath }}/PSRule-output.md' >> $GITHUB_STEP_SUMMARY
+        shell: pwsh
+        run: Get-Content '${{ env.modulesPath }}/PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY
