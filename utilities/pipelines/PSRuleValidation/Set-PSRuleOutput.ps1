@@ -34,7 +34,7 @@ function Set-PSRuleOutput {
         [string] $OutputFilePath = './output.md',
 
         [Parameter(Mandatory = $false)]
-        [switch] $skipPassedRulesReport
+        [switch] $SkipPassedRulesReport
     )
 
     ###########################################
