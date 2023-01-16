@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.desktopvirtualization.scalingplans-${serviceShort}-rg'
@@ -81,5 +82,4 @@ module testDeployment '../../deploy.bicep' = {
     friendlyName: 'My Scaling Plan'
     scalingplanDescription: 'My Scaling Plan Description'
   }
-}
 }

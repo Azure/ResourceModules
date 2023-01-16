@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.documentdb.databaseaccounts-${serviceShort}-rg'
@@ -272,5 +273,4 @@ module testDeployment '../../deploy.bicep' = {
     ]
     systemAssignedIdentity: true
   }
-}
 }

@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.desktopvirtualization.applicationgroups-${serviceShort}-rg'
@@ -48,5 +49,4 @@ module testDeployment '../../deploy.bicep' = {
     applicationGroupType: 'RemoteApp'
     hostpoolName: nestedDependencies.outputs.hostPoolName
   }
-}
 }

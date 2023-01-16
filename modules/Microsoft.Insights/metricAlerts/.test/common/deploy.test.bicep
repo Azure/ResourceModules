@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.insights.metricalerts-${serviceShort}-rg'
@@ -74,5 +75,4 @@ module testDeployment '../../deploy.bicep' = {
     targetResourceType: 'microsoft.compute/virtualmachines'
     windowSize: 'PT15M'
   }
-}
 }

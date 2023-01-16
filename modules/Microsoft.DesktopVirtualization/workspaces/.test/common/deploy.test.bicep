@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.desktopvirtualization.workspaces-${serviceShort}-rg'
@@ -83,5 +84,4 @@ module testDeployment '../../deploy.bicep' = {
     workspaceDescription: 'This is my first AVD Workspace'
     workspaceFriendlyName: 'My first AVD Workspace'
   }
-}
 }
