@@ -62,7 +62,7 @@ function Set-PSRuleOutput {
 
     if ($failedRules.Count -eq 0) {
         # No failure content
-        $noFailuresContent = ('## :rocket: All {0} rules passed, YAY! :rocket:' -f $results.Count)
+        $noFailuresContent = ('## :rocket: All [{0}] rules passed, YAY! :rocket:' -f $results.Count)
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $noFailuresContent
     } else {
         # Failure content
