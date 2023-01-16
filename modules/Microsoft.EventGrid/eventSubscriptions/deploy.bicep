@@ -23,18 +23,26 @@ param deliveryWithResourceIdentity object = {}
 param destination object
 
 @description('Optional. The event delivery schema for the event subscription.')
+@allowed(
+  [
+    'CloudEventSchemaV1_0'
+    'CustomInputSchema'
+    'EventGridSchema'
+    'EventGridEvent'
+  ]
+)
 param eventDeliverySchema string = 'EventGridSchema'
 
 @description('Optional. The expiration time for the event subscription.')
 param expirationTimeUtc string = ''
 
-@description('Optional. The filter for the event subscription.')
+@description('Optional. The filter for the event subscription. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#eventsubscriptionfilter for more information).')
 param filter object = {}
 
 @description('Optional. The list of user defined labels.')
 param labels array = []
 
-@description('Optional. Configuration of the retry Policy.')
+@description('Optional. The retry policy for events. This can be used to configure the TTL and maximum number of delivery attempts and time to live for events.')
 param retryPolicy object = {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

@@ -1,4 +1,4 @@
-# EventGrid EventSubscriptions `[Microsoft.EventGrid/subscriptions]`
+# EventGrid EventSubscriptions `[Microsoft.EventGrid/eventSubscriptions]`
 
 This module deploys EventGrid EventSubscriptions.
 
@@ -28,18 +28,18 @@ This module deploys EventGrid EventSubscriptions.
 
 **Optional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `deadLetterDestination` | object | `{object}` | Dead Letter Destination. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterdestination-objects for more information). |
-| `deadLetterWithResourceIdentity` | object | `{object}` | Dead Letter with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterwithresourceidentity-objects for more information). |
-| `deliveryWithResourceIdentity` | object | `{object}` | Delivery with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deliverywithresourceidentity-objects for more information). |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventDeliverySchema` | string | `'EventGridSchema'` | The event delivery schema for the event subscription. |
-| `expirationTimeUtc` | string | `''` | The expiration time for the event subscription. |
-| `filter` | object | `{object}` | The filter for the event subscription. |
-| `labels` | array | `[]` | The list of user defined labels. |
-| `location` | string | `[resourceGroup().location]` | Location for all Resources. |
-| `retryPolicy` | object | `{object}` | Configuration of the retry Policy. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `deadLetterDestination` | object | `{object}` |  | Dead Letter Destination. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterdestination-objects for more information). |
+| `deadLetterWithResourceIdentity` | object | `{object}` |  | Dead Letter with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterwithresourceidentity-objects for more information). |
+| `deliveryWithResourceIdentity` | object | `{object}` |  | Delivery with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deliverywithresourceidentity-objects for more information). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `eventDeliverySchema` | string | `'EventGridSchema'` | `[CloudEventSchemaV1_0, CustomInputSchema, EventGridEvent, EventGridSchema]` | The event delivery schema for the event subscription. |
+| `expirationTimeUtc` | string | `''` |  | The expiration time for the event subscription. |
+| `filter` | object | `{object}` |  | The filter for the event subscription. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#eventsubscriptionfilter for more information). |
+| `labels` | array | `[]` |  | The list of user defined labels. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
+| `retryPolicy` | object | `{object}` |  | The retry policy for events. This can be used to configure the TTL and maximum number of delivery attempts and time to live for events. |
 
 
 ## Outputs
@@ -69,7 +69,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module subscriptions './Microsoft.EventGrid/subscriptions/deploy.bicep' = {
+module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egescom'
   params: {
     // Required parameters
@@ -83,6 +83,15 @@ module subscriptions './Microsoft.EventGrid/subscriptions/deploy.bicep' = {
     name: '<<namePrefix>>egescom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventDeliverySchema: 'EventGridSchema'
+    expirationTimeUtc: 'P30D'
+    filter: {
+      isSubjectCaseSensitive: false
+    }
+    retryPolicy: {
+      eventTimeToLive: 'P10D'
+      maxDeliveryAttempts: 10
+    }
   }
 }
 ```
@@ -117,6 +126,23 @@ module subscriptions './Microsoft.EventGrid/subscriptions/deploy.bicep' = {
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "eventDeliverySchema": {
+      "value": "EventGridSchema"
+    },
+    "expirationTimeUtc": {
+      "value": "P30D"
+    },
+    "filter": {
+      "value": {
+        "isSubjectCaseSensitive": false
+      }
+    },
+    "retryPolicy": {
+      "value": {
+        "eventTimeToLive": "P10D",
+        "maxDeliveryAttempts": 10
+      }
     }
   }
 }

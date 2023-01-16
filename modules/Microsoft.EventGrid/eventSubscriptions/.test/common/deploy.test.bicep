@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.eventgrid.subscriptions-${serviceShort}-rg'
+param resourceGroupName string = 'ms.eventgrid.eventsubscriptions-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -49,10 +49,20 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicResourceId, '/'))
+    expirationTimeUtc: 'P30D'
+    filter: {
+      isSubjectCaseSensitive: false
+    }
+    retryPolicy: {
+      maxDeliveryAttempts: 10
+      eventTimeToLive: 'P10D'
+    }
+    eventDeliverySchema: 'EventGridSchema'
     destination: {
       endpointType: 'ServiceBusTopic'
       properties: {
         resourceId: nestedDependencies.outputs.serviceBusTopicResourceId
+
       }
     }
   }

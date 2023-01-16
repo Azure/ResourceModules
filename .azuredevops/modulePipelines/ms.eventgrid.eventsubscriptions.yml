@@ -1,4 +1,4 @@
-name: 'EventGrid - Subscriptions'
+name: 'EventGrid - Event Subscriptions'
 
 parameters:
   - name: removeDeployment
@@ -19,9 +19,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.eventgrid.subscriptions.yml'
+      - '/.azuredevops/modulePipelines/ms.eventgrid.eventsubscriptions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.EventGrid/subscriptions/*'
+      - '/modules/Microsoft.EventGrid/eventSubscriptions/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -31,7 +31,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.EventGrid/subscriptions'
+    value: '/modules/Microsoft.EventGrid/eventSubscriptions'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

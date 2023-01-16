@@ -1,4 +1,4 @@
-name: 'EventGrid: Subscriptions'
+name: 'EventGrid: Event Subscriptions'
 
 on:
   workflow_dispatch:
@@ -18,16 +18,16 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.eventgrid.subscriptions.yml'
-      - 'modules/Microsoft.EventGrid/subscriptions/**'
+      - '.github/workflows/ms.eventgrid.eventsubscriptions.yml'
+      - 'modules/Microsoft.EventGrid/eventSubscriptions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
   variablesPath: 'settings.yml'
-  modulePath: 'modules/Microsoft.EventGrid/subscriptions'
-  workflowPath: '.github/workflows/ms.eventgrid.subscriptions.yml'
+  modulePath: 'modules/Microsoft.EventGrid/eventSubscriptions'
+  workflowPath: '.github/workflows/ms.eventgrid.eventsubscriptions.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
