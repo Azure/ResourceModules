@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.virtualnetworks-${serviceShort}-rg'
@@ -41,5 +42,4 @@ module testDeployment '../../deploy.bicep' = {
       '10.0.0.0/16'
     ]
   }
-}
 }

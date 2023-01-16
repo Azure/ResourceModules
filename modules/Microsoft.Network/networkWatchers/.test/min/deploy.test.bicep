@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'NetworkWatcherRG' // Note, this is the default NetworkWatcher resource group. Do not change.
@@ -40,5 +41,4 @@ module testDeployment '../../deploy.bicep' = {
     // Note: This value is not required and only set to enable testing
     location: testLocation
   }
-}
 }
