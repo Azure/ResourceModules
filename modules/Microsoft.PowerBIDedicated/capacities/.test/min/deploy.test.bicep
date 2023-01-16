@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.powerbidedicated.capacities-${serviceShort}-rg'
@@ -50,5 +51,4 @@ module testDeployment '../../deploy.bicep' = {
       nestedDependencies.outputs.managedIdentityPrincipalId
     ]
   }
-}
 }

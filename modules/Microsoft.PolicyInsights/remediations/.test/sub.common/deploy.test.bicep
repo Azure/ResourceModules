@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
@@ -92,5 +93,4 @@ module testDeployment '../../subscription/deploy.bicep' = {
     parallelDeployments: 1
     failureThresholdPercentage: '0.5'
   }
-}
 }

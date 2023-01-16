@@ -3,6 +3,7 @@ targetScope = 'managementGroup'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
@@ -38,5 +39,4 @@ module testDeployment '../../managementGroup/deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     policyAssignmentId: policyAssignment.id
   }
-}
 }

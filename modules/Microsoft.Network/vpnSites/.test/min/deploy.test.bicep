@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.vpnSites-${serviceShort}-rg'
@@ -52,4 +53,4 @@ module testDeployment '../../deploy.bicep' = {
     ipAddress: '1.2.3.4'
   }
 }
-}
+
