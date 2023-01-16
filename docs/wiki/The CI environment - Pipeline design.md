@@ -11,6 +11,7 @@ This section provides an overview of the design principles applied to the CARML 
 - [Platform pipelines](#platform-pipelines)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
+  - [PSRule Pre-Flight validation pipeline](#psrule-pre-flight-validation-pipeline)
 
 ---
 
@@ -140,7 +141,7 @@ Documentation for all configuration options is available at the following links:
 
 ### Baselines
 
-A [baseline](https://azure.github.io/PSRule.Rules.Azure/working-with-baselines/) is a standard PSRule artifact that combines rules and configuration. This pipeline uses the default baseline to analyze module test resources.
+A [baseline](https://azure.github.io/PSRule.Rules.Azure/working-with-baselines/) is a standard PSRule artifact that combines rules and configuration. The PSRule Pre-Flight validation pipeline uses the default baseline to analyze module test resources.
 
 For the list of all rules included see [Azure.Default baseline](https://azure.github.io/PSRule.Rules.Azure/en/baselines/Azure.Default/).
 To view a list of rules by Azure resources see [Rules by resource](https://azure.github.io/PSRule.Rules.Azure/en/rules/resource/).
@@ -152,11 +153,13 @@ Not all baseline rules may be valid for some of the test Azure resources deploye
 For example, resources deployed by the min tests, aim to validate only the required input parameters for each module.
 Therefore, optional features such as diagnostic settings are not configured in those tests. Since enabling logging is a general recommendation for most of the resources supporting them, missing diagnostic settings usually trigger incopliance of PSRule checks, e.g., [Azure.KeyVault.Logs](https://azure.github.io/PSRule.Rules.Azure/en/rules/Azure.KeyVault.Logs/). For this reason, these checks are excluded from being evaluated for resources deployed by min tests.
 
-The following configuration files host exclusions and suppression rules:
+PSRule allows skipping rules on two levels:
 
-- [.ps-rule\dep-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/dep-suppress.Rule.yaml): for resources deployed as dependencies
-- [.ps-rule\min-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/min-suppress.Rule.yaml): for resources deployed by the min tests
-- [ps-rule.yaml](https://github.com/Azure/ResourceModules/blob/main/ps-rule.yaml): lists exclusions valid for all resources under the option [Rule.Exclude](https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_Options/#ruleexclude)
+- **Exclusions**: Can be leveraged to exclude specific baseline rules from being evaluated for any resource.
+   - [ps-rule.yaml](https://github.com/Azure/ResourceModules/blob/main/ps-rule.yaml): Lists the name of specific rules to exclude under the option [Rule.Exclude](https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_Options/#ruleexclude)
+- **Suppression Groups**: PSRule can use [Suppression Groups](https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_SuppressionGroups/) to suppress rules based on a condition. Suppression groups can be leveraged when some of the rules in the baseline are not relevant under specific conditions, e.g., only for specific resources. They are stored in the `.ps-rule` repo root folder in `.yaml` format. In particular:
+   - [.ps-rule\dep-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/dep-suppress.Rule.yaml): Lists rules to be ignored for resources deployed as dependencies
+   - [.ps-rule\min-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/min-suppress.Rule.yaml): Lists rules to be ignored for resources deployed by the min tests
 
 ### Output
 
