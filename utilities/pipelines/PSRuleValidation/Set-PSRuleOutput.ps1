@@ -28,13 +28,13 @@ function Set-PSRuleOutput {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [String] $inputFilePath,
+        [String] $InputFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $outputFilePath = './output.md',
+        [string] $OutputFilePath = './output.md',
 
         [Parameter(Mandatory = $false)]
-        [switch] $skipPassedRulesReport
+        [switch] $SkipPassedRulesReport
     )
 
     ###########################################
@@ -62,7 +62,7 @@ function Set-PSRuleOutput {
 
     if ($failedRules.Count -eq 0) {
         # No failure content
-        $noFailuresContent = ('## :rocket: All {0} rules passed, YAY! :rocket:' -f $results.Count)
+        $noFailuresContent = ('## :rocket: All [{0}] rules passed, YAY! :rocket:' -f $results.Count)
         Out-File -FilePath $outputFilePath -Append -NoClobber -InputObject $noFailuresContent
     } else {
         # Failure content
@@ -98,9 +98,9 @@ function Set-PSRuleOutput {
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                 $null = Invoke-WebRequest -Uri $PSRuleReferenceUrl
-                $resourceLink = '[' + $content.RuleName + '](' + $PSRuleReferenceUrl + ')'
+                $resourceLink = '[{0}]({1})' -f $content.RuleName, $PSRuleReferenceUrl
             } catch {
-                Write-Warning "Unable to build url for $content.RuleName"
+                Write-Warning ('Unable to build url for rule [{0}]' -f $content.RuleName)
                 $resourceLink = $content.RuleName
             }
             $failContent += ('| {0} | {1} | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
@@ -137,9 +137,9 @@ function Set-PSRuleOutput {
             try {
                 $PSRuleReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                 $null = Invoke-WebRequest -Uri $PSRuleReferenceUrl
-                $resourceLink = '[' + $content.RuleName + '](' + $PSRuleReferenceUrl + ')'
+                $resourceLink = '[{0}]({1})' -f $content.RuleName, $PSRuleReferenceUrl
             } catch {
-                Write-Warning "Unable to build url for $content.RuleName"
+                Write-Warning 'Unable to build url for rule [{0}]' -f $content.RuleName)
                 $resourceLink = $content.RuleName
             }
             $passContent += ('| {0} | {1} | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
