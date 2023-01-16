@@ -84,12 +84,13 @@ module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     eventDeliverySchema: 'EventGridSchema'
-    expirationTimeUtc: 'P30D'
+    expirationTimeUtc: '2026-01-01T11:00:21.715Z'
     filter: {
+      enableAdvancedFilteringOnArrays: true
       isSubjectCaseSensitive: false
     }
     retryPolicy: {
-      eventTimeToLive: 'P10D'
+      eventTimeToLive: '120'
       maxDeliveryAttempts: 10
     }
   }
@@ -131,16 +132,17 @@ module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep
       "value": "EventGridSchema"
     },
     "expirationTimeUtc": {
-      "value": "P30D"
+      "value": "2026-01-01T11:00:21.715Z"
     },
     "filter": {
       "value": {
+        "enableAdvancedFilteringOnArrays": true,
         "isSubjectCaseSensitive": false
       }
     },
     "retryPolicy": {
       "value": {
-        "eventTimeToLive": "P10D",
+        "eventTimeToLive": "120",
         "maxDeliveryAttempts": 10
       }
     }

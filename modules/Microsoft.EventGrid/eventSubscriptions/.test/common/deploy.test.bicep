@@ -49,13 +49,14 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicResourceId, '/'))
-    expirationTimeUtc: 'P30D'
+    expirationTimeUtc: '2026-01-01T11:00:21.715Z'
     filter: {
       isSubjectCaseSensitive: false
+      enableAdvancedFilteringOnArrays: true
     }
     retryPolicy: {
       maxDeliveryAttempts: 10
-      eventTimeToLive: 'P10D'
+      eventTimeToLive: '120'
     }
     eventDeliverySchema: 'EventGridSchema'
     destination: {
