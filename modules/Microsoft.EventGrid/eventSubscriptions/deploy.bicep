@@ -33,7 +33,7 @@ param destination object
 )
 param eventDeliverySchema string = 'EventGridSchema'
 
-@description('Optional. The expiration time for the event subscription.')
+@description('Optional. The expiration time for the event subscription. Format is ISO-8601 (yyyy-MM-ddTHH:mm:ssZ).')
 param expirationTimeUtc string = ''
 
 @description('Optional. The filter for the event subscription. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#eventsubscriptionfilter for more information).')

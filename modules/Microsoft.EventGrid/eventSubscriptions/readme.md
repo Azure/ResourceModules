@@ -35,7 +35,7 @@ This module deploys EventGrid EventSubscriptions.
 | `deliveryWithResourceIdentity` | object | `{object}` |  | Delivery with Resource Identity Configuration. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deliverywithresourceidentity-objects for more information). |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventDeliverySchema` | string | `'EventGridSchema'` | `[CloudEventSchemaV1_0, CustomInputSchema, EventGridEvent, EventGridSchema]` | The event delivery schema for the event subscription. |
-| `expirationTimeUtc` | string | `''` |  | The expiration time for the event subscription. |
+| `expirationTimeUtc` | string | `''` |  | The expiration time for the event subscription. Format is ISO-8601 (yyyy-MM-ddTHH:mm:ssZ). |
 | `filter` | object | `{object}` |  | The filter for the event subscription. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#eventsubscriptionfilter for more information). |
 | `labels` | array | `[]` |  | The list of user defined labels. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
