@@ -48,7 +48,7 @@ param storageAccountAccessTier string = 'Hot'
   'Disabled'
   'Enabled'
 ])
-@description('Optional. Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.')
+@description('Optional. Allow large file shares if sets to \'Enabled\'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares).')
 param largeFileSharesState string = 'Disabled'
 
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
