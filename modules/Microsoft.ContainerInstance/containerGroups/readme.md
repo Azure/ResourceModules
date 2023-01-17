@@ -306,7 +306,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cicgcom'
   params: {
     // Required parameters
     containers: [
@@ -483,7 +483,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgecr'
+  name: '${uniqueString(deployment().name, location)}-test-cicgecr'
   params: {
     // Required parameters
     containers: [
@@ -668,7 +668,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgmin'
+  name: '${uniqueString(deployment().name, location)}-test-cicgmin'
   params: {
     // Required parameters
     containers: [
@@ -769,7 +769,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cicgprivate'
+  name: '${uniqueString(deployment().name, location)}-test-cicgprivate'
   params: {
     // Required parameters
     containers: [

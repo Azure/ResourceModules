@@ -47,7 +47,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // ============== //
 
 module testDeployment '../../deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'

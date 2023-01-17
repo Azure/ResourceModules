@@ -411,7 +411,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvcom'
+  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
     name: '<<namePrefix>>kvvcom002'
     accessPolicies: [
@@ -710,7 +710,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvmin'
+  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>kvvmin002'
@@ -759,7 +759,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvpe'
+  name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>kvvpe001'

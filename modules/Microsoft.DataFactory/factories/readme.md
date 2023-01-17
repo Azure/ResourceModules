@@ -388,7 +388,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dffcom'
+  name: '${uniqueString(deployment().name, location)}-test-dffcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>dffcom001'
@@ -589,7 +589,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
 
 ```bicep
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dffmin'
+  name: '${uniqueString(deployment().name, location)}-test-dffmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>dffmin001'

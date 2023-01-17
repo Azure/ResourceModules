@@ -170,7 +170,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iccom'
+  name: '${uniqueString(deployment().name, location)}-test-iccom'
   params: {
     // Required parameters
     name: '<<namePrefix>>iccom001'
@@ -239,7 +239,7 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
 
 ```bicep
 module components './Microsoft.Insights/components/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-icmin'
+  name: '${uniqueString(deployment().name, location)}-test-icmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>icmin001'

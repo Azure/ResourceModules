@@ -219,7 +219,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-whasev2'
+  name: '${uniqueString(deployment().name, location)}-test-whasev2'
   params: {
     // Required parameters
     name: '<<namePrefix>>whasev2001'
@@ -334,7 +334,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-whasev3'
+  name: '${uniqueString(deployment().name, location)}-test-whasev3'
   params: {
     // Required parameters
     name: '<<namePrefix>>whasev3001'

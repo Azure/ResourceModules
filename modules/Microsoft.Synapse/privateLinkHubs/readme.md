@@ -272,7 +272,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-splhcom'
+  name: '${uniqueString(deployment().name, location)}-test-splhcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>splhcom001'
@@ -377,7 +377,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
 
 ```bicep
 module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-splhmin'
+  name: '${uniqueString(deployment().name, location)}-test-splhmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>splhmin001'

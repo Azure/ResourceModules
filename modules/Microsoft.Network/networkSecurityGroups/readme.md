@@ -175,7 +175,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnsgcom'
+  name: '${uniqueString(deployment().name, location)}-test-nnsgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nnsgcom001'
@@ -394,7 +394,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 
 ```bicep
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnsgmin'
+  name: '${uniqueString(deployment().name, location)}-test-nnsgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nnsgmin001'
