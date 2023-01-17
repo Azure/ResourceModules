@@ -30,7 +30,7 @@ resource eventTopic 'Microsoft.EventGrid/topics@2022-06-15' = {
     }
 }
 
-resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
+resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
     name: serviceBusName
     location: location
     properties: {
@@ -41,20 +41,21 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
         }
         zoneRedundant: false
     }
-}
 
-resource serviceBus_Topic 'Microsoft.ServiceBus/namespaces/topics@2021-11-01' = {
-    name: '${serviceBus.name}/topic1'
-    properties:{
-        maxSizeInMegabytes: 1024
-        requiresDuplicateDetection: false
-        defaultMessageTimeToLive: 'P10675199DT2H48M5.4775807S'
-        duplicateDetectionHistoryTimeWindow: 'PT10M'
-        enableBatchedOperations: true
-        status: 'Active'
-        autoDeleteOnIdle: 'P10675199DT2H48M5.4775807S'
+    resource topic 'topics@2021-11-01' = {
+        name: 'topic1'
+        properties:{
+            maxSizeInMegabytes: 1024
+            requiresDuplicateDetection: false
+            defaultMessageTimeToLive: 'P10675199DT2H48M5.4775807S'
+            duplicateDetectionHistoryTimeWindow: 'PT10M'
+            enableBatchedOperations: true
+            status: 'Active'
+            autoDeleteOnIdle: 'P10675199DT2H48M5.4775807S'
+        }
     }
 }
+
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
@@ -63,4 +64,4 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 output eventTopicResourceId string = eventTopic.id
 
 @description('The resource ID of the created Service Bus Topic.')
-output serviceBusTopicResourceId string = serviceBus_Topic.id
+output serviceBusTopicResourceId string = serviceBusNamespace::topic.id
