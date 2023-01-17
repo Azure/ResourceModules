@@ -64,6 +64,7 @@ module testDeployment '../../deploy.bicep' = {
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
+    largeFileSharesState: 'Enabled'
     lock: 'CanNotDelete'
     enableHierarchicalNamespace: true
     enableSftp: true
@@ -112,7 +113,6 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
-
     blobServices: {
       diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
@@ -164,7 +164,7 @@ module testDeployment '../../deploy.bicep' = {
         }
         {
           name: 'avdprofiles2'
-          shareQuota: 5120
+          shareQuota: 102400
         }
       ]
     }

@@ -44,6 +44,13 @@ param storageAccountSku string = 'Standard_GRS'
 @description('Optional. Storage Account Access Tier.')
 param storageAccountAccessTier string = 'Hot'
 
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.')
+param largeFileSharesState string = 'Disabled'
+
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
 
@@ -238,6 +245,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
     isSftpEnabled: enableSftp
     isNfsV3Enabled: enableNfsV3
+    largeFileSharesState: largeFileSharesState
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null

@@ -8,7 +8,7 @@ param fileServicesName string = 'default'
 @description('Required. The name of the file share to create.')
 param name string
 
-@description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.')
+@description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5120 (5TB). For Large File Shares, the maximum size is 102400 (100TB).')
 param sharedQuota int = 5120
 
 @allowed([
