@@ -60,7 +60,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 // For the below test case, please consider the guidelines described here: https://github.com/Azure/ResourceModules/wiki/Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#microsoftwebsites
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'

@@ -910,7 +910,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslin'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1253,7 +1253,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslinmin'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1390,7 +1390,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslcmk'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslcmk'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1565,7 +1565,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsswin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1890,7 +1890,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsswinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'

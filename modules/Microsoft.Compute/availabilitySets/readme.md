@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cascom'
+  name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
     name: '<<namePrefix>>cascom001'
@@ -242,7 +242,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-casmin'
+  name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>casmin001'

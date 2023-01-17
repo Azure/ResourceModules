@@ -342,7 +342,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swcom'
+  name: '${uniqueString(deployment().name, location)}-test-swcom'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
@@ -487,7 +487,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swensa'
+  name: '${uniqueString(deployment().name, location)}-test-swensa'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
@@ -560,7 +560,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swenua'
+  name: '${uniqueString(deployment().name, location)}-test-swenua'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
@@ -629,7 +629,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swmanv'
+  name: '${uniqueString(deployment().name, location)}-test-swmanv'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
@@ -698,7 +698,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-swmin'
+  name: '${uniqueString(deployment().name, location)}-test-swmin'
   params: {
     // Required parameters
     defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'

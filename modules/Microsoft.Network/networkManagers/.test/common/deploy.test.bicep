@@ -49,7 +49,7 @@ var networkManagerExpecetedResourceID = '${resourceGroup.id}/providers/Microsoft
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     name: networkManagerName
     enableDefaultTelemetry: enableDefaultTelemetry

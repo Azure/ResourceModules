@@ -278,7 +278,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvspcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvspcom001'
@@ -385,7 +385,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvspmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvspmin001'

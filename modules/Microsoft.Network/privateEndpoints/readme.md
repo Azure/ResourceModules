@@ -298,7 +298,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npecom'
+  name: '${uniqueString(deployment().name, location)}-test-npecom'
   params: {
     // Required parameters
     groupIds: [
@@ -433,7 +433,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npemin'
+  name: '${uniqueString(deployment().name, location)}-test-npemin'
   params: {
     // Required parameters
     groupIds: [

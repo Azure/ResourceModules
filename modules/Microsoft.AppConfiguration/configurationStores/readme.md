@@ -325,7 +325,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-acccom'
+  name: '${uniqueString(deployment().name, location)}-test-acccom'
   params: {
     // Required parameters
     name: '<<namePrefix>>acccom001'
@@ -468,7 +468,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-accmin'
+  name: '${uniqueString(deployment().name, location)}-test-accmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>accmin001'
@@ -513,7 +513,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
 
 ```bicep
 module configurationStores './Microsoft.AppConfiguration/configurationStores/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-accpe'
+  name: '${uniqueString(deployment().name, location)}-test-accpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>accpe001'

@@ -270,7 +270,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ntmpcom'
+  name: '${uniqueString(deployment().name, location)}-test-ntmpcom'
   params: {
     // Required parameters
     name: '<name>'
@@ -363,7 +363,7 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
 
 ```bicep
 module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ntmpmin'
+  name: '${uniqueString(deployment().name, location)}-test-ntmpmin'
   params: {
     // Required parameters
     name: '<name>'

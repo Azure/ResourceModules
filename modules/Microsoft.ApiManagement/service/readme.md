@@ -267,7 +267,7 @@ userAssignedIdentities: {
 
 ## Considerations
 
-- *None*
+- _None_
 
 ## Cross-referenced modules
 
@@ -292,7 +292,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apiscom'
+  name: '${uniqueString(deployment().name, location)}-test-apiscom'
   params: {
     // Required parameters
     name: '<<namePrefix>>apiscom001'
@@ -421,7 +421,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismax'
+  name: '${uniqueString(deployment().name, location)}-test-apismax'
   params: {
     // Required parameters
     name: '<<namePrefix>>apismax001'
@@ -760,7 +760,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
 
 ```bicep
 module service './Microsoft.ApiManagement/service/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apismin'
+  name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
     name: '<<namePrefix>>apismin001'

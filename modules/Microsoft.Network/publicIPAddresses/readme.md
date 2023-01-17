@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npiacom'
+  name: '${uniqueString(deployment().name, location)}-test-npiacom'
   params: {
     // Required parameters
     name: '<<namePrefix>>npiacom001'
@@ -291,7 +291,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
 
 ```bicep
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npiamin'
+  name: '${uniqueString(deployment().name, location)}-test-npiamin'
   params: {
     // Required parameters
     name: '<<namePrefix>>npiamin001'

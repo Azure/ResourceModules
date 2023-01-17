@@ -176,7 +176,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvwcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvwcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvwcom001'
@@ -285,7 +285,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
 
 ```bicep
 module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvwmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvwmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvwmin001'
