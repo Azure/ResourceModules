@@ -2,7 +2,7 @@
 @maxLength(50)
 param name string
 
-@description('Required. The name of the parent health data services workspace.')
+@description('Conditional. The name of the parent health data services workspace. Required if the template is used in a standalone deployment.')
 param workspaceName string
 
 @description('Required. Event Hub name to connect to.')
