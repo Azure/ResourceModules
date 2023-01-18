@@ -8,7 +8,7 @@ param destinationMapping object = {
   template: []
 }
 
-@description('Required. The name of the MedTech service to add this destination to.')
+@description('Conditional. The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment.')
 param iotConnectorName string
 
 @description('Required. The name of the parent health data services workspace.')
