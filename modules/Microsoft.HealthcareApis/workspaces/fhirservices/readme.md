@@ -7,7 +7,6 @@ This module deploys HealthcareApis Workspaces FHIR Service.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -284,27 +283,6 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the fhir service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `workspaceName` | string | The name of the fhir workspace. |
-
-## Deployment examples
-
-<h3>Example 1: min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module fhir './Microsoft.HealthcareApis/workspaces/fhireservices/deploy.bicep' = {
-    name: '${uniqueString(deployment().name)}-test-fhir'
-    params: {
-        // Required parameters
-        name: '<<namePrefix>>fhir001'
-        workspaceName: '<workspaceName>'
-    }
-}
-```
-
-</details>
 
 ## Cross-referenced modules
 
