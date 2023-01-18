@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       - env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.PLATFORM_PROJECT_TOKEN }}
         name: Manage issues
         shell: pwsh
         run: |
