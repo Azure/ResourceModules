@@ -77,5 +77,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
-  scope: fhir
+  scope: workspace::fhir
 }]
