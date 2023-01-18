@@ -1045,7 +1045,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmlincom'
+  name: '${uniqueString(deployment().name, location)}-test-cvmlincom'
   params: {
     // Required parameters
     adminUsername: 'localAdministrator'
@@ -1472,7 +1472,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmlinatmg'
+  name: '${uniqueString(deployment().name, location)}-test-cvmlinatmg'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1613,7 +1613,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmlinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmlinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1750,7 +1750,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwincom'
+  name: '${uniqueString(deployment().name, location)}-test-cvmwincom'
   params: {
     // Required parameters
     adminUsername: 'VMAdmin'
@@ -2205,7 +2205,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwinatmg'
+  name: '${uniqueString(deployment().name, location)}-test-cvmwinatmg'
   params: {
     // Required parameters
     adminUsername: 'localAdministrator'
@@ -2326,7 +2326,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmwinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -2443,7 +2443,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 
 ```bicep
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmwincmk'
+  name: '${uniqueString(deployment().name, location)}-test-cvmwincmk'
   params: {
     // Required parameters
     adminUsername: 'VMAdministrator'

@@ -332,7 +332,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehncom'
+  name: '${uniqueString(deployment().name, location)}-test-ehncom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ehncom001'
@@ -633,7 +633,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehnmin'
+  name: '${uniqueString(deployment().name, location)}-test-ehnmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>ehnmin001'
@@ -678,7 +678,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehnpe'
+  name: '${uniqueString(deployment().name, location)}-test-ehnpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>ehnpe001'

@@ -177,7 +177,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-asscom'
+  name: '${uniqueString(deployment().name, location)}-test-asscom'
   params: {
     // Required parameters
     name: '<<namePrefix>>asscom'
@@ -407,7 +407,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-assmin'
+  name: '${uniqueString(deployment().name, location)}-test-assmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>assmin'

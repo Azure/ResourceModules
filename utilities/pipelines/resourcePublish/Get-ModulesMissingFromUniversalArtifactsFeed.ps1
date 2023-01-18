@@ -104,15 +104,15 @@ function Get-ModulesMissingFromUniversalArtifactsFeed {
         # Collect any that are not part of the ACR, fetch their version and return the result array
         $modulesToPublish = @()
         foreach ($missingTemplatePath in $missingTemplatePaths) {
-            $moduleToPublish = @{
+            $moduleVersionToPublish = @{
                 TemplateFilePath = $missingTemplatePath
                 Version          = '{0}.0' -f (Get-Content (Join-Path (Split-Path $missingTemplatePath) 'version.json') -Raw | ConvertFrom-Json).version
             }
-            $modulesToPublish += $moduleToPublish
-            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $modulesToPublish.TemplateFilePath, $modulesToPublish.Version) -Verbose
+            $modulesToPublish += $moduleVersionToPublish
+            Write-Verbose ('Missing module [{0}] will be considered for publishing with version [{1}]' -f $moduleVersionToPublish.TemplateFilePath, $moduleVersionToPublish.Version) -Verbose
         }
 
-        if ($moduleToPublish.count -eq 0) {
+        if ($modulesToPublish.count -eq 0) {
             Write-Verbose 'No modules missing in the target environment' -Verbose
         }
 

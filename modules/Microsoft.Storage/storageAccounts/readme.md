@@ -69,6 +69,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `enableNfsV3` | bool | `False` |  | If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `enableSftp` | bool | `False` |  | If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
+| `largeFileSharesState` | string | `'Disabled'` | `[Disabled, Enabled]` | Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares). |
 | `localUsers` | _[localUsers](localUsers/readme.md)_ array | `[]` |  | Local users to deploy for SFTP authentication. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -417,7 +418,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssacom'
+  name: '${uniqueString(deployment().name, location)}-test-ssacom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssacom001'
@@ -483,10 +484,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
         {
           name: 'avdprofiles2'
-          shareQuota: 5120
+          shareQuota: 102400
         }
       ]
     }
+    largeFileSharesState: 'Enabled'
     localUsers: [
       {
         hasSharedKey: false
@@ -692,10 +694,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           },
           {
             "name": "avdprofiles2",
-            "shareQuota": 5120
+            "shareQuota": 102400
           }
         ]
       }
+    },
+    "largeFileSharesState": {
+      "value": "Enabled"
     },
     "localUsers": {
       "value": [
@@ -834,7 +839,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-stsencr'
+  name: '${uniqueString(deployment().name, location)}-test-stsencr'
   params: {
     // Required parameters
     name: '<<namePrefix>>stsencr001'
@@ -957,7 +962,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssamin'
+  name: '${uniqueString(deployment().name, location)}-test-ssamin'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssamin001'
@@ -1006,7 +1011,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssanfs'
+  name: '${uniqueString(deployment().name, location)}-test-ssanfs'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssanfs001'
@@ -1141,7 +1146,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ssav1'
+  name: '${uniqueString(deployment().name, location)}-test-ssav1'
   params: {
     // Required parameters
     name: '<<namePrefix>>ssav1001'

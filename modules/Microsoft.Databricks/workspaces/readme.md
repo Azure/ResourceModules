@@ -239,7 +239,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dwcom'
+  name: '${uniqueString(deployment().name, location)}-test-dwcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>dwcom001'

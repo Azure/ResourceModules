@@ -274,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iplscom'
+  name: '${uniqueString(deployment().name, location)}-test-iplscom'
   params: {
     // Required parameters
     name: '<<namePrefix>>iplscom001'
@@ -377,7 +377,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
 
 ```bicep
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iplsmin'
+  name: '${uniqueString(deployment().name, location)}-test-iplsmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>iplsmin001'

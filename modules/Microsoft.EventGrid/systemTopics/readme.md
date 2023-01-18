@@ -289,7 +289,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egstcom'
+  name: '${uniqueString(deployment().name, location)}-test-egstcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>egstcom001'
@@ -386,7 +386,7 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 
 ```bicep
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egstmin'
+  name: '${uniqueString(deployment().name, location)}-test-egstmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>egstmin001'

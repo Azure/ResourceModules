@@ -379,7 +379,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbncom'
+  name: '${uniqueString(deployment().name, location)}-test-sbncom'
   params: {
     // Required parameters
     name: '<<namePrefix>>sbncom001'
@@ -726,7 +726,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbnencr'
+  name: '${uniqueString(deployment().name, location)}-test-sbnencr'
   params: {
     // Required parameters
     name: '<<namePrefix>>sbnencr001'
@@ -901,7 +901,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbnmin'
+  name: '${uniqueString(deployment().name, location)}-test-sbnmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>sbnmin001'
@@ -946,7 +946,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sbnpe'
+  name: '${uniqueString(deployment().name, location)}-test-sbnpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>sbnpe001'

@@ -285,7 +285,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egdcom'
+  name: '${uniqueString(deployment().name, location)}-test-egdcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>egdcom001'
@@ -412,7 +412,7 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
 
 ```bicep
 module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egdmin'
+  name: '${uniqueString(deployment().name, location)}-test-egdmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>egdmin001'
@@ -457,7 +457,7 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
 
 ```bicep
 module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-egdpe'
+  name: '${uniqueString(deployment().name, location)}-test-egdpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>egdpe001'

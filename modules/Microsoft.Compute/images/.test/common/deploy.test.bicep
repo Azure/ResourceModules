@@ -4,7 +4,7 @@ targetScope = 'subscription'
 // Parameters //
 // ========== //
 
-@description('Optional. The name of the resource group to deploy for a testing purposes.')
+@description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.compute.images-${serviceShort}-rg'
 
@@ -20,9 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,9 +31,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
@@ -56,7 +56,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     osAccountType: 'Premium_LRS'
-    osDiskBlobUri: resourceGroupResources.outputs.vhdUri
+    osDiskBlobUri: nestedDependencies.outputs.vhdUri
     osDiskCaching: 'ReadWrite'
     osType: 'Windows'
     hyperVGeneration: 'V1'
@@ -64,13 +64,13 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
     ]
     zoneResilient: true
-    diskEncryptionSetResourceId: resourceGroupResources.outputs.diskEncryptionSetResourceId
+    diskEncryptionSetResourceId: nestedDependencies.outputs.diskEncryptionSetResourceId
     osState: 'Generalized'
     diskSizeGB: 128
     tags: {

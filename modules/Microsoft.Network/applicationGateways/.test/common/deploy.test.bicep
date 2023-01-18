@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.applicationgateways-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'nagcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     publicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}'
@@ -61,7 +62,7 @@ var appGWName = '<<namePrefix>>${serviceShort}001'
 var appGWExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/applicationGateways/${appGWName}'
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: appGWName
@@ -125,7 +126,7 @@ module testDeployment '../../deploy.bicep' = {
           privateIPAddress: '10.0.0.20'
           privateIPAllocationMethod: 'Static'
           subnet: {
-            id: resourceGroupResources.outputs.subnetResourceId
+            id: nestedDependencies.outputs.subnetResourceId
           }
         }
       }
@@ -134,7 +135,7 @@ module testDeployment '../../deploy.bicep' = {
         properties: {
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
-            id: resourceGroupResources.outputs.publicIPResourceId
+            id: nestedDependencies.outputs.publicIPResourceId
           }
         }
       }
@@ -170,7 +171,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'apw-ip-configuration'
         properties: {
           subnet: {
-            id: resourceGroupResources.outputs.subnetResourceId
+            id: nestedDependencies.outputs.subnetResourceId
           }
         }
       }
@@ -359,7 +360,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -369,12 +370,12 @@ module testDeployment '../../deploy.bicep' = {
       {
         name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
         properties: {
-          keyVaultSecretId: resourceGroupResources.outputs.certificateSecretUrl
+          keyVaultSecretId: nestedDependencies.outputs.certificateSecretUrl
         }
       }
     ]
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     webApplicationFirewallConfiguration: {
       disabledRuleGroups: []

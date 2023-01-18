@@ -173,7 +173,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module connections './Microsoft.Web/connections/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wccom'
+  name: '${uniqueString(deployment().name, location)}-test-wccom'
   params: {
     // Required parameters
     displayName: 'azuremonitorlogs'

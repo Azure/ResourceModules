@@ -172,7 +172,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cdnpcom'
+  name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters
     name: 'dep-<<namePrefix>>-test-cdnpcom'
@@ -208,19 +208,19 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
         }
       ]
       queryStringCachingBehavior: 'IgnoreQueryString'
-      roleAssignments: [
-        {
-          principalIds: [
-            '<managedIdentityPrincipalId>'
-          ]
-          principalType: 'ServicePrincipal'
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
     }
     location: '<location>'
     lock: 'CanNotDelete'
     originResponseTimeoutSeconds: 60
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
   }
 }
 ```
@@ -277,16 +277,7 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
             }
           }
         ],
-        "queryStringCachingBehavior": "IgnoreQueryString",
-        "roleAssignments": [
-          {
-            "principalIds": [
-              "<managedIdentityPrincipalId>"
-            ],
-            "principalType": "ServicePrincipal",
-            "roleDefinitionIdOrName": "Reader"
-          }
-        ]
+        "queryStringCachingBehavior": "IgnoreQueryString"
       }
     },
     "location": {
@@ -297,6 +288,17 @@ module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
     },
     "originResponseTimeoutSeconds": {
       "value": 60
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     }
   }
 }

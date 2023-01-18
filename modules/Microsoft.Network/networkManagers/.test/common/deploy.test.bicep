@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.networkmanagers-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'nnmcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     virtualNetworkHubName: 'dep-<<namePrefix>>-vnetHub-${serviceShort}'
@@ -48,7 +49,7 @@ var networkManagerExpecetedResourceID = '${resourceGroup.id}/providers/Microsoft
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     name: networkManagerName
     enableDefaultTelemetry: enableDefaultTelemetry
@@ -57,7 +58,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -78,11 +79,11 @@ module testDeployment '../../deploy.bicep' = {
         staticMembers: [
           {
             name: 'virtualNetworkSpoke1'
-            resourceId: resourceGroupResources.outputs.virtualNetworkSpoke1Id
+            resourceId: nestedDependencies.outputs.virtualNetworkSpoke1Id
           }
           {
             name: 'virtualNetworkSpoke2'
-            resourceId: resourceGroupResources.outputs.virtualNetworkSpoke2Id
+            resourceId: nestedDependencies.outputs.virtualNetworkSpoke2Id
           }
         ]
       }
@@ -94,7 +95,7 @@ module testDeployment '../../deploy.bicep' = {
         connectivityTopology: 'HubAndSpoke'
         hubs: [
           {
-            resourceId: resourceGroupResources.outputs.virtualNetworkHubId
+            resourceId: nestedDependencies.outputs.virtualNetworkHubId
             resourceType: 'Microsoft.Network/virtualNetworks'
           }
         ]

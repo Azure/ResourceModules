@@ -552,7 +552,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddagrm'
+  name: '${uniqueString(deployment().name, location)}-test-dddagrm'
   params: {
     // Required parameters
     locations: [
@@ -777,7 +777,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddamng'
+  name: '${uniqueString(deployment().name, location)}-test-dddamng'
   params: {
     // Required parameters
     locations: [
@@ -1266,7 +1266,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddapln'
+  name: '${uniqueString(deployment().name, location)}-test-dddapln'
   params: {
     // Required parameters
     locations: [
@@ -1381,7 +1381,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dddasql'
+  name: '${uniqueString(deployment().name, location)}-test-dddasql'
   params: {
     // Required parameters
     locations: [

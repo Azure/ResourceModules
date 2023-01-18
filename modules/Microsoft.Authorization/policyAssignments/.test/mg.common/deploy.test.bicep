@@ -3,6 +3,7 @@ targetScope = 'managementGroup'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'apamgcom'
 
@@ -17,7 +18,7 @@ param enableDefaultTelemetry bool = true
 // ============== //
 
 module testDeployment '../../deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'

@@ -130,7 +130,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rtrg'
+  name: '${uniqueString(deployment().name, location)}-test-rtrg'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: false
