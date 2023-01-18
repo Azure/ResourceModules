@@ -45,8 +45,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource iotConnector 'Microsoft.HealthcareApis/workspaces/iotconnectors@2022-06-01' existing = {
-  name: '${workspaceName}/${iotConnectorName}'
+resource workspace 'Microsoft.HealthcareApis/workspaces@2022-06-01' existing = {
+  name: workspaceName
+
+  resource iotConnector 'iotconnectors@2022-06-01' existing = {
+  name: iotConnectorName
+  }
 }
 
 resource fhirDestination 'Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations@2022-06-01' = {
