@@ -33,8 +33,8 @@ function New-IssuesForFailingPipelines {
         [int] $limitInDays = 2
     )
 
-    $issues = gh issue list --state open --label 'automation,bug' --json title, url, body, comments --repo $repo | ConvertFrom-Json -Depth 100
-    $runs = gh run list --json url, workflowName, headBranch, startedAt --limit $limitNumberOfRuns --repo $repo | ConvertFrom-Json -Depth 100
+    $issues = gh issue list --state open --label 'automation,bug' --json title,url,body,comments --repo $repo | ConvertFrom-Json -Depth 100
+    $runs = gh run list --json url,workflowName,headBranch,startedAt --limit $limitNumberOfRuns --repo $repo | ConvertFrom-Json -Depth 100
     $workflowRuns = @{}
     $issuesCreated = 0
     $issuesCommented = 0
