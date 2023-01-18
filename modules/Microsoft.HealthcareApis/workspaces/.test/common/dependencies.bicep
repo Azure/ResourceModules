@@ -69,7 +69,7 @@ output eventHubNamespaceResourceId string = ehns.id
 output eventHubNamespaceName string = ehns.name
 
 @description('The resource ID of the created Event Hub.')
-output eventHubResourceId string = ehub.id
+output eventHubResourceId string = ehns::eventhub.id
 
 @description('The name of the created Event Hub.')
 output eventHubName string = ehub.name
