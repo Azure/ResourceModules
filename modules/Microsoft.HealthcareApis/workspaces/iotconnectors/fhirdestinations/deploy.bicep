@@ -49,7 +49,7 @@ resource workspace 'Microsoft.HealthcareApis/workspaces@2022-06-01' existing = {
   name: workspaceName
 
   resource iotConnector 'iotconnectors@2022-06-01' existing = {
-  name: iotConnectorName
+    name: iotConnectorName
   }
 }
 
@@ -79,4 +79,4 @@ output resourceGroupName string = resourceGroup().name
 output location string = fhirDestination.location
 
 @description('The name of the medtech service.')
-output iotConnectorName string = iotConnector.name
+output iotConnectorName string = workspace::iotConnector.name
