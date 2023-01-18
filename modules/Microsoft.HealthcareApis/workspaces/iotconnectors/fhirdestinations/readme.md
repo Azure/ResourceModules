@@ -7,7 +7,6 @@ This module deploys HealthcareApis MedTech FHIR Destination.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -112,30 +111,6 @@ destinationMapping: {
 | `name` | string | The name of the FHIR destination. |
 | `resourceGroupName` | string | The resource group where the namespace is deployed. |
 | `resourceId` | string | The resource ID of the FHIR destination. |
-
-## Deployment examples
-
-<h3>Example 1: min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module iotConnector_destination './Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations/deploy.bicep' = {
-    name: '${uniqueString(deployment().name)}-test-iomtmap'
-    params: {
-        // Required parameters
-        name: '<<namePrefix>>iomtmap001'
-        workspaceName: '<workspaceName>'
-        iotConnectorName: '<eventHubName>'
-        destinationMapping '<destinationMapping>'
-        fhirServiceResourceId: '<fhirServiceResourceId>'
-    }
-}
-```
-
-</details>
 
 ## Cross-referenced modules
 
