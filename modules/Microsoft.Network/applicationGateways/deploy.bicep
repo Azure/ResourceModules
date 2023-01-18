@@ -326,7 +326,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
     }, (enableFips ? {
       enableFips: enableFips
     } : {}),
-    (empty(webApplicationFirewallConfiguration) ? {} : { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration })
+    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration }: {})
   )
   zones: zones
 }
