@@ -55,7 +55,7 @@ resource workspace 'Microsoft.HealthcareApis/workspaces@2022-06-01' existing = {
 
 resource fhirDestination 'Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations@2022-06-01' = {
   name: name
-  parent: iotConnector
+  parent: workspace::iotConnector
   location: location
   properties: {
     resourceIdentityResolutionType: resourceIdentityResolutionType
