@@ -55,7 +55,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource health 'Microsoft.HealthcareApis/workspaces@2022-06-01' = {
+resource workspace 'Microsoft.HealthcareApis/workspaces@2022-06-01' = {
   name: name
   location: location
   tags: tags
@@ -64,16 +64,16 @@ resource health 'Microsoft.HealthcareApis/workspaces@2022-06-01' = {
   }
 }
 
-resource health_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${health.name}-${lock}-lock'
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: health
+  scope: workspace
 }
 
-module health_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -82,16 +82,16 @@ module health_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (role
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: health.id
+    resourceId: workspace.id
   }
 }]
 
-module health_fhir 'fhirservices/deploy.bicep' = [for (fhir, index) in fhirServices: {
+module workspace_fhir 'fhirservices/deploy.bicep' = [for (fhir, index) in fhirServices: {
   name: '${uniqueString(deployment().name, location)}-Health-FHIR-${index}'
   params: {
     name: fhir.name
     location: location
-    workspaceName: health.name
+    workspaceName: workspace.name
     kind: fhir.kind
     tags: contains(fhir, 'tags') ? fhir.tags : {}
     publicNetworkAccess: contains(fhir, 'publicNetworkAccess') ? fhir.publicNetworkAccess : 'Disabled'
@@ -101,7 +101,7 @@ module health_fhir 'fhirservices/deploy.bicep' = [for (fhir, index) in fhirServi
     acrLoginServers: contains(fhir, 'acrLoginServers') ? fhir.acrLoginServers : []
     acrOciArtifacts: contains(fhir, 'acrOciArtifacts') ? fhir.acrOciArtifacts : []
     authenticationAuthority: contains(fhir, 'authenticationAuthority') ? fhir.authenticationAuthority : uri(environment().authentication.loginEndpoint, subscription().tenantId)
-    authenticationAudience: contains(fhir, 'authenticationAudience') ? fhir.authenticationAudience : 'https://${health.name}-${fhir.name}.fhir.azurehealthcareapis.com'
+    authenticationAudience: contains(fhir, 'authenticationAudience') ? fhir.authenticationAudience : 'https://${workspace.name}-${fhir.name}.fhir.azurehealthcareapis.com'
     corsOrigins: contains(fhir, 'corsOrigins') ? fhir.corsOrigins : []
     corsHeaders: contains(fhir, 'corsHeaders') ? fhir.corsHeaders : []
     corsMethods: contains(fhir, 'corsMethods') ? fhir.corsMethods : []
@@ -127,12 +127,12 @@ module health_fhir 'fhirservices/deploy.bicep' = [for (fhir, index) in fhirServi
   }
 }]
 
-module health_dicom 'dicomservices/deploy.bicep' = [for (dicom, index) in dicomServices: {
+module workspace_dicom 'dicomservices/deploy.bicep' = [for (dicom, index) in dicomServices: {
   name: '${uniqueString(deployment().name, location)}-Health-DICOM-${index}'
   params: {
     name: dicom.name
     location: location
-    workspaceName: health.name
+    workspaceName: workspace.name
     tags: contains(dicom, 'tags') ? dicom.tags : {}
     publicNetworkAccess: contains(dicom, 'publicNetworkAccess') ? dicom.publicNetworkAccess : 'Disabled'
     systemAssignedIdentity: contains(dicom, 'systemAssignedIdentity') ? dicom.systemAssignedIdentity : false
@@ -153,12 +153,12 @@ module health_dicom 'dicomservices/deploy.bicep' = [for (dicom, index) in dicomS
   }
 }]
 
-module health_iomt 'iotconnectors/deploy.bicep' = [for (iomt, index) in iotConnectors: {
+module workspace_iomt 'iotconnectors/deploy.bicep' = [for (iomt, index) in iotConnectors: {
   name: '${uniqueString(deployment().name, location)}-Health-IOMT-${index}'
   params: {
     name: iomt.name
     location: location
-    workspaceName: health.name
+    workspaceName: workspace.name
     tags: contains(iomt, 'tags') ? iomt.tags : {}
     eventHubName: iomt.eventHubName
     eventHubNamespaceName: iomt.eventHubNamespaceName
@@ -188,13 +188,13 @@ module health_iomt 'iotconnectors/deploy.bicep' = [for (iomt, index) in iotConne
 }]
 
 @description('The name of the health data services workspace.')
-output name string = health.name
+output name string = workspace.name
 
 @description('The resource ID of the health data services workspace.')
-output resourceId string = health.id
+output resourceId string = workspace.id
 
 @description('The resource group where the workspace is deployed.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = health.location
+output location string = workspace.location
