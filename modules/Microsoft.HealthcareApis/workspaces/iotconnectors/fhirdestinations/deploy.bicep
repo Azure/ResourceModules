@@ -11,7 +11,7 @@ param destinationMapping object = {
 @description('Conditional. The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment.')
 param iotConnectorName string
 
-@description('Required. The name of the parent health data services workspace.')
+@description('Conditional. The name of the parent health data services workspace. Required if the template is used in a standalone deployment.')
 param workspaceName string
 
 @description('Required. The resource identifier of the FHIR Service to connect to.')
