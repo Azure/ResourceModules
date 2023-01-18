@@ -7,7 +7,6 @@ This module deploys a DICOM service.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -135,50 +134,6 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group where the namespace is deployed. |
 | `resourceId` | string | The resource ID of the dicom service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Deployment examples
-
-<h3>Example 1: Common</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module dicom './Microsoft.HealthcareApis/workspaces/dicomservices/deploy.bicep' = {
-    name: '${uniqueString(deployment().name)}-test-dicom'
-    params: {
-        // Required parameters
-        name: '<<namePrefix>>dicom001'
-        workspaceName: '<healthDataServicesWorkspaceName>'
-        // Non-required parameters
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
-        diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-        lock: 'CanNotDelete'
-        systemAssignedIdentity: true
-        userAssignedIdentities: {
-            '<managedIdentityResourceId>': {}
-        }
-        corsOrigins: [
-            '*'
-        ]
-        corsHeaders: [
-            '*'
-        ]
-        corsMethods: [
-            'GET'
-        ]
-        corsMaxAge: 600
-        corsAllowCredentials: true
-        publicNetworkAccess: 'Enabled'
-    }
-}
-```
-
-</details>
 
 ## Cross-referenced modules
 

@@ -7,7 +7,6 @@ This module deploys HealthcareApis MedTech Service.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Deployment examples](#Deployment-examples)
 - [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
@@ -276,32 +275,6 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the medtech service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 | `workspaceName` | string | The name of the medtech workspace. |
-
-## Deployment examples
-
-<h3>Example 1: min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module iotConnector './Microsoft.HealthcareApis/workspaces/iotconnectors/deploy.bicep' = {
-    name: '${uniqueString(deployment().name)}-test-iomt'
-    params: {
-        // Required parameters
-        name: '<<namePrefix>>iomt001'
-        workspaceName: '<workspaceName>'
-        eventHubName: '<eventHubName>'
-        eventHubNamespaceName: '<eventHubNamespaceName>'
-        deviceMapping: '<deviceMapping>'
-        destinationMapping '<destinationMapping>'
-        fhirServiceResourceId: '<fhirServiceResourceId>'
-    }
-}
-```
-
-</details>
 
 ## Cross-referenced modules
 
