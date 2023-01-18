@@ -30,7 +30,12 @@ This module deploys HealthcareApis MedTech Service.
 | `eventHubNamespaceName` | string |  | Namespace of the Event Hub to connect to. |
 | `fhirServiceResourceId` | string |  | The resource identifier of the FHIR Service to connect to. |
 | `name` | string |  | The name of the MedTech service. |
-| `workspaceName` | string |  | The name of the parent health data services workspace. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceName` | string | The name of the parent health data services workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

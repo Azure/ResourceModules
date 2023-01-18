@@ -24,7 +24,12 @@ This module deploys a DICOM service.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the DICOM service. |
-| `workspaceName` | string | The name of the parent health data services workspace. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceName` | string | The name of the parent health data services workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

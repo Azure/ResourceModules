@@ -25,7 +25,12 @@ This module deploys HealthcareApis Workspaces FHIR Service.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the FHIR service. |
-| `workspaceName` | string | The name of the parent health data services workspace. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceName` | string | The name of the parent health data services workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

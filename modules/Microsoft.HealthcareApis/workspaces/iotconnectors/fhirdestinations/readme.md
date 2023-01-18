@@ -23,9 +23,14 @@ This module deploys HealthcareApis MedTech FHIR Destination.
 | :-- | :-- | :-- | :-- |
 | `destinationMapping` | object | `{object}` | The mapping JSON that determines how normalized data is converted to FHIR Observations. |
 | `fhirServiceResourceId` | string |  | The resource identifier of the FHIR Service to connect to. |
-| `iotConnectorName` | string |  | The name of the MedTech service to add this destination to. |
 | `name` | string |  | The name of the FHIR destination. |
-| `workspaceName` | string |  | The name of the parent health data services workspace. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `iotConnectorName` | string | The name of the MedTech service to add this destination to. Required if the template is used in a standalone deployment. |
+| `workspaceName` | string | The name of the parent health data services workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
