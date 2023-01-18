@@ -9,7 +9,7 @@ param name string
 @description('Optional. The kind of the service. Defaults to R4.')
 param kind string = 'fhir-R4'
 
-@description('Required. The name of the parent health data services workspace.')
+@description('Conditional. The name of the parent health data services workspace. Required if the template is used in a standalone deployment.')
 param workspaceName string
 
 @description('Optional. List of Azure AD object IDs (User or Apps) that is allowed access to the FHIR service.')
