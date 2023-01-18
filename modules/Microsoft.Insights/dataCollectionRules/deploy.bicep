@@ -5,6 +5,15 @@
 @description('Required. The name of the data collection rule. The name is case insensitive.')
 param name string
 
+@description('The specification of data flows."')
+param dataFlows array
+
+@description('Required. Specification of data sources that will be collected.')
+param dataSources object
+
+@description('Required. Specification of destinations that can be used in data flows.')
+param destinations object
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -53,6 +62,11 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-04-01' 
   location: location
   name: name
   tags: tags
+  properties: {
+    dataSources: dataSources
+    destinations: destinations
+    dataFlows: dataFlows
+  }
 }
 
 resource dataCollectionRule_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
