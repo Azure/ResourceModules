@@ -1,0 +1,32 @@
+name: 'create/update/close issues for failing pipelines in main'
+
+on:
+  workflow_dispatch
+  # schedule:
+  #   - cron:  '30 5 * * *'
+jobs:
+  manage-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        name: Manage issues
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'manageIssueForFailingPipelines' 'New-IssuesForFailingPipelines.ps1')
+
+          $functionInput = @{
+            repo = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
+            limitNumberOfRuns = 100
+            limitInDays = 2
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          New-IssuesForFailingPipelines @functionInput -Verbose -WhatIf
