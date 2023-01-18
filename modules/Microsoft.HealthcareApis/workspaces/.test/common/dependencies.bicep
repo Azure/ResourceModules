@@ -39,20 +39,18 @@ resource ehns 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
         zoneRedundant: false
         isAutoInflateEnabled: false
     }
-}
 
-resource ehub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
-    name: '${eventHubNamespaceName}-hub'
-    parent: ehns
-    properties: {
-        messageRetentionInDays: 1
-        partitionCount: 1
+    resource eventhub 'eventhubs@2022-01-01-preview' = {
+        name: '${eventHubNamespaceName}-hub'
+        properties: {
+            messageRetentionInDays: 1
+            partitionCount: 1
+        }
+        
+        resource consumergroup 'consumergroups@2022-01-01-preview' = {
+            name: eventHubConsumerGroupName
+        }
     }
-}
-
-resource ehub_consumergroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
-    name: eventHubConsumerGroupName
-    parent: ehub
 }
 
 @description('The principal ID of the created Managed Identity.')
