@@ -153,36 +153,36 @@ module workspace_dicom 'dicomservices/deploy.bicep' = [for (dicom, index) in dic
   }
 }]
 
-module workspace_iomt 'iotconnectors/deploy.bicep' = [for (iomt, index) in iotConnectors: {
+module workspace_iotConnector 'iotconnectors/deploy.bicep' = [for (iotConnector, index) in iotConnectors: {
   name: '${uniqueString(deployment().name, location)}-Health-IOMT-${index}'
   params: {
-    name: iomt.name
+    name: iotConnector.name
     location: location
     workspaceName: workspace.name
-    tags: contains(iomt, 'tags') ? iomt.tags : {}
-    eventHubName: iomt.eventHubName
-    eventHubNamespaceName: iomt.eventHubNamespaceName
-    deviceMapping: contains(iomt, 'deviceMapping') ? iomt.deviceMapping : {
+    tags: contains(iotConnector, 'tags') ? iotConnector.tags : {}
+    eventHubName: iotConnector.eventHubName
+    eventHubNamespaceName: iotConnector.eventHubNamespaceName
+    deviceMapping: contains(iotConnector, 'deviceMapping') ? iotConnector.deviceMapping : {
       templateType: 'CollectionContent'
       template: []
     }
-    destinationMapping: contains(iomt, 'destinationMapping') ? iomt.destinationMapping : {
+    destinationMapping: contains(iotConnector, 'destinationMapping') ? iotConnector.destinationMapping : {
       templateType: 'CollectionFhir'
       template: []
     }
-    consumerGroup: contains(iomt, 'consumerGroup') ? iomt.consumerGroup : iomt.name
-    systemAssignedIdentity: contains(iomt, 'systemAssignedIdentity') ? iomt.systemAssignedIdentity : false
-    fhirServiceResourceId: iomt.fhirServiceResourceId
-    diagnosticLogsRetentionInDays: contains(iomt, 'diagnosticLogsRetentionInDays') ? iomt.diagnosticLogsRetentionInDays : 365
-    diagnosticStorageAccountId: contains(iomt, 'diagnosticStorageAccountId') ? iomt.diagnosticStorageAccountId : ''
-    diagnosticWorkspaceId: contains(iomt, 'diagnosticWorkspaceId') ? iomt.diagnosticWorkspaceId : ''
-    diagnosticEventHubAuthorizationRuleId: contains(iomt, 'diagnosticEventHubAuthorizationRuleId') ? iomt.diagnosticEventHubAuthorizationRuleId : ''
-    diagnosticEventHubName: contains(iomt, 'diagnosticEventHubName') ? iomt.diagnosticEventHubName : ''
-    lock: contains(iomt, 'lock') ? iomt.lock : ''
-    userAssignedIdentities: contains(iomt, 'userAssignedIdentities') ? iomt.userAssignedIdentities : {}
-    diagnosticLogCategoriesToEnable: contains(iomt, 'diagnosticLogCategoriesToEnable') ? iomt.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
-    diagnosticMetricsToEnable: contains(iomt, 'diagnosticMetricsToEnable') ? iomt.diagnosticMetricsToEnable : [ 'AllMetrics' ]
-    resourceIdentityResolutionType: contains(iomt, 'resourceIdentityResolutionType') ? iomt.resourceIdentityResolutionType : 'Lookup'
+    consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
+    systemAssignedIdentity: contains(iotConnector, 'systemAssignedIdentity') ? iotConnector.systemAssignedIdentity : false
+    fhirServiceResourceId: iotConnector.fhirServiceResourceId
+    diagnosticLogsRetentionInDays: contains(iotConnector, 'diagnosticLogsRetentionInDays') ? iotConnector.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(iotConnector, 'diagnosticStorageAccountId') ? iotConnector.diagnosticStorageAccountId : ''
+    diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
+    diagnosticEventHubAuthorizationRuleId: contains(iotConnector, 'diagnosticEventHubAuthorizationRuleId') ? iotConnector.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(iotConnector, 'diagnosticEventHubName') ? iotConnector.diagnosticEventHubName : ''
+    lock: contains(iotConnector, 'lock') ? iotConnector.lock : ''
+    userAssignedIdentities: contains(iotConnector, 'userAssignedIdentities') ? iotConnector.userAssignedIdentities : {}
+    diagnosticLogCategoriesToEnable: contains(iotConnector, 'diagnosticLogCategoriesToEnable') ? iotConnector.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
+    diagnosticMetricsToEnable: contains(iotConnector, 'diagnosticMetricsToEnable') ? iotConnector.diagnosticMetricsToEnable : [ 'AllMetrics' ]
+    resourceIdentityResolutionType: contains(iotConnector, 'resourceIdentityResolutionType') ? iotConnector.resourceIdentityResolutionType : 'Lookup'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
