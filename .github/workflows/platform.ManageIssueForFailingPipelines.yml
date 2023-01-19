@@ -1,8 +1,9 @@
 name: 'create/update/close issues for failing pipelines in main'
 
-on:
-  schedule:
-    - cron: '30 5 * * *'
+on: workflow_dispatch
+# on:
+#   schedule:
+#     - cron: '30 5 * * *'
 jobs:
   manage-issues:
     runs-on: ubuntu-latest
