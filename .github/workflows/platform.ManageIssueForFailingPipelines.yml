@@ -1,12 +1,8 @@
 name: 'create/update/close issues for failing pipelines in main'
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - users/rahalan/AddIssueCreator
-  # schedule:
-  #   - cron:  '30 5 * * *'
+  schedule:
+    - cron: '30 5 * * *'
 jobs:
   manage-issues:
     runs-on: ubuntu-latest
