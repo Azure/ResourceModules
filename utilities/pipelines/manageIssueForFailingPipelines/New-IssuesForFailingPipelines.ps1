@@ -39,12 +39,14 @@ function New-IssuesForFailingPipelines {
     $issuesCreated = 0
     $issuesCommented = 0
     $issuesClosed = 0
+    Write-Verbose '#1'
 
     foreach ($run in $runs) {
         $runStartTime = [Datetime]::ParseExact($run.startedAt, 'MM/dd/yyyy HH:mm:ss', $null)
 
         if (($run.headBranch -eq 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$limitInDays))) {
             $runId = $run.url.Split('/') | Select-Object -Last 1
+            Write-Verbose '#2'
             $runDetails = gh run view $runId --json conclusion, number --repo $repo | ConvertFrom-Json -Depth 100
 
             if (!$workflowRuns.ContainsKey($run.workflowName) -or $runDetails.number -gt $workflowRuns[$run.workflowName].number) {
@@ -56,8 +58,10 @@ function New-IssuesForFailingPipelines {
                 }
 
                 if (!$workflowRuns.ContainsKey($run.workflowName)) {
+                    Write-Verbose '#3'
                     $workflowRuns.Add($run.workflowName, $workflowRun)
                 } else {
+                    Write-Verbose '#4'
                     $workflowRuns[$run.workflowName] = $workflowRun
                 }
             }
@@ -65,6 +69,7 @@ function New-IssuesForFailingPipelines {
     }
 
     foreach ($workflowRun in $workflowRuns.values) {
+        Write-Verbose '#5'
         if ($workflowRun.conclusion -eq 'failure') {
             $issueName = "[Failed pipeline] $($workflowRun.workflowName)"
             $failedrun = "failed run: $($workflowRun.url)"
