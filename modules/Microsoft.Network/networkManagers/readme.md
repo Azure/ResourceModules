@@ -35,7 +35,7 @@ Azure Virtual Network Manager is a management service that enables you to group,
 | :-- | :-- | :-- |
 | `name` | string | Name of the Network Manager. |
 | `networkManagerScopeAccesses` | array | Scope Access. String array containing any of "Connectivity", "SecurityAdmin". The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs. |
-| `networkManagerScopes` | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this virtual network manager instance can manage. |
+| `networkManagerScopes` | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this virtual network manager instance can manage. If using management groups, ensure that the "Microsoft.Network" resource provider is registered for management groups first before deploying network manager. |
 
 **Conditional parameters**
 
@@ -534,9 +534,7 @@ _None_
 
 ## Considerations
 
-There is currently an issue when deploying a network manager instance for a management group scope where the management group ID is a `guid`. For example, if the management group resource ID looks like `/providers/Microsoft.Management/managementGroups/f2857922-1732-4c0d-a8d4-7003b13be520`, then this will fail when the deployment happens via code but succeed if it was created using the Azure Portal. This does not impact management group IDs that use a regular string such as `mg-contoso`.
-
-The workaround is to deploy network manager using the Azure Portal first, before triggering it via code. This has been communicated to the network manager team and waiting on investigation outcomes and the documentation will be updated accordingly.
+In order to deploy network manager where the `networkManagerScopes` property is set to `managementGroups`, you need to register the management group with the `Microsoft.Network` resource provider first, which is available in the [Providers - Register At Management Group Scope API](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope) documentation.
 
 ## Deployment examples
 
