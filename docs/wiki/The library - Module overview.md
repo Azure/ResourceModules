@@ -74,7 +74,7 @@ This section provides an overview of the library's feature set.
 | 59 | MS.ManagedServices<p>registrationDefinitions |  |  |  |  |  |  |  | 60 |
 | 60 | MS.Management<p>managementGroups |  |  |  |  |  |  |  | 44 |
 | 61 | MS.NetApp<p>netAppAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1, L2:1] | 106 |
-| 62 | MS.Network<p>applicationGateways | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 317 |
+| 62 | MS.Network<p>applicationGateways | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 318 |
 | 63 | MS.Network<p>applicationGatewayWebApplicationFirewallPolicies |  |  | :white_check_mark: |  |  |  |  | 44 |
 | 64 | MS.Network<p>applicationSecurityGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 63 |
 | 65 | MS.Network<p>azureFirewalls | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | 285 |
@@ -130,7 +130,7 @@ This section provides an overview of the library's feature set.
 | 115 | MS.Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 116 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3, L2:2] | 380 |
 | 117 | MS.Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 91 | 89 | 100 | 50 | 23 | 2 | 175 | 20314 |
+| Sum | | 91 | 89 | 100 | 50 | 23 | 2 | 175 | 20315 |
 
 ## Legend
 
