@@ -3,7 +3,7 @@
 Check for failing pipelines and create issues for those, that are failing.
 
 .DESCRIPTION
-If a pipeline fails, a new issue will be created, with a link to the failed pipeline. If the issue is already existing, a comment will be added, if a new run failed (with the link for the new failed run). If a pipeline run succeeds and a issue is open for the failed run, it will be closed (and a link to the successful run is added to the issue).
+If a pipeline fails, a new issue will be created, with a link to the failed pipeline. If the issue is already existing, a comment will be added, if a new run failed (with the link for the new failed run). If a pipeline run succeeds and an issue is open for the failed run, it will be closed (and a link to the successful run is added to the issue).
 
 .PARAMETER repo
 Needs to have the structure "owner/repositioryName"
