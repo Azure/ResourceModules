@@ -45,9 +45,7 @@ function New-IssuesForFailingPipelines {
 
         if (($run.headBranch -eq 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$limitInDays))) {
             $runId = $run.url.Split('/') | Select-Object -Last 1
-            Write-Verbose '#2'
-            $runDetails = gh run view $runId --json conclusion, number --repo $repo | ConvertFrom-Json -Depth 100
-            Write-Verbose '#3'
+            $runDetails = gh run view $runId --json 'conclusion,number' --repo $repo | ConvertFrom-Json -Depth 100
 
             if (!$workflowRuns.ContainsKey($run.workflowName) -or $runDetails.number -gt $workflowRuns[$run.workflowName].number) {
                 $workflowRun = New-Object PSObject -Property @{
