@@ -35,7 +35,46 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    dataSources: {
+      performanceCounters: [
+        {
+          name: 'perfCounterDataSource10'
+          samplingFrequencyInSeconds: 10
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+          counterSpecifiers: [
+            '\\Processor Information(_Total)\\% Processor Time'
+            '\\Processor Information(_Total)\\% Privileged Time'
+            '\\Processor Information(_Total)\\% User Time'
+            '\\Processor Information(_Total)\\Processor Frequency'
+            '\\System\\Processes'
+            '\\Process(_Total)\\Thread Count'
+            '\\Process(_Total)\\Handle Count'
+            '\\System\\System Up Time'
+            '\\System\\Context Switches/sec'
+            '\\System\\Processor Queue Length'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      azureMonitorMetrics: {
+        name: 'azureMonitorMetrics-default'
+      }
+    }
+    dataFlows: [
+      {
+        streams: [
+          'Microsoft-InsightsMetrics'
+        ]
+        destinations: [
+          'azureMonitorMetrics-default'
+        ]
+      }
+    ]
+    enableDefaultTelemetry: enableDefaultTelemetry
+    kind: 'Windows'
   }
 }
