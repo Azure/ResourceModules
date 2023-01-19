@@ -35,7 +35,7 @@ Azure Virtual Network Manager is a management service that enables you to group,
 | :-- | :-- | :-- |
 | `name` | string | Name of the Network Manager. |
 | `networkManagerScopeAccesses` | array | Scope Access. String array containing any of "Connectivity", "SecurityAdmin". The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs. |
-| `networkManagerScopes` | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this virtual network manager instance can manage. If using management groups, ensure that the "Microsoft.Network" resource provider is registered for management groups first before deploying network manager. |
+| `networkManagerScopes` | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this Network Manager instance can manage. If using Management Groups, ensure that the "Microsoft.Network" resource provider is registered for those Management Groups prior to deployment. |
 
 **Conditional parameters**
 
