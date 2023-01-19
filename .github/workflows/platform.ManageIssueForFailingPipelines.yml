@@ -1,6 +1,9 @@
 name: 'create/update/close issues for failing pipelines in main'
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - users/rahalan/AddIssueCreator
 # on:
 #   schedule:
 #     - cron: '30 5 * * *'
