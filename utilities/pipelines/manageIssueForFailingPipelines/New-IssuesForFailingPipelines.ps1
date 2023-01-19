@@ -76,7 +76,7 @@ function New-IssuesForFailingPipelines {
             $failedrun = "failed run: $($workflowRun.url)"
 
             if ($issues.title -notcontains $issueName) {
-                if ($PSCmdlet.ShouldProcess("$issueName", 'create')) {
+                if ($PSCmdlet.ShouldProcess("Issue [$issueName]", 'Create')) {
                     gh issue create --title "$issueName" --body "$failedrun" --label 'automation,bug' --repo $repo
                 }
 
