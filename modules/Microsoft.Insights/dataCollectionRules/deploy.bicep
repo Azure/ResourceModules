@@ -5,6 +5,9 @@
 @description('Required. The name of the data collection rule. The name is case insensitive.')
 param name string
 
+@description('Optional. The resource ID of the data collection endpoint that this rule can be used with.')
+param dataCollectionEndpointId string = ''
+
 @description('The specification of data flows."')
 param dataFlows array
 
@@ -57,7 +60,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-04-01' = {
+resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-preview' = {
   kind: kind
   location: location
   name: name
@@ -66,6 +69,7 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-04-01' 
     dataSources: dataSources
     destinations: destinations
     dataFlows: dataFlows
+    dataCollectionEndpointId: empty(dataCollectionEndpointId) ? null : dataCollectionEndpointId
   }
 }
 
