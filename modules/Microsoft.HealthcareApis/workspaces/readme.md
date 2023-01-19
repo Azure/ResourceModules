@@ -434,80 +434,80 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     // Non-required parameters
     dicomServices: [
       {
-        workspaceName: '<<namePrefix>>hawcom001'
-        publicNetworkAccess: 'Enabled'
-        diagnosticLogsRetentionInDays: 7
-        name: '<<namePrefix>>-az-dicom-x-001'
-        userAssignedIdentities: {
-          '<managedIdentityResourceId>': {}
-        }
-        corsOrigins: [
+        corsAllowCredentials: false
+        corsHeaders: [
           '*'
         ]
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        corsMaxAge: 600
         corsMethods: [
           'GET'
         ]
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-        corsAllowCredentials: false
-        enableDefaultTelemetry: '<enableDefaultTelemetry>'
-        location: '<location>'
-        corsHeaders: [
-          '*'
-        ]
-        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticEventHubName: '<diagnosticEventHubName>'
-        corsMaxAge: 600
-        systemAssignedIdentity: true
-      }
-    ]
-    fhirServices: [
-      {
         corsOrigins: [
           '*'
         ]
-        corsHeaders: [
-          '*'
-        ]
-        diagnosticEventHubName: '<diagnosticEventHubName>'
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
         diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        location: '<location>'
+        name: '<<namePrefix>>-az-dicom-x-001'
+        publicNetworkAccess: 'Enabled'
+        systemAssignedIdentity: true
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
+        workspaceName: '<<namePrefix>>hawcom001'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fhirServices: [
+      {
+        corsAllowCredentials: false
+        corsHeaders: [
+          '*'
+        ]
+        corsMaxAge: 600
+        corsMethods: [
+          'GET'
+        ]
+        corsOrigins: [
+          '*'
+        ]
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        importEnabled: false
+        initialImportMode: false
+        kind: 'fhir-R4'
+        location: '<location>'
+        name: '<<namePrefix>>-az-fhir-x-001'
+        publicNetworkAccess: 'Enabled'
+        resourceVersionPolicy: 'versioned'
         roleAssignments: [
           {
-            roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
-            principalType: 'ServicePrincipal'
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: '<roleDefinitionIdOrName>'
           }
         ]
-        resourceVersionPolicy: 'versioned'
-        corsAllowCredentials: false
-        importEnabled: false
-        name: '<<namePrefix>>-az-fhir-x-001'
-        publicNetworkAccess: 'Enabled'
-        corsMaxAge: 600
-        workspaceName: '<<namePrefix>>hawcom001'
-        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-        initialImportMode: false
-        systemAssignedIdentity: true
-        location: '<location>'
-        corsMethods: [
-          'GET'
-        ]
-        kind: 'fhir-R4'
-        enableDefaultTelemetry: '<enableDefaultTelemetry>'
         smartProxyEnabled: false
+        systemAssignedIdentity: true
+        userAssignedIdentities: {
+          '<managedIdentityResourceId>': {}
+        }
+        workspaceName: '<<namePrefix>>hawcom001'
       }
     ]
-    publicNetworkAccess: 'Enabled'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: ''
+    publicNetworkAccess: 'Enabled'
   }
 }
 ```
@@ -532,90 +532,90 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     "dicomServices": {
       "value": [
         {
-          "workspaceName": "<<namePrefix>>hawcom001",
-          "publicNetworkAccess": "Enabled",
-          "diagnosticLogsRetentionInDays": 7,
-          "name": "<<namePrefix>>-az-dicom-x-001",
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
-          "corsOrigins": [
+          "corsAllowCredentials": false,
+          "corsHeaders": [
             "*"
           ],
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "corsMaxAge": 600,
           "corsMethods": [
             "GET"
           ],
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-          "corsAllowCredentials": false,
-          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-          "location": "<location>",
-          "corsHeaders": [
+          "corsOrigins": [
             "*"
           ],
           "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
           "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "corsMaxAge": 600,
-          "systemAssignedIdentity": true
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "location": "<location>",
+          "name": "<<namePrefix>>-az-dicom-x-001",
+          "publicNetworkAccess": "Enabled",
+          "systemAssignedIdentity": true,
+          "userAssignedIdentities": {
+            "<managedIdentityResourceId>": {}
+          },
+          "workspaceName": "<<namePrefix>>hawcom001"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "fhirServices": {
       "value": [
         {
-          "corsOrigins": [
-            "*"
-          ],
+          "corsAllowCredentials": false,
           "corsHeaders": [
             "*"
           ],
-          "diagnosticEventHubName": "<diagnosticEventHubName>",
-          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
-          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
-          "diagnosticLogsRetentionInDays": 7,
-          "userAssignedIdentities": {
-            "<managedIdentityResourceId>": {}
-          },
-          "roleAssignments": [
-            {
-              "roleDefinitionIdOrName": "<roleDefinitionIdOrName>",
-              "principalType": "ServicePrincipal",
-              "principalIds": [
-                "<managedIdentityPrincipalId>"
-              ]
-            }
-          ],
-          "resourceVersionPolicy": "versioned",
-          "corsAllowCredentials": false,
-          "importEnabled": false,
-          "name": "<<namePrefix>>-az-fhir-x-001",
-          "publicNetworkAccess": "Enabled",
           "corsMaxAge": 600,
-          "workspaceName": "<<namePrefix>>hawcom001",
-          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
-          "initialImportMode": false,
-          "systemAssignedIdentity": true,
-          "location": "<location>",
           "corsMethods": [
             "GET"
           ],
-          "kind": "fhir-R4",
+          "corsOrigins": [
+            "*"
+          ],
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-          "smartProxyEnabled": false
+          "importEnabled": false,
+          "initialImportMode": false,
+          "kind": "fhir-R4",
+          "location": "<location>",
+          "name": "<<namePrefix>>-az-fhir-x-001",
+          "publicNetworkAccess": "Enabled",
+          "resourceVersionPolicy": "versioned",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "<roleDefinitionIdOrName>"
+            }
+          ],
+          "smartProxyEnabled": false,
+          "systemAssignedIdentity": true,
+          "userAssignedIdentities": {
+            "<managedIdentityResourceId>": {}
+          },
+          "workspaceName": "<<namePrefix>>hawcom001"
         }
       ]
-    },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     },
     "location": {
       "value": "<location>"
     },
     "lock": {
       "value": ""
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     }
   }
 }
@@ -675,8 +675,8 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     name: '<<namePrefix>>hawmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    publicNetworkAccess: 'Enabled'
     location: '<location>'
+    publicNetworkAccess: 'Enabled'
   }
 }
 ```
@@ -701,11 +701,11 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "publicNetworkAccess": {
-      "value": "Enabled"
-    },
     "location": {
       "value": "<location>"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
     }
   }
 }
