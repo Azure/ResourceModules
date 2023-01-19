@@ -1,41 +1,37 @@
-
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
-
-@description('Required. The name of the Key Vault to create.')
-param keyVaultName string
 
 // @description('Required. The name of the Managed Identity to create.')
 // param managedIdentityName string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-    name: keyVaultName
-    location: location
-    properties: {
-        sku: {
-            family: 'A'
-            name: 'standard'
-        }
-        tenantId: tenant().tenantId
-        enablePurgeProtection: false
-        softDeleteRetentionInDays: 7
-        enabledForTemplateDeployment: true
-        enabledForDiskEncryption: true
-        enabledForDeployment: true
-        enableRbacAuthorization: true
-        accessPolicies: []
+  name: 'testkvcarmludt'
+  location: location
+  properties: {
+    sku: {
+      family: 'A'
+      name: 'standard'
     }
+    tenantId: tenant().tenantId
+    enablePurgeProtection: false
+    softDeleteRetentionInDays: 7
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+    enabledForDeployment: true
+    enableRbacAuthorization: true
+    accessPolicies: []
+  }
 
-    resource key 'keys@2022-07-01' = {
-        name: 'keyEncryptionKey'
-        properties: {
-            kty: 'RSA'
-        }
+  resource key 'keys@2022-07-01' = {
+    name: 'keyEncryptionKey'
+    properties: {
+      kty: 'RSA'
     }
+  }
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: storageAccountName
+  name: 'testsacarmludt'
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -82,4 +78,4 @@ output keyName string = keyVault::key.name // Note: this is returning keyvaultNa
 output storageAccountResourceId string = storageAccount.id
 
 @description('The resource ID of the created Storage Account.')
-output storageContainerName string = storageAccount::blobService::container.Name
+output storageContainerName string = storageAccount::blobService::container.name

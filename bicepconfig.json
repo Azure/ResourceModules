@@ -10,8 +10,9 @@
                 }
             }
         }
-    },
-    "experimentalFeaturesEnabled": {
-        "userDefinedTypes": true
     }
+    // ,
+    // "experimentalFeaturesEnabled": {
+    //     "userDefinedTypes": true
+    // }
 }
