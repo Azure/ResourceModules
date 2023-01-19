@@ -86,7 +86,7 @@ function New-IssuesForFailingPipelines {
 
                 if (!$issue.body.Contains($failedrun)) {
                     if ($issue.comments.length -eq 0) {
-                        if ($PSCmdlet.ShouldProcess("$issueName", 'comment')) {
+                        if ($PSCmdlet.ShouldProcess("Issue [$issueName]", 'Add comment')) {
                             gh issue comment $issue.url --body $failedrun --repo $repo
                         }
 
