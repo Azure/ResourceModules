@@ -25,11 +25,11 @@ jobs:
 
           $functionInput = @{
             repo = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
-            limitNumberOfRuns = 10000
-            limitInDays = 70
+            limitNumberOfRuns = 500
+            limitInDays = 2
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          New-IssuesForFailingPipelines @functionInput -Verbose -WhatIf
+          New-IssuesForFailingPipelines @functionInput -Verbose # -WhatIf
