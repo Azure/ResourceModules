@@ -19,9 +19,6 @@ Optional. List of pipeline names that should be ignored (even if they fail, no t
 
 .EXAMPLE
 New-IssuesForFailingPipelines -repo 'owner/repo01' -limitNumberOfRuns 100 -limitInDays 2 -Verbose -WhatIf
-
-.NOTES
-The function supports -WhatIf
 #>
 function New-IssuesForFailingPipelines {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
