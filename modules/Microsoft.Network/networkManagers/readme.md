@@ -534,7 +534,7 @@ _None_
 
 ## Considerations
 
-In order to deploy network manager where the `networkManagerScopes` property is set to `managementGroups`, you need to register the management group with the `Microsoft.Network` resource provider first, which is available in the [Providers - Register At Management Group Scope API](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope) documentation.
+In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
 
 ## Deployment examples
 
