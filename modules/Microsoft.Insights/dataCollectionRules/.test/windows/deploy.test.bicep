@@ -171,6 +171,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     tags: {
       resourceType: 'Data Collection Rules'
+      kind: 'Windows'
     }
   }
 }
