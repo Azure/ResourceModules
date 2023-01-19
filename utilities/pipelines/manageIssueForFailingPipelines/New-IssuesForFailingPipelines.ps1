@@ -50,7 +50,7 @@ function New-IssuesForFailingPipelines {
             $runId = $run.url.Split('/') | Select-Object -Last 1
             $runDetails = gh run view $runId --json 'conclusion,number' --repo $repo | ConvertFrom-Json -Depth 100
 
-            if (!$workflowRuns.ContainsKey($run.workflowName) -or $runDetails.number -gt $workflowRuns[$run.workflowName].number) {
+            if (-not $workflowRuns.ContainsKey($run.workflowName) -or $runDetails.number -gt $workflowRuns[$run.workflowName].number) {
                 $workflowRun = New-Object PSObject -Property @{
                     workflowName = $run.workflowName
                     number       = $runDetails.number
