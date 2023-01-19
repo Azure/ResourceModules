@@ -14,6 +14,9 @@ Optional. Number of recent runs to scan for failed runs. Default is 100.
 .PARAMETER limitInDays
 Optional. Only runs in the past selected days will be analyzed. Default is 2.
 
+.PARAMETER ignorePipelines
+Optional. List of pipeline names that should be ignored (even if they fail, no ticket will be created). Default is an empty array.
+
 .EXAMPLE
 New-IssuesForFailingPipelines -repo 'owner/repo01' -limitNumberOfRuns 100 -limitInDays 2 -Verbose -WhatIf
 
@@ -30,7 +33,10 @@ function New-IssuesForFailingPipelines {
         [int] $limitNumberOfRuns = 100,
 
         [Parameter(Mandatory = $false)]
-        [int] $limitInDays = 2
+        [int] $limitInDays = 2,
+
+        [Parameter(Mandatory = $false)]
+        [String[]] $ignorePipelines = @()
     )
 
     $issues = gh issue list --state open --label 'automation,bug' --json 'title,url,body,comments' --repo $repo | ConvertFrom-Json -Depth 100
@@ -43,7 +49,7 @@ function New-IssuesForFailingPipelines {
     foreach ($run in $runs) {
         $runStartTime = [Datetime]::ParseExact($run.startedAt, 'MM/dd/yyyy HH:mm:ss', $null)
 
-        if (($run.headBranch -eq 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$limitInDays))) {
+        if (($run.headBranch -eq 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$limitInDays)) -and ($ignorePipelines -notcontains $run.workflowName)) {
             $runId = $run.url.Split('/') | Select-Object -Last 1
             $runDetails = gh run view $runId --json 'conclusion,number' --repo $repo | ConvertFrom-Json -Depth 100
 
