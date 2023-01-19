@@ -5,13 +5,13 @@ Check for failing pipelines and create issues for those, that are failing.
 .DESCRIPTION
 If a pipeline fails, a new issue will be created, with a link to the failed pipeline. If the issue is already existing, a comment will be added, if a new run failed (with the link for the new failed run). If a pipeline run succeeds and an issue is open for the failed run, it will be closed (and a link to the successful run is added to the issue).
 
-.PARAMETER repo
-Needs to have the structure "owner/repositioryName"
+.PARAMETER Repo
+Mandatory. The name of the respository to scan. Needs to have the structure "<owner>/<repositioryName>"
 
-.PARAMETER limitNumberOfRuns
+.PARAMETER LimitNumberOfRuns
 Optional. Number of recent runs to scan for failed runs. Default is 100.
 
-.PARAMETER limitInDays
+.PARAMETER LimitInDays
 Optional. Only runs in the past selected days will be analyzed. Default is 2.
 
 .PARAMETER ignorePipelines
