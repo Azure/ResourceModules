@@ -58,7 +58,7 @@ function New-IssuesForFailingPipelines {
                     conclusion   = $runDetails.conclusion
                 }
 
-                if (!$workflowRuns.ContainsKey($run.workflowName)) {
+                if (-not $workflowRuns.ContainsKey($run.workflowName)) {
                     $workflowRuns.Add($run.workflowName, $workflowRun)
                 } else {
                     $workflowRuns[$run.workflowName] = $workflowRun
