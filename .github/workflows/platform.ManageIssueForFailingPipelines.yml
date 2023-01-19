@@ -1,4 +1,4 @@
-name: 'create/update/close issues for failing pipelines in main'
+name: '.Platform: Manage issues for failing pipelines'
 
 on:
   schedule:
