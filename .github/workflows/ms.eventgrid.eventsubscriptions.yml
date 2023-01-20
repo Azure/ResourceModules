@@ -100,7 +100,7 @@ jobs:
   #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment validation'
+    name: 'Deploying'
     if: |
       !cancelled() &&
       github.event.inputs.deploymentValidation == 'true' &&
