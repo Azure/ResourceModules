@@ -26,7 +26,6 @@ variables:
 
 jobs:
   - job: Update_module_tables
-    displayName: Update module tables
     pool:
       ${{ if ne(variables.vmImage, '') }}:
         vmImage: ${{ variables.vmImage }}
