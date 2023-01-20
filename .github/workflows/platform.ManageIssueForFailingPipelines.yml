@@ -17,7 +17,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'manageIssueForFailingPipelines' 'New-IssuesForFailingPipelines.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'manageIssueForFailingPipelines' 'Set-IssueForWorkflow.ps1')
 
           $functionInput = @{
             Repo              = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
@@ -29,4 +29,4 @@ jobs:
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          New-IssuesForFailingPipelines @functionInput -Verbose # -WhatIf
+          Set-IssueForWorkflow @functionInput -Verbose # -WhatIf
