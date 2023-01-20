@@ -1,4 +1,4 @@
-name: ".Platform: Update Pester Test Documentation"
+name: ".Platform: Update Static Test Documentation"
 
 on:
   workflow_dispatch:
