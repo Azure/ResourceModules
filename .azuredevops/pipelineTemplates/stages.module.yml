@@ -9,13 +9,15 @@ parameters:
 stages:
   - stage: validation
     displayName: Static validation
-    condition: and(succeeded(), eq('${{ parameters.staticValidation }}', 'true'))
+    condition: and(eq('${{ parameters.staticValidation }}', 'true'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: deployment
     displayName: Deployment validation
-    condition: and(succeeded(), eq('${{ parameters.deploymentValidation }}', 'true'))
+    dependsOn:
+      - validation
+    condition: and(eq('${{ parameters.deploymentValidation }}', 'true'), ne(dependencies.validation.result, 'Failed'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
