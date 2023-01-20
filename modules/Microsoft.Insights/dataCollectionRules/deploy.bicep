@@ -8,7 +8,7 @@ param name string
 @description('Optional. The resource ID of the data collection endpoint that this rule can be used with.')
 param dataCollectionEndpointId string = ''
 
-@description('The specification of data flows."')
+@description('Required. The specification of data flows.')
 param dataFlows array
 
 @description('Required. Specification of data sources that will be collected.')
