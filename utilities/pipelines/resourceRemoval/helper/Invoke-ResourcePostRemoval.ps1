@@ -63,7 +63,15 @@ function Invoke-ResourcePostRemoval {
             if ($matchingKeyVault -and -not $matchingKeyVault.EnablePurgeProtection) {
                 Write-Verbose ("Purging key vault [$resourceName]") -Verbose
                 if ($PSCmdlet.ShouldProcess(('Key Vault with ID [{0}]' -f $matchingKeyVault.Id), 'Purge')) {
-                    $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
+                    try {
+                        $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location -ErrorAction 'Stop'
+                    } catch {
+                        if ($_.Exception.Message -like '*DeletedVaultPurge*') {
+                            Write-Warning ('Purge protection for key vault [{0}] enabled. Skipping. Scheduled purge date is [{1}]' -f $resourceName, $matchingKeyVault.ScheduledPurgeDate)
+                        } else {
+                            throw $_
+                        }
+                    }
                 }
             }
             break
@@ -101,30 +109,6 @@ function Invoke-ResourcePostRemoval {
                 }
                 if ($PSCmdlet.ShouldProcess(('API management service with ID [{0}]' -f $softDeletedService.properties.serviceId), 'Purge')) {
                     $null = Invoke-AzRestMethod @purgeRequestInputObject
-                }
-            }
-            break
-        }
-        'Microsoft.OperationalInsights/workspaces' {
-            $subscriptionId = $resourceId.Split('/')[2]
-            $resourceGroupName = $resourceId.Split('/')[4]
-            $resourceName = Split-Path $ResourceId -Leaf
-            # Fetch service in soft-delete state
-            $getPath = '/subscriptions/{0}/providers/Microsoft.OperationalInsights/deletedWorkspaces?api-version=2020-03-01-preview' -f $subscriptionId
-            $getRequestInputObject = @{
-                Method = 'GET'
-                Path   = $getPath
-            }
-            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.id -eq $resourceId -and $_.name -eq $resourceName }
-            if ($softDeletedService) {
-                # Recover service
-                $location = $softDeletedService.location
-                if ($PSCmdlet.ShouldProcess(('Log analytics workspace [{0}]' -f $resourceId), 'Recover')) {
-                    $recoveredWorkspace = New-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Location $location
-                }
-                # Purge service
-                if ($PSCmdlet.ShouldProcess(('Log analytics workspace with ID [{0}]' -f $resourceId), 'Purge')) {
-                    $recoveredWorkspace | Remove-AzOperationalInsightsWorkspace -ForceDelete -Force
                 }
             }
             break

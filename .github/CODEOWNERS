@@ -5,8 +5,4 @@
 # @global-owner1 and @global-owner2 will be requested for
 # review when someone opens a pull request.
 
-* @modules-maintainers
-
-.azuredevops/** @modules-maintainers
-.github/** @modules-admins
-.pipelines/** @modules-maintainers
+*   @Azure/modules-maintainers

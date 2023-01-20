@@ -104,11 +104,11 @@ param bootDiagnosticStorageAccountName string = ''
 @description('Optional. Storage account boot diagnostic base URI.')
 param bootDiagnosticStorageAccountUri string = '.blob.${environment().suffixes.storage}/'
 
-@description('Optional. Resource name of a proximity placement group.')
-param proximityPlacementGroupName string = ''
+@description('Optional. Resource ID of a proximity placement group.')
+param proximityPlacementGroupResourceId string = ''
 
-@description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
-param availabilitySetName string = ''
+@description('Optional. Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set.')
+param availabilitySetResourceId string = ''
 
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
 @allowed([
@@ -126,16 +126,15 @@ param nicConfigurations array
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param pipdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -166,9 +165,6 @@ param backupVaultResourceGroup string = resourceGroup().name
 @description('Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault.')
 param backupPolicyName string = 'DefaultPolicy'
 
-@description('Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key.')
-param enableServerSideEncryption bool = false
-
 // Child resources
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
@@ -179,6 +175,11 @@ param extensionDomainJoinPassword string = ''
 
 @description('Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionDomainJoinConfig object = {
+  enabled: false
+}
+
+@description('Optional. The configuration for the [AAD Join] extension. Must at least contain the ["enabled": true] property to be executed.')
+param extensionAadJoinConfig object = {
   enabled: false
 }
 
@@ -206,7 +207,7 @@ param extensionNetworkWatcherAgentConfig object = {
 }
 
 @description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
-param extensionDiskEncryptionConfig object = {
+param extensionAzureDiskEncryptionConfig object = {
   enabled: false
 }
 
@@ -282,7 +283,7 @@ param provisionVMAgent bool = true
 @description('Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.')
 param enableAutomaticUpdates bool = true
 
-@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
+@description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`.')
 param timeZone string = ''
 
 @description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.')
@@ -298,9 +299,9 @@ var vmGeneratedNames = [for instance in range(0, vmNumberOfInstances): '${vmName
 
 var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
-module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
+module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
   params: {
     name: vmName
@@ -313,7 +314,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     vmSize: vmSize
     additionalUnattendContent: additionalUnattendContent
     allowExtensionOperations: allowExtensionOperations
-    availabilitySetName: availabilitySetName
+    availabilitySetResourceId: availabilitySetResourceId
     backupPolicyName: backupPolicyName
     backupVaultName: backupVaultName
     backupVaultResourceGroup: backupVaultResourceGroup
@@ -332,15 +333,15 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     diagnosticWorkspaceId: diagnosticWorkspaceId
     disablePasswordAuthentication: disablePasswordAuthentication
     enableAutomaticUpdates: enableAutomaticUpdates
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     enableEvictionPolicy: enableEvictionPolicy
-    enableServerSideEncryption: enableServerSideEncryption
     encryptionAtHost: encryptionAtHost
     extensionAntiMalwareConfig: extensionAntiMalwareConfig
     extensionCustomScriptConfig: extensionCustomScriptConfig
     extensionCustomScriptProtectedSetting: extensionCustomScriptProtectedSetting
     extensionDependencyAgentConfig: extensionDependencyAgentConfig
-    extensionDiskEncryptionConfig: extensionDiskEncryptionConfig
+    extensionAzureDiskEncryptionConfig: extensionAzureDiskEncryptionConfig
+    extensionAadJoinConfig: extensionAadJoinConfig
     extensionDomainJoinConfig: extensionDomainJoinConfig
     extensionDomainJoinPassword: extensionDomainJoinPassword
     extensionDSCConfig: extensionDSCConfig
@@ -358,7 +359,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     pipDiagnosticSettingsName: !empty(pipDiagnosticSettingsName) ? pipDiagnosticSettingsName : '${vmName}-diagnosticSettings'
     plan: plan
     provisionVMAgent: provisionVMAgent
-    proximityPlacementGroupName: proximityPlacementGroupName
+    proximityPlacementGroupResourceId: proximityPlacementGroupResourceId
     publicKeys: publicKeys
     roleAssignments: roleAssignments
     sasTokenValidityLength: sasTokenValidityLength

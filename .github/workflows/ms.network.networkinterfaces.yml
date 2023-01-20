@@ -19,21 +19,23 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.networkinterfaces.yml'
-      - 'arm/Microsoft.Network/networkInterfaces/**'
-      - 'arm/.global/global.module.tests.ps1'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Network/networkInterfaces/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
+      - '!*/**/readme.md'
 
 env:
-  variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.Network/networkInterfaces'
+  variablesPath: 'settings.yml'
+  modulePath: 'modules/Microsoft.Network/networkInterfaces'
   workflowPath: '.github/workflows/ms.network.networkinterfaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
+
+concurrency:
+  group: ${{ github.workflow }}
 
 jobs:
   ###########################
@@ -44,7 +46,7 @@ jobs:
     name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Set input parameters to output variables'
@@ -53,13 +55,13 @@ jobs:
         with:
           workflowPath: '${{ env.workflowPath}}'
       - name: 'Get parameter file paths'
-        id: get-parameter-file-paths
-        uses: ./.github/actions/templates/getParameterFiles
+        id: get-module-test-file-paths
+        uses: ./.github/actions/templates/getModuleTestFiles
         with:
           modulePath: '${{ env.modulePath }}'
     outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
+      workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
   #########################
   #   Static validation   #
@@ -69,13 +71,18 @@ jobs:
     name: 'Static validation'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Run tests'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #############################
   #   Deployment validation   #
@@ -89,26 +96,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
+        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
+          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
           location: '${{ env.location }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
+          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
 
   ##################
   #   Publishing   #
@@ -121,7 +126,7 @@ jobs:
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
@@ -140,3 +145,4 @@ jobs:
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+          publishLatest: '${{ env.publishLatest }}'
