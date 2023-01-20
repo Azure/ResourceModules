@@ -102,7 +102,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
     # success() &&
-    if: ${{ github.event.inputs.deploymentValidation == 'true' && (needs.job_module_pester_validation.conclusion  == 'skipped' || needs.job_module_pester_validation.conclusion  == 'success') }}
+    if: ${{ github.event.inputs.deploymentValidation == 'true' && needs.job_module_pester_validation.conclusion != 'failed' }}
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
