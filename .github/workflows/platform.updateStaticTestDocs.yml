@@ -24,12 +24,6 @@ jobs:
           fetch-depth: 0
           token: "${{ secrets.PLATFORM_REPO_UPDATE_PAT }}" # Sets general GIT credentials up
 
-      - name: Azure Login
-        uses: Azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-
       - name: "Update file"
         shell: pwsh
         run: |

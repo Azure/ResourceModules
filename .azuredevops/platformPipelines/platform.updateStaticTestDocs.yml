@@ -29,15 +29,12 @@ jobs:
       - checkout: self
         persistCredentials: true
 
-      - task: AzurePowerShell@5
+      - task: PowerShell@2
         displayName: "Update file"
         inputs:
-          azureSubscription: "$(serviceConnection)"
-          azurePowerShellVersion: "latestVersion"
-          preferredAzurePowerShellVersion: ""
+          targetType: inline
           pwsh: true
-          ScriptType: InlineScript
-          inline: |
+          script: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-StaticTestDocumentation.ps1')
 
