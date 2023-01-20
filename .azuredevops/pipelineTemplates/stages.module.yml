@@ -1,4 +1,6 @@
 parameters:
+  staticValidation: true
+  deploymentValidation: true
   removeDeployment: true
   prerelease: false
   templateFilePath: ''
@@ -7,11 +9,13 @@ parameters:
 stages:
   - stage: validation
     displayName: Static validation
+    condition: and(succeeded(), eq('${{ parameters.staticValidation }}', 'true'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: deployment
     displayName: Deployment validation
+    condition: and(succeeded(), eq('${{ parameters.deploymentValidation }}', 'true'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -21,6 +25,7 @@ stages:
 
   - stage: Publishing
     dependsOn:
+      - validation
       - deployment
     displayName: Publish module
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
