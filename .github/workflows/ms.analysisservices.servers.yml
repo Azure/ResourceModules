@@ -101,7 +101,6 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
-    # success() &&
     if: |
       !cancelled() &&
       github.event.inputs.deploymentValidation == 'true' &&
@@ -109,15 +108,6 @@ jobs:
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
-    # env:
-    #   NEEDS: ${{ toJSON(needs) }}
-    #   CONDITION1: ${{ github.event.inputs.deploymentValidation == 'true' }}
-    #   CONDITION2: ${{ needs.job_module_pester_validation.conclusion != 'failed' }}
-    # steps:
-    #   - run: |
-    #       echo "$NEEDS"
-    #       echo "$CONDITION1"
-    #       echo "$CONDITION2"
     strategy:
       fail-fast: false
       matrix:
