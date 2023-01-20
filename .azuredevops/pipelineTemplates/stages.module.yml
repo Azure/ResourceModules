@@ -15,9 +15,9 @@ stages:
 
   - stage: deployment
     displayName: Deployment validation
+    condition: and(eq('${{ parameters.deploymentValidation }}', 'true'), ne(dependencies.validation.result, 'Failed'))
     dependsOn:
       - validation
-    condition: and(eq('${{ parameters.deploymentValidation }}', 'true'), ne(dependencies.validation.result, 'Failed'))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -26,10 +26,10 @@ stages:
           defaultJobTimeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
 
   - stage: Publishing
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     dependsOn:
       - validation
       - deployment
-    displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
