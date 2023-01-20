@@ -20,6 +20,7 @@ variables:
 
 jobs:
   - job: Update_Static_Test_Docs
+    displayName: Update Static Tests Documentation
     pool:
       ${{ if ne(variables.vmImage, '') }}:
         vmImage: ${{ variables.vmImage }}
