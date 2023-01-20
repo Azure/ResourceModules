@@ -101,7 +101,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment validation'
-    if: github.event.inputs.deploymentValidation == 'true'
+    if: ${{ succeeded() && github.event.inputs.deploymentValidation == 'true' && (needs.job_module_pester_validation.result == 'skipped' || needs.job_module_pester_validation.result == 'succeeded') }}
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
