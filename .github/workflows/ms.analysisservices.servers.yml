@@ -109,27 +109,36 @@ jobs:
     needs:
       - job_initialize_pipeline
       - job_module_pester_validation
-    strategy:
-      fail-fast: false
-      matrix:
-        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+    env:
+      NEEDS: ${{ toJSON(needs) }}
+      CONDITION1: ${{ github.event.inputs.deploymentValidation == 'true' }}
+      CONDITION2: ${{ needs.job_module_pester_validation.conclusion != 'failed' }}
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          location: '${{ env.location }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
+      - run: |
+          echo "$NEEDS"
+          echo "$CONDITION1"
+          echo "$CONDITION2"
+    # strategy:
+    #   fail-fast: false
+    #   matrix:
+    #     moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+    # steps:
+    #   - name: 'Checkout'
+    #     uses: actions/checkout@v3
+    #     with:
+    #       fetch-depth: 0
+    #   - name: Set environment variables
+    #     uses: ./.github/actions/templates/setEnvironmentVariables
+    #     with:
+    #       variablesPath: ${{ env.variablesPath }}
+    #   - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+    #     uses: ./.github/actions/templates/validateModuleDeployment
+    #     with:
+    #       templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+    #       location: '${{ env.location }}'
+    #       subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+    #       managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+    #       removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
 
   ##################
   #   Publishing   #
