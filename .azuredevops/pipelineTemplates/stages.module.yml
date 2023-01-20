@@ -9,13 +9,13 @@ parameters:
 stages:
   - stage: validation
     displayName: Static validation
-    condition: and(eq('${{ parameters.staticValidation }}', 'true'))
+    condition: eq('${{ parameters.staticValidation }}', 'True')
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: deployment
     displayName: Deployment validation
-    condition: and(eq('${{ parameters.deploymentValidation }}', 'true'), ne(dependencies.validation.result, 'Failed'))
+    condition: and(eq('${{ parameters.deploymentValidation }}', 'True'), ne(dependencies.validation.result, 'Failed'))
     dependsOn:
       - validation
     jobs:
@@ -27,7 +27,7 @@ stages:
 
   - stage: Publishing
     displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'True')))
     dependsOn:
       - validation
       - deployment
