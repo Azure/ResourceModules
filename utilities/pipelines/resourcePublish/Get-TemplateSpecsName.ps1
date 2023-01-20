@@ -23,7 +23,29 @@ function Get-TemplateSpecsName {
 
     $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
     $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+    $templateSpecIdentifier = $templateSpecIdentifier -replace 'microsoft', 'ms'
 
+    # Shorten the name
+    # This is requried as certain modules generate names such as `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.replicationProtectionContainerMappings` which are longer than the allowed 90 characters for template specs
+    # Using the logic below, the name is shortened to `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.Mappings` which has 'only' 86 characters
+    $nameElems = $templateSpecIdentifier -split '\.'
+    for ($index = 0; $index -lt $nameElems.Count; $index++) {
+        if ($index -lt ($nameElems.count - 1)) {
+            $stringToRemove = $nameElems[($index)]
+            $stringToCheck = $nameElems[($index + 1)]
+
+            if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
+                $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)
+                $rest = $stringToCheck.length - $singularString.Length
+                $shortenedString = $stringToCheck.Substring($singularString.length, $rest)
+                $camelCaseString = [Regex]::Replace($shortenedString , '\b.', { $args[0].Value.Tolower() })
+                $nameElems[($index + 1)] = $camelCaseString
+            } elseif ($stringToCheck.StartsWith($stringToRemove)) {
+                $nameElems[($index + 1)] = $stringToCheck.Substring($stringToRemove.length, $stringToCheck.length)
+            }
+        }
+    }
+    $templateSpecIdentifier = $nameElems -join '.'
 
     return $templateSpecIdentifier
 }
