@@ -540,9 +540,9 @@ Describe 'Readme tests' -Tag 'Readme' {
     }
 }
 
-Describe 'Deployment test file tests' -Tag 'TestTemplate' {
+Describe 'Test file tests' -Tag 'TestTemplate' {
 
-    Context 'Deployment test file tests' {
+    Context 'General test file' {
 
         $deploymentTestFileTestCases = @()
 
@@ -629,7 +629,7 @@ Describe 'Deployment test file tests' -Tag 'TestTemplate' {
         }
     }
 
-    Context 'Parameter file token tests' {
+    Context 'Token usage' {
 
         # Parameter file test cases
         $parameterFileTokenTestCases = @()
@@ -652,7 +652,7 @@ Describe 'Deployment test file tests' -Tag 'TestTemplate' {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
             param (
                 [string] $testFilePath,
                 [string] $parameterFileName,
@@ -674,7 +674,7 @@ Describe 'Deployment test file tests' -Tag 'TestTemplate' {
 
 Describe 'Deployment template tests' -Tag 'Template' {
 
-    Context 'Deployment template tests' {
+    Context 'General template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -1152,53 +1152,9 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
     }
-
-    Context 'Parameter file token tests' {
-
-        # Parameter file test cases
-        $parameterFileTokenTestCases = @()
-
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -File -Force).FullName
-                foreach ($TestFilePath in $TestFilePaths) {
-                    foreach ($token in $tokenConfiguration.Tokens.Keys) {
-                        $parameterFileTokenTestCases += @{
-                            parameterFilePath = $TestFilePath
-                            parameterFileName = Split-Path $TestFilePath -Leaf
-                            tokenPrefix       = $tokenConfiguration.TokenPrefix
-                            tokenSuffix       = $tokenConfiguration.TokenSuffix
-                            tokenName         = $token
-                            tokenValue        = $tokenConfiguration.Tokens[$token]
-                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                        }
-                    }
-                }
-            }
-        }
-
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCases {
-            param (
-                [string] $parameterFilePath,
-                [string] $parameterFileName,
-                [string] $tokenPrefix,
-                [string] $tokenSuffix,
-                [string] $tokenName,
-                [string] $tokenValue,
-                [string] $moduleFolderName
-            )
-            $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $parameterFilePath
-
-            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-            if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
-            }
-        }
-    }
 }
 
-Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
+Describe 'API version tests' -Tag ApiCheck {
 
     $testCases = @()
     $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'
