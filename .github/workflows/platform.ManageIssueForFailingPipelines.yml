@@ -20,10 +20,10 @@ jobs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'manageIssueForFailingPipelines' 'New-IssuesForFailingPipelines.ps1')
 
           $functionInput = @{
-            repo = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
-            limitNumberOfRuns = 500
-            limitInDays = 2
-            ignorePipelines = @('AAD: DomainServices')
+            Repo              = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
+            LimitNumberOfRuns = 500
+            LimitInDays       = 2
+            IgnoreWorkflows   = @('AAD: DomainServices')
           }
 
           Write-Verbose "Invoke task with" -Verbose

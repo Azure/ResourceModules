@@ -14,30 +14,33 @@ Optional. Number of recent runs to scan for failed runs. Default is 100.
 .PARAMETER LimitInDays
 Optional. Only runs in the past selected days will be analyzed. Default is 2.
 
-.PARAMETER ignorePipelines
-Optional. List of pipeline names that should be ignored (even if they fail, no ticket will be created). Default is an empty array.
+.PARAMETER IgnoreWorkflows
+Optional. List of workflow names that should be ignored (even if they fail, no ticket will be created). Default is an empty array.
 
 .EXAMPLE
-New-IssuesForFailingPipelines -repo 'owner/repo01' -limitNumberOfRuns 100 -limitInDays 2 -Verbose -WhatIf
+New-IssuesForFailingPipelines -Repo 'owner/repo01' -LimitNumberOfRuns 100 -LimitInDays 2 -IgnoreWorkflows @('Pipeline 01')
+
+.NOTES
+The function requires GitHub CLI to be installed.
 #>
 function New-IssuesForFailingPipelines {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     param (
         [Parameter(Mandatory = $true)]
-        [string] $repo,
+        [string] $Repo,
 
         [Parameter(Mandatory = $false)]
-        [int] $limitNumberOfRuns = 100,
+        [int] $LimitNumberOfRuns = 100,
 
         [Parameter(Mandatory = $false)]
-        [int] $limitInDays = 2,
+        [int] $LimitInDays = 2,
 
         [Parameter(Mandatory = $false)]
-        [String[]] $ignorePipelines = @()
+        [String[]] $IgnoreWorkflows = @()
     )
 
-    $issues = gh issue list --state open --label 'automation,bug' --json 'title,url,body,comments' --repo $repo | ConvertFrom-Json -Depth 100
-    $runs = gh run list --json 'url,workflowName,headBranch,startedAt' --limit $limitNumberOfRuns --repo $repo | ConvertFrom-Json -Depth 100
+    $issues = gh issue list --state open --label 'automation,bug' --json 'title,url,body,comments' --repo $Repo | ConvertFrom-Json -Depth 100
+    $runs = gh run list --json 'url,workflowName,headBranch,startedAt' --limit $LimitNumberOfRuns --repo $Repo | ConvertFrom-Json -Depth 100
     $workflowRuns = @{}
     $issuesCreated = 0
     $issuesCommented = 0
@@ -46,9 +49,9 @@ function New-IssuesForFailingPipelines {
     foreach ($run in $runs) {
         $runStartTime = [Datetime]::ParseExact($run.startedAt, 'MM/dd/yyyy HH:mm:ss', $null)
 
-        if (($run.headBranch -eq 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$limitInDays)) -and ($ignorePipelines -notcontains $run.workflowName)) {
+        if (($run.headBranch -eq 'main') -and ($runStartTime -gt (Get-Date).AddDays(-$LimitInDays)) -and ($IgnoreWorkflows -notcontains $run.workflowName)) {
             $runId = $run.url.Split('/') | Select-Object -Last 1
-            $runDetails = gh run view $runId --json 'conclusion,number' --repo $repo | ConvertFrom-Json -Depth 100
+            $runDetails = gh run view $runId --json 'conclusion,number' --repo $Repo | ConvertFrom-Json -Depth 100
 
             if (-not $workflowRuns.ContainsKey($run.workflowName) -or $runDetails.number -gt $workflowRuns[$run.workflowName].number) {
                 $workflowRun = New-Object PSObject -Property @{
@@ -74,7 +77,7 @@ function New-IssuesForFailingPipelines {
 
             if ($issues.title -notcontains $issueName) {
                 if ($PSCmdlet.ShouldProcess("Issue [$issueName]", 'Create')) {
-                    gh issue create --title "$issueName" --body "$failedrun" --label 'automation,bug' --repo $repo
+                    gh issue create --title "$issueName" --body "$failedrun" --label 'automation,bug' --repo $Repo
                 }
 
                 $issuesCreated++
@@ -84,14 +87,14 @@ function New-IssuesForFailingPipelines {
                 if (!$issue.body.Contains($failedrun)) {
                     if ($issue.comments.length -eq 0) {
                         if ($PSCmdlet.ShouldProcess("Issue [$issueName]", 'Add comment')) {
-                            gh issue comment $issue.url --body $failedrun --repo $repo
+                            gh issue comment $issue.url --body $failedrun --repo $Repo
                         }
 
                         $issuesCommented++
                     } else {
                         if (!$issue.comments.body.Contains($failedrun)) {
                             if ($PSCmdlet.ShouldProcess("Issue [$issueName]", 'Close')) {
-                                gh issue comment $issue.url --body $failedrun --repo $repo
+                                gh issue comment $issue.url --body $failedrun --repo $Repo
                             }
 
                             $issuesCommented++
@@ -105,7 +108,7 @@ function New-IssuesForFailingPipelines {
             if ($issues.title -contains $issueName) {
                 $issue = ($issues | Where-Object { $_.title -eq $issueName })[0]
                 $successfulrun = "successful run: $($workflowRun.url)"
-                gh issue close $issue.url --comment $successfulrun --repo $repo
+                gh issue close $issue.url --comment $successfulrun --repo $Repo
                 $issuesClosed++
             }
         }
