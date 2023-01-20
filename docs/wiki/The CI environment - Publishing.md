@@ -26,6 +26,68 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 The names of published modules differ slighly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
 
+<details>
+<summary>Template Specs</summary>
+
+**Actions**
+
+- Make lowercase
+- Replace `Microsoft` with `MS`
+- Replace all `\` or `/` with `.`
+- Remove all duplications in the path. For example, the path `virtualNetwork/virtualNetworkPeerings` would be shortened to `virtualNetwork/peerings`
+
+**Examples**
+
+  - Vaults
+    - Before: `modules\Microsoft.RecoveryServices\vaults\deploy.bicep`
+    - After: `ms.recoveryservices.vaults`
+  - ReplicationProtectionContainerMappings
+    - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings\deploy.bicep`
+    - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
+
+</details>
+
+<details>
+<summary>Private Bicep Registry (Azure Container Registry)</summary>
+
+**Actions**
+
+- Make lowercase
+- Replace all `\` or `/` with `.`
+- Add the `bicep\modules` prefix
+
+**Examples**
+
+- Vaults
+   - Before: `modules\Microsoft.RecoveryServices\vaults\deploy.bicep`
+   - After: `bicep/modules/microsoft.recoveryservices.vaults`
+- ReplicationProtectionContainerMappings
+   - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings\deploy.bicep`
+   - After: `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+
+</details>
+
+<details>
+<summary>Azure DevOps Universal Packages</summary>
+
+**Actions**
+
+- Make lowercase
+- Replace all `\` or `/` with `.`
+
+**Examples**
+
+- Vaults
+  - Before: `modules\Microsoft.RecoveryServices\vaults\deploy.bicep`
+  - After: `microsoft.recoveryservices.vaults`
+- ReplicationProtectionContainerMappings
+  - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings\deploy.bicep`
+  - After: `microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+
+</details>
+
+<p>
+
 # How it works
 
 The publishing works as follows:
