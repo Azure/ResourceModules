@@ -20,6 +20,8 @@ Optional. List of workflow names that should be ignored (even if they fail, no t
 .EXAMPLE
 New-IssuesForFailingPipelines -Repo 'owner/repo01' -LimitNumberOfRuns 100 -LimitInDays 2 -IgnoreWorkflows @('Pipeline 01')
 
+Check the last 100 workflow runs in the repository 'owner/repo01' that happened in the last 2 days. If the workflow name is 'Pipeline 01', then ignore the workflow run.
+
 .NOTES
 The function requires GitHub CLI to be installed.
 #>
