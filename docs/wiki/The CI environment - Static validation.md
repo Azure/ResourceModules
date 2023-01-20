@@ -16,6 +16,8 @@ All module Unit tests are performed with the help of [Pester](https://github.com
 
 The following activities are performed by the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.
 
+## Outline
+
 - **File/folder tests**
   - **General module folder tests**
     1. Module should have a GitHub workflow

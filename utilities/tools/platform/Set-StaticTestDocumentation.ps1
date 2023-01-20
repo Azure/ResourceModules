@@ -57,12 +57,12 @@ Update the current documentation in the given wiki file path with the latest tes
 Mandatory. The path to the test file to get the content from.
 
 .PARAMETER WikiFilePath
-Mandatory. The path to the Wiki file to update the data in. It should contain a header '# Static code validation'
+Mandatory. The path to the Wiki file to update the data in. It should contain a header '## Outline'
 
 .EXAMPLE
 Set-StaticTestDocumentation -TestFilePath 'C:/ResourceModules/utilities/pipelines/staticValidation/module.tests.ps1' -WikiFilePath 'C:/ResourceModules/docs/wiki/The CI environment - Static validation.md'
 
-Update the section '# Static code validation' of Wiki file 'The CI environment - Static validation.md' with the content of the Pester test file 'module.tests.ps1'
+Update the section '## Outline' of Wiki file 'The CI environment - Static validation.md' with the content of the Pester test file 'module.tests.ps1'
 #>
 function Set-StaticTestDocumentation {
 
@@ -82,15 +82,9 @@ function Set-StaticTestDocumentation {
     # Logic
     $contentArray = Get-Content -Path $WikiFilePath
 
-    $testOutline = @(
-        'All module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) to ensure that the modules are configured correctly, documentation is up to date, and modules don''t turn stale.',
-        '',
-        'The following activities are performed by the [`utilities/pipelines/staticValidation/module.tests.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/staticValidation/module.tests.ps1) script.',
-        ''
-    )
-    $testOutline += Get-TestsAsMarkdown -TestFilePath $TestFilePath
+    $testOutline = Get-TestsAsMarkdown -TestFilePath $TestFilePath
 
-    $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $testOutline -sectionStartIdentifier '# Static code validation'
+    $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $testOutline -sectionStartIdentifier '## Outline'
 
     Write-Verbose 'New content:'
     Write-Verbose '============'
