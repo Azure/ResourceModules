@@ -31,6 +31,7 @@ The names of published modules differ slighly depending on the location they are
 
 **Actions**
 
+- Remove the root folder name `modules` from provided module reference
 - Make lowercase
 - Replace `Microsoft` with `MS`
 - Replace all `\` or `/` with `.`
@@ -52,6 +53,7 @@ The names of published modules differ slighly depending on the location they are
 
 **Actions**
 
+- Remove the root folder name `modules` from provided module reference
 - Make lowercase
 - Replace all `\` or `/` with `.`
 - Add the `bicep/modules` prefix
@@ -72,6 +74,7 @@ The names of published modules differ slighly depending on the location they are
 
 **Actions**
 
+- Remove the root folder name `modules` from provided module reference
 - Make lowercase
 - Replace all `\` or `/` with `.`
 
