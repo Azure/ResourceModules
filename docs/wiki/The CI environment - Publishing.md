@@ -54,7 +54,7 @@ The names of published modules differ slighly depending on the location they are
 
 - Make lowercase
 - Replace all `\` or `/` with `.`
-- Add the `bicep\modules` prefix
+- Add the `bicep/modules` prefix
 
 **Examples**
 
