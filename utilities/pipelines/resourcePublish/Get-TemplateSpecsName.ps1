@@ -37,7 +37,7 @@ function Get-TemplateSpecsName {
 
             # If a name is replicated in a path, it is usually plural in the parent, and singular in the child path.
             # For example: /virtualNetworks/ (plural) & /virtualNetworks/virtualNetworkPeerings/ (singular)
-            # In this case we want to remove the signular version from the subsequent string & format it accordingly
+            # In this case we want to remove the singular version from the subsequent string & format it accordingly
             if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
                 $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)
                 $rest = $stringToCheck.length - $singularString.Length
