@@ -29,7 +29,7 @@ function Get-TemplateSpecsName {
     # This is requried as certain modules generate names such as `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.replicationProtectionContainerMappings` which are longer than the allowed 90 characters for template specs
     # Using the logic below, the name is shortened to `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.Mappings` which has 'only' 86 characters
     $nameElems = $templateSpecIdentifier -split '\.'
-    # Staring at index 2 to skip the resource provider
+    # Starting at index 2 to skip the resource provider
     for ($index = 2; $index -lt $nameElems.Count; $index++) {
         if ($index -lt ($nameElems.count - 1)) {
             $stringToRemove = $nameElems[($index)]
