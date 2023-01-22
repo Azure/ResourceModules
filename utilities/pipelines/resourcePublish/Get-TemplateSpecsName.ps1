@@ -29,11 +29,15 @@ function Get-TemplateSpecsName {
     # This is requried as certain modules generate names such as `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.replicationProtectionContainerMappings` which are longer than the allowed 90 characters for template specs
     # Using the logic below, the name is shortened to `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.Mappings` which has 'only' 86 characters
     $nameElems = $templateSpecIdentifier -split '\.'
-    for ($index = 0; $index -lt $nameElems.Count; $index++) {
+    # Starting at index 2 to skip the resource provider
+    for ($index = 2; $index -lt $nameElems.Count; $index++) {
         if ($index -lt ($nameElems.count - 1)) {
             $stringToRemove = $nameElems[($index)]
             $stringToCheck = $nameElems[($index + 1)]
 
+            # If a name is replicated in a path, it is usually plural in the parent, and singular in the child path.
+            # For example: /virtualNetworks/ (plural) & /virtualNetworks/virtualNetworkPeerings/ (singular)
+            # In this case we want to remove the singular version from the subsequent string & format it accordingly
             if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
                 $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)
                 $rest = $stringToCheck.length - $singularString.Length
