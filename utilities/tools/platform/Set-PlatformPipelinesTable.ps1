@@ -15,10 +15,10 @@ Mandatory. The name of the repository the pipelines/workflows are in (required t
 Mandatory. The name of the Organization the pipelines/workflows are in (required to generate the correct links)
 
 .PARAMETER Environment
-Parameter description
+Mandatory. The environment to generate the badges for (either Azure DevOps - or GitHub)
 
 .PARAMETER ProjectName
-Parameter description
+Mandatory. The name of the Azure DevOps project the pipelines are in (required to generate the correct links) - in case Azure DevOps is used
 
 .EXAMPLE
 Set-PlatformPipelinesTable -FilePath 'C:\ResourceModules\README.md' -Environment 'GitHub' -RepositoryName 'ResourceModules' -Organization 'Azure'
