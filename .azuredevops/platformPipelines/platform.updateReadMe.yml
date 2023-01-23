@@ -23,6 +23,8 @@ variables:
     value: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
   - name: relativeScriptPath_SetModuleOverviewTable
     value: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
+  - name: relativeScriptPath_SetPlatformPipelinesTable
+    value: 'utilities/tools/platform/Set-PlatformPipelinesTable.ps1'
 
 jobs:
   - job: Update_module_tables
@@ -100,6 +102,28 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Set-ModuleOverviewTable @functionInput -Verbose
+
+      - task: PowerShell@2
+        displayName: 'Update Platform Pipelines table'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetPlatformPipelinesTable)')
+
+            $functionInput = @{
+              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
+              Organization   = '$(System.CollectionUri)'.Split('/')[3]
+              RepositoryName = '$(Build.Repository.Name)'
+              Environment    = 'ADO'
+              ProjectName    = '$(System.TeamProject)'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-PlatformPipelinesTable @functionInput -Verbose
 
       - task: PowerShell@2
         displayName: 'Push changes'
