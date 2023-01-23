@@ -27,7 +27,8 @@ variables:
     value: 'utilities/tools/platform/Set-PlatformPipelinesTable.ps1'
 
 jobs:
-  - job: Update_module_tables
+  - job: Update status tables
+    displayName: Update status tables
     pool:
       ${{ if ne(variables.vmImage, '') }}:
         vmImage: ${{ variables.vmImage }}
