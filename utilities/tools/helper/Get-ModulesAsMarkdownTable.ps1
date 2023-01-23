@@ -414,6 +414,9 @@ function Get-ModulesAsMarkdownTable {
         [string] $ProjectName = ''
     )
 
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'Get-PipelineStatusUrl.ps1')
+
     # Header
     # ------
     $headerRow = '|'
