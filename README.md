@@ -142,11 +142,21 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [Web PubSub Services](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.SignalRService/webPubSub) | [!['SignalR Service: Web PubSub'](https://github.com/Azure/ResourceModules/workflows/SignalR%20Service:%20Web%20PubSub/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.signalrservice.webpubsub.yml) |
 | [Web/Function Apps](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Web/sites) | [!['Web: Sites'](https://github.com/Azure/ResourceModules/workflows/Web:%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |
 
-## Tooling
+## Platform
 
-| Name | Status | Docs |
-| - | - | - |
+| Name | Status |
+| - | - |
 | [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Test%20-%20ConvertTo-ARMTemplate.ps1/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/Interoperability%20-%20Bicep%20to%20ARM%20conversion) |
+| Update API Specs file | [![.Platform: Update API Specs file](https://github.com/Azure/ResourceModules/actions/workflows/platform.apiSpecs.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.apiSpecs.yml) | |
+| Assign Issue to Project | [![.Platform: Assign Issue to Project](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignIssueToProject.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignIssueToProject.yml) | |
+| Assign Pull Request to Author | [![.Platform: Assign Pull Request to Author](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignPrToAuthor.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignPrToAuthor.yml) | |
+| Clean up deployment history | [![.Platform: Clean up deployment history](https://github.com/Azure/ResourceModules/actions/workflows/platform.deployment.history.cleanup.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.deployment.history.cleanup.yml) | |
+| Library PSRule pre-flight validation | [![.Platform: Library PSRule pre-flight validation](https://github.com/Azure/ResourceModules/actions/workflows/platform.librarycheck.psrule.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.librarycheck.psrule.yml) | |
+| Broken Links Check | [![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml) | |
+| Linter | [![.Platform: Linter](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml) | |
+| Manage issues for failing pipelines | [![.Platform: Manage issues for failing pipelines](https://github.com/Azure/ResourceModules/actions/workflows/platform.ManageIssueForFailingPipelines.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.ManageIssueForFailingPipelines.yml) | |
+| Update ReadMe Module Tables | [![.Platform: Update ReadMe Module Tables](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateReadMe.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateReadMe.yml) | |
+| Sync Docs/Wiki | [![.Platform: Sync Docs/Wiki](https://github.com/Azure/ResourceModules/actions/workflows/platform.wiki-sync.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.wiki-sync.yml) | |
 
 ## Contributing
 

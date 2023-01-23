@@ -1,6 +1,4 @@
-﻿#region Helper functions
-
-<#
+﻿<#
 .SYNOPSIS
 Update the given ReadMe file with the latest module table
 
