@@ -80,6 +80,9 @@ function Get-PipelineStatusUrl {
         [string] $ProjectName = ''
     )
 
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'Get-PipelineNameFromFile.ps1')
+
     if ([String]::IsNullOrEmpty($PipelineFileName)) {
         $shortProviderNamespace = $ProviderNamespace.Replace('Microsoft.', 'MS.')
         $pipelineFileName = ('{0}.{1}.yml' -f $shortProviderNamespace, $ModuleName).Replace('\', '/').Replace('/', '.').ToLower()
@@ -89,7 +92,7 @@ function Get-PipelineStatusUrl {
         'ADO' {
             $pipelinesFolderPath = (-not [String]::IsNullOrEmpty($CustomFolderPath)) ? $CustomFolderPath : (Join-Path '.azuredevops' 'modulePipelines')
             $pipelineFileUri = Join-Path $pipelinesFolderPath $pipelineFileName
-            $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
+            $pipelineName = Get-PipelineNameFromFile -FilePath $pipelineFileUri
             $pipelineFileGitUri = ('https://dev.azure.com/{0}/{1}/_apis/build/status/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
 
             # Note: Badge name is automatically the pipeline name
@@ -97,13 +100,13 @@ function Get-PipelineStatusUrl {
         }
         'GitHub' {
             $workflowsFolderPath = (-not [String]::IsNullOrEmpty($CustomFolderPath)) ? $CustomFolderPath : (Join-Path '.github' 'workflows')
-            $pipelineFileUri = Join-Path $workflowsFolderPath $pipelineFileName
-            $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-            $pipelineNameInUri = $pipelineName.Replace(' ', '%20').Replace("'", '')
-            $pipelineStatusUri = 'https://github.com/{0}/{1}/workflows/{2}' -f $Organization, $RepositoryName, $pipelineNameInUri
-            $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
+            $workflowFileUri = Join-Path $workflowsFolderPath $pipelineFileName
+            $workflowName = Get-PipelineNameFromFile -FilePath $workflowFileUri
+            $workflowNameInUri = $workflowName.Replace(' ', '%20').Replace("'", '')
+            $workflowStatusUri = 'https://github.com/{0}/{1}/workflows/{2}' -f $Organization, $RepositoryName, $workflowNameInUri
+            $workflowFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
             # Note: Badge name is automatically the pipeline name
-            return ('[![{0}]({1}/badge.svg)]({2})' -f $pipelineName, $pipelineStatusUri, $pipelineFileGitUri).Replace('\', '/')
+            return ('[![{0}]({1}/badge.svg)]({2})' -f $workflowName, $workflowStatusUri, $workflowFileGitUri).Replace('\', '/')
         }
     }
 }

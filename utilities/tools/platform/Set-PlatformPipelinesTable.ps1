@@ -11,9 +11,9 @@
         [Parameter(Mandatory = $true)]
         [string] $Organization,
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet('GitHub', 'ADO')]
-        [string]$Environment,
+        [string] $Environment,
 
         [Parameter(Mandatory = $false)]
         [string] $ProjectName = ''
@@ -23,6 +23,7 @@
     $repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
     . (Join-Path $repoRoot 'utilities' 'tools' 'helper' 'Merge-FileWithNewContent.ps1')
     . (Join-Path $repoRoot 'utilities' 'tools' 'helper' 'Get-PipelineStatusUrl.ps1')
+    . (Join-Path $repoRoot 'utilities' 'tools' 'helper' 'Get-PipelineNameFromFile.ps1')
 
     # Logic
     $contentArray = Get-Content -Path $FilePath
@@ -34,35 +35,37 @@
 
     switch ($Environment) {
         'ADO' {
+            $platformPipelinePaths = (Get-ChildItem (Join-Path $repoRoot '.azuredevops' 'platformPipelines')).FullName | Sort-Object
 
-            $statusInputObject = @{
-                PipelineFileName = $workflowFileName
-                CustomFolderPath = $workflowFolderPath
-                RepositoryName   = $RepositoryName
-                Organization     = $Organization
-                ProjectName      = $ProjectName
-                Environment      = $Environment
+            foreach ($platformPipelinePath in $platformPipelinePaths) {
+
+                $pipelineFileName = Split-Path $platformPipelinePath -Leaf
+                $pipelineFolderPath = (Split-Path $platformPipelinePath -Parent).Replace($repoRoot, '')
+
+                $pipelineName = Get-PipelineNameFromFile -FilePath $platformPipelinePath
+                $shortenedPipelineName = ($pipelineName -split '\.Platform: ')[1]
+
+                $statusInputObject = @{
+                    PipelineFileName = $pipelineFileName
+                    CustomFolderPath = $pipelineFolderPath
+                    RepositoryName   = $RepositoryName
+                    Organization     = $Organization
+                    ProjectName      = $ProjectName
+                    Environment      = $Environment
+                }
+                $statusBadge = Get-PipelineStatusUrl @statusInputObject
+                $pipelineTable += '| {0} | {1} |' -f $shortenedPipelineName, $statusBadge
             }
-            $statusBadge = Get-PipelineStatusUrl @statusInputObject
         }
         'GitHub' {
-            $platformWorkflowPaths = (Get-ChildItem (Join-Path $repoRoot '.github' 'workflows') -Filter 'platform.*').FullName
+            $platformWorkflowPaths = (Get-ChildItem (Join-Path $repoRoot '.github' 'workflows') -Filter 'platform.*').FullName | Sort-Object
 
             foreach ($platformWorkflowPath in $platformWorkflowPaths) {
-                $workflowContent = Get-Content -Path $platformWorkflowPath
                 $workflowFileName = Split-Path $platformWorkflowPath -Leaf
                 $workflowFolderPath = (Split-Path $platformWorkflowPath -Parent).Replace($repoRoot, '')
 
-                $lineIndex = 0
-                while ($workflowContent[$lineIndex] -notlike 'name: *') {
-                    $lineIndex++
-                }
-
-                if ($workflowContent[$lineIndex] -match "name: ['|`"]\.Platform: (.+)['|`"]") {
-                    $shortenedWorkflowName = $Matches[1].Trim()
-                } else {
-                    throw "Unable to determine name of workflow in path [$platformWorkflowPath]. The name should start with [.Platform: ]"
-                }
+                $workflowName = Get-PipelineNameFromFile -FilePath $platformWorkflowPath
+                $shortenedWorkflowName = ($workflowName -split '\.Platform: ')[1]
 
                 $statusInputObject = @{
                     PipelineFileName = $workflowFileName
