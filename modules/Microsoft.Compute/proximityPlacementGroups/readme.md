@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cppgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cppgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>cppgcom001'
@@ -288,7 +288,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
 
 ```bicep
 module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cppgmin'
+  name: '${uniqueString(deployment().name, location)}-test-cppgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>cppgmin001'

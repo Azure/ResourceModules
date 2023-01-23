@@ -3,15 +3,16 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.networkmanagers-${serviceShort}-rg'
+param resourceGroupName string = 'ms.signalrservice.signalr-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nnmmin'
+param serviceShort string = 'srsdrmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -36,14 +37,6 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
-    networkManagerScopeAccesses: [
-      'Connectivity'
-    ]
-    networkManagerScopes: {
-      managementGroups: [
-        '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
-      ]
-    }
+    name: '<<namePrefix>>-${serviceShort}-001'
   }
 }

@@ -9,6 +9,7 @@ Azure Virtual Network Manager is a management service that enables you to group,
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Considerations](#Considerations)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
@@ -34,7 +35,7 @@ Azure Virtual Network Manager is a management service that enables you to group,
 | :-- | :-- | :-- |
 | `name` | string | Name of the Network Manager. |
 | `networkManagerScopeAccesses` | array | Scope Access. String array containing any of "Connectivity", "SecurityAdmin". The connectivity feature allows you to create network topologies at scale. The security admin feature lets you create high-priority security rules, which take precedence over NSGs. |
-| `networkManagerScopes` | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this virtual network manager instance can manage. |
+| `networkManagerScopes` | object | Scope of Network Manager. Contains a list of management groups or a list of subscriptions. This defines the boundary of network resources that this Network Manager instance can manage. If using Management Groups, ensure that the "Microsoft.Network" resource provider is registered for those Management Groups prior to deployment. |
 
 **Conditional parameters**
 
@@ -531,6 +532,10 @@ tags: {
 
 _None_
 
+## Considerations
+
+In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
+
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
@@ -546,7 +551,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnmcom'
+  name: '${uniqueString(deployment().name, location)}-test-nnmcom'
   params: {
     // Required parameters
     name: '<name>'
@@ -963,71 +968,6 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
           ]
         }
       ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnmmin'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>nnmmin001'
-    networkManagerScopeAccesses: [
-      'Connectivity'
-    ]
-    networkManagerScopes: {
-      managementGroups: [
-        '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
-      ]
-    }
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>nnmmin001"
-    },
-    "networkManagerScopeAccesses": {
-      "value": [
-        "Connectivity"
-      ]
-    },
-    "networkManagerScopes": {
-      "value": {
-        "managementGroups": [
-          "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>"
-        ]
-      }
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
     }
   }
 }

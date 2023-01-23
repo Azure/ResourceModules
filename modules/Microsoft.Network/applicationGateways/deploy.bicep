@@ -323,10 +323,11 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
       trustedClientCertificates: trustedClientCertificates
       trustedRootCertificates: trustedRootCertificates
       urlPathMaps: urlPathMaps
-      webApplicationFirewallConfiguration: webApplicationFirewallConfiguration
     }, (enableFips ? {
       enableFips: enableFips
-    } : {}), {})
+    } : {}),
+    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration }: {})
+  )
   zones: zones
 }
 

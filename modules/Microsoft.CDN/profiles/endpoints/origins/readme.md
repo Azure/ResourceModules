@@ -29,12 +29,10 @@ This module deploys CDN Profiles Endpoint Origins.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `originHostHeader` | string |  | The host header value sent to the origin. |
 | `priority` | int | `-1` | The priority of origin in given origin group for load balancing. Required if `weight` is provided. |
-| `privateLinkAlias` | string |  | The private link alias of the origin. privateLinkLocation should also be provided. |
-| `privateLinkLocation` | string |  | The private link location of the origin. privateLinkAlias should also be provided. |
-| `privateLinkResourceId` | string |  | The private link resource ID of the origin. |
-| `weight` | int | `-1` | The weight of the origin used for load balancing. Required if `proprity` is provided.. |
+| `privateLinkAlias` | string |  | The private link alias of the origin. Required if privateLinkLocation is provided. |
+| `privateLinkLocation` | string |  | The private link location of the origin. Required if privateLinkAlias is provided. |
+| `weight` | int | `-1` | The weight of the origin used for load balancing. Required if `priority` is provided.. |
 
 **Optional parameters**
 
@@ -44,6 +42,8 @@ This module deploys CDN Profiles Endpoint Origins.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `httpPort` | int | `80` | The HTTP port of the origin. |
 | `httpsPort` | int | `443` | The HTTPS port of the origin. |
+| `originHostHeader` | string |  | The host header value sent to the origin. |
+| `privateLinkResourceId` | string |  | The private link resource ID of the origin. |
 | `profileName` | string | `'default'` | The name of the CDN profile. Default to "default". |
 
 

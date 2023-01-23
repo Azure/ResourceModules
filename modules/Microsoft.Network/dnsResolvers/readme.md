@@ -252,7 +252,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndrcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndrcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ndrcom001'

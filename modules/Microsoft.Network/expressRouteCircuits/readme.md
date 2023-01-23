@@ -187,7 +187,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nerccom'
+  name: '${uniqueString(deployment().name, location)}-test-nerccom'
   params: {
     // Required parameters
     bandwidthInMbps: 50
@@ -296,7 +296,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
 
 ```bicep
 module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nercmin'
+  name: '${uniqueString(deployment().name, location)}-test-nercmin'
   params: {
     // Required parameters
     bandwidthInMbps: 50

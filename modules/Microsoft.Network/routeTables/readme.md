@@ -256,7 +256,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nrtcom'
+  name: '${uniqueString(deployment().name, location)}-test-nrtcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nrtcom001'
@@ -347,7 +347,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
 
 ```bicep
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nrtmin'
+  name: '${uniqueString(deployment().name, location)}-test-nrtmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nrtmin001'

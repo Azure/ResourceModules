@@ -381,7 +381,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmaz'
+  name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmaz001'
@@ -632,7 +632,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmkube'
+  name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmkube001'

@@ -51,7 +51,7 @@ var expandedAppSettings = union(appSettingsKeyValuePairs, azureWebJobsValues, ap
 // =========== //
 // Existing resources //
 // =========== //
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   name: appName
   resource slot 'slots' existing = {
     name: slotName
@@ -68,9 +68,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing 
   scope: resourceGroup(split(storageAccountId, '/')[2], split(storageAccountId, '/')[4])
 }
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {

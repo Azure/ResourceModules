@@ -54,7 +54,7 @@ This module deploys a Web PubSub Service resource.
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -391,7 +391,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-srswpscom'
+  name: '${uniqueString(deployment().name, location)}-test-srswpscom'
   params: {
     // Required parameters
     name: '<<namePrefix>>-srswpscom-001'
@@ -568,7 +568,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-srswpsmin'
+  name: '${uniqueString(deployment().name, location)}-test-srswpsmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>-srswpsmin-001'
@@ -613,7 +613,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 
 ```bicep
 module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-srswpspe'
+  name: '${uniqueString(deployment().name, location)}-test-srswpspe'
   params: {
     // Required parameters
     name: '<<namePrefix>>-srswpspe-001'

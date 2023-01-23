@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.devtestlab.labs-${serviceShort}-rg'
@@ -19,9 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -30,9 +31,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
@@ -49,7 +50,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
@@ -59,7 +60,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -79,40 +80,40 @@ module testDeployment '../../deploy.bicep' = {
       RdpConnectionType: '7'
     }
     labStorageType: 'Premium'
-    artifactsStorageAccount: resourceGroupResources.outputs.storageAccountResourceId
+    artifactsStorageAccount: nestedDependencies.outputs.storageAccountResourceId
     premiumDataDisks: 'Enabled'
     support: {
       enabled: 'Enabled'
       markdown: 'DevTest Lab support text. <br> New line. It also supports Markdown'
     }
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     managementIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     vmCreationResourceGroupId: resourceGroup.id
     browserConnect: 'Enabled'
     disableAutoUpgradeCseMinorVersion: true
     isolateLabResources: 'Enabled'
     encryptionType: 'EncryptionAtRestWithCustomerKey'
-    encryptionDiskEncryptionSetId: resourceGroupResources.outputs.diskEncryptionSetResourceId
+    encryptionDiskEncryptionSetId: nestedDependencies.outputs.diskEncryptionSetResourceId
     virtualNetworks: [
       {
-        name: resourceGroupResources.outputs.virtualNetworkName
-        externalProviderResourceId: resourceGroupResources.outputs.virtualNetworkResourceId
+        name: nestedDependencies.outputs.virtualNetworkName
+        externalProviderResourceId: nestedDependencies.outputs.virtualNetworkResourceId
         description: 'lab virtual network description'
         allowedSubnets: [
           {
-            labSubnetName: resourceGroupResources.outputs.subnetName
-            resourceId: resourceGroupResources.outputs.subnetResourceId
+            labSubnetName: nestedDependencies.outputs.subnetName
+            resourceId: nestedDependencies.outputs.subnetResourceId
             allowPublicIp: 'Allow'
           }
         ]
         subnetOverrides: [
           {
-            labSubnetName: resourceGroupResources.outputs.subnetName
-            resourceId: resourceGroupResources.outputs.subnetResourceId
+            labSubnetName: nestedDependencies.outputs.subnetName
+            resourceId: nestedDependencies.outputs.subnetResourceId
             useInVmCreationPermission: 'Allow'
             usePublicIpAddressPermission: 'Allow'
             sharedPublicIpAddressConfiguration: {
@@ -133,9 +134,9 @@ module testDeployment '../../deploy.bicep' = {
     ]
     policies: [
       {
-        name: resourceGroupResources.outputs.subnetName
+        name: nestedDependencies.outputs.subnetName
         evaluatorType: 'MaxValuePolicy'
-        factData: resourceGroupResources.outputs.subnetResourceId
+        factData: nestedDependencies.outputs.subnetResourceId
         factName: 'UserOwnedLabVmCountInSubnet'
         threshold: '1'
       }

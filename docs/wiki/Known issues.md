@@ -8,6 +8,7 @@ This section provides an overview of the most impactful limitations and known is
   - [Microsoft.AAD/DomainServices](#microsoftaaddomainservices)
   - [Microsoft.Management/managementGroups](#microsoftmanagementmanagementgroups)
   - [Microsoft.RecoveryServices/vaults](#microsoftrecoveryservicesvaults)
+  - [Microsoft.Network/networkManagers](#microsoftnetworknetworkmanagers)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
@@ -49,6 +50,10 @@ The Recovery Services Vaults module does not currently validate the identity pro
 The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
 
 A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
+
+## Microsoft.Network/networkManagers
+
+In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
 
 ---
 

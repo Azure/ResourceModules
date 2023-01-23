@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.networksecuritygroups-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'nnsgcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
@@ -56,7 +57,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
@@ -70,7 +71,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -123,7 +124,7 @@ module testDeployment '../../deploy.bicep' = {
           description: 'Allow inbound access on TCP 8082'
           destinationApplicationSecurityGroups: [
             {
-              id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+              id: nestedDependencies.outputs.applicationSecurityGroupResourceId
             }
           ]
           destinationPortRange: '8082'
@@ -132,7 +133,7 @@ module testDeployment '../../deploy.bicep' = {
           protocol: '*'
           sourceApplicationSecurityGroups: [
             {
-              id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+              id: nestedDependencies.outputs.applicationSecurityGroupResourceId
             }
           ]
           sourcePortRange: '*'

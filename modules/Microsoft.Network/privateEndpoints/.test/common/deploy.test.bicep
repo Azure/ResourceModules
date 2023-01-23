@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.network.privateendpoints-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'npecom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
@@ -44,26 +45,26 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     groupIds: [
       'vault'
     ]
-    serviceResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+    serviceResourceId: nestedDependencies.outputs.keyVaultResourceId
+    subnetResourceId: nestedDependencies.outputs.subnetResourceId
     lock: 'CanNotDelete'
     privateDnsZoneGroup: {
       privateDNSResourceIds: [
-        resourceGroupResources.outputs.privateDNSZoneResourceId
+        nestedDependencies.outputs.privateDNSZoneResourceId
       ]
     }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -81,7 +82,7 @@ module testDeployment '../../deploy.bicep' = {
     customNetworkInterfaceName: '<<namePrefix>>${serviceShort}001nic'
     applicationSecurityGroups: [
       {
-        id: resourceGroupResources.outputs.applicationSecurityGroupResourceId
+        id: nestedDependencies.outputs.applicationSecurityGroupResourceId
       }
     ]
   }

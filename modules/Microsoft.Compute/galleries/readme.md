@@ -170,7 +170,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cgcom'
+  name: '${uniqueString(deployment().name, location)}-test-cgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>cgcom001'
@@ -405,7 +405,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cgmin'
+  name: '${uniqueString(deployment().name, location)}-test-cgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>cgmin001'

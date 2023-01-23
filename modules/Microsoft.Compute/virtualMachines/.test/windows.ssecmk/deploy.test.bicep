@@ -3,8 +3,9 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(80)
+@maxLength(90)
 param resourceGroupName string = 'ms.compute.virtualMachines-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
@@ -23,9 +24,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -34,7 +35,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
@@ -51,7 +52,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 // ============== //
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
@@ -68,7 +69,7 @@ module testDeployment '../../deploy.bicep' = {
         ipConfigurations: [
           {
             name: 'ipconfig01'
-            subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         ]
         nicSuffix: '-nic-01'
@@ -79,7 +80,7 @@ module testDeployment '../../deploy.bicep' = {
       managedDisk: {
         storageAccountType: 'Premium_LRS'
         diskEncryptionSet: {
-          id: resourceGroupResources.outputs.diskEncryptionSetResourceId
+          id: nestedDependencies.outputs.diskEncryptionSetResourceId
         }
       }
     }
@@ -92,7 +93,7 @@ module testDeployment '../../deploy.bicep' = {
         managedDisk: {
           storageAccountType: 'Premium_LRS'
           diskEncryptionSet: {
-            id: resourceGroupResources.outputs.diskEncryptionSetResourceId
+            id: nestedDependencies.outputs.diskEncryptionSetResourceId
           }
         }
       }

@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.keyvault.vaults-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'kvvcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -56,13 +57,13 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}002'
     accessPolicies: [
       {
-        objectId: resourceGroupResources.outputs.managedIdentityPrincipalId
+        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
         permissions: {
           keys: [
             'get'
@@ -76,7 +77,7 @@ module testDeployment '../../deploy.bicep' = {
         tenantId: tenant().tenantId
       }
       {
-        objectId: resourceGroupResources.outputs.managedIdentityPrincipalId
+        objectId: nestedDependencies.outputs.managedIdentityPrincipalId
         permissions: {
           certificates: [
             'backup'
@@ -106,7 +107,7 @@ module testDeployment '../../deploy.bicep' = {
           {
             roleDefinitionIdOrName: 'Reader'
             principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
+              nestedDependencies.outputs.managedIdentityPrincipalId
             ]
             principalType: 'ServicePrincipal'
           }
@@ -124,7 +125,7 @@ module testDeployment '../../deploy.bicep' = {
       ]
       virtualNetworkRules: [
         {
-          id: resourceGroupResources.outputs.subnetResourceId
+          id: nestedDependencies.outputs.subnetResourceId
           ignoreMissingVnetServiceEndpoint: false
         }
       ]
@@ -133,18 +134,18 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'vault'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -160,7 +161,7 @@ module testDeployment '../../deploy.bicep' = {
             {
               roleDefinitionIdOrName: 'Reader'
               principalIds: [
-                resourceGroupResources.outputs.managedIdentityPrincipalId
+                nestedDependencies.outputs.managedIdentityPrincipalId
               ]
               principalType: 'ServicePrincipal'
             }

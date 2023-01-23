@@ -22,19 +22,19 @@ param httpsPort int = 443
 @description('Conditional. The priority of origin in given origin group for load balancing. Required if `weight` is provided.')
 param priority int = -1
 
-@description('Conditional. The weight of the origin used for load balancing. Required if `proprity` is provided..')
+@description('Conditional. The weight of the origin used for load balancing. Required if `priority` is provided..')
 param weight int = -1
 
-@description('Conditional. The private link alias of the origin. privateLinkLocation should also be provided.')
+@description('Conditional. The private link alias of the origin. Required if privateLinkLocation is provided.')
 param privateLinkAlias string
 
-@description('Conditional. The private link location of the origin. privateLinkAlias should also be provided.')
+@description('Conditional. The private link location of the origin. Required if privateLinkAlias is provided.')
 param privateLinkLocation string
 
-@description('Conditional. The private link resource ID of the origin.')
+@description('Optional. The private link resource ID of the origin.')
 param privateLinkResourceId string
 
-@description('Conditional. The host header value sent to the origin.')
+@description('Optional. The host header value sent to the origin.')
 param originHostHeader string
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
