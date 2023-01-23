@@ -1,18 +1,18 @@
 ﻿<#
 .SYNOPSIS
-Short description
+Update the table of Platform pipelines in the given Readme.md
 
 .DESCRIPTION
-Long description
+Update the table of Platform pipelines in the given Readme.md. The header must be identifyable with the `## Platform` header.
 
 .PARAMETER FilePath
-Parameter description
+Mandatory. The path to the ReadMe file to update
 
 .PARAMETER RepositoryName
-Parameter description
+Mandatory. The name of the repository the pipelines/workflows are in (required to generate the correct links)
 
 .PARAMETER Organization
-Parameter description
+Mandatory. The name of the Organization the pipelines/workflows are in (required to generate the correct links)
 
 .PARAMETER Environment
 Parameter description

@@ -18,6 +18,12 @@ Mandatory. The name of the repository the modules are in (required to generate t
 .PARAMETER Organization
 Mandatory. The name of the Organization the modules are in (required to generate the correct links)
 
+.PARAMETER ProjectName
+Mandatory. The name of the Azure DevOps project the pipelines are in (required to generate the correct links) - in case Azure DevOps is used
+
+.PARAMETER Environment
+Mandatory. The environment to generate the badges for (either Azure DevOps - or GitHub)
+
 .PARAMETER ColumnsInOrder
 Mandatory. The set of columns to add to the table in the order you expect them in the table.
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
