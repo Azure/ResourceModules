@@ -114,10 +114,10 @@ jobs:
 
             $functionInput = @{
               FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
-              Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
-              Environment    = 'ADO'
+              Organization   = '$(System.CollectionUri)'.Split('/')[3]
               ProjectName    = '$(System.TeamProject)'
+              Environment    = 'ADO'
             }
 
             Write-Verbose "Invoke task with" -Verbose
