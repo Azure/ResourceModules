@@ -146,17 +146,10 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 | Name | Status |
 | - | - |
-| Update API Specs file | [![.Platform: Update API Specs file](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20API%20Specs%20file/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.apiSpecs.yml) |
-| Assign Issue to Project | [![.Platform: Assign Issue to Project](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Assign%20Issue%20to%20Project/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignIssueToProject.yml) |
-| Assign Pull Request to Author | [![.Platform: Assign Pull Request to Author](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Assign%20Pull%20Request%20to%20Author/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignPrToAuthor.yml) |
-| Test - ConvertTo-ARMTemplate.ps1 | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Test%20-%20ConvertTo-ARMTemplate.ps1/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) |
-| Clean up deployment history | [![.Platform: Clean up deployment history](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Clean%20up%20deployment%20history/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.deployment.history.cleanup.yml) |
-| Library PSRule pre-flight validation | [![.Platform: Library PSRule pre-flight validation](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Library%20PSRule%20pre-flight%20validation/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.librarycheck.psrule.yml) |
-| Broken Links Check | [![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Broken%20Links%20Check/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml) |
-| Linter | [![.Platform: Linter](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Linter/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml) |
-| Manage issues for failing pipelines | [![.Platform: Manage issues for failing pipelines](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Manage%20issues%20for%20failing%20pipelines/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.ManageIssueForFailingPipelines.yml) |
-| Update ReadMe Module Tables | [![.Platform: Update ReadMe Module Tables](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20ReadMe%20Module%20Tables/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateReadMe.yml) |
-| Sync Docs/Wiki | [![.Platform: Sync Docs/Wiki](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Sync%20Docs/Wiki/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.wiki-sync.yml) |
+|  | [![.Platform - Update API Specs file](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Update%20API%20Specs%20file?branchName=main)](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Update%20API%20Specs%20file?branchName=main) |
+|  | [![.Platform - Clean up deployment history](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Clean%20up%20deployment%20history?branchName=main)](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Clean%20up%20deployment%20history?branchName=main) |
+|  | [![.Platform - Update ReadMe Module Tables](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Update%20ReadMe%20Module%20Tables?branchName=main)](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Update%20ReadMe%20Module%20Tables?branchName=main) |
+|  | [![.Platform - Sync Docs/Wiki](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Sync%20Docs/Wiki?branchName=main)](https://dev.azure.com/carml/carml/_apis/build/status/.Platform%20-%20Sync%20Docs/Wiki?branchName=main) |
 
 ## Contributing
 

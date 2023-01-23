@@ -47,7 +47,7 @@
 
                 $statusInputObject = @{
                     PipelineFileName = $pipelineFileName
-                    CustomFolderPath = $pipelineFolderPath
+                    CustomFolderPath = $pipelineFolderPath.Substring(1, ($pipelineFolderPath.Length - 1))
                     RepositoryName   = $RepositoryName
                     Organization     = $Organization
                     ProjectName      = $ProjectName
