@@ -94,10 +94,11 @@ function Get-PipelineStatusUrl {
             $pipelinesFolderPath = (-not [String]::IsNullOrEmpty($CustomFolderPath)) ? $CustomFolderPath : (Join-Path '.azuredevops' 'modulePipelines')
             $pipelineFileUri = Join-Path $pipelinesFolderPath $pipelineFileName
             $pipelineName = Get-PipelineNameFromFile -FilePath $pipelineFileUri
-            $pipelineFileGitUri = ('https://dev.azure.com/{0}/{1}/_build/latest/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
+            $pipelineFrontUri = ('https://dev.azure.com/{0}/{1}/_apis/build/status/Modules/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
+            $pipelineBackUri = ('https://dev.azure.com/{0}/{1}/_build/latest/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
 
             # Note: Badge name is automatically the pipeline name
-            return ('[![{0}]({1})]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
+            return ('[![{0}]({1})]({2})' -f $pipelineName, $pipelineFrontUri, $pipelineBackUri).Replace('\', '/')
         }
         'GitHub' {
             $workflowsFolderPath = (-not [String]::IsNullOrEmpty($CustomFolderPath)) ? $CustomFolderPath : (Join-Path '.github' 'workflows')
