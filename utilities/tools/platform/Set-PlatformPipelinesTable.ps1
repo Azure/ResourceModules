@@ -1,4 +1,36 @@
-﻿function Set-PlatformPipelinesTable {
+﻿<#
+.SYNOPSIS
+Short description
+
+.DESCRIPTION
+Long description
+
+.PARAMETER FilePath
+Parameter description
+
+.PARAMETER RepositoryName
+Parameter description
+
+.PARAMETER Organization
+Parameter description
+
+.PARAMETER Environment
+Parameter description
+
+.PARAMETER ProjectName
+Parameter description
+
+.EXAMPLE
+Set-PlatformPipelinesTable -FilePath 'C:\ResourceModules\README.md' -Environment 'GitHub' -RepositoryName 'ResourceModules' -Organization 'Azure'
+
+Updated the 'README.md' file with the Platform badges from the 'https://github.com/Azure/ResourceModules' GitHub project.
+
+.EXAMPLE
+Set-PlatformPipelinesTable -FilePath 'C:\ResourceModules\README.md' -Environment 'ADO' -RepositoryName 'ResourceModules' -Organization 'carml' -ProjectName 'carml'
+
+Updated the 'README.md' file with the Platform badges from the 'https://dev.azure.com/carml/carml' Azure DevOps project.
+#>
+function Set-PlatformPipelinesTable {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
