@@ -84,6 +84,7 @@ function Get-PipelineStatusUrl {
     . (Join-Path $PSScriptRoot 'Get-PipelineNameFromFile.ps1')
 
     if ([String]::IsNullOrEmpty($PipelineFileName)) {
+        # If no custom path was provided we'll assume the default module path
         $shortProviderNamespace = $ProviderNamespace.Replace('Microsoft.', 'MS.')
         $pipelineFileName = ('{0}.{1}.yml' -f $shortProviderNamespace, $ModuleName).Replace('\', '/').Replace('/', '.').ToLower()
     }
@@ -93,7 +94,7 @@ function Get-PipelineStatusUrl {
             $pipelinesFolderPath = (-not [String]::IsNullOrEmpty($CustomFolderPath)) ? $CustomFolderPath : (Join-Path '.azuredevops' 'modulePipelines')
             $pipelineFileUri = Join-Path $pipelinesFolderPath $pipelineFileName
             $pipelineName = Get-PipelineNameFromFile -FilePath $pipelineFileUri
-            $pipelineFileGitUri = ('https://dev.azure.com/{0}/{1}/_apis/build/status/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
+            $pipelineFileGitUri = ('https://dev.azure.com/{0}/{1}/_build/latest/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
 
             # Note: Badge name is automatically the pipeline name
             return ('[![{0}]({1})]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
