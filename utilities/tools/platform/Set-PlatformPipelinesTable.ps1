@@ -21,16 +21,16 @@ Mandatory. The environment to generate the badges for (either Azure DevOps - or 
 Mandatory. The name of the Azure DevOps project the pipelines are in (required to generate the correct links) - in case Azure DevOps is used
 
 .EXAMPLE
-Set-PlatformPipelinesTable -FilePath 'C:\ResourceModules\README.md' -Environment 'GitHub' -RepositoryName 'ResourceModules' -Organization 'Azure'
+Set-ReadMePlatformTable -FilePath 'C:\ResourceModules\README.md' -Environment 'GitHub' -RepositoryName 'ResourceModules' -Organization 'Azure'
 
 Updated the 'README.md' file with the Platform badges from the 'https://github.com/Azure/ResourceModules' GitHub project.
 
 .EXAMPLE
-Set-PlatformPipelinesTable -FilePath 'C:\ResourceModules\README.md' -Environment 'ADO' -RepositoryName 'ResourceModules' -Organization 'carml' -ProjectName 'carml'
+Set-ReadMePlatformTable -FilePath 'C:\ResourceModules\README.md' -Environment 'ADO' -RepositoryName 'ResourceModules' -Organization 'carml' -ProjectName 'carml'
 
 Updated the 'README.md' file with the Platform badges from the 'https://dev.azure.com/carml/carml' Azure DevOps project.
 #>
-function Set-PlatformPipelinesTable {
+function Set-ReadMePlatformTable {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

@@ -20,7 +20,7 @@ with the latest available data.
 You can find the used scripts under
 - [`/utilities/tools/platform/Set-ReadMeModuleTable.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/platform/Set-ReadMeModuleTable.ps1)
 - [`/utilities/tools/platform/Set-ModuleOverviewTable.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/platform/Set-ModuleOverviewTable.ps1)
-- [`/utilities/tools/platform/Set-PlatformPipelinesTable.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/platform/Set-PlatformPipelinesTable.ps1)
+- [`/utilities/tools/platform/Set-ReadMePlatformTable.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/platform/Set-ReadMePlatformTable.ps1)
 
 # How it works
 

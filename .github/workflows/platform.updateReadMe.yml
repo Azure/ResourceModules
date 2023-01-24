@@ -19,7 +19,7 @@ env:
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
   relativeScriptPath_SetReadMeModuleTable: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
   relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
-  relativeScriptPath_SetPlatformPipelinesTable: 'utilities/tools/platform/Set-PlatformPipelinesTable.ps1'
+  relativeScriptPath_SetReadMePlatformTable: 'utilities/tools/platform/Set-ReadMePlatformTable.ps1'
 
 jobs:
   job_update_readme:
@@ -92,7 +92,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetPlatformPipelinesTable)
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMePlatformTable)
 
           $functionInput = @{
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
@@ -104,7 +104,7 @@ jobs:
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-PlatformPipelinesTable @functionInput -Verbose
+          Set-ReadMePlatformTable @functionInput -Verbose
 
       - name: 'Push changes'
         shell: pwsh
