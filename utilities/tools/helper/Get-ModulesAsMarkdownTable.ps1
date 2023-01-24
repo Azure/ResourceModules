@@ -312,8 +312,6 @@ function Get-ResolvedSubServiceRow {
                 }
                 'Status' {
                     $statusInputObject = @{
-                        ModuleName         = $subName
-                        ProviderNamespace  = $provider
                         RepositoryName     = $RepositoryName
                         Organization       = $Organization
                         PipelineFileName   = ('{0}.{1}.yml' -f $provider.Replace('Microsoft.', 'MS.'), $subName).Replace('\', '/').Replace('/', '.').ToLower()
@@ -525,8 +523,6 @@ function Get-ModulesAsMarkdownTable {
                         }
                         'Status' {
                             $statusInputObject = @{
-                                ModuleName         = $containedFolderName
-                                ProviderNamespace  = $provider
                                 RepositoryName     = $RepositoryName
                                 Organization       = $Organization
                                 Environment        = $Environment
