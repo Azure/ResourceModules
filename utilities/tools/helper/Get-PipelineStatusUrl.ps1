@@ -52,7 +52,7 @@ function Get-PipelineStatusUrl {
 
     switch ($Environment) {
         'ADO' {
-            $pipelineFileUri = Join-Path $pipelinesFolderPath $pipelineFileName
+            $pipelineFileUri = Join-Path $PipelineFolderPath $PipelineFileName
             $pipelineName = Get-PipelineNameFromFile -FilePath $pipelineFileUri
             $pipelineFrontUri = ('https://dev.azure.com/{0}/{1}/_apis/build/status/Modules/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
             $pipelineBackUri = ('https://dev.azure.com/{0}/{1}/_build/latest/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName.Replace("'", '')) -replace ' ', '%20'
@@ -61,11 +61,11 @@ function Get-PipelineStatusUrl {
             return ('[![{0}]({1})]({2})' -f $pipelineName, $pipelineFrontUri, $pipelineBackUri).Replace('\', '/')
         }
         'GitHub' {
-            $workflowFileUri = Join-Path $workflowsFolderPath $pipelineFileName
+            $workflowFileUri = Join-Path $PipelineFolderPath $PipelineFileName
             $workflowName = Get-PipelineNameFromFile -FilePath $workflowFileUri
             $workflowNameInUri = $workflowName.Replace(' ', '%20').Replace("'", '')
             $workflowStatusUri = 'https://github.com/{0}/{1}/workflows/{2}' -f $Organization, $RepositoryName, $workflowNameInUri
-            $workflowFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
+            $workflowFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $PipelineFileName
             # Note: Badge name is automatically the pipeline name
             return ('[![{0}]({1}/badge.svg)]({2})' -f $workflowName, $workflowStatusUri, $workflowFileGitUri).Replace('\', '/')
         }
