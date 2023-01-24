@@ -31,6 +31,8 @@ jobs:
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
+
+      # Update the root ReadMe Module Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - name: 'Update Module Pipelines table'
         shell: pwsh
         run: |
@@ -52,6 +54,7 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
+      # Update the `modules` folder ReadMe ([`/modules/readme.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
       - name: 'Update module folder ReadMe'
         shell: pwsh
         run: |
@@ -72,6 +75,7 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
+      # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - name: 'Update module outline'
         shell: pwsh
         run: |
@@ -88,6 +92,7 @@ jobs:
 
           Set-ModuleOverviewTable @functionInput -Verbose
 
+      # Update the root ReadMe Platform Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - name: 'Update Platform Pipelines table'
         shell: pwsh
         run: |

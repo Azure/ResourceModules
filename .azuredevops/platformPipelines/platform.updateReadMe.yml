@@ -37,6 +37,8 @@ jobs:
     steps:
       - checkout: self
         persistCredentials: true
+
+      # Update the root ReadMe Module Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - task: PowerShell@2
         displayName: 'Update Module Pipelines table'
         inputs:
@@ -61,6 +63,8 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Set-ReadMeModuleTable @functionInput -Verbose
+
+      # Update the `modules` folder ReadMe ([`/modules/readme.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
       - task: PowerShell@2
         displayName: 'Update module folder ReadMe'
         inputs:
@@ -85,6 +89,7 @@ jobs:
 
             Set-ReadMeModuleTable @functionInput -Verbose
 
+      # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - task: PowerShell@2
         displayName: 'Update module outline'
         inputs:
@@ -104,6 +109,7 @@ jobs:
 
             Set-ModuleOverviewTable @functionInput -Verbose
 
+      # Update the root ReadMe Platform Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - task: PowerShell@2
         displayName: 'Update Platform Pipelines table'
         inputs:
