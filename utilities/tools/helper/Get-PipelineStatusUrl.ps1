@@ -3,7 +3,7 @@
 Generate the status URL for the given pipeline/workflow file
 
 .DESCRIPTION
-Generate the status URL for GitHub module action workflows
+Generate the status URL for the given pipeline/workflow file
 E.g.  # [![AnalysisServices: Servers](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml)
 
 .PARAMETER PipelineFileName
