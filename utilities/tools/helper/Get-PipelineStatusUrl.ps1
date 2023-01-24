@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-Generate the status URL for GitHub module action workflows
+Generate the status URL for the given pipeline/workflow file
 
 .DESCRIPTION
 Generate the status URL for GitHub module action workflows
