@@ -38,7 +38,7 @@ jobs:
       - checkout: self
         persistCredentials: true
       - task: PowerShell@2
-        displayName: 'Update general ReadMe'
+        displayName: 'Update Module Pipelines table'
         inputs:
           targetType: inline
           pwsh: true

@@ -31,7 +31,7 @@ jobs:
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Update general ReadMe'
+      - name: 'Update Module Pipelines table'
         shell: pwsh
         run: |
           # Load used functions
