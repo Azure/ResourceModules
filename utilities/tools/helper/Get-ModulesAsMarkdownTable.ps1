@@ -311,7 +311,15 @@ function Get-ResolvedSubServiceRow {
                     $row['Deploy'] += Get-DeployToAzureUrl -path $subfolder -RepositoryName $RepositoryName -Organization $Organization
                 }
                 'Status' {
-                    $row['Status'] += Get-PipelineStatusUrl -ModuleName $subName -ProviderNamespace $provider -RepositoryName $RepositoryName -Organization $Organization
+                    $statusInputObject = @{
+                        ModuleName         = $subName
+                        ProviderNamespace  = $provider
+                        RepositoryName     = $RepositoryName
+                        Organization       = $Organization
+                        PipelineFileName   = ('{0}.{1}.yml' -f $ProviderNamespace.Replace('Microsoft.', 'MS.'), $ModuleName).Replace('\', '/').Replace('/', '.').ToLower()
+                        PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
+                    }
+                    $row['Status'] += Get-PipelineStatusUrl @statusInputObject
                 }
                 Default {
                     Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"
@@ -516,7 +524,17 @@ function Get-ModulesAsMarkdownTable {
                             $row['Deploy'] += Get-DeployToAzureUrl -path $containedFolder -RepositoryName $RepositoryName -Organization $Organization
                         }
                         'Status' {
-                            $row['Status'] += Get-PipelineStatusUrl -ModuleName $containedFolderName -ProviderNamespace $provider -RepositoryName $RepositoryName -Organization $Organization -Environment $Environment -ProjectName $ProjectName
+                            $statusInputObject = @{
+                                ModuleName         = $containedFolderName
+                                ProviderNamespace  = $provider
+                                RepositoryName     = $RepositoryName
+                                Organization       = $Organization
+                                Environment        = $Environment
+                                ProjectName        = $ProjectName
+                                PipelineFileName   = ('{0}.{1}.yml' -f $ProviderNamespace.Replace('Microsoft.', 'MS.'), $ModuleName).Replace('\', '/').Replace('/', '.').ToLower()
+                                PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
+                            }
+                            $row['Status'] += Get-PipelineStatusUrl @statusInputObject
                         }
                         Default {
                             Write-Warning "Column [$column] not existing. Available are: [Name|ProviderNamespace|ResourceType|TemplateType|Deploy|Status]"

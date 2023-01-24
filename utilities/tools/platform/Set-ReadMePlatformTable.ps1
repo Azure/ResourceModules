@@ -78,12 +78,12 @@ function Set-ReadMePlatformTable {
                 $shortenedPipelineName = ($pipelineName -split '\.Platform: ')[1]
 
                 $statusInputObject = @{
-                    PipelineFileName = $pipelineFileName
-                    CustomFolderPath = $pipelineFolderPath.Substring(1, ($pipelineFolderPath.Length - 1))
-                    RepositoryName   = $RepositoryName
-                    Organization     = $Organization
-                    ProjectName      = $ProjectName
-                    Environment      = $Environment
+                    PipelineFileName   = $pipelineFileName
+                    PipelineFolderPath = $pipelineFolderPath.Substring(1, ($pipelineFolderPath.Length - 1))
+                    RepositoryName     = $RepositoryName
+                    Organization       = $Organization
+                    ProjectName        = $ProjectName
+                    Environment        = $Environment
                 }
                 $statusBadge = Get-PipelineStatusUrl @statusInputObject
                 $pipelineTable += '| {0} | {1} |' -f $shortenedPipelineName, $statusBadge
@@ -100,11 +100,11 @@ function Set-ReadMePlatformTable {
                 $shortenedWorkflowName = ($workflowName -split '\.Platform: ')[1]
 
                 $statusInputObject = @{
-                    PipelineFileName = $workflowFileName
-                    CustomFolderPath = $workflowFolderPath.Substring(1, ($workflowFolderPath.Length - 1))
-                    RepositoryName   = $RepositoryName
-                    Organization     = $Organization
-                    Environment      = $Environment
+                    PipelineFileName   = $workflowFileName
+                    PipelineFolderPath = $workflowFolderPath.Substring(1, ($workflowFolderPath.Length - 1))
+                    RepositoryName     = $RepositoryName
+                    Organization       = $Organization
+                    Environment        = $Environment
                 }
                 $statusBadge = Get-PipelineStatusUrl @statusInputObject
 
