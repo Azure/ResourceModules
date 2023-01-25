@@ -17,7 +17,7 @@ This module deploys Insights DataCollectionRules.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/dataCollectionRules` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-04-01/dataCollectionRules) |
+| `Microsoft.Insights/dataCollectionRules` | [2021-09-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-09-01-preview/dataCollectionRules) |
 
 ## Parameters
 
@@ -25,17 +25,22 @@ This module deploys Insights DataCollectionRules.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `dataFlows` | array | The specification of data flows. |
+| `dataSources` | object | Specification of data sources that will be collected. |
+| `destinations` | object | Specification of destinations that can be used in data flows. |
 | `name` | string | The name of the data collection rule. The name is case insensitive. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `dataCollectionEndpointId` | string | `''` |  | The resource ID of the data collection endpoint that this rule can be used with. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string | `'Linux'` | `[Linux, Windows]` | The kind of the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `streamDeclarations` | object | `{object}` |  | Declaration of custom streams used in this rule. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -163,6 +168,1012 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+<h3>Example 1: Custombasic</h3>
 
-<h3>Example 2: Min</h3>
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-idcrcusb'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          '<logAnalyticsWorkspaceName>'
+        ]
+        outputStream: 'Custom-CustomTableBasic_CL'
+        streams: [
+          'Custom-CustomTableBasic_CL'
+        ]
+        transformKql: 'source'
+      }
+    ]
+    dataSources: {
+      logFiles: [
+        {
+          filePatterns: [
+            'C:\\TestLogs\\TestLog*.log'
+          ]
+          format: 'text'
+          name: 'CustomTableBasic_CL'
+          samplingFrequencyInSeconds: 10
+          settings: {
+            text: {
+              recordStartTimestampFormat: 'ISO 8601'
+            }
+          }
+          streams: [
+            'Custom-CustomTableBasic_CL'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      logAnalytics: [
+        {
+          name: '<name>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+    }
+    name: '<<namePrefix>>idcrcusb001'
+    // Non-required parameters
+    dataCollectionEndpointId: '<dataCollectionEndpointId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+    streamDeclarations: {
+      'Custom-CustomTableBasic_CL': {
+        columns: [
+          {
+            name: 'TimeGenerated'
+            type: 'datetime'
+          }
+          {
+            name: 'RawData'
+            type: 'string'
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "<logAnalyticsWorkspaceName>"
+          ],
+          "outputStream": "Custom-CustomTableBasic_CL",
+          "streams": [
+            "Custom-CustomTableBasic_CL"
+          ],
+          "transformKql": "source"
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "logFiles": [
+          {
+            "filePatterns": [
+              "C:\\TestLogs\\TestLog*.log"
+            ],
+            "format": "text",
+            "name": "CustomTableBasic_CL",
+            "samplingFrequencyInSeconds": 10,
+            "settings": {
+              "text": {
+                "recordStartTimestampFormat": "ISO 8601"
+              }
+            },
+            "streams": [
+              "Custom-CustomTableBasic_CL"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "logAnalytics": [
+          {
+            "name": "<name>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>idcrcusb001"
+    },
+    // Non-required parameters
+    "dataCollectionEndpointId": {
+      "value": "<dataCollectionEndpointId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    },
+    "streamDeclarations": {
+      "value": {
+        "Custom-CustomTableBasic_CL": {
+          "columns": [
+            {
+              "name": "TimeGenerated",
+              "type": "datetime"
+            },
+            {
+              "name": "RawData",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Linux</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-idcrlin'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          'azureMonitorMetrics-default'
+        ]
+        streams: [
+          'Microsoft-InsightsMetrics'
+        ]
+      }
+      {
+        destinations: [
+          '<logAnalyticsWorkspaceName>'
+        ]
+        streams: [
+          'Microsoft-Syslog'
+        ]
+      }
+    ]
+    dataSources: {
+      performanceCounters: [
+        {
+          counterSpecifiers: [
+            'Memory(*)\\% Available Memory'
+            'Memory(*)\\% Available Swap Space'
+            'Memory(*)\\% Used Memory'
+            'Memory(*)\\% Used Swap Space'
+            'Memory(*)\\Available MBytes Memory'
+            'Memory(*)\\Available MBytes Swap'
+            'Memory(*)\\Page Reads/sec'
+            'Memory(*)\\Page Writes/sec'
+            'Memory(*)\\Pages/sec'
+            'Memory(*)\\Used MBytes Swap Space'
+            'Memory(*)\\Used Memory MBytes'
+            'Processor(*)\\% DPC Time'
+            'Processor(*)\\% Idle Time'
+            'Processor(*)\\% Interrupt Time'
+            'Processor(*)\\% IO Wait Time'
+            'Processor(*)\\% Nice Time'
+            'Processor(*)\\% Privileged Time'
+            'Processor(*)\\% Processor Time'
+            'Processor(*)\\% User Time'
+          ]
+          name: 'perfCounterDataSource10'
+          samplingFrequencyInSeconds: 10
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+        }
+        {
+          counterSpecifiers: [
+            'Logical Disk(*)\\% Free Inodes'
+            'Logical Disk(*)\\% Free Space'
+            'Logical Disk(*)\\% Used Inodes'
+            'Logical Disk(*)\\% Used Space'
+            'Logical Disk(*)\\Disk Read Bytes/sec'
+            'Logical Disk(*)\\Disk Reads/sec'
+            'Logical Disk(*)\\Disk Transfers/sec'
+            'Logical Disk(*)\\Disk Write Bytes/sec'
+            'Logical Disk(*)\\Disk Writes/sec'
+            'Logical Disk(*)\\Free Megabytes'
+            'Logical Disk(*)\\Logical Disk Bytes/sec'
+            'Network(*)\\Total Bytes'
+            'Network(*)\\Total Bytes Received'
+            'Network(*)\\Total Bytes Transmitted'
+            'Network(*)\\Total Collisions'
+            'Network(*)\\Total Packets Received'
+            'Network(*)\\Total Packets Transmitted'
+            'Network(*)\\Total Rx Errors'
+            'Network(*)\\Total Tx Errors'
+          ]
+          name: 'perfCounterDataSource15'
+          samplingFrequencyInSeconds: 15
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+        }
+      ]
+      syslog: [
+        {
+          facilityNames: [
+            'auth'
+            'authpriv'
+          ]
+          logLevels: [
+            'Alert'
+            'Critical'
+            'Debug'
+            'Emergency'
+            'Error'
+            'Info'
+            'Notice'
+            'Warning'
+          ]
+          name: 'sysLogsDataSource-debugLevel'
+          streams: [
+            'Microsoft-Syslog'
+          ]
+        }
+        {
+          facilityNames: [
+            'cron'
+            'daemon'
+            'kern'
+            'local0'
+            'mark'
+          ]
+          logLevels: [
+            'Alert'
+            'Critical'
+            'Emergency'
+            'Error'
+            'Warning'
+          ]
+          name: 'sysLogsDataSource-warningLevel'
+          streams: [
+            'Microsoft-Syslog'
+          ]
+        }
+        {
+          facilityNames: [
+            'local1'
+            'local2'
+            'local3'
+            'local4'
+            'local5'
+            'local6'
+            'local7'
+            'lpr'
+            'mail'
+            'news'
+            'syslog'
+          ]
+          logLevels: [
+            'Alert'
+            'Critical'
+            'Emergency'
+            'Error'
+          ]
+          name: 'sysLogsDataSource-errLevel'
+          streams: [
+            'Microsoft-Syslog'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      azureMonitorMetrics: {
+        name: 'azureMonitorMetrics-default'
+      }
+      logAnalytics: [
+        {
+          name: '<name>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+    }
+    name: '<<namePrefix>>idcrlin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Linux'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      kind: 'Linux'
+      resourceType: 'Data Collection Rules'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "azureMonitorMetrics-default"
+          ],
+          "streams": [
+            "Microsoft-InsightsMetrics"
+          ]
+        },
+        {
+          "destinations": [
+            "<logAnalyticsWorkspaceName>"
+          ],
+          "streams": [
+            "Microsoft-Syslog"
+          ]
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "performanceCounters": [
+          {
+            "counterSpecifiers": [
+              "Memory(*)\\% Available Memory",
+              "Memory(*)\\% Available Swap Space",
+              "Memory(*)\\% Used Memory",
+              "Memory(*)\\% Used Swap Space",
+              "Memory(*)\\Available MBytes Memory",
+              "Memory(*)\\Available MBytes Swap",
+              "Memory(*)\\Page Reads/sec",
+              "Memory(*)\\Page Writes/sec",
+              "Memory(*)\\Pages/sec",
+              "Memory(*)\\Used MBytes Swap Space",
+              "Memory(*)\\Used Memory MBytes",
+              "Processor(*)\\% DPC Time",
+              "Processor(*)\\% Idle Time",
+              "Processor(*)\\% Interrupt Time",
+              "Processor(*)\\% IO Wait Time",
+              "Processor(*)\\% Nice Time",
+              "Processor(*)\\% Privileged Time",
+              "Processor(*)\\% Processor Time",
+              "Processor(*)\\% User Time"
+            ],
+            "name": "perfCounterDataSource10",
+            "samplingFrequencyInSeconds": 10,
+            "streams": [
+              "Microsoft-InsightsMetrics"
+            ]
+          },
+          {
+            "counterSpecifiers": [
+              "Logical Disk(*)\\% Free Inodes",
+              "Logical Disk(*)\\% Free Space",
+              "Logical Disk(*)\\% Used Inodes",
+              "Logical Disk(*)\\% Used Space",
+              "Logical Disk(*)\\Disk Read Bytes/sec",
+              "Logical Disk(*)\\Disk Reads/sec",
+              "Logical Disk(*)\\Disk Transfers/sec",
+              "Logical Disk(*)\\Disk Write Bytes/sec",
+              "Logical Disk(*)\\Disk Writes/sec",
+              "Logical Disk(*)\\Free Megabytes",
+              "Logical Disk(*)\\Logical Disk Bytes/sec",
+              "Network(*)\\Total Bytes",
+              "Network(*)\\Total Bytes Received",
+              "Network(*)\\Total Bytes Transmitted",
+              "Network(*)\\Total Collisions",
+              "Network(*)\\Total Packets Received",
+              "Network(*)\\Total Packets Transmitted",
+              "Network(*)\\Total Rx Errors",
+              "Network(*)\\Total Tx Errors"
+            ],
+            "name": "perfCounterDataSource15",
+            "samplingFrequencyInSeconds": 15,
+            "streams": [
+              "Microsoft-InsightsMetrics"
+            ]
+          }
+        ],
+        "syslog": [
+          {
+            "facilityNames": [
+              "auth",
+              "authpriv"
+            ],
+            "logLevels": [
+              "Alert",
+              "Critical",
+              "Debug",
+              "Emergency",
+              "Error",
+              "Info",
+              "Notice",
+              "Warning"
+            ],
+            "name": "sysLogsDataSource-debugLevel",
+            "streams": [
+              "Microsoft-Syslog"
+            ]
+          },
+          {
+            "facilityNames": [
+              "cron",
+              "daemon",
+              "kern",
+              "local0",
+              "mark"
+            ],
+            "logLevels": [
+              "Alert",
+              "Critical",
+              "Emergency",
+              "Error",
+              "Warning"
+            ],
+            "name": "sysLogsDataSource-warningLevel",
+            "streams": [
+              "Microsoft-Syslog"
+            ]
+          },
+          {
+            "facilityNames": [
+              "local1",
+              "local2",
+              "local3",
+              "local4",
+              "local5",
+              "local6",
+              "local7",
+              "lpr",
+              "mail",
+              "news",
+              "syslog"
+            ],
+            "logLevels": [
+              "Alert",
+              "Critical",
+              "Emergency",
+              "Error"
+            ],
+            "name": "sysLogsDataSource-errLevel",
+            "streams": [
+              "Microsoft-Syslog"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "azureMonitorMetrics": {
+          "name": "azureMonitorMetrics-default"
+        },
+        "logAnalytics": [
+          {
+            "name": "<name>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>idcrlin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Linux"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "kind": "Linux",
+        "resourceType": "Data Collection Rules"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-idcrmin'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          'azureMonitorMetrics-default'
+        ]
+        streams: [
+          'Microsoft-InsightsMetrics'
+        ]
+      }
+    ]
+    dataSources: {
+      performanceCounters: [
+        {
+          counterSpecifiers: [
+            '\\Process(_Total)\\Handle Count'
+            '\\Process(_Total)\\Thread Count'
+            '\\Processor Information(_Total)\\% Privileged Time'
+            '\\Processor Information(_Total)\\% Processor Time'
+            '\\Processor Information(_Total)\\% User Time'
+            '\\Processor Information(_Total)\\Processor Frequency'
+            '\\System\\Context Switches/sec'
+            '\\System\\Processes'
+            '\\System\\Processor Queue Length'
+            '\\System\\System Up Time'
+          ]
+          name: 'perfCounterDataSource10'
+          samplingFrequencyInSeconds: 10
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      azureMonitorMetrics: {
+        name: 'azureMonitorMetrics-default'
+      }
+    }
+    name: '<<namePrefix>>idcrmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "azureMonitorMetrics-default"
+          ],
+          "streams": [
+            "Microsoft-InsightsMetrics"
+          ]
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "performanceCounters": [
+          {
+            "counterSpecifiers": [
+              "\\Process(_Total)\\Handle Count",
+              "\\Process(_Total)\\Thread Count",
+              "\\Processor Information(_Total)\\% Privileged Time",
+              "\\Processor Information(_Total)\\% Processor Time",
+              "\\Processor Information(_Total)\\% User Time",
+              "\\Processor Information(_Total)\\Processor Frequency",
+              "\\System\\Context Switches/sec",
+              "\\System\\Processes",
+              "\\System\\Processor Queue Length",
+              "\\System\\System Up Time"
+            ],
+            "name": "perfCounterDataSource10",
+            "samplingFrequencyInSeconds": 10,
+            "streams": [
+              "Microsoft-InsightsMetrics"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "azureMonitorMetrics": {
+          "name": "azureMonitorMetrics-default"
+        }
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>idcrmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Windows</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-idcrwin'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          'azureMonitorMetrics-default'
+        ]
+        streams: [
+          'Microsoft-InsightsMetrics'
+        ]
+      }
+      {
+        destinations: [
+          '<logAnalyticsWorkspaceName>'
+        ]
+        streams: [
+          'Microsoft-Event'
+        ]
+      }
+    ]
+    dataSources: {
+      performanceCounters: [
+        {
+          counterSpecifiers: [
+            '\\Memory\\% Committed Bytes In Use'
+            '\\Memory\\Available Bytes'
+            '\\Memory\\Cache Bytes'
+            '\\Memory\\Committed Bytes'
+            '\\Memory\\Page Faults/sec'
+            '\\Memory\\Pages/sec'
+            '\\Memory\\Pool Nonpaged Bytes'
+            '\\Memory\\Pool Paged Bytes'
+            '\\Process(_Total)\\Handle Count'
+            '\\Process(_Total)\\Thread Count'
+            '\\Process(_Total)\\Working Set'
+            '\\Process(_Total)\\Working Set - Private'
+            '\\Processor Information(_Total)\\% Privileged Time'
+            '\\Processor Information(_Total)\\% Processor Time'
+            '\\Processor Information(_Total)\\% User Time'
+            '\\Processor Information(_Total)\\Processor Frequency'
+            '\\System\\Context Switches/sec'
+            '\\System\\Processes'
+            '\\System\\Processor Queue Length'
+            '\\System\\System Up Time'
+          ]
+          name: 'perfCounterDataSource10'
+          samplingFrequencyInSeconds: 10
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+        }
+        {
+          counterSpecifiers: [
+            '\\LogicalDisk(_Total)\\% Disk Read Time'
+            '\\LogicalDisk(_Total)\\% Disk Time'
+            '\\LogicalDisk(_Total)\\% Disk Write Time'
+            '\\LogicalDisk(_Total)\\% Free Space'
+            '\\LogicalDisk(_Total)\\% Idle Time'
+            '\\LogicalDisk(_Total)\\Avg. Disk Queue Length'
+            '\\LogicalDisk(_Total)\\Avg. Disk Read Queue Length'
+            '\\LogicalDisk(_Total)\\Avg. Disk sec/Read'
+            '\\LogicalDisk(_Total)\\Avg. Disk sec/Transfer'
+            '\\LogicalDisk(_Total)\\Avg. Disk sec/Write'
+            '\\LogicalDisk(_Total)\\Avg. Disk Write Queue Length'
+            '\\LogicalDisk(_Total)\\Disk Bytes/sec'
+            '\\LogicalDisk(_Total)\\Disk Read Bytes/sec'
+            '\\LogicalDisk(_Total)\\Disk Reads/sec'
+            '\\LogicalDisk(_Total)\\Disk Transfers/sec'
+            '\\LogicalDisk(_Total)\\Disk Write Bytes/sec'
+            '\\LogicalDisk(_Total)\\Disk Writes/sec'
+            '\\LogicalDisk(_Total)\\Free Megabytes'
+            '\\Network Interface(*)\\Bytes Received/sec'
+            '\\Network Interface(*)\\Bytes Sent/sec'
+            '\\Network Interface(*)\\Bytes Total/sec'
+            '\\Network Interface(*)\\Packets Outbound Errors'
+            '\\Network Interface(*)\\Packets Received Errors'
+            '\\Network Interface(*)\\Packets Received/sec'
+            '\\Network Interface(*)\\Packets Sent/sec'
+            '\\Network Interface(*)\\Packets/sec'
+          ]
+          name: 'perfCounterDataSource15'
+          samplingFrequencyInSeconds: 15
+          streams: [
+            'Microsoft-InsightsMetrics'
+          ]
+        }
+      ]
+      windowsEventLogs: [
+        {
+          name: 'eventLogsDataSource'
+          streams: [
+            'Microsoft-Event'
+          ]
+          xPathQueries: [
+            'Application!*[System[(Level=1 or Level=2 or Level=3 or Level=4 or Level=0 or Level=5)]]'
+            'Security!*[System[(band(Keywords13510798882111488))]]'
+            'System!*[System[(Level=1 or Level=2 or Level=3 or Level=4 or Level=0 or Level=5)]]'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      azureMonitorMetrics: {
+        name: 'azureMonitorMetrics-default'
+      }
+      logAnalytics: [
+        {
+          name: '<name>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+    }
+    name: '<<namePrefix>>idcrwin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      kind: 'Windows'
+      resourceType: 'Data Collection Rules'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "azureMonitorMetrics-default"
+          ],
+          "streams": [
+            "Microsoft-InsightsMetrics"
+          ]
+        },
+        {
+          "destinations": [
+            "<logAnalyticsWorkspaceName>"
+          ],
+          "streams": [
+            "Microsoft-Event"
+          ]
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "performanceCounters": [
+          {
+            "counterSpecifiers": [
+              "\\Memory\\% Committed Bytes In Use",
+              "\\Memory\\Available Bytes",
+              "\\Memory\\Cache Bytes",
+              "\\Memory\\Committed Bytes",
+              "\\Memory\\Page Faults/sec",
+              "\\Memory\\Pages/sec",
+              "\\Memory\\Pool Nonpaged Bytes",
+              "\\Memory\\Pool Paged Bytes",
+              "\\Process(_Total)\\Handle Count",
+              "\\Process(_Total)\\Thread Count",
+              "\\Process(_Total)\\Working Set",
+              "\\Process(_Total)\\Working Set - Private",
+              "\\Processor Information(_Total)\\% Privileged Time",
+              "\\Processor Information(_Total)\\% Processor Time",
+              "\\Processor Information(_Total)\\% User Time",
+              "\\Processor Information(_Total)\\Processor Frequency",
+              "\\System\\Context Switches/sec",
+              "\\System\\Processes",
+              "\\System\\Processor Queue Length",
+              "\\System\\System Up Time"
+            ],
+            "name": "perfCounterDataSource10",
+            "samplingFrequencyInSeconds": 10,
+            "streams": [
+              "Microsoft-InsightsMetrics"
+            ]
+          },
+          {
+            "counterSpecifiers": [
+              "\\LogicalDisk(_Total)\\% Disk Read Time",
+              "\\LogicalDisk(_Total)\\% Disk Time",
+              "\\LogicalDisk(_Total)\\% Disk Write Time",
+              "\\LogicalDisk(_Total)\\% Free Space",
+              "\\LogicalDisk(_Total)\\% Idle Time",
+              "\\LogicalDisk(_Total)\\Avg. Disk Queue Length",
+              "\\LogicalDisk(_Total)\\Avg. Disk Read Queue Length",
+              "\\LogicalDisk(_Total)\\Avg. Disk sec/Read",
+              "\\LogicalDisk(_Total)\\Avg. Disk sec/Transfer",
+              "\\LogicalDisk(_Total)\\Avg. Disk sec/Write",
+              "\\LogicalDisk(_Total)\\Avg. Disk Write Queue Length",
+              "\\LogicalDisk(_Total)\\Disk Bytes/sec",
+              "\\LogicalDisk(_Total)\\Disk Read Bytes/sec",
+              "\\LogicalDisk(_Total)\\Disk Reads/sec",
+              "\\LogicalDisk(_Total)\\Disk Transfers/sec",
+              "\\LogicalDisk(_Total)\\Disk Write Bytes/sec",
+              "\\LogicalDisk(_Total)\\Disk Writes/sec",
+              "\\LogicalDisk(_Total)\\Free Megabytes",
+              "\\Network Interface(*)\\Bytes Received/sec",
+              "\\Network Interface(*)\\Bytes Sent/sec",
+              "\\Network Interface(*)\\Bytes Total/sec",
+              "\\Network Interface(*)\\Packets Outbound Errors",
+              "\\Network Interface(*)\\Packets Received Errors",
+              "\\Network Interface(*)\\Packets Received/sec",
+              "\\Network Interface(*)\\Packets Sent/sec",
+              "\\Network Interface(*)\\Packets/sec"
+            ],
+            "name": "perfCounterDataSource15",
+            "samplingFrequencyInSeconds": 15,
+            "streams": [
+              "Microsoft-InsightsMetrics"
+            ]
+          }
+        ],
+        "windowsEventLogs": [
+          {
+            "name": "eventLogsDataSource",
+            "streams": [
+              "Microsoft-Event"
+            ],
+            "xPathQueries": [
+              "Application!*[System[(Level=1 or Level=2 or Level=3 or Level=4 or Level=0 or Level=5)]]",
+              "Security!*[System[(band(Keywords,13510798882111488))]]",
+              "System!*[System[(Level=1 or Level=2 or Level=3 or Level=4 or Level=0 or Level=5)]]"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "azureMonitorMetrics": {
+          "name": "azureMonitorMetrics-default"
+        },
+        "logAnalytics": [
+          {
+            "name": "<name>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>idcrwin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "kind": "Windows",
+        "resourceType": "Data Collection Rules"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
