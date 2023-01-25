@@ -41,6 +41,9 @@ param lock string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
+@description('Optional. Declaration of custom streams used in this rule.')
+param streamDeclarations object = {}
+
 @description('Optional. Resource tags.')
 param tags object = {}
 
@@ -70,6 +73,7 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
     destinations: destinations
     dataFlows: dataFlows
     dataCollectionEndpointId: empty(dataCollectionEndpointId) ? null : dataCollectionEndpointId
+    streamDeclarations: empty(streamDeclarations) ? null : streamDeclarations
   }
 }
 
