@@ -14,6 +14,9 @@ param dataFlows array
 @description('Required. Specification of data sources that will be collected.')
 param dataSources object
 
+@description('Optional. Description of the data collection rule.')
+param dataCollectionRuleDescription string = ''
+
 @description('Required. Specification of destinations that can be used in data flows.')
 param destinations object
 
@@ -74,6 +77,7 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
     dataFlows: dataFlows
     dataCollectionEndpointId: empty(dataCollectionEndpointId) ? null : dataCollectionEndpointId
     streamDeclarations: empty(streamDeclarations) ? null : streamDeclarations
+    description: empty(dataCollectionRuleDescription) ? null : dataCollectionRuleDescription
   }
 }
 
