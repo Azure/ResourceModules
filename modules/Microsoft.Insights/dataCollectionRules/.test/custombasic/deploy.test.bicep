@@ -69,7 +69,7 @@ module testDeployment '../../deploy.bicep' = {
             'Custom-CustomTableBasic_CL'
           ]
           filePatterns: [
-            'C:\\TestLogs\\TestLog*.log'
+            'C:\\TestLogsBasic\\TestLog*.log'
           ]
           format: 'text'
           settings: {
