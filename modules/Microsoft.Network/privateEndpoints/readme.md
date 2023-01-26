@@ -27,7 +27,7 @@ The following resources are required to be able to deploy this resource:
 - `VirtualNetwork/subnet`
 - The service that needs to be connected through private endpoint
 
-**Important**: Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon).
+**Important**: Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon).
 
 ## Parameters
 
@@ -298,7 +298,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npecom'
+  name: '${uniqueString(deployment().name, location)}-test-npecom'
   params: {
     // Required parameters
     groupIds: [
@@ -433,7 +433,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 
 ```bicep
 module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npemin'
+  name: '${uniqueString(deployment().name, location)}-test-npemin'
   params: {
     // Required parameters
     groupIds: [

@@ -175,7 +175,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cdescom'
+  name: '${uniqueString(deployment().name, location)}-test-cdescom'
   params: {
     // Required parameters
     keyName: '<keyName>'

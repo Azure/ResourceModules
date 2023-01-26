@@ -63,7 +63,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-omsmin'
+  name: '${uniqueString(deployment().name, location)}-test-omsmin'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
@@ -112,7 +112,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-omsms'
+  name: '${uniqueString(deployment().name, location)}-test-omsms'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
@@ -169,7 +169,7 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 ```bicep
 module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-omsnonms'
+  name: '${uniqueString(deployment().name, location)}-test-omsnonms'
   params: {
     // Required parameters
     logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'

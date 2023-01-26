@@ -24,7 +24,7 @@ function Get-UniversalArtifactsName {
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $universalPackageModuleName = $ModuleFolderPath.Replace('\', '/').Split('/modules/')[1]
-    $universalPackageModuleName = ($universalPackageModuleName.Replace('\', '.').Replace('/', '.').toLower() -Replace '[^a-z0-9\.\-_]')[0..255] -join ''
+    $universalPackageModuleName = $universalPackageModuleName.Replace('\', '.').Replace('/', '.').toLower()
 
     return $universalPackageModuleName
 }

@@ -181,7 +181,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module remediations './Microsoft.PolicyInsights/remediations/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pirmgcom'
+  name: '${uniqueString(deployment().name, location)}-test-pirmgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>pirmgcom001'

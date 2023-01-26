@@ -28,7 +28,14 @@ This module deploys a firewall.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Firewall. |
-| `vNetId` | string | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `hubIPAddresses` | object | `{object}` | IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied. |
+| `virtualHubId` | string | `''` | The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty. |
+| `vNetId` | string | `''` | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty. |
 
 **Optional parameters**
 
@@ -37,7 +44,6 @@ This module deploys a firewall.
 | `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
 | `applicationRuleCollections` | array | `[]` |  | Collection of application rule collections used by Azure Firewall. |
 | `azureFirewallSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet. |
-| `azureSkuName` | string | `'AZFW_VNet'` | `[AZFW_Hub, AZFW_VNet]` | Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `'Standard'` | `[Premium, Standard]` | Tier of an Azure Firewall. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -286,14 +292,14 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | List of Application Rule Collections. |
-| `ipConfAzureFirewallSubnet` | object | The public ipconfiguration object for the AzureFirewallSubnet. |
+| `ipConfAzureFirewallSubnet` | object | The public IP configuration object for the Azure Firewall Subnet. |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Azure firewall. |
+| `name` | string | The name of the Azure Firewall. |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | List of Network Rule Collections. |
 | `privateIp` | string | The private IP of the Azure firewall. |
 | `resourceGroupName` | string | The resource group the Azure firewall was deployed into. |
-| `resourceId` | string | The resource ID of the Azure firewall. |
+| `resourceId` | string | The resource ID of the Azure Firewall. |
 
 ## Considerations
 
@@ -323,11 +329,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafaddpip'
+  name: '${uniqueString(deployment().name, location)}-test-nafaddpip'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafaddpip001'
-    vNetId: '<vNetId>'
     // Non-required parameters
     additionalPublicIpConfigurations: [
       {
@@ -336,6 +341,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    vNetId: '<vNetId>'
   }
 }
 ```
@@ -356,9 +362,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>nafaddpip001"
     },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
     // Non-required parameters
     "additionalPublicIpConfigurations": {
       "value": [
@@ -370,6 +373,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
     }
   }
 }
@@ -386,11 +392,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcom'
+  name: '${uniqueString(deployment().name, location)}-test-nafcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafcom001'
-    vNetId: '<vNetId>'
     // Non-required parameters
     applicationRuleCollections: [
       {
@@ -490,6 +495,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    vNetId: '<vNetId>'
     zones: [
       '1'
       '2'
@@ -514,9 +520,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     // Required parameters
     "name": {
       "value": "<<namePrefix>>nafcom001"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
     },
     // Non-required parameters
     "applicationRuleCollections": {
@@ -639,6 +642,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       ]
     },
+    "vNetId": {
+      "value": "<vNetId>"
+    },
     "zones": {
       "value": [
         "1",
@@ -661,11 +667,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcstpip'
+  name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafcstpip001'
-    vNetId: '<vNetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
@@ -692,6 +697,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       skuName: 'Standard'
       skuTier: 'Regional'
     }
+    vNetId: '<vNetId>'
   }
 }
 ```
@@ -711,9 +717,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     // Required parameters
     "name": {
       "value": "<<namePrefix>>nafcstpip001"
-    },
-    "vNetId": {
-      "value": "<vNetId>"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -744,6 +747,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "skuName": "Standard",
         "skuTier": "Regional"
       }
+    },
+    "vNetId": {
+      "value": "<vNetId>"
     }
   }
 }
@@ -752,7 +758,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Min</h3>
+<h3>Example 4: Hub</h3>
 
 <details>
 
@@ -760,13 +766,78 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafmin'
+  name: '${uniqueString(deployment().name, location)}-test-nafhub'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nafhub001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    firewallPolicyId: '<firewallPolicyId>'
+    hubIPAddresses: {
+      publicIPs: {
+        count: 1
+      }
+    }
+    virtualHubId: '<virtualHubId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nafhub001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "firewallPolicyId": {
+      "value": "<firewallPolicyId>"
+    },
+    "hubIPAddresses": {
+      "value": {
+        "publicIPs": {
+          "count": 1
+        }
+      }
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 5: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafmin001'
-    vNetId: '<vNetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    vNetId: '<vNetId>'
   }
 }
 ```
@@ -787,12 +858,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     "name": {
       "value": "<<namePrefix>>nafmin001"
     },
-    "vNetId": {
-      "value": "<vNetId>"
-    },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "vNetId": {
+      "value": "<vNetId>"
     }
   }
 }
