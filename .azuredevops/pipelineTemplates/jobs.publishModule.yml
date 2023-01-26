@@ -21,12 +21,13 @@
 ##   |======================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                           |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------|
-##   | displayName                     | 'Publishing'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
+##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
 ##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                           | 'demo-internal'                   |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
+##   | publishLatest                   | '$(publishLatest)'                   | Flag to indicate whether or not to publish a "latest" version to Bicep Registry and Template Specs                                           | true                              |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -55,6 +56,9 @@ parameters:
   # Logic-related parameters
   ## Module-related
   modulePath: '$(modulePath)'
+
+  # Shared
+  publishLatest: '$(publishLatest)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -129,7 +133,8 @@ jobs:
           script: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactsFeed.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromUniversalArtifactsFeed.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
@@ -137,34 +142,63 @@ jobs:
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
+            ################################
+            ##   Get modules to publish   ##
+            ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              PublishLatest    = $false # Not supported by Azure DevOps feeds
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            # Get the modified child resources
-            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish = @()
 
-            # Publish the modified child resources
-            foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            # Get the modified child resources
+            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
+
+            #############################
+            ##   Get missing modules   ##
+            #############################
+            # Add all modules that don't exist in the target location
+            $missingInputObject = @{
+                TemplateFilePath    = $TemplateFilePath
+                VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
+                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName        = '${{ parameters.vstsFeedName }}'
+            }
+
+            Write-Verbose "Invoke Get-ModulesMissingFromUniversalArtifactsFeed with" -Verbose
+            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+            $missingModules = Get-ModulesMissingFromUniversalArtifactsFeed @missingInputObject -BearerToken $env:TOKEN
+
+            foreach($missingModule in $missingModules) {
+              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
+
+            #################
+            ##   Publish   ##
+            #################
+            foreach ($moduleToPublish in $modulesToPublish) {
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath    = $moduleToPublish.TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
-                VstsFeedProject  = '${{ parameters.vstsFeedProject }}'
-                VstsFeedName     = '${{ parameters.vstsFeedName }}'
-                ModuleVersion    = $ModuleToPublish.Version
-                BearerToken      = $env:TOKEN
+                VstsFeedProject     = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName        = '${{ parameters.vstsFeedName }}'
+                ModuleVersion       = $moduleToPublish.Version
               }
 
-              Write-Verbose "Invoke Publish-ModuleToUniversalArtifactFeed with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToUniversalArtifactsFeed with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
+              Publish-ModuleToUniversalArtifactsFeed @functionInput -BearerToken $env:TOKEN  -Verbose
               Write-Host "##[endgroup]"
             }
         env:
@@ -188,7 +222,8 @@ jobs:
           inline: |
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
@@ -196,33 +231,63 @@ jobs:
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
+            ################################
+            ##   Get modules to publish   ##
+            ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              PublishLatest    = [bool] '${{ parameters.publishLatest }}'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            # Get the modified child resources
-            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish = @()
 
-            # Publish the modified child resources
-            foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            # Get the modified child resources
+            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
+
+            #############################
+            ##   Get missing modules   ##
+            #############################
+
+            # Add all modules that don't exist in the target location
+            $missingInputObject = @{
+                TemplateFilePath    = $TemplateFilePath
+                TemplateSpecsRGName = '${{ parameters.templateSpecsRgName }}'
+                PublishLatest       = [bool] '${{ parameters.bicepRegistryRgName }}'
+            }
+
+            Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
+            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+            $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
+
+            foreach($missingModule in $missingModules) {
+              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
+
+            #################
+            ##   Publish   ##
+            #################
+            foreach ($moduleToPublish in $modulesToPublish) {
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath         = $moduleToPublish.TemplateFilePath
                 TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-                ModuleVersion            = $ModuleToPublish.Version
+                ModuleVersion            = $moduleToPublish.Version
               }
 
-              Write-Verbose "Invoke Publish-ModuleToTemplateSpec with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToTemplateSpecsRG with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-              Publish-ModuleToTemplateSpec @functionInput -Verbose
+              Publish-ModuleToTemplateSpecsRG @functionInput -Verbose
               Write-Host "##[endgroup]"
             }
 
@@ -244,10 +309,11 @@ jobs:
             . $profile # Load PS-Profile configuration
             $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
             $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
-            Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+            $null = Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
@@ -256,27 +322,57 @@ jobs:
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
 
+            ################################
+            ##   Get modules to publish   ##
+            ################################
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              PublishLatest    = [bool] '${{ parameters.publishLatest }}'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            # Get the modified child resources
-            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
+            $modulesToPublish = @()
 
-            # Publish the modified child resources
-            foreach ($ModuleToPublish in $ModulesToPublish) {
-              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
-              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+            # Get the modified child resources
+            $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
+
+            #############################
+            ##   Get missing modules   ##
+            #############################
+            # Add all modules that don't exist in the target location
+            $missingInputObject = @{
+                TemplateFilePath    = $TemplateFilePath
+                BicepRegistryName   = '${{ parameters.bicepRegistryName }}'
+                BicepRegistryRgName = '${{ parameters.bicepRegistryRgName }}'
+                PublishLatest       = [bool] '${{ parameters.bicepRegistryRgName }}'
+            }
+
+            Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
+            Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+            $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
+
+            foreach($missingModule in $missingModules) {
+              if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+                $modulesToPublish += $missingModule
+              }
+            }
+
+            #################
+            ##   Publish   ##
+            #################
+            foreach ($moduleToPublish in $modulesToPublish) {
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath        = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath        = $moduleToPublish.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                ModuleVersion           = $ModuleToPublish.Version
+                ModuleVersion           = $moduleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose

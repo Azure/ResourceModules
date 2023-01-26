@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nasgcom'
+  name: '${uniqueString(deployment().name, location)}-test-nasgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nasgcom001'

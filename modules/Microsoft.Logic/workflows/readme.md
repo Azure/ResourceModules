@@ -332,7 +332,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-lwcom'
+  name: '${uniqueString(deployment().name, location)}-test-lwcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>lwcom001'

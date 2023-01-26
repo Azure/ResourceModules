@@ -15,7 +15,7 @@ With this module you can perform policy assignments across the management group,
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
+| `Microsoft.Authorization/policyAssignments` | [2022-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-06-01/policyAssignments) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
@@ -41,8 +41,10 @@ With this module you can perform policy assignments across the management group,
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `nonComplianceMessages` | array | `[]` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes. |
+| `overrides` | array | `[]` |  | The policy property value override. Allows changing the effect of a policy definition without modifying the underlying policy definition or using a parameterized effect in the policy definition. |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. |
+| `resourceSelectors` | array | `[]` |  | The resource selector list to filter policies by resource properties. Facilitates safe deployment practices (SDP) by enabling gradual roll out policy assignments based on factors like resource location, resource type, or whether a resource has a location. |
 | `roleDefinitionIds` | array | `[]` |  | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition. |
 | `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
@@ -188,11 +190,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apamgcom'
+  name: '${uniqueString(deployment().name, location)}-test-apamgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>apamgcom001'
-    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+    policyDefinitionId: '/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611'
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
     displayName: '[Display Name] Policy Assignment at the management group scope'
@@ -213,14 +215,48 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     notScopes: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
     ]
-    parameters: {
-      tagName: {
-        value: 'env'
+    overrides: [
+      {
+        kind: 'policyEffect'
+        selectors: [
+          {
+            in: [
+              'ASC_DeployAzureDefenderForSqlAdvancedThreatProtectionWindowsAgent'
+              'ASC_DeployAzureDefenderForSqlVulnerabilityAssessmentWindowsAgent'
+            ]
+            kind: 'policyDefinitionReferenceId'
+          }
+        ]
+        value: 'Disabled'
       }
-      tagValue: {
-        value: 'prod'
+    ]
+    parameters: {
+      effect: {
+        value: 'Disabled'
+      }
+      enableCollectionOfSqlQueriesForSecurityResearch: {
+        value: false
       }
     }
+    resourceSelectors: [
+      {
+        name: 'resourceSelector-test'
+        selectors: [
+          {
+            in: [
+              'Microsoft.Compute/virtualMachines'
+            ]
+            kind: 'resourceType'
+          }
+          {
+            in: [
+              'westeurope'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
     roleDefinitionIds: [
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
@@ -245,7 +281,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "<<namePrefix>>apamgcom001"
     },
     "policyDefinitionId": {
-      "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
+      "value": "/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611"
     },
     // Non-required parameters
     "description": {
@@ -287,15 +323,53 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg"
       ]
     },
+    "overrides": {
+      "value": [
+        {
+          "kind": "policyEffect",
+          "selectors": [
+            {
+              "in": [
+                "ASC_DeployAzureDefenderForSqlAdvancedThreatProtectionWindowsAgent",
+                "ASC_DeployAzureDefenderForSqlVulnerabilityAssessmentWindowsAgent"
+              ],
+              "kind": "policyDefinitionReferenceId"
+            }
+          ],
+          "value": "Disabled"
+        }
+      ]
+    },
     "parameters": {
       "value": {
-        "tagName": {
-          "value": "env"
+        "effect": {
+          "value": "Disabled"
         },
-        "tagValue": {
-          "value": "prod"
+        "enableCollectionOfSqlQueriesForSecurityResearch": {
+          "value": false
         }
       }
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "resourceSelector-test",
+          "selectors": [
+            {
+              "in": [
+                "Microsoft.Compute/virtualMachines"
+              ],
+              "kind": "resourceType"
+            },
+            {
+              "in": [
+                "westeurope"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     },
     "roleDefinitionIds": {
       "value": [
@@ -370,7 +444,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>apargcom001'
-    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+    policyDefinitionId: '/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611'
     // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
     displayName: '[Display Name] Policy Assignment at the resource group scope'
@@ -390,15 +464,49 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     notScopes: [
       '<keyVaultResourceId>'
     ]
-    parameters: {
-      tagName: {
-        value: 'env'
+    overrides: [
+      {
+        kind: 'policyEffect'
+        selectors: [
+          {
+            in: [
+              'ASC_DeployAzureDefenderForSqlAdvancedThreatProtectionWindowsAgent'
+              'ASC_DeployAzureDefenderForSqlVulnerabilityAssessmentWindowsAgent'
+            ]
+            kind: 'policyDefinitionReferenceId'
+          }
+        ]
+        value: 'Disabled'
       }
-      tagValue: {
-        value: 'prod'
+    ]
+    parameters: {
+      effect: {
+        value: 'Disabled'
+      }
+      enableCollectionOfSqlQueriesForSecurityResearch: {
+        value: false
       }
     }
     resourceGroupName: '<resourceGroupName>'
+    resourceSelectors: [
+      {
+        name: 'resourceSelector-test'
+        selectors: [
+          {
+            in: [
+              'Microsoft.Compute/virtualMachines'
+            ]
+            kind: 'resourceType'
+          }
+          {
+            in: [
+              'westeurope'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
     roleDefinitionIds: [
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
@@ -425,7 +533,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "<<namePrefix>>apargcom001"
     },
     "policyDefinitionId": {
-      "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
+      "value": "/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611"
     },
     // Non-required parameters
     "description": {
@@ -464,18 +572,56 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         "<keyVaultResourceId>"
       ]
     },
+    "overrides": {
+      "value": [
+        {
+          "kind": "policyEffect",
+          "selectors": [
+            {
+              "in": [
+                "ASC_DeployAzureDefenderForSqlAdvancedThreatProtectionWindowsAgent",
+                "ASC_DeployAzureDefenderForSqlVulnerabilityAssessmentWindowsAgent"
+              ],
+              "kind": "policyDefinitionReferenceId"
+            }
+          ],
+          "value": "Disabled"
+        }
+      ]
+    },
     "parameters": {
       "value": {
-        "tagName": {
-          "value": "env"
+        "effect": {
+          "value": "Disabled"
         },
-        "tagValue": {
-          "value": "prod"
+        "enableCollectionOfSqlQueriesForSecurityResearch": {
+          "value": false
         }
       }
     },
     "resourceGroupName": {
       "value": "<resourceGroupName>"
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "resourceSelector-test",
+          "selectors": [
+            {
+              "in": [
+                "Microsoft.Compute/virtualMachines"
+              ],
+              "kind": "resourceType"
+            },
+            {
+              "in": [
+                "westeurope"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     },
     "roleDefinitionIds": {
       "value": [
@@ -560,7 +706,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
     // Required parameters
     name: '<<namePrefix>>apasubcom001'
-    policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+    policyDefinitionId: '/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611'
     // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
     displayName: '[Display Name] Policy Assignment at the subscription scope'
@@ -580,14 +726,48 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
     notScopes: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
     ]
-    parameters: {
-      tagName: {
-        value: 'env'
+    overrides: [
+      {
+        kind: 'policyEffect'
+        selectors: [
+          {
+            in: [
+              'ASC_DeployAzureDefenderForSqlAdvancedThreatProtectionWindowsAgent'
+              'ASC_DeployAzureDefenderForSqlVulnerabilityAssessmentWindowsAgent'
+            ]
+            kind: 'policyDefinitionReferenceId'
+          }
+        ]
+        value: 'Disabled'
       }
-      tagValue: {
-        value: 'prod'
+    ]
+    parameters: {
+      effect: {
+        value: 'Disabled'
+      }
+      enableCollectionOfSqlQueriesForSecurityResearch: {
+        value: false
       }
     }
+    resourceSelectors: [
+      {
+        name: 'resourceSelector-test'
+        selectors: [
+          {
+            in: [
+              'Microsoft.Compute/virtualMachines'
+            ]
+            kind: 'resourceType'
+          }
+          {
+            in: [
+              'westeurope'
+            ]
+            kind: 'resourceLocation'
+          }
+        ]
+      }
+    ]
     roleDefinitionIds: [
       '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
     ]
@@ -614,7 +794,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
       "value": "<<namePrefix>>apasubcom001"
     },
     "policyDefinitionId": {
-      "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
+      "value": "/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611"
     },
     // Non-required parameters
     "description": {
@@ -653,15 +833,53 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
         "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg"
       ]
     },
+    "overrides": {
+      "value": [
+        {
+          "kind": "policyEffect",
+          "selectors": [
+            {
+              "in": [
+                "ASC_DeployAzureDefenderForSqlAdvancedThreatProtectionWindowsAgent",
+                "ASC_DeployAzureDefenderForSqlVulnerabilityAssessmentWindowsAgent"
+              ],
+              "kind": "policyDefinitionReferenceId"
+            }
+          ],
+          "value": "Disabled"
+        }
+      ]
+    },
     "parameters": {
       "value": {
-        "tagName": {
-          "value": "env"
+        "effect": {
+          "value": "Disabled"
         },
-        "tagValue": {
-          "value": "prod"
+        "enableCollectionOfSqlQueriesForSecurityResearch": {
+          "value": false
         }
       }
+    },
+    "resourceSelectors": {
+      "value": [
+        {
+          "name": "resourceSelector-test",
+          "selectors": [
+            {
+              "in": [
+                "Microsoft.Compute/virtualMachines"
+              ],
+              "kind": "resourceType"
+            },
+            {
+              "in": [
+                "westeurope"
+              ],
+              "kind": "resourceLocation"
+            }
+          ]
+        }
+      ]
     },
     "roleDefinitionIds": {
       "value": [

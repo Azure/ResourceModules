@@ -254,7 +254,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
 
 ### Diagnostic Settings
 
-The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed.  However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
+The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. Also possible, and default setting is to use the category `allLogs`. If using `allLogs`, the other `<LogsIfAny>` are not needed. However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
 
 <details>
 <summary>Details</summary>
@@ -562,105 +562,43 @@ Module test files follow these general guidelines:
 - A module should have as many module test files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
 
-In addition, they follow these file-type-specific guidelines:
+Test folder guidelines:
 
 - Each scenario should be setup in its own sub-folder (e.g. `.test/linux`)
-- Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters are used to deploy the module.
-- Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file. The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario. The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed resource group).
+- Sub-folder names should ideally relate to the content they deploy. For example, a sub-folder `min` should be chosen for a scenario in which only the minimum set of parameters, i.e., only required parameters, are used to deploy the module.
+- Each folder should contain at least a file `deploy.test.bicep` and optionally an additional `dependencies.bicep` file.
+
+Test file (`deploy.test.bicep`) guidelines:
+
+- The `deploy.test.bicep` file should deploy any immediate dependencies (e.g. a resource group, if required) and invoke the module's main template while providing all parameters for a given test scenario.
 - Parameters
-  - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements. As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`)
+  - Each file should define a parameter `serviceShort`. This parameter should be unique to this file (i.e, no two test files should share the same) as it is injected into all resource deployments, making them unique too and account for corresponding requirements.
+    - As a reference you can create a identifier by combining a substring of the resource type and test scenario (e.g., in case of a Linux Virtual Machine Deployment: `vmlin`).
+    - For the substring, we recommend to take the first character and subsequent upper-case characters from the resource type identifier and combine them into one string. Following you can find a few examples for reference:
+      - `Microsoft.DBforPostgreSQL/flexibleServers` with a test folder `common` could be: `dfpsfscom`
+      - `Microsoft.Storage/storageAccounts` with a test folder `min` could be: `ssamin`
+      > **Note:** If the combination of the `servicesShort` with the rest of a resource name becomes too long, it may be necessary to bend the above recommendations and shorten the name. This can especially happen when deploying resources such as Virtual Machines or Storage Accounts that only allow comparatively short names.
   - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
   - Each file should also provide a `location` parameter that may default to the deployments default location
 - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
-- References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `resourceGroupResources.outputs.managedIdentityPrincipalId`
+- Further, for any test file (including the `dependencies.bicep` file), the usage of variables should be reduced to the absolute minimum. In other words: You should only use variables if you must use them in more than one place. The idea is to keep the test files as simple as possible
+- References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `nestedDependencies.outputs.managedIdentityPrincipalId`
 - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
-    <details>
-    <summary>Example (for a resource group level resource)</summary>
+> :scroll: [Example of test file](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep)
 
-    ```Bicep
-    targetScope = 'subscription'
 
-    // ========== //
-    // Parameters //
-    // ========== //
-    @description('Optional. The name of the resource group to deploy for testing purposes')
-    @maxLength(90)
-    param resourceGroupName string = 'ms.analysisservices.servers-${serviceShort}-test-rg'
+Dependency file (`dependencies.bicep`) guidelines:
 
-    @description('Optional. The location to deploy resources to')
-    param location string = deployment().location
+- The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
+- Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
+  - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
-    @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints')
-    param serviceShort string = 'asscom'
-
-    // =========== //
-    // Deployments //
-    // =========== //
-
-    // General resources
-    // =================
-    resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-      name: resourceGroupName
-      location: location
-    }
-
-    module resourceGroupResources 'dependencies.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-nestedDependencies'
-      params: {
-        managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-      }
-    }
-
-    // Diagnostics
-    // ===========
-    module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
-      params: {
-        storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-        logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-        eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-        eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
-        location: location
-      }
-    }
-
-    // ============== //
-    // Test Execution //
-    // ============== //
-
-    module testDeployment '../../deploy.bicep' = {
-      scope: resourceGroup
-      name: '${uniqueString(deployment().name)}-test-${serviceShort}'
-      params: {
-        name: '<<namePrefix>>az${serviceShort}'
-        lock: 'CanNotDelete'
-        skuName: 'S0'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              resourceGroupResources.outputs.managedIdentityPrincipalId
-            ]
-            principalType: 'ServicePrincipal'
-          }
-        ]
-        diagnosticLogsRetentionInDays: 7
-        diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-        diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-        diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-        diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-      }
-    }
-    ```
-
-    </details>
+    > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
 
 # Telemetry
 
-## Overview 
+## Overview
 
 Microsoft uses the approach detailed in this section to identify the deployments of the Bicep and ARM JSON templates of the CARML library. Microsoft collects this information to provide the best experiences with their products and to operate their business. Telemetry data is captured through the built-in mechanisms of the Azure platform; therefore, it never leaves the platform, providing only Microsoft with access. Deployments are identified through a specific GUID (Globally Unique ID), indicating that the code originated from the CARML library. The data is collected and governed by Microsoft's privacy policies, located at the [Trust Center](https://www.microsoft.com/en-us/trust-center).
 
@@ -694,4 +632,4 @@ When consuming the modules outside of CARML's pipelines you can either
 
 Though similar in principles, this approach is not to be confused and does not conflict with the usage of CUA IDs that are used to track Customer Usage Attribution of Azure marketplace solutions (partner solutions). The GUID-based telemetry approach described here can coexist and can be used side-by-side with CUA IDs. If you have any partner or customer scenarios that require the addition of CUA IDs, you can customize the modules of this library by adding the required CUA ID deployment while keeping the built-in telemetry solution.
 
-> **Note:** *If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix).*
+> **Note:** _If you’re a partner and want to build a solution that tracks customer usage attribution (using a [CUA ID](https://learn.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)), we recommend implementing it on the consuming template's level (i.e., the multi-module solution, such as workload/application) and apply the required naming format 'pid-<GUID>' (without the suffix)._

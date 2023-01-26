@@ -77,6 +77,10 @@ param lock string = ''
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
+// List of slots
+@description('Optional. Configuration for deployment slots for an app.')
+param slots array = []
+
 // Tags
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -140,6 +144,54 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. To enable client certificate authentication (TLS mutual authentication).')
+param clientCertEnabled bool = false
+
+@description('Optional. Client certificate authentication comma-separated exclusion paths.')
+param clientCertExclusionPaths string = ''
+
+@description('''Optional. This composes with ClientCertEnabled setting.
+- ClientCertEnabled: false means ClientCert is ignored.
+- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.''')
+@allowed([
+  'Optional'
+  'OptionalInteractiveUser'
+  'Required'
+])
+param clientCertMode string = 'Optional'
+
+@description('Optional. If specified during app creation, the app is cloned from a source app.')
+param cloningInfo object = {}
+
+@description('Optional. Size of the function container.')
+param containerSize int = -1
+
+@description('Optional. Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification.')
+param customDomainVerificationId string = ''
+
+@description('Optional. Maximum allowed daily memory-time quota (applicable on dynamic apps only).')
+param dailyMemoryTimeQuota int = -1
+
+@description('Optional. Setting this value to false disables the app (takes the app offline).')
+param enabled bool = true
+
+@description('Optional. Hostname SSL states are used to manage the SSL bindings for app\'s hostnames.')
+param hostNameSslStates array = []
+
+@description('Optional. Hyper-V sandbox.')
+param hyperV bool = false
+
+@description('Optional. Site redundancy mode.')
+@allowed([
+  'ActiveActive'
+  'Failover'
+  'GeoRedundant'
+  'Manual'
+  'None'
+])
+param redundancyMode string = 'None'
+
 // =========== //
 // Variables   //
 // =========== //
@@ -182,9 +234,9 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -214,6 +266,17 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
     keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
     virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : any(null)
     siteConfig: siteConfig
+    clientCertEnabled: clientCertEnabled
+    clientCertExclusionPaths: !empty(clientCertExclusionPaths) ? clientCertExclusionPaths : null
+    clientCertMode: clientCertMode
+    cloningInfo: !empty(cloningInfo) ? cloningInfo : null
+    containerSize: containerSize != -1 ? containerSize : null
+    customDomainVerificationId: !empty(customDomainVerificationId) ? customDomainVerificationId : null
+    dailyMemoryTimeQuota: dailyMemoryTimeQuota != -1 ? dailyMemoryTimeQuota : null
+    enabled: enabled
+    hostNameSslStates: hostNameSslStates
+    hyperV: hyperV
+    redundancyMode: redundancyMode
   }
 }
 
@@ -239,6 +302,59 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
+
+@batchSize(1)
+module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
+  name: '${uniqueString(deployment().name, location)}-Slot-${slot.name}'
+  params: {
+    name: slot.name
+    appName: app.name
+    location: location
+    kind: kind
+    serverFarmResourceId: serverFarmResourceId
+    httpsOnly: contains(slot, 'httpsOnly') ? slot.httpsOnly : httpsOnly
+    appServiceEnvironmentId: !empty(appServiceEnvironmentId) ? appServiceEnvironmentId : ''
+    clientAffinityEnabled: contains(slot, 'clientAffinityEnabled') ? slot.clientAffinityEnabled : clientAffinityEnabled
+    systemAssignedIdentity: contains(slot, 'systemAssignedIdentity') ? slot.systemAssignedIdentity : systemAssignedIdentity
+    userAssignedIdentities: contains(slot, 'userAssignedIdentities') ? slot.userAssignedIdentities : userAssignedIdentities
+    keyVaultAccessIdentityResourceId: contains(slot, 'keyVaultAccessIdentityResourceId') ? slot.keyVaultAccessIdentityResourceId : keyVaultAccessIdentityResourceId
+    storageAccountRequired: contains(slot, 'storageAccountRequired') ? slot.storageAccountRequired : storageAccountRequired
+    virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : virtualNetworkSubnetId
+    siteConfig: contains(slot, 'siteConfig') ? slot.siteConfig : siteConfig
+    storageAccountId: contains(slot, 'storageAccountId') ? slot.storageAccountId : storageAccountId
+    appInsightId: contains(slot, 'appInsightId') ? slot.appInsightId : appInsightId
+    setAzureWebJobsDashboard: contains(slot, 'setAzureWebJobsDashboard') ? slot.setAzureWebJobsDashboard : setAzureWebJobsDashboard
+    authSettingV2Configuration: contains(slot, 'authSettingV2Configuration') ? slot.authSettingV2Configuration : authSettingV2Configuration
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    diagnosticLogsRetentionInDays: contains(slot, 'diagnosticLogsRetentionInDays') ? slot.diagnosticLogsRetentionInDays : diagnosticLogsRetentionInDays
+    diagnosticStorageAccountId: contains(slot, 'diagnosticStorageAccountId') ? slot.diagnosticStorageAccountId : diagnosticStorageAccountId
+    diagnosticWorkspaceId: contains(slot, 'diagnosticWorkspaceId') ? slot.diagnosticWorkspaceId : diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: contains(slot, 'diagnosticEventHubAuthorizationRuleId') ? slot.diagnosticEventHubAuthorizationRuleId : diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: contains(slot, 'diagnosticEventHubName') ? slot.diagnosticEventHubName : diagnosticEventHubName
+    diagnosticLogCategoriesToEnable: contains(slot, 'diagnosticLogCategoriesToEnable') ? slot.diagnosticLogCategoriesToEnable : diagnosticLogCategoriesToEnable
+    diagnosticMetricsToEnable: contains(slot, 'diagnosticMetricsToEnable') ? slot.diagnosticMetricsToEnable : diagnosticMetricsToEnable
+    roleAssignments: contains(slot, 'roleAssignments') ? slot.roleAssignments : roleAssignments
+    appSettingsKeyValuePairs: contains(slot, 'appSettingsKeyValuePairs') ? slot.appSettingsKeyValuePairs : appSettingsKeyValuePairs
+    lock: contains(slot, 'lock') ? slot.lock : lock
+    privateEndpoints: contains(slot, 'privateEndpoints') ? slot.privateEndpoints : privateEndpoints
+    tags: tags
+    clientCertEnabled: contains(slot, 'clientCertEnabled') ? slot.clientCertEnabled : false
+    clientCertExclusionPaths: contains(slot, 'clientCertExclusionPaths') ? slot.clientCertExclusionPaths : ''
+    clientCertMode: contains(slot, 'clientCertMode') ? slot.clientCertMode : 'Optional'
+    cloningInfo: contains(slot, 'cloningInfo') ? slot.cloningInfo : {}
+    containerSize: contains(slot, 'containerSize') ? slot.containerSize : -1
+    customDomainVerificationId: contains(slot, 'customDomainVerificationId') ? slot.customDomainVerificationId : ''
+    dailyMemoryTimeQuota: contains(slot, 'dailyMemoryTimeQuota') ? slot.dailyMemoryTimeQuota : -1
+    enabled: contains(slot, 'enabled') ? slot.enabled : true
+    hostNameSslStates: contains(slot, 'hostNameSslStates') ? slot.hostNameSslStates : []
+    hyperV: contains(slot, 'hyperV') ? slot.hyperV : false
+    publicNetworkAccess: contains(slot, 'publicNetworkAccess') ? slot.publicNetworkAccess : ''
+    redundancyMode: contains(slot, 'redundancyMode') ? slot.redundancyMode : 'None'
+    vnetContentShareEnabled: contains(slot, 'vnetContentShareEnabled') ? slot.vnetContentShareEnabled : false
+    vnetImagePullEnabled: contains(slot, 'vnetImagePullEnabled') ? slot.vnetImagePullEnabled : false
+    vnetRouteAllEnabled: contains(slot, 'vnetRouteAllEnabled') ? slot.vnetRouteAllEnabled : false
+  }
+}]
 
 resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
@@ -292,6 +408,9 @@ module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 
@@ -304,11 +423,20 @@ output name string = app.name
 @description('The resource ID of the site.')
 output resourceId string = app.id
 
+@description('The list of the slots.')
+output slots array = [for (slot, index) in slots: app_slots[index].name]
+
+@description('The list of the slot resource ids.')
+output slotResourceIds array = [for (slot, index) in slots: app_slots[index].outputs.resourceId]
+
 @description('The resource group the site was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''
+
+@description('The principal ID of the system assigned identity of slots.')
+output slotSystemAssignedPrincipalIds array = [for (slot, index) in slots: app_slots[index].outputs.systemAssignedPrincipalId]
 
 @description('The location the resource was deployed into.')
 output location string = app.location

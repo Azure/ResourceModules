@@ -280,7 +280,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-02-15-preview' = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' = {
   name: name
   location: location
   tags: tags

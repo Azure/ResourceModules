@@ -244,7 +244,11 @@ tags: {
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/publicIPAddresses` | Local reference |
 
 ## Deployment examples
 
@@ -261,7 +265,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvngavpn'
+  name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvngavpn001'
@@ -406,7 +410,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvger'
+  name: '${uniqueString(deployment().name, location)}-test-nvger'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvger001'
@@ -531,7 +535,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgvpn'
+  name: '${uniqueString(deployment().name, location)}-test-nvgvpn'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvgvpn001'

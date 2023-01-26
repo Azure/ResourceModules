@@ -58,6 +58,12 @@ param notScopes array = []
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
+@sys.description('Optional. The policy property value override. Allows changing the effect of a policy definition without modifying the underlying policy definition or using a parameterized effect in the policy definition.')
+param overrides array = []
+
+@sys.description('Optional. The resource selector list to filter policies by resource properties. Facilitates safe deployment practices (SDP) by enabling gradual roll out policy assignments based on factors like resource location, resource type, or whether a resource has a location.')
+param resourceSelectors array = []
+
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -94,6 +100,8 @@ module policyAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     notScopes: !empty(notScopes) ? notScopes : []
     managementGroupId: managementGroupId
     location: location
+    overrides: !empty(overrides) ? overrides : []
+    resourceSelectors: !empty(resourceSelectors) ? resourceSelectors : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -116,6 +124,8 @@ module policyAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
+    overrides: !empty(overrides) ? overrides : []
+    resourceSelectors: !empty(resourceSelectors) ? resourceSelectors : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -138,6 +148,8 @@ module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGro
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
+    overrides: !empty(overrides) ? overrides : []
+    resourceSelectors: !empty(resourceSelectors) ? resourceSelectors : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }

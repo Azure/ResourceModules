@@ -310,7 +310,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhcom'
+  name: '${uniqueString(deployment().name, location)}-test-nbhcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nbhcom001'
@@ -431,7 +431,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhctmpip'
+  name: '${uniqueString(deployment().name, location)}-test-nbhctmpip'
   params: {
     // Required parameters
     name: '<<namePrefix>>nbhctmpip001'
@@ -530,7 +530,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhmin'
+  name: '${uniqueString(deployment().name, location)}-test-nbhmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nbhmin001'

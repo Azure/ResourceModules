@@ -274,7 +274,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-msrdrg'
+  name: '${uniqueString(deployment().name, location)}-test-msrdrg'
   params: {
     // Required parameters
     authorizations: [

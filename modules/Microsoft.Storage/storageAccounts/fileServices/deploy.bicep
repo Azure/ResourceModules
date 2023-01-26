@@ -137,7 +137,7 @@ module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares
     name: share.name
     enabledProtocols: contains(share, 'enabledProtocols') ? share.enabledProtocols : 'SMB'
     rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
-    sharedQuota: contains(share, 'sharedQuota') ? share.sharedQuota : 5120
+    shareQuota: contains(share, 'shareQuota') ? share.shareQuota : 5120
     roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }

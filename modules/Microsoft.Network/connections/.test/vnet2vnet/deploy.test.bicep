@@ -3,8 +3,9 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(80)
+@maxLength(90)
 param resourceGroupName string = 'ms.network.connections-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
@@ -20,9 +21,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,9 +32,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     primaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-1'
     primaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-1'
@@ -50,17 +51,17 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     virtualNetworkGateway1: {
-      id: resourceGroupResources.outputs.primaryVNETGatewayResourceID
+      id: nestedDependencies.outputs.primaryVNETGatewayResourceID
     }
     enableBgp: false
     lock: 'CanNotDelete'
     virtualNetworkGateway2: {
-      id: resourceGroupResources.outputs.secondaryVNETGatewayResourceID
+      id: nestedDependencies.outputs.secondaryVNETGatewayResourceID
     }
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     vpnSharedKey: password
