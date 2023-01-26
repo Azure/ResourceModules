@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    dataCollectionRuleDescription: 'Collecting Linux-specific performance counters and Linix Syslog'
+    dataCollectionRuleDescription: 'Collecting Linux-specific performance counters and Linux Syslog'
     dataSources: {
       performanceCounters: [
         {
