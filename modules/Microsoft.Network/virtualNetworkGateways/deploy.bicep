@@ -283,12 +283,8 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
   aadTenant: vpnClientAadConfiguration.aadTenant
   aadAudience: vpnClientAadConfiguration.aadAudience
   aadIssuer: vpnClientAadConfiguration.aadIssuer
-  vpnAuthenticationTypes: [
-    vpnClientAadConfiguration.vpnAuthenticationTypes
-  ]
-  vpnClientProtocols: [
-    vpnClientAadConfiguration.vpnClientProtocols
-  ]
+  vpnAuthenticationTypes: vpnClientAadConfiguration.vpnAuthenticationTypes
+  vpnClientProtocols: vpnClientAadConfiguration.vpnClientProtocols
 } : null
 
 // ================//
@@ -310,7 +306,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 @batchSize(1)
 module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
   name: virtualGatewayPublicIpName
-  params :{
+  params: {
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
