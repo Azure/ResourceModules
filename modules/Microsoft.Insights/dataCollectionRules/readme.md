@@ -35,6 +35,7 @@ This module deploys Insights DataCollectionRules.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dataCollectionEndpointId` | string | `''` |  | The resource ID of the data collection endpoint that this rule can be used with. |
+| `dataCollectionRuleDescription` | string | `''` |  | Description of the data collection rule. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string | `'Linux'` | `[Linux, Windows]` | The kind of the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -168,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Custombasic</h3>
+<h3>Example 1: Customadv</h3>
 
 <details>
 
@@ -176,7 +177,212 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-idcrcusb'
+  name: '${uniqueString(deployment().name)}-test-idcrcusadv'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          '<logAnalyticsWorkspaceName>'
+        ]
+        outputStream: 'Custom-CustomTableAdvanced_CL'
+        streams: [
+          'Custom-CustomTableAdvanced_CL'
+        ]
+        transformKql: 'source | extend LogFields = split(RawData \'\') | extend EventTime = todatetime(LogFields[0]) | extend EventLevel = tostring(LogFields[1]) | extend EventCode = toint(LogFields[2]) | extend Message = tostring(LogFields[3]) | project TimeGenerated EventTime EventLevel EventCode Message'
+      }
+    ]
+    dataSources: {
+      logFiles: [
+        {
+          filePatterns: [
+            'C:\\TestLogsAdvanced\\TestLog*.log'
+          ]
+          format: 'text'
+          name: 'CustomTableAdvanced_CL'
+          samplingFrequencyInSeconds: 10
+          settings: {
+            text: {
+              recordStartTimestampFormat: 'ISO 8601'
+            }
+          }
+          streams: [
+            'Custom-CustomTableAdvanced_CL'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      logAnalytics: [
+        {
+          name: '<name>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+    }
+    name: '<<namePrefix>>idcrcusadv001'
+    // Non-required parameters
+    dataCollectionEndpointId: '<dataCollectionEndpointId>'
+    dataCollectionRuleDescription: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+    streamDeclarations: {
+      'Custom-CustomTableAdvanced_CL': {
+        columns: [
+          {
+            name: 'TimeGenerated'
+            type: 'datetime'
+          }
+          {
+            name: 'EventTime'
+            type: 'datetime'
+          }
+          {
+            name: 'EventLevel'
+            type: 'string'
+          }
+          {
+            name: 'EventCode'
+            type: 'int'
+          }
+          {
+            name: 'Message'
+            type: 'string'
+          }
+          {
+            name: 'RawData'
+            type: 'string'
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "<logAnalyticsWorkspaceName>"
+          ],
+          "outputStream": "Custom-CustomTableAdvanced_CL",
+          "streams": [
+            "Custom-CustomTableAdvanced_CL"
+          ],
+          "transformKql": "source | extend LogFields = split(RawData, \",\") | extend EventTime = todatetime(LogFields[0]) | extend EventLevel = tostring(LogFields[1]) | extend EventCode = toint(LogFields[2]) | extend Message = tostring(LogFields[3]) | project TimeGenerated, EventTime, EventLevel, EventCode, Message"
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "logFiles": [
+          {
+            "filePatterns": [
+              "C:\\TestLogsAdvanced\\TestLog*.log"
+            ],
+            "format": "text",
+            "name": "CustomTableAdvanced_CL",
+            "samplingFrequencyInSeconds": 10,
+            "settings": {
+              "text": {
+                "recordStartTimestampFormat": "ISO 8601"
+              }
+            },
+            "streams": [
+              "Custom-CustomTableAdvanced_CL"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "logAnalytics": [
+          {
+            "name": "<name>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>idcrcusadv001"
+    },
+    // Non-required parameters
+    "dataCollectionEndpointId": {
+      "value": "<dataCollectionEndpointId>"
+    },
+    "dataCollectionRuleDescription": {
+      "value": "Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \"<DateTime>,<EventLevel>,<EventCode>,<Message>\", for example: \"2023-01-25T20:15:05Z,ERROR,404,Page not found\""
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    },
+    "streamDeclarations": {
+      "value": {
+        "Custom-CustomTableAdvanced_CL": {
+          "columns": [
+            {
+              "name": "TimeGenerated",
+              "type": "datetime"
+            },
+            {
+              "name": "EventTime",
+              "type": "datetime"
+            },
+            {
+              "name": "EventLevel",
+              "type": "string"
+            },
+            {
+              "name": "EventCode",
+              "type": "int"
+            },
+            {
+              "name": "Message",
+              "type": "string"
+            },
+            {
+              "name": "RawData",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Custombasic</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-idcrcusbas'
   params: {
     // Required parameters
     dataFlows: [
@@ -195,7 +401,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       logFiles: [
         {
           filePatterns: [
-            'C:\\TestLogs\\TestLog*.log'
+            'C:\\TestLogsBasic\\TestLog*.log'
           ]
           format: 'text'
           name: 'CustomTableBasic_CL'
@@ -219,9 +425,10 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
         }
       ]
     }
-    name: '<<namePrefix>>idcrcusb001'
+    name: '<<namePrefix>>idcrcusbas001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
+    dataCollectionRuleDescription: 'Collecting custom text logs without ingestion-time transformation.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     streamDeclarations: {
@@ -274,7 +481,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
         "logFiles": [
           {
             "filePatterns": [
-              "C:\\TestLogs\\TestLog*.log"
+              "C:\\TestLogsBasic\\TestLog*.log"
             ],
             "format": "text",
             "name": "CustomTableBasic_CL",
@@ -302,11 +509,14 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrcusb001"
+      "value": "<<namePrefix>>idcrcusbas001"
     },
     // Non-required parameters
     "dataCollectionEndpointId": {
       "value": "<dataCollectionEndpointId>"
+    },
+    "dataCollectionRuleDescription": {
+      "value": "Collecting custom text logs without ingestion-time transformation."
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
@@ -337,7 +547,136 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
 </details>
 <p>
 
-<h3>Example 2: Linux</h3>
+<h3>Example 3: Customiis</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-idcrcusiis'
+  params: {
+    // Required parameters
+    dataFlows: [
+      {
+        destinations: [
+          '<logAnalyticsWorkspaceName>'
+        ]
+        outputStream: 'Microsoft-W3CIISLog'
+        streams: [
+          'Microsoft-W3CIISLog'
+        ]
+        transformKql: 'source'
+      }
+    ]
+    dataSources: {
+      iisLogs: [
+        {
+          logDirectories: [
+            'C:\\inetpub\\logs\\LogFiles\\W3SVC1'
+          ]
+          name: 'iisLogsDataSource'
+          streams: [
+            'Microsoft-W3CIISLog'
+          ]
+        }
+      ]
+    }
+    destinations: {
+      logAnalytics: [
+        {
+          name: '<name>'
+          workspaceResourceId: '<workspaceResourceId>'
+        }
+      ]
+    }
+    name: '<<namePrefix>>idcrcusiis001'
+    // Non-required parameters
+    dataCollectionEndpointId: '<dataCollectionEndpointId>'
+    dataCollectionRuleDescription: 'Collecting IIS logs.'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    kind: 'Windows'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dataFlows": {
+      "value": [
+        {
+          "destinations": [
+            "<logAnalyticsWorkspaceName>"
+          ],
+          "outputStream": "Microsoft-W3CIISLog",
+          "streams": [
+            "Microsoft-W3CIISLog"
+          ],
+          "transformKql": "source"
+        }
+      ]
+    },
+    "dataSources": {
+      "value": {
+        "iisLogs": [
+          {
+            "logDirectories": [
+              "C:\\inetpub\\logs\\LogFiles\\W3SVC1"
+            ],
+            "name": "iisLogsDataSource",
+            "streams": [
+              "Microsoft-W3CIISLog"
+            ]
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "value": {
+        "logAnalytics": [
+          {
+            "name": "<name>",
+            "workspaceResourceId": "<workspaceResourceId>"
+          }
+        ]
+      }
+    },
+    "name": {
+      "value": "<<namePrefix>>idcrcusiis001"
+    },
+    // Non-required parameters
+    "dataCollectionEndpointId": {
+      "value": "<dataCollectionEndpointId>"
+    },
+    "dataCollectionRuleDescription": {
+      "value": "Collecting IIS logs."
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "kind": {
+      "value": "Windows"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Linux</h3>
 
 <details>
 
@@ -506,6 +845,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     }
     name: '<<namePrefix>>idcrlin001'
     // Non-required parameters
+    dataCollectionRuleDescription: 'Collecting Linux-specific performance counters and Linux Syslog'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Linux'
     lock: 'CanNotDelete'
@@ -705,6 +1045,9 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       "value": "<<namePrefix>>idcrlin001"
     },
     // Non-required parameters
+    "dataCollectionRuleDescription": {
+      "value": "Collecting Linux-specific performance counters and Linux Syslog"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -738,7 +1081,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
+<h3>Example 5: Min</h3>
 
 <details>
 
@@ -869,7 +1212,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
 </details>
 <p>
 
-<h3>Example 4: Windows</h3>
+<h3>Example 6: Windows</h3>
 
 <details>
 
@@ -992,6 +1335,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     }
     name: '<<namePrefix>>idcrwin001'
     // Non-required parameters
+    dataCollectionRuleDescription: 'Collecting Windows-specific performance counters and Windows Event Logs'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     lock: 'CanNotDelete'
@@ -1145,6 +1489,9 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       "value": "<<namePrefix>>idcrwin001"
     },
     // Non-required parameters
+    "dataCollectionRuleDescription": {
+      "value": "Collecting Windows-specific performance counters and Windows Event Logs"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
