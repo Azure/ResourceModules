@@ -1,7 +1,6 @@
 # Insights DataCollectionRules `[Microsoft.Insights/dataCollectionRules]`
 
-This module deploys Insights DataCollectionRules.
-// TODO: Replace Resource and fill in description
+This module deploys DataCollection Rules.
 
 ## Navigation
 
