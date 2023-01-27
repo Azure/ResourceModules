@@ -19,7 +19,7 @@ This module deploys a recovery service vault.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults) |
+| `Microsoft.RecoveryServices/vaults` | [2022-09-30-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-09-30-preview/vaults) |
 | `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupconfig) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems) |
@@ -68,7 +68,7 @@ This module deploys a recovery service vault.
 | `securitySettings` | object | `{object}` |  | Security Settings of the vault. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. If `systemAssignedIdentity = true` no User Assigned Identities will be set due to a bug in the Rest API. |
 
 
 ### Parameter Usage: `backupStorageConfig`
@@ -1235,7 +1235,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         state: 'Unlocked'
       }
     }
-    systemAssignedIdentity: true
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -1574,9 +1573,6 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "state": "Unlocked"
         }
       }
-    },
-    "systemAssignedIdentity": {
-      "value": true
     },
     "userAssignedIdentities": {
       "value": {
