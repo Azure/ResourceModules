@@ -226,6 +226,16 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     dataCollectionRuleDescription: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     streamDeclarations: {
       'Custom-CustomTableAdvanced_CL': {
         columns: [
@@ -255,6 +265,10 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
           }
         ]
       }
+    }
+    tags: {
+      kind: 'Windows'
+      resourceType: 'Data Collection Rules'
     }
   }
 }
@@ -335,6 +349,20 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     "kind": {
       "value": "Windows"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "streamDeclarations": {
       "value": {
         "Custom-CustomTableAdvanced_CL": {
@@ -365,6 +393,12 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             }
           ]
         }
+      }
+    },
+    "tags": {
+      "value": {
+        "kind": "Windows",
+        "resourceType": "Data Collection Rules"
       }
     }
   }
@@ -431,6 +465,16 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     dataCollectionRuleDescription: 'Collecting custom text logs without ingestion-time transformation.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     streamDeclarations: {
       'Custom-CustomTableBasic_CL': {
         columns: [
@@ -444,6 +488,10 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
           }
         ]
       }
+    }
+    tags: {
+      kind: 'Windows'
+      resourceType: 'Data Collection Rules'
     }
   }
 }
@@ -524,6 +572,20 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     "kind": {
       "value": "Windows"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "streamDeclarations": {
       "value": {
         "Custom-CustomTableBasic_CL": {
@@ -538,6 +600,12 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             }
           ]
         }
+      }
+    },
+    "tags": {
+      "value": {
+        "kind": "Windows",
+        "resourceType": "Data Collection Rules"
       }
     }
   }
@@ -597,6 +665,20 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     dataCollectionRuleDescription: 'Collecting IIS logs.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      kind: 'Windows'
+      resourceType: 'Data Collection Rules'
+    }
   }
 }
 ```
@@ -668,6 +750,26 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     },
     "kind": {
       "value": "Windows"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "kind": "Windows",
+        "resourceType": "Data Collection Rules"
+      }
     }
   }
 }
