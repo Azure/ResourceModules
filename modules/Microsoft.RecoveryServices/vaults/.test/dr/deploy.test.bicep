@@ -93,5 +93,6 @@ module testDeployment '../../deploy.bicep' = {
         recoveryPointHistory: 2880
       }
     ]
+    systemAssignedIdentity: true
   }
 }
