@@ -35,13 +35,9 @@ This module deploys Insights DataCollectionEndpoints.
 | `kind` | string | `'Linux'` | `[Linux, Windows]` | The kind of the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | The configuration to set whether network access from public internet to the endpoints are allowed. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
-
-**The configuration to set whether network access from public internet to the endpoints are allowed parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
