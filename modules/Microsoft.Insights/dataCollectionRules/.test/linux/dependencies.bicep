@@ -7,7 +7,7 @@ param logAnalyticsWorkspaceName string
 @description('Required. The name of the managed identity to create.')
 param managedIdentityName string
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
     name: logAnalyticsWorkspaceName
     location: location
 }
