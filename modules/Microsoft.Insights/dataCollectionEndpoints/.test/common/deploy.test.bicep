@@ -27,6 +27,15 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module resourceGroupResources 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-paramNested'
+  params: {
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    location: location
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -37,5 +46,21 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    publicNetworkAccess: 'Enabled'
+    kind: 'Windows'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    tags: {
+      resourceType: 'Data Collection Rules'
+      kind: 'Windows'
+    }
   }
 }
