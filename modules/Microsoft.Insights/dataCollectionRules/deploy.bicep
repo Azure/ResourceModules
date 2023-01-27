@@ -75,9 +75,9 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
     dataSources: dataSources
     destinations: destinations
     dataFlows: dataFlows
-    dataCollectionEndpointId: empty(dataCollectionEndpointId) ? null : dataCollectionEndpointId
-    streamDeclarations: empty(streamDeclarations) ? null : streamDeclarations
-    description: empty(dataCollectionRuleDescription) ? null : dataCollectionRuleDescription
+    dataCollectionEndpointId: !empty(dataCollectionEndpointId) ? dataCollectionEndpointId : null
+    streamDeclarations: !empty(streamDeclarations) ? streamDeclarations : null
+    description: !empty(dataCollectionRuleDescription) ? dataCollectionRuleDescription : null
   }
 }
 
