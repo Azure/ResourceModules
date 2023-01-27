@@ -33,6 +33,7 @@ module resourceGroupResources 'dependencies.bicep' = {
   params: {
     dataCollectionEndpointName: 'dep-<<namePrefix>>-dce-${serviceShort}'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     location: location
   }
 }
@@ -120,5 +121,19 @@ module testDeployment '../../deploy.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     kind: 'Windows'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          resourceGroupResources.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    tags: {
+      resourceType: 'Data Collection Rules'
+      kind: 'Windows'
+    }
   }
 }
