@@ -1655,6 +1655,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         recoveryPointHistory: 2880
       }
     ]
+    systemAssignedIdentity: true
   }
 }
 ```
@@ -1737,6 +1738,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "recoveryPointHistory": 2880
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
     }
   }
 }
