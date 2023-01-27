@@ -62,7 +62,7 @@ param lock string = ''
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
+@description('Optional. The ID(s) to assign to the resource. If `systemAssignedIdentity = true` no User Assigned Identities will be set due to a bug in the Rest API.')
 param userAssignedIdentities object = {}
 
 @description('Optional. Tags of the Recovery Service Vault resource.')
@@ -147,11 +147,12 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+// Due to a Bug in the Rest API
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  userAssignedIdentities: identityType == 'UserAssigned' ? userAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -168,7 +169,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-30-preview' = {
   name: name
   location: location
   tags: tags
