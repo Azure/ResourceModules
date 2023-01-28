@@ -79,3 +79,4 @@ jobs:
       modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
       removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
       moduleTestFilePaths: '${{ needs.job_initialize_pipeline.outputs.moduleTestFilePaths }}'
+      prerelease: false
