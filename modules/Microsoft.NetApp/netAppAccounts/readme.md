@@ -174,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nanaamin'
+  name: '${uniqueString(deployment().name, location)}-test-nanaamin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nanaamin001'
@@ -219,7 +219,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nanaanfs3'
+  name: '${uniqueString(deployment().name, location)}-test-nanaanfs3'
   params: {
     // Required parameters
     name: '<<namePrefix>>nanaanfs3001'
@@ -444,7 +444,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
 
 ```bicep
 module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nanaanfs41'
+  name: '${uniqueString(deployment().name, location)}-test-nanaanfs41'
   params: {
     // Required parameters
     name: '<<namePrefix>>nanaanfs41001'

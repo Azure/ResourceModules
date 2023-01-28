@@ -245,7 +245,7 @@ administrators: {
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -374,7 +374,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlsadmin'
+  name: '${uniqueString(deployment().name, location)}-test-sqlsadmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sqlsadmin'
@@ -435,7 +435,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlscom'
+  name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
     name: '<<namePrefix>>-sqlscom'
     administratorLogin: 'adminUserName'
@@ -694,7 +694,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```bicep
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sqlspe'
+  name: '${uniqueString(deployment().name, location)}-test-sqlspe'
   params: {
     // Required parameters
     name: '<<namePrefix>>-sqlspe'

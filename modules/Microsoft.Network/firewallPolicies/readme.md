@@ -156,7 +156,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfpcom'
+  name: '${uniqueString(deployment().name, location)}-test-nfpcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nfpcom001'
@@ -279,7 +279,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 
 ```bicep
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfpmin'
+  name: '${uniqueString(deployment().name, location)}-test-nfpmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nfpmin001'

@@ -252,7 +252,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iagcom'
+  name: '${uniqueString(deployment().name, location)}-test-iagcom'
   params: {
     // Required parameters
     groupShortName: 'agiagcom001'
@@ -361,7 +361,7 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
 
 ```bicep
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-iagmin'
+  name: '${uniqueString(deployment().name, location)}-test-iagmin'
   params: {
     // Required parameters
     groupShortName: 'agiagmin001'

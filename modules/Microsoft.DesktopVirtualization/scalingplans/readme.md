@@ -15,7 +15,7 @@ This module deploys an AVD Scaling Plan.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DesktopVirtualization/scalingPlans` | [2021-09-03-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-09-03-preview/scalingPlans) |
+| `Microsoft.DesktopVirtualization/scalingPlans` | [2022-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-04-01-preview/scalingPlans) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -278,7 +278,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvspcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvspcom001'
@@ -385,7 +385,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
 
 ```bicep
 module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvspmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvspmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvspmin001'

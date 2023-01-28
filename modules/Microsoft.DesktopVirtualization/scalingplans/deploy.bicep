@@ -135,7 +135,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = {
+resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2022-04-01-preview' = {
   name: name
   location: location
   tags: tags

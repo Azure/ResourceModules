@@ -57,13 +57,14 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
+    largeFileSharesState: 'Enabled'
     lock: 'CanNotDelete'
     enableHierarchicalNamespace: true
     enableSftp: true
@@ -112,7 +113,6 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
-
     blobServices: {
       diagnosticLogsRetentionInDays: 7
       diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
@@ -164,7 +164,7 @@ module testDeployment '../../deploy.bicep' = {
         }
         {
           name: 'avdprofiles2'
-          shareQuota: 5120
+          shareQuota: 102400
         }
       ]
     }

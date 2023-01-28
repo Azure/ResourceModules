@@ -171,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlngcom'
+  name: '${uniqueString(deployment().name, location)}-test-nlngcom'
   params: {
     // Required parameters
     localAddressPrefixes: [
@@ -260,7 +260,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
 
 ```bicep
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlngmin'
+  name: '${uniqueString(deployment().name, location)}-test-nlngmin'
   params: {
     // Required parameters
     localAddressPrefixes: [

@@ -219,7 +219,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module serverfarms './Microsoft.Web/serverfarms/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-wsfcom'
+  name: '${uniqueString(deployment().name, location)}-test-wsfcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>wsfcom001'

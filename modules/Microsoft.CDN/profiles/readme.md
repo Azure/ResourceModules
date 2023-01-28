@@ -172,7 +172,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module profiles './Microsoft.CDN/profiles/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cdnpcom'
+  name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters
     name: 'dep-<<namePrefix>>-test-cdnpcom'

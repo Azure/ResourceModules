@@ -29,11 +29,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: keyVaultName
 }
 
-resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
+resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
   name: name
   parent: keyVault
   properties: {

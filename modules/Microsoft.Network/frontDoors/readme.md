@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfdcom'
+  name: '${uniqueString(deployment().name, location)}-test-nfdcom'
   params: {
     // Required parameters
     backendPools: [
@@ -443,7 +443,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
 
 ```bicep
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nfdmin'
+  name: '${uniqueString(deployment().name, location)}-test-nfdmin'
   params: {
     // Required parameters
     backendPools: [

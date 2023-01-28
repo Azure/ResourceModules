@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npipcom'
+  name: '${uniqueString(deployment().name, location)}-test-npipcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>npipcom001'
@@ -239,7 +239,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npipmin'
+  name: '${uniqueString(deployment().name, location)}-test-npipmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>npipmin001'
