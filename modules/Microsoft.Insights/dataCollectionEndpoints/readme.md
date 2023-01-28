@@ -1,7 +1,6 @@
 # Insights DataCollectionEndpoints `[Microsoft.Insights/dataCollectionEndpoints]`
 
-This module deploys Insights DataCollectionEndpoints.
-// TODO: Replace Resource and fill in description
+This module deploys DataCollection Endpoints.
 
 ## Navigation
 
