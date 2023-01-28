@@ -4,15 +4,22 @@ param localVnetName string
 @description('Optional. Optional. The list of remote networks to peering peer with, including the configuration.')
 param peeringConfigurations array = []
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-module virtualNetworkPeering '../../../../arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep' = [for peeringConfiguration in peeringConfigurations: {
+module virtualNetworkPeering '../../../../modules/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep' = [for peeringConfiguration in peeringConfigurations: {
   name: 'virtualNetworkPeering-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'
   params: {
     name: contains(peeringConfiguration, 'peeringName') ? '${peeringConfiguration.peeringName}' : '${localVnetName}-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'
@@ -26,9 +33,9 @@ module virtualNetworkPeering '../../../../arm/Microsoft.Network/virtualNetworks/
   }
 }]
 
-@description('The names of the deployed virtual network peerings')
+@description('The names of the deployed virtual network peerings.')
 output virtualNetworkPeeringNames array = [for i in range(0, length(peeringConfigurations)): virtualNetworkPeering[i].name]
-@description('The resource IDs of the deployed virtual network peerings')
+@description('The resource IDs of the deployed virtual network peerings.')
 output localVirtualNetworkPeeringResourceIds array = [for peeringConfiguration in peeringConfigurations: resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', localVnetName, (contains(peeringConfiguration, 'peeringName') ? peeringConfiguration.peeringName : '${localVnetName}-${last(split(peeringConfiguration.remoteVirtualNetworkId, '/'))}'))]
-@description('The resource group of the deployed virtual network peerings')
+@description('The resource group of the deployed virtual network peerings.')
 output virtualNetworkPeeringResourceGroup string = resourceGroup().name

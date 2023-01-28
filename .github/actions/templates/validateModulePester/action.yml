@@ -1,9 +1,34 @@
+#########################################################
+## 'Validate module with Pester' Composite Action      ##
+#########################################################
+##
+## This composite action contains the logic to validate a module using a set of Pester tests
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |==================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                          | Example                                                   |
+##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
+##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/Microsoft.ApiManagement/service'                 |
+##   | moduleTestFilePath       | true     | ''      | The path to the module Pester tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
+##   |==================================================================================================================================================|
+##
+##---------------------------------------------##
+
 name: 'Execute Pester module tests'
 description: 'Execute Pester module tests (if any)'
 
 inputs:
   modulePath:
-    description: 'The path to the module folder'
+    description: "The path to the module's folder"
+    required: true
+    default: ''
+  moduleTestFilePath:
+    description: 'The path to the test file'
     required: true
     default: ''
 
@@ -13,6 +38,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output '::group::Setup agent'
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -21,10 +49,13 @@ runs:
             # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
             # @{ Name = 'Pester'; Version = '5.3.1' }
             @{ Name = 'Az.Resources' }
+            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
         )
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output '::endgroup::'
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -34,11 +65,24 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run global tests via Pester'
+    - name: 'Run Pester tests'
       id: pester_run_step
       shell: pwsh
       run: |
-        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        # Grouping task logs
+        Write-Output '::group::Run Pester tests'
+
+        # Set repo root path
+        $repoRootPath = $env:GITHUB_WORKSPACE
+
+        # Get Service Principal Object ID
+        $context = Get-AzContext
+        $servicePrincipalAppId = $context.Account.Id
+        $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
+        $servicePrincipalObjectId = $servicePrincipal.Id
+
+        # Set test input module path
+        $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
@@ -47,21 +91,54 @@ runs:
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
+        # Construct Token Configuration Input and enforced tokens list
+        $GlobalVariablesObject = Get-Content -Path 'settings.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+        $tokenConfiguration = @{
+            Tokens      = @{}
+            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        }
+
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
+            $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
+            $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
+            $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
+            $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
+        }
+
+        # Set and print test output path
+        $moduleTestFilePath = '${{ inputs.moduleTestFilePath }}'
+        $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
+        $outputPathFile = 'testResults.xml'
+        $outputPath = Join-Path $outputPathDirectory $outputPathFile
+        Write-Verbose "Pester tests output: $outputPath" -Verbose
+        Write-Output ('{0}={1}' -f 'outputPath', $outputPath) >> $env:GITHUB_OUTPUT
+
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
+        $testContainerData = @{
+          moduleFolderPaths              = $moduleFolderPaths
+          tokenConfiguration             = $tokenConfiguration
+          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
+        }
+
+        Write-Verbose 'Invoke test with' -Verbose
+        Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
+
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = $moduleFolderPaths
-            }
-          }
-          Filter     = @{
-            ExcludeTag = 'ApiCheck'
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
           }
           TestResult = @{
-            TestSuiteName = 'Global Module Tests'
-            OutputPath    = 'arm/.global/global-testResults.xml'
+            TestSuiteName = 'Module Tests'
+            OutputPath    = $outputPath
             OutputFormat  = 'JUnitXml'
             Enabled       = $true
           }
@@ -70,53 +147,8 @@ runs:
           }
         }
 
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
-      with:
-        files: arm/.global/global-testResults.xml
-
-    # [Module Pester Test] task(s)
-    #-----------------------------
-    - name: 'Run API tests via Pester'
-      id: pester_api_run_step
+    - name: 'Publish Test Results'
+      uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
-      shell: pwsh
-      run: |
-        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
-        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-        }
-        Write-Verbose "Execute tests in path(s):" -Verbose
-        foreach($moduleFolderPath in $moduleFolderPaths) {
-          Write-Verbose "- [($moduleFolderPath]" -Verbose
-        }
-
-        # --------------------- #
-        # Invoke Pester test(s) #
-        # --------------------- #
-        Invoke-Pester -Configuration @{
-          Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = $moduleFolderPaths
-            }
-          }
-          Filter     = @{
-            Tag = 'ApiCheck'
-          }
-          TestResult = @{
-            TestSuiteName = 'Global Module API Tests'
-            OutputPath    = 'arm/.global/api-testResults.xml'
-            OutputFormat  = 'JUnitXml'
-            Enabled       = $true
-          }
-          Output     = @{
-            Verbosity = 'Detailed'
-          }
-        }
-
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always() && !contains('cancelled,skipped', steps.pester_api_run_step.outcome)
       with:
-        files: arm/.global/api-testResults.xml
+        junit_files: '${{ steps.pester_run_step.outputs.outputPath }}'

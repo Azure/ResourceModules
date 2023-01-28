@@ -1,6 +1,7 @@
 name: '.Platform: Test - ConvertTo-ARMTemplate.ps1'
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -18,7 +19,7 @@ jobs:
         tags: ['Default', 'ConvertChildren', 'Skip']
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: 'Run Pester tests'
@@ -44,7 +45,7 @@ jobs:
             }
           }
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'
+          junit_files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'

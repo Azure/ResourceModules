@@ -1,20 +1,35 @@
-# VirtualNetworkPeering
+# VirtualNetworkPeering `[Microsoft.Network/virtualNetwork/virtualNetworkPeerings-multiRemoteVnets]`
 
 This template deploys Virtual Network Peering.
+
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-02-01 |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `localVnetName` | string |  |  | Required. The Name of the Virtual Network to add the peering to. |
-| `peeringConfigurations` | array | `[]` |  | Optional. Optional. The list of remote networks to peering peer with, including the configuration. |
+**Required parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `localVnetName` | string | The Name of the Virtual Network to add the peering to. |
+
+**Optional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `peeringConfigurations` | array | `[]` | Optional. The list of remote networks to peering peer with, including the configuration. |
+
 
 ### Parameter Usage: `peeringConfigurations`
 
@@ -35,14 +50,36 @@ Array containing multiple objects for different VNETs to peer with.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+peeringConfigurations: [
+    {
+        peeringName: 'sxx-az-peering-x-002-sxx-az-peering-x-003'  // Optional
+        remoteVirtualNetworkId: '/subscriptions/<subscriptionId>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/<vnetName>'
+        allowVirtualNetworkAccess: false // Optional. Default true
+        allowForwardedTraffic: false // Optional. Default true
+        allowGatewayTransit: false // Optional. Default false
+        useRemoteGateways: false // Optional. Default true
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `localVirtualNetworkPeeringResourceIds` | array | The names of the deployed virtual network peerings |
-| `virtualNetworkPeeringNames` | array | The resource IDs of the deployed virtual network peerings |
-| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings |
+| `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings. |
+| `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings. |
+| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings. |
 
-## Template references
+## Cross-referenced modules
 
-- [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)
+_None_

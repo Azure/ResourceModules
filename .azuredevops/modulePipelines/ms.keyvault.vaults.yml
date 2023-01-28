@@ -4,11 +4,13 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Soft-delete prevents re-deployment
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
     default: false
+
+pr: none
 
 trigger:
   batch: true
@@ -18,35 +20,21 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.keyvault.vaults.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.KeyVault/vaults/*'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.KeyVault/vaults/*'
+      - '/utilities/pipelines/*'
     exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.KeyVault/vaults'
+    value: '/modules/Microsoft.KeyVault/vaults'
 
 stages:
-  - stage: Validation
-    displayName: Pester tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-
-  - stage: Deployment
-    displayName: Deployment tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
-
-  - stage: Publishing
-    displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'

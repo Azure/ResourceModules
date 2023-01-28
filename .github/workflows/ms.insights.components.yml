@@ -7,121 +7,133 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'true'
+        default: true
       prerelease:
         type: boolean
         description: 'Publish prerelease module'
         required: false
-        default: 'false'
+        default: false
   push:
     branches:
       - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.components.yml'
-      - 'arm/Microsoft.Insights/components/**'
-      - '!*/**/readme.md'
+      - 'modules/Microsoft.Insights/components/**'
       - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
+      - '!utilities/pipelines/deploymentRemoval/**'
+      - '!*/**/readme.md'
 
 env:
-  modulePath: 'arm/Microsoft.Insights/components'
+  variablesPath: 'settings.yml'
+  modulePath: 'modules/Microsoft.Insights/components'
   workflowPath: '.github/workflows/ms.insights.components.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
+
+concurrency:
+  group: ${{ github.workflow }}
 
 jobs:
-  ############################
-  #   SET INPUT PARAMETERS   #
-  ############################
-  job_set_workflow_param:
+  ###########################
+  #   Initialize pipeline   #
+  ###########################
+  job_initialize_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
+    name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: 'Set input parameters'
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
+        id: get-module-test-file-paths
+        uses: ./.github/actions/templates/getModuleTestFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
     outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
 
-  ####################
-  #   Pester Tests   #
-  ####################
+  #########################
+  #   Static validation   #
+  #########################
   job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Pester tests'
+    name: 'Static validation'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Run tests'
         uses: ./.github/actions/templates/validateModulePester
         with:
           modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
-  ####################
-  # Deployment tests #
-  ####################
+  #############################
+  #   Deployment validation   #
+  #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment tests'
+    name: 'Deployment validation'
     needs:
-      - job_set_workflow_param
+      - job_initialize_pipeline
       - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
-      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          location: '${{ env.location }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
 
-  ###############
-  #   PUBLISH   #
-  ###############
+  ##################
+  #   Publishing   #
+  ##################
   job_publish_module:
-    name: 'Publish module'
+    name: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_set_workflow_param
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
-      - name: 'Publish module'
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Publishing'
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -133,3 +145,4 @@ jobs:
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+          publishLatest: '${{ env.publishLatest }}'

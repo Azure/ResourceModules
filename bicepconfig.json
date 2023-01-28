@@ -1,0 +1,14 @@
+// This is a Bicep configuration file. It can be used to control how Bicep operates.
+// For example which linter warnings to display, or which external source (e.g. Template Specs / Bicep Container Registry) to make available as a short reference
+// For further information, please refer to the official documentation at: https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config
+{
+    "analyzers": {
+        "core": {
+            "rules": {
+                "explicit-values-for-loc-params": {
+                    "level": "off" // Reason: Our modules default to e.g. the location of their parent resource group which is sufficient if deploying a self-contained solution
+                }
+            }
+        }
+    }
+}

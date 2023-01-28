@@ -1,5 +1,35 @@
-name: 'Publish module'
-description: 'Publish module'
+#########################################################
+## 'Publishing' Composite Action                   ##
+#########################################################
+##
+## This composite action contains the logic to publish a given template to a number of different locations such as:
+## - Template Specs
+## - Private Bicep Registry
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |===========================================================================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
+##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/Microsoft.ApiManagement/service/deploy.bicep' |
+##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
+##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
+##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |
+##   | templateSpecsDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to template specs                                     | 'true'                                                 |
+##   | bicepRegistryName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to      | 'myacr'                                                |
+##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                         |
+##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                           |
+##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                                 |
+##   | publishLatest            | false    | 'true'  | Flag to indicate whether or not to publish a "latest" version                                    | 'true'                                                 |
+##   |===========================================================================================================================================================================================================|
+##
+##---------------------------------------------##
+name: 'Publishing'
+description: 'Publishing'
 
 inputs:
   templateFilePath:
@@ -19,7 +49,7 @@ inputs:
     default: 'false'
     required: false
   bicepRegistryName:
-    description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
+    description: 'Required to publish to private bicep registry. Name of the container registry to publish to'
     required: false
   bicepRegistryRgName:
     description: 'Required to publish to private bicep registry. Name of the container registry resource group'
@@ -31,6 +61,10 @@ inputs:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
     required: false
+  publishLatest:
+    description: 'Flag to indicate whether or not to publish a "latest" version'
+    default: 'true'
+    required: false
 
 runs:
   using: 'composite'
@@ -38,6 +72,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output '::group::Setup agent'
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -51,6 +88,8 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
+        Write-Output '::endgroup::'
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -58,69 +97,151 @@ runs:
         enable-AzPSSession: true
 
     - name: 'Publish module to template specs'
-      shell: pwsh
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
-      run: |
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Publish module to template specs'
 
-        $functionInput = @{
-          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-        }
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromTemplateSpecsRG.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
-        Write-Verbose "Invoke task with" -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+          $modulesToPublish = @()
 
-        # Get the modified child resources
-        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
-
-        # Publish the modified child resources
-        foreach ($ModuleToUpdate in $ModulesToUpdate) {
+          ################################
+          ##   Get modules to publish   ##
+          ################################
           $functionInput = @{
-            TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
-            TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
-            TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
-            TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
-            ModuleVersion            = $ModuleToUpdate.Version
+            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            PublishLatest    = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Publish-ModuleToTemplateSpec @functionInput -Verbose
-        }
+          # Get the modified child resources
+          $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
+
+          #############################
+          ##   Get missing modules   ##
+          #############################
+
+          # Add all modules that don't exist in the target location
+          $missingInputObject = @{
+              TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+              TemplateSpecsRGName = '${{ inputs.templateSpecsRgName }}'
+              PublishLatest       = [bool] "${{ inputs.publishLatest }}"
+          }
+
+          Write-Verbose "Invoke Get-ModulesMissingFromTemplateSpecsRG with" -Verbose
+          Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+          $missingModules = Get-ModulesMissingFromTemplateSpecsRG @missingInputObject
+
+          foreach($missingModule in $missingModules) {
+            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              $modulesToPublish += $missingModule
+            }
+          }
+
+          #################
+          ##   Publish   ##
+          #################
+          foreach ($moduleToPublish in $modulesToPublish) {
+            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
+
+            $functionInput = @{
+              TemplateFilePath         = $moduleToPublish.TemplateFilePath
+              TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
+              TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
+              TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+              ModuleVersion            = $moduleToPublish.Version
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Publish-ModuleToTemplateSpecsRG @functionInput -Verbose
+          }
+
+          Write-Output '::endgroup::'
 
     - name: 'Publish module to private bicep registry'
-      shell: pwsh
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
-      run: |
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output '::group::Publish module to private bicep registry'
 
-        $functionInput = @{
-          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-        }
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesMissingFromPrivateBicepRegistry.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
-        Write-Verbose "Invoke task with" -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+          $modulesToPublish = @()
 
-        # Get the modified child resources
-        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
-
-        # Publish the modified child resources
-        foreach ($ModuleToUpdate in $ModulesToUpdate) {
+          ################################
+          ##   Get modules to publish   ##
+          ################################
           $functionInput = @{
-            TemplateFilePath        = $ModuleToUpdate.TemplateFilePath
-            BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
-            BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
-            BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
-            ModuleVersion           = $ModuleToUpdate.Version
+            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            PublishLatest    = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
-        }
+          # Get the modified child resources
+          $modulesToPublish += Get-ModulesToPublish @functionInput -Verbose
+
+          #############################
+          ##   Get missing modules   ##
+          #############################
+          # Add all modules that don't exist in the target location
+          $missingInputObject = @{
+              TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+              BicepRegistryName   = '${{ inputs.bicepRegistryName }}'
+              BicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
+              PublishLatest    = [bool] "${{ inputs.publishLatest }}"
+          }
+
+          Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
+          Write-Verbose ($missingInputObject | ConvertTo-Json | Out-String) -Verbose
+
+          $missingModules = Get-ModulesMissingFromPrivateBicepRegistry @missingInputObject
+
+          foreach($missingModule in $missingModules) {
+            if($modulsToPublish.TemplateFilePath -notcontains $missingModule.TemplateFilePath) {
+              $modulesToPublish += $missingModule
+            }
+          }
+
+          #################
+          ##   Publish   ##
+          #################
+          foreach ($moduleToPublish in $modulesToPublish) {
+            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
+
+            $functionInput = @{
+              TemplateFilePath        = $moduleToPublish.TemplateFilePath
+              BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
+              BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
+              BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+              ModuleVersion           = $moduleToPublish.Version
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+          }
+
+          Write-Output '::endgroup::'

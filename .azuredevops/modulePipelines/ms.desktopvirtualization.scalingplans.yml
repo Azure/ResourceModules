@@ -1,0 +1,40 @@
+name: 'DesktopVirtualization - ScalingPlans'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.desktopvirtualization.scalingplans.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
+      - '/modules/Microsoft.DesktopVirtualization/scalingplans/*'
+      - '/utilities/pipelines/*'
+    exclude:
+      - '/utilities/pipelines/deploymentRemoval/*'
+      - '/**/*.md'
+
+variables:
+  - template: '../../settings.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/modules/Microsoft.DesktopVirtualization/scalingplans'
+
+stages:
+  - template: /.azuredevops/pipelineTemplates/stages.module.yml
+    parameters:
+      removeDeployment: '${{ parameters.removeDeployment }}'
+      prerelease: '${{ parameters.prerelease }}'
