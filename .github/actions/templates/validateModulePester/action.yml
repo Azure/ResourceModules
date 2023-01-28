@@ -99,17 +99,17 @@ runs:
             TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+        if (-not [String]::IsNullOrEmpty('${{ secrets.ARM_SUBSCRIPTION_ID }}')) {
+            $tokenConfiguration.Tokens['subscriptionId'] = '${{ secrets.ARM_SUBSCRIPTION_ID }}'
         }
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
-            $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+        if (-not [String]::IsNullOrEmpty('${{ secrets.ARM_MGMTGROUP_ID }}')) {
+            $tokenConfiguration.Tokens['managementGroupId'] = '${{ secrets.ARM_MGMTGROUP_ID }}'
         }
-        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
+        if (-not [String]::IsNullOrEmpty('${{ secrets.DEPLOYMENT_SP_ID }}')) {
             $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
         }
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
+        if (-not [String]::IsNullOrEmpty('${{ secrets.ARM_TENANT_ID }}')) {
+            $tokenConfiguration.Tokens['tenantId'] = '${{ secrets.ARM_TENANT_ID }}'
         }
 
         # Set and print test output path
@@ -126,7 +126,7 @@ runs:
         $testContainerData = @{
           moduleFolderPaths              = $moduleFolderPaths
           tokenConfiguration             = $tokenConfiguration
-          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
+          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ secrets.allowPreviewVersionsInAPITests }}')
         }
 
         Write-Verbose 'Invoke test with' -Verbose
