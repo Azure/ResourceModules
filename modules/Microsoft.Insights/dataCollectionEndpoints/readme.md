@@ -1,4 +1,4 @@
-# Insights DataCollectionEndpoints `[Microsoft.Insights/dataCollectionEndpoints]`
+# DataCollectionEndpoints `[Microsoft.Insights/dataCollectionEndpoints]`
 
 This module deploys DataCollection Endpoints.
 
@@ -38,10 +38,6 @@ This module deploys DataCollection Endpoints.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `tags`
 
@@ -260,7 +256,10 @@ module dataCollectionEndpoints './Microsoft.Insights/dataCollectionEndpoints/dep
 module dataCollectionEndpoints './Microsoft.Insights/dataCollectionEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcemin'
   params: {
+    // Required parameters
     name: '<<namePrefix>>idcemin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -277,8 +276,13 @@ module dataCollectionEndpoints './Microsoft.Insights/dataCollectionEndpoints/dep
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
       "value": "<<namePrefix>>idcemin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
