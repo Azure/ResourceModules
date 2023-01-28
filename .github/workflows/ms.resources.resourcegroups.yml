@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - main
+      - reus-wkf-donotdelete
     paths:
       - '.github/workflows/ms.resources.resourcegroups.yml'
       - 'modules/Microsoft.Resources/resourceGroups/**'
@@ -24,14 +25,14 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
+  # variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Resources/resourceGroups'
   workflowPath: '.github/workflows/ms.resources.resourcegroups.yml'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
+  # AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  # ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  # ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  # ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  # TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 concurrency:
   group: ${{ github.workflow }}
@@ -70,8 +71,9 @@ jobs:
   call-workflow-passing-data:
     name: 'Template'
     needs:
-    - job_set_workflow_param
-    uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
+    - job_initialize_pipeline
+    # uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
+    uses: ./.github/workflows/template.module.yml
     with:
       modulePath: '${{ env.modulePath}}'
       removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
