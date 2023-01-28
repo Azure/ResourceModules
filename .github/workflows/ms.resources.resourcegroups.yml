@@ -60,9 +60,9 @@ jobs:
           modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: '${{ steps.get-workflow-param.outputs.removeDeployment }}'
-      versioningOption: '${{ steps.get-workflow-param.outputs.versioningOption }}'
-      customVersion: '${{ steps.get-workflow-param.outputs.customVersion }}'
-      modulePath: '${{ env.modulePath}}'
+      workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
+      moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
+
 
   ##############################
   #   Call reusable workflow   #
@@ -73,13 +73,6 @@ jobs:
     - job_set_workflow_param
     uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     with:
-      modulePath: '${{ needs.job_set_workflow_param.outputs.modulePath }}'
-      removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-      versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
-      customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
-    secrets:
-      AZURE_CREDENTIALS: '${{ secrets.AZURE_CREDENTIALS }}'
-      ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-      DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+      modulePath: '${{ env.modulePath}}'
+      removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
+      moduleTestFilePaths: '${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}'
