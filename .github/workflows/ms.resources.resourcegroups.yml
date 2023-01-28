@@ -63,6 +63,7 @@ jobs:
       removeDeployment: '${{ steps.get-workflow-param.outputs.removeDeployment }}'
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
+      modulePath: '${{ env.modulePath}}'
 
 
   ##############################
@@ -75,6 +76,6 @@ jobs:
     # uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     uses: ./.github/workflows/template.module.yml
     with:
-      modulePath: '${{ env.modulePath}}'
+      modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
       removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
       moduleTestFilePaths: '${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}'
