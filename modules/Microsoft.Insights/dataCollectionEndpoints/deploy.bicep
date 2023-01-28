@@ -77,7 +77,7 @@ resource dataCollectionEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' 
 }
 
 module dataCollectionEndpoint_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-dataCollectionRule-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-dataCollectionEndpoint-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
