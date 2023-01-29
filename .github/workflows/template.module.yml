@@ -63,35 +63,35 @@ jobs:
           modulePath: '${{ inputs.modulePath }}'
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
-  # #############################
-  # #   Deployment validation   #
-  # #############################
-  # job_module_deploy_validation:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deployment validation'
-  #   needs:
-  #     - job_module_pester_validation
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: ./.github/actions/templates/setEnvironmentVariables
-  #       with:
-  #         variablesPath: ${{ env.variablesPath }}
-  #     - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: '${{ inputs.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-  #         location: '${{ env.location }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ inputs.removeDeployment }}'
+  #############################
+  #   Deployment validation   #
+  #############################
+  job_module_deploy_validation:
+    runs-on: ubuntu-20.04
+    name: 'Deployment validation'
+    needs:
+      - job_module_pester_validation
+    strategy:
+      fail-fast: false
+      matrix:
+        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ inputs.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          location: '${{ env.location }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ inputs.removeDeployment }}'
 
   # ##################
   # #   Publishing   #
