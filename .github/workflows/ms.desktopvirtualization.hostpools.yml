@@ -80,7 +80,7 @@ jobs:
   job_module_static_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
-    if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation }}
+    if: (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation
     needs:
       - job_initialize_pipeline
     steps:
@@ -108,11 +108,6 @@ jobs:
       !cancelled() &&
       (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation &&
       needs.job_module_static_validation.conclusion != 'failed'
-  # if: fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation && (needs.job_module_static_validation.conclusion != 'failed')
-  #  if: (${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }}) && (needs.job_module_static_validation.conclusion != 'failed')
-  # (${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }} == false)
-  # ${{ always() }} &&
-  # && needs.job_module_static_validation.conclusion != 'failed'
     needs:
       - job_initialize_pipeline
       - job_module_static_validation
