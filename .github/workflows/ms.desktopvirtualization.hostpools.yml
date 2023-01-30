@@ -105,9 +105,9 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploying'
     if: |
-    ${{ always() }} &&
-    (needs.job_module_static_validation.conclusion != 'failed') &&
-    ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }}
+      ${{ always() }} &&
+      (needs.job_module_static_validation.conclusion != 'failed') &&
+      ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }}
     needs:
       - job_initialize_pipeline
       - job_module_static_validation
