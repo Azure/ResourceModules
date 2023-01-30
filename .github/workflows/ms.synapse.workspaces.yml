@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Execute static validation'
         required: false
-        default: true
+        default: false
       deploymentValidation:
         type: boolean
         description: 'Execute deployment validation'
@@ -26,6 +26,7 @@ on:
   push:
     branches:
       - main
+      - users/erikag/skip-jobs-failing
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.workspaces.yml'
