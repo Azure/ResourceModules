@@ -81,6 +81,8 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Static validation'
     if: github.event.inputs.staticValidation == 'true' || '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation }}' == 'true'
+    needs:
+      - job_initialize_pipeline
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
