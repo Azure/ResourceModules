@@ -106,8 +106,7 @@ jobs:
     name: 'Deploying'
     if: |
       always()
-    # &&
-    # ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }}
+      && ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }}
     # &&
     # (needs.job_module_static_validation.conclusion != 'failed')
     needs:
