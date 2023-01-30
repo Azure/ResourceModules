@@ -67,7 +67,6 @@ runs:
           $workflowInput = @{}
           foreach($parameterName in $parameters.Keys) {
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $parameters[$parameterName]) -Verbose
-            Write-Verbose ($parameters[$parameterName].getType()) -Verbose
             $workflowInput[$parameterName] = $parameters[$parameterName]
           }
           Write-Output ('{0}={1}' -f 'workflowInput', ($workflowInput | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
@@ -90,7 +89,6 @@ runs:
           $workflowInput = @{}
           foreach($parameterName in $workflowParameters.Keys) {
             Write-Verbose ('Passing output [{0}] with value [{1}]' -f $parameterName, $workflowParameters[$parameterName]) -Verbose
-            Write-Verbose ($workflowParameters[$parameterName].getType()) -Verbose
             $workflowInput[$parameterName] = $workflowParameters[$parameterName].toString()
           }
           Write-Output ('{0}={1}' -f 'workflowInput', ($workflowInput | ConvertTo-Json -Compress)) >> $env:GITHUB_OUTPUT
