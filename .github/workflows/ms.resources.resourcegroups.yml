@@ -22,7 +22,7 @@ on:
         type: boolean
         description: 'Publish prerelease module'
         required: false
-        default: false
+        default: true
   push:
     branches:
       - main
@@ -82,7 +82,6 @@ jobs:
     name: 'Template'
     needs:
     - job_initialize_pipeline
-    # uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     uses: ./.github/workflows/template.module.yml
     with:
       modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
