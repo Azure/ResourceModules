@@ -95,7 +95,7 @@ jobs:
     name: 'Deploying'
     if: |
       !cancelled() &&
-      github.event.inputs.deploymentValidation == 'true' &&
+      (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation == 'true' &&
       needs.job_module_static_validation.conclusion != 'failed'
     needs:
       - job_initialize_pipeline
