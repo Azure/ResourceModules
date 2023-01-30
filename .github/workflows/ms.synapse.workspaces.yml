@@ -26,7 +26,6 @@ on:
   push:
     branches:
       - main
-      - users/erikag/skip-jobs-failing
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.workspaces.yml'
