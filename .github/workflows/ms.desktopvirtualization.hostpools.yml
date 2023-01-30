@@ -26,6 +26,7 @@ on:
   push:
     branches:
       - main
+      - users/erikag/skip-jobs
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.hostpools.yml'
