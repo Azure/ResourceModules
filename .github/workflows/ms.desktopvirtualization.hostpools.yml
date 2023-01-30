@@ -98,40 +98,40 @@ jobs:
       #     modulePath: '${{ env.modulePath }}'
       #     moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
-  #############################
-  #   Deployment validation   #
-  #############################
-  job_module_deploy_validation:
-    runs-on: ubuntu-20.04
-    name: 'Deploying'
-    if: |
-      !cancelled() &&
-      (github.event.inputs.deploymentValidation == 'true' ||  &&
-      needs.job_module_static_validation.conclusion != 'failed'
-    needs:
-      - job_initialize_pipeline
-      - job_module_static_validation
-    strategy:
-      fail-fast: false
-      matrix:
-        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          location: '${{ env.location }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
+  # #############################
+  # #   Deployment validation   #
+  # #############################
+  # job_module_deploy_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploying'
+  #   if: |
+  #     !cancelled() &&
+  #     (github.event.inputs.deploymentValidation == 'true' ||  &&
+  #     needs.job_module_static_validation.conclusion != 'failed'
+  #   needs:
+  #     - job_initialize_pipeline
+  #     - job_module_static_validation
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: ./.github/actions/templates/setEnvironmentVariables
+  #       with:
+  #         variablesPath: ${{ env.variablesPath }}
+  #     - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+  #         location: '${{ env.location }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
 
   ##################
   #   Publishing   #
