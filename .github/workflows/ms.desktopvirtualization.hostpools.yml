@@ -80,7 +80,7 @@ jobs:
   job_module_static_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
-    if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation == 'True' }}
+    if: ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation == True }}
     needs:
       - job_initialize_pipeline
     steps:
