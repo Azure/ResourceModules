@@ -35,7 +35,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  # variablesPath: 'settings.yml'
+  # # variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Resources/resourceGroups'
   workflowPath: '.github/workflows/ms.resources.resourcegroups.yml'
   # AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
