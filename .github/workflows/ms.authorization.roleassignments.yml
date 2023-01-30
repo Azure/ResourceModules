@@ -79,7 +79,9 @@ jobs:
   job_module_static_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
-    if: github.event.inputs.staticValidation == 'true'
+    if: (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation == 'true'
+    needs:
+      - job_initialize_pipeline
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -103,7 +105,7 @@ jobs:
     name: 'Deploying'
     if: |
       !cancelled() &&
-      github.event.inputs.deploymentValidation == 'true' &&
+      (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation == 'true' &&
       needs.job_module_static_validation.conclusion != 'failed'
     needs:
       - job_initialize_pipeline
