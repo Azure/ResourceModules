@@ -20,17 +20,17 @@ on:
         type: string
         description: 'Relative path to the module folder'
         required: true
-    secrets:
-      AZURE_CREDENTIALS:
-        required: true
-      ARM_SUBSCRIPTION_ID:
-        required: true
-      ARM_MGMTGROUP_ID:
-        required: true
-      ARM_TENANT_ID:
-        required: true
-      TOKEN_NAMEPREFIX:
-        required: true
+    # secrets:
+    #   AZURE_CREDENTIALS:
+    #     required: true
+    #   ARM_SUBSCRIPTION_ID:
+    #     required: true
+    #   ARM_MGMTGROUP_ID:
+    #     required: true
+    #   ARM_TENANT_ID:
+    #     required: true
+    #   TOKEN_NAMEPREFIX:
+    #     required: true
 
 env:
   variablesPath: 'settings.yml'
