@@ -26,7 +26,6 @@ on:
   push:
     branches:
       - main
-      - users/erikag/skip-jobs
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.hostpools.yml'
@@ -88,15 +87,15 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      # - name: Set environment variables
-      #   uses: ./.github/actions/templates/setEnvironmentVariables
-      #   with:
-      #     variablesPath: ${{ env.variablesPath }}
-      # - name: 'Run tests'
-      #   uses: ./.github/actions/templates/validateModulePester
-      #   with:
-      #     modulePath: '${{ env.modulePath }}'
-      #     moduleTestFilePath: '${{ env.moduleTestFilePath }}'
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
+          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #############################
   #   Deployment validation   #
@@ -120,18 +119,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      # - name: Set environment variables
-      #   uses: ./.github/actions/templates/setEnvironmentVariables
-      #   with:
-      #     variablesPath: ${{ env.variablesPath }}
-      # - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-      #   uses: ./.github/actions/templates/validateModuleDeployment
-      #   with:
-      #     templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-      #     location: '${{ env.location }}'
-      #     subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      #     managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      #     removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
+          location: '${{ env.location }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
 
   ##################
   #   Publishing   #
