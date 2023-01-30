@@ -13,25 +13,25 @@ param managedIdentityName string
 var addressPrefix = '10.0.0.0/16'
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
-  name: networkSecurityGroupName
-  location: location
-  properties: {
-    securityRules: [
-      {
-        name: 'AllowPortsForASE'
-        properties: {
-          access: 'Allow'
-          destinationAddressPrefix: '10.0.7.0/24'
-          destinationPortRange: '454-455'
-          direction: 'Inbound'
-          priority: 1010
-          protocol: '*'
-          sourceAddressPrefix: 'AppServiceManagement'
-          sourcePortRange: '*'
-        }
-      }
-    ]
-  }
+    name: networkSecurityGroupName
+    location: location
+    properties: {
+        securityRules: [
+            {
+                name: 'AllowPortsForASE'
+                properties: {
+                    access: 'Allow'
+                    destinationAddressPrefix: '10.0.7.0/24'
+                    destinationPortRange: '454-455'
+                    direction: 'Inbound'
+                    priority: 1010
+                    protocol: '*'
+                    sourceAddressPrefix: 'AppServiceManagement'
+                    sourcePortRange: '*'
+                }
+            }
+        ]
+    }
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -55,7 +55,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                         {
                             name: 'ase'
                             properties: {
-                            serviceName: 'Microsoft.Web/hostingEnvironments'
+                                serviceName: 'Microsoft.Web/hostingEnvironments'
                             }
                         }
                     ]
@@ -76,3 +76,5 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id

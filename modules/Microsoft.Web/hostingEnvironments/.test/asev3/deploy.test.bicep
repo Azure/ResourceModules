@@ -69,6 +69,11 @@ module testDeployment '../../deploy.bicep' = {
         value: '1'
       }
     ]
+    allowNewPrivateEndpointConnections: true
+    ftpEnabled: true
+    inboundIpAddressOverride: '10.0.0.10'
+    remoteDebugEnabled: true
+    upgradePreference: 'Late'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
@@ -84,5 +89,9 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
   }
 }

@@ -17,7 +17,8 @@ This module deploys an app service environment.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Web/hostingEnvironments` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/hostingEnvironments) |
+| `Microsoft.Web/hostingEnvironments` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/hostingEnvironments) |
+| `Microsoft.Web/hostingEnvironments/configurations` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/hostingEnvironments/configurations) |
 
 ## Parameters
 
@@ -32,8 +33,10 @@ This module deploys an app service environment.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `allowNewPrivateEndpointConnections` | bool | `False` |  | Property to enable and disable new private endpoint connection creation on ASE. Ignored when kind is set to ASEv2. |
 | `clusterSettings` | array | `[System.Management.Automation.OrderedHashtable]` |  | Custom settings for changing the behavior of the App Service Environment. |
-| `dedicatedHostCount` | int | `-1` |  | The Dedicated Host Count. Is not supported by ASEv2. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. |
+| `customDnsSuffixConfiguration` | object | `{object}` |  | CustomDnsSuffixConfiguration resource specific properties. Includes certificateUrl, dnsSuffix and keyVaultReferenceIdentity. Not available when internalLoadBalancingMode is set to None. Cannot be used when kind is set to ASEv2. |
+| `dedicatedHostCount` | int | `0` |  | The Dedicated Host Count. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. Cannot be used when kind is set to ASEv2. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AppServiceEnvironmentPlatformLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -44,14 +47,20 @@ This module deploys an app service environment.
 | `dnsSuffix` | string | `''` |  | DNS suffix of the App Service Environment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
-| `internalLoadBalancingMode` | string | `'None'` | `[None, Publishing, Web]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
-| `ipsslAddressCount` | int | `-1` |  | Number of IP SSL addresses reserved for the App Service Environment. |
-| `kind` | string | `'ASEv3'` |  | Kind of resource. |
+| `ftpEnabled` | bool | `False` |  | Property to enable and disable FTP on ASEV3. Ignored when kind is set to ASEv2. |
+| `inboundIpAddressOverride` | string | `''` |  | Customer provided Inbound IP Address. Only able to be set on Ase create. Ignored when kind is set to ASEv2. |
+| `internalLoadBalancingMode` | string | `'None'` | `[None, Publishing, Web, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
+| `ipsslAddressCount` | int | `0` |  | Number of IP SSL addresses reserved for the App Service Environment. Cannot be used when kind is set to ASEv3. |
+| `kind` | string | `'ASEv3'` | `[ASEv2, ASEv3]` | Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `multiSize` | string | `''` | `['', ExtraLarge, Large, Medium, Standard_D1_V2, Standard_D2, Standard_D2_V2, Standard_D3, Standard_D3_V2, Standard_D4, Standard_D4_V2]` | Frontend VM size. Cannot be used with 'kind' `ASEv3`. |
+| `multiSize` | string | `''` | `['', ExtraLarge, Large, Medium, Standard_D1_V2, Standard_D2, Standard_D2_V2, Standard_D3, Standard_D3_V2, Standard_D4, Standard_D4_V2]` | Frontend VM size. Cannot be used when kind is set to ASEv3. |
+| `remoteDebugEnabled` | bool | `False` |  | Property to enable and disable Remote Debug on ASEv3. Ignored when kind is set to ASEv2. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
+| `upgradePreference` | string | `'None'` | `[Early, Late, Manual, None]` | Specify preference for when and how the planned maintenance is applied. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `userWhitelistedIpRanges` | array | `[]` |  | User added IP ranges to whitelist on ASE DB. Cannot be used with 'kind' `ASEv3`. |
 | `zoneRedundant` | bool | `False` |  | Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled, the `dedicatedHostCount` must be set to `-1`. |
 
@@ -185,6 +194,39 @@ tags: {
     CostCenter: '7890'
     ServiceName: 'DeploymentValidation'
     Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -340,6 +382,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     name: '<<namePrefix>>whasev3001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
+    allowNewPrivateEndpointConnections: true
     clusterSettings: [
       {
         name: 'DisableTls1.0'
@@ -352,7 +395,10 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ftpEnabled: true
+    inboundIpAddressOverride: '10.0.0.10'
     lock: 'CanNotDelete'
+    remoteDebugEnabled: true
     roleAssignments: [
       {
         principalIds: [
@@ -362,6 +408,11 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    systemAssignedIdentity: true
+    upgradePreference: 'Late'
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -386,6 +437,9 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       "value": "<subnetResourceId>"
     },
     // Non-required parameters
+    "allowNewPrivateEndpointConnections": {
+      "value": true
+    },
     "clusterSettings": {
       "value": [
         {
@@ -412,8 +466,17 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "ftpEnabled": {
+      "value": true
+    },
+    "inboundIpAddressOverride": {
+      "value": "10.0.0.10"
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "remoteDebugEnabled": {
+      "value": true
     },
     "roleAssignments": {
       "value": [
@@ -425,6 +488,17 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "upgradePreference": {
+      "value": "Late"
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
