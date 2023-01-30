@@ -12,7 +12,7 @@ on:
         type: boolean
         description: 'Execute deployment validation'
         required: false
-        default: false
+        default: true
       removeDeployment:
         type: boolean
         description: 'Remove deployed module'
