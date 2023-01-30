@@ -7,12 +7,12 @@ on:
         type: boolean
         description: 'Execute static validation'
         required: false
-        default: false
+        default: true
       deploymentValidation:
         type: boolean
         description: 'Execute deployment validation'
         required: false
-        default: true
+        default: false
       removeDeployment:
         type: boolean
         description: 'Remove deployed module'
@@ -105,9 +105,9 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploying'
     if: |
-      ${{ always() }} &&
-      ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }} &&
-      needs.job_module_static_validation.conclusion != 'failed'
+    # ${{ always() }} &&
+      ${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation }}
+    # && needs.job_module_static_validation.conclusion != 'failed'
     needs:
       - job_initialize_pipeline
       - job_module_static_validation
