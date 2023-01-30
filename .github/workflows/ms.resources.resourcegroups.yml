@@ -70,10 +70,9 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
     outputs:
-      removeDeployment: '${{ steps.get-workflow-param.outputs.removeDeployment }}'
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
-      modulePath: '${{ env.modulePath}}'
+      modulePath: '${{ env.modulePath }}'
 
 
   ##############################
@@ -87,7 +86,7 @@ jobs:
     uses: ./.github/workflows/template.module.yml
     with:
       modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
-      removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
+      workflowInput: '${{ needs.job_initialize_pipeline.outputs.workflowInput }}'
       moduleTestFilePaths: '${{ needs.job_initialize_pipeline.outputs.moduleTestFilePaths }}'
       # prerelease: false
     secrets: inherit
