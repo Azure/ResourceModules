@@ -80,7 +80,7 @@ jobs:
   job_module_static_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
-    if: github.event.inputs.staticValidation == 'true'
+    if: github.event.inputs.staticValidation == 'true' || '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation }}' == 'true'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
