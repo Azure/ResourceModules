@@ -29,17 +29,24 @@ This module deploys an app service environment.
 | `name` | string | Name of the App Service Environment. |
 | `subnetResourceId` | string | ResourceId for the subnet. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `customDnsSuffixCertificateUrl` | string | `''` | The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2. |
+| `customDnsSuffixKeyVaultReferenceIdentity` | string | `''` | The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2. |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowNewPrivateEndpointConnections` | bool | `False` |  | Property to enable and disable new private endpoint connection creation on ASE. Ignored when kind is set to ASEv2. |
 | `clusterSettings` | array | `[System.Management.Automation.OrderedHashtable]` |  | Custom settings for changing the behavior of the App Service Environment. |
-| `customDnsSuffixConfiguration` | object | `{object}` |  | CustomDnsSuffixConfiguration resource specific properties. Includes certificateUrl, dnsSuffix and keyVaultReferenceIdentity. Not available when internalLoadBalancingMode is set to None. Cannot be used when kind is set to ASEv2. |
+| `customDnsSuffix` | string | `''` |  | Enable the default custom domain suffix to use for all sites deployed on the ASE. If provided, then customDnsSuffixCertificateUrl and customDnsSuffixKeyVaultReferenceIdentity are required. Cannot be used when kind is set to ASEv2. |
 | `dedicatedHostCount` | int | `0` |  | The Dedicated Host Count. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. Cannot be used when kind is set to ASEv2. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AppServiceEnvironmentPlatformLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, hostingEnvironmentPlatformLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
@@ -238,9 +245,9 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the app service environment. |
-| `resourceGroupName` | string | The resource group the app service environment was deployed into. |
-| `resourceId` | string | The resource ID of the app service environment. |
+| `name` | string | The name of the App Service Environment. |
+| `resourceGroupName` | string | The resource group the App Service Environment was deployed into. |
+| `resourceId` | string | The resource ID of the App Service Environment. |
 
 ## Cross-referenced modules
 
@@ -281,6 +288,8 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipsslAddressCount: 2
     kind: 'ASEv2'
+    location: '<location>'
+    lock: 'CanNotDelete'
     multiSize: 'Standard_D1_V2'
     roleAssignments: [
       {
@@ -291,6 +300,14 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    systemAssignedIdentity: true
+    tags: {
+      hostingEnvironmentName: '<<namePrefix>>whasev2001'
+      resourceType: 'App Service Environment'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -347,6 +364,12 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     "kind": {
       "value": "ASEv2"
     },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
     "multiSize": {
       "value": "Standard_D1_V2"
     },
@@ -360,6 +383,20 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "hostingEnvironmentName": "<<namePrefix>>whasev2001",
+        "resourceType": "App Service Environment"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
@@ -376,10 +413,10 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-whasev3'
+  name: '${uniqueString(deployment().name, location)}-test-<<namePrefix>>v3'
   params: {
     // Required parameters
-    name: '<<namePrefix>>whasev3001'
+    name: '<<namePrefix>><<namePrefix>>v3001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     allowNewPrivateEndpointConnections: true
@@ -389,6 +426,9 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
         value: '1'
       }
     ]
+    customDnsSuffix: 'internal.contoso.com'
+    customDnsSuffixCertificateUrl: '<customDnsSuffixCertificateUrl>'
+    customDnsSuffixKeyVaultReferenceIdentity: '<customDnsSuffixKeyVaultReferenceIdentity>'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -397,6 +437,8 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ftpEnabled: true
     inboundIpAddressOverride: '10.0.0.10'
+    internalLoadBalancingMode: 'Web Publishing'
+    location: '<location>'
     lock: 'CanNotDelete'
     remoteDebugEnabled: true
     roleAssignments: [
@@ -409,6 +451,10 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      hostingEnvironmentName: '<<namePrefix>><<namePrefix>>v3001'
+      resourceType: 'App Service Environment'
+    }
     upgradePreference: 'Late'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -431,7 +477,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>whasev3001"
+      "value": "<<namePrefix>><<namePrefix>>v3001"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -447,6 +493,15 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
           "value": "1"
         }
       ]
+    },
+    "customDnsSuffix": {
+      "value": "internal.contoso.com"
+    },
+    "customDnsSuffixCertificateUrl": {
+      "value": "<customDnsSuffixCertificateUrl>"
+    },
+    "customDnsSuffixKeyVaultReferenceIdentity": {
+      "value": "<customDnsSuffixKeyVaultReferenceIdentity>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -472,6 +527,12 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     "inboundIpAddressOverride": {
       "value": "10.0.0.10"
     },
+    "internalLoadBalancingMode": {
+      "value": "Web, Publishing"
+    },
+    "location": {
+      "value": "<location>"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -491,6 +552,12 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "hostingEnvironmentName": "<<namePrefix>><<namePrefix>>v3001",
+        "resourceType": "App Service Environment"
+      }
     },
     "upgradePreference": {
       "value": "Late"

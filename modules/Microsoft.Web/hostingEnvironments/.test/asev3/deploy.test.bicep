@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.web.hostingenvironments-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'whasev3'
+param serviceShort string = '<<namePrefix>>v3'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -35,6 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
   }
 }
 
@@ -62,7 +64,23 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    location: resourceGroup.location
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    tags: {
+      resourceType: 'App Service Environment'
+      hostingEnvironmentName: '<<namePrefix>>${serviceShort}001'
+    }
     subnetResourceId: nestedDependencies.outputs.subnetResourceId
+    internalLoadBalancingMode: 'Web, Publishing'
     clusterSettings: [
       {
         name: 'DisableTls1.0'
@@ -79,19 +97,12 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    customDnsSuffix: 'internal.contoso.com'
+    customDnsSuffixCertificateUrl: nestedDependencies.outputs.certificateSecretUrl
+    customDnsSuffixKeyVaultReferenceIdentity: nestedDependencies.outputs.managedIdentityResourceId
   }
 }

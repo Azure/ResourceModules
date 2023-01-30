@@ -33,8 +33,15 @@ param clusterSettings array = [
     value: '1'
   }
 ]
-@description('Optional. CustomDnsSuffixConfiguration resource specific properties. Includes certificateUrl, dnsSuffix and keyVaultReferenceIdentity. Not available when internalLoadBalancingMode is set to None. Cannot be used when kind is set to ASEv2.')
-param customDnsSuffixConfiguration object = {}
+
+@description('Optional. Enable the default custom domain suffix to use for all sites deployed on the ASE. If provided, then customDnsSuffixCertificateUrl and customDnsSuffixKeyVaultReferenceIdentity are required. Cannot be used when kind is set to ASEv2.')
+param customDnsSuffix string = ''
+
+@description('Conditional. The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2.')
+param customDnsSuffixCertificateUrl string = ''
+
+@description('Conditional. The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available. Required if customDnsSuffix is not empty. Cannot be used when kind is set to ASEv2.')
+param customDnsSuffixKeyVaultReferenceIdentity string = ''
 
 @description('Optional. The Dedicated Host Count. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0. Cannot be used when kind is set to ASEv2.')
 param dedicatedHostCount int = 0
@@ -132,7 +139,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
   'allLogs'
-  'AppServiceEnvironmentPlatformLogs'
+  'hostingEnvironmentPlatformLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'
@@ -162,6 +169,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
 ] : diagnosticsLogsSpecified
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var enableReferencedModulesTelemetry = false
 
 var identity = identityType != 'None' ? {
   type: identityType
@@ -180,7 +188,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = {
+resource hostingEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = {
   name: name
   kind: kind
   location: location
@@ -188,7 +196,6 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = 
   identity: identity
   properties: {
     clusterSettings: clusterSettings
-    customDnsSuffixConfiguration: !empty(customDnsSuffixConfiguration) ? customDnsSuffixConfiguration : null
     dedicatedHostCount: dedicatedHostCount != 0 ? dedicatedHostCount : null
     dnsSuffix: dnsSuffix
     frontEndScaleFactor: frontEndScaleFactor
@@ -205,27 +212,39 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = 
   }
 }
 
-resource appServiceEnvironment_configurations_networking 'Microsoft.Web/hostingEnvironments/configurations@2022-03-01' = if (kind == 'ASEv3') {
-  name: 'networking'
-  parent: appServiceEnvironment
-  properties: {
+module hostingEnvironment_configurations_networking 'configurations-networking/deploy.bicep' = if (kind == 'ASEv3') {
+  name: '${uniqueString(deployment().name, location)}-HostingEnvironment-Configurations-Networking'
+  params: {
+    hostingEnvironmentName: hostingEnvironment.name
     allowNewPrivateEndpointConnections: allowNewPrivateEndpointConnections
     ftpEnabled: ftpEnabled
     inboundIpAddressOverride: inboundIpAddressOverride
     remoteDebugEnabled: remoteDebugEnabled
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${appServiceEnvironment.name}-${lock}-lock'
+module hostingEnvironment_configurations_customDnsSuffix 'configurations-customDnsSuffix/deploy.bicep' = if (kind == 'ASEv3' && !empty(customDnsSuffix)) {
+  name: '${uniqueString(deployment().name, location)}-HostingEnvironment-Configurations-CustomDnsSuffix'
+  params: {
+    hostingEnvironmentName: hostingEnvironment.name
+    certificateUrl: customDnsSuffixCertificateUrl
+    keyVaultReferenceIdentity: customDnsSuffixKeyVaultReferenceIdentity
+    dnsSuffix: customDnsSuffix
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+resource hostingEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${hostingEnvironment.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: appServiceEnvironment
+  scope: hostingEnvironment
 }
 
-resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
+resource hostingEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -234,11 +253,11 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     logs: diagnosticsLogs
   }
-  scope: appServiceEnvironment
+  scope: hostingEnvironment
 }
 
-module appServiceEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppServiceEnv-Rbac-${index}'
+module hostingEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-HostingEnvironment-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -246,18 +265,18 @@ module appServiceEnvironment_roleAssignments '.bicep/nested_roleAssignments.bice
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: appServiceEnvironment.id
+    resourceId: hostingEnvironment.id
   }
 }]
 
-@description('The resource ID of the app service environment.')
-output resourceId string = appServiceEnvironment.id
+@description('The resource ID of the App Service Environment.')
+output resourceId string = hostingEnvironment.id
 
-@description('The resource group the app service environment was deployed into.')
+@description('The resource group the App Service Environment was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the app service environment.')
-output name string = appServiceEnvironment.name
+@description('The name of the App Service Environment.')
+output name string = hostingEnvironment.name
 
 @description('The location the resource was deployed into.')
-output location string = appServiceEnvironment.location
+output location string = hostingEnvironment.location
