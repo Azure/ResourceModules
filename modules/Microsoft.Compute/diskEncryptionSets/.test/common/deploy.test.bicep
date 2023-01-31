@@ -32,8 +32,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    keyVaultName: 'dep-hook-kv-${serviceShort}'
-    managedIdentityName: 'dep-hook-msi-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'hook${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     keyName: nestedDependencies.outputs.keyName
     keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     roleAssignments: [
