@@ -22,7 +22,7 @@ on:
         type: boolean
         description: 'Publish prerelease module'
         required: false
-        default: true
+        default: false
   push:
     branches:
       - main
@@ -35,14 +35,8 @@ on:
       - '!*/**/readme.md'
 
 env:
-  # # variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Resources/resourceGroups'
   workflowPath: '.github/workflows/ms.resources.resourcegroups.yml'
-  # AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  # ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  # ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  # ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  # TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 concurrency:
   group: ${{ github.workflow }}
@@ -79,18 +73,12 @@ jobs:
   #   Call reusable workflow   #
   ##############################
   call-workflow-passing-data:
-    name: 'Template'
+    name: 'Module'
     needs:
-    - job_initialize_pipeline
+      - job_initialize_pipeline
     uses: ./.github/workflows/template.module.yml
     with:
-      modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
       workflowInput: '${{ needs.job_initialize_pipeline.outputs.workflowInput }}'
       moduleTestFilePaths: '${{ needs.job_initialize_pipeline.outputs.moduleTestFilePaths }}'
-      # prerelease: false
+      modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
     secrets: inherit
-      # AZURE_CREDENTIALS: '${{ secrets.AZURE_CREDENTIALS }}'
-      # ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-      # ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      # ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-      # TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
