@@ -16,7 +16,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
             name: 'standard'
         }
         tenantId: tenant().tenantId
-        enablePurgeProtection: null
+        enablePurgeProtection: true
         enabledForTemplateDeployment: true
         enabledForDiskEncryption: true
         enabledForDeployment: true
@@ -55,3 +55,6 @@ output keyName string = keyVault::key.name
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
