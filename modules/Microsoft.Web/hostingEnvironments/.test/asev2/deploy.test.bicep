@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.web.hostingenvironments-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'whasev2'
+param serviceShort string = 'ziro2'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -32,9 +32,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    networkSecurityGroupName: 'dep-ziro-nsg-${serviceShort}'
+    virtualNetworkName: 'dep-ziro-vnet-${serviceShort}'
+    managedIdentityName: 'dep-ziro-msi-${serviceShort}'
   }
 }
 
@@ -44,10 +44,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'depzirodiasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-ziro-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-ziro-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-ziro-evhns-${serviceShort}'
     location: location
   }
 }
@@ -61,7 +61,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: 'ziro${serviceShort}001'
     location: resourceGroup.location
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -75,7 +75,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     tags: {
       resourceType: 'App Service Environment'
-      hostingEnvironmentName: '<<namePrefix>>${serviceShort}001'
+      hostingEnvironmentName: 'ziro${serviceShort}001'
     }
     subnetResourceId: nestedDependencies.outputs.subnetResourceId
     clusterSettings: [
