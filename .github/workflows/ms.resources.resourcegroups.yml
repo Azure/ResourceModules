@@ -28,6 +28,7 @@ on:
       - main
       - reus-wkf-donotdelete
     paths:
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.resourcegroups.yml'
       - 'modules/Microsoft.Resources/resourceGroups/**'
       - 'utilities/pipelines/**'
