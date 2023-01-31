@@ -20,7 +20,7 @@ param keyVersion string = ''
 ])
 param encryptionType string = 'EncryptionAtRestWithPlatformAndCustomerKeys'
 
-@description('Optional. Multi-tenant application client id to access key vault in a different tenant. Setting the value to "None" will clear the property.')
+@description('Optional. Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property.')
 param federatedClientId string = 'None'
 
 @description('Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.')
