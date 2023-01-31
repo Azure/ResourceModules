@@ -54,6 +54,12 @@ param largeFileSharesState string = 'Disabled'
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
 
+@description('Optional. A boolean flag which indicates whether the default authentication is OAuth or not.')
+param defaultToOAuthAuthentication bool = false
+
+@description('Optional. Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.')
+param allowSharedKeyAccess bool = true
+
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
@@ -65,6 +71,23 @@ param networkAcls object = {}
 
 @description('Optional. A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
+
+@description('Optional. Allow or disallow cross AAD tenant object replication.')
+param allowCrossTenantReplication bool = true
+
+@description('Optional. Sets the custom domain name assigned to the storage account. Name is the CNAME source.')
+param customDomainName string = ''
+
+@description('Optional. Indicates whether indirect CName validation is enabled. This should only be set on updates.')
+param customDomainUseSubDomainName bool = false
+
+@description('Optional. Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier.')
+@allowed([
+  ''
+  'AzureDnsZone'
+  'Standard'
+])
+param dnsEndpointType string = ''
 
 @description('Optional. Blob service and containers to deploy.')
 param blobServices object = {}
@@ -97,6 +120,9 @@ param enableSftp bool = false
 
 @description('Optional. Local users to deploy for SFTP authentication.')
 param localUsers array = []
+
+@description('Optional. Enables local users feature, if set to true.')
+param isLocalUserEnabled bool = false
 
 @description('Optional. If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true.')
 param enableNfsV3 bool = false
@@ -131,6 +157,14 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.')
+@allowed([
+  ''
+  'AAD'
+  'PrivateLink'
+])
+param allowedCopyScope string = ''
 
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.')
 @allowed([
@@ -204,7 +238,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: name
   location: location
   kind: storageAccountKind
@@ -214,6 +248,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   identity: identity
   tags: tags
   properties: {
+    allowSharedKeyAccess: allowSharedKeyAccess
+    defaultToOAuthAuthentication: defaultToOAuthAuthentication
+    allowCrossTenantReplication: allowCrossTenantReplication
+    allowedCopyScope: !empty(allowedCopyScope) ? allowedCopyScope : null
+    customDomain: {
+      name: customDomainName
+      useSubDomainName: customDomainUseSubDomainName
+    }
+    dnsEndpointType: !empty(dnsEndpointType) ? dnsEndpointType : null
+    isLocalUserEnabled: isLocalUserEnabled
     encryption: {
       keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {

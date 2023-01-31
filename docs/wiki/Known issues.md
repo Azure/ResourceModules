@@ -53,11 +53,7 @@ A related issue has been opened in the Bug board [#2391](https://github.com/Azur
 
 ## Microsoft.Network/networkManagers
 
-There is currently an issue when deploying a network manager instance for a management group scope where the management group ID is a `guid`. For example, if the management group resource ID looks like `/providers/Microsoft.Management/managementGroups/f2857922-1732-4c0d-a8d4-7003b13be520`, then this will fail when the deployment happens via code but succeed if it was created using the Azure Portal. This does not impact management group IDs that use a regular string such as `mg-contoso`.
-
-The workaround is to deploy network manager using the Azure Portal first, before triggering it via code. This has been communicated to the network manager team and waiting on investigation outcomes and the documentation will be updated accordingly.
-
-A related issue has been opened in the Bug board [#2551](https://github.com/Azure/ResourceModules/issues/2551) to keep track of the network manager issue.
+In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
 
 ---
 
