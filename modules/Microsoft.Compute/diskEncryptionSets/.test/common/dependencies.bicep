@@ -7,6 +7,11 @@ param keyVaultName string
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+    name: managedIdentityName
+    location: location
+}
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     name: keyVaultName
     location: location
@@ -16,7 +21,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
             name: 'standard'
         }
         tenantId: tenant().tenantId
-        enablePurgeProtection: true
+        enablePurgeProtection: true // Required by disk encryption set
+        softDeleteRetentionInDays: 7
         enabledForTemplateDeployment: true
         enabledForDiskEncryption: true
         enabledForDeployment: true
@@ -32,13 +38,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
-    name: managedIdentityName
-    location: location
-}
-
 resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-KeyVault-Reader-RoleAssignment.')
+    name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
     scope: keyVault::key
     properties: {
         principalId: managedIdentity.properties.principalId
