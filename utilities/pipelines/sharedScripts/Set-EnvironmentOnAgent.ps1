@@ -158,7 +158,6 @@ function Set-EnvironmentOnAgent {
 
     Write-Verbose 'Bicep CLI version:' -Verbose
     bicep --version
-
     <#
     Write-Verbose ("Install bicep start") -Verbose
     # Fetch the latest Bicep CLI binary
