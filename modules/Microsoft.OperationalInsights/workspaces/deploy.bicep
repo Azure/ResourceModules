@@ -28,6 +28,9 @@ param savedSearches array = []
 @description('Optional. LAW data sources to configure.')
 param dataSources array = []
 
+@description('Optional. LAW custom tables to deployed.')
+param tables array = []
+
 @description('Optional. List of gallerySolutions to be created in the log analytics workspace.')
 param gallerySolutions array = []
 
@@ -263,6 +266,21 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
     syslogName: contains(dataSource, 'syslogName') ? dataSource.syslogName : ''
     syslogSeverities: contains(dataSource, 'syslogSeverities') ? dataSource.syslogSeverities : []
     performanceCounters: contains(dataSource, 'performanceCounters') ? dataSource.performanceCounters : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module logAnalyticsWorkspace_tables 'tables/deploy.bicep' = [for (table, index) in tables: {
+  name: '${uniqueString(deployment().name, location)}-LAW-Table-${index}'
+  params: {
+    workspaceName: logAnalyticsWorkspace.name
+    name: table.name
+    plan: contains(table, 'plan') ? table.plan : 'Analytics'
+    schema: contains(table, 'schema') ? table.schema : {}
+    retentionInDays: contains(table, 'retentionInDays') ? table.retentionInDays : -1
+    totalRetentionInDays: contains(table, 'totalRetentionInDays') ? table.totalRetentionInDays : -1
+    restoredLogs: contains(table, 'restoredLogs') ? table.restoredLogs : {}
+    searchResults: contains(table, 'searchResults') ? table.searchResults : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
