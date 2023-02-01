@@ -413,10 +413,10 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
 
 ```bicep
 module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-<<namePrefix>>v3'
+  name: '${uniqueString(deployment().name, location)}-test-whasev3'
   params: {
     // Required parameters
-    name: '<<namePrefix>><<namePrefix>>v3001'
+    name: '<<namePrefix>>whasev3001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     allowNewPrivateEndpointConnections: true
@@ -452,7 +452,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     ]
     systemAssignedIdentity: true
     tags: {
-      hostingEnvironmentName: '<<namePrefix>><<namePrefix>>v3001'
+      hostingEnvironmentName: '<<namePrefix>>whasev3001'
       resourceType: 'App Service Environment'
     }
     upgradePreference: 'Late'
@@ -477,7 +477,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>><<namePrefix>>v3001"
+      "value": "<<namePrefix>>whasev3001"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -555,7 +555,7 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
     },
     "tags": {
       "value": {
-        "hostingEnvironmentName": "<<namePrefix>><<namePrefix>>v3001",
+        "hostingEnvironmentName": "<<namePrefix>>whasev3001",
         "resourceType": "App Service Environment"
       }
     },
