@@ -16,15 +16,15 @@ param enableDefaultTelemetry bool = true
   'Basic'
   'Analytics'
 ])
-param plan string = ''
+param plan string = 'Analytics'
 
 @description('Optional. Restore parameters.')
 param restoredLogs object = {}
 
 @description('Optional. The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.')
-@minValue(4)
+@minValue(-1)
 @maxValue(730)
-param retentionInDays int = 
+param retentionInDays int = -1
 
 @description('Optional. Table\'s schema.')
 param schema object = {}
@@ -33,9 +33,9 @@ param schema object = {}
 param searchResults object = {}
 
 @description('Optional. The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.')
-@minValue(4)
+@minValue(-1)
 @maxValue(2555)
-param totalRetentionInDays int = 
+param totalRetentionInDays int = -1
 
 // =============== //
 //   Deployments   //
