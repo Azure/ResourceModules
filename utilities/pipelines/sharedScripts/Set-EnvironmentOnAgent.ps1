@@ -156,8 +156,11 @@ function Set-EnvironmentOnAgent {
     # Bicep CLI is pre-installed on GitHub hosted runners.
     # https://github.com/actions/virtual-environments#available-environments
 
-    Write-Verbose 'Bicep CLI version:' -Verbose
+    Write-Verbose 'Bicep CLI version (bicep --version):' -Verbose
     bicep --version
+
+    Write-Verbose 'Bicep CLI version (az bicep version):' -Verbose
+    az bicep version
     <#
     Write-Verbose ("Install bicep start") -Verbose
     # Fetch the latest Bicep CLI binary
