@@ -257,152 +257,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Aadvpn</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>nvngavpn001'
-    virtualNetworkGatewaySku: 'VpnGw2AZ'
-    virtualNetworkGatewayType: 'Vpn'
-    vNetResourceId: '<vNetResourceId>'
-    // Non-required parameters
-    activeActive: false
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    domainNameLabel: [
-      '<<namePrefix>>-dm-nvngavpn'
-    ]
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
-    publicIpZones: [
-      '1'
-    ]
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    vpnClientAadConfiguration: {
-      aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
-      aadIssuer: '<aadIssuer>'
-      aadTenant: '<aadTenant>'
-      vpnAuthenticationTypes: [
-        'AAD'
-      ]
-      vpnClientProtocols: [
-        'OpenVPN'
-      ]
-    }
-    vpnType: 'RouteBased'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>nvngavpn001"
-    },
-    "virtualNetworkGatewaySku": {
-      "value": "VpnGw2AZ"
-    },
-    "virtualNetworkGatewayType": {
-      "value": "Vpn"
-    },
-    "vNetResourceId": {
-      "value": "<vNetResourceId>"
-    },
-    // Non-required parameters
-    "activeActive": {
-      "value": false
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "domainNameLabel": {
-      "value": [
-        "<<namePrefix>>-dm-nvngavpn"
-      ]
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "publicIpZones": {
-      "value": [
-        "1"
-      ]
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "vpnClientAadConfiguration": {
-      "value": {
-        "aadAudience": "41b23e61-6c1e-4545-b367-cd054e0ed4b4",
-        "aadIssuer": "<aadIssuer>",
-        "aadTenant": "<aadTenant>",
-        "vpnAuthenticationTypes": [
-          "AAD"
-        ],
-        "vpnClientProtocols": [
-          "OpenVPN"
-        ]
-      }
-    },
-    "vpnType": {
-      "value": "RouteBased"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Expressroute</h3>
+<h3>Example 1: Expressroute</h3>
 
 <details>
 
@@ -527,7 +382,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 </details>
 <p>
 
-<h3>Example 3: Vpn</h3>
+<h3>Example 2: Vpn</h3>
 
 <details>
 
@@ -639,6 +494,151 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "vpnType": {
+      "value": "RouteBased"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Aadvpn</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nvngavpn001'
+    virtualNetworkGatewaySku: 'VpnGw2AZ'
+    virtualNetworkGatewayType: 'Vpn'
+    vNetResourceId: '<vNetResourceId>'
+    // Non-required parameters
+    activeActive: false
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    domainNameLabel: [
+      '<<namePrefix>>-dm-nvngavpn'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    publicIpZones: [
+      '1'
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    vpnClientAadConfiguration: {
+      vpnAuthenticationTypes: [
+        'AAD'
+      ]
+      vpnClientProtocols: [
+        'OpenVPN'
+      ]
+      aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
+      aadIssuer: '<aadIssuer>'
+      aadTenant: '<aadTenant>'
+    }
+    vpnType: 'RouteBased'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nvngavpn001"
+    },
+    "virtualNetworkGatewaySku": {
+      "value": "VpnGw2AZ"
+    },
+    "virtualNetworkGatewayType": {
+      "value": "Vpn"
+    },
+    "vNetResourceId": {
+      "value": "<vNetResourceId>"
+    },
+    // Non-required parameters
+    "activeActive": {
+      "value": false
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "domainNameLabel": {
+      "value": [
+        "<<namePrefix>>-dm-nvngavpn"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "publicIpZones": {
+      "value": [
+        "1"
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "vpnClientAadConfiguration": {
+      "value": {
+        "vpnAuthenticationTypes": [
+          "AAD"
+        ],
+        "vpnClientProtocols": [
+          "OpenVPN"
+        ],
+        "aadAudience": "41b23e61-6c1e-4545-b367-cd054e0ed4b4",
+        "aadIssuer": "<aadIssuer>",
+        "aadTenant": "<aadTenant>"
+      }
     },
     "vpnType": {
       "value": "RouteBased"

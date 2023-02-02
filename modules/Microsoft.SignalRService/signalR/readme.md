@@ -292,8 +292,8 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
-    disableAadAuth: false
     disableLocalAuth: true
+    disableAadAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'SignalR'
     location: '<location>'
@@ -371,11 +371,11 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     "clientCertEnabled": {
       "value": false
     },
-    "disableAadAuth": {
-      "value": false
-    },
     "disableLocalAuth": {
       "value": true
+    },
+    "disableAadAuth": {
+      "value": false
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"

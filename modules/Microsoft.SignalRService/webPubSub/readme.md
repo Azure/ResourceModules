@@ -398,8 +398,8 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
-    disableAadAuth: false
     disableLocalAuth: true
+    disableAadAuth: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -477,11 +477,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     "clientCertEnabled": {
       "value": false
     },
-    "disableAadAuth": {
-      "value": false
-    },
     "disableLocalAuth": {
       "value": true
+    },
+    "disableAadAuth": {
+      "value": false
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"

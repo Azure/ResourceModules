@@ -46,7 +46,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `administratorLogin` | string | The username used to establish jumpbox VMs. |
-| `administratorLoginPassword` | secureString | The password given to the admin user. |
+| `administratorLoginPassword` | securestring | The password given to the admin user. |
 | `name` | string | The name of the SQL managed instance. |
 | `subnetId` | string | The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
 
