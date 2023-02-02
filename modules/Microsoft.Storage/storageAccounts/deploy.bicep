@@ -40,7 +40,6 @@ param storageAccountSku string = 'Standard_GRS'
 @allowed([
   'Hot'
   'Cool'
-  'Premium'
 ])
 @description('Optional. Storage Account Access Tier.')
 param storageAccountAccessTier string = 'Hot'
