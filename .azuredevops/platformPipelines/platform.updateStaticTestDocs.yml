@@ -9,7 +9,9 @@ trigger:
       - main
   paths:
     include:
+      - .azuredevops/platformPipelines/platform.updateStaticTestDocs.yml
       - 'utilities/pipelines/staticValidation/module.tests.ps1'
+      - utilities/tools/platform/Set-StaticTestDocumentation.ps1
 
 variables:
   - template: "../../settings.yml"
