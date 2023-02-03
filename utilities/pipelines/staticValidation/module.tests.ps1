@@ -540,137 +540,137 @@ Describe 'Readme tests' -Tag 'Readme' {
     }
 }
 
-# Describe 'Test file tests' -Tag 'TestTemplate' {
+Describe 'Test file tests' -Tag 'TestTemplate' {
 
-#     Context 'General test file' {
+    Context 'General test file' {
 
-#         $deploymentTestFileTestCases = @()
+        $deploymentTestFileTestCases = @()
 
-#         foreach ($moduleFolderPath in $moduleFolderPaths) {
-#             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-#                 $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
-#                 foreach ($testFilePath in $testFilePaths) {
-#                     $testFileContent = Get-Content $testFilePath
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
+                foreach ($testFilePath in $testFilePaths) {
+                    $testFileContent = Get-Content $testFilePath
 
-#                     if ((Split-Path $testFilePath -Extension) -eq '.json') {
-#                         # Skip any classic parameter files
-#                         $contentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
-#                         $isParameterFile = $contentHashtable.'$schema' -like '*deploymentParameters*'
-#                         if ($isParameterFile) {
-#                             continue
-#                         }
-#                     }
+                    if ((Split-Path $testFilePath -Extension) -eq '.json') {
+                        # Skip any classic parameter files
+                        $contentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
+                        $isParameterFile = $contentHashtable.'$schema' -like '*deploymentParameters*'
+                        if ($isParameterFile) {
+                            continue
+                        }
+                    }
 
-#                     $deploymentTestFileTestCases += @{
-#                         testFilePath     = $testFilePath
-#                         testFileContent  = $testFileContent
-#                         moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-#                     }
-#                 }
-#             }
-#         }
+                    $deploymentTestFileTestCases += @{
+                        testFilePath     = $testFilePath
+                        testFileContent  = $testFileContent
+                        moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                    }
+                }
+            }
+        }
 
-#         It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*deploy.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*deploy.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
-#             param(
-#                 [object[]] $testFileContent
-#             )
+            param(
+                [object[]] $testFileContent
+            )
 
-#             $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*deploy.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
+            $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*deploy.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
 
-#             $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
-#         }
+            $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
+        }
 
-#         It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
-#             param(
-#                 [object[]] $testFileContent
-#             )
+            param(
+                [object[]] $testFileContent
+            )
 
-#             $expectedNameFormat = ($testFileContent | Out-String) -match '\s*name:.+-test-.+\s*'
+            $expectedNameFormat = ($testFileContent | Out-String) -match '\s*name:.+-test-.+\s*'
 
-#             $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
-#         }
+            $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
+        }
 
-#         It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
-#             param(
-#                 [object[]] $testFileContent
-#             )
+            param(
+                [object[]] $testFileContent
+            )
 
-#             $hasExpectedParam = ($testFileContent | Out-String) -match '\s*param\s+serviceShort\s+string\s*'
+            $hasExpectedParam = ($testFileContent | Out-String) -match '\s*param\s+serviceShort\s+string\s*'
 
-#             $hasExpectedParam | Should -Be $true
-#         }
+            $hasExpectedParam | Should -Be $true
+        }
 
-#         It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
-#             param(
-#                 [object[]] $testFileContent
-#             )
+            param(
+                [object[]] $testFileContent
+            )
 
-#             # Handle case of deployment test file (instead of ARM-JSON parameter file)
-#             $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
+            # Handle case of deployment test file (instead of ARM-JSON parameter file)
+            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
 
-#             # Uses deployment test file (instead of parameter file). Need to extract parameters.
-#             $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
+            # Uses deployment test file (instead of parameter file). Need to extract parameters.
+            $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
 
-#             $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
-#         }
+            $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
+        }
 
-#         It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
-#             param(
-#                 [object[]] $testFileContent
-#             )
+            param(
+                [object[]] $testFileContent
+            )
 
-#             $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99 -AsHashtable
-#             $rawContentHashtable.parameters.keys | Should -Contain 'serviceShort'
-#         }
-#     }
+            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99 -AsHashtable
+            $rawContentHashtable.parameters.keys | Should -Contain 'serviceShort'
+        }
+    }
 
-#     Context 'Token usage' {
+    Context 'Token usage' {
 
-#         # Parameter file test cases
-#         $parameterFileTokenTestCases = @()
+        # Parameter file test cases
+        $parameterFileTokenTestCases = @()
 
-#         foreach ($moduleFolderPath in $moduleFolderPaths) {
-#             if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-#                 $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
-#                 foreach ($testFilePath in $testFilePaths) {
-#                     foreach ($token in $enforcedTokenList.Keys) {
-#                         $parameterFileTokenTestCases += @{
-#                             testFilePath      = $testFilePath
-#                             parameterFileName = Split-Path $testFilePath -Leaf
-#                             tokenSettings     = $Settings.parameterFileTokens
-#                             tokenName         = $token
-#                             tokenValue        = $enforcedTokenList[$token]
-#                             moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-#                         }
-#                     }
-#                 }
-#             }
-#         }
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
+                foreach ($testFilePath in $testFilePaths) {
+                    foreach ($token in $enforcedTokenList.Keys) {
+                        $parameterFileTokenTestCases += @{
+                            testFilePath      = $testFilePath
+                            parameterFileName = Split-Path $testFilePath -Leaf
+                            tokenSettings     = $Settings.parameterFileTokens
+                            tokenName         = $token
+                            tokenValue        = $enforcedTokenList[$token]
+                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                        }
+                    }
+                }
+            }
+        }
 
-#         It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
-#             param (
-#                 [string] $testFilePath,
-#                 [string] $parameterFileName,
-#                 [hashtable] $tokenSettings,
-#                 [string] $tokenName,
-#                 [string] $tokenValue,
-#                 [string] $moduleFolderName
-#             )
-#             $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
-#             $ParameterFileContent = Get-Content -Path $testFilePath
+        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+            param (
+                [string] $testFilePath,
+                [string] $parameterFileName,
+                [hashtable] $tokenSettings,
+                [string] $tokenName,
+                [string] $tokenValue,
+                [string] $moduleFolderName
+            )
+            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
+            $ParameterFileContent = Get-Content -Path $testFilePath
 
-#             $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-#             if ($incorrectReferencesFound.Matches) {
-#                 $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
-#             }
-#         }
-#     }
-# }
+            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
+            if ($incorrectReferencesFound.Matches) {
+                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
+            }
+        }
+    }
+}
 
 # Describe 'Deployment template tests' -Tag 'Template' {
 
