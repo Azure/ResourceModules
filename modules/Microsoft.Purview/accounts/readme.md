@@ -1,4 +1,4 @@
-# `[Microsoft.]`
+# `[Microsoft.Purview/accounts]`
 
 This module deploys .
 // TODO: Replace Resource and fill in description
@@ -9,6 +9,7 @@ This module deploys .
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -242,4 +243,165 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.Network/privateEndpoints` | Local reference |
+
+## Deployment examples
+
+The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
+   >**Note**: The name of each example is based on the name of the file from which it is taken.
+
+   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
+
+<h3>Example 1: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-pviewcom'
+  params: {
+    // Required parameters
+    managedResourceGroupName: '<<namePrefix>>pviewcom002-managed-rg'
+    name: '<<namePrefix>>pviewcom002'
+    // Non-required parameters
+    accountPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-account'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventHubPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-eh'
+    portalPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-portal'
+    publicNetworkAccess: 'Disabled'
+    storageAccountBlobPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-sa-blob-blob'
+    storageAccountQueuePrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-sa-queue-blob'
+    subnetId: '<subnetId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managedResourceGroupName": {
+      "value": "<<namePrefix>>pviewcom002-managed-rg"
+    },
+    "name": {
+      "value": "<<namePrefix>>pviewcom002"
+    },
+    // Non-required parameters
+    "accountPrivateEndpointName": {
+      "value": "pe-<<namePrefix>>pviewcom002-account"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "eventHubPrivateEndpointName": {
+      "value": "pe-<<namePrefix>>pviewcom002-eh"
+    },
+    "portalPrivateEndpointName": {
+      "value": "pe-<<namePrefix>>pviewcom002-portal"
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "storageAccountBlobPrivateEndpointName": {
+      "value": "pe-<<namePrefix>>pviewcom002-sa-blob-blob"
+    },
+    "storageAccountQueuePrivateEndpointName": {
+      "value": "pe-<<namePrefix>>pviewcom002-sa-queue-blob"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-pviewmin'
+  params: {
+    // Required parameters
+    managedResourceGroupName: '<<namePrefix>>pviewmin001-managed-rg'
+    name: '<<namePrefix>>pviewmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    publicNetworkAccess: 'Enabled'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "managedResourceGroupName": {
+      "value": "<<namePrefix>>pviewmin001-managed-rg"
+    },
+    "name": {
+      "value": "<<namePrefix>>pviewmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "publicNetworkAccess": {
+      "value": "Enabled"
+    }
+  }
+}
+```
+
+</details>
+<p>
