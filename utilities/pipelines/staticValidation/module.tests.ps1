@@ -824,7 +824,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources`' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources` ' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
