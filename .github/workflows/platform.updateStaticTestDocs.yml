@@ -6,7 +6,9 @@ on:
     branches:
       - main
     paths:
+      - '.github/workflows/platform.updateStaticTestDocs.yml'
       - 'utilities/pipelines/staticValidation/module.tests.ps1'
+      - utilities/tools/platform/Set-StaticTestDocumentation.ps1
 
 env:
   pipelinePrincipalGitUserName: "CARMLPipelinePrincipal"
