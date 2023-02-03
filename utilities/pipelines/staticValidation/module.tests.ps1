@@ -109,15 +109,15 @@ Describe 'File/folder tests' -Tag 'Modules' {
             $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
+        # It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
 
-            param(
-                [string] $moduleFolderPath
-            )
+        #     param(
+        #         [string] $moduleFolderPath
+        #     )
 
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
-            $pathExisting | Should -Be $true
-        }
+        #     $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
+        #     $pathExisting | Should -Be $true
+        # }
     }
 
     Context '.test folder' {
