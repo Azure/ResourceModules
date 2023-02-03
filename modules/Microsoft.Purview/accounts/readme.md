@@ -29,17 +29,18 @@ This module deploys .
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `managedResourceGroupName` | string | The Managed Resource Group Name. |
+| `name` | string | Name of the Purview Account |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `accountPrivateEndpointName` | string | `''` | Name of the Purview Account Private Endpoint. Required for the Purview account Private Endpoint. |
-| `eventHubPrivateEndpointName` | string | `''` | Name of the managed Event Hub Namespace Private Endpoint. Required for the managed Event Hub Namespace private endpoint. |
-| `portalPrivateEndpointName` | string | `''` | Name of the Purview Portal Private Endpoint. Required for the Purview portal Private Endpoint. |
-| `storageAccountBlobPrivateEndpointName` | string | `''` | Name of the managed Storage Account blob Private Endpoint. Required for the managed storage account blob private endpoint. |
-| `storageAccountQueuePrivateEndpointName` | string | `''` | Name of the managed Storage Account queue Private Endpoint. Required for the managed storage account queue private endpoint |
-| `subnetId` | string | `''` | Existing Subnet Resource ID to assign to the Private Endpoint. Required for Private Endpoints. |
+| `accountPrivateEndpointName` | string | `''` | Name of the Purview Account Private Endpoint. Required if the Purview account Private Endpoint is required. |
+| `eventHubPrivateEndpointName` | string | `''` | Name of the managed Event Hub Namespace Private Endpoint. Required if the managed Event Hub Namespace private endpoint is required. |
+| `portalPrivateEndpointName` | string | `''` | Name of the Purview Portal Private Endpoint. Required if the Purview portal Private Endpoint is required. |
+| `storageAccountBlobPrivateEndpointName` | string | `''` | Name of the managed Storage Account blob Private Endpoint. Required if the managed storage account blob private endpoint is required. |
+| `storageAccountQueuePrivateEndpointName` | string | `''` | Name of the managed Storage Account queue Private Endpoint. Required if the managed storage account queue private endpoint is required. |
+| `subnetId` | string | `''` | Existing Subnet Resource ID to assign to the Private Endpoint. Required if Private Endpoints are required. |
 
 **Optional parameters**
 
@@ -58,6 +59,7 @@ This module deploys .
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventHubPrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Event Hub Namespace private endpoint. |
 | `eventHubPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Event Hub Namespace private endpoint. |
+| `location` | string | `[resourceGroup().location]` |  | Azure location where the Purview Account will be created |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `portalPrivateEndpointIP` | string | `''` |  | The static privavte IP address for the Purview Portal private endpoint. |
 | `portalPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the Purview Portal private endpoint. |
@@ -67,22 +69,8 @@ This module deploys .
 | `storageAccountBlobPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Storage Account blob private endpoint. |
 | `storageAccountQueuePrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Storage Account blob private endpoint. |
 | `storageAccountQueuePrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Storage Account queue private endpoint. |
+| `tags` | object | `{object}` |  | Resource Tags |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-
-**Azure location where the Purview Account will be created parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Name of the Purview Account parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Tags parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
@@ -226,19 +214,19 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `accountName` | string | The name of the Microsoft Purview Account. |
-| `accountPrivateEndpointId` | string | The resource ID of the Purview Account private endpoint |
-| `eventHubPrivateEndpointId` | string | The resource ID of the Purview Managed Event Hub Namepsace private endpoint |
+| `accountPrivateEndpointId` | string | The resource ID of the Purview Account private endpoint. |
+| `eventHubPrivateEndpointId` | string | The resource ID of the Purview Managed Event Hub Namepsace private endpoint. |
 | `location` | string | The location the resource was deployed into. |
-| `managedEventHubId` | string | The resource ID of the managed Event Hub Namespace |
+| `managedEventHubId` | string | The resource ID of the managed Event Hub Namespace. |
 | `managedResourceGroupId` | string | The resource ID of the managed resource group. |
 | `managedResourceGroupName` | string | The name of the managed resource group. |
 | `managedStorageAccountId` | string | The resource ID of the managed storage account. |
-| `portalPrivateEndpointId` | string | The resource ID of the Purview portal private endpoint |
+| `name` | string | The name of the Microsoft Purview Account. |
+| `portalPrivateEndpointId` | string | The resource ID of the Purview portal private endpoint. |
 | `resourceGroupName` | string | The resource group the Microsoft Purview Account was deployed into. |
 | `resourceId` | string | The resource ID of the Microsoft Purview Account. |
-| `storageAccountBlobPrivateEndpointId` | string | The resource ID of the Purview Managed Storage Account Blob private endpoint |
-| `storageAccountQueuePrivateEndpointId` | string | The resource ID of the Purview Managed Storage Account Queue private endpoint |
+| `storageAccountBlobPrivateEndpointId` | string | The resource ID of the Purview Managed Storage Account Blob private endpoint. |
+| `storageAccountQueuePrivateEndpointId` | string | The resource ID of the Purview Managed Storage Account Queue private endpoint. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
@@ -270,19 +258,40 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     managedResourceGroupName: '<<namePrefix>>pviewcom002-managed-rg'
     name: '<<namePrefix>>pviewcom002'
     // Non-required parameters
+    accountPrivateEndpointIP: ''
     accountPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-account'
+    accountPrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-account'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogCategoriesToEnable: [
+      'allLogs'
+    ]
     diagnosticLogsRetentionInDays: 7
+    diagnosticMetricsToEnable: [
+      'AllMetrics'
+    ]
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventHubPrivateEndpointIP: ''
     eventHubPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-eh'
+    eventHubPrivateEndpointNicName: 'nic-e-<<namePrefix>>pviewcom002-eh'
+    location: '<location>'
+    lock: ''
+    portalPrivateEndpointIP: ''
     portalPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-portal'
+    portalPrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-portal'
     publicNetworkAccess: 'Disabled'
+    roleAssignments: []
+    storageAccountBlobPrivateEndpointIP: ''
     storageAccountBlobPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-sa-blob-blob'
+    storageAccountBlobPrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-sa-blob-blob'
+    storageAccountQueuePrivateEndpointIP: ''
     storageAccountQueuePrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-sa-queue-blob'
+    storageAccountQueuePrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-sa-queue-blob'
     subnetId: '<subnetId>'
+    tags: '<tags>'
+    userAssignedIdentities: {}
   }
 }
 ```
@@ -307,8 +316,14 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
       "value": "<<namePrefix>>pviewcom002"
     },
     // Non-required parameters
+    "accountPrivateEndpointIP": {
+      "value": ""
+    },
     "accountPrivateEndpointName": {
       "value": "pe-<<namePrefix>>pviewcom002-account"
+    },
+    "accountPrivateEndpointNicName": {
+      "value": "nic-pe-<<namePrefix>>pviewcom002-account"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -316,8 +331,18 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     "diagnosticEventHubName": {
       "value": "<diagnosticEventHubName>"
     },
+    "diagnosticLogCategoriesToEnable": {
+      "value": [
+        "allLogs"
+      ]
+    },
     "diagnosticLogsRetentionInDays": {
       "value": 7
+    },
+    "diagnosticMetricsToEnable": {
+      "value": [
+        "AllMetrics"
+      ]
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
@@ -328,23 +353,62 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "eventHubPrivateEndpointIP": {
+      "value": ""
+    },
     "eventHubPrivateEndpointName": {
       "value": "pe-<<namePrefix>>pviewcom002-eh"
+    },
+    "eventHubPrivateEndpointNicName": {
+      "value": "nic-e-<<namePrefix>>pviewcom002-eh"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "lock": {
+      "value": ""
+    },
+    "portalPrivateEndpointIP": {
+      "value": ""
     },
     "portalPrivateEndpointName": {
       "value": "pe-<<namePrefix>>pviewcom002-portal"
     },
+    "portalPrivateEndpointNicName": {
+      "value": "nic-pe-<<namePrefix>>pviewcom002-portal"
+    },
     "publicNetworkAccess": {
       "value": "Disabled"
+    },
+    "roleAssignments": {
+      "value": []
+    },
+    "storageAccountBlobPrivateEndpointIP": {
+      "value": ""
     },
     "storageAccountBlobPrivateEndpointName": {
       "value": "pe-<<namePrefix>>pviewcom002-sa-blob-blob"
     },
+    "storageAccountBlobPrivateEndpointNicName": {
+      "value": "nic-pe-<<namePrefix>>pviewcom002-sa-blob-blob"
+    },
+    "storageAccountQueuePrivateEndpointIP": {
+      "value": ""
+    },
     "storageAccountQueuePrivateEndpointName": {
       "value": "pe-<<namePrefix>>pviewcom002-sa-queue-blob"
     },
+    "storageAccountQueuePrivateEndpointNicName": {
+      "value": "nic-pe-<<namePrefix>>pviewcom002-sa-queue-blob"
+    },
     "subnetId": {
       "value": "<subnetId>"
+    },
+    "tags": {
+      "value": "<tags>"
+    },
+    "userAssignedIdentities": {
+      "value": {}
     }
   }
 }

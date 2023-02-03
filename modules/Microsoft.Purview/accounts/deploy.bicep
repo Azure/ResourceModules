@@ -1,10 +1,10 @@
-@description('Azure location where the Purview Account will be created')
+@description('Optional. Azure location where the Purview Account will be created')
 param location string = resourceGroup().location
 
-@description('Name of the Purview Account')
+@description('Required. Name of the Purview Account')
 param name string
 
-@description('Tags')
+@description('Optional. Resource Tags')
 param tags object = {}
 
 @description('Optional. The ID(s) to assign to the resource.')
@@ -41,10 +41,10 @@ param diagnosticEventHubName string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Conditional. Existing Subnet Resource ID to assign to the Private Endpoint. Required for Private Endpoints.')
+@description('Conditional. Existing Subnet Resource ID to assign to the Private Endpoint. Required if Private Endpoints are required.')
 param subnetId string = ''
 
-@description('Conditional. Name of the Purview Account Private Endpoint. Required for the Purview account Private Endpoint.')
+@description('Conditional. Name of the Purview Account Private Endpoint. Required if the Purview account Private Endpoint is required.')
 param accountPrivateEndpointName string = ''
 
 @description('Optional. The custom name of the network interface attached to the Purview Account private endpoint.')
@@ -53,7 +53,7 @@ param accountPrivateEndpointNicName string = ''
 @description('Optional. The static privavte IP address for the Purview Account private endpoint.')
 param accountPrivateEndpointIP string = ''
 
-@description('Conditional. Name of the Purview Portal Private Endpoint. Required for the Purview portal Private Endpoint.')
+@description('Conditional. Name of the Purview Portal Private Endpoint. Required if the Purview portal Private Endpoint is required.')
 param portalPrivateEndpointName string = ''
 
 @description('Optional. The custom name of the network interface attached to the Purview Portal private endpoint.')
@@ -62,7 +62,7 @@ param portalPrivateEndpointNicName string = ''
 @description('Optional. The static privavte IP address for the Purview Portal private endpoint.')
 param portalPrivateEndpointIP string = ''
 
-@description('Conditional. Name of the managed Storage Account blob Private Endpoint. Required for the managed storage account blob private endpoint.')
+@description('Conditional. Name of the managed Storage Account blob Private Endpoint. Required if the managed storage account blob private endpoint is required.')
 param storageAccountBlobPrivateEndpointName string = ''
 
 @description('Optional. The custom name of the network interface attached to the managed Storage Account blob private endpoint.')
@@ -71,7 +71,7 @@ param storageAccountBlobPrivateEndpointNicName string = ''
 @description('Optional. The static private IP address for the managed Storage Account blob private endpoint.')
 param storageAccountBlobPrivateEndpointIP string = ''
 
-@description('Conditional. Name of the managed Storage Account queue Private Endpoint. Required for the managed storage account queue private endpoint')
+@description('Conditional. Name of the managed Storage Account queue Private Endpoint. Required if the managed storage account queue private endpoint is required.')
 param storageAccountQueuePrivateEndpointName string = ''
 
 @description('Optional. The custom name of the network interface attached to the managed Storage Account queue private endpoint.')
@@ -80,7 +80,7 @@ param storageAccountQueuePrivateEndpointNicName string = ''
 @description('Optional. The static private IP address for the managed Storage Account blob private endpoint.')
 param storageAccountQueuePrivateEndpointIP string = ''
 
-@description('Conditional. Name of the managed Event Hub Namespace Private Endpoint. Required for the managed Event Hub Namespace private endpoint.')
+@description('Conditional. Name of the managed Event Hub Namespace Private Endpoint. Required if the managed Event Hub Namespace private endpoint is required.')
 param eventHubPrivateEndpointName string = ''
 
 @description('Optional. The custom name of the network interface attached to the managed Event Hub Namespace private endpoint.')
@@ -352,7 +352,7 @@ module purview_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
 }]
 
 @description('The name of the Microsoft Purview Account.')
-output accountName string = purviewAccount.name
+output name string = purviewAccount.name
 
 @description('The resource group the Microsoft Purview Account was deployed into.')
 output resourceGroupName string = resourceGroup().name
@@ -361,7 +361,7 @@ output resourceGroupName string = resourceGroup().name
 output resourceId string = purviewAccount.id
 
 @description('The location the resource was deployed into.')
-output location string = location
+output location string = purviewAccount.location
 
 @description('The name of the managed resource group.')
 output managedResourceGroupName string = purviewAccount.properties.managedResourceGroupName
@@ -372,23 +372,23 @@ output managedResourceGroupId string = purviewAccount.properties.managedResource
 @description('The resource ID of the managed storage account.')
 output managedStorageAccountId string = purviewAccount.properties.managedResources.storageAccount
 
-@description('The resource ID of the managed Event Hub Namespace')
+@description('The resource ID of the managed Event Hub Namespace.')
 output managedEventHubId string = purviewAccount.properties.managedResources.eventHubNamespace
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = purviewAccount.identity.principalId
 
-@description('The resource ID of the Purview Account private endpoint')
+@description('The resource ID of the Purview Account private endpoint.')
 output accountPrivateEndpointId string = !empty(accountPrivateEndpointName) ? purviewAccountPE.outputs.resourceId : ''
 
-@description('The resource ID of the Purview portal private endpoint')
+@description('The resource ID of the Purview portal private endpoint.')
 output portalPrivateEndpointId string = !empty(portalPrivateEndpointName) ? purviewPortalPE.outputs.resourceId : ''
 
-@description('The resource ID of the Purview Managed Storage Account Blob private endpoint')
+@description('The resource ID of the Purview Managed Storage Account Blob private endpoint.')
 output storageAccountBlobPrivateEndpointId string = !empty(storageAccountBlobPrivateEndpointName) ? storageBlobPe.outputs.resourceId : ''
 
-@description('The resource ID of the Purview Managed Storage Account Queue private endpoint')
+@description('The resource ID of the Purview Managed Storage Account Queue private endpoint.')
 output storageAccountQueuePrivateEndpointId string = !empty(storageAccountQueuePrivateEndpointName) ? storageQueuePe.outputs.resourceId : ''
 
-@description('The resource ID of the Purview Managed Event Hub Namepsace private endpoint')
+@description('The resource ID of the Purview Managed Event Hub Namepsace private endpoint.')
 output eventHubPrivateEndpointId string = !empty(eventHubPrivateEndpointName) ? eventHubPe.outputs.resourceId : ''

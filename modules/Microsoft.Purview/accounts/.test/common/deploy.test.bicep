@@ -10,6 +10,9 @@ param resourceGroupName string = 'ms.purview-${serviceShort}-rg'
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
+@description('Tags')
+param tags object = {}
+
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'pviewcom'
 
@@ -47,6 +50,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
     eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}01'
     eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}01'
     location: location
+
   }
 }
 
@@ -59,6 +63,9 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}002'
+    location: location
+    tags: tags
+    userAssignedIdentities: {}
     managedResourceGroupName: '<<namePrefix>>${serviceShort}002-managed-rg'
     publicNetworkAccess: 'Disabled'
     diagnosticLogsRetentionInDays: 7
@@ -66,12 +73,26 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    roleAssignments: []
     subnetId: resourceGroupResources.outputs.subnetResourceId
     accountPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-account'
+    accountPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-account'
+    accountPrivateEndpointIP: ''
     portalPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-portal'
+    portalPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-portal'
+    portalPrivateEndpointIP: ''
     storageAccountBlobPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-sa-blob-blob'
+    storageAccountBlobPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-sa-blob-blob'
+    storageAccountBlobPrivateEndpointIP: ''
     storageAccountQueuePrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-sa-queue-blob'
+    storageAccountQueuePrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-sa-queue-blob'
+    storageAccountQueuePrivateEndpointIP: ''
     eventHubPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-eh'
+    eventHubPrivateEndpointNicName: 'nic-e-<<namePrefix>>${serviceShort}002-eh'
+    eventHubPrivateEndpointIP: ''
     enableDefaultTelemetry: enableDefaultTelemetry
+    diagnosticLogCategoriesToEnable: [ 'allLogs' ]
+    diagnosticMetricsToEnable: [ 'AllMetrics' ]
+    lock: ''
   }
 }
