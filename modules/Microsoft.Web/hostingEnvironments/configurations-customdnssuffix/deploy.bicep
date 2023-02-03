@@ -25,13 +25,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource hostingEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' existing = {
+resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' existing = {
   name: hostingEnvironmentName
 }
 
 resource configuration 'Microsoft.Web/hostingEnvironments/configurations@2022-03-01' = {
   name: 'customdnssuffix'
-  parent: hostingEnvironment
+  parent: appServiceEnvironment
   properties: {
     certificateUrl: certificateUrl
     keyVaultReferenceIdentity: keyVaultReferenceIdentity
