@@ -3,7 +3,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
-        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
     [Parameter(Mandatory = $false)]
@@ -80,31 +80,43 @@ Describe 'File/folder tests' -Tag 'Modules' {
             }
         }
 
-        It '[<moduleFolderName>] Module should contain a [`deploy.json`/`deploy.bicep`] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 
-            $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
-            $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
-            ($hasARM -or $hasBicep) | Should -Be $true
+            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')
+            $hasBicep = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep')
+                ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` readme.md `] file' -TestCases $moduleFolderTestCases {
 
-            param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')
+            $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [` .test `] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-            param( [string] $moduleFolderPath )
-            Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath '.test')
+            $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` version.json `] file' -TestCases $moduleFolderTestCases {
 
-            param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+            param (
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
+            $pathExisting | Should -Be $true
         }
     }
 
@@ -824,7 +836,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources`' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources` ' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1154,7 +1166,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
     }
 }
 
-Describe 'API version tests' -Tag ApiCheck {
+Describe 'API version tests' -Tag 'ApiCheck' {
 
     $testCases = @()
     $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'
