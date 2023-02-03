@@ -1,0 +1,67 @@
+name: ".Platform - Update Static Test Documentation"
+
+pr: none
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - .azuredevops/platformPipelines/platform.updateStaticTestDocs.yml
+      - 'utilities/pipelines/staticValidation/module.tests.ps1'
+      - utilities/tools/platform/Set-StaticTestDocumentation.ps1
+
+variables:
+  - template: "../../settings.yml"
+  - name: pipelinePrincipalGitUserName
+    value: "CARMLPipelinePrincipal"
+  - name: pipelinePrincipalGitUserEmail
+    value: "CARML@noreply.github.com"
+
+jobs:
+  - job: Update_Static_Test_Docs
+    displayName: Update Static Tests Documentation
+    pool:
+      ${{ if ne(variables.vmImage, '') }}:
+        vmImage: ${{ variables.vmImage }}
+      ${{ if ne(variables.poolName, '') }}:
+        name: ${{ variables.poolName }}
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: PowerShell@2
+        displayName: "Update file"
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-StaticTestDocumentation.ps1')
+
+            $functionInput = @{
+              TestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'staticValidation' 'module.tests.ps1'
+              WikiFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The CI environment - Static validation.md'
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-StaticTestDocumentation @functionInput -Verbose
+
+      - task: PowerShell@2
+        displayName: "Push changes"
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            git config --global user.email '$(pipelinePrincipalGitUserEmail)'
+            git config --global user.name '$(pipelinePrincipalGitUserName)'
+
+            git add .
+            git status
+            git commit -m 'Push updated API Specs file'
+            git pull $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
+            git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
