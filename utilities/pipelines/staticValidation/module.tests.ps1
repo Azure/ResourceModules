@@ -89,23 +89,23 @@ Describe 'File/folder tests' -Tag 'Modules' {
         #         ($hasARM -or $hasBicep) | Should -Be $true
         #     }
 
-        #     It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
 
-        #         param( [string] $moduleFolderPath )
-        #         (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
-        #     }
+            param( [string] $moduleFolderPath )
+                (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
+        }
 
-        #     It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-        #         param( [string] $moduleFolderPath )
-        #         Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
-        #     }
+            param( [string] $moduleFolderPath )
+            Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
+        }
 
-        #     It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
 
-        #         param( [string] $moduleFolderPath )
-        #         (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
-        #     }
+            param( [string] $moduleFolderPath )
+                (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+        }
     }
 
     Context '.test folder' {
