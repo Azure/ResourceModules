@@ -39,74 +39,74 @@ Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
 Describe 'File/folder tests' -Tag 'Modules' {
 
-    # Context 'General module folder tests' {
+    Context 'General module folder tests' {
 
-    #     $moduleFolderTestCases = [System.Collections.ArrayList] @()
-    #     foreach ($moduleFolderPath in $moduleFolderPaths) {
-    #         $moduleFolderTestCases += @{
-    #             moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-    #             moduleFolderPath = $moduleFolderPath
-    #             isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
-    #         }
-    #     }
+        $moduleFolderTestCases = [System.Collections.ArrayList] @()
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            $moduleFolderTestCases += @{
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                moduleFolderPath = $moduleFolderPath
+                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            }
+        }
 
-    #     if (Test-Path (Join-Path $repoRootPath '.github')) {
-    #         It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        if (Test-Path (Join-Path $repoRootPath '.github')) {
+            It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-    #             param(
-    #                 [string] $moduleFolderName,
-    #                 [string] $moduleFolderPath
-    #             )
+                param(
+                    [string] $moduleFolderName,
+                    [string] $moduleFolderPath
+                )
 
-    #             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-    #             $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-    #             $workflowPath = Join-Path $workflowsFolderName $workflowFileName
-    #             Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
-    #         }
-    #     }
+                $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+                $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+                $workflowPath = Join-Path $workflowsFolderName $workflowFileName
+                Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
+            }
+        }
 
-    #     if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
-    #         It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
+            It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-    #             param(
-    #                 [string] $moduleFolderName,
-    #                 [string] $moduleFolderPath
-    #             )
+                param(
+                    [string] $moduleFolderName,
+                    [string] $moduleFolderPath
+                )
 
-    #             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-    #             $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-    #             $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
-    #             Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
-    #         }
-    #     }
+                $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+                $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+                $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
+                Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
+            }
+        }
 
-    #     It '[<moduleFolderName>] Module should contain a [`deploy.json`/`deploy.bicep`] file' -TestCases $moduleFolderTestCases {
+        #     It '[<moduleFolderName>] Module should contain a [`deploy.json`/`deploy.bicep`] file' -TestCases $moduleFolderTestCases {
 
-    #         param( [string] $moduleFolderPath )
+        #         param( [string] $moduleFolderPath )
 
-    #         $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
-    #         $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
-    #         ($hasARM -or $hasBicep) | Should -Be $true
-    #     }
+        #         $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
+        #         $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
+        #         ($hasARM -or $hasBicep) | Should -Be $true
+        #     }
 
-    #     It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
+        #     It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
 
-    #         param( [string] $moduleFolderPath )
-    #         (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
-    #     }
+        #         param( [string] $moduleFolderPath )
+        #         (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
+        #     }
 
-    #     It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        #     It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-    #         param( [string] $moduleFolderPath )
-    #         Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
-    #     }
+        #         param( [string] $moduleFolderPath )
+        #         Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
+        #     }
 
-    #     It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
+        #     It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
 
-    #         param( [string] $moduleFolderPath )
-    #         (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
-    #     }
-    # }
+        #         param( [string] $moduleFolderPath )
+        #         (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+        #     }
+    }
 
     Context '.test folder' {
 
