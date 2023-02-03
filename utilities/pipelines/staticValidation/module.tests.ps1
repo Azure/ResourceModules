@@ -1154,7 +1154,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
     }
 }
 
-Describe 'API version tests' -Tag ApiCheck {
+Describe 'API version tests' -Tag 'ApiCheck' {
 
     $testCases = @()
     $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'
