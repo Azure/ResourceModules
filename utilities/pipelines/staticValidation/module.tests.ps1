@@ -95,17 +95,25 @@ Describe 'File/folder tests' -Tag 'Modules' {
         #         (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         # }
 
-        # It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-        #     param( [string] $moduleFolderPath )
-        #     Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
-        # }
+            param(
+                [string] $moduleFolderPath
+            )
 
-        It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
-
-            param( [string] $moduleFolderPath )
-                (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath '.test')
+            $pathExisting | Should -Be $true
         }
+
+        # It '[<moduleFolderName>] Module should contain a [`version.json`] file' -TestCases $moduleFolderTestCases {
+
+        #     param(
+        # [string] $moduleFolderPath
+        # )
+
+        #$pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
+        #         $pathExisting | Should -Be $true
+        # }
     }
 
     Context '.test folder' {
