@@ -152,6 +152,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | Linter | [![.Platform: Linter](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Linter/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml) |
 | Manage issues for failing pipelines | [![.Platform: Manage issues for failing pipelines](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Manage%20issues%20for%20failing%20pipelines/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.ManageIssueForFailingPipelines.yml) |
 | Update ReadMe status Tables | [![.Platform: Update ReadMe status Tables](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20ReadMe%20status%20Tables/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateReadMe.yml) |
+| Update Static Test Documentation | [![.Platform: Update Static Test Documentation](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20Static%20Test%20Documentation/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateStaticTestDocs.yml) |
 | Sync Docs/Wiki | [![.Platform: Sync Docs/Wiki](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Sync%20Docs/Wiki/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.wiki-sync.yml) |
 
 ## Contributing
