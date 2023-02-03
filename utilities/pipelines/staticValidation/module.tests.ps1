@@ -89,11 +89,15 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        # It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [`readme.md`] file' -TestCases $moduleFolderTestCases {
 
-        #     param( [string] $moduleFolderPath )
-        #         (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
-        # }
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')
+            $pathExisting | Should -Be $true
+        }
 
         It '[<moduleFolderName>] Module should contain a [`.test`] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
