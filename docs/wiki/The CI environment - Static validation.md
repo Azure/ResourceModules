@@ -22,10 +22,10 @@ The following activities are performed by the [`utilities/pipelines/staticValida
   - **General module folder tests**
     1. Module should have a GitHub workflow
     1. Module should have an Azure DevOps pipeline
-    1. Module should contain a [`deploy.json`/`deploy.bicep`] file
-    1. Module should contain a [`readme.md`] file
-    1. Module should contain a [`.test`] folder
-    1. Module should contain a [`version.json`] file
+    1. Module should contain a [` deploy.json ` / ` deploy.bicep `] file
+    1. Module should contain a [` readme.md `] file
+    1. Module should contain a [` .test `] folder
+    1. Module should contain a [` version.json `] file
   - **.test folder**
     1. Folder should contain one or more test files
     1. JSON test files in the `.test` folder should be valid json
