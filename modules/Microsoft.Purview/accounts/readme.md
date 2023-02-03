@@ -29,7 +29,7 @@ This module deploys .
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `managedResourceGroupName` | string | The Managed Resource Group Name. |
-| `name` | string | Name of the Purview Account |
+| `name` | string | Name of the Purview Account. |
 
 **Conditional parameters**
 
@@ -59,17 +59,17 @@ This module deploys .
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventHubPrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Event Hub Namespace private endpoint. |
 | `eventHubPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Event Hub Namespace private endpoint. |
-| `location` | string | `[resourceGroup().location]` |  | Azure location where the Purview Account will be created |
+| `location` | string | `[resourceGroup().location]` |  | Azure location where the Purview Account will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `portalPrivateEndpointIP` | string | `''` |  | The static privavte IP address for the Purview Portal private endpoint. |
 | `portalPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the Purview Portal private endpoint. |
-| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled, NotSpecified]` | Enable or disable resource provider inbound network traffic from public clients. default is Disabled |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled, NotSpecified]` | Enable or disable resource provider inbound network traffic from public clients. default is Disabled. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageAccountBlobPrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Storage Account blob private endpoint. |
 | `storageAccountBlobPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Storage Account blob private endpoint. |
 | `storageAccountQueuePrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Storage Account blob private endpoint. |
 | `storageAccountQueuePrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Storage Account queue private endpoint. |
-| `tags` | object | `{object}` |  | Resource Tags |
+| `tags` | object | `{object}` |  | Resource Tags. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 

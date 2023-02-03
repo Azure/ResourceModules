@@ -1,10 +1,10 @@
-@description('Optional. Azure location where the Purview Account will be created')
+@description('Optional. Azure location where the Purview Account will be created.')
 param location string = resourceGroup().location
 
-@description('Required. Name of the Purview Account')
+@description('Required. Name of the Purview Account.')
 param name string
 
-@description('Optional. Resource Tags')
+@description('Optional. Resource Tags.')
 param tags object = {}
 
 @description('Optional. The ID(s) to assign to the resource.')
@@ -13,7 +13,7 @@ param userAssignedIdentities object = {}
 @description('Required. The Managed Resource Group Name.')
 param managedResourceGroupName string
 
-@description('Optional. Enable or disable resource provider inbound network traffic from public clients. default is Disabled')
+@description('Optional. Enable or disable resource provider inbound network traffic from public clients. default is Disabled.')
 @allowed([
   'Enabled'
   'Disabled'
