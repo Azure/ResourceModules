@@ -48,7 +48,7 @@ param backupRetentionDays int = 7
   'Disabled'
   'Enabled'
 ])
-@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then .') //check if it supports CMK
+@description('Optional. A value indicating whether Geo-Redundant backup is enabled on the server. If "Enabled" and "cMKKeyName" is not empty, then "geoBackupCMKKeyVaultResourceId" and "cMKUserAssignedIdentityResourceId" are also required.')
 param geoRedundantBackup string = 'Disabled'
 
 @allowed([
@@ -60,10 +60,10 @@ param geoRedundantBackup string = 'Disabled'
 @description('Optional. The mode to create a new MySQL server.')
 param createMode string = 'Default'
 
-@description('Conditional. The ID(s) to assign to the resource. Required if \'cMKKeyName\' is not empty.')
+@description('Conditional. The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty.')
 param userAssignedIdentities object = {}
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
@@ -72,10 +72,10 @@ param cMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if \'cMKKeyName\' is not empty.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty and geoRedundantBackup is "Enabled".')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".')
 param geoBackupCMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled".')
@@ -84,7 +84,7 @@ param geoBackupCMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used.')
 param geoBackupCMKKeyVersion string = ''
 
-@description('Conditional. Geo backup user identity resource id as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if \'cMKKeyName\' is not empty and geoRedundantBackup is "Enabled".')
+@description('Conditional. Geo backup user identity resource id as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".')
 param geoBackupCMKUserAssignedIdentityResourceId string = ''
 
 @allowed([
@@ -132,12 +132,13 @@ param storageAutoGrow string = 'Disabled'
 @description('Optional. Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs.')
 param storageAutoIoScaling string = 'Disabled'
 
-@minValue(400)
+@minValue(360)
 @maxValue(48000)
 @description('Optional. Storage IOPS for a server. Max IOPS are determined by compute size.')
 param storageIOPS int = 1000
 
 @allowed([
+  20
   32
   64
   128
@@ -159,10 +160,16 @@ param storageSizeGB int = 64
 @description('Optional. MySQL Server version.')
 param version string = '5.7'
 
+@description('Optional. The databases to create in the server.')
+param databases array = []
+
+@description('Optional. The configurations to create in the server.')
+param configurations array = []
+
 @description('Optional. The firewall rules to create in the MySQL flexible server.')
 param firewallRules array = []
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@description('Optional. Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11".')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -204,7 +211,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     tier: tier
   }
   identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : null
+    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
   }
   properties: {
@@ -233,13 +240,13 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
       startHour: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startHour : 0
       startMinute: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startMinute : 0
     } : null
-    network: {
+    network: geoRedundantBackup == 'delegatedSubnetResourceId' ? {
       delegatedSubnetResourceId: delegatedSubnetResourceId
       privateDnsZoneResourceId: privateDnsZoneArmResourceId
-    }
+    } : null
     replicationRole: replicationRole
     restorePointInTime: restorePointInTime
-    sourceServerResourceId: sourceServerResourceId
+    sourceServerResourceId: !empty(sourceServerResourceId) ? sourceServerResourceId : null
     storage: {
       autoGrow: storageAutoGrow
       autoIoScaling: storageAutoIoScaling
@@ -271,3 +278,54 @@ module flexibleServer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     resourceId: flexibleServer.id
   }
 }]
+
+module flexibleServer_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: '${uniqueString(deployment().name, location)}-MySQL-DB-${index}'
+  params: {
+    name: database.name
+    flexibleServerName: flexibleServer.name
+    collation: contains(database, 'collation') ? database.collation : ''
+    charset: contains(database, 'charset') ? database.charset : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+  name: '${uniqueString(deployment().name, location)}-MySQL-FirewallRules-${index}'
+  params: {
+    name: firewallRule.name
+    flexibleServerName: flexibleServer.name
+    startIpAddress: firewallRule.startIpAddress
+    endIpAddress: firewallRule.endIpAddress
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    flexibleServer_databases
+  ]
+}]
+
+module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
+  name: '${uniqueString(deployment().name, location)}-MySQL-Configurations-${index}'
+  params: {
+    name: configuration.name
+    flexibleServerName: flexibleServer.name
+    source: contains(configuration, 'source') ? configuration.source : ''
+    value: contains(configuration, 'value') ? configuration.value : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    flexibleServer_firewallRules
+  ]
+}]
+
+@description('The name of the deployed MySQL Flexible server.')
+output name string = flexibleServer.name
+
+@description('The resource ID of the deployed MySQL Flexible server.')
+output resourceId string = flexibleServer.id
+
+@description('The resource group of the deployed MySQL Flexible server.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = flexibleServer.location
