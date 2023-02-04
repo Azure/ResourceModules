@@ -217,8 +217,8 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     }
     createMode: createMode
     dataEncryption: !empty(cMKKeyName) ? {
-      geoBackupKeyURI: !empty(geoBackupCMKKeyVersion) ? '${geoBackupCMKKeyVaultKey.properties.keyUri}/${geoBackupCMKKeyVersion}' : geoBackupCMKKeyVaultKey.properties.keyUriWithVersion
-      geoBackupUserAssignedIdentityId: geoBackupCMKUserAssignedIdentityResourceId
+      geoBackupKeyURI: geoRedundantBackup == 'Enabled' ? (!empty(geoBackupCMKKeyVersion) ? '${geoBackupCMKKeyVaultKey.properties.keyUri}/${geoBackupCMKKeyVersion}' : geoBackupCMKKeyVaultKey.properties.keyUriWithVersion) : null
+      geoBackupUserAssignedIdentityId: geoRedundantBackup == 'Enabled' ? geoBackupCMKUserAssignedIdentityResourceId : null
       primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
       type: 'AzureKeyVault'
