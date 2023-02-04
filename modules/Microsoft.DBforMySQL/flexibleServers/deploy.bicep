@@ -113,7 +113,7 @@ param restorePointInTime string = '' //verify
   'Source'
 ])
 @description('Optional. The replication role.')
-param replicationRole string = 'None' //verify
+param replicationRole string = 'None'
 
 @description('Conditional. The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore".')
 param sourceServerResourceId string = ''
