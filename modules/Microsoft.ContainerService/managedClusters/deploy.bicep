@@ -613,4 +613,4 @@ output omsagentIdentityObjectId string = contains(managedCluster.properties, 'ad
 output location string = managedCluster.location
 
 @description('The OIDC token issuer Url.')
-output oidcIssuerUrl string = managedCluster.properties.oidcIssuerProfile.issuerURL
+output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.properties.oidcIssuerProfile.issuerURL : ''
