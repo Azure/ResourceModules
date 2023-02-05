@@ -1,4 +1,8 @@
-@description('Optional. Azure location where the Purview Account will be created.')
+@description('Required. Name of the Purview Account.')
+param name string
+
+@description('Optional. Location for all resources.)
+param location string = resourceGroup().location
 param location string = resourceGroup().location
 
 @description('Required. Name of the Purview Account.')
