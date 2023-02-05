@@ -94,22 +94,56 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    subnetId: resourceGroupResources.outputs.subnetResourceId
-    accountPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-account'
-    accountPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-account'
-    accountPrivateEndpointIP: ''
-    portalPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-portal'
-    portalPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-portal'
-    portalPrivateEndpointIP: ''
-    storageAccountBlobPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-sa-blob-blob'
-    storageAccountBlobPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-sa-blob-blob'
-    storageAccountBlobPrivateEndpointIP: ''
-    storageAccountQueuePrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-sa-queue-blob'
-    storageAccountQueuePrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-sa-queue-blob'
-    storageAccountQueuePrivateEndpointIP: ''
-    eventHubPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-eh'
-    eventHubPrivateEndpointNicName: 'nic-e-<<namePrefix>>${serviceShort}002-eh'
-    eventHubPrivateEndpointIP: ''
+    accountPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.purviewAccountPrivateDNSResourceId
+          ]
+        }
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+      }
+    ]
+    portalPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.purviewPortalPrivateDNSResourceId
+          ]
+        }
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+      }
+    ]
+    storageBlobPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.storageBlobPrivateDNSResourceId
+          ]
+        }
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+      }
+    ]
+    storageQueuePrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.storageQueuePrivateDNSResourceId
+          ]
+        }
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+      }
+    ]
+    eventHubPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            nestedDependencies.outputs.eventHubPrivateDNSResourceId
+          ]
+        }
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+      }
+    ]
     enableDefaultTelemetry: enableDefaultTelemetry
     diagnosticLogCategoriesToEnable: [ 'allLogs' ]
     diagnosticMetricsToEnable: [ 'AllMetrics' ]

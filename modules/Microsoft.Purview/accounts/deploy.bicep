@@ -43,53 +43,20 @@ param diagnosticEventHubName string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Conditional. Existing Subnet Resource ID to assign to the Private Endpoint. Required if Private Endpoints are required.')
-param subnetId string = ''
+@description('Optional. Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param accountPrivateEndpoints array = []
 
-@description('Conditional. Name of the Purview Account Private Endpoint. Required if the Purview account Private Endpoint is required.')
-param accountPrivateEndpointName string = ''
+@description('Optional. Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param portalPrivateEndpoints array = []
 
-@description('Optional. The custom name of the network interface attached to the Purview Account private endpoint.')
-param accountPrivateEndpointNicName string = ''
+@description('Optional. Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param storageBlobPrivateEndpoints array = []
 
-@description('Optional. The static privavte IP address for the Purview Account private endpoint.')
-param accountPrivateEndpointIP string = ''
+@description('Optional. Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param storageQueuePrivateEndpoints array = []
 
-@description('Conditional. Name of the Purview Portal Private Endpoint. Required if the Purview portal Private Endpoint is required.')
-param portalPrivateEndpointName string = ''
-
-@description('Optional. The custom name of the network interface attached to the Purview Portal private endpoint.')
-param portalPrivateEndpointNicName string = ''
-
-@description('Optional. The static privavte IP address for the Purview Portal private endpoint.')
-param portalPrivateEndpointIP string = ''
-
-@description('Conditional. Name of the managed Storage Account blob Private Endpoint. Required if the managed storage account blob private endpoint is required.')
-param storageAccountBlobPrivateEndpointName string = ''
-
-@description('Optional. The custom name of the network interface attached to the managed Storage Account blob private endpoint.')
-param storageAccountBlobPrivateEndpointNicName string = ''
-
-@description('Optional. The static private IP address for the managed Storage Account blob private endpoint.')
-param storageAccountBlobPrivateEndpointIP string = ''
-
-@description('Conditional. Name of the managed Storage Account queue Private Endpoint. Required if the managed storage account queue private endpoint is required.')
-param storageAccountQueuePrivateEndpointName string = ''
-
-@description('Optional. The custom name of the network interface attached to the managed Storage Account queue private endpoint.')
-param storageAccountQueuePrivateEndpointNicName string = ''
-
-@description('Optional. The static private IP address for the managed Storage Account blob private endpoint.')
-param storageAccountQueuePrivateEndpointIP string = ''
-
-@description('Conditional. Name of the managed Event Hub Namespace Private Endpoint. Required if the managed Event Hub Namespace private endpoint is required.')
-param eventHubPrivateEndpointName string = ''
-
-@description('Optional. The custom name of the network interface attached to the managed Event Hub Namespace private endpoint.')
-param eventHubPrivateEndpointNicName string = ''
-
-@description('Optional. The static private IP address for the managed Event Hub Namespace private endpoint.')
-param eventHubPrivateEndpointIP string = ''
+@description('Optional. Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param eventHubPrivateEndpoints array = []
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -166,8 +133,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var deploymentNameSuffix = last(split(deployment().name, '-'))
-
 var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -216,131 +181,120 @@ resource purview_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-
   scope: account
 }
 
-module accountPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(accountPrivateEndpointName)) {
-  name: take('purview-account-pe-${name}-${deploymentNameSuffix}', 64)
+module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in accountPrivateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-purview-account-PrivateEndpoint-${index}'
   params: {
-    name: accountPrivateEndpointName
-    tags: tags
-    subnetResourceId: subnetId
-    serviceResourceId: account.id
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
     groupIds: [
       'account'
     ]
-    ipConfigurations: !empty(accountPrivateEndpointIP) ? [
-      {
-        name: 'ipconfig1'
-        properties: {
-          groupId: 'account'
-          memberName: 'default'
-          privateIPAddress: accountPrivateEndpointIP
-        }
-      }
-    ] : []
-    customNetworkInterfaceName: accountPrivateEndpointNicName
-    lock: lock
-  }
-}
-
-module portalPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(portalPrivateEndpointName)) {
-  name: take('purview-portal-pe-${name}-${deploymentNameSuffix}', 64)
-  params: {
-    name: portalPrivateEndpointName
-    tags: tags
-    subnetResourceId: subnetId
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.id
+    subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+  }
+}]
+
+module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in portalPrivateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-purview-portal-PrivateEndpoint-${index}'
+  params: {
     groupIds: [
       'portal'
     ]
-    ipConfigurations: !empty(accountPrivateEndpointIP) ? [
-      {
-        name: 'ipconfig1'
-        properties: {
-          groupId: 'portal'
-          memberName: 'default'
-          privateIPAddress: portalPrivateEndpointIP
-        }
-      }
-    ] : []
-    customNetworkInterfaceName: portalPrivateEndpointNicName
-  }
-}
-
-module storageBlobPe '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(storageAccountBlobPrivateEndpointName)) {
-  name: take('purview-sa-blob-pe-${name}-${deploymentNameSuffix}', 64)
-  params: {
-    name: storageAccountBlobPrivateEndpointName
-    tags: tags
-    subnetResourceId: subnetId
-    serviceResourceId: account.properties.managedResources.storageAccount
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: account.id
+    subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+  }
+}]
+
+module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in storageBlobPrivateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-purview-storage-blob-PrivateEndpoint-${index}'
+  params: {
     groupIds: [
       'blob'
     ]
-    ipConfigurations: !empty(accountPrivateEndpointIP) ? [
-      {
-        name: 'ipconfig1'
-        properties: {
-          groupId: 'blob'
-          memberName: 'default'
-          privateIPAddress: storageAccountBlobPrivateEndpointIP
-        }
-      }
-    ] : []
-    customNetworkInterfaceName: storageAccountBlobPrivateEndpointNicName
-  }
-}
-
-module storageQueuePe '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(storageAccountQueuePrivateEndpointName)) {
-  name: take('purview-sa-queue-pe-${name}-${deploymentNameSuffix}', 64)
-  params: {
-    name: storageAccountQueuePrivateEndpointName
-    tags: tags
-    subnetResourceId: subnetId
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
+    subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+  }
+}]
+
+module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in storageQueuePrivateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-purview-storage-queue-PrivateEndpoint-${index}'
+  params: {
     groupIds: [
       'queue'
     ]
-    ipConfigurations: !empty(accountPrivateEndpointIP) ? [
-      {
-        name: 'ipconfig1'
-        properties: {
-          groupId: 'queue'
-          memberName: 'default'
-          privateIPAddress: storageAccountQueuePrivateEndpointIP
-        }
-      }
-    ] : []
-    customNetworkInterfaceName: storageAccountQueuePrivateEndpointNicName
-  }
-}
-
-module eventHubPe '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(eventHubPrivateEndpointName)) {
-  name: take('purview-eh-pe-${name}-${deploymentNameSuffix}', 64)
-  params: {
-    name: eventHubPrivateEndpointName
-    tags: tags
-    subnetResourceId: subnetId
-    serviceResourceId: account.properties.managedResources.eventHubNamespace
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: account.properties.managedResources.storageAccount
+    subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
+  }
+}]
+
+module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in eventHubPrivateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-purview-event-hub-PrivateEndpoint-${index}'
+  params: {
     groupIds: [
       'namespace'
     ]
-    ipConfigurations: !empty(accountPrivateEndpointIP) ? [
-      {
-        name: 'ipconfig1'
-        properties: {
-          groupId: 'namespace'
-          memberName: 'default'
-          privateIPAddress: eventHubPrivateEndpointIP
-        }
-      }
-    ] : []
-    customNetworkInterfaceName: eventHubPrivateEndpointNicName
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: account.properties.managedResources.eventHubNamespace
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroup: contains(privateEndpoint, 'privateDnsZoneGroup') ? privateEndpoint.privateDnsZoneGroup : {}
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
-}
+}]
 
 module purview_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Rbac-${index}'
@@ -381,18 +335,3 @@ output managedEventHubId string = account.properties.managedResources.eventHubNa
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = account.identity.principalId
-
-@description('The resource ID of the Purview Account private endpoint.')
-output accountPrivateEndpointId string = !empty(accountPrivateEndpointName) ? accountPE.outputs.resourceId : ''
-
-@description('The resource ID of the Purview portal private endpoint.')
-output portalPrivateEndpointId string = !empty(portalPrivateEndpointName) ? portalPE.outputs.resourceId : ''
-
-@description('The resource ID of the Purview Managed Storage Account Blob private endpoint.')
-output storageAccountBlobPrivateEndpointId string = !empty(storageAccountBlobPrivateEndpointName) ? storageBlobPe.outputs.resourceId : ''
-
-@description('The resource ID of the Purview Managed Storage Account Queue private endpoint.')
-output storageAccountQueuePrivateEndpointId string = !empty(storageAccountQueuePrivateEndpointName) ? storageQueuePe.outputs.resourceId : ''
-
-@description('The resource ID of the Purview Managed Event Hub Namepsace private endpoint.')
-output eventHubPrivateEndpointId string = !empty(eventHubPrivateEndpointName) ? eventHubPe.outputs.resourceId : ''

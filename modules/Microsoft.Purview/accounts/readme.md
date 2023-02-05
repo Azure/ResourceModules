@@ -1,7 +1,6 @@
-# `[Microsoft.Purview/accounts]`
+# Purview Accounts `[Microsoft.Purview/accounts]`
 
-This module deploys .
-// TODO: Replace Resource and fill in description
+This module deploys Purview Accounts.
 
 ## Navigation
 
@@ -28,26 +27,13 @@ This module deploys .
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedResourceGroupName` | string | The Managed Resource Group Name. |
 | `name` | string | Name of the Purview Account. |
-
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `accountPrivateEndpointName` | string | `''` | Name of the Purview Account Private Endpoint. Required if the Purview account Private Endpoint is required. |
-| `eventHubPrivateEndpointName` | string | `''` | Name of the managed Event Hub Namespace Private Endpoint. Required if the managed Event Hub Namespace private endpoint is required. |
-| `portalPrivateEndpointName` | string | `''` | Name of the Purview Portal Private Endpoint. Required if the Purview portal Private Endpoint is required. |
-| `storageAccountBlobPrivateEndpointName` | string | `''` | Name of the managed Storage Account blob Private Endpoint. Required if the managed storage account blob private endpoint is required. |
-| `storageAccountQueuePrivateEndpointName` | string | `''` | Name of the managed Storage Account queue Private Endpoint. Required if the managed storage account queue private endpoint is required. |
-| `subnetId` | string | `''` | Existing Subnet Resource ID to assign to the Private Endpoint. Required if Private Endpoints are required. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accountPrivateEndpointIP` | string | `''` |  | The static privavte IP address for the Purview Account private endpoint. |
-| `accountPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the Purview Account private endpoint. |
+| `accountPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DataSensitivity, PurviewAccountAuditEvents, ScanStatus]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -57,25 +43,18 @@ This module deploys .
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventHubPrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Event Hub Namespace private endpoint. |
-| `eventHubPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Event Hub Namespace private endpoint. |
-| `location` | string | `[resourceGroup().location]` |  | Azure location where the Purview Account will be created. |
+| `eventHubPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `portalPrivateEndpointIP` | string | `''` |  | The static privavte IP address for the Purview Portal private endpoint. |
-| `portalPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the Purview Portal private endpoint. |
-| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled, NotSpecified]` | Enable or disable resource provider inbound network traffic from public clients. default is Disabled. |
+| `managedResourceGroupName` | string | `''` |  | The Managed Resource Group Name. Default to 'managed-rg-<purview-account-name>'. |
+| `portalPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `publicNetworkAccess` | string | `'NotSpecified'` | `[Disabled, Enabled, NotSpecified]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `storageAccountBlobPrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Storage Account blob private endpoint. |
-| `storageAccountBlobPrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Storage Account blob private endpoint. |
-| `storageAccountQueuePrivateEndpointIP` | string | `''` |  | The static private IP address for the managed Storage Account blob private endpoint. |
-| `storageAccountQueuePrivateEndpointNicName` | string | `''` |  | The custom name of the network interface attached to the managed Storage Account queue private endpoint. |
-| `tags` | object | `{object}` |  | Resource Tags. |
+| `storageBlobPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `storageQueuePrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 
@@ -214,19 +193,14 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `accountPrivateEndpointId` | string | The resource ID of the Purview Account private endpoint. |
-| `eventHubPrivateEndpointId` | string | The resource ID of the Purview Managed Event Hub Namepsace private endpoint. |
 | `location` | string | The location the resource was deployed into. |
 | `managedEventHubId` | string | The resource ID of the managed Event Hub Namespace. |
 | `managedResourceGroupId` | string | The resource ID of the managed resource group. |
 | `managedResourceGroupName` | string | The name of the managed resource group. |
 | `managedStorageAccountId` | string | The resource ID of the managed storage account. |
 | `name` | string | The name of the Microsoft Purview Account. |
-| `portalPrivateEndpointId` | string | The resource ID of the Purview portal private endpoint. |
 | `resourceGroupName` | string | The resource group the Microsoft Purview Account was deployed into. |
-| `resourceId` | string | The resource ID of the Microsoft Purview Account. |
-| `storageAccountBlobPrivateEndpointId` | string | The resource ID of the Purview Managed Storage Account Blob private endpoint. |
-| `storageAccountQueuePrivateEndpointId` | string | The resource ID of the Purview Managed Storage Account Queue private endpoint. |
+| `resourceId` | string | The resource ID of the Purview Account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
@@ -252,15 +226,21 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pviewcom'
+  name: '${uniqueString(deployment().name)}-test-pvacom'
   params: {
     // Required parameters
-    managedResourceGroupName: '<<namePrefix>>pviewcom002-managed-rg'
-    name: '<<namePrefix>>pviewcom002'
+    name: '<<namePrefix>>pvacom002'
     // Non-required parameters
-    accountPrivateEndpointIP: ''
-    accountPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-account'
-    accountPrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-account'
+    accountPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<purviewAccountPrivateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogCategoriesToEnable: [
@@ -273,25 +253,63 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    eventHubPrivateEndpointIP: ''
-    eventHubPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-eh'
-    eventHubPrivateEndpointNicName: 'nic-e-<<namePrefix>>pviewcom002-eh'
+    eventHubPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<eventHubPrivateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
     location: '<location>'
-    lock: ''
-    portalPrivateEndpointIP: ''
-    portalPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-portal'
-    portalPrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-portal'
+    lock: 'CanNotDelete'
+    managedResourceGroupName: '<<namePrefix>>pvacom002-managed-rg'
+    portalPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<purviewPortalPrivateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
     publicNetworkAccess: 'Disabled'
-    roleAssignments: []
-    storageAccountBlobPrivateEndpointIP: ''
-    storageAccountBlobPrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-sa-blob-blob'
-    storageAccountBlobPrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-sa-blob-blob'
-    storageAccountQueuePrivateEndpointIP: ''
-    storageAccountQueuePrivateEndpointName: 'pe-<<namePrefix>>pviewcom002-sa-queue-blob'
-    storageAccountQueuePrivateEndpointNicName: 'nic-pe-<<namePrefix>>pviewcom002-sa-queue-blob'
-    subnetId: '<subnetId>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    storageBlobPrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<storageBlobPrivateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    storageQueuePrivateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<storageQueuePrivateDNSResourceId>'
+          ]
+        }
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
     tags: '<tags>'
-    userAssignedIdentities: {}
+    userAssignedIdentities: {
+      '<managedIdentityPrincipalId>': {}
+    }
   }
 }
 ```
@@ -309,21 +327,21 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "managedResourceGroupName": {
-      "value": "<<namePrefix>>pviewcom002-managed-rg"
-    },
     "name": {
-      "value": "<<namePrefix>>pviewcom002"
+      "value": "<<namePrefix>>pvacom002"
     },
     // Non-required parameters
-    "accountPrivateEndpointIP": {
-      "value": ""
-    },
-    "accountPrivateEndpointName": {
-      "value": "pe-<<namePrefix>>pviewcom002-account"
-    },
-    "accountPrivateEndpointNicName": {
-      "value": "nic-pe-<<namePrefix>>pviewcom002-account"
+    "accountPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<purviewAccountPrivateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -353,62 +371,84 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "eventHubPrivateEndpointIP": {
-      "value": ""
-    },
-    "eventHubPrivateEndpointName": {
-      "value": "pe-<<namePrefix>>pviewcom002-eh"
-    },
-    "eventHubPrivateEndpointNicName": {
-      "value": "nic-e-<<namePrefix>>pviewcom002-eh"
+    "eventHubPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<eventHubPrivateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     },
     "location": {
       "value": "<location>"
     },
     "lock": {
-      "value": ""
+      "value": "CanNotDelete"
     },
-    "portalPrivateEndpointIP": {
-      "value": ""
+    "managedResourceGroupName": {
+      "value": "<<namePrefix>>pvacom002-managed-rg"
     },
-    "portalPrivateEndpointName": {
-      "value": "pe-<<namePrefix>>pviewcom002-portal"
-    },
-    "portalPrivateEndpointNicName": {
-      "value": "nic-pe-<<namePrefix>>pviewcom002-portal"
+    "portalPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<purviewPortalPrivateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     },
     "publicNetworkAccess": {
       "value": "Disabled"
     },
     "roleAssignments": {
-      "value": []
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
-    "storageAccountBlobPrivateEndpointIP": {
-      "value": ""
+    "storageBlobPrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<storageBlobPrivateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     },
-    "storageAccountBlobPrivateEndpointName": {
-      "value": "pe-<<namePrefix>>pviewcom002-sa-blob-blob"
-    },
-    "storageAccountBlobPrivateEndpointNicName": {
-      "value": "nic-pe-<<namePrefix>>pviewcom002-sa-blob-blob"
-    },
-    "storageAccountQueuePrivateEndpointIP": {
-      "value": ""
-    },
-    "storageAccountQueuePrivateEndpointName": {
-      "value": "pe-<<namePrefix>>pviewcom002-sa-queue-blob"
-    },
-    "storageAccountQueuePrivateEndpointNicName": {
-      "value": "nic-pe-<<namePrefix>>pviewcom002-sa-queue-blob"
-    },
-    "subnetId": {
-      "value": "<subnetId>"
+    "storageQueuePrivateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<storageQueuePrivateDNSResourceId>"
+            ]
+          },
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
     },
     "tags": {
       "value": "<tags>"
     },
     "userAssignedIdentities": {
-      "value": {}
+      "value": {
+        "<managedIdentityPrincipalId>": {}
+      }
     }
   }
 }
@@ -425,14 +465,13 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pviewmin'
+  name: '${uniqueString(deployment().name)}-test-pvamin'
   params: {
     // Required parameters
-    managedResourceGroupName: '<<namePrefix>>pviewmin001-managed-rg'
-    name: '<<namePrefix>>pviewmin001'
+    name: '<<namePrefix>>pvamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    publicNetworkAccess: 'Enabled'
+    managedResourceGroupName: '<<namePrefix>>pvamin001-managed-rg'
   }
 }
 ```
@@ -450,18 +489,15 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "managedResourceGroupName": {
-      "value": "<<namePrefix>>pviewmin001-managed-rg"
-    },
     "name": {
-      "value": "<<namePrefix>>pviewmin001"
+      "value": "<<namePrefix>>pvamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "publicNetworkAccess": {
-      "value": "Enabled"
+    "managedResourceGroupName": {
+      "value": "<<namePrefix>>pvamin001-managed-rg"
     }
   }
 }
