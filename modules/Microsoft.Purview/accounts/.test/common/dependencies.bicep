@@ -53,7 +53,9 @@ resource privateDNSZone_account 'Microsoft.Network/privateDnsZones@2020-06-01' =
 resource privateDNSZone_portal 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.purviewstudio.azure.com'
   location: 'global'
-
+  dependsOn: [
+    privateDNSZone_account
+  ]
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
     name: '${virtualNetwork.name}-vnetlink'
     location: 'global'
@@ -69,7 +71,9 @@ resource privateDNSZone_portal 'Microsoft.Network/privateDnsZones@2020-06-01' = 
 resource privateDNSZone_blob 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.blob.core.windows.net'
   location: 'global'
-
+  dependsOn: [
+    privateDNSZone_portal
+  ]
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
     name: '${virtualNetwork.name}-vnetlink'
     location: 'global'
@@ -85,7 +89,9 @@ resource privateDNSZone_blob 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 resource privateDNSZone_queue 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.queue.core.windows.net'
   location: 'global'
-
+  dependsOn: [
+    privateDNSZone_blob
+  ]
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
     name: '${virtualNetwork.name}-vnetlink'
     location: 'global'
@@ -101,7 +107,9 @@ resource privateDNSZone_queue 'Microsoft.Network/privateDnsZones@2020-06-01' = {
 resource privateDNSZone_eh 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.servicebus.windows.net'
   location: 'global'
-
+  dependsOn: [
+    privateDNSZone_queue
+  ]
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
     name: '${virtualNetwork.name}-vnetlink'
     location: 'global'
