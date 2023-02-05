@@ -37,89 +37,26 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 resource privateDNSZone_account 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.purview.azure.com'
   location: 'global'
-
-  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-    name: '${virtualNetwork.name}-account-vnetlink'
-    location: 'global'
-    properties: {
-      virtualNetwork: {
-        id: virtualNetwork.id
-      }
-      registrationEnabled: false
-    }
-  }
 }
 
 resource privateDNSZone_portal 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.purviewstudio.azure.com'
   location: 'global'
-  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-    name: '${virtualNetwork.name}-portal-vnetlink'
-    location: 'global'
-    dependsOn: [
-      privateDNSZone_account::virtualNetworkLinks
-    ]
-    properties: {
-      virtualNetwork: {
-        id: virtualNetwork.id
-      }
-      registrationEnabled: false
-    }
-  }
 }
 
 resource privateDNSZone_blob 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.blob.core.windows.net'
   location: 'global'
-  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-    name: '${virtualNetwork.name}-blob-vnetlink'
-    location: 'global'
-    dependsOn: [
-      privateDNSZone_portal::virtualNetworkLinks
-    ]
-    properties: {
-      virtualNetwork: {
-        id: virtualNetwork.id
-      }
-      registrationEnabled: false
-    }
-  }
 }
 
 resource privateDNSZone_queue 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.queue.core.windows.net'
   location: 'global'
-  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-    name: '${virtualNetwork.name}-queue-vnetlink'
-    location: 'global'
-    dependsOn: [
-      privateDNSZone_blob::virtualNetworkLinks
-    ]
-    properties: {
-      virtualNetwork: {
-        id: virtualNetwork.id
-      }
-      registrationEnabled: false
-    }
-  }
 }
 
 resource privateDNSZone_eh 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   name: 'privatelink.servicebus.windows.net'
   location: 'global'
-  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
-    name: '${virtualNetwork.name}-eh-vnetlink'
-    location: 'global'
-    dependsOn: [
-      privateDNSZone_queue::virtualNetworkLinks
-    ]
-    properties: {
-      virtualNetwork: {
-        id: virtualNetwork.id
-      }
-      registrationEnabled: false
-    }
-  }
 }
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
