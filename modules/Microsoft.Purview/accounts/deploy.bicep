@@ -187,7 +187,7 @@ module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy
     groupIds: [
       'account'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-account-${index}'
     serviceResourceId: account.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -210,7 +210,7 @@ module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
     groupIds: [
       'portal'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-portal-${index}'
     serviceResourceId: account.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -233,7 +233,7 @@ module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bi
     groupIds: [
       'blob'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-blob-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -256,7 +256,7 @@ module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
     groupIds: [
       'queue'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-queue-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -279,7 +279,7 @@ module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     groupIds: [
       'namespace'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-namespace-${index}'
     serviceResourceId: account.properties.managedResources.eventHubNamespace
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
