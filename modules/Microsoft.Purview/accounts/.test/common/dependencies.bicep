@@ -39,8 +39,8 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.vaultcore.azure.net'
+resource privateDNSZone_account 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.purview.azure.com'
   location: 'global'
 
   resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
@@ -55,11 +55,86 @@ resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   }
 }
 
+resource privateDNSZone_portal 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.purviewstudio.azure.com'
+  location: 'global'
+
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
+    }
+  }
+}
+
+resource privateDNSZone_blob 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.blob.core.windows.net'
+  location: 'global'
+
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
+    }
+  }
+}
+
+resource privateDNSZone_queue 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.queue.core.windows.net'
+  location: 'global'
+
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
+    }
+  }
+}
+
+resource privateDNSZone_eh 'Microsoft.Network/privateDnsZones@2020-06-01' = {
+  name: 'privatelink.servicebus.windows.net'
+  location: 'global'
+
+  resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
+    name: '${virtualNetwork.name}-vnetlink'
+    location: 'global'
+    properties: {
+      virtualNetwork: {
+        id: virtualNetwork.id
+      }
+      registrationEnabled: false
+    }
+  }
+}
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
-@description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceId string = privateDNSZone.id
+@description('The resource ID of the created Private DNS Zone for Purview Account.')
+output purviewAccountPrivateDNSResourceId string = privateDNSZone_account.id
+
+@description('The resource ID of the created Private DNS Zone for Purview Portal.')
+output purviewPortalPrivateDNSResourceId string = privateDNSZone_portal.id
+
+@description('The resource ID of the created Private DNS Zone for Storage Account Blob.')
+output storageBlobPrivateDNSResourceId string = privateDNSZone_blob.id
+
+@description('The resource ID of the created Private DNS Zone for Storage Account Queue.')
+output storageQueuePrivateDNSResourceId string = privateDNSZone_queue.id
+
+@description('The resource ID of the created Private DNS Zone for Event Hub Namespace.')
+output eventHubPrivateDNSResourceId string = privateDNSZone_eh.id
