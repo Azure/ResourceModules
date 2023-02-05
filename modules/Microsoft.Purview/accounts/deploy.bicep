@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 @description('Required. Name of the Purview Account.')
 param name string
 
-@description('Optional. Resource Tags.')
+@description('Optional. Tags of the resource.')
 param tags object = {}
 
 @description('Optional. The ID(s) to assign to the resource.')
