@@ -25,6 +25,16 @@ param enableDefaultTelemetry bool = false
 
 // General resources
 // =================
+
+module nestedDependencies 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+  params: {
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+  }
+}
+
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
@@ -66,7 +76,7 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     tags: tags
     userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityPrincipalId}': {}
     }
     managedResourceGroupName: '<<namePrefix>>${serviceShort}002-managed-rg'
     publicNetworkAccess: 'Disabled'
