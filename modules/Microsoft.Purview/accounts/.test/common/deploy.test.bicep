@@ -14,7 +14,7 @@ param location string = deployment().location
 param tags object = {}
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'pviewcom'
+param serviceShort string = 'pvacom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
