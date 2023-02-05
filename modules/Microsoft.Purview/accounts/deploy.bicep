@@ -17,7 +17,7 @@ param userAssignedIdentities object = {}
 @description('Required. The Managed Resource Group Name.')
 param managedResourceGroupName string
 
-@description('Optional. Enable or disable resource provider inbound network traffic from public clients. default is Disabled.')
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
   'Enabled'
   'Disabled'
