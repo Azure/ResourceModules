@@ -12,8 +12,8 @@ param tags object = {}
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Required. The Managed Resource Group Name.')
-param managedResourceGroupName string
+@description('Optional. The Managed Resource Group Name. Default to \'managed-rg-<purview-account-name>\'.')
+param managedResourceGroupName string = ''
 
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
@@ -127,6 +127,8 @@ param lock string = ''
 // =========== //
 // Variables   //
 // =========== //
+var managedRgName = !empty(managedResourceGroupName) ? managedResourceGroupName : 'managed-rg-${name}'
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
@@ -180,25 +182,25 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource purviewAccount 'Microsoft.Purview/accounts@2021-07-01' = {
+resource account 'Microsoft.Purview/accounts@2021-07-01' = {
   name: name
   location: location
   tags: tags
   identity: any(identity)
   properties: {
     cloudConnectors: {}
-    managedResourceGroupName: managedResourceGroupName
+    managedResourceGroupName: managedRgName
     publicNetworkAccess: publicNetworkAccess
   }
 }
 
 resource purview_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${purviewAccount.name}-${lock}-lock'
+  name: '${account.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: purviewAccount
+  scope: account
 }
 
 resource purview_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
@@ -211,16 +213,16 @@ resource purview_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: purviewAccount
+  scope: account
 }
 
-module purviewAccountPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(accountPrivateEndpointName)) {
+module accountPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(accountPrivateEndpointName)) {
   name: take('purview-account-pe-${name}-${deploymentNameSuffix}', 64)
   params: {
     name: accountPrivateEndpointName
     tags: tags
     subnetResourceId: subnetId
-    serviceResourceId: purviewAccount.id
+    serviceResourceId: account.id
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     groupIds: [
       'account'
@@ -240,13 +242,13 @@ module purviewAccountPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' 
   }
 }
 
-module purviewPortalPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(portalPrivateEndpointName)) {
+module portalPE '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (!empty(portalPrivateEndpointName)) {
   name: take('purview-portal-pe-${name}-${deploymentNameSuffix}', 64)
   params: {
     name: portalPrivateEndpointName
     tags: tags
     subnetResourceId: subnetId
-    serviceResourceId: purviewAccount.id
+    serviceResourceId: account.id
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     groupIds: [
       'portal'
@@ -271,7 +273,7 @@ module storageBlobPe '../../Microsoft.Network/privateEndpoints/deploy.bicep' = i
     name: storageAccountBlobPrivateEndpointName
     tags: tags
     subnetResourceId: subnetId
-    serviceResourceId: purviewAccount.properties.managedResources.storageAccount
+    serviceResourceId: account.properties.managedResources.storageAccount
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     groupIds: [
       'blob'
@@ -296,7 +298,7 @@ module storageQueuePe '../../Microsoft.Network/privateEndpoints/deploy.bicep' = 
     name: storageAccountQueuePrivateEndpointName
     tags: tags
     subnetResourceId: subnetId
-    serviceResourceId: purviewAccount.properties.managedResources.storageAccount
+    serviceResourceId: account.properties.managedResources.storageAccount
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     groupIds: [
       'queue'
@@ -321,7 +323,7 @@ module eventHubPe '../../Microsoft.Network/privateEndpoints/deploy.bicep' = if (
     name: eventHubPrivateEndpointName
     tags: tags
     subnetResourceId: subnetId
-    serviceResourceId: purviewAccount.properties.managedResources.eventHubNamespace
+    serviceResourceId: account.properties.managedResources.eventHubNamespace
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     groupIds: [
       'namespace'
@@ -349,42 +351,42 @@ module purview_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: purviewAccount.id
+    resourceId: account.id
   }
 }]
 
 @description('The name of the Microsoft Purview Account.')
-output name string = purviewAccount.name
+output name string = account.name
 
 @description('The resource group the Microsoft Purview Account was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the Purview Account.')
-output resourceId string = purviewAccount.id
+output resourceId string = account.id
 
 @description('The location the resource was deployed into.')
-output location string = purviewAccount.location
+output location string = account.location
 
 @description('The name of the managed resource group.')
-output managedResourceGroupName string = purviewAccount.properties.managedResourceGroupName
+output managedResourceGroupName string = account.properties.managedResourceGroupName
 
 @description('The resource ID of the managed resource group.')
-output managedResourceGroupId string = purviewAccount.properties.managedResources.resourceGroup
+output managedResourceGroupId string = account.properties.managedResources.resourceGroup
 
 @description('The resource ID of the managed storage account.')
-output managedStorageAccountId string = purviewAccount.properties.managedResources.storageAccount
+output managedStorageAccountId string = account.properties.managedResources.storageAccount
 
 @description('The resource ID of the managed Event Hub Namespace.')
-output managedEventHubId string = purviewAccount.properties.managedResources.eventHubNamespace
+output managedEventHubId string = account.properties.managedResources.eventHubNamespace
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = purviewAccount.identity.principalId
+output systemAssignedPrincipalId string = account.identity.principalId
 
 @description('The resource ID of the Purview Account private endpoint.')
-output accountPrivateEndpointId string = !empty(accountPrivateEndpointName) ? purviewAccountPE.outputs.resourceId : ''
+output accountPrivateEndpointId string = !empty(accountPrivateEndpointName) ? accountPE.outputs.resourceId : ''
 
 @description('The resource ID of the Purview portal private endpoint.')
-output portalPrivateEndpointId string = !empty(portalPrivateEndpointName) ? purviewPortalPE.outputs.resourceId : ''
+output portalPrivateEndpointId string = !empty(portalPrivateEndpointName) ? portalPE.outputs.resourceId : ''
 
 @description('The resource ID of the Purview Managed Storage Account Blob private endpoint.')
 output storageAccountBlobPrivateEndpointId string = !empty(storageAccountBlobPrivateEndpointName) ? storageBlobPe.outputs.resourceId : ''
