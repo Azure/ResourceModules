@@ -357,7 +357,7 @@ output name string = purviewAccount.name
 @description('The resource group the Microsoft Purview Account was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the Microsoft Purview Account.')
+@description('The resource ID of the Purview Account.')
 output resourceId string = purviewAccount.id
 
 @description('The location the resource was deployed into.')
