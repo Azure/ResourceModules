@@ -12,6 +12,9 @@ param lock string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. Tags of the resource.')
+param tags object = {}
+
 @description('Required. The administrator login name of a server. Can only be specified when the MySQL server is being created.')
 param administratorLogin string
 
@@ -102,10 +105,10 @@ param maintenanceWindow object = {}
 param delegatedSubnetResourceId string = ''
 
 @description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId".')
-param privateDnsZoneArmResourceId string = '' //private.mysql.database.azure.com
+param privateDnsZoneArmResourceId string = ''
 
 @description('Conditional. Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore".')
-param restorePointInTime string = '' //verify
+param restorePointInTime string = ''
 
 @allowed([
   'None'
@@ -122,7 +125,7 @@ param sourceServerResourceId string = ''
   'Disabled'
   'Enabled'
 ])
-@description('Optional. Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only.')
+@description('Conditional. Enable Storage Auto Grow or not. Storage auto-growth prevents a server from running out of storage and becoming read-only. Required if "highAvailability" is not "Disabled".')
 param storageAutoGrow string = 'Disabled'
 
 @allowed([
@@ -172,8 +175,73 @@ param firewallRules array = []
 @description('Optional. Array of role assignment objects that contain the "roleDefinitionIdOrName" and "principalId" to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11".')
 param roleAssignments array = []
 
-@description('Optional. Tags of the resource.')
-param tags object = {}
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
+
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
+
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@allowed([
+  'allLogs'
+  'MySqlAuditLogs'
+  'MySqlSlowLogs'
+])
+param diagnosticLogCategoriesToEnable array = [
+  'allLogs'
+]
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'AllMetrics'
+])
+param diagnosticMetricsToEnable array = [
+  'AllMetrics'
+]
+
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+  category: category
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
@@ -299,9 +367,6 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
     endIpAddress: firewallRule.endIpAddress
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
-  dependsOn: [
-    flexibleServer_databases
-  ]
 }]
 
 module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
@@ -313,10 +378,20 @@ module flexibleServer_configurations 'configurations/deploy.bicep' = [for (confi
     value: contains(configuration, 'value') ? configuration.value : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
-  dependsOn: [
-    flexibleServer_firewallRules
-  ]
 }]
+
+resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+  name: diagnosticSettingsName
+  properties: {
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
+  }
+  scope: flexibleServer
+}
 
 @description('The name of the deployed MySQL Flexible server.')
 output name string = flexibleServer.name

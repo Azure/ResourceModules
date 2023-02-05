@@ -25,11 +25,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource flexibleServer 'Microsoft.DBforMySQL/servers@2017-12-01-preview' existing = {
+resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview' existing = {
   name: flexibleServerName
 }
 
-resource firewallRule 'Microsoft.DBforMySQL/servers/firewallRules@2017-12-01' = {
+resource firewallRule 'Microsoft.DBforMySQL/flexibleServers/firewallRules@2021-12-01-preview' = {
   name: name
   parent: flexibleServer
   properties: {

@@ -5,10 +5,10 @@ param name string
 param flexibleServerName string
 
 @description('Optional. The collation of the database.')
-param collation string = ''
+param collation string = 'utf8'
 
 @description('Optional. The charset of the database.')
-param charset string = ''
+param charset string = 'utf8_general_ci'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -28,11 +28,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource flexibleServer 'Microsoft.DBforMySQL/servers@2017-12-01-preview' existing = {
+resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview' existing = {
   name: flexibleServerName
 }
 
-resource database 'Microsoft.DBforMySQL/servers/databases@2017-12-01' = {
+resource database 'Microsoft.DBforMySQL/flexibleServers/databases@2021-12-01-preview' = {
   name: name
   parent: flexibleServer
   properties: {
