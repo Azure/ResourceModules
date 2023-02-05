@@ -15,8 +15,8 @@ This template deploys a disk encryption set.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/diskEncryptionSets` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/diskEncryptionSets) |
-| `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
+| `Microsoft.Compute/diskEncryptionSets` | [2022-07-02](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/diskEncryptionSets) |
+| `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
 
 ## Parameters
 
@@ -34,11 +34,14 @@ This template deploys a disk encryption set.
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionType` | string | `'EncryptionAtRestWithPlatformAndCustomerKeys'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
+| `federatedClientId` | string | `'None'` |  | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property. |
 | `keyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `rotationToLatestKeyVersionEnabled` | bool | `False` |  | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
+| `systemAssignedIdentity` | bool | `True` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the disk encryption resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -141,6 +144,39 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -192,6 +228,10 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -232,6 +272,14 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
