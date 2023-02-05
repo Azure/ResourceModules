@@ -308,7 +308,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     ]
     tags: '<tags>'
     userAssignedIdentities: {
-      '<managedIdentityPrincipalId>': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -447,7 +447,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "<managedIdentityPrincipalId>": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
