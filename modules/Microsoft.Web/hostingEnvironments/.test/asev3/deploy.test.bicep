@@ -36,7 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    certDeploymentScriptName: 'dep-<<namePrefix>>ds-${serviceShort}'
+    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
   }
 }
 
