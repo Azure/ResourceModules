@@ -9,6 +9,14 @@ param managedIdentityName string
 
 var addressPrefix = '10.0.0.0/16'
 
+var privateDNSZoneNames = [
+  'privatelink.purview.azure.com'
+  'privatelink.purviewstudio.azure.com'
+  'privatelink.blob.core.windows.net'
+  'privatelink.queue.core.windows.net'
+  'privatelink.servicebus.windows.net'
+]
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkName
   location: location
@@ -34,30 +42,12 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource privateDNSZone_account 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.purview.azure.com'
+@batchSize(1)
+resource privateDNSZones 'Microsoft.Network/privateDnsZones@2020-06-01' = [for privateDNSZone in privateDNSZoneNames: {
+  name: privateDNSZone
   location: 'global'
-}
+}]
 
-resource privateDNSZone_portal 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.purviewstudio.azure.com'
-  location: 'global'
-}
-
-resource privateDNSZone_blob 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.blob.core.windows.net'
-  location: 'global'
-}
-
-resource privateDNSZone_queue 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.queue.core.windows.net'
-  location: 'global'
-}
-
-resource privateDNSZone_eh 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-  name: 'privatelink.servicebus.windows.net'
-  location: 'global'
-}
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -65,16 +55,16 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Private DNS Zone for Purview Account.')
-output purviewAccountPrivateDNSResourceId string = privateDNSZone_account.id
+output purviewAccountPrivateDNSResourceId string = privateDNSZones[0].id
 
 @description('The resource ID of the created Private DNS Zone for Purview Portal.')
-output purviewPortalPrivateDNSResourceId string = privateDNSZone_portal.id
+output purviewPortalPrivateDNSResourceId string = privateDNSZones[1].id
 
 @description('The resource ID of the created Private DNS Zone for Storage Account Blob.')
-output storageBlobPrivateDNSResourceId string = privateDNSZone_blob.id
+output storageBlobPrivateDNSResourceId string = privateDNSZones[2].id
 
 @description('The resource ID of the created Private DNS Zone for Storage Account Queue.')
-output storageQueuePrivateDNSResourceId string = privateDNSZone_queue.id
+output storageQueuePrivateDNSResourceId string = privateDNSZones[3].id
 
 @description('The resource ID of the created Private DNS Zone for Event Hub Namespace.')
-output eventHubPrivateDNSResourceId string = privateDNSZone_eh.id
+output eventHubPrivateDNSResourceId string = privateDNSZones[4].id
