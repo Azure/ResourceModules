@@ -37,7 +37,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     managedResourceGroupName: '<<namePrefix>>${serviceShort}001-managed-rg'
-    publicNetworkAccess: 'Enabled'
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }

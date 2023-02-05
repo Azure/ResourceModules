@@ -1,12 +1,10 @@
 @description('Required. Name of the Purview Account.')
+@minLength(3)
+@maxLength(63)
 param name string
 
-@description('Optional. Location for all resources.)
+@description('Optional. Location for all resources.')
 param location string = resourceGroup().location
-param location string = resourceGroup().location
-
-@description('Required. Name of the Purview Account.')
-param name string
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -23,7 +21,7 @@ param managedResourceGroupName string
   'Disabled'
   'NotSpecified'
 ])
-param publicNetworkAccess string = 'Disabled'
+param publicNetworkAccess string = 'NotSpecified'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
