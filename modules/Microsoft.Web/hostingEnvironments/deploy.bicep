@@ -52,7 +52,7 @@ param dnsSuffix string = ''
 @description('Optional. Scale factor for frontends.')
 param frontEndScaleFactor int = 15
 
-@description('Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing.')
+@description('Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. "None" Exposes the ASE-hosted apps on an internet-accessible IP address.')
 @allowed([
   'None'
   'Web'

@@ -56,7 +56,7 @@ This module deploys an app service environment.
 | `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
 | `ftpEnabled` | bool | `False` |  | Property to enable and disable FTP on ASEV3. Ignored when kind is set to ASEv2. |
 | `inboundIpAddressOverride` | string | `''` |  | Customer provided Inbound IP Address. Only able to be set on Ase create. Ignored when kind is set to ASEv2. |
-| `internalLoadBalancingMode` | string | `'None'` | `[None, Publishing, Web, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
+| `internalLoadBalancingMode` | string | `'None'` | `[None, Publishing, Web, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. "None" Exposes the ASE-hosted apps on an internet-accessible IP address. |
 | `ipsslAddressCount` | int | `0` |  | Number of IP SSL addresses reserved for the App Service Environment. Cannot be used when kind is set to ASEv3. |
 | `kind` | string | `'ASEv3'` | `[ASEv2, ASEv3]` | Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
