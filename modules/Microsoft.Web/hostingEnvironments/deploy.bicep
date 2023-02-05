@@ -224,7 +224,7 @@ module appServiceEnvironment_configurations_networking 'configurations-networkin
   }
 }
 
-module appServiceEnvironment_configurations_customDnsSuffix 'configurations-customDnsSuffix/deploy.bicep' = if (kind == 'ASEv3' && !empty(customDnsSuffix)) {
+module appServiceEnvironment_configurations_customDnsSuffix 'configurations-customdnssuffix/deploy.bicep' = if (kind == 'ASEv3' && !empty(customDnsSuffix)) {
   name: '${uniqueString(deployment().name, location)}-AppServiceEnv-Configurations-CustomDnsSuffix'
   params: {
     hostingEnvironmentName: appServiceEnvironment.name
