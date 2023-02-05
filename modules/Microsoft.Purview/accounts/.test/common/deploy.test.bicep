@@ -73,7 +73,15 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    roleAssignments: []
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
     subnetId: resourceGroupResources.outputs.subnetResourceId
     accountPrivateEndpointName: 'pe-<<namePrefix>>${serviceShort}002-account'
     accountPrivateEndpointNicName: 'nic-pe-<<namePrefix>>${serviceShort}002-account'
