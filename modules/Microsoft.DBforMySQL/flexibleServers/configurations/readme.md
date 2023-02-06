@@ -1,6 +1,6 @@
-# DBforPostgreSQL FlexibleServers Configurations `[Microsoft.DBforPostgreSQL/flexibleServers/configurations]`
+# DBforMySQL FlexibleServers Configurations `[Microsoft.DBforMySQL/flexibleServers/configurations]`
 
-This module deploys DBforPostgreSQL FlexibleServers Configurations.
+This module deploys DBforMySQL FlexibleServers Configurations.
 
 ## Navigation
 
@@ -13,7 +13,7 @@ This module deploys DBforPostgreSQL FlexibleServers Configurations.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DBforPostgreSQL/flexibleServers/configurations` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/configurations) |
+| `Microsoft.DBforMySQL/flexibleServers/configurations` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers/configurations) |
 
 ## Parameters
 
@@ -27,7 +27,7 @@ This module deploys DBforPostgreSQL FlexibleServers Configurations.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `flexibleServerName` | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
+| `flexibleServerName` | string | The name of the parent MySQL flexible server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

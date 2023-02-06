@@ -1,6 +1,6 @@
-# DBforPostgreSQL FlexibleServers FirewallRules `[Microsoft.DBforPostgreSQL/flexibleServers/firewallRules]`
+# DBforMySQL FlexibleServers FirewallRules `[Microsoft.DBforMySQL/flexibleServers/firewallRules]`
 
-This module deploys DBforPostgreSQL FlexibleServers FirewallRules.
+This module deploys DBforMySQL FlexibleServers FirewallRules.
 
 ## Navigation
 
@@ -13,7 +13,7 @@ This module deploys DBforPostgreSQL FlexibleServers FirewallRules.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/firewallRules) |
+| `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers/firewallRules) |
 
 ## Parameters
 
@@ -22,14 +22,14 @@ This module deploys DBforPostgreSQL FlexibleServers FirewallRules.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `endIpAddress` | string | The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses. |
-| `name` | string | The name of the PostgreSQL flexible server Firewall Rule. |
+| `name` | string | The name of the MySQL flexible server Firewall Rule. |
 | `startIpAddress` | string | The start IP address of the firewall rule. Must be IPv4 format. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `flexibleServerName` | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
+| `flexibleServerName` | string | The name of the parent MySQL flexible server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

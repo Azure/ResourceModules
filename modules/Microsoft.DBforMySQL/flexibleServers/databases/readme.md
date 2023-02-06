@@ -1,6 +1,6 @@
-# DBforPostgreSQL FlexibleServers Databases `[Microsoft.DBforPostgreSQL/flexibleServers/databases]`
+# DBforMySQL FlexibleServers Databases `[Microsoft.DBforMySQL/flexibleServers/databases]`
 
-This module deploys DBforPostgreSQL FlexibleServers Databases.
+This module deploys DBforMySQL FlexibleServers Databases.
 
 ## Navigation
 
@@ -13,7 +13,7 @@ This module deploys DBforPostgreSQL FlexibleServers Databases.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DBforPostgreSQL/flexibleServers/databases` | [2022-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/databases) |
+| `Microsoft.DBforMySQL/flexibleServers/databases` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers/databases) |
 
 ## Parameters
 
@@ -27,14 +27,14 @@ This module deploys DBforPostgreSQL FlexibleServers Databases.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `flexibleServerName` | string | The name of the parent PostgreSQL flexible server. Required if the template is used in a standalone deployment. |
+| `flexibleServerName` | string | The name of the parent MySQL flexible server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `charset` | string | `''` | The charset of the database. |
-| `collation` | string | `''` | The collation of the database. |
+| `charset` | string | `'utf8_general_ci'` | The charset of the database. |
+| `collation` | string | `'utf8'` | The collation of the database. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 
