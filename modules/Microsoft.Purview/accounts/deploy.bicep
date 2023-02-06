@@ -277,7 +277,7 @@ module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
   name: '${uniqueString(deployment().name, location)}-Eventhub-Namespace-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      'namespace'
+      ${privateEndpoint.service}
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.eventHubNamespace
