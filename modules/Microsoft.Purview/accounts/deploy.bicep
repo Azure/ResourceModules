@@ -279,7 +279,7 @@ module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     groupIds: [
       'namespace'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-namespace-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.eventHubNamespace
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
