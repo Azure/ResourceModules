@@ -13,7 +13,7 @@ param tags object = {}
 param userAssignedIdentities object = {}
 
 @description('Optional. The Managed Resource Group Name. A managed Storage Account, and an Event Hubs will be created in the selected subscription for catalog ingestion scenarios. Default is \'managed-rg-<purview-account-name>\'.')
-param managedResourceGroupName string = ''
+param managedResourceGroupName string = 'managed-rg-${name}'
 
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
 @allowed([
