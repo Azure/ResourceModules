@@ -204,7 +204,7 @@ module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy
 }]
 
 module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in portalPrivateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-purview-portal-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-Portal-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       'portal'
