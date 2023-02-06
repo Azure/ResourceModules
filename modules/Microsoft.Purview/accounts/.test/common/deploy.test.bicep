@@ -114,6 +114,7 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.storageBlobPrivateDNSResourceId
           ]
         }
+        service: 'blob'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
