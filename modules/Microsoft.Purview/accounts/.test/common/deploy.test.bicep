@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}002'
+    name: '<<namePrefix>>${serviceShort}001'
     location: location
     tags: tags
     userAssignedIdentities: {
