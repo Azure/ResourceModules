@@ -125,6 +125,7 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.storageQueuePrivateDNSResourceId
           ]
         }
+        service: 'queue'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
