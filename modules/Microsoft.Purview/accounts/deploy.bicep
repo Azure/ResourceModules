@@ -43,19 +43,19 @@ param diagnosticEventHubName string = ''
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to \'account\'.')
 param accountPrivateEndpoints array = []
 
-@description('Optional. Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to \'portal\'.')
 param portalPrivateEndpoints array = []
 
-@description('Optional. Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to \'blob\'.')
 param storageBlobPrivateEndpoints array = []
 
-@description('Optional. Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to \'queue\'.')
 param storageQueuePrivateEndpoints array = []
 
-@description('Optional. Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+@description('Optional. Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to \'namespace\'.')
 param eventHubPrivateEndpoints array = []
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
@@ -207,7 +207,7 @@ module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
   name: '${uniqueString(deployment().name, location)}-Portal-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      ${privateEndpoint.service}
+      privateEndpoint.service
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.id
@@ -230,7 +230,7 @@ module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bi
   name: '${uniqueString(deployment().name, location)}-Storage-Blob-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      ${privateEndpoint.service}
+      privateEndpoint.service
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
@@ -253,7 +253,7 @@ module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
   name: '${uniqueString(deployment().name, location)}-Storage-Queue-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      ${privateEndpoint.service}
+      privateEndpoint.service
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
@@ -276,7 +276,7 @@ module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
   name: '${uniqueString(deployment().name, location)}-Eventhub-Namespace-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      ${privateEndpoint.service}
+      privateEndpoint.service
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.eventHubNamespace

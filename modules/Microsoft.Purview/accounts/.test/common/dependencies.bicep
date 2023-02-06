@@ -55,11 +55,8 @@ output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Managed Identity.')
-@description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
 
-@description('The resource ID of the created Private DNS Zone for Purview Account.')
-output purviewAccountPrivateDNSResourceId string = privateDNSZones[0].id
 @description('The resource ID of the created Private DNS Zone for Purview Account.')
 output purviewAccountPrivateDNSResourceId string = privateDNSZones[0].id
 

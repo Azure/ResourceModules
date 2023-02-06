@@ -33,7 +33,7 @@ This module deploys Purview Accounts.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accountPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `accountPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Account private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'account'. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DataSensitivity, PurviewAccountAuditEvents, ScanStatus]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -43,15 +43,15 @@ This module deploys Purview Accounts.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventHubPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `eventHubPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Event Hub namespace private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'namespace'. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `managedResourceGroupName` | string | `''` |  | The Managed Resource Group Name. Default to 'managed-rg-<purview-account-name>'. |
-| `portalPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `managedResourceGroupName` | string | `[format('managed-rg-{0}', parameters('name'))]` |  | The Managed Resource Group Name. A managed Storage Account, and an Event Hubs will be created in the selected subscription for catalog ingestion scenarios. Default is 'managed-rg-<purview-account-name>'. |
+| `portalPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Portal private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'portal'. |
 | `publicNetworkAccess` | string | `'NotSpecified'` | `[Disabled, Enabled, NotSpecified]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `storageBlobPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `storageQueuePrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
+| `storageBlobPrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Storage Account blob private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'blob'. |
+| `storageQueuePrivateEndpoints` | array | `[]` |  | Configuration details for Purview Managed Storage Account queue private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. Make sure the service property is set to 'queue'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
@@ -198,8 +198,8 @@ userAssignedIdentities: {
 | `managedResourceGroupId` | string | The resource ID of the managed resource group. |
 | `managedResourceGroupName` | string | The name of the managed resource group. |
 | `managedStorageAccountId` | string | The resource ID of the managed storage account. |
-| `name` | string | The name of the Microsoft Purview Account. |
-| `resourceGroupName` | string | The resource group the Microsoft Purview Account was deployed into. |
+| `name` | string | The name of the Purview Account. |
+| `resourceGroupName` | string | The resource group the Purview Account was deployed into. |
 | `resourceId` | string | The resource ID of the Purview Account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
@@ -229,7 +229,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvacom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>pvacom002'
+    name: '<<namePrefix>>pvacom001'
     // Non-required parameters
     accountPrivateEndpoints: [
       {
@@ -238,6 +238,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             '<purviewAccountPrivateDNSResourceId>'
           ]
         }
+        service: 'account'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
@@ -260,12 +261,13 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             '<eventHubPrivateDNSResourceId>'
           ]
         }
+        service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
     location: '<location>'
     lock: 'CanNotDelete'
-    managedResourceGroupName: '<<namePrefix>>pvacom002-managed-rg'
+    managedResourceGroupName: '<<namePrefix>>pvacom001-managed-rg'
     portalPrivateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -273,6 +275,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             '<purviewPortalPrivateDNSResourceId>'
           ]
         }
+        service: 'portal'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
@@ -293,6 +296,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             '<storageBlobPrivateDNSResourceId>'
           ]
         }
+        service: 'blob'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
@@ -303,6 +307,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             '<storageQueuePrivateDNSResourceId>'
           ]
         }
+        service: 'queue'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
@@ -328,7 +333,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>pvacom002"
+      "value": "<<namePrefix>>pvacom001"
     },
     // Non-required parameters
     "accountPrivateEndpoints": {
@@ -339,6 +344,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
               "<purviewAccountPrivateDNSResourceId>"
             ]
           },
+          "service": "account",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
@@ -379,6 +385,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
               "<eventHubPrivateDNSResourceId>"
             ]
           },
+          "service": "namespace",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
@@ -390,7 +397,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
       "value": "CanNotDelete"
     },
     "managedResourceGroupName": {
-      "value": "<<namePrefix>>pvacom002-managed-rg"
+      "value": "<<namePrefix>>pvacom001-managed-rg"
     },
     "portalPrivateEndpoints": {
       "value": [
@@ -400,6 +407,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
               "<purviewPortalPrivateDNSResourceId>"
             ]
           },
+          "service": "portal",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
@@ -426,6 +434,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
               "<storageBlobPrivateDNSResourceId>"
             ]
           },
+          "service": "blob",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
@@ -438,6 +447,7 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
               "<storageQueuePrivateDNSResourceId>"
             ]
           },
+          "service": "queue",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
