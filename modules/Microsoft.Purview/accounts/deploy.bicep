@@ -184,7 +184,7 @@ module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy
   name: '${uniqueString(deployment().name, location)}-Account-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      'account'
+      privateEndpoint.service
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-account-${index}'
     serviceResourceId: account.id
