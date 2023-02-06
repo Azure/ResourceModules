@@ -207,7 +207,7 @@ module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
   name: '${uniqueString(deployment().name, location)}-Portal-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      'portal'
+      ${privateEndpoint.service}
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-portal-${index}'
     serviceResourceId: account.id
