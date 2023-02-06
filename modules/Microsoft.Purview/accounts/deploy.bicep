@@ -94,7 +94,6 @@ param lock string = ''
 // =========== //
 // Variables   //
 // =========== //
-var managedRgName = !empty(managedResourceGroupName) ? managedResourceGroupName : 'managed-rg-${name}'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
