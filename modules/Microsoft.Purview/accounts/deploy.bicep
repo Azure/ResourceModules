@@ -227,7 +227,7 @@ module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
 }]
 
 module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in storageBlobPrivateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-purview-storage-blob-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-Storage-Blob-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       'blob'
