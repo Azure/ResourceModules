@@ -266,8 +266,8 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = i
 }
 
 resource geoBackupCMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+  name: '${last(split(geoBackupCMKKeyVaultResourceId, '/'))}/${geoBackupCMKKeyName}'
+  scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
 }
 
 resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview' = {
@@ -292,11 +292,11 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     }
     createMode: createMode
     dataEncryption: !empty(cMKKeyName) ? {
+      type: 'AzureKeyVault'
       geoBackupKeyURI: geoRedundantBackup == 'Enabled' ? (!empty(geoBackupCMKKeyVersion) ? '${geoBackupCMKKeyVaultKey.properties.keyUri}/${geoBackupCMKKeyVersion}' : geoBackupCMKKeyVaultKey.properties.keyUriWithVersion) : null
       geoBackupUserAssignedIdentityId: geoRedundantBackup == 'Enabled' ? geoBackupCMKUserAssignedIdentityResourceId : null
       primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
-      type: 'AzureKeyVault'
     } : null
     highAvailability: {
       mode: highAvailability

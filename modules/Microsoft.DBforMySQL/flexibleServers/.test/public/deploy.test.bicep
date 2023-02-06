@@ -35,13 +35,27 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module nestedDependencies 'dependencies.bicep' = {
+module nestedDependencies1 'dependencies1.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies1'
+  params: {
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    location: location
+    managedIdentityName: 'dep-<<namePrefix>>-msi-ds-${serviceShort}'
+    pairedRegionScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
+  }
+}
+
+module nestedDependencies2 'dependencies2.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies2'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    geoBackupKeyVaultName: 'dep-<<namePrefix>>-kvp-${serviceShort}-${substring(uniqueString(baseTime), 0, 2)}'
+    geoBackupManagedIdentityName: 'dep-<<namePrefix>>-msip-${serviceShort}'
+    geoBackupLocation: nestedDependencies1.outputs.pairedRegionName
   }
 }
 
@@ -75,7 +89,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
+          nestedDependencies2.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }
@@ -128,15 +142,19 @@ module testDeployment '../../deploy.bicep' = {
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Disabled'
     highAvailability: 'SameZone'
     storageAutoGrow: 'Enabled'
     version: '8.0.21'
-    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
-    cMKKeyName: nestedDependencies.outputs.keyName
-    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    cMKKeyVaultResourceId: nestedDependencies2.outputs.keyVaultResourceId
+    cMKKeyName: nestedDependencies2.outputs.keyName
+    cMKUserAssignedIdentityResourceId: nestedDependencies2.outputs.managedIdentityResourceId
+    geoRedundantBackup: 'Enabled'
+    geoBackupCMKKeyVaultResourceId: nestedDependencies2.outputs.geoBackupKeyVaultResourceId
+    geoBackupCMKKeyName: nestedDependencies2.outputs.geoBackupKeyName
+    geoBackupCMKUserAssignedIdentityResourceId: nestedDependencies2.outputs.geoBackupManagedIdentityResourceId
     userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies2.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies2.outputs.geoBackupManagedIdentityResourceId}': {}
     }
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
