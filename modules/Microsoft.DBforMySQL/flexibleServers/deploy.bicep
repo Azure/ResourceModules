@@ -87,7 +87,7 @@ param geoBackupCMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used.')
 param geoBackupCMKKeyVersion string = ''
 
-@description('Conditional. Geo backup user identity resource id as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".')
+@description('Conditional. Geo backup user identity resource ID as identity cant cross region, need identity in same region as geo backup. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty and geoRedundantBackup is "Enabled".')
 param geoBackupCMKUserAssignedIdentityResourceId string = ''
 
 @allowed([
