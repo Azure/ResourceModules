@@ -340,7 +340,7 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
     highAvailability: 'SameZone'
     location: '<location>'
     lock: 'CanNotDelete'
-    privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
+    privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     roleAssignments: [
       {
         principalIds: [
@@ -443,8 +443,8 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "privateDnsZoneArmResourceId": {
-      "value": "<privateDnsZoneArmResourceId>"
+    "privateDnsZoneResourceId": {
+      "value": "<privateDnsZoneResourceId>"
     },
     "roleAssignments": {
       "value": [
