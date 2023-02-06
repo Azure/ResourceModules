@@ -92,6 +92,7 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.purviewAccountPrivateDNSResourceId
           ]
         }
+        service: 'account'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
