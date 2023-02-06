@@ -133,7 +133,7 @@ output resourceGroupName string = resourceGroup().name
 output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
 
 @description('The name of the key vault with the disk encryption key.')
-output keyVaultName string = last(split(keyVaultResourceId, '/'))
+output keyVaultName string = any(last(split(keyVaultResourceId, '/')))
 
 @description('The location the resource was deployed into.')
 output location string = diskEncryptionSet.location
