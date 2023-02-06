@@ -4,7 +4,7 @@
 
 Start-Sleep -Seconds 20
 
-$PairedRegionName = Get-AzLocation | Where-Object -Property Location -eq $Location |
+$PairedRegionName = Get-AzLocation | Where-Object -Property Location -EQ "$Location" |
     Select-Object -ExpandProperty PairedRegion -First 1 | Select-Object -ExpandProperty name
 
 # Write into Deployment Script output stream
