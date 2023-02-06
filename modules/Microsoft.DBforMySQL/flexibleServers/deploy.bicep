@@ -105,7 +105,7 @@ param maintenanceWindow object = {}
 param delegatedSubnetResourceId string = ''
 
 @description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server.')
-param privateDnsZoneArmResourceId string = ''
+param privateDnsZoneResourceId string = ''
 
 @description('Conditional. Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore".')
 param restorePointInTime string = ''
@@ -310,7 +310,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     } : null
     network: !empty(delegatedSubnetResourceId) && empty(firewallRules) ? {
       delegatedSubnetResourceId: delegatedSubnetResourceId
-      privateDnsZoneArmResourceId: privateDnsZoneArmResourceId
+      privateDnsZoneResourceId: privateDnsZoneResourceId
     } : null
     replicationRole: replicationRole
     restorePointInTime: restorePointInTime
