@@ -147,12 +147,19 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-// Due to a Bug in the Rest API
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+// // Due to a Bug in the Rest API
+// var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+// var identity = identityType != 'None' ? {
+//   type: identityType
+//   userAssignedIdentities: identityType == 'UserAssigned' ? userAssignedIdentities : null
+// } : null
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
-  userAssignedIdentities: identityType == 'UserAssigned' ? userAssignedIdentities : null
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
 var enableReferencedModulesTelemetry = false
