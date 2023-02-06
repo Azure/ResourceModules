@@ -55,7 +55,7 @@ resource remediation 'Microsoft.PolicyInsights/remediations@2021-10-01' = {
   name: name
   properties: {
     failureThreshold: {
-      percentage: json(failureThresholdPercentage)
+      percentage: json(failureThresholdPercentage) // The json() function is used to allow specifying a decimal value.
     }
     filters: {
       locations: filtersLocations
