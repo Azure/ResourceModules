@@ -254,7 +254,7 @@ module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
   name: '${uniqueString(deployment().name, location)}-purview-storage-queue-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      'queue'
+      ${privateEndpoint.service}
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
