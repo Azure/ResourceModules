@@ -55,7 +55,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `allowCrossTenantReplication` | bool | `True` |  | Allow or disallow cross AAD tenant object replication. |
-| `allowedCopyScope` | string | `''` | `['', AAD, PrivateLink]` | Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. |
+| `allowedCopyScope` | string | `''` | `['', PrivateLink, AAD]` | Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. |
 | `allowSharedKeyAccess` | bool | `True` |  | Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy. |
@@ -1019,10 +1019,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssamin'
+  name: '${uniqueString(deployment().name, location)}-test-ssaminprem'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ssamin001'
+    name: '<<namePrefix>>ssaminprem001'
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1045,7 +1045,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ssamin001"
+      "value": "<<namePrefix>>ssaminprem001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
