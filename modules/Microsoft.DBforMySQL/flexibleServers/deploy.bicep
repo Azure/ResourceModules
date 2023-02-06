@@ -95,16 +95,16 @@ param geoBackupCMKUserAssignedIdentityResourceId string = ''
   'SameZone'
   'ZoneRedundant'
 ])
-@description('Optional. The mode for high availability.')
+@description('Optional. The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning.')
 param highAvailability string = 'Disabled'
 
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
-@description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration.')
+@description('Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29.')
 param delegatedSubnetResourceId string = ''
 
-@description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId".')
+@description('Conditional. Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server.')
 param privateDnsZoneArmResourceId string = ''
 
 @description('Conditional. Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore".')
@@ -308,9 +308,9 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
       startHour: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startHour : 0
       startMinute: maintenanceWindow.customWindow == 'Enabled' ? maintenanceWindow.startMinute : 0
     } : null
-    network: geoRedundantBackup == 'delegatedSubnetResourceId' ? {
+    network: !empty(delegatedSubnetResourceId) && empty(firewallRules) ? {
       delegatedSubnetResourceId: delegatedSubnetResourceId
-      privateDnsZoneResourceId: privateDnsZoneArmResourceId
+      privateDnsZoneArmResourceId: privateDnsZoneArmResourceId
     } : null
     replicationRole: replicationRole
     restorePointInTime: restorePointInTime
