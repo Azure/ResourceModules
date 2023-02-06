@@ -181,7 +181,7 @@ resource purview_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-
 }
 
 module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in accountPrivateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-purview-account-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-Account-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       'account'
