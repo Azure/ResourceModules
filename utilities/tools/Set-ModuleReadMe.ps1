@@ -192,9 +192,9 @@ function Set-ParametersSection {
             }
 
             # Add external single quotes to all default values of type string except for those using functions
-            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object -Culture 'en-US') -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
+            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f (($parameter.defaultValue | Sort-Object) -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
             $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
-            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f (($parameter.allowedValues | Sort-Object -Culture 'en-US') -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
+            $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f (($parameter.allowedValues | Sort-Object) -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
             # Further, replace all "empty string" default values with actual visible quotes
             if ([regex]::Match($allowedValue, '^(\[\s*,.+)|(\[.+,\s*,)|(.+,\s*\])$').Captures.Count -gt 0) {
                 $allowedValue = $allowedValue -replace '\[\s*,', "[''," -replace ',\s*,', ", ''," -replace ',\s*\]', ", '']"
@@ -367,13 +367,13 @@ function Set-CrossReferencesSection {
     $dependencies = (Get-CrossReferencedModuleList)[$FullModuleIdentifier]
 
     if ($dependencies.Keys -contains 'localPathReferences' -and $dependencies['localPathReferences']) {
-        foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object -Culture 'en-US')) {
+        foreach ($reference in ($dependencies['localPathReferences'] | Sort-Object)) {
             $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Local reference')
         }
     }
 
     if ($dependencies.Keys -contains 'remoteReferences' -and $dependencies['remoteReferences']) {
-        foreach ($reference in ($dependencies['remoteReferences'] | Sort-Object -Culture 'en-US')) {
+        foreach ($reference in ($dependencies['remoteReferences'] | Sort-Object)) {
             $SectionContent += ("| ``{0}`` | {1} |" -f $reference, 'Remote reference')
         }
     }
@@ -938,7 +938,7 @@ function Set-DeploymentExamplesSection {
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
-    $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object -Culture 'en-US'
+    $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
 
     ############################
     ##   Process test files   ##
@@ -1204,7 +1204,7 @@ function Set-DeploymentExamplesSection {
                 #        Also, add a link to the corresponding Key Vault 'resource' to each identified Key Vault secret reference
                 $extendedKeyVaultReferences = @()
                 $counter = 0
-                foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique -Culture 'en-US')) {
+                foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
                     $counter++
                     $extendedKeyVaultReferences += @(
                         "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",

@@ -31,7 +31,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `adminUsername` | securestring |  |  | Administrator username. |
+| `adminUsername` | secureString |  |  | Administrator username. |
 | `configurationProfile` | string | `''` | `['', /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction]` | The configuration profile of automanage. |
 | `imageReference` | object |  |  | OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
 | `nicConfigurations` | array |  |  | Configures NICs and PIPs. |
@@ -44,7 +44,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalUnattendContent` | array | `[]` |  | Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object. |
-| `adminPassword` | securestring | `''` |  | When specifying a Windows Virtual Machine, this value should be passed. |
+| `adminPassword` | secureString | `''` |  | When specifying a Windows Virtual Machine, this value should be passed. |
 | `allowExtensionOperations` | bool | `True` |  | Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
 | `availabilitySetResourceId` | string | `''` |  | Resource ID of an availability set. Cannot be used in combination with availability zone nor scale set. |
 | `availabilityZone` | int | `0` | `[0, 1, 2, 3]` | If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
@@ -75,7 +75,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `extensionCustomScriptProtectedSetting` | secureObject | `{object}` |  | Any object that contains the extension specific protected settings. |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionDomainJoinConfig` | object | `{object}` |  | The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed. |
-| `extensionDomainJoinPassword` | securestring | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
+| `extensionDomainJoinPassword` | secureString | `''` |  | Required if name is specified. Password of the user specified in user parameter. |
 | `extensionDSCConfig` | object | `{object}` |  | The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionMonitoringAgentConfig` | object | `{object}` |  | The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
@@ -1143,6 +1143,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
+    extensionAadJoinConfig: {
+      enabled: true
+    }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
       settings: {
@@ -1178,9 +1181,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       enabled: true
     }
     extensionNetworkWatcherAgentConfig: {
-      enabled: true
-    }
-    extensionAadJoinConfig: {
       enabled: true
     }
     location: '<location>'
@@ -1359,6 +1359,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "encryptionAtHost": {
       "value": false
     },
+    "extensionAadJoinConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
     "extensionAzureDiskEncryptionConfig": {
       "value": {
         "enabled": true,
@@ -1406,11 +1411,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     },
     "extensionNetworkWatcherAgentConfig": {
-      "value": {
-        "enabled": true
-      }
-    },
-    "extensionAadJoinConfig": {
       "value": {
         "enabled": true
       }
@@ -1848,6 +1848,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     enableAutomaticUpdates: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryptionAtHost: false
+    extensionAadJoinConfig: {
+      enabled: true
+    }
     extensionAntiMalwareConfig: {
       enabled: true
       settings: {
@@ -1901,9 +1904,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       enabled: true
     }
     extensionNetworkWatcherAgentConfig: {
-      enabled: true
-    }
-    extensionAadJoinConfig: {
       enabled: true
     }
     location: '<location>'
@@ -2077,6 +2077,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "encryptionAtHost": {
       "value": false
     },
+    "extensionAadJoinConfig": {
+      "value": {
+        "enabled": true
+      }
+    },
     "extensionAntiMalwareConfig": {
       "value": {
         "enabled": true,
@@ -2144,11 +2149,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     },
     "extensionNetworkWatcherAgentConfig": {
-      "value": {
-        "enabled": true
-      }
-    },
-    "extensionAadJoinConfig": {
       "value": {
         "enabled": true
       }
