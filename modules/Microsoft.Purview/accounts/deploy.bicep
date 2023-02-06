@@ -297,7 +297,7 @@ module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
 }]
 
 module purview_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-KeyVault-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-Account-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
