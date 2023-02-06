@@ -69,7 +69,7 @@ module testDeployment '../../deploy.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
-    managedResourceGroupName: '<<namePrefix>>${serviceShort}002-managed-rg'
+    managedResourceGroupName: '<<namePrefix>>${serviceShort}001-managed-rg'
     publicNetworkAccess: 'Disabled'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
