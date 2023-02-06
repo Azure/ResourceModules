@@ -230,7 +230,7 @@ module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bi
   name: '${uniqueString(deployment().name, location)}-Storage-Blob-PrivateEndpoint-${index}'
   params: {
     groupIds: [
-      'blob'
+      ${privateEndpoint.service}
     ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-blob-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
