@@ -136,6 +136,7 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.eventHubPrivateDNSResourceId
           ]
         }
+        service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
