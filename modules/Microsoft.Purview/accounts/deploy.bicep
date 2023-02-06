@@ -312,7 +312,7 @@ module purview_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
 @description('The name of the Purview Account.')
 output name string = account.name
 
-@description('The resource group the Microsoft Purview Account was deployed into.')
+@description('The resource group the Purview Account was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the Purview Account.')
