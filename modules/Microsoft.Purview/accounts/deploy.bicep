@@ -274,7 +274,7 @@ module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
 }]
 
 module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in eventHubPrivateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-purview-event-hub-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-Eventhub-Namespace-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       'namespace'
