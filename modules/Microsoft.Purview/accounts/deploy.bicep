@@ -256,7 +256,7 @@ module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
     groupIds: [
       'queue'
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-queue-${index}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(account.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: account.properties.managedResources.storageAccount
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
