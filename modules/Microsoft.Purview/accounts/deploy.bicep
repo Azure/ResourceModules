@@ -250,7 +250,7 @@ module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bi
 }]
 
 module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in storageQueuePrivateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-purview-storage-queue-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-Storage-Queue-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       ${privateEndpoint.service}
