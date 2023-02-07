@@ -84,52 +84,21 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
-  category: category
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
-  {
-    categoryGroup: 'allLogs'
-    enabled: true
-    retentionPolicy: {
-      enabled: true
-      days: diagnosticLogsRetentionInDays
-    }
-  }
-] : diagnosticsLogsSpecified
-
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var natGatewayPipNameVar = (empty(natGatewayPipName) ? '${name}-pip' : natGatewayPipName)
-var natGatewayPublicIPPrefix = {
-  id: natGatewayPublicIPPrefixId
-}
-
 var natGatewayPropertyPublicIPPrefixes = [for publicIpPrefix in publicIpPrefixes: {
   id: az.resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
 }]
+
 var natGatewayPropertyPublicIPAddresses = [for publicIpAddress in publicIpAddresses: {
   id: az.resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
 }]
+
 var natGatewayProperties = {
   idleTimeoutInMinutes: idleTimeoutInMinutes
   publicIpPrefixes: natGatewayPropertyPublicIPPrefixes
   publicIpAddresses: natGatewayPropertyPublicIPAddresses
 }
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -145,42 +114,26 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // PUBLIC IP
 // =========
-resource publicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = if (natGatewayPublicIpAddress) {
-  name: natGatewayPipNameVar
-  location: location
-  tags: tags
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPublicIpAddress) {
+  name: '${uniqueString(deployment().name, location)}-NatGateway-PIP'
+  params: {
+    name: !empty(natGatewayPipName) ? natGatewayPipName : '${name}-pip'
+    diagnosticLogCategoriesToEnable: diagnosticLogCategoriesToEnable
+    diagnosticMetricsToEnable: diagnosticMetricsToEnable
+    diagnosticSettingsName: diagnosticSettingsName
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
+    domainNameLabel: natGatewayDomainNameLabel
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: location
+    lock: lock
     publicIPAllocationMethod: 'Static'
-    publicIPPrefix: !empty(natGatewayPublicIPPrefixId) ? natGatewayPublicIPPrefix : null
-    dnsSettings: !empty(natGatewayDomainNameLabel) ? {
-      domainNameLabel: natGatewayDomainNameLabel
-    } : null
+    publicIPPrefixResourceId: natGatewayPublicIPPrefixId
+    tags: tags
+    skuName: 'Standard'
   }
-}
-
-resource publicIP_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${publicIP.name}-${lock}-lock'
-  properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: publicIP
-}
-
-resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
-  properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
-    logs: diagnosticsLogs
-  }
-  scope: publicIP
 }
 
 // NAT GATEWAY
