@@ -1,6 +1,6 @@
-# Web HostingEnvironments Configurations-customdnssuffix `[Microsoft.Web/hostingEnvironments/configurations-customdnssuffix]`
+# Hosting Environment Custom DNS Suffix Configuration `[Microsoft.Web/hostingEnvironments/configurations-customdnssuffix]`
 
-This module deploys Web HostingEnvironments Configurations-customdnssuffix.
+This module deploys a Custom DNS Suffix Configuration for Hosting Environments.
 
 ## Navigation
 

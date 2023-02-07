@@ -1,6 +1,6 @@
-# Web HostingEnvironments Configurations-networking `[Microsoft.Web/hostingEnvironments/configurations-networking]`
+#  Hosting Environment Network Configuration `[Microsoft.Web/hostingEnvironments/configurations-networking]`
 
-This module deploys Web HostingEnvironments Configurations-networking.
+This module deploys a Network Configuration for Hosting Environments.
 
 ## Navigation
 
