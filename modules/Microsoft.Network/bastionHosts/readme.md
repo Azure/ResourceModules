@@ -447,7 +447,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
+      name: '<<namePrefix>>nbhctmpip001-pip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
@@ -499,7 +499,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
+        "name": "<<namePrefix>>nbhctmpip001-pip",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
