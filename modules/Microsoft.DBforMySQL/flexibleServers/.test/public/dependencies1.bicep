@@ -34,7 +34,7 @@ resource getPairedRegionScript 'Microsoft.Resources/deploymentScripts@2020-10-01
     properties: {
         azPowerShellVersion: '8.0'
         retentionInterval: 'P1D'
-        arguments: '-Location "${location}"'
+        arguments: '-Location "${replace(toLower(location), ' ', '')}"'
         scriptContent: loadTextContent('../.scripts/Get-PairedRegion.ps1')
     }
     dependsOn: [
