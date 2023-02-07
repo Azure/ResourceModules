@@ -155,7 +155,9 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = if (natGate
   properties: {
     publicIPAllocationMethod: 'Static'
     publicIPPrefix: !empty(natGatewayPublicIPPrefixId) ? natGatewayPublicIPPrefix : null
-    dnsSettings: !empty(natGatewayDomainNameLabel) ? json('{"domainNameLabel": "${natGatewayDomainNameLabel}"}') : null
+    dnsSettings: !empty(natGatewayDomainNameLabel) ? {
+      domainNameLabel: natGatewayDomainNameLabel
+    } : null
   }
 }
 

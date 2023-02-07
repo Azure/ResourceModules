@@ -34,7 +34,7 @@ This module deploys an Azure SQL Server Database.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `autoPauseDelay` | string | `''` |  | Time in minutes after which database is automatically paused. |
+| `autoPauseDelay` | int | `0` |  | Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. |
 | `collation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | The collation of the database. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

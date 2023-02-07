@@ -158,7 +158,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     skuSize: contains(database, 'skuSize') ? database.skuSize : ''
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
-    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : 0
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
