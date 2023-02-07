@@ -28,11 +28,6 @@ param zones array = []
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
-@minValue(0)
-@maxValue(365)
-param diagnosticLogsRetentionInDays int = 365
-
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -92,12 +87,6 @@ var natGatewayPropertyPublicIPAddresses = [for publicIpAddress in publicIpAddres
   id: az.resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
 }]
 
-var natGatewayProperties = {
-  idleTimeoutInMinutes: idleTimeoutInMinutes
-  publicIpPrefixes: natGatewayPropertyPublicIPPrefixes
-  publicIpAddresses: natGatewayPropertyPublicIPAddresses
-}
-
 var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -138,14 +127,18 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPubli
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2021-08-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
   sku: {
     name: 'Standard'
   }
-  properties: natGatewayProperties
+  properties: {
+    idleTimeoutInMinutes: idleTimeoutInMinutes
+    publicIpPrefixes: natGatewayPropertyPublicIPPrefixes
+    publicIpAddresses: natGatewayPropertyPublicIPAddresses
+  }
   zones: zones
 }
 
