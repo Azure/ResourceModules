@@ -2,10 +2,12 @@
     [string] $Location
 )
 
-Start-Sleep -Seconds 20
+Start-Sleep -Seconds 30
 
-$PairedRegionName = Get-AzLocation | Where-Object -Property Location -EQ $Location | Select-Object -expand PairedRegion |
-    Select-Object -ExpandProperty name
+$PairedRegionName = Get-AzLocation |
+    Where-Object -FilterScript { $PSItem.Location -eq $Location -or $PSItem.DisplayName -eq $Location } |
+    Select-Object -ExpandProperty PairedRegion |
+    Select-Object -ExpandProperty Name
 
 # Write into Deployment Script output stream
 $DeploymentScriptOutputs = @{
