@@ -6,7 +6,7 @@
 Start-Sleep -Seconds 10
 
 $PairedRegionName = Get-AzLocation |
-    Where-Object -FilterScript { $PSItem.Location -eq $Location } |
+    Where-Object -FilterScript { $PSItem.Location -eq $Location -or $PSItem.DisplayName -eq $Location } |
     Select-Object -ExpandProperty PairedRegion |
     Select-Object -ExpandProperty Name
 

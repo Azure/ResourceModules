@@ -41,8 +41,8 @@ module nestedDependencies1 'dependencies1.bicep' = {
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     location: location
-    managedIdentityName: 'dep-kekoz-msi-ds-${serviceShort}'
-    pairedRegionScriptName: 'dep-kekoz-ds-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-ds-${serviceShort}'
+    pairedRegionScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
   }
 }
 
@@ -51,10 +51,10 @@ module nestedDependencies2 'dependencies2.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies2'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-kekoz-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    managedIdentityName: 'dep-kekoz-msi-${serviceShort}'
-    geoBackupKeyVaultName: 'dep-kekoz-kvp-${serviceShort}-${substring(uniqueString(baseTime), 0, 2)}'
-    geoBackupManagedIdentityName: 'dep-kekoz-msip-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    geoBackupKeyVaultName: 'dep-<<namePrefix>>-kvp-${serviceShort}-${substring(uniqueString(baseTime), 0, 2)}'
+    geoBackupManagedIdentityName: 'dep-<<namePrefix>>-msip-${serviceShort}'
     geoBackupLocation: nestedDependencies1.outputs.pairedRegionName
   }
 }
@@ -65,10 +65,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'depkekozdiasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-kekoz-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-kekoz-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-kekoz-evhns-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -82,7 +82,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'kekoz${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     location: resourceGroup.location
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -96,7 +96,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     tags: {
       resourceType: 'MySQL Flexible Server'
-      serverName: 'kekoz${serviceShort}001'
+      serverName: '<<namePrefix>>${serviceShort}001'
     }
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
