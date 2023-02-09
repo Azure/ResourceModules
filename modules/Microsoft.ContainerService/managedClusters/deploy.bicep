@@ -556,7 +556,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-module fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxConfiguration)) {
+module managedCluster_fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxConfiguration)) {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
@@ -571,6 +571,26 @@ module fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.
     targetNamespace: contains(fluxConfiguration, 'targetNamespace') ? fluxConfiguration.targetNamespace : ''
     version: contains(fluxConfiguration, 'version') ? fluxConfiguration.version : ''
   }
+}
+
+module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = if (!empty(fluxConfiguration)) {
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration'
+  params: {
+    enableDefaultTelemetry: enableDefaultTelemetry
+    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxConfiguration'
+    clusterName: managedCluster.name
+    bucket: contains(fluxConfiguration, 'bucket') ? (!empty(fluxConfiguration.bucket) ? fluxConfiguration.bucket : null) : null
+    configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? (!empty(fluxConfiguration.configurationProtectedSettings) ? fluxConfiguration.configurationProtectedSettings : {}) : {}
+    gitRepository: contains(fluxConfiguration, 'gitRepository') ? (!empty(fluxConfiguration.gitRepository) ? fluxConfiguration.gitRepository : null) : null
+    kustomizations: contains(fluxConfiguration, 'kustomizations') ? (!empty(fluxConfiguration.kustomizations) ? fluxConfiguration.kustomizations : {}) : {}
+    namespace: fluxConfiguration.namespace
+    scope: fluxConfiguration.scope
+    sourceKind: fluxConfiguration.sourceKind
+    suspend: contains(fluxConfiguration, 'suspend') ? (!empty(fluxConfiguration.suspend) ? fluxConfiguration.suspend : false) : false
+  }
+  dependsOn: [
+    managedCluster_fluxExtension
+  ]
 }
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {

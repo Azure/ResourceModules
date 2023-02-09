@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.containerservice.managedclusters-${serviceS
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'csmmin'
+param serviceShort string = 'csmminflux'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -45,6 +45,18 @@ module testDeployment '../../deploy.bicep' = {
     ]
     fluxConfiguration: {
       enable: true
+      namespace: 'flux-system'
+      scope: 'cluster'
+      sourceKind: 'GitRepository'
+      gitRepository: {
+        repositoryRef: {
+          branch: 'main'
+        }
+        sshKnownHosts: ''
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
+        url: 'https://github.com/mspnp/aks-baseline'
+      }
     }
   }
 }

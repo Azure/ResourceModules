@@ -20,6 +20,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
 
 ## Parameters
 
@@ -371,6 +372,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 | Reference | Type |
 | :-- | :-- |
 | `Microsoft.KubernetesConfiguration/extensions` | Local reference |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | Local reference |
 
 ## Deployment examples
 
@@ -379,7 +381,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Minflux</h3>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -401,9 +403,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fluxConfiguration: {
-      enable: true
-    }
     systemAssignedIdentity: true
   }
 }
@@ -439,9 +438,101 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Minflux</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmminflux'
+  params: {
+    // Required parameters
+    name: 'csmminflux001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfiguration: {
+      enable: true
+      gitRepository: {
+        repositoryRef: {
+          branch: 'main'
+        }
+        sshKnownHosts: ''
+        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
+        url: 'https://github.com/mspnp/aks-baseline'
+      }
+      namespace: 'flux-system'
+      sourceKind: 'GitRepository'
+    }
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmminflux001"
+    },
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "fluxConfiguration": {
       "value": {
-        "enable": true
+        "enable": true,
+        "gitRepository": {
+          "repositoryRef": {
+            "branch": "main"
+          },
+          "sshKnownHosts": "",
+          "syncIntervalInSeconds": 300,
+          "timeoutInSeconds": 180,
+          "url": "https://github.com/mspnp/aks-baseline"
+        },
+        "namespace": "flux-system",
+        "sourceKind": "GitRepository"
       }
     },
     "systemAssignedIdentity": {
