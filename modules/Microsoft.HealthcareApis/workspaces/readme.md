@@ -454,7 +454,7 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
         location: '<location>'
         name: '<<namePrefix>>-az-dicom-x-001'
         publicNetworkAccess: 'Enabled'
-        systemAssignedIdentity: true
+        systemAssignedIdentity: false
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
@@ -498,7 +498,7 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
           }
         ]
         smartProxyEnabled: false
-        systemAssignedIdentity: true
+        systemAssignedIdentity: false
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
@@ -552,7 +552,7 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
           "location": "<location>",
           "name": "<<namePrefix>>-az-dicom-x-001",
           "publicNetworkAccess": "Enabled",
-          "systemAssignedIdentity": true,
+          "systemAssignedIdentity": false,
           "userAssignedIdentities": {
             "<managedIdentityResourceId>": {}
           },
@@ -600,7 +600,7 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
             }
           ],
           "smartProxyEnabled": false,
-          "systemAssignedIdentity": true,
+          "systemAssignedIdentity": false,
           "userAssignedIdentities": {
             "<managedIdentityResourceId>": {}
           },
