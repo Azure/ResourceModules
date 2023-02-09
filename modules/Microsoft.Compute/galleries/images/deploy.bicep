@@ -167,7 +167,7 @@ resource image 'Microsoft.Compute/galleries/images@2022-03-03' = {
         value: securityType
       }
       {
-        name: 'IsAcceleratedNetworkingSupported'
+        name: 'IsAcceleratedNetworkSupported'
         value: isAcceleratedNetworkSupported
       }
       {
@@ -176,7 +176,7 @@ resource image 'Microsoft.Compute/galleries/images@2022-03-03' = {
       }
     ] : [
       {
-        name: 'IsAcceleratedNetworkingSupported'
+        name: 'IsAcceleratedNetworkSupported'
         value: isAcceleratedNetworkSupported
       }
       {
