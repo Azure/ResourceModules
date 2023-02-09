@@ -74,6 +74,20 @@ param hyperVGeneration string = ''
 ])
 param securityType string = 'Standard'
 
+@description('Optional. The image will support hybernation.')
+@allowed([
+  'true'
+  'false'
+])
+param isHibernateSupported string = 'false'
+
+@description('Optional. The image supports accelerated Networking.')
+@allowed([
+  'true'
+  'false'
+])
+param isAcceleratedNetworkSupported string = 'false'
+
 @description('Optional. The description of this gallery Image Definition resource. This property is updatable.')
 param imageDefinitionDescription string = ''
 
@@ -152,7 +166,24 @@ resource image 'Microsoft.Compute/galleries/images@2022-03-03' = {
         name: 'SecurityType'
         value: securityType
       }
-    ] : null
+      {
+        name: 'IsAcceleratedNetworkingSupported'
+        value: isAcceleratedNetworkSupported
+      }
+      {
+        name: 'IsHibernateSupported'
+        value: isHibernateSupported
+      }
+    ] : [
+      {
+        name: 'IsAcceleratedNetworkingSupported'
+        value: isAcceleratedNetworkSupported
+      }
+      {
+        name: 'IsHibernateSupported'
+        value: isHibernateSupported
+      }
+    ]
     description: imageDefinitionDescription
     eula: eula
     privacyStatementUri: privacyStatementUri
