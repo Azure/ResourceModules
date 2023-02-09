@@ -134,10 +134,13 @@ module webPubSub_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 
-resource webPubSub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource webPubSub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${webPubSub.name}-${lock}-lock'
   properties: {
     level: any(lock)

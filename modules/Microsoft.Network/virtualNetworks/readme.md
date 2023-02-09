@@ -15,7 +15,7 @@ This template deploys a virtual network (vNet).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/virtualNetworks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks) |
@@ -38,7 +38,7 @@ This template deploys a virtual network (vNet).
 | `ddosProtectionPlanId` | string | `''` |  | Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[VMProtectionAlerts]` | `[VMProtectionAlerts]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, VMProtectionAlerts]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -342,6 +342,7 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `diagnosticsLogs` | array | The Diagnostic Settings of the virtual network. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the virtual network. |
 | `resourceGroupName` | string | The resource group the virtual network was deployed into. |
@@ -368,7 +369,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvncom'
+  name: '${uniqueString(deployment().name, location)}-test-nvncom'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -571,7 +572,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvnmin'
+  name: '${uniqueString(deployment().name, location)}-test-nvnmin'
   params: {
     // Required parameters
     addressPrefixes: [
@@ -624,18 +625,18 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 ```bicep
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvnpeer'
+  name: '${uniqueString(deployment().name, location)}-test-nvnpeer'
   params: {
     // Required parameters
     addressPrefixes: [
-      '10.0.0.0/24'
+      '10.1.0.0/24'
     ]
     name: '<<namePrefix>>nvnpeer001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     subnets: [
       {
-        addressPrefix: '10.0.0.0/26'
+        addressPrefix: '10.1.0.0/26'
         name: 'GatewaySubnet'
       }
     ]
@@ -671,7 +672,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     // Required parameters
     "addressPrefixes": {
       "value": [
-        "10.0.0.0/24"
+        "10.1.0.0/24"
       ]
     },
     "name": {
@@ -684,7 +685,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "subnets": {
       "value": [
         {
-          "addressPrefix": "10.0.0.0/26",
+          "addressPrefix": "10.1.0.0/26",
           "name": "GatewaySubnet"
         }
       ]

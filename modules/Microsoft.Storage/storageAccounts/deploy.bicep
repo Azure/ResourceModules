@@ -38,14 +38,28 @@ param storageAccountKind string = 'StorageV2'
 param storageAccountSku string = 'Standard_GRS'
 
 @allowed([
+  'Premium'
   'Hot'
   'Cool'
 ])
 @description('Optional. Storage Account Access Tier.')
 param storageAccountAccessTier string = 'Hot'
 
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. Allow large file shares if sets to \'Enabled\'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares).')
+param largeFileSharesState string = 'Disabled'
+
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
+
+@description('Optional. A boolean flag which indicates whether the default authentication is OAuth or not.')
+param defaultToOAuthAuthentication bool = false
+
+@description('Optional. Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.')
+param allowSharedKeyAccess bool = true
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
@@ -58,6 +72,23 @@ param networkAcls object = {}
 
 @description('Optional. A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
+
+@description('Optional. Allow or disallow cross AAD tenant object replication.')
+param allowCrossTenantReplication bool = true
+
+@description('Optional. Sets the custom domain name assigned to the storage account. Name is the CNAME source.')
+param customDomainName string = ''
+
+@description('Optional. Indicates whether indirect CName validation is enabled. This should only be set on updates.')
+param customDomainUseSubDomainName bool = false
+
+@description('Optional. Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier.')
+@allowed([
+  ''
+  'AzureDnsZone'
+  'Standard'
+])
+param dnsEndpointType string = ''
 
 @description('Optional. Blob service and containers to deploy.')
 param blobServices object = {}
@@ -82,8 +113,20 @@ param allowBlobPublicAccess bool = false
 @description('Optional. Set the minimum TLS version on request to storage.')
 param minimumTlsVersion string = 'TLS1_2'
 
-@description('Optional. If true, enables Hierarchical Namespace for the storage account.')
+@description('Conditional. If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true.')
 param enableHierarchicalNamespace bool = false
+
+@description('Optional. If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true.')
+param enableSftp bool = false
+
+@description('Optional. Local users to deploy for SFTP authentication.')
+param localUsers array = []
+
+@description('Optional. Enables local users feature, if set to true.')
+param isLocalUserEnabled bool = false
+
+@description('Optional. If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true.')
+param enableNfsV3 bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -116,6 +159,14 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.')
+@allowed([
+  ''
+  'AAD'
+  'PrivateLink'
+])
+param allowedCopyScope string = ''
+
 @description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set.')
 @allowed([
   ''
@@ -135,7 +186,7 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
@@ -188,7 +239,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: name
   location: location
   kind: storageAccountKind
@@ -198,6 +249,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   identity: identity
   tags: tags
   properties: {
+    allowSharedKeyAccess: allowSharedKeyAccess
+    defaultToOAuthAuthentication: defaultToOAuthAuthentication
+    allowCrossTenantReplication: allowCrossTenantReplication
+    allowedCopyScope: !empty(allowedCopyScope) ? allowedCopyScope : null
+    customDomain: {
+      name: customDomainName
+      useSubDomainName: customDomainUseSubDomainName
+    }
+    dnsEndpointType: !empty(dnsEndpointType) ? dnsEndpointType : null
+    isLocalUserEnabled: isLocalUserEnabled
     encryption: {
       keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
@@ -227,6 +288,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
+    isSftpEnabled: enableSftp
+    isNfsV3Enabled: enableNfsV3
+    largeFileSharesState: (storageAccountSku == 'Standard_LRS') || (storageAccountSku == 'Standard_ZRS') ? largeFileSharesState : null
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
@@ -252,7 +316,7 @@ resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSetting
   scope: storageAccount
 }
 
-resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource storageAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${storageAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -291,6 +355,9 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 
@@ -303,6 +370,22 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
+
+// SFTP user settings
+module storageAccount_localUsers 'localUsers/deploy.bicep' = [for (localUser, index) in localUsers: {
+  name: '${uniqueString(deployment().name, location)}-Storage-LocalUsers-${index}'
+  params: {
+    storageAccountName: storageAccount.name
+    name: localUser.name
+    hasSharedKey: contains(localUser, 'hasSharedKey') ? localUser.hasSharedKey : false
+    hasSshKey: contains(localUser, 'hasSshPassword') ? localUser.hasSshPassword : true
+    hasSshPassword: contains(localUser, 'hasSshPassword') ? localUser.hasSshPassword : false
+    homeDirectory: contains(localUser, 'homeDirectory') ? localUser.homeDirectory : ''
+    permissionScopes: contains(localUser, 'permissionScopes') ? localUser.permissionScopes : []
+    sshAuthorizedKeys: contains(localUser, 'sshAuthorizedKeys') ? localUser.sshAuthorizedKeys : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 // Containers
 module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blobServices)) {

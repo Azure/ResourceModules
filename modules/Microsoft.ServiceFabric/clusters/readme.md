@@ -14,7 +14,7 @@ This module deploys a Service Fabric Cluster.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ServiceFabric/clusters` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters) |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
@@ -248,7 +248,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sfccer'
+  name: '${uniqueString(deployment().name, location)}-test-sfccer'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080'
@@ -347,7 +347,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sfccom'
+  name: '${uniqueString(deployment().name, location)}-test-sfccom'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080'
@@ -754,7 +754,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 
 ```bicep
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sfcmin'
+  name: '${uniqueString(deployment().name, location)}-test-sfcmin'
   params: {
     // Required parameters
     managementEndpoint: 'https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080'

@@ -14,7 +14,7 @@ This module deploys an Azure virtual desktop application group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DesktopVirtualization/applicationGroups` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups) |
 | `Microsoft.DesktopVirtualization/applicationGroups/applications` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups/applications) |
@@ -38,7 +38,7 @@ This module deploys an Azure virtual desktop application group.
 | `description` | string | `''` |  | The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[Checkpoint, Error, Management]` | `[Checkpoint, Error, Management]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Checkpoint, Error, Management]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
@@ -179,7 +179,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvagcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvagcom'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'
@@ -326,7 +326,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 
 ```bicep
 module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvagmin'
+  name: '${uniqueString(deployment().name, location)}-test-dvagmin'
   params: {
     // Required parameters
     applicationGroupType: 'RemoteApp'

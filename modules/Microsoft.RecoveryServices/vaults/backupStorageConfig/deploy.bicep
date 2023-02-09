@@ -35,7 +35,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' existing = {
   name: recoveryVaultName
 }
 
-resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2022-02-01' = {
+resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstorageconfig@2022-04-01' = {
   name: name
   parent: rsv
   properties: {

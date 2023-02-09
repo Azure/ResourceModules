@@ -1464,7 +1464,7 @@ function Set-ModuleReadMe {
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $templateFileContent = bicep build $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
         } else {
             $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
         }

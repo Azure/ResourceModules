@@ -49,6 +49,8 @@ param containerType string = ''
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableReferencedModulesTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -61,7 +63,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2022-02-01' = {
+resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2022-04-01' = {
   name: '${recoveryVaultName}/Azure/${name}'
   properties: {
     sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
@@ -81,7 +83,7 @@ module protectionContainer_protectedItems 'protectedItems/deploy.bicep' = [for (
     recoveryVaultName: recoveryVaultName
     sourceResourceId: protectedItem.sourceResourceId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     protectionContainer

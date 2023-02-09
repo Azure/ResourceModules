@@ -75,6 +75,6 @@ runs:
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Convert YAML Variable File to Environment Variables
-        Add-YamlListToFile @functionInput -Verbose
+        Add-YamlListToFile @functionInput
 
         Write-Output '::endgroup::'

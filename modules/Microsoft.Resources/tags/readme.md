@@ -14,7 +14,7 @@ This module deploys Resources Tags on a subscription or resource group scope.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/tags) |
+| `Microsoft.Resources/tags` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/tags) |
 
 ## Parameters
 
@@ -130,7 +130,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rtrg'
+  name: '${uniqueString(deployment().name, location)}-test-rtrg'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: false

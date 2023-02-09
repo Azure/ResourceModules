@@ -3,7 +3,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
-        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
     [Parameter(Mandatory = $false)]
@@ -11,7 +11,10 @@ param (
 
     # Dedicated Tokens configuration hashtable containing the tokens and token prefix and suffix.
     [Parameter(Mandatory = $false)]
-    [hashtable] $tokenConfiguration = @{}
+    [hashtable] $tokenConfiguration = @{},
+
+    [Parameter(Mandatory = $false)]
+    [bool] $AllowPreviewVersionsInAPITests = $true
 )
 
 Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
@@ -27,14 +30,14 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $script:convertedTemplates = @{}
 
 # Shared exception messages
-$script:bicepTemplateCompilationFailedException = "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``az bicep build --file {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
+$script:bicepTemplateCompilationFailedException = "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``bicep build {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
 $script:jsonTemplateLoadFailedException = "Unable to load the deploy.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
-Describe 'File/folder tests' -Tag Modules {
+Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
 
@@ -77,31 +80,43 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 
-            $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
-            $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
-            ($hasARM -or $hasBicep) | Should -Be $true
+            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')
+            $hasBicep = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep')
+                ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [readme.md] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` readme.md `] file' -TestCases $moduleFolderTestCases {
 
-            param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')
+            $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.test] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [` .test `] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-            param( [string] $moduleFolderPath )
-            Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath '.test')
+            $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` version.json `] file' -TestCases $moduleFolderTestCases {
 
-            param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+            param (
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
+            $pathExisting | Should -Be $true
         }
     }
 
@@ -117,7 +132,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] folder should contain one or more test files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] Folder should contain one or more test files' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -141,7 +156,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] JSON test files in the .test folder should be valid json' -TestCases $testFolderFilesTestCases {
+        It '[<moduleFolderName>] JSON test files in the `.test` folder should be valid json' -TestCases $testFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -155,7 +170,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 }
-Describe 'Readme tests' -Tag Readme {
+Describe 'Readme tests' -Tag 'Readme' {
 
     Context 'Readme content tests' {
 
@@ -167,7 +182,7 @@ Describe 'Readme tests' -Tag Readme {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
@@ -206,7 +221,7 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] Readme.md file should not be empty' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Readme.md` file should not be empty' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -215,7 +230,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -313,7 +328,7 @@ Describe 'Readme tests' -Tag Readme {
             $actualParamCategories | Should -Be $expectedParamCategoriesInOrder
         }
 
-        It '[<moduleFolderName>] parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -502,7 +517,7 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Set-ModuleReadMe` script should not apply any updates' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -537,9 +552,9 @@ Describe 'Readme tests' -Tag Readme {
     }
 }
 
-Describe 'Parameter file tests' -Tag 'Parameter' {
+Describe 'Test file tests' -Tag 'TestTemplate' {
 
-    Context 'Deployment test file tests' {
+    Context 'General test file' {
 
         $deploymentTestFileTestCases = @()
 
@@ -567,7 +582,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             }
         }
 
-        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [module testDeployment '../.*deploy.bicep' = {]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*deploy.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -578,7 +593,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment name should contain [-test-]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -589,7 +604,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment should have parameter [serviceShort]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -600,7 +615,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $hasExpectedParam | Should -Be $true
         }
 
-        It '[<moduleFolderName>] JSON test deployment name should contain [-test-]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
             param(
                 [object[]] $testFileContent
@@ -615,7 +630,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] JSON test deployment should have parameter [serviceShort]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
             param(
                 [object[]] $testFileContent
@@ -626,7 +641,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
         }
     }
 
-    Context 'Parameter file token tests' {
+    Context 'Token usage' {
 
         # Parameter file test cases
         $parameterFileTokenTestCases = @()
@@ -649,7 +664,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
             param (
                 [string] $testFilePath,
                 [string] $parameterFileName,
@@ -669,9 +684,9 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
     }
 }
 
-Describe 'Deployment template tests' -Tag Template {
+Describe 'Deployment template tests' -Tag 'Template' {
 
-    Context 'Deployment template tests' {
+    Context 'General template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -681,7 +696,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
@@ -729,7 +744,7 @@ Describe 'Deployment template tests' -Tag Template {
 
                         $deploymentTestFile_AllParameterNames = $rawContentHashtable.parameters.Keys | Sort-Object
                     } else {
-                        $deploymentFileContent = az bicep build --file $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
+                        $deploymentFileContent = bicep build $moduleTestFilePath --stdout | ConvertFrom-Json -AsHashtable
                         $deploymentTestFile_AllParameterNames = $deploymentFileContent.resources[-1].properties.parameters.Keys | Sort-Object # The last resource should be the test
                     }
                     $testFileTestCases += @{
@@ -752,7 +767,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] the template file should not be empty' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should not be empty' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -821,7 +836,7 @@ Describe 'Deployment template tests' -Tag Template {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] the template file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources` ' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -832,7 +847,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateContent.Keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of ['''']' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with an empty default value' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -930,7 +945,7 @@ Describe 'Deployment template tests' -Tag Template {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
-        It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of '`resourceGroup().Location`' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1031,7 +1046,7 @@ Describe 'Deployment template tests' -Tag Template {
             $outputs | Should -Contain 'resourceId'
         }
 
-        It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] Each parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1105,7 +1120,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         # PARAMETER Tests
-        It '[<moduleFolderName>] All parameters in parameters files exist in template file (deploy.json)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`deploy.json`)' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1119,7 +1134,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] All required parameters in template file (deploy.json) should exist in parameters files' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All required parameters in template file (`deploy.json`) should exist in parameters files' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1149,56 +1164,19 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
     }
-
-    Context 'Parameter file token tests' {
-
-        # Parameter file test cases
-        $parameterFileTokenTestCases = @()
-
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -File -Force).FullName
-                foreach ($TestFilePath in $TestFilePaths) {
-                    foreach ($token in $tokenConfiguration.Tokens.Keys) {
-                        $parameterFileTokenTestCases += @{
-                            parameterFilePath = $TestFilePath
-                            parameterFileName = Split-Path $TestFilePath -Leaf
-                            tokenPrefix       = $tokenConfiguration.TokenPrefix
-                            tokenSuffix       = $tokenConfiguration.TokenSuffix
-                            tokenName         = $token
-                            tokenValue        = $tokenConfiguration.Tokens[$token]
-                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                        }
-                    }
-                }
-            }
-        }
-
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCases {
-            param (
-                [string] $parameterFilePath,
-                [string] $parameterFileName,
-                [string] $tokenPrefix,
-                [string] $tokenSuffix,
-                [string] $tokenName,
-                [string] $tokenValue,
-                [string] $moduleFolderName
-            )
-            $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $parameterFilePath
-
-            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-            if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
-            }
-        }
-    }
 }
 
-Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
+Describe 'API version tests' -Tag 'ApiCheck' {
 
     $testCases = @()
-    $ApiVersions = Get-AzResourceProvider -ListAvailable
+    $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'
+
+    if (-not (Test-Path $apiSpecsFilePath)) {
+        Write-Verbose "Skipping API tests as no API version are available in path [$apiSpecsFilePath]"
+        return
+    }
+
+    $ApiVersions = Get-Content -Path $apiSpecsFilePath -Raw | ConvertFrom-Json
     foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
@@ -1208,7 +1186,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {
                     throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
@@ -1241,52 +1219,57 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             switch ($resource.type) {
                 { $PSItem -like '*diagnosticsettings*' } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'diagnosticsettings'
-                        ProviderNamespace    = 'Microsoft.insights'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'diagnosticsettings'
+                        ProviderNamespace              = 'Microsoft.insights'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 { $PSItem -like '*locks' } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'locks'
-                        ProviderNamespace    = 'Microsoft.Authorization'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'locks'
+                        ProviderNamespace              = 'Microsoft.Authorization'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 { $PSItem -like '*roleAssignments' } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'roleassignments'
-                        ProviderNamespace    = 'Microsoft.Authorization'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'roleassignments'
+                        ProviderNamespace              = 'Microsoft.Authorization'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 { $PSItem -like '*privateEndpoints' -and ($PSItem -notlike '*managedPrivateEndpoints') } {
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = 'privateEndpoints'
-                        ProviderNamespace    = 'Microsoft.Network'
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = 'privateEndpoints'
+                        ProviderNamespace              = 'Microsoft.Network'
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
                 Default {
                     $ProviderNamespace, $rest = $resource.Type.Split('/')
                     $testCases += @{
-                        moduleName           = $moduleFolderName
-                        resourceType         = $rest -join '/'
-                        ProviderNamespace    = $ProviderNamespace
-                        TargetApi            = $resource.ApiVersion
-                        AvailableApiVersions = $ApiVersions
+                        moduleName                     = $moduleFolderName
+                        resourceType                   = $rest -join '/'
+                        ProviderNamespace              = $ProviderNamespace
+                        TargetApi                      = $resource.ApiVersion
+                        AvailableApiVersions           = $ApiVersions
+                        AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests
                     }
                     break
                 }
@@ -1294,28 +1277,64 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         }
     }
 
-    It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+    It 'In [<moduleName>] used resource type [<ResourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
 
         param(
             [string] $moduleName,
-            [string] $resourceType,
+            [string] $ResourceType,
             [string] $TargetApi,
             [string] $ProviderNamespace,
-            [object[]] $AvailableApiVersions
+            [PSCustomObject] $AvailableApiVersions,
+            [bool] $AllowPreviewVersionsInAPITests
         )
 
-        $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes
-        $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
+        if (-not (($AvailableApiVersions | Get-Member -Type NoteProperty).Name -contains $ProviderNamespace)) {
+            Write-Warning "[API Test] The Provider Namespace [$ProviderNamespace] is missing in your Azure API versions file. Please consider updating it and if it is still missing to open an issue in the 'AzureAPICrawler' PowerShell module's GitHub repository."
+            Set-ItResult -Skipped -Because "The Azure API version file is missing the Provider Namespace [$ProviderNamespace]."
+            return
+        }
+        if (-not (($AvailableApiVersions.$ProviderNamespace | Get-Member -Type NoteProperty).Name -contains $ResourceType)) {
+            Write-Warning "[API Test] The Provider Namespace [$ProviderNamespace] is missing the Resource Type [$ResourceType] in your API versions file. Please consider updating it and if it is still missing to open an issue in the 'AzureAPICrawler' PowerShell module's GitHub repository."
+            Set-ItResult -Skipped -Because "The Azure API version file is missing the Resource Type [$ResourceType] for Provider Namespace [$ProviderNamespace]."
+            return
+        }
+
+        $resourceTypeApiVersions = $AvailableApiVersions.$ProviderNamespace.$ResourceType
 
         if (-not $resourceTypeApiVersions) {
             Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
             continue
         }
 
-        # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
         $approvedApiVersions = @()
-        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -First 5
-        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
-        ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
+        if ($AllowPreviewVersionsInAPITests) {
+            # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
+            $approvedApiVersions += $resourceTypeApiVersions | Select-Object -Last 5
+            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+        } else {
+            # We allow the latest 3 non-preview preview
+            $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -Last 3
+        }
+
+        $approvedApiVersions = $approvedApiVersions | Sort-Object -Unique -Descending
+        $approvedApiVersions | Should -Contain $TargetApi
+
+        # Provide a warning if an API version is second to next to expire.
+        if ($approvedApiVersions -contains $TargetApi) {
+            $indexOfVersion = $approvedApiVersions.IndexOf($TargetApi)
+
+            # Example
+            # Available versions:
+            #
+            # 2017-08-01-beta
+            # 2017-08-01        < $TargetApi (Index = 1)
+            # 2017-07-14
+            # 2016-05-16
+
+            if ($indexOfVersion -gt ($approvedApiVersions.Count - 2)) {
+                $newerAPIVersions = $approvedApiVersions[0..($indexOfVersion - 1)]
+                Write-Warning ("The used API version [$TargetApi] for Resource Type [$ProviderNamespace/$ResourceType] will soon expire. Please consider updating it. Consider using one of the newer API versions [{0}]" -f ($newerAPIVersions -join ', '))
+            }
+        }
     }
 }

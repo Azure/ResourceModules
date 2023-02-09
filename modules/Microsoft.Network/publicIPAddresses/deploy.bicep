@@ -52,6 +52,15 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
+@description('Optional. The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with the public IP address. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.')
+param domainNameLabel string = ''
+
+@description('Optional. The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.')
+param fqdn string = ''
+
+@description('Optional. The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN.')
+param reverseFqdn string = ''
+
 @allowed([
   ''
   'CanNotDelete'
@@ -72,16 +81,15 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -95,7 +103,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -103,6 +111,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -126,7 +145,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -136,6 +155,11 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   }
   zones: zones
   properties: {
+    dnsSettings: !empty(domainNameLabel) ? {
+      domainNameLabel: domainNameLabel
+      fqdn: fqdn
+      reverseFqdn: reverseFqdn
+    } : null
     publicIPAddressVersion: publicIPAddressVersion
     publicIPAllocationMethod: publicIPAllocationMethod
     publicIPPrefix: !empty(publicIPPrefixResourceId) ? {
@@ -146,7 +170,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-08-01' = {
   }
 }
 
-resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpAddress_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
     level: any(lock)

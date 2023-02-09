@@ -15,9 +15,9 @@ This module deploys different kinds of cognitive services resources
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.CognitiveServices/accounts` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2021-10-01/accounts) |
+| `Microsoft.CognitiveServices/accounts` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2022-10-01/accounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
@@ -35,6 +35,8 @@ This module deploys different kinds of cognitive services resources
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
@@ -44,17 +46,19 @@ This module deploys different kinds of cognitive services resources
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
 | `apiProperties` | object | `{object}` |  | The API properties for special APIs. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit, RequestResponse]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
+| `dynamicThrottlingEnabled` | bool | `False` |  | The flag to enable dynamic throttling. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryption` | object | `{object}` |  | Properties to configure encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
@@ -74,7 +78,7 @@ This module deploys different kinds of cognitive services resources
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -94,7 +98,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -130,7 +144,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -138,6 +151,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -333,7 +356,6 @@ tags: {
 
 </details>
 
-
 <details>
 
 <summary>Bicep format</summary>
@@ -433,7 +455,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csacom'
+  name: '${uniqueString(deployment().name, location)}-test-csacom'
   params: {
     // Required parameters
     kind: 'Face'
@@ -600,22 +622,16 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csaencr'
+  name: '${uniqueString(deployment().name, location)}-test-csaencr'
   params: {
     // Required parameters
     kind: 'SpeechServices'
     name: '<<namePrefix>>csaencr001'
     // Non-required parameters
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    encryption: {
-      keySource: 'Microsoft.KeyVault'
-      keyVaultProperties: {
-        identityClientId: '<identityClientId>'
-        keyName: '<keyName>'
-        keyVaultUri: '<keyVaultUri>'
-        keyversion: '<keyversion>'
-      }
-    }
     publicNetworkAccess: 'Enabled'
     sku: 'S0'
     userAssignedIdentities: {
@@ -645,19 +661,17 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       "value": "<<namePrefix>>csaencr001"
     },
     // Non-required parameters
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "encryption": {
-      "value": {
-        "keySource": "Microsoft.KeyVault",
-        "keyVaultProperties": {
-          "identityClientId": "<identityClientId>",
-          "keyName": "<keyName>",
-          "keyVaultUri": "<keyVaultUri>",
-          "keyversion": "<keyversion>"
-        }
-      }
     },
     "publicNetworkAccess": {
       "value": "Enabled"
@@ -685,7 +699,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csamin'
+  name: '${uniqueString(deployment().name, location)}-test-csamin'
   params: {
     // Required parameters
     kind: 'SpeechServices'
@@ -734,7 +748,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 ```bicep
 module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csaspeech'
+  name: '${uniqueString(deployment().name, location)}-test-csaspeech'
   params: {
     // Required parameters
     kind: 'SpeechServices'

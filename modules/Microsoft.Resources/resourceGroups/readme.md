@@ -17,7 +17,7 @@ This module deploys a resource group.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Resources/resourceGroups` | [2019-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/resourceGroups) |
+| `Microsoft.Resources/resourceGroups` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/resourceGroups) |
 
 ## Parameters
 
@@ -34,6 +34,7 @@ This module deploys a resource group.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location of the Resource Group. It uses the deployment's location when not provided. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `managedBy` | string | `''` |  | The ID of the resource that manages this resource group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the storage account resource. |
 
@@ -173,7 +174,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rrgcom'
+  name: '${uniqueString(deployment().name, location)}-test-rrgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>rrgcom001'

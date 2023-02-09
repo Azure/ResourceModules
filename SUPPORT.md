@@ -10,9 +10,9 @@ Following list of issues are within the scope of Microsoft support:
 - Module specific issues (e.g., template errors, internal server errors, etc.)
 - Template specific issues (e.g., template publishing, resource removal, etc.)
 
-Any issues that are deemed outside of the above list by Microsoft support and/or requires bugfix in the module or code in the repo, Microsoft support will redirect user to file the issue on GitHub.
+Any issues that are deemed outside of the above list by Microsoft support and/or requires bugfix in the module or code in the repository, Microsoft support will redirect user to file the issue on GitHub.
 
-Project maintainers and community aim to get issues resolved in timely fashion as per community support policy of this repo.
+Project maintainers and community aim to get issues resolved in timely fashion as per community support policy of this repository.
 
 ## Community Support Policy
 
@@ -33,4 +33,3 @@ For help and questions about using this project, please submit a GitHub issue wi
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
 [PowerShellIcon]: docs/media/MicrosoftPowerShellCore-32px.png
-[BashIcon]: docs/media/Bash_Logo_black_and_white_icon_only-32px.svg.png

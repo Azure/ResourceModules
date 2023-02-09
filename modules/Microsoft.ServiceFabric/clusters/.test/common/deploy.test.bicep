@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.servicefabric.clusters-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'sfccom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
@@ -42,7 +43,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
@@ -60,7 +61,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     maxUnusedVersionsToKeep: 2
     azureActiveDirectory: {
-      clientApplication: resourceGroupResources.outputs.managedIdentityPrincipalId
+      clientApplication: nestedDependencies.outputs.managedIdentityPrincipalId
       clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
       tenantId: tenant().tenantId
     }
@@ -96,11 +97,11 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     diagnosticsStorageAccountConfig: {
-      blobEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.blob.${environment().suffixes.storage}/'
+      blobEndpoint: 'https://${nestedDependencies.outputs.storageAccountName}.blob.${environment().suffixes.storage}/'
       protectedAccountKeyName: 'StorageAccountKey1'
-      queueEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.queue.${environment().suffixes.storage}/'
-      storageAccountName: resourceGroupResources.outputs.storageAccountName
-      tableEndpoint: 'https://${resourceGroupResources.outputs.storageAccountName}.table.${environment().suffixes.storage}/'
+      queueEndpoint: 'https://${nestedDependencies.outputs.storageAccountName}.queue.${environment().suffixes.storage}/'
+      storageAccountName: nestedDependencies.outputs.storageAccountName
+      tableEndpoint: 'https://${nestedDependencies.outputs.storageAccountName}.table.${environment().suffixes.storage}/'
     }
     fabricSettings: [
       {
@@ -203,7 +204,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         principalType: 'ServicePrincipal'
       }

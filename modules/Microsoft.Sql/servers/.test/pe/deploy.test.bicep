@@ -3,8 +3,9 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
-@maxLength(80)
+@maxLength(90)
 param resourceGroupName string = 'ms.sql.servers-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
@@ -20,9 +21,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -31,11 +32,11 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
   }
 }
@@ -46,7 +47,7 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>-${serviceShort}'
@@ -56,11 +57,11 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'sqlServer'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
   }

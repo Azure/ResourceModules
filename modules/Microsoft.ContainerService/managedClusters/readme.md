@@ -14,7 +14,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.ContainerService/managedClusters` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters) |
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
@@ -84,7 +84,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `azurePolicyVersion` | string | `'v2'` |  | Specifies the azure policy version to use. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | `[cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -357,6 +357,7 @@ userAssignedIdentities: {
 | `kubeletidentityObjectId` | string | The Object ID of the AKS identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the managed cluster. |
+| `oidcIssuerUrl` | string | The OIDC token issuer Url. |
 | `omsagentIdentityObjectId` | string | The Object ID of the OMS agent identity. |
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
@@ -381,7 +382,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmaz'
+  name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmaz001'
@@ -632,7 +633,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmkube'
+  name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmkube001'

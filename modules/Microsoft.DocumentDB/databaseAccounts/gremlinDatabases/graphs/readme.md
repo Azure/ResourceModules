@@ -13,7 +13,7 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases/graphs) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-08-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases/graphs) |
 
 ## Parameters
 
@@ -34,8 +34,8 @@ This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `automaticIndexing` | bool | `True` | Indicates if the indexing policy is automatic. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `indexingPolicy` | object | `{object}` | Indexing policy of the graph. |
 | `partitionKeyPaths` | array | `[]` | List of paths using which data within the container can be partitioned. |
 | `tags` | object | `{object}` | Tags of the Gremlin graph resource. |
 

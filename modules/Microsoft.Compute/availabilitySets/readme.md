@@ -14,7 +14,7 @@ This template deploys an availability set
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/availabilitySets` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/availabilitySets) |
 
@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cascom'
+  name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
     name: '<<namePrefix>>cascom001'
@@ -242,7 +242,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 
 ```bicep
 module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-casmin'
+  name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>casmin001'

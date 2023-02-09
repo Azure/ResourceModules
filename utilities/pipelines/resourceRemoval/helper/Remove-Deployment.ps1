@@ -21,8 +21,8 @@ Optional. The maximum times to retry the search for resources via their removal 
 .PARAMETER SearchRetryInterval
 Optional. The time to wait in between the search for resources via their remove tags
 
-.PARAMETER DeploymentName
-Optional. The deployment name to use for the removal
+.PARAMETER DeploymentNames
+Optional. The deployment names to use for the removal
 
 .PARAMETER TemplateFilePath
 Mandatory. The path to the deployment file
@@ -31,9 +31,9 @@ Mandatory. The path to the deployment file
 Optional. The order of resource types to apply for deletion
 
 .EXAMPLE
-Remove-Deployment -DeploymentName 'KeyVault' -ResourceGroupName 'validation-rg' -TemplateFilePath 'C:/deploy.json'
+Remove-Deployment -DeploymentNames @('KeyVault-t1','KeyVault-t2') -TemplateFilePath 'C:/deploy.json'
 
-Remove a virtual WAN with deployment name 'keyvault-12345' from resource group 'validation-rg'
+Remove all resources deployed via the with deployment names 'KeyVault-t1' & 'KeyVault-t2'
 #>
 function Remove-Deployment {
 
@@ -46,7 +46,7 @@ function Remove-Deployment {
         [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $true)]
-        [string] $DeploymentName,
+        [string[]] $DeploymentNames,
 
         [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
@@ -87,17 +87,24 @@ function Remove-Deployment {
 
         # Fetch deployments
         # =================
-        $deploymentsInputObject = @{
-            Name  = $deploymentName
-            Scope = $deploymentScope
+        $deployedTargetResources = @()
+
+        foreach ($deploymentName in $DeploymentNames) {
+            $deploymentsInputObject = @{
+                Name  = $deploymentName
+                Scope = $deploymentScope
+            }
+            if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+                $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
+            }
+            if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+                $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
+            }
+            $deployedTargetResources += Get-DeploymentTargetResourceList @deploymentsInputObject
         }
-        if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
-            $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
-        }
-        if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
-            $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
-        }
-        [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
+
+        [array] $deployedTargetResources = $deployedTargetResources | Select-Object -Unique
+
         Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
 
         # Pre-Filter & order items
@@ -151,7 +158,7 @@ function Remove-Deployment {
         # ================
         if ($resourcesToRemove.Count -gt 0) {
             if ($PSCmdlet.ShouldProcess(('[{0}] resources' -f (($resourcesToRemove -is [array]) ? $resourcesToRemove.Count : 1)), 'Remove')) {
-                Remove-ResourceList -ResourcesToRemove $resourcesToRemove -Verbose
+                Remove-ResourceList -ResourcesToRemove $resourcesToRemove
             }
         } else {
             Write-Verbose 'Found [0] resources to remove'

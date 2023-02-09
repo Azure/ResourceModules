@@ -14,7 +14,7 @@ This module deploys a user defined route table.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/routeTables` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/routeTables) |
 
@@ -256,7 +256,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nrtcom'
+  name: '${uniqueString(deployment().name, location)}-test-nrtcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nrtcom001'
@@ -347,7 +347,7 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
 
 ```bicep
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nrtmin'
+  name: '${uniqueString(deployment().name, location)}-test-nrtmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nrtmin001'

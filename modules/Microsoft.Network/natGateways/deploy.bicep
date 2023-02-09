@@ -62,16 +62,15 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -85,41 +84,15 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
-  category: category
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-var natGatewayPipNameVar = (empty(natGatewayPipName) ? '${name}-pip' : natGatewayPipName)
-var natGatewayPublicIPPrefix = {
-  id: natGatewayPublicIPPrefixId
-}
-
 var natGatewayPropertyPublicIPPrefixes = [for publicIpPrefix in publicIpPrefixes: {
   id: az.resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
 }]
+
 var natGatewayPropertyPublicIPAddresses = [for publicIpAddress in publicIpAddresses: {
   id: az.resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
 }]
-var natGatewayProperties = {
-  idleTimeoutInMinutes: idleTimeoutInMinutes
-  publicIpPrefixes: natGatewayPropertyPublicIPPrefixes
-  publicIpAddresses: natGatewayPropertyPublicIPAddresses
-}
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -135,56 +108,47 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // PUBLIC IP
 // =========
-resource publicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = if (natGatewayPublicIpAddress) {
-  name: natGatewayPipNameVar
-  location: location
-  tags: tags
-  sku: {
-    name: 'Standard'
-  }
-  properties: {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPublicIpAddress) {
+  name: '${uniqueString(deployment().name, location)}-NatGateway-PIP'
+  params: {
+    name: !empty(natGatewayPipName) ? natGatewayPipName : '${name}-pip'
+    diagnosticLogCategoriesToEnable: diagnosticLogCategoriesToEnable
+    diagnosticMetricsToEnable: diagnosticMetricsToEnable
+    diagnosticSettingsName: diagnosticSettingsName
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
+    domainNameLabel: natGatewayDomainNameLabel
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: location
+    lock: lock
     publicIPAllocationMethod: 'Static'
-    publicIPPrefix: !empty(natGatewayPublicIPPrefixId) ? natGatewayPublicIPPrefix : null
-    dnsSettings: !empty(natGatewayDomainNameLabel) ? json('{"domainNameLabel": "${natGatewayDomainNameLabel}"}') : null
+    publicIPPrefixResourceId: natGatewayPublicIPPrefixId
+    tags: tags
+    skuName: 'Standard'
   }
-}
-
-resource publicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
-  name: '${publicIP.name}-${lock}-lock'
-  properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: publicIP
-}
-
-resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
-  properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
-    logs: diagnosticsLogs
-  }
-  scope: publicIP
 }
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2021-08-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
   sku: {
     name: 'Standard'
   }
-  properties: natGatewayProperties
+  properties: {
+    idleTimeoutInMinutes: idleTimeoutInMinutes
+    publicIpPrefixes: natGatewayPropertyPublicIPPrefixes
+    publicIpAddresses: natGatewayPropertyPublicIPAddresses
+  }
   zones: zones
 }
 
-resource natGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource natGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${natGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

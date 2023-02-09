@@ -52,6 +52,9 @@ function Publish-ModuleToPrivateBicepRegistry {
 
     begin {
         Write-Debug ('{0} entered' -f $MyInvocation.MyCommand)
+
+        # Load used functions
+        . (Join-Path $PSScriptRoot 'Get-PrivateRegistryRepositoryName.ps1')
     }
 
     process {
@@ -76,9 +79,8 @@ function Publish-ModuleToPrivateBicepRegistry {
             }
         }
 
-        # Extracts Microsoft.KeyVault/vaults from e.g. C:\modules\Microsoft.KeyVault\vaults\deploy.bicep
-        $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
-        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+        # Get a valid Container Registry name
+        $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath
 
         #############################################
         ##    Publish to private bicep registry    ##

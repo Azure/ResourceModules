@@ -14,7 +14,7 @@ This module deploys a virtual machine scale set.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/virtualMachineScaleSets` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-01/virtualMachineScaleSets) |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions) |
@@ -910,7 +910,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslin'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1253,7 +1253,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslinmin'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1390,7 +1390,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsslcmk'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsslcmk'
   params: {
     // Required parameters
     adminUsername: 'scaleSetAdmin'
@@ -1565,7 +1565,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsswin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'
@@ -1890,7 +1890,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 
 ```bicep
 module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-cvmsswinmin'
+  name: '${uniqueString(deployment().name, location)}-test-cvmsswinmin'
   params: {
     // Required parameters
     adminUsername: 'localAdminUser'

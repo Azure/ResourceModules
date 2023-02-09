@@ -448,7 +448,9 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
       licenseType: empty(licenseType) ? null : licenseType
       priority: vmPriority
       evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
-      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
+      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? {
+        maxPrice: maxPriceForLowPriorityVm
+      } : null
       scheduledEventsProfile: scheduledEventsProfile
     }
     overprovision: overprovision
@@ -611,7 +613,7 @@ module vmss_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensi
   ]
 }
 
-resource vmss_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vmss_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${vmss.name}-${lock}-lock'
   properties: {
     level: any(lock)

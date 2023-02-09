@@ -14,7 +14,7 @@ This module deploys an event hub namespace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.EventHub/namespaces` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces) |
 | `Microsoft.EventHub/namespaces/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/authorizationRules) |
@@ -42,7 +42,7 @@ This module deploys an event hub namespace.
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Event Hub namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[ApplicationMetricsLogs, ArchiveLogs, AutoScaleLogs, CustomerManagedKeyUserLogs, EventHubVNetConnectionEvent, KafkaCoordinatorLogs, KafkaUserErrorLogs, OperationalLogs, RuntimeAuditLogs]` | `[ApplicationMetricsLogs, ArchiveLogs, AutoScaleLogs, CustomerManagedKeyUserLogs, EventHubVNetConnectionEvent, KafkaCoordinatorLogs, KafkaUserErrorLogs, OperationalLogs, RuntimeAuditLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, ApplicationMetricsLogs, ArchiveLogs, AutoScaleLogs, CustomerManagedKeyUserLogs, EventHubVNetConnectionEvent, KafkaCoordinatorLogs, KafkaUserErrorLogs, OperationalLogs, RuntimeAuditLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -70,7 +70,7 @@ This module deploys an event hub namespace.
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -90,7 +90,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -126,7 +136,6 @@ privateEndpoints:  [
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -134,6 +143,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -313,7 +332,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehncom'
+  name: '${uniqueString(deployment().name, location)}-test-ehncom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ehncom001'
@@ -614,7 +633,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehnmin'
+  name: '${uniqueString(deployment().name, location)}-test-ehnmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>ehnmin001'
@@ -659,7 +678,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 
 ```bicep
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ehnpe'
+  name: '${uniqueString(deployment().name, location)}-test-ehnpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>ehnpe001'

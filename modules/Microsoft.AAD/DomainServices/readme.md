@@ -16,7 +16,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.AAD/domainServices` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices) |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -42,6 +42,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `additionalRecipients` | array | `[]` |  | The email recipient value to receive alerts. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AccountLogon, AccountManagement, allLogs, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
@@ -54,7 +55,6 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `ldaps` | string | `'Enabled'` | `[Disabled, Enabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `logsToEnable` | array | `[AccountLogon, AccountManagement, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | `[AccountLogon, AccountManagement, DetailTracking, DirectoryServiceAccess, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, SystemSecurity]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
 | `notifyDcAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the DC Admins. |
 | `notifyGlobalAdmins` | string | `'Enabled'` | `[Disabled, Enabled]` | The value is to notify the Global Admins. |
@@ -228,7 +228,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-aaddscom'
+  name: '${uniqueString(deployment().name, location)}-test-aaddscom'
   params: {
     // Required parameters
     domainName: '<<namePrefix>>.onmicrosoft.com'

@@ -14,7 +14,7 @@ This module deploys an IP group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/ipGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/ipGroups) |
 
@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nigcom'
+  name: '${uniqueString(deployment().name, location)}-test-nigcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nigcom001'
@@ -245,7 +245,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
 
 ```bicep
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nigmin'
+  name: '${uniqueString(deployment().name, location)}-test-nigmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nigmin001'

@@ -14,7 +14,7 @@ This module deploys Network DnsResolvers.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/dnsResolvers` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers) |
 | `Microsoft.Network/dnsResolvers/inboundEndpoints` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsResolvers/inboundEndpoints) |
@@ -252,7 +252,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndrcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndrcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ndrcom001'

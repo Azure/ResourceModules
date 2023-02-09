@@ -3,6 +3,16 @@ name: 'EventGrid: System Topics'
 on:
   workflow_dispatch:
     inputs:
+      staticValidation:
+        type: boolean
+        description: 'Execute static validation'
+        required: false
+        default: true
+      deploymentValidation:
+        type: boolean
+        description: 'Execute deployment validation'
+        required: false
+        default: true
       removeDeployment:
         type: boolean
         description: 'Remove deployed module'
@@ -34,6 +44,9 @@ env:
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
+concurrency:
+  group: ${{ github.workflow }}
+
 jobs:
   ###########################
   #   Initialize pipeline   #
@@ -63,9 +76,12 @@ jobs:
   #########################
   #   Static validation   #
   #########################
-  job_module_pester_validation:
+  job_module_static_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
+    if: (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation == 'true'
+    needs:
+      - job_initialize_pipeline
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -86,10 +102,14 @@ jobs:
   #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment validation'
+    name: 'Deploying'
+    if: |
+      !cancelled() &&
+      (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation == 'true' &&
+      needs.job_module_static_validation.result != 'failure'
     needs:
       - job_initialize_pipeline
-      - job_module_pester_validation
+      - job_module_static_validation
     strategy:
       fail-fast: false
       matrix:
@@ -142,3 +162,4 @@ jobs:
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+          publishLatest: '${{ env.publishLatest }}'

@@ -14,7 +14,7 @@ This module deploys VPN Gateways.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Network/vpnGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways) |
 | `Microsoft.Network/vpnGateways/natRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways/natRules) |
 | `Microsoft.Network/vpnGateways/vpnConnections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways/vpnConnections) |
@@ -190,7 +190,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgcom'
+  name: '${uniqueString(deployment().name, location)}-test-nvgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvgcom001'
@@ -319,7 +319,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 
 ```bicep
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgmin'
+  name: '${uniqueString(deployment().name, location)}-test-nvgmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvgmin001'

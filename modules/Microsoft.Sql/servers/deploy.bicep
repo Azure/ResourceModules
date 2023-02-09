@@ -17,6 +17,9 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
+@description('Conditional. The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty.')
+param primaryUserAssignedIdentityId string = ''
+
 @allowed([
   ''
   'CanNotDelete'
@@ -48,6 +51,9 @@ param virtualNetworkRules array = []
 
 @description('Optional. The security alert policies to create in the server.')
 param securityAlertPolicies array = []
+
+@description('Optional. The keys to configure.')
+param keys array = []
 
 @description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
@@ -95,7 +101,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
+resource server 'Microsoft.Sql/servers@2022-05-01-preview' = {
   location: location
   name: name
   tags: tags
@@ -113,11 +119,12 @@ resource server 'Microsoft.Sql/servers@2022-02-01-preview' = {
     } : null
     version: '12.0'
     minimalTlsVersion: minimalTlsVersion
+    primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource server_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -151,7 +158,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     skuSize: contains(database, 'skuSize') ? database.skuSize : ''
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
-    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : 0
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
@@ -218,6 +225,9 @@ module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 
@@ -274,6 +284,17 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
     server_securityAlertPolicies
   ]
 }
+
+module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
+  name: '${uniqueString(deployment().name, location)}-Sql-Key-${index}'
+  params: {
+    name: key.name
+    serverName: server.name
+    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+    uri: contains(key, 'uri') ? key.uri : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 @description('The name of the deployed SQL server.')
 output name string = server.name

@@ -26,10 +26,6 @@ param skuTier string = 'Standard'
 param skuFamily string = 'MeteredData'
 
 @description('Optional. Enabled BGP peering type for the Circuit.')
-@allowed([
-  true
-  false
-])
 param peering bool = false
 
 @description('Optional. BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering.')
@@ -91,12 +87,13 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'PeeringRouteLog'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'PeeringRouteLog'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -110,7 +107,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -118,6 +115,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -174,7 +182,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01
   }
 }
 
-resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
     level: any(lock)

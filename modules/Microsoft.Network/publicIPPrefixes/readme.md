@@ -14,7 +14,7 @@ This template deploys a public IP prefix.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/publicIPPrefixes` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPPrefixes) |
 
@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npipcom'
+  name: '${uniqueString(deployment().name, location)}-test-npipcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>npipcom001'
@@ -239,7 +239,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
 
 ```bicep
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npipmin'
+  name: '${uniqueString(deployment().name, location)}-test-npipmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>npipmin001'

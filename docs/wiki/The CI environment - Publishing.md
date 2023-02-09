@@ -1,6 +1,7 @@
 This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
 
 - [Publishing overview](#publishing-overview)
+- [Module identifiers](#module-identifiers)
 - [How it works](#how-it-works)
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
@@ -17,10 +18,78 @@ The publishing phase concludes each module's pipeline. If all previous tests suc
 
 Besides the publishing phase's runtime, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a prerelease version in every workflow run that is not based on `main` or `master`. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module-pipeline-inputs).
 
-> **Note**<br>
-> The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
+> **Note**: The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
 
 > **Note:** The orchestration options described in the [solution creation](./Solution%20creation) section work differently well with the publishing locations we offer in CARML. To help you select the best location for your use case, we provide further information [here](./Solution%20creation#publish-location-considerations) section.
+
+## Module identifiers
+
+The names of published modules differ slighly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
+
+<details>
+<summary>Template Specs</summary>
+
+**Actions**
+
+- Remove the root folder name `modules` from provided module reference
+- Make lowercase
+- Replace `Microsoft` with `MS`
+- Replace all `\` or `/` with `.`
+- Remove all duplications in the path. For example, the path `virtualNetwork/virtualNetworkPeerings` would be shortened to `virtualNetwork/peerings`
+
+**Examples**
+
+  - Vaults
+    - Before: `modules\Microsoft.RecoveryServices\vaults`
+    - After: `ms.recoveryservices.vaults`
+  - ReplicationProtectionContainerMappings
+    - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
+    - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
+
+</details>
+
+<details>
+<summary>Private Bicep Registry (Azure Container Registry)</summary>
+
+**Actions**
+
+- Remove the root folder name `modules` from provided module reference
+- Make lowercase
+- Replace all `\` or `/` with `.`
+- Add the `bicep/modules` prefix
+
+**Examples**
+
+- Vaults
+   - Before: `modules\Microsoft.RecoveryServices\vaults`
+   - After: `bicep/modules/microsoft.recoveryservices.vaults`
+- ReplicationProtectionContainerMappings
+   - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
+   - After: `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+
+</details>
+
+<details>
+<summary>Azure DevOps Universal Packages</summary>
+
+**Actions**
+
+- Remove the root folder name `modules` from provided module reference
+- Make lowercase
+- Replace all `\` or `/` with `.`
+
+**Examples**
+
+- Vaults
+  - Before: `modules\Microsoft.RecoveryServices\vaults`
+  - After: `microsoft.recoveryservices.vaults`
+- ReplicationProtectionContainerMappings
+  - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
+  - After: `microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+
+</details>
+
+<p>
 
 # How it works
 
@@ -29,13 +98,14 @@ The publishing works as follows:
 1. The script [`utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1) gets all changed module files, including child modules, and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the `version.json` file in the module folder.
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
-   1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`) and a `major.minor` version (`x.y`) are also updated, allowing a consumer to:
+   1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`), a `major.minor` version (`x.y`) and a `latest` version are also updated, allowing a consumer to:
       - Reference the latest version of a major, i.e., the latest minor and patch of a major version.
          > Example: Using Template Specs, the reference to a `major` could look like: `ts/modules:microsoft.resources.resourcegroups:1` which means that the template will always consume whatever the potentially overwritten/updated version `1` contains.
       - Reference the latest version of a minor, i.e., the latest patch of a minor version.
          > Example: Using the Bicep registry, the reference to a `major.minor` could look like: `br/modules:microsoft.resources.resourcegroups:0.4` which means that the template will always consume whatever the potentially overwritten/updated version `0.4` contains.
    1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
    1. The list of module files paths and their versions are passed on as a array list.
+1. The [Get-ModulesMissingFrom*.ps1](https://github.com/Azure/ResourceModules/tree/main/utilities/pipelines/resourcePublish) scripts further check if a given module is missing from the corresponding target location (e.g., Azure Container Registry) and adds each missing entry to to aforementioned array - using the version specified in the module's `version.json` file.
 1. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
 
 ## Example scenario

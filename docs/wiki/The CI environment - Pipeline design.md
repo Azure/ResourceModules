@@ -11,6 +11,7 @@ This section provides an overview of the design principles applied to the CARML 
 - [Platform pipelines](#platform-pipelines)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
+  - [PSRule Pre-Flight validation pipeline](#psrule-pre-flight-validation-pipeline)
 
 ---
 
@@ -105,6 +106,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 - [ReadMe pipeline](#readme-pipeline)
 - [Wiki pipeline](#wiki-pipeline)
+- [PSRule Pre-Flight validation pipeline](#psrule-pre-flight-validation-pipeline)
 
 ## ReadMe pipeline
 
@@ -121,3 +123,48 @@ Once triggered, the pipeline crawls through the library and updates the tables i
 The purpose of the wiki pipeline is to sync any files from the `docs/wiki` folder to the wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
 
 > **Note:** Any changes performed directly on the wiki via the UI will be overwritten by this pipeline.
+
+## PSRule Pre-Flight validation pipeline
+
+The purpose of the PSRule Pre-Flight validation pipeline is to validate Azure resources deployed by module validation pipeline tests, by leveraging [PSRule for Azure](https://azure.github.io/PSRule.Rules.Azure/about/).
+PSRule for Azure is aligned to the [Well-Architected Framework (WAF)](https://learn.microsoft.com/en-us/azure/architecture/framework/). Tests, called _Rules_, check the configuration of Azure resources against WAF principles.
+
+The pipeline, currently only available as a [GitHub workflow](https://github.com/Azure/ResourceModules/blob/main/.github/workflows/platform.librarycheck.psrule.yml), runs weekly on the whole library, providing as output the list of non-compliant resources and corresponding failing rules, if any.
+
+### Configuration settings
+
+PSRule options set for the CARML repository are configured in the [ps-rule.yaml](https://github.com/Azure/ResourceModules/blob/main/ps-rule.yaml) file.
+
+Documentation for all configuration options is available at the following links:
+- https://aka.ms/ps-rule/options
+- https://aka.ms/ps-rule-azure/options
+
+### Baselines
+
+A [baseline](https://azure.github.io/PSRule.Rules.Azure/working-with-baselines/) is a standard PSRule artifact that combines rules and configuration. The PSRule Pre-Flight validation pipeline uses the default baseline to analyze module test resources.
+
+For the list of all rules included see [Azure.Default baseline](https://azure.github.io/PSRule.Rules.Azure/en/baselines/Azure.Default/).
+To view a list of rules by Azure resources see [Rules by resource](https://azure.github.io/PSRule.Rules.Azure/en/rules/resource/).
+
+### Exclusions and suppression rules
+
+Not all baseline rules may be valid for some of the test Azure resources deployed by the module validation pipelines.
+
+For example, resources deployed by the min tests, aim to validate only the required input parameters for each module.
+Therefore, optional features such as diagnostic settings are not configured in those tests. Since enabling logging is a general recommendation for most of the resources supporting them, missing diagnostic settings usually trigger incopliance of PSRule checks, e.g., [Azure.KeyVault.Logs](https://azure.github.io/PSRule.Rules.Azure/en/rules/Azure.KeyVault.Logs/). For this reason, these checks are excluded from being evaluated for resources deployed by min tests.
+
+PSRule allows skipping rules on two levels:
+
+- **Exclusions**: Can be leveraged to exclude specific baseline rules from being evaluated for any resource.
+   - [ps-rule.yaml](https://github.com/Azure/ResourceModules/blob/main/ps-rule.yaml): Lists the name of specific rules to exclude under the option [Rule.Exclude](https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_Options/#ruleexclude)
+- **Suppression Groups**: PSRule can use [Suppression Groups](https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_SuppressionGroups/) to suppress rules based on a condition. Suppression groups can be leveraged when some of the rules in the baseline are not relevant under specific conditions, e.g., only for specific resources. They are stored in the `.ps-rule` repo root folder in `.yaml` format. In particular:
+   - [.ps-rule\dep-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/dep-suppress.Rule.yaml): Lists rules to be ignored for resources deployed as dependencies
+   - [.ps-rule\min-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/min-suppress.Rule.yaml): Lists rules to be ignored for resources deployed by the min tests
+
+### Output
+
+To better outline failed rules and allow fixing incompliant resources quickly, the pipeline leverages the script [utilities\pipelines\PSRuleValidation\Set-PSRuleGitHubOutput.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/PSRuleValidation/Set-PSRuleGitHubOutput.ps1) to aggregate PSRule output into Custom Markdown content and display it to the Actions run summary page.
+
+<img src="./media/CIEnvironment/PSRuleSummary.png" alt="PSRule Summary">
+
+

@@ -14,7 +14,7 @@ This template deploys a DDoS protection plan.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/ddosProtectionPlans` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/ddosProtectionPlans) |
 
@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndppcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndppcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ndppcom001'
@@ -234,7 +234,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndppmin'
+  name: '${uniqueString(deployment().name, location)}-test-ndppmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>ndppmin001'

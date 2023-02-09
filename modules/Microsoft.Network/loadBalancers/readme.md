@@ -14,7 +14,7 @@ This module deploys a load balancer.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/loadBalancers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/loadBalancers) |
@@ -479,7 +479,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbcom'
+  name: '${uniqueString(deployment().name, location)}-test-nlbcom'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -740,7 +740,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbint'
+  name: '${uniqueString(deployment().name, location)}-test-nlbint'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -947,7 +947,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbmin'
+  name: '${uniqueString(deployment().name, location)}-test-nlbmin'
   params: {
     // Required parameters
     frontendIPConfigurations: [

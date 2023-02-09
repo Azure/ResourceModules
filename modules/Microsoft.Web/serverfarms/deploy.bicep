@@ -103,9 +103,9 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -151,7 +151,7 @@ resource appServicePlan_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
   scope: appServicePlan
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${appServicePlan.name}-${lock}-lock'
   properties: {
     level: any(lock)
