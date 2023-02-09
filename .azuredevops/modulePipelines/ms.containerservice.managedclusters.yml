@@ -12,7 +12,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -25,7 +25,6 @@ trigger:
   branches:
     include:
       - main
-      - 'users/mast/k8sExtensions'
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.containerservice.managedclusters.yml'
