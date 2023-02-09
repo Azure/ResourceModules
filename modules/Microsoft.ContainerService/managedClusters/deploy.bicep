@@ -582,9 +582,9 @@ module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration
     namespace: fluxConfiguration.namespace
     sourceKind: fluxConfiguration.sourceKind
     name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxConfiguration'
-    bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : null
+    bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : {}
     configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
-    gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : null
+    gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : {}
     kustomizations: contains(fluxConfiguration, 'kustomizations') ? fluxConfiguration.kustomizations : {}
     suspend: contains(fluxConfiguration, 'suspend') ? fluxConfiguration.suspend : false
   }
