@@ -57,6 +57,19 @@ module testDeployment '../../deploy.bicep' = {
           url: 'https://github.com/mspnp/aks-baseline'
         }
       }
+      {
+        namespace: 'flux-system-helm'
+        scope: 'cluster'
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+        }
+      }
     ]
   }
 }

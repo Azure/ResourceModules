@@ -104,7 +104,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
-| `fluxConfiguration` | object | `{object}` |  | A flux configuraiton. |
+| `fluxConfigurations` | array | `[]` |  | A list of flux configuraitons. |
+| `fluxReleaseTrain` | string | `'Stable'` |  | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
+| `fluxVersion` | string | `''` |  | Version of the extension for this extension, if it is "pinned" to a specific version. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
@@ -470,20 +472,20 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fluxConfiguration: {
-      enable: true
-      gitRepository: {
-        repositoryRef: {
-          branch: 'main'
+    fluxConfigurations: [
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
         }
-        sshKnownHosts: ''
-        syncIntervalInSeconds: 300
-        timeoutInSeconds: 180
-        url: 'https://github.com/mspnp/aks-baseline'
+        namespace: 'flux-system'
       }
-      namespace: 'flux-system'
-      sourceKind: 'GitRepository'
-    }
+    ]
     systemAssignedIdentity: true
   }
 }
@@ -519,21 +521,142 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "fluxConfiguration": {
-      "value": {
-        "enable": true,
-        "gitRepository": {
-          "repositoryRef": {
-            "branch": "main"
+    "fluxConfigurations": {
+      "value": [
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/mspnp/aks-baseline"
           },
-          "sshKnownHosts": "",
-          "syncIntervalInSeconds": 300,
-          "timeoutInSeconds": 180,
-          "url": "https://github.com/mspnp/aks-baseline"
-        },
-        "namespace": "flux-system",
-        "sourceKind": "GitRepository"
+          "namespace": "flux-system"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Minfluxdouble</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmminflux'
+  params: {
+    // Required parameters
+    name: 'csmminflux001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
       }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfigurations: [
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
+        }
+        namespace: 'flux-system'
+      }
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+        }
+        namespace: 'flux-system-helm'
+      }
+    ]
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmminflux001"
+    },
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "fluxConfigurations": {
+      "value": [
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/mspnp/aks-baseline"
+          },
+          "namespace": "flux-system"
+        },
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/Azure/gitops-flux2-kustomize-helm-mt"
+          },
+          "namespace": "flux-system-helm"
+        }
+      ]
     },
     "systemAssignedIdentity": {
       "value": true

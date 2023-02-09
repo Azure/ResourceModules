@@ -295,8 +295,14 @@ param tags object = {}
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
-@description('Optional. A flux configuraiton.')
-param fluxConfiguration object = {}
+@description('Optional. ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true".')
+param fluxReleaseTrain string = 'Stable'
+
+@description('Optional. Version of the extension for this extension, if it is "pinned" to a specific version.')
+param fluxVersion string = ''
+
+@description('Optional. A list of flux configuraitons.')
+param fluxConfigurations array = []
 
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
@@ -556,32 +562,29 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-module managedCluster_fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxConfiguration)) {
+module managedCluster_fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxConfigurations)) {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
-    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxExtension'
+    name: 'flux'
     extensionType: 'microsoft.flux'
-    configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
-    configurationSettings: contains(fluxConfiguration, 'configurationSettings') ? fluxConfiguration.configurationSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     releaseNamespace: 'flux-system'
-    releaseTrain: contains(fluxConfiguration, 'releaseTrain') ? fluxConfiguration.releaseTrain : 'Stable'
-    targetNamespace: contains(fluxConfiguration, 'targetNamespace') ? fluxConfiguration.targetNamespace : ''
-    version: contains(fluxConfiguration, 'version') ? fluxConfiguration.version : ''
+    releaseTrain: !empty(fluxReleaseTrain) ? fluxReleaseTrain : 'Stable'
+    version: !empty(fluxVersion) ? fluxVersion : ''
   }
 }
 
-module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = if (!empty(fluxConfiguration)) {
-  name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration'
+module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = [for (fluxConfiguration, index) in fluxConfigurations: {
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration${index}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     clusterName: managedCluster.name
     scope: fluxConfiguration.scope
     namespace: fluxConfiguration.namespace
-    sourceKind: fluxConfiguration.sourceKind
-    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxconfiguration'
+    sourceKind: contains(fluxConfiguration, 'gitRepository') ? 'GitRepository' : 'Bucket'
+    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxconfiguration${index}'
     bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : {}
     configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
     gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : {}
@@ -591,7 +594,7 @@ module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration
   dependsOn: [
     managedCluster_fluxExtension
   ]
-}
+}]
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
