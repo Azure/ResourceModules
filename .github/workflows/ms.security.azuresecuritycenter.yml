@@ -66,9 +66,12 @@ jobs:
   #########################
   #   Static validation   #
   #########################
-  job_module_pester_validation:
+  job_module_static_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
+    if: (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation == 'true'
+    needs:
+      - job_initialize_pipeline
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -89,10 +92,14 @@ jobs:
   #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment validation'
+    name: 'Deploying'
+    if: |
+      !cancelled() &&
+      (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation == 'true' &&
+      needs.job_module_static_validation.result != 'failure'
     needs:
       - job_initialize_pipeline
-      - job_module_pester_validation
+      - job_module_static_validation
     strategy:
       fail-fast: false
       matrix:

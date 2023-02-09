@@ -226,8 +226,12 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
     enableClientCertificate: enableClientCertificate ? true : null
     disableGateway: disableGateway
     virtualNetworkType: virtualNetworkType
-    virtualNetworkConfiguration: !empty(subnetResourceId) ? json('{"subnetResourceId": "${subnetResourceId}"}') : null
-    apiVersionConstraint: !empty(minApiVersion) ? json('{"minApiVersion": "${minApiVersion}"}') : null
+    virtualNetworkConfiguration: !empty(subnetResourceId) ? {
+      subnetResourceId: subnetResourceId
+    } : null
+    apiVersionConstraint: !empty(minApiVersion) ? {
+      minApiVersion: minApiVersion
+    } : null
     restore: restore
   }
 }

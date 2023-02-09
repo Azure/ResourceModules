@@ -287,6 +287,8 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
   vpnClientProtocols: vpnClientAadConfiguration.vpnClientProtocols
 } : null
 
+var enableReferencedModulesTelemetry = false
+
 // ================//
 // Deployments     //
 // ================//
@@ -316,7 +318,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
     domainNameLabel: length(virtualGatewayPipNameVar) == length(domainNameLabel) ? domainNameLabel[index] : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
     publicIPAllocationMethod: gatewayPipAllocationMethod
