@@ -560,7 +560,7 @@ module fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
-    name: '${managedCluster.name}-fluxExtension'
+    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxExtension'
     extensionType: 'microsoft.flux'
     configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
     configurationSettings: contains(fluxConfiguration, 'configurationSettings') ? fluxConfiguration.configurationSettings : {}

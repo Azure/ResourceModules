@@ -379,7 +379,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Minflux</h3>
 
 <details>
 
@@ -401,6 +401,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfiguration: {
+      enable: true
+    }
     systemAssignedIdentity: true
   }
 }
@@ -435,6 +438,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "fluxConfiguration": {
+      "value": {
+        "enable": true
+      }
     },
     "systemAssignedIdentity": {
       "value": true
