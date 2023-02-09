@@ -24,11 +24,9 @@ This module deploys HealthcareApis MedTech Service.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `destinationMapping` | object | `{object}` | The mapping JSON that determines how normalized data is converted to FHIR Observations. |
 | `deviceMapping` | object | `{object}` | The mapping JSON that determines how incoming device data is normalized. |
 | `eventHubName` | string |  | Event Hub name to connect to. |
 | `eventHubNamespaceName` | string |  | Namespace of the Event Hub to connect to. |
-| `fhirServiceResourceId` | string |  | The resource identifier of the FHIR Service to connect to. |
 | `name` | string |  | The name of the MedTech service. |
 
 **Conditional parameters**
@@ -51,9 +49,9 @@ This module deploys HealthcareApis MedTech Service.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `fhirdestination` | object | `{object}` |  | FHIR Destination. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `resourceIdentityResolutionType` | string | `'Lookup'` | `[Create, Lookup]` | Determines how resource identity is resolved on the destination. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
