@@ -459,10 +459,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmmf2'
+  name: '${uniqueString(deployment().name, location)}-test-csmmf'
   params: {
     // Required parameters
-    name: 'csmmf2001'
+    name: 'csmmf001'
     primaryAgentPoolProfile: [
       {
         count: 1
@@ -506,7 +506,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "csmmf2001"
+      "value": "csmmf001"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -556,10 +556,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmminfluxdouble'
+  name: '${uniqueString(deployment().name, location)}-test-csmmf2'
   params: {
     // Required parameters
-    name: 'csmminfluxdouble001'
+    name: 'csmmf2001'
     primaryAgentPoolProfile: [
       {
         count: 1
@@ -615,7 +615,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "csmminfluxdouble001"
+      "value": "csmmf2001"
     },
     "primaryAgentPoolProfile": {
       "value": [
