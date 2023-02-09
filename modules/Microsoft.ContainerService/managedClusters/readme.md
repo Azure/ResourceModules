@@ -385,32 +385,89 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
+    name: '<<namePrefix>>csmaz001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
           '1'
         ]
-        minCount: 1
-        maxCount: 3
-        mode: 'System'
+        count: 1
         enableAutoScaling: true
-        osDiskSizeGB: 0
-        serviceCidr: ''
+        maxCount: 3
         maxPods: 30
+        minCount: 1
+        mode: 'System'
+        name: 'systempool'
+        osDiskSizeGB: 0
+        osType: 'Linux'
+        serviceCidr: ''
+        storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        count: 1
-        osType: 'Linux'
         vnetSubnetID: '<vnetSubnetID>'
-        name: 'systempool'
-        storageProfile: 'ManagedDisks'
       }
     ]
     // Non-required parameters
-    name: '<<namePrefix>>csmaz001'
-    systemAssignedIdentity: true
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    agentPools: [
+      {
+        availabilityZones: [
+          '1'
+        ]
+        count: 2
+        enableAutoScaling: true
+        maxCount: 3
+        maxPods: 30
+        minCount: 1
+        minPods: 2
+        mode: 'User'
+        name: 'userpool1'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        osDiskSizeGB: 128
+        osType: 'Linux'
+        scaleSetEvictionPolicy: 'Delete'
+        scaleSetPriority: 'Regular'
+        storageProfile: 'ManagedDisks'
+        type: 'VirtualMachineScaleSets'
+        vmSize: 'Standard_DS2_v2'
+        vnetSubnetID: '<vnetSubnetID>'
+      }
+      {
+        availabilityZones: [
+          '1'
+        ]
+        count: 2
+        enableAutoScaling: true
+        maxCount: 3
+        maxPods: 30
+        minCount: 1
+        minPods: 2
+        mode: 'User'
+        name: 'userpool2'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        osDiskSizeGB: 128
+        osType: 'Linux'
+        scaleSetEvictionPolicy: 'Delete'
+        scaleSetPriority: 'Regular'
+        storageProfile: 'ManagedDisks'
+        type: 'VirtualMachineScaleSets'
+        vmSize: 'Standard_DS2_v2'
+        vnetSubnetID: '<vnetSubnetID>'
+      }
+    ]
+    aksClusterNetworkPlugin: 'azure'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    diskEncryptionSetID: '<diskEncryptionSetID>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -421,64 +478,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    aksClusterNetworkPlugin: 'azure'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
-    diskEncryptionSetID: '<diskEncryptionSetID>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    agentPools: [
-      {
-        osType: 'Linux'
-        scaleSetPriority: 'Regular'
-        count: 2
-        maxPods: 30
-        minPods: 2
-        type: 'VirtualMachineScaleSets'
-        enableAutoScaling: true
-        maxCount: 3
-        nodeTaints: [
-          'CriticalAddonsOnly=true:NoSchedule'
-        ]
-        availabilityZones: [
-          '1'
-        ]
-        scaleSetEvictionPolicy: 'Delete'
-        nodeLabels: {}
-        vmSize: 'Standard_DS2_v2'
-        name: 'userpool1'
-        osDiskSizeGB: 128
-        minCount: 1
-        vnetSubnetID: '<vnetSubnetID>'
-        mode: 'User'
-        storageProfile: 'ManagedDisks'
-      }
-      {
-        osType: 'Linux'
-        scaleSetPriority: 'Regular'
-        count: 2
-        maxPods: 30
-        minPods: 2
-        type: 'VirtualMachineScaleSets'
-        enableAutoScaling: true
-        maxCount: 3
-        nodeTaints: [
-          'CriticalAddonsOnly=true:NoSchedule'
-        ]
-        availabilityZones: [
-          '1'
-        ]
-        scaleSetEvictionPolicy: 'Delete'
-        nodeLabels: {}
-        vmSize: 'Standard_DS2_v2'
-        name: 'userpool2'
-        osDiskSizeGB: 128
-        minCount: 1
-        vnetSubnetID: '<vnetSubnetID>'
-        mode: 'User'
-        storageProfile: 'ManagedDisks'
-      }
-    ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    systemAssignedIdentity: true
   }
 }
 ```
@@ -496,41 +496,110 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "name": {
+      "value": "<<namePrefix>>csmaz001"
+    },
     "primaryAgentPoolProfile": {
       "value": [
         {
           "availabilityZones": [
             "1"
           ],
-          "minCount": 1,
-          "maxCount": 3,
-          "mode": "System",
+          "count": 1,
           "enableAutoScaling": true,
-          "osDiskSizeGB": 0,
-          "serviceCidr": "",
+          "maxCount": 3,
           "maxPods": 30,
+          "minCount": 1,
+          "mode": "System",
+          "name": "systempool",
+          "osDiskSizeGB": 0,
+          "osType": "Linux",
+          "serviceCidr": "",
+          "storageProfile": "ManagedDisks",
           "type": "VirtualMachineScaleSets",
           "vmSize": "Standard_DS2_v2",
-          "count": 1,
-          "osType": "Linux",
-          "vnetSubnetID": "<vnetSubnetID>",
-          "name": "systempool",
-          "storageProfile": "ManagedDisks"
+          "vnetSubnetID": "<vnetSubnetID>"
         }
       ]
     },
     // Non-required parameters
-    "name": {
-      "value": "<<namePrefix>>csmaz001"
+    "agentPools": {
+      "value": [
+        {
+          "availabilityZones": [
+            "1"
+          ],
+          "count": 2,
+          "enableAutoScaling": true,
+          "maxCount": 3,
+          "maxPods": 30,
+          "minCount": 1,
+          "minPods": 2,
+          "mode": "User",
+          "name": "userpool1",
+          "nodeLabels": {},
+          "nodeTaints": [
+            "CriticalAddonsOnly=true:NoSchedule"
+          ],
+          "osDiskSizeGB": 128,
+          "osType": "Linux",
+          "scaleSetEvictionPolicy": "Delete",
+          "scaleSetPriority": "Regular",
+          "storageProfile": "ManagedDisks",
+          "type": "VirtualMachineScaleSets",
+          "vmSize": "Standard_DS2_v2",
+          "vnetSubnetID": "<vnetSubnetID>"
+        },
+        {
+          "availabilityZones": [
+            "1"
+          ],
+          "count": 2,
+          "enableAutoScaling": true,
+          "maxCount": 3,
+          "maxPods": 30,
+          "minCount": 1,
+          "minPods": 2,
+          "mode": "User",
+          "name": "userpool2",
+          "nodeLabels": {},
+          "nodeTaints": [
+            "CriticalAddonsOnly=true:NoSchedule"
+          ],
+          "osDiskSizeGB": 128,
+          "osType": "Linux",
+          "scaleSetEvictionPolicy": "Delete",
+          "scaleSetPriority": "Regular",
+          "storageProfile": "ManagedDisks",
+          "type": "VirtualMachineScaleSets",
+          "vmSize": "Standard_DS2_v2",
+          "vnetSubnetID": "<vnetSubnetID>"
+        }
+      ]
     },
     "aksClusterNetworkPlugin": {
       "value": "azure"
     },
-    "diagnosticStorageAccountId": {
-      "value": "<diagnosticStorageAccountId>"
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "diskEncryptionSetID": {
+      "value": "<diskEncryptionSetID>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -546,77 +615,8 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
       ]
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
     "systemAssignedIdentity": {
       "value": true
-    },
-    "diskEncryptionSetID": {
-      "value": "<diskEncryptionSetID>"
-    },
-    "diagnosticWorkspaceId": {
-      "value": "<diagnosticWorkspaceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "agentPools": {
-      "value": [
-        {
-          "osType": "Linux",
-          "scaleSetPriority": "Regular",
-          "count": 2,
-          "maxPods": 30,
-          "minPods": 2,
-          "type": "VirtualMachineScaleSets",
-          "enableAutoScaling": true,
-          "maxCount": 3,
-          "nodeTaints": [
-            "CriticalAddonsOnly=true:NoSchedule"
-          ],
-          "availabilityZones": [
-            "1"
-          ],
-          "scaleSetEvictionPolicy": "Delete",
-          "nodeLabels": {},
-          "vmSize": "Standard_DS2_v2",
-          "name": "userpool1",
-          "osDiskSizeGB": 128,
-          "minCount": 1,
-          "vnetSubnetID": "<vnetSubnetID>",
-          "mode": "User",
-          "storageProfile": "ManagedDisks"
-        },
-        {
-          "osType": "Linux",
-          "scaleSetPriority": "Regular",
-          "count": 2,
-          "maxPods": 30,
-          "minPods": 2,
-          "type": "VirtualMachineScaleSets",
-          "enableAutoScaling": true,
-          "maxCount": 3,
-          "nodeTaints": [
-            "CriticalAddonsOnly=true:NoSchedule"
-          ],
-          "availabilityZones": [
-            "1"
-          ],
-          "scaleSetEvictionPolicy": "Delete",
-          "nodeLabels": {},
-          "vmSize": "Standard_DS2_v2",
-          "name": "userpool2",
-          "osDiskSizeGB": 128,
-          "minCount": 1,
-          "vnetSubnetID": "<vnetSubnetID>",
-          "mode": "User",
-          "storageProfile": "ManagedDisks"
-        }
-      ]
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
     }
   }
 }
@@ -636,88 +636,85 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
+    name: '<<namePrefix>>csmkube001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
           '1'
         ]
-        minCount: 1
-        maxCount: 3
-        mode: 'System'
+        count: 1
         enableAutoScaling: true
+        maxCount: 3
+        maxPods: 30
+        minCount: 1
+        mode: 'System'
+        name: 'systempool'
         osDiskSizeGB: 0
+        osType: 'Linux'
         serviceCidr: ''
+        storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        count: 1
-        osType: 'Linux'
-        maxPods: 30
-        name: 'systempool'
-        storageProfile: 'ManagedDisks'
       }
     ]
     // Non-required parameters
-    name: '<<namePrefix>>csmkube001'
-    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
-    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
-    diagnosticEventHubName: '<diagnosticEventHubName>'
     agentPools: [
       {
-        osType: 'Linux'
-        count: 2
-        maxPods: 30
-        minPods: 2
-        type: 'VirtualMachineScaleSets'
-        enableAutoScaling: true
-        maxCount: 3
-        nodeTaints: [
-          'CriticalAddonsOnly=true:NoSchedule'
-        ]
         availabilityZones: [
           '1'
         ]
-        scaleSetEvictionPolicy: 'Delete'
-        nodeLabels: {}
-        vmSize: 'Standard_DS2_v2'
-        name: 'userpool1'
-        osDiskSizeGB: 128
-        storageProfile: 'ManagedDisks'
+        count: 2
+        enableAutoScaling: true
+        maxCount: 3
+        maxPods: 30
         minCount: 1
+        minPods: 2
         mode: 'User'
+        name: 'userpool1'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        osDiskSizeGB: 128
+        osType: 'Linux'
+        scaleSetEvictionPolicy: 'Delete'
         scaleSetPriority: 'Regular'
+        storageProfile: 'ManagedDisks'
+        type: 'VirtualMachineScaleSets'
+        vmSize: 'Standard_DS2_v2'
       }
       {
-        osType: 'Linux'
-        count: 2
-        maxPods: 30
-        minPods: 2
-        type: 'VirtualMachineScaleSets'
-        enableAutoScaling: true
-        maxCount: 3
-        nodeTaints: [
-          'CriticalAddonsOnly=true:NoSchedule'
-        ]
         availabilityZones: [
           '1'
         ]
-        scaleSetEvictionPolicy: 'Delete'
-        nodeLabels: {}
-        vmSize: 'Standard_DS2_v2'
-        name: 'userpool2'
-        osDiskSizeGB: 128
-        storageProfile: 'ManagedDisks'
+        count: 2
+        enableAutoScaling: true
+        maxCount: 3
+        maxPods: 30
         minCount: 1
+        minPods: 2
         mode: 'User'
+        name: 'userpool2'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        osDiskSizeGB: 128
+        osType: 'Linux'
+        scaleSetEvictionPolicy: 'Delete'
         scaleSetPriority: 'Regular'
+        storageProfile: 'ManagedDisks'
+        type: 'VirtualMachineScaleSets'
+        vmSize: 'Standard_DS2_v2'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     aksClusterNetworkPlugin: 'kubenet'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
@@ -727,6 +724,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -744,31 +744,95 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "name": {
+      "value": "<<namePrefix>>csmkube001"
+    },
     "primaryAgentPoolProfile": {
       "value": [
         {
           "availabilityZones": [
             "1"
           ],
-          "minCount": 1,
-          "maxCount": 3,
-          "mode": "System",
-          "enableAutoScaling": true,
-          "osDiskSizeGB": 0,
-          "serviceCidr": "",
-          "type": "VirtualMachineScaleSets",
-          "vmSize": "Standard_DS2_v2",
           "count": 1,
-          "osType": "Linux",
+          "enableAutoScaling": true,
+          "maxCount": 3,
           "maxPods": 30,
+          "minCount": 1,
+          "mode": "System",
           "name": "systempool",
-          "storageProfile": "ManagedDisks"
+          "osDiskSizeGB": 0,
+          "osType": "Linux",
+          "serviceCidr": "",
+          "storageProfile": "ManagedDisks",
+          "type": "VirtualMachineScaleSets",
+          "vmSize": "Standard_DS2_v2"
         }
       ]
     },
     // Non-required parameters
-    "name": {
-      "value": "<<namePrefix>>csmkube001"
+    "agentPools": {
+      "value": [
+        {
+          "availabilityZones": [
+            "1"
+          ],
+          "count": 2,
+          "enableAutoScaling": true,
+          "maxCount": 3,
+          "maxPods": 30,
+          "minCount": 1,
+          "minPods": 2,
+          "mode": "User",
+          "name": "userpool1",
+          "nodeLabels": {},
+          "nodeTaints": [
+            "CriticalAddonsOnly=true:NoSchedule"
+          ],
+          "osDiskSizeGB": 128,
+          "osType": "Linux",
+          "scaleSetEvictionPolicy": "Delete",
+          "scaleSetPriority": "Regular",
+          "storageProfile": "ManagedDisks",
+          "type": "VirtualMachineScaleSets",
+          "vmSize": "Standard_DS2_v2"
+        },
+        {
+          "availabilityZones": [
+            "1"
+          ],
+          "count": 2,
+          "enableAutoScaling": true,
+          "maxCount": 3,
+          "maxPods": 30,
+          "minCount": 1,
+          "minPods": 2,
+          "mode": "User",
+          "name": "userpool2",
+          "nodeLabels": {},
+          "nodeTaints": [
+            "CriticalAddonsOnly=true:NoSchedule"
+          ],
+          "osDiskSizeGB": 128,
+          "osType": "Linux",
+          "scaleSetEvictionPolicy": "Delete",
+          "scaleSetPriority": "Regular",
+          "storageProfile": "ManagedDisks",
+          "type": "VirtualMachineScaleSets",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    "aksClusterNetworkPlugin": {
+      "value": "kubenet"
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
     },
     "diagnosticStorageAccountId": {
       "value": "<diagnosticStorageAccountId>"
@@ -776,77 +840,8 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
-    "diagnosticEventHubName": {
-      "value": "<diagnosticEventHubName>"
-    },
-    "agentPools": {
-      "value": [
-        {
-          "osType": "Linux",
-          "count": 2,
-          "maxPods": 30,
-          "minPods": 2,
-          "type": "VirtualMachineScaleSets",
-          "enableAutoScaling": true,
-          "maxCount": 3,
-          "nodeTaints": [
-            "CriticalAddonsOnly=true:NoSchedule"
-          ],
-          "availabilityZones": [
-            "1"
-          ],
-          "scaleSetEvictionPolicy": "Delete",
-          "nodeLabels": {},
-          "vmSize": "Standard_DS2_v2",
-          "name": "userpool1",
-          "osDiskSizeGB": 128,
-          "storageProfile": "ManagedDisks",
-          "minCount": 1,
-          "mode": "User",
-          "scaleSetPriority": "Regular"
-        },
-        {
-          "osType": "Linux",
-          "count": 2,
-          "maxPods": 30,
-          "minPods": 2,
-          "type": "VirtualMachineScaleSets",
-          "enableAutoScaling": true,
-          "maxCount": 3,
-          "nodeTaints": [
-            "CriticalAddonsOnly=true:NoSchedule"
-          ],
-          "availabilityZones": [
-            "1"
-          ],
-          "scaleSetEvictionPolicy": "Delete",
-          "nodeLabels": {},
-          "vmSize": "Standard_DS2_v2",
-          "name": "userpool2",
-          "osDiskSizeGB": 128,
-          "storageProfile": "ManagedDisks",
-          "minCount": 1,
-          "mode": "User",
-          "scaleSetPriority": "Regular"
-        }
-      ]
-    },
-    "diagnosticLogsRetentionInDays": {
-      "value": 7
-    },
-    "diagnosticEventHubAuthorizationRuleId": {
-      "value": "<diagnosticEventHubAuthorizationRuleId>"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "aksClusterNetworkPlugin": {
-      "value": "kubenet"
     },
     "roleAssignments": {
       "value": [
@@ -858,6 +853,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
