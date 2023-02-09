@@ -459,10 +459,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmminflux'
+  name: '${uniqueString(deployment().name, location)}-test-csmmf2'
   params: {
     // Required parameters
-    name: 'csmminflux001'
+    name: 'csmmf2001'
     primaryAgentPoolProfile: [
       {
         count: 1
@@ -506,7 +506,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "csmminflux001"
+      "value": "csmmf2001"
     },
     "primaryAgentPoolProfile": {
       "value": [
