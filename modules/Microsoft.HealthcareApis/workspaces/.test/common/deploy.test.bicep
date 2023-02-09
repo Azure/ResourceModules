@@ -85,7 +85,7 @@ module testDeployment '../../deploy.bicep' = {
         resourceVersionPolicy: 'versioned'
         smartProxyEnabled: false
         enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: true
+        systemAssignedIdentity: false
         importEnabled: false
         initialImportMode: false
         userAssignedIdentities: {
@@ -119,7 +119,7 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         publicNetworkAccess: 'Enabled'
         enableDefaultTelemetry: enableDefaultTelemetry
-        systemAssignedIdentity: true
+        systemAssignedIdentity: false
         userAssignedIdentities: {
           '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
         }
