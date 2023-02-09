@@ -577,16 +577,16 @@ module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxConfiguration'
     clusterName: managedCluster.name
-    bucket: contains(fluxConfiguration, 'bucket') ? (!empty(fluxConfiguration.bucket) ? fluxConfiguration.bucket : null) : null
-    configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? (!empty(fluxConfiguration.configurationProtectedSettings) ? fluxConfiguration.configurationProtectedSettings : {}) : {}
-    gitRepository: contains(fluxConfiguration, 'gitRepository') ? (!empty(fluxConfiguration.gitRepository) ? fluxConfiguration.gitRepository : null) : null
-    kustomizations: contains(fluxConfiguration, 'kustomizations') ? (!empty(fluxConfiguration.kustomizations) ? fluxConfiguration.kustomizations : {}) : {}
-    namespace: fluxConfiguration.namespace
     scope: fluxConfiguration.scope
+    namespace: fluxConfiguration.namespace
     sourceKind: fluxConfiguration.sourceKind
-    suspend: contains(fluxConfiguration, 'suspend') ? (!empty(fluxConfiguration.suspend) ? fluxConfiguration.suspend : false) : false
+    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxConfiguration'
+    bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : null
+    configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
+    gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : null
+    kustomizations: contains(fluxConfiguration, 'kustomizations') ? fluxConfiguration.kustomizations : {}
+    suspend: contains(fluxConfiguration, 'suspend') ? fluxConfiguration.suspend : false
   }
   dependsOn: [
     managedCluster_fluxExtension
