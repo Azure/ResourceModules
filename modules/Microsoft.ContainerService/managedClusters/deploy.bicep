@@ -295,6 +295,9 @@ param tags object = {}
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
+@description('Optional. A flux configuraiton.')
+param fluxConfiguration object = {}
+
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
   'allLogs'
@@ -552,6 +555,23 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
+
+module fluxExtension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxConfiguration)) {
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
+  params: {
+    clusterName: managedCluster.name
+    name: '${managedCluster.name}-fluxExtension'
+    extensionType: 'microsoft.flux'
+    configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
+    configurationSettings: contains(fluxConfiguration, 'configurationSettings') ? fluxConfiguration.configurationSettings : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: location
+    releaseNamespace: 'flux-system'
+    releaseTrain: contains(fluxConfiguration, 'releaseTrain') ? fluxConfiguration.releaseTrain : 'Stable'
+    targetNamespace: contains(fluxConfiguration, 'targetNamespace') ? fluxConfiguration.targetNamespace : ''
+    version: contains(fluxConfiguration, 'version') ? fluxConfiguration.version : ''
+  }
+}
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
