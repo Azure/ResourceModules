@@ -8,8 +8,8 @@ param fileServicesName string = 'default'
 @description('Required. The name of the file share to create.')
 param name string
 
-@description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.')
-param sharedQuota int = 5120
+@description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5120 (5TB). For Large File Shares, the maximum size is 102400 (100TB).')
+param shareQuota int = 5120
 
 @allowed([
   'NFS'
@@ -56,7 +56,7 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-0
   name: name
   parent: storageAccount::fileService
   properties: {
-    shareQuota: sharedQuota
+    shareQuota: shareQuota
     rootSquash: enabledProtocols == 'NFS' ? rootSquash : null
     enabledProtocols: enabledProtocols
   }

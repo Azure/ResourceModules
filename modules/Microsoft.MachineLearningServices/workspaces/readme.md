@@ -286,7 +286,7 @@ tags: {
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -448,7 +448,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswcom'
+  name: '${uniqueString(deployment().name, location)}-test-mlswcom'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
@@ -663,7 +663,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 
 ```bicep
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswecr'
+  name: '${uniqueString(deployment().name, location)}-test-mlswecr'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
@@ -776,7 +776,7 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 
 ```bicep
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-mlswmin'
+  name: '${uniqueString(deployment().name, location)}-test-mlswmin'
   params: {
     // Required parameters
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'

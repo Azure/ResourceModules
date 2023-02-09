@@ -276,7 +276,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-dvhpcom'
+  name: '${uniqueString(deployment().name, location)}-test-dvhpcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>dvhpcom001'

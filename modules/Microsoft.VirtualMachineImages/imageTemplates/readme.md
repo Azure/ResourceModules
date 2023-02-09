@@ -353,7 +353,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmiitcom'
+  name: '${uniqueString(deployment().name, location)}-test-vmiitcom'
   params: {
     // Required parameters
     customizationSteps: [
@@ -508,7 +508,7 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 
 ```bicep
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-vmiitmin'
+  name: '${uniqueString(deployment().name, location)}-test-vmiitmin'
   params: {
     // Required parameters
     customizationSteps: [

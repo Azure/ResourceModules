@@ -199,7 +199,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnicom'
+  name: '${uniqueString(deployment().name, location)}-test-nnicom'
   params: {
     // Required parameters
     ipConfigurations: [
@@ -338,7 +338,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
 
 ```bicep
 module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nnimin'
+  name: '${uniqueString(deployment().name, location)}-test-nnimin'
   params: {
     // Required parameters
     ipConfigurations: [

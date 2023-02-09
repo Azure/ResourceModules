@@ -17,7 +17,7 @@ This module deploys a virtual network gateway.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
+| `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 | `Microsoft.Network/virtualNetworkGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworkGateways) |
 
 ## Parameters
@@ -265,7 +265,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvngavpn'
+  name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvngavpn001'
@@ -410,7 +410,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvger'
+  name: '${uniqueString(deployment().name, location)}-test-nvger'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvger001'
@@ -535,7 +535,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 
 ```bicep
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvgvpn'
+  name: '${uniqueString(deployment().name, location)}-test-nvgvpn'
   params: {
     // Required parameters
     name: '<<namePrefix>>nvgvpn001'

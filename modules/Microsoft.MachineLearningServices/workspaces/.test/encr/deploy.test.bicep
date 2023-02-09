@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.machinelearningservices.workspaces-${serviceShort}-rg'
@@ -19,9 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -30,9 +31,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
@@ -49,25 +50,25 @@ module resourceGroupResources 'dependencies.bicep' = {
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    associatedApplicationInsightsResourceId: resourceGroupResources.outputs.applicationInsightsResourceId
-    associatedKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    associatedStorageAccountResourceId: resourceGroupResources.outputs.storageAccountResourceId
+    associatedApplicationInsightsResourceId: nestedDependencies.outputs.applicationInsightsResourceId
+    associatedKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    associatedStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     sku: 'Basic'
-    cMKKeyName: resourceGroupResources.outputs.keyVaultEncryptionKeyName
-    cMKKeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-    cMKUserAssignedIdentityResourceId: resourceGroupResources.outputs.managedIdentityResourceId
-    primaryUserAssignedIdentity: resourceGroupResources.outputs.managedIdentityResourceId
+    cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
+    cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    primaryUserAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     privateEndpoints: [
       {
         service: 'amlworkspace'
-        subnetResourceId: resourceGroupResources.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            resourceGroupResources.outputs.privateDNSZoneResourceId
+            nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
       }
@@ -75,7 +76,7 @@ module testDeployment '../../deploy.bicep' = {
     // Must be false if `primaryUserAssignedIdentity` is provided
     systemAssignedIdentity: false
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }

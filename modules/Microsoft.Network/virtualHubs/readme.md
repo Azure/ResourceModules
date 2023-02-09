@@ -123,7 +123,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvhcom'
+  name: '${uniqueString(deployment().name, location)}-test-nvhcom'
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
@@ -236,7 +236,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 
 ```bicep
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nvhmin'
+  name: '${uniqueString(deployment().name, location)}-test-nvhmin'
   params: {
     // Required parameters
     addressPrefix: '10.0.0.0/16'

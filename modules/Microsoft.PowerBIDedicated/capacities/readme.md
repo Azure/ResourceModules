@@ -170,7 +170,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pbdcapcom'
+  name: '${uniqueString(deployment().name, location)}-test-pbdcapcom'
   params: {
     // Required parameters
     members: [
@@ -261,7 +261,7 @@ module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
 
 ```bicep
 module capacities './Microsoft.PowerBIDedicated/capacities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-pbdcapmin'
+  name: '${uniqueString(deployment().name, location)}-test-pbdcapmin'
   params: {
     // Required parameters
     members: [

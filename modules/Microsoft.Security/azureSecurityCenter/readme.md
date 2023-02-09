@@ -116,7 +116,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-sasccom'
+  name: '${uniqueString(deployment().name, location)}-test-sasccom'
   params: {
     // Required parameters
     workspaceId: '<workspaceId>'

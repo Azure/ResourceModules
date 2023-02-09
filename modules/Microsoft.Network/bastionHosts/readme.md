@@ -18,7 +18,7 @@ This module deploys a bastion host.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/bastionHosts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/bastionHosts) |
-| `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
+| `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 
 ## Parameters
 
@@ -310,7 +310,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhcom'
+  name: '${uniqueString(deployment().name, location)}-test-nbhcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nbhcom001'
@@ -431,7 +431,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhctmpip'
+  name: '${uniqueString(deployment().name, location)}-test-nbhctmpip'
   params: {
     // Required parameters
     name: '<<namePrefix>>nbhctmpip001'
@@ -447,7 +447,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
+      name: '<<namePrefix>>nbhctmpip001-pip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
@@ -499,7 +499,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
+        "name": "<<namePrefix>>nbhctmpip001-pip",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
@@ -530,7 +530,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 
 ```bicep
 module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nbhmin'
+  name: '${uniqueString(deployment().name, location)}-test-nbhmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nbhmin001'

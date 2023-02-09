@@ -13,7 +13,7 @@ This module deploys the app settings.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/config` | [2020-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/config` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
 

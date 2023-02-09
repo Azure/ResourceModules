@@ -357,6 +357,7 @@ userAssignedIdentities: {
 | `kubeletidentityObjectId` | string | The Object ID of the AKS identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the managed cluster. |
+| `oidcIssuerUrl` | string | The OIDC token issuer Url. |
 | `omsagentIdentityObjectId` | string | The Object ID of the OMS agent identity. |
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
@@ -381,7 +382,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmaz'
+  name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmaz001'
@@ -632,7 +633,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 
 ```bicep
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-csmkube'
+  name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
     name: '<<namePrefix>>csmkube001'

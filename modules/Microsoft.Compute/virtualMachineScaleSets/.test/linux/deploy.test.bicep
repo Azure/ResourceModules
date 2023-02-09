@@ -3,6 +3,7 @@ targetScope = 'subscription'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
 param resourceGroupName string = 'ms.compute.virtualmachinescalesets-${serviceShort}-rg'
@@ -16,9 +17,9 @@ param serviceShort string = 'cvmsslin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================
@@ -27,9 +28,9 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module resourceGroupResources 'dependencies.bicep' = {
+module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-paramNested'
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
@@ -61,7 +62,7 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
 
 module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
-  name: '${uniqueString(deployment().name)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
@@ -84,7 +85,7 @@ module testDeployment '../../deploy.bicep' = {
     availabilityZones: [
       '2'
     ]
-    bootDiagnosticStorageAccountName: resourceGroupResources.outputs.storageAccountName
+    bootDiagnosticStorageAccountName: nestedDependencies.outputs.storageAccountName
     dataDisks: [
       {
         caching: 'ReadOnly'
@@ -114,8 +115,8 @@ module testDeployment '../../deploy.bicep' = {
       enabled: true
       fileData: [
         {
-          storageAccountId: resourceGroupResources.outputs.storageAccountResourceId
-          uri: resourceGroupResources.outputs.storageAccountCSEFileUrl
+          storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+          uri: nestedDependencies.outputs.storageAccountCSEFileUrl
         }
       ]
       protectedSettings: {
@@ -129,11 +130,11 @@ module testDeployment '../../deploy.bicep' = {
       enabled: true
       settings: {
         EncryptionOperation: 'EnableEncryption'
-        KekVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
+        KekVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
         KeyEncryptionAlgorithm: 'RSA-OAEP'
-        KeyEncryptionKeyURL: resourceGroupResources.outputs.keyVaultEncryptionKeyUrl
-        KeyVaultResourceId: resourceGroupResources.outputs.keyVaultResourceId
-        KeyVaultURL: resourceGroupResources.outputs.keyVaultUrl
+        KeyEncryptionKeyURL: nestedDependencies.outputs.keyVaultEncryptionKeyUrl
+        KeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+        KeyVaultURL: nestedDependencies.outputs.keyVaultUrl
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
@@ -152,7 +153,7 @@ module testDeployment '../../deploy.bicep' = {
             name: 'ipconfig1'
             properties: {
               subnet: {
-                id: resourceGroupResources.outputs.subnetResourceId
+                id: nestedDependencies.outputs.subnetResourceId
               }
             }
           }
@@ -162,14 +163,14 @@ module testDeployment '../../deploy.bicep' = {
     ]
     publicKeys: [
       {
-        keyData: resourceGroupResources.outputs.SSHKeyPublicKey
+        keyData: nestedDependencies.outputs.SSHKeyPublicKey
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          resourceGroupResources.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -179,7 +180,7 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     upgradePolicyMode: 'Manual'
     userAssignedIdentities: {
-      '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     vmNamePrefix: 'vmsslinvm'
     vmPriority: 'Regular'

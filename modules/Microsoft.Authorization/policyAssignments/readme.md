@@ -190,7 +190,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-apamgcom'
+  name: '${uniqueString(deployment().name, location)}-test-apamgcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>apamgcom001'

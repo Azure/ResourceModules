@@ -15,7 +15,7 @@
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
+| `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 
 ## Parameters
 
@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npiacom'
+  name: '${uniqueString(deployment().name, location)}-test-npiacom'
   params: {
     // Required parameters
     name: '<<namePrefix>>npiacom001'
@@ -291,7 +291,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
 
 ```bicep
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-npiamin'
+  name: '${uniqueString(deployment().name, location)}-test-npiamin'
   params: {
     // Required parameters
     name: '<<namePrefix>>npiamin001'

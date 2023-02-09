@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndppcom'
+  name: '${uniqueString(deployment().name, location)}-test-ndppcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>ndppcom001'
@@ -234,7 +234,7 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
 
 ```bicep
 module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-ndppmin'
+  name: '${uniqueString(deployment().name, location)}-test-ndppmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>ndppmin001'

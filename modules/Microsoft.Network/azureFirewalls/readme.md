@@ -19,7 +19,7 @@ This module deploys a firewall.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/azureFirewalls` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/azureFirewalls) |
-| `Microsoft.Network/publicIPAddresses` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/publicIPAddresses) |
+| `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 
 ## Parameters
 
@@ -329,7 +329,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafaddpip'
+  name: '${uniqueString(deployment().name, location)}-test-nafaddpip'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafaddpip001'
@@ -392,7 +392,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcom'
+  name: '${uniqueString(deployment().name, location)}-test-nafcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafcom001'
@@ -667,7 +667,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafcstpip'
+  name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafcstpip001'
@@ -766,7 +766,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafhub'
+  name: '${uniqueString(deployment().name, location)}-test-nafhub'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafhub001'
@@ -831,7 +831,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nafmin'
+  name: '${uniqueString(deployment().name, location)}-test-nafmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>nafmin001'

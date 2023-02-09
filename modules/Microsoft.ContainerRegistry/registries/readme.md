@@ -179,7 +179,7 @@ acrAdminUserEnabled: false
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -383,7 +383,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrcom'
+  name: '${uniqueString(deployment().name, location)}-test-crrcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>crrcom001'
@@ -582,7 +582,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrencr'
+  name: '${uniqueString(deployment().name, location)}-test-crrencr'
   params: {
     // Required parameters
     name: '<<namePrefix>>crrencr001'
@@ -655,7 +655,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrmin'
+  name: '${uniqueString(deployment().name, location)}-test-crrmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>crrmin001'
@@ -700,7 +700,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
 
 ```bicep
 module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-crrpe'
+  name: '${uniqueString(deployment().name, location)}-test-crrpe'
   params: {
     // Required parameters
     name: '<<namePrefix>>crrpe001'

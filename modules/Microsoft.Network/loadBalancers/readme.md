@@ -479,7 +479,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbcom'
+  name: '${uniqueString(deployment().name, location)}-test-nlbcom'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -740,7 +740,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbint'
+  name: '${uniqueString(deployment().name, location)}-test-nlbint'
   params: {
     // Required parameters
     frontendIPConfigurations: [
@@ -947,7 +947,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 
 ```bicep
 module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-nlbmin'
+  name: '${uniqueString(deployment().name, location)}-test-nlbmin'
   params: {
     // Required parameters
     frontendIPConfigurations: [

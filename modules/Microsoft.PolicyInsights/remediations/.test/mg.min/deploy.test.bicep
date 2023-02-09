@@ -3,6 +3,7 @@ targetScope = 'managementGroup'
 // ========== //
 // Parameters //
 // ========== //
+
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
@@ -12,9 +13,9 @@ param serviceShort string = 'pirmgmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 
 // General resources
 // =================

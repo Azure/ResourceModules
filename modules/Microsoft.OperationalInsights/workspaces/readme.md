@@ -472,7 +472,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-oiwcom'
+  name: '${uniqueString(deployment().name, location)}-test-oiwcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>oiwcom001'
@@ -825,7 +825,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 
 ```bicep
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-oiwmin'
+  name: '${uniqueString(deployment().name, location)}-test-oiwmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>oiwmin001'

@@ -816,7 +816,7 @@ userAssignedIdentities: {
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
@@ -945,7 +945,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvcom'
+  name: '${uniqueString(deployment().name, location)}-test-rsvcom'
   params: {
     // Required parameters
     name: '<<namePrefix>>rsvcom001'
@@ -1586,7 +1586,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvdr'
+  name: '${uniqueString(deployment().name, location)}-test-rsvdr'
   params: {
     // Required parameters
     name: '<name>'
@@ -1745,7 +1745,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-rsvmin'
+  name: '${uniqueString(deployment().name, location)}-test-rsvmin'
   params: {
     // Required parameters
     name: '<<namePrefix>>rsvmin001'
