@@ -581,7 +581,7 @@ module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration
     scope: fluxConfiguration.scope
     namespace: fluxConfiguration.namespace
     sourceKind: fluxConfiguration.sourceKind
-    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxConfiguration'
+    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : '${managedCluster.name}-fluxconfiguration'
     bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : {}
     configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
     gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : {}
