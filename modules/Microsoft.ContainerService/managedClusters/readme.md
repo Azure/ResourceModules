@@ -390,14 +390,18 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   name: '${uniqueString(deployment().name, location)}-test-csmmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmmin001'
+    name: 'csmmin001'
     primaryAgentPoolProfile: [
       {
+        count: 1
+        mode: 'System'
         name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
       }
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
   }
 }
 ```
@@ -416,18 +420,24 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmmin001"
+      "value": "csmmin001"
     },
     "primaryAgentPoolProfile": {
       "value": [
         {
-          "name": "systempool"
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
         }
       ]
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
     }
   }
 }
