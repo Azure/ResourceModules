@@ -20,14 +20,8 @@ param deviceMapping object = {
   template: []
 }
 
-@description('Required. The mapping JSON that determines how normalized data is converted to FHIR Observations.')
-param destinationMapping object = {
-  templateType: 'CollectionFhir'
-  template: []
-}
-
-@description('Required. The resource identifier of the FHIR Service to connect to.')
-param fhirServiceResourceId string
+@description('Optional. FHIR Destination.')
+param fhirdestination object = {}
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -68,13 +62,6 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
-
-@allowed([
-  'Create'
-  'Lookup'
-])
-@description('Optional. Determines how resource identity is resolved on the destination.')
-param resourceIdentityResolutionType string = 'Lookup'
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -182,14 +169,17 @@ resource iotConnector_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: iotConnector
 }
 
-module fhir_destination 'fhirdestinations/deploy.bicep' = {
+module fhir_destination 'fhirdestinations/deploy.bicep' = if (!empty(fhirdestination)) {
   name: '${deployment().name}-FhirDestination'
   params: {
     name: '${uniqueString(workspaceName, iotConnector.name)}-map'
     iotConnectorName: iotConnector.name
-    resourceIdentityResolutionType: resourceIdentityResolutionType
-    fhirServiceResourceId: fhirServiceResourceId
-    destinationMapping: destinationMapping
+    resourceIdentityResolutionType: contains(fhirdestination, 'resourceIdentityResolutionType') ? fhirdestination.resourceIdentityResolutionType : 'Lookup'
+    fhirServiceResourceId: fhirdestination.fhirServiceResourceId
+    destinationMapping: contains(fhirdestination, 'destinationMapping') ? fhirdestination.destinationMapping : {
+      templateType: 'CollectionFhir'
+      template: []
+    }
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     workspaceName: workspaceName

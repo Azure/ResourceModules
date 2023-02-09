@@ -166,13 +166,9 @@ module workspace_iotConnector 'iotconnectors/deploy.bicep' = [for (iotConnector,
       templateType: 'CollectionContent'
       template: []
     }
-    destinationMapping: contains(iotConnector, 'destinationMapping') ? iotConnector.destinationMapping : {
-      templateType: 'CollectionFhir'
-      template: []
-    }
+    fhirdestination: contains(iotConnector, 'fhirdestination') ? iotConnector.fhirdestination : {}
     consumerGroup: contains(iotConnector, 'consumerGroup') ? iotConnector.consumerGroup : iotConnector.name
     systemAssignedIdentity: contains(iotConnector, 'systemAssignedIdentity') ? iotConnector.systemAssignedIdentity : false
-    fhirServiceResourceId: iotConnector.fhirServiceResourceId
     diagnosticLogsRetentionInDays: contains(iotConnector, 'diagnosticLogsRetentionInDays') ? iotConnector.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(iotConnector, 'diagnosticStorageAccountId') ? iotConnector.diagnosticStorageAccountId : ''
     diagnosticWorkspaceId: contains(iotConnector, 'diagnosticWorkspaceId') ? iotConnector.diagnosticWorkspaceId : ''
@@ -182,7 +178,6 @@ module workspace_iotConnector 'iotconnectors/deploy.bicep' = [for (iotConnector,
     userAssignedIdentities: contains(iotConnector, 'userAssignedIdentities') ? iotConnector.userAssignedIdentities : {}
     diagnosticLogCategoriesToEnable: contains(iotConnector, 'diagnosticLogCategoriesToEnable') ? iotConnector.diagnosticLogCategoriesToEnable : [ 'DiagnosticLogs' ]
     diagnosticMetricsToEnable: contains(iotConnector, 'diagnosticMetricsToEnable') ? iotConnector.diagnosticMetricsToEnable : [ 'AllMetrics' ]
-    resourceIdentityResolutionType: contains(iotConnector, 'resourceIdentityResolutionType') ? iotConnector.resourceIdentityResolutionType : 'Lookup'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
