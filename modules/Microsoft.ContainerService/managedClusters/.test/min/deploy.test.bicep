@@ -32,11 +32,15 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${serviceShort}001'
     enableDefaultTelemetry: enableDefaultTelemetry
+    systemAssignedIdentity: true
     primaryAgentPoolProfile: [
       {
         name: 'systempool'
+        count: 1
+        vmSize: 'Standard_DS2_v2'
+        mode: 'System'
       }
     ]
   }
