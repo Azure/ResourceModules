@@ -74,14 +74,18 @@ param hyperVGeneration string = ''
 ])
 param securityType string = 'Standard'
 
-@description('Optional. The image will support hybernation.')
+@description('Optional. The image will support hibernation.')
 @allowed([
   'true'
   'false'
 ])
 param isHibernateSupported string = 'false'
 
-@description('Optional. The image supports accelerated Networking.')
+@description('''Optional. The image supports accelerated networking.
+Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.
+This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the
+most demanding network workloads on supported VM types.
+''')
 @allowed([
   'true'
   'false'

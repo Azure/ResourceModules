@@ -40,8 +40,8 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
 | `hyperVGeneration` | string | `''` | `['', V1, V2]` | The hypervisor generation of the Virtual Machine.<p>* If this value is not specified, then it is determined by the securityType parameter.<p>* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.<p> |
 | `imageDefinitionDescription` | string | `''` |  | The description of this gallery Image Definition resource. This property is updatable. |
-| `isAcceleratedNetworkSupported` | string | `'false'` | `[false, true]` | The image supports accelerated Networking. |
-| `isHibernateSupported` | string | `'false'` | `[false, true]` | The image will support hybernation. |
+| `isAcceleratedNetworkSupported` | string | `'false'` | `[false, true]` | The image supports accelerated networking.<p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.<p>This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the<p>most demanding network workloads on supported VM types.<p> |
+| `isHibernateSupported` | string | `'false'` | `[false, true]` | The image will support hibernation. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `maxRecommendedMemory` | int | `16` |  | The maximum amount of RAM in GB recommended for this image. |
 | `maxRecommendedvCPUs` | int | `4` |  | The maximum number of the CPU cores recommended for this image. |
