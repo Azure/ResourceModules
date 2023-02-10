@@ -47,8 +47,8 @@ param highAvailabilityReplicaCount int = 0
 @description('Optional. Minimal capacity that database will always have allocated.')
 param minCapacity string = ''
 
-@description('Optional. Time in minutes after which database is automatically paused.')
-param autoPauseDelay string = ''
+@description('Optional. Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.')
+param autoPauseDelay int = 0
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -199,8 +199,8 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     zoneRedundant: zoneRedundant
     licenseType: licenseType
     readScale: readScale
-    minCapacity: !empty(minCapacity) ? json(minCapacity) : 0
-    autoPauseDelay: !empty(autoPauseDelay) ? json(autoPauseDelay) : 0
+    minCapacity: !empty(minCapacity) ? json(minCapacity) : 0 // The json() function is used to allow specifying a decimal value.
+    autoPauseDelay: autoPauseDelay
     highAvailabilityReplicaCount: highAvailabilityReplicaCount
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
     isLedgerOn: isLedgerOn

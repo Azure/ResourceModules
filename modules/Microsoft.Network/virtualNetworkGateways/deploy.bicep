@@ -291,6 +291,8 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
   ]
 } : null
 
+var enableReferencedModulesTelemetry = false
+
 // ================//
 // Deployments     //
 // ================//
@@ -310,7 +312,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 @batchSize(1)
 module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
   name: virtualGatewayPublicIpName
-  params :{
+  params: {
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
@@ -320,7 +322,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
     domainNameLabel: length(virtualGatewayPipNameVar) == length(domainNameLabel) ? domainNameLabel[index] : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
     publicIPAllocationMethod: gatewayPipAllocationMethod

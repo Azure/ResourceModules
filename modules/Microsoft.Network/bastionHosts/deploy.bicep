@@ -137,6 +137,8 @@ var ipConfigurations = [
   }
 ]
 
+var enableReferencedModulesTelemetry = false
+
 // ----------------------------------------------------------------------------
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -168,7 +170,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
     publicIPAddressVersion: contains(publicIPAddressObject, 'publicIPAddressVersion') ? publicIPAddressObject.publicIPAddressVersion : 'IPv4'

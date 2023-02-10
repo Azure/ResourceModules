@@ -3,7 +3,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
-        (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
     [Parameter(Mandatory = $false)]
@@ -37,7 +37,7 @@ $script:templateNotFoundException = 'No template file found in folder [{0}]' # -
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
-Describe 'File/folder tests' -Tag Modules {
+Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
 
@@ -80,31 +80,43 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 
-            $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
-            $hasBicep = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep'))
-            ($hasARM -or $hasBicep) | Should -Be $true
+            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')
+            $hasBicep = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep')
+                ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [readme.md] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` readme.md `] file' -TestCases $moduleFolderTestCases {
 
-            param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')
+            $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.test] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [` .test `] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
-            param( [string] $moduleFolderPath )
-            Test-Path (Join-Path -Path $moduleFolderPath '.test') | Should -Be $true
+            param(
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath '.test')
+            $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` version.json `] file' -TestCases $moduleFolderTestCases {
 
-            param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+            param (
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
+            $pathExisting | Should -Be $true
         }
     }
 
@@ -120,7 +132,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] folder should contain one or more test files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] Folder should contain one or more test files' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -144,7 +156,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        It '[<moduleFolderName>] JSON test files in the .test folder should be valid json' -TestCases $testFolderFilesTestCases {
+        It '[<moduleFolderName>] JSON test files in the `.test` folder should be valid json' -TestCases $testFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -158,7 +170,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 }
-Describe 'Readme tests' -Tag Readme {
+Describe 'Readme tests' -Tag 'Readme' {
 
     Context 'Readme content tests' {
 
@@ -209,7 +221,7 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] Readme.md file should not be empty' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Readme.md` file should not be empty' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -218,7 +230,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -316,7 +328,7 @@ Describe 'Readme tests' -Tag Readme {
             $actualParamCategories | Should -Be $expectedParamCategoriesInOrder
         }
 
-        It '[<moduleFolderName>] parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -505,7 +517,7 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Set-ModuleReadMe` script should not apply any updates' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -540,9 +552,9 @@ Describe 'Readme tests' -Tag Readme {
     }
 }
 
-Describe 'Parameter file tests' -Tag 'Parameter' {
+Describe 'Test file tests' -Tag 'TestTemplate' {
 
-    Context 'Deployment test file tests' {
+    Context 'General test file' {
 
         $deploymentTestFileTestCases = @()
 
@@ -570,7 +582,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             }
         }
 
-        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [module testDeployment '../.*deploy.bicep' = {]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*deploy.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -581,7 +593,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment name should contain [-test-]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -592,7 +604,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment should have parameter [serviceShort]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -603,7 +615,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $hasExpectedParam | Should -Be $true
         }
 
-        It '[<moduleFolderName>] JSON test deployment name should contain [-test-]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
             param(
                 [object[]] $testFileContent
@@ -618,7 +630,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] JSON test deployment should have parameter [serviceShort]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
             param(
                 [object[]] $testFileContent
@@ -629,7 +641,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
         }
     }
 
-    Context 'Parameter file token tests' {
+    Context 'Token usage' {
 
         # Parameter file test cases
         $parameterFileTokenTestCases = @()
@@ -652,7 +664,7 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
             param (
                 [string] $testFilePath,
                 [string] $parameterFileName,
@@ -672,9 +684,9 @@ Describe 'Parameter file tests' -Tag 'Parameter' {
     }
 }
 
-Describe 'Deployment template tests' -Tag Template {
+Describe 'Deployment template tests' -Tag 'Template' {
 
-    Context 'Deployment template tests' {
+    Context 'General template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -755,7 +767,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] the template file should not be empty' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should not be empty' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -824,7 +836,7 @@ Describe 'Deployment template tests' -Tag Template {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] the template file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources` ' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -835,7 +847,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateContent.Keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of ['''']' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with an empty default value' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -933,7 +945,7 @@ Describe 'Deployment template tests' -Tag Template {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
-        It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of '`resourceGroup().Location`' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1034,7 +1046,7 @@ Describe 'Deployment template tests' -Tag Template {
             $outputs | Should -Contain 'resourceId'
         }
 
-        It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] Each parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1108,7 +1120,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         # PARAMETER Tests
-        It '[<moduleFolderName>] All parameters in parameters files exist in template file (deploy.json)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`deploy.json`)' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1122,7 +1134,7 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] All required parameters in template file (deploy.json) should exist in parameters files' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All required parameters in template file (`deploy.json`) should exist in parameters files' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1152,53 +1164,9 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
     }
-
-    Context 'Parameter file token tests' {
-
-        # Parameter file test cases
-        $parameterFileTokenTestCases = @()
-
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $TestFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.test') -Recurse -File -Force).FullName
-                foreach ($TestFilePath in $TestFilePaths) {
-                    foreach ($token in $tokenConfiguration.Tokens.Keys) {
-                        $parameterFileTokenTestCases += @{
-                            parameterFilePath = $TestFilePath
-                            parameterFileName = Split-Path $TestFilePath -Leaf
-                            tokenPrefix       = $tokenConfiguration.TokenPrefix
-                            tokenSuffix       = $tokenConfiguration.TokenSuffix
-                            tokenName         = $token
-                            tokenValue        = $tokenConfiguration.Tokens[$token]
-                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                        }
-                    }
-                }
-            }
-        }
-
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCases {
-            param (
-                [string] $parameterFilePath,
-                [string] $parameterFileName,
-                [string] $tokenPrefix,
-                [string] $tokenSuffix,
-                [string] $tokenName,
-                [string] $tokenValue,
-                [string] $moduleFolderName
-            )
-            $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $parameterFilePath
-
-            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-            if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
-            }
-        }
-    }
 }
 
-Describe "API version tests [All apiVersions in the template should be 'recent']" -Tag ApiCheck {
+Describe 'API version tests' -Tag 'ApiCheck' {
 
     $testCases = @()
     $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'
