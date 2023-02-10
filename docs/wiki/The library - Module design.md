@@ -594,6 +594,7 @@ Dependency file (`dependencies.bicep`) guidelines:
   - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
     > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
+  - If you need a Deployment Script to set additional non-template resources up (for example certificates/files, etc.), we recommend to store it as a file in the shared `modules/.shared/.scripts` folder and load it using the template function `loadTextContent()` (for example: `scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')`). This approach makes it easier to test & validate the logic and further allows reusing the same logic accross multiple test cases.
 
 # Telemetry
 
