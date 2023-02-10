@@ -110,5 +110,9 @@ module testDeployment '../../deploy.bicep' = {
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

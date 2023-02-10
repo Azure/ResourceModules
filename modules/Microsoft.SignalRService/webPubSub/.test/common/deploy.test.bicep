@@ -98,7 +98,8 @@ module testDeployment '../../deploy.bicep' = {
     sku: 'Standard_S1'
     systemAssignedIdentity: true
     tags: {
-      purpose: 'test'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

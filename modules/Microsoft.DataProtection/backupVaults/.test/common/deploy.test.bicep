@@ -119,5 +119,9 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

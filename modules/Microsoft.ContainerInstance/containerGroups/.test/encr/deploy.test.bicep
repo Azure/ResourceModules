@@ -114,5 +114,9 @@ module testDeployment '../../deploy.bicep' = {
     }
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

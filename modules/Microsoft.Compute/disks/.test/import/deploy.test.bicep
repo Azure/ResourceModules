@@ -62,5 +62,9 @@ module testDeployment '../../deploy.bicep' = {
     ]
     sourceUri: nestedDependencies.outputs.vhdUri
     storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

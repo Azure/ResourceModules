@@ -89,5 +89,9 @@ module testDeployment '../../deploy.bicep' = {
     linkedBackend: {
       resourceId: nestedDependencies.outputs.siteResourceId
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

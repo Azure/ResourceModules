@@ -61,6 +61,9 @@ module testDeployment '../../deploy.bicep' = {
         name: 'Node01'
       }
     ]
-
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
