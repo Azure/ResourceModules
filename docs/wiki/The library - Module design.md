@@ -463,7 +463,7 @@ Within a bicep file, use the following conventions:
 
 ## Modules
 
-- Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g., `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
+- Module symbolic names are in camel*Snake_Case, following the schema `<mainResourceType>*<referencedResourceType>`e.g.,`storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_roleAssignments`.
 - Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
 - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
   > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20Get%20module%20cross-references).
@@ -577,21 +577,21 @@ Test file (`deploy.test.bicep`) guidelines:
     - For the substring, we recommend to take the first character and subsequent upper-case characters from the resource type identifier and combine them into one string. Following you can find a few examples for reference:
       - `Microsoft.DBforPostgreSQL/flexibleServers` with a test folder `common` could be: `dfpsfscom`
       - `Microsoft.Storage/storageAccounts` with a test folder `min` could be: `ssamin`
-      > **Note:** If the combination of the `servicesShort` with the rest of a resource name becomes too long, it may be necessary to bend the above recommendations and shorten the name. This can especially happen when deploying resources such as Virtual Machines or Storage Accounts that only allow comparatively short names.
+        > **Note:** If the combination of the `servicesShort` with the rest of a resource name becomes too long, it may be necessary to bend the above recommendations and shorten the name. This can especially happen when deploying resources such as Virtual Machines or Storage Accounts that only allow comparatively short names.
   - If the module deploys a resource group level resource, the template should further have a `resourceGroupName` parameter and subsequent resource deployment. As a reference for the default name you can use `ms.<providerNamespace>.<resourceType>-${serviceShort}-test-rg`.
   - Each file should also provide a `location` parameter that may default to the deployments default location
 - It is recommended to define all major resource names in the `deploy.test.bicep` file as it makes later maintenance easier. To implement this, make sure to pass all resource names to any referenced module.
 - Further, for any test file (including the `dependencies.bicep` file), the usage of variables should be reduced to the absolute minimum. In other words: You should only use variables if you must use them in more than one place. The idea is to keep the test files as simple as possible
 - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `nestedDependencies.outputs.managedIdentityPrincipalId`
-- If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/dependencyConstructs/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
+- If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/.templates/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
 > :scroll: [Example of test file](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/.test/common/deploy.test.bicep)
-
 
 Dependency file (`dependencies.bicep`) guidelines:
 
 - The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
 - Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
+
   - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
     > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
