@@ -3,7 +3,7 @@
     [string] $CertName
 )
 
-$certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'Stop'
+$certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'SilentlyContinue'
 
 if (-not $certificate) {
     $policyInputObject = @{
