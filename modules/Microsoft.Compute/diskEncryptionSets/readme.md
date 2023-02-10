@@ -192,7 +192,11 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.KeyVault/vaults/accessPolicies` | Local reference |
 
 ## Deployment examples
 
@@ -201,7 +205,92 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+<h3>Example 1: Accesspolicies</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdesap'
+  params: {
+    // Required parameters
+    keyName: '<keyName>'
+    keyVaultResourceId: '<keyVaultResourceId>'
+    name: '<<namePrefix>>cdesap001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "keyName": {
+      "value": "<keyName>"
+    },
+    "keyVaultResourceId": {
+      "value": "<keyVaultResourceId>"
+    },
+    "name": {
+      "value": "<<namePrefix>>cdesap001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Common</h3>
 
 <details>
 
