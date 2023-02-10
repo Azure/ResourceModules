@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cdn.profiles.yml'
       - 'modules/Microsoft.CDN/profiles/**'
       - 'utilities/pipelines/**'

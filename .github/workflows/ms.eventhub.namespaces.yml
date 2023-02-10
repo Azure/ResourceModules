@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventhub.namespaces.yml'
       - 'modules/Microsoft.EventHub/namespaces/**'
       - 'utilities/pipelines/**'

@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.healthbot.healthbots.yml'
       - 'modules/Microsoft.HealthBot/healthBots/**'
       - 'utilities/pipelines/**'

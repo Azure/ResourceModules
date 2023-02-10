@@ -18,6 +18,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.security.azuresecuritycenter.yml'
       - 'modules/Microsoft.Security/azureSecurityCenter/**'
       - 'utilities/pipelines/**'

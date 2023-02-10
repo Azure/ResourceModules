@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.datafactory.factories.yml'
       - 'modules/Microsoft.DataFactory/factories/**'
       - 'utilities/pipelines/**'

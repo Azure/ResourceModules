@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.routetables.yml'
       - 'modules/Microsoft.Network/routeTables/**'
       - 'utilities/pipelines/**'

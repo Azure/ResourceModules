@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.apimanagement.service.yml'
       - 'modules/Microsoft.ApiManagement/service/**'
       - 'utilities/pipelines/**'

@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.virtualmachinescalesets.yml'
       - 'modules/Microsoft.Compute/virtualMachineScaleSets/**'
       - 'utilities/pipelines/**'

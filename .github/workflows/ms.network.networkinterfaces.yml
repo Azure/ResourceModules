@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.networkinterfaces.yml'
       - 'modules/Microsoft.Network/networkInterfaces/**'
       - 'utilities/pipelines/**'

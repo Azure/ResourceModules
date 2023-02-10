@@ -28,6 +28,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
+      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.managedidentity.userassignedidentities.yml'
       - 'modules/Microsoft.ManagedIdentity/userAssignedIdentities/**'
       - 'utilities/pipelines/**'
