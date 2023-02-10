@@ -104,7 +104,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
+| `fluxConfigurationProtectedSettings` | object | `{object}` |  | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `fluxConfigurations` | array | `[]` |  | A list of flux configuraitons. |
+| `fluxConfigurationSettings` | object | `{object}` |  | Configuration settings, as name-value pairs for configuring this extension. |
 | `fluxReleaseTrain` | string | `'Stable'` |  | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
 | `fluxVersion` | string | `''` |  | Version of the extension for this extension, if it is "pinned" to a specific version. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
