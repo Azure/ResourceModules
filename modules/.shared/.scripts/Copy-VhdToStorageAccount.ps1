@@ -25,12 +25,10 @@
 
     .EXAMPLE
     Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001'
-
     Copy a VHD created by image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in blob container named 'vhds'. Save the VHD file as 'vhd-img-template-001-2022-07-29-15-54-01.vhd'.
 
     .EXAMPLE
     Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001' -VhdName 'vhd-img-template-001' -WaitForComplete
-
     Copy a VHD baked by image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in a blob container named 'vhds' and wait for the completion of the copy. Save the VHD file as 'vhd-img-template-001.vhd'.
 #>
 
@@ -121,4 +119,3 @@ process {
 end {
     Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
 }
-
