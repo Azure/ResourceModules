@@ -73,4 +73,3 @@ jobs:
       moduleTestFilePaths: '${{ needs.job_initialize_pipeline.outputs.moduleTestFilePaths }}'
       modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
     secrets: inherit
-
