@@ -1,37 +1,37 @@
 <#
-    .SYNOPSIS
-    Copy a VHD baked from a given image template to a given destination storage account blob container
+.SYNOPSIS
+Copy a VHD baked from a given Image Template to a given destination storage account blob container
 
-    .DESCRIPTION
-    Copy a VHD baked from a given image template to a given destination storage account blob container
+.DESCRIPTION
+Copy a VHD baked from a given Image Template to a given destination storage account blob container
 
-    .PARAMETER ImageTemplateName
-    Mandatory. The name of the image template
+.PARAMETER ImageTemplateName
+Mandatory. The name of the Image Template
 
-    .PARAMETER ImageTemplateResourceGroup
-    Mandatory. The resource group name of the image template
+.PARAMETER ImageTemplateResourceGroup
+Mandatory. The resource group name of the Image Template
 
-    .PARAMETER DestinationStorageAccountName
-    Mandatory. The name of the destination storage account
+.PARAMETER DestinationStorageAccountName
+Mandatory. The name of the destination storage account
 
-    .PARAMETER DestinationContainerName
-    Optional. The name of the existing destination blob container
+.PARAMETER DestinationContainerName
+Optional. The name of the existing destination blob container
 
-    .PARAMETER VhdName
-    Optional. Specify a different name for the destination VHD file
+.PARAMETER VhdName
+Optional. Specify a different name for the destination VHD file
 
-    .PARAMETER WaitForComplete
-    Optional. Run the command synchronously. Wait for the completion of the copy.
+.PARAMETER WaitForComplete
+Optional. Run the command synchronously. Wait for the completion of the copy.
 
-    .EXAMPLE
-    Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001'
+.EXAMPLE
+./Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001'
 
-    Copy a VHD created by image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in blob container named 'vhds'. Save the VHD file as 'vhd-img-template-001-2022-07-29-15-54-01.vhd'.
+Copy a VHD created by Image Template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in blob container named 'vhds'. Save the VHD file as 'vhd-img-template-001-2022-07-29-15-54-01.vhd'.
 
-    .EXAMPLE
-    Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001' -VhdName 'vhd-img-template-001' -WaitForComplete
+.EXAMPLE
+./Copy-VhdToStorageAccount -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -DestinationStorageAccountName 'vhdstorage001' -VhdName 'vhd-img-template-001' -WaitForComplete
 
-    Copy a VHD baked by image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in a blob container named 'vhds' and wait for the completion of the copy. Save the VHD file as 'vhd-img-template-001.vhd'.
+Copy a VHD baked by Image Template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' to destination storage account 'vhdstorage001' in a blob container named 'vhds' and wait for the completion of the copy. Save the VHD file as 'vhd-img-template-001.vhd'.
 #>
 
 [CmdletBinding(SupportsShouldProcess)]
@@ -81,7 +81,7 @@ begin {
 process {
     # Retrieving and initializing parameters before the blob copy
     Write-Verbose 'Initializing source storage account parameters before the blob copy' -Verbose
-    Write-Verbose ('Retrieving source storage account from image template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
+    Write-Verbose ('Retrieving source storage account from Image Template [{0}] in resource group [{1}]' -f $imageTemplateName, $imageTemplateResourceGroup) -Verbose
     Get-InstalledModule
     $imgtRunOutput = Get-AzImageBuilderTemplateRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
     $sourceUri = $imgtRunOutput.ArtifactUri

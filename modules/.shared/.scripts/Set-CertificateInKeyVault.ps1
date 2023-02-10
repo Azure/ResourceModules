@@ -1,5 +1,26 @@
-﻿param(
+﻿<#
+.SYNOPSIS
+Generate a new Key Vault Certificate or fetch its secret reference if already existing.
+
+.DESCRIPTION
+Generate a new Key Vault Certificate or fetch its secret reference if already existing.
+
+.PARAMETER KeyVaultName
+Mandatory. The name of the Key Vault to add a new certificate to, or fetch the secret reference it from
+
+.PARAMETER CertName
+Mandatory. The name of the certificate to generate or fetch the secret reference from
+
+.EXAMPLE
+./Set-CertificateInKeyVault.ps1 -KeyVaultName 'myVault' -CertName 'myCert'
+
+Generate a new Key Vault Certificate or fetch its secret reference if already existing as 'myCert' in Key Vault 'myVault'
+#>
+param(
+    [Parameter(Mandatory = $true)]
     [string] $KeyVaultName,
+
+    [Parameter(Mandatory = $true)]
     [string] $CertName
 )
 
