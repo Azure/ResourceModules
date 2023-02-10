@@ -41,7 +41,7 @@ An artifact source allows you to create custom artifacts for the VMs in the lab,
 | `branchRef` | string | `''` |  | The artifact source's branch reference (e.g. main or master). |
 | `displayName` | string | `[parameters('name')]` |  | The artifact source's display name. Default is the name of the artifact source. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `securityToken` | secureString | `''` |  | The security token to authenticate to the artifact source. |
+| `securityToken` | securestring | `''` |  | The security token to authenticate to the artifact source. |
 | `sourceType` | string | `''` | `['', GitHub, StorageAccount, VsoGit]` | The artifact source's type. |
 | `status` | string | `'Enabled'` | `[Disabled, Enabled]` | Indicates if the artifact source is enabled (values: Enabled, Disabled). Default is "Enabled". |
 | `tags` | object | `{object}` |  | Tags of the resource. |
