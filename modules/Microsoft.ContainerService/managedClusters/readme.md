@@ -104,7 +104,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
+| `fluxConfigurationProtectedSettings` | object | `{object}` |  | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `fluxConfigurations` | array | `[]` |  | A list of flux configuraitons. |
+| `fluxConfigurationSettings` | object | `{object}` |  | Configuration settings, as name-value pairs for configuring this extension. |
 | `fluxReleaseTrain` | string | `'Stable'` |  | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
 | `fluxVersion` | string | `''` |  | Version of the extension for this extension, if it is "pinned" to a specific version. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
@@ -635,7 +637,185 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 </details>
 <p>
 
-<h3>Example 2: Kubenet</h3>
+<h3>Example 2: Flux</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmmf2'
+  params: {
+    // Required parameters
+    name: 'csmmf2001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfigurations: [
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
+        }
+        namespace: 'flux-system'
+      }
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+        }
+        kustomizations: {
+          apps: {
+            path: './apps/staging'
+            prune: true
+            retryIntervalInSeconds: 600
+            syncIntervalInSeconds: 600
+            timeoutInSeconds: 600
+          }
+          infra: {
+            dependsOn: []
+            path: './infrastructure'
+            prune: true
+            syncIntervalInSeconds: 600
+            timeoutInSeconds: 600
+            validation: 'none'
+          }
+        }
+        namespace: 'flux-system-helm'
+      }
+    ]
+    fluxConfigurationSettings: {
+      'helm-controller.enabled': 'true'
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'true'
+      'source-controller.enabled': 'true'
+    }
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmmf2001"
+    },
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "fluxConfigurations": {
+      "value": [
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/mspnp/aks-baseline"
+          },
+          "namespace": "flux-system"
+        },
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/Azure/gitops-flux2-kustomize-helm-mt"
+          },
+          "kustomizations": {
+            "apps": {
+              "dependsOn": [
+                {
+                  "kustomizationName": "infra"
+                }
+              ],
+              "path": "./apps/staging",
+              "prune": true,
+              "retryIntervalInSeconds": 600,
+              "syncIntervalInSeconds": 600,
+              "timeoutInSeconds": 600
+            },
+            "infra": {
+              "dependsOn": [],
+              "path": "./infrastructure",
+              "prune": true,
+              "syncIntervalInSeconds": 600,
+              "timeoutInSeconds": 600,
+              "validation": "none"
+            }
+          },
+          "namespace": "flux-system-helm"
+        }
+      ]
+    },
+    "fluxConfigurationSettings": {
+      "value": {
+        "helm-controller.enabled": "true",
+        "image-automation-controller.enabled": "false",
+        "image-reflector-controller.enabled": "false",
+        "kustomize-controller.enabled": "true",
+        "notification-controller.enabled": "true",
+        "source-controller.enabled": "true"
+      }
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Kubenet</h3>
 
 <details>
 
@@ -876,73 +1056,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 </details>
 <p>
 
-<h3>Example 3: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmmin'
-  params: {
-    // Required parameters
-    name: 'csmmin001'
-    primaryAgentPoolProfile: [
-      {
-        count: 1
-        mode: 'System'
-        name: 'systempool'
-        vmSize: 'Standard_DS2_v2'
-      }
-    ]
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    systemAssignedIdentity: true
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "csmmin001"
-    },
-    "primaryAgentPoolProfile": {
-      "value": [
-        {
-          "count": 1,
-          "mode": "System",
-          "name": "systempool",
-          "vmSize": "Standard_DS2_v2"
-        }
-      ]
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
 <h3>Example 4: Minflux</h3>
 
 <details>
@@ -1027,127 +1140,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
             "url": "https://github.com/mspnp/aks-baseline"
           },
           "namespace": "flux-system"
-        }
-      ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 5: Minfluxdouble</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmmf2'
-  params: {
-    // Required parameters
-    name: 'csmmf2001'
-    primaryAgentPoolProfile: [
-      {
-        count: 1
-        mode: 'System'
-        name: 'systempool'
-        vmSize: 'Standard_DS2_v2'
-      }
-    ]
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fluxConfigurations: [
-      {
-        gitRepository: {
-          repositoryRef: {
-            branch: 'main'
-          }
-          sshKnownHosts: ''
-          syncIntervalInSeconds: 300
-          timeoutInSeconds: 180
-          url: 'https://github.com/mspnp/aks-baseline'
-        }
-        namespace: 'flux-system'
-      }
-      {
-        gitRepository: {
-          repositoryRef: {
-            branch: 'main'
-          }
-          sshKnownHosts: ''
-          syncIntervalInSeconds: 300
-          timeoutInSeconds: 180
-          url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
-        }
-        namespace: 'flux-system-helm'
-      }
-    ]
-    systemAssignedIdentity: true
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "csmmf2001"
-    },
-    "primaryAgentPoolProfile": {
-      "value": [
-        {
-          "count": 1,
-          "mode": "System",
-          "name": "systempool",
-          "vmSize": "Standard_DS2_v2"
-        }
-      ]
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "fluxConfigurations": {
-      "value": [
-        {
-          "gitRepository": {
-            "repositoryRef": {
-              "branch": "main"
-            },
-            "sshKnownHosts": "",
-            "syncIntervalInSeconds": 300,
-            "timeoutInSeconds": 180,
-            "url": "https://github.com/mspnp/aks-baseline"
-          },
-          "namespace": "flux-system"
-        },
-        {
-          "gitRepository": {
-            "repositoryRef": {
-              "branch": "main"
-            },
-            "sshKnownHosts": "",
-            "syncIntervalInSeconds": 300,
-            "timeoutInSeconds": 180,
-            "url": "https://github.com/Azure/gitops-flux2-kustomize-helm-mt"
-          },
-          "namespace": "flux-system-helm"
         }
       ]
     },

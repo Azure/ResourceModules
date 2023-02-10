@@ -301,9 +301,14 @@ param fluxReleaseTrain string = 'Stable'
 @description('Optional. Version of the extension for this extension, if it is "pinned" to a specific version.')
 param fluxVersion string = ''
 
+@description('Optional. Configuration settings that are sensitive, as name-value pairs for configuring this extension.')
+param fluxConfigurationProtectedSettings object = {}
+
+@description('Optional. Configuration settings, as name-value pairs for configuring this extension.')
+param fluxConfigurationSettings object = {}
+
 @description('Optional. A list of flux configuraitons.')
 param fluxConfigurations array = []
-
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
   'allLogs'
@@ -566,14 +571,16 @@ module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensi
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
-    name: 'flux'
-    extensionType: 'microsoft.flux'
+    configurationProtectedSettings: !empty(fluxConfigurationProtectedSettings) ? fluxConfigurationProtectedSettings : {}
+    configurationSettings: !empty(fluxConfigurationSettings) ? fluxConfigurationSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    extensionType: 'microsoft.flux'
+    fluxConfigurations: fluxConfigurations
     location: location
+    name: 'flux'
     releaseNamespace: 'flux-system'
     releaseTrain: !empty(fluxReleaseTrain) ? fluxReleaseTrain : 'Stable'
     version: !empty(fluxVersion) ? fluxVersion : ''
-    fluxConfigurations: fluxConfigurations
   }
 }
 
