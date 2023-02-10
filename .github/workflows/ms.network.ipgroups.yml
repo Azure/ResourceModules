@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Network/ipGroups'
   workflowPath: '.github/workflows/ms.network.ipgroups.yml'
 

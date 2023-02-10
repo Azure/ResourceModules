@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Compute/availabilitySets'
   workflowPath: '.github/workflows/ms.compute.availabilitysets.yml'
 

@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Consumption/budgets'
   workflowPath: '.github/workflows/ms.consumption.budgets.yml'
 

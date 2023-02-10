@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.ManagedIdentity/userAssignedIdentities'
   workflowPath: '.github/workflows/ms.managedidentity.userassignedidentities.yml'
 

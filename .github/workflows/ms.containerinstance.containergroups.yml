@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.ContainerInstance/containerGroups'
   workflowPath: '.github/workflows/ms.containerinstance.containergroups.yml'
 

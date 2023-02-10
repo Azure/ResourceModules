@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Network/networkManagers'
   workflowPath: '.github/workflows/ms.network.networkmanagers.yml'
 

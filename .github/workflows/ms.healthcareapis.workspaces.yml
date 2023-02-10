@@ -26,7 +26,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.HealthcareApis/workspaces'
   workflowPath: '.github/workflows/ms.healthcareapis.workspaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

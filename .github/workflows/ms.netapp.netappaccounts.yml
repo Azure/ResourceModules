@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.NetApp/netAppAccounts'
   workflowPath: '.github/workflows/ms.netapp.netappaccounts.yml'
 

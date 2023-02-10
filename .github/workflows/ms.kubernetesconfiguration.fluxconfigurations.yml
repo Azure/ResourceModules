@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations'
   workflowPath: '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
 

@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Web/sites'
   workflowPath: '.github/workflows/ms.web.sites.yml'
 

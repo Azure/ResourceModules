@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.ServiceBus/namespaces'
   workflowPath: '.github/workflows/ms.servicebus.namespaces.yml'
 

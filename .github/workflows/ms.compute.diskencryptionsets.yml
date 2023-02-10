@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Compute/diskEncryptionSets'
   workflowPath: '.github/workflows/ms.compute.diskencryptionsets.yml'
 

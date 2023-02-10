@@ -36,7 +36,6 @@ on:
       - '!*/**/readme.md'
 
 env:
-  variablesPath: 'settings.yml'
   modulePath: 'modules/Microsoft.Logic/workflows'
   workflowPath: '.github/workflows/ms.logic.workflows.yml'
 
