@@ -1,4 +1,4 @@
-# Compute Disks `[Microsoft.Compute/sshPublicKeys]`
+# Public SSH Keys `[Microsoft.Compute/sshPublicKeys]`
 
 This template deploys a disk
 
