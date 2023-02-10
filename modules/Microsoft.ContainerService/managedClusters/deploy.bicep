@@ -573,28 +573,9 @@ module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensi
     releaseNamespace: 'flux-system'
     releaseTrain: !empty(fluxReleaseTrain) ? fluxReleaseTrain : 'Stable'
     version: !empty(fluxVersion) ? fluxVersion : ''
+    fluxConfigurations: fluxConfigurations
   }
 }
-
-module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = [for (fluxConfiguration, index) in fluxConfigurations: {
-  name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration${index}'
-  params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
-    clusterName: managedCluster.name
-    scope: fluxConfiguration.scope
-    namespace: fluxConfiguration.namespace
-    sourceKind: contains(fluxConfiguration, 'gitRepository') ? 'GitRepository' : 'Bucket'
-    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : toLower('${managedCluster.name}-fluxconfiguration${index}')
-    bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : {}
-    configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
-    gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : {}
-    kustomizations: contains(fluxConfiguration, 'kustomizations') ? fluxConfiguration.kustomizations : {}
-    suspend: contains(fluxConfiguration, 'suspend') ? fluxConfiguration.suspend : false
-  }
-  dependsOn: [
-    managedCluster_fluxExtension
-  ]
-}]
 
 resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
