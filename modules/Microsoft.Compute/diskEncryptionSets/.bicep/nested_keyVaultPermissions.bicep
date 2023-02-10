@@ -29,6 +29,10 @@ module userAssignedIdentity 'nested_managedIdentityReference.bicep' = {
   scope: resourceGroup(split(userAssignedIdentityResourceId, '/')[2], split(userAssignedIdentityResourceId, '/')[4])
 }
 
+// =============== //
+// Role Assignment //
+// =============== //
+
 resource keyVaultKeyRBAC 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (rbacAuthorizationEnabled == true) {
   name: guid('msi-${keyVault::key.id}-${location}-${userAssignedIdentityResourceId}-Key-Reader-RoleAssignment')
   scope: keyVault::key
@@ -39,11 +43,17 @@ resource keyVaultKeyRBAC 'Microsoft.Authorization/roleAssignments@2022-04-01' = 
   }
 }
 
-resource accessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = if (rbacAuthorizationEnabled != true) {
+// ============= //
+// Access Policy //
+// ============= //
+
+module keyVaultAccessPolicies '../../../Microsoft.KeyVault/vaults/accessPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
-  properties: {
+  params: {
+    keyVaultName: last(split(keyVaultResourceId, '/'))!
     accessPolicies: [
       {
+        tenantId: subscription().tenantId
         objectId: userAssignedIdentity.outputs.principalId
         permissions: {
           keys: [
@@ -52,7 +62,6 @@ resource accessPolicies 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = 
             'unwrapKey'
           ]
         }
-        tenantId: subscription().tenantId
       }
     ]
   }
