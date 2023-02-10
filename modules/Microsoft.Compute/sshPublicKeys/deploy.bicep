@@ -70,7 +70,7 @@ module sshPublicKey_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
 @description('The resource group the  disk was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the disk.')
+@description('The resource ID of the Public SSH Key.')
 output resourceId string = sshPublicKey.id
 
 @description('The name of the Public SSH Key.')
