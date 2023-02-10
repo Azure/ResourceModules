@@ -69,6 +69,18 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
   }
 }
 
+// Note: This is only enabled for user-assigned identities and the service's system-assigned identity isn't available during its intitial deployment
+module keyVaultPermissions '.bicep/nested_keyVaultPermissions.bicep' = [for (userAssignedIdentityId, index) in items(userAssignedIdentities): {
+  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVPermissions-${index}'
+  params: {
+    keyName: keyName
+    keyVaultResourceId: keyVaultResourceId
+    userAssignedIdentityResourceId: userAssignedIdentityId.key
+    rbacAuthorizationEnabled: keyVault.properties.enableRbacAuthorization
+  }
+  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+}]
+
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
   name: name
   location: location
@@ -85,16 +97,9 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
     federatedClientId: federatedClientId
     rotationToLatestKeyVersionEnabled: rotationToLatestKeyVersionEnabled
   }
-}
-
-module keyVaultPermissions '.bicep/nested_keyVaultPermissions.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVPermissions'
-  params: {
-    keyName: keyName
-    keyVaultResourceId: keyVaultResourceId
-    principalId: diskEncryptionSet.identity.principalId
-    rbacAuthorizationEnabled: keyVault.properties.enableRbacAuthorization
-  }
+  dependsOn: [
+    keyVaultPermissions
+  ]
 }
 
 module diskEncryptionSet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
