@@ -301,6 +301,12 @@ param fluxReleaseTrain string = 'Stable'
 @description('Optional. Version of the extension for this extension, if it is "pinned" to a specific version.')
 param fluxVersion string = ''
 
+@description('Optional. Configuration settings that are sensitive, as name-value pairs for configuring this extension.')
+param fluxConfigurationProtectedSettings object = {}
+
+@description('Optional. Configuration settings, as name-value pairs for configuring this extension.')
+param fluxConfigurationSettings object = {}
+
 @description('Optional. A list of flux configuraitons.')
 param fluxConfigurations array = []
 
@@ -566,10 +572,12 @@ module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensi
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
-    name: 'flux'
-    extensionType: 'microsoft.flux'
+    configurationProtectedSettings: !empty(fluxConfigurationProtectedSettings) ? fluxConfigurationProtectedSettings : {}
+    configurationSettings: !empty(fluxConfigurationSettings) ? fluxConfigurationSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    extensionType: 'microsoft.flux'
     location: location
+    name: 'flux'
     releaseNamespace: 'flux-system'
     releaseTrain: !empty(fluxReleaseTrain) ? fluxReleaseTrain : 'Stable'
     version: !empty(fluxVersion) ? fluxVersion : ''
@@ -579,20 +587,20 @@ module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensi
 module managedCluster_fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = [for (fluxConfiguration, index) in fluxConfigurations: {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration${index}'
   params: {
-    enableDefaultTelemetry: enableDefaultTelemetry
-    clusterName: managedCluster.name
-    scope: fluxConfiguration.scope
-    namespace: fluxConfiguration.namespace
-    sourceKind: contains(fluxConfiguration, 'gitRepository') ? 'GitRepository' : 'Bucket'
-    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : toLower('${managedCluster.name}-fluxconfiguration${index}')
     bucket: contains(fluxConfiguration, 'bucket') ? fluxConfiguration.bucket : {}
+    clusterName: managedCluster.name
     configurationProtectedSettings: contains(fluxConfiguration, 'configurationProtectedSettings') ? fluxConfiguration.configurationProtectedSettings : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
     gitRepository: contains(fluxConfiguration, 'gitRepository') ? fluxConfiguration.gitRepository : {}
     kustomizations: contains(fluxConfiguration, 'kustomizations') ? fluxConfiguration.kustomizations : {}
+    name: contains(fluxConfiguration, 'name') ? fluxConfiguration.name : toLower('${managedCluster.name}-fluxconfiguration${index}')
+    namespace: fluxConfiguration.namespace
+    scope: fluxConfiguration.scope
+    sourceKind: contains(fluxConfiguration, 'gitRepository') ? 'GitRepository' : 'Bucket'
     suspend: contains(fluxConfiguration, 'suspend') ? fluxConfiguration.suspend : false
   }
   dependsOn: [
-    managedCluster_fluxExtension
+    managedCluster_extension
   ]
 }]
 
