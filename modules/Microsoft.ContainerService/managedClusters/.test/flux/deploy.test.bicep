@@ -43,6 +43,14 @@ module testDeployment '../../deploy.bicep' = {
         mode: 'System'
       }
     ]
+    fluxConfigurationSettings: {
+      'helm-controller.enabled': 'true'
+      'source-controller.enabled': 'true'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'true'
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+    }
     fluxConfigurations: [
       {
         namespace: 'flux-system'
@@ -68,6 +76,28 @@ module testDeployment '../../deploy.bicep' = {
           syncIntervalInSeconds: 300
           timeoutInSeconds: 180
           url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+        }
+        kustomizations: {
+          infra: {
+            path: './infrastructure'
+            dependsOn: []
+            timeoutInSeconds: 600
+            syncIntervalInSeconds: 600
+            validation: 'none'
+            prune: true
+          }
+          apps: {
+            path: './apps/staging'
+            dependsOn: [
+              {
+                kustomizationName: 'infra'
+              }
+            ]
+            timeoutInSeconds: 600
+            syncIntervalInSeconds: 600
+            retryIntervalInSeconds: 600
+            prune: true
+          }
         }
       }
     ]
