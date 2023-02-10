@@ -181,20 +181,17 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `identities` | object | The idenities of the disk encryption set. |
 | `keyVaultName` | string | The name of the key vault with the disk encryption key. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the disk encryption set. |
+| `principalId` | string | The principal ID of the disk encryption set. |
 | `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
 | `resourceId` | string | The resource ID of the disk encryption set. |
-| `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set. |
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.KeyVault/vaults/accessPolicies` | Local reference |
+_None_
 
 ## Deployment examples
 

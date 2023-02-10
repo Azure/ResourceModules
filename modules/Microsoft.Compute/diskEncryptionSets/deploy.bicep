@@ -60,9 +60,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = {
-  name: '${last(split(keyVaultResourceId, '/'))}/${keyName}'
+resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
+  name: last(split(keyVaultResourceId, '/'))!
   scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+
+  resource key 'keys@2021-10-01' existing = {
+    name: keyName
+  }
 }
 
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
@@ -75,7 +79,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
       sourceVault: {
         id: keyVaultResourceId
       }
-      keyUrl: !empty(keyVersion) ? '${keyVaultKey.properties.keyUri}/${keyVersion}' : keyVaultKey.properties.keyUriWithVersion
+      keyUrl: !empty(keyVersion) ? '${keyVault::key.properties.keyUri}/${keyVersion}' : keyVault::key.properties.keyUriWithVersion
     }
     encryptionType: encryptionType
     federatedClientId: federatedClientId
@@ -83,28 +87,14 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
   }
 }
 
-module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
+module keyVaultPermissions '.bicep/nested_keyVaultPermissions.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVPermissions'
   params: {
-    keyVaultName: last(split(keyVaultResourceId, '/'))
-    accessPolicies: [
-      {
-        tenantId: subscription().tenantId
-        objectId: diskEncryptionSet.identity.principalId
-        permissions: {
-          keys: [
-            'get'
-            'wrapKey'
-            'unwrapKey'
-          ]
-          secrets: []
-          certificates: []
-        }
-      }
-    ]
+    keyName: keyName
+    keyVaultResourceId: keyVaultResourceId
+    principalId: diskEncryptionSet.identity.principalId
+    rbacAuthorizationEnabled: keyVault.properties.enableRbacAuthorization
   }
-  // This is to support access policies to KV in different subscription and resource group than the disk encryption set.
-  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
 }
 
 module diskEncryptionSet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -130,10 +120,13 @@ output name string = diskEncryptionSet.name
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the disk encryption set.')
-output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
+output principalId string = diskEncryptionSet.identity.principalId
+
+@description('The idenities of the disk encryption set.')
+output identities object = diskEncryptionSet.identity
 
 @description('The name of the key vault with the disk encryption key.')
-output keyVaultName string = last(split(keyVaultResourceId, '/'))
+output keyVaultName string = last(split(keyVaultResourceId, '/'))!
 
 @description('The location the resource was deployed into.')
 output location string = diskEncryptionSet.location
