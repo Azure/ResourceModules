@@ -29,7 +29,6 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
-      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.resourcegroups.yml'
       - 'modules/Microsoft.Resources/resourceGroups/**'
       - 'utilities/pipelines/**'
