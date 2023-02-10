@@ -74,6 +74,24 @@ param hyperVGeneration string = ''
 ])
 param securityType string = 'Standard'
 
+@description('Optional. The image will support hibernation.')
+@allowed([
+  'true'
+  'false'
+])
+param isHibernateSupported string = 'false'
+
+@description('''Optional. The image supports accelerated networking.
+Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.
+This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the
+most demanding network workloads on supported VM types.
+''')
+@allowed([
+  'true'
+  'false'
+])
+param isAcceleratedNetworkSupported string = 'false'
+
 @description('Optional. The description of this gallery Image Definition resource. This property is updatable.')
 param imageDefinitionDescription string = ''
 
@@ -152,7 +170,24 @@ resource image 'Microsoft.Compute/galleries/images@2022-03-03' = {
         name: 'SecurityType'
         value: securityType
       }
-    ] : null
+      {
+        name: 'IsAcceleratedNetworkSupported'
+        value: isAcceleratedNetworkSupported
+      }
+      {
+        name: 'IsHibernateSupported'
+        value: isHibernateSupported
+      }
+    ] : [
+      {
+        name: 'IsAcceleratedNetworkSupported'
+        value: isAcceleratedNetworkSupported
+      }
+      {
+        name: 'IsHibernateSupported'
+        value: isHibernateSupported
+      }
+    ]
     description: imageDefinitionDescription
     eula: eula
     privacyStatementUri: privacyStatementUri

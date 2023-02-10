@@ -448,7 +448,9 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
       licenseType: empty(licenseType) ? null : licenseType
       priority: vmPriority
       evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
-      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
+      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? {
+        maxPrice: maxPriceForLowPriorityVm
+      } : null
       scheduledEventsProfile: scheduledEventsProfile
     }
     overprovision: overprovision
