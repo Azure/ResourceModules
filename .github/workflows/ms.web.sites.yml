@@ -1,4 +1,4 @@
-name: 'Web: Sites'
+name: 'Web - Sites'
 
 on:
   workflow_dispatch:

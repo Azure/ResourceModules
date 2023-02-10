@@ -1,4 +1,4 @@
-name: 'Insights: ScheduledQueryRules'
+name: 'Insights - ScheduledQueryRules'
 
 on:
   workflow_dispatch:

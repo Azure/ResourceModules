@@ -1,4 +1,4 @@
-name: 'Sql: ManagedInstances'
+name: 'Sql - ManagedInstances'
 
 on:
   workflow_dispatch:

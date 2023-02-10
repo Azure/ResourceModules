@@ -1,4 +1,4 @@
-name: 'Insights: ActionGroups'
+name: 'Insights - ActionGroups'
 
 on:
   workflow_dispatch:

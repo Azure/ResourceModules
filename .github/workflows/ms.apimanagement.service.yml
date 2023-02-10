@@ -1,4 +1,4 @@
-name: 'ApiManagement: Service'
+name: 'ApiManagement - Service'
 
 on:
   workflow_dispatch:

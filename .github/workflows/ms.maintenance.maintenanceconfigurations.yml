@@ -1,4 +1,4 @@
-name: 'Maintenance: MaintenanceConfigurations'
+name: 'Maintenance - MaintenanceConfigurations'
 
 on:
   workflow_dispatch:

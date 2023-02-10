@@ -1,4 +1,4 @@
-name: 'Purview: Accounts'
+name: 'Purview - Accounts'
 
 on:
   workflow_dispatch:

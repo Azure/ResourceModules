@@ -1,4 +1,4 @@
-name: 'KeyVault: Vaults'
+name: 'KeyVault - Vaults'
 
 on:
   workflow_dispatch:

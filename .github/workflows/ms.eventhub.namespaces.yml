@@ -1,4 +1,4 @@
-name: 'EventHub: Namespaces'
+name: 'EventHub - Namespaces'
 
 on:
   workflow_dispatch:

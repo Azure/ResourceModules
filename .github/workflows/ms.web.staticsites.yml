@@ -1,4 +1,4 @@
-name: 'Web: StaticSites'
+name: 'Web - StaticSites'
 
 on:
   workflow_dispatch:

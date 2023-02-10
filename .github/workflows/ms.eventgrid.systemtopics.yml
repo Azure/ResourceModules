@@ -1,4 +1,4 @@
-name: 'EventGrid: System Topics'
+name: 'EventGrid - System Topics'
 
 on:
   workflow_dispatch:

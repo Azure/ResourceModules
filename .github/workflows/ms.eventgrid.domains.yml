@@ -1,4 +1,4 @@
-name: 'EventGrid: Domains'
+name: 'EventGrid - Domains'
 
 on:
   workflow_dispatch:

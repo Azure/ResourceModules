@@ -1,4 +1,4 @@
-name: 'DocumentDB: DatabaseAccounts'
+name: 'DocumentDB - DatabaseAccounts'
 
 on:
   workflow_dispatch:

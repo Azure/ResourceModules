@@ -1,4 +1,4 @@
-name: 'SignalR Service: SignalR'
+name: 'SignalRService - SignalR'
 
 on:
   workflow_dispatch:

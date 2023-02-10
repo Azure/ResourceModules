@@ -1,4 +1,4 @@
-name: 'Network: ApplicationGateways'
+name: 'Network - ApplicationGateways'
 
 on:
   workflow_dispatch:

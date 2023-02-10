@@ -1,4 +1,4 @@
-name: 'ContainerService: ManagedClusters'
+name: 'ContainerService - ManagedClusters'
 
 on:
   workflow_dispatch:

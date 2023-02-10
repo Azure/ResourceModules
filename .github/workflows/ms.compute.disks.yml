@@ -1,4 +1,4 @@
-name: 'Compute: Disks'
+name: 'Compute - Disks'
 
 on:
   workflow_dispatch:

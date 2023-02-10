@@ -1,4 +1,4 @@
-name: 'AnalysisServices: Servers'
+name: 'AnalysisServices - Servers'
 
 on:
   workflow_dispatch:

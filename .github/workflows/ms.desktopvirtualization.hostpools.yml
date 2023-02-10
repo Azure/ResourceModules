@@ -1,4 +1,4 @@
-name: 'DesktopVirtualization: HostPools'
+name: 'DesktopVirtualization - HostPools'
 
 on:
   workflow_dispatch:

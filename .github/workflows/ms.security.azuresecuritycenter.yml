@@ -1,4 +1,4 @@
-name: 'Security: AzureSecurityCenter'
+name: 'Security - AzureSecurityCenter'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'ContainerInstance: ContainerGroups'
+name: 'ContainerInstance - ContainerGroups'
 
 on:
   workflow_dispatch:

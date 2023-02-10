@@ -1,4 +1,4 @@
-name: 'Insights: MetricAlerts'
+name: 'Insights - MetricAlerts'
 
 on:
   workflow_dispatch:

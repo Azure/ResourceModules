@@ -1,4 +1,4 @@
-name: 'Network: Frontdoors'
+name: 'Network - Frontdoors'
 
 on:
   workflow_dispatch:

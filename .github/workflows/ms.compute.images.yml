@@ -1,4 +1,4 @@
-name: 'Compute: Images'
+name: 'Compute - Images'
 
 on:
   workflow_dispatch:

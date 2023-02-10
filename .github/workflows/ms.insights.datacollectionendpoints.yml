@@ -1,4 +1,4 @@
-name: 'Insights: DataCollectionEndpoints'
+name: 'Insights - DataCollectionEndpoints'
 
 on:
   workflow_dispatch:

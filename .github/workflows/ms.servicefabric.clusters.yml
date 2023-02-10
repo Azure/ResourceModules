@@ -1,4 +1,4 @@
-name: 'Service Fabric: Clusters'
+name: 'ServiceFabric - Clusters'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'EventGrid: Event Subscriptions'
+name: 'EventGrid - Event Subscriptions'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'ContainerRegistry: Registries'
+name: 'ContainerRegistry - Registries'
 
 on:
   workflow_dispatch:

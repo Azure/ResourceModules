@@ -1,4 +1,4 @@
-name: 'Web: HostingEnvironments'
+name: 'Web - HostingEnvironments'
 
 on:
   workflow_dispatch:

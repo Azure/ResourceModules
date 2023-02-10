@@ -1,4 +1,4 @@
-name: 'Network: ApplicationGatewayWebApplicationFirewallPolicies'
+name: 'Network - ApplicationGatewayWebApplicationFirewallPolicies'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'Insights: ActivityLogAlerts'
+name: 'Insights - ActivityLogAlerts'
 
 on:
   workflow_dispatch:

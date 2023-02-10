@@ -1,4 +1,4 @@
-name: 'Network: PublicIpAddresses'
+name: 'Network - PublicIpAddresses'
 
 on:
   workflow_dispatch:

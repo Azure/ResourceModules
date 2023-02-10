@@ -1,4 +1,4 @@
-name: 'OperationalInsights: Workspaces'
+name: 'OperationalInsights - Workspaces'
 
 on:
   workflow_dispatch:

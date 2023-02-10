@@ -1,4 +1,4 @@
-name: 'Compute: Galleries'
+name: 'Compute - Galleries'
 
 on:
   workflow_dispatch:

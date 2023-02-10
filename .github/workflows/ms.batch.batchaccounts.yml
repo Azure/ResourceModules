@@ -1,4 +1,4 @@
-name: 'Batch: BatchAccounts'
+name: 'Batch - BatchAccounts'
 
 on:
   workflow_dispatch:

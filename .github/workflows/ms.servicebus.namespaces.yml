@@ -1,4 +1,4 @@
-name: 'ServiceBus: Namespaces'
+name: 'ServiceBus - Namespaces'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'DesktopVirtualization: Scalingplans'
+name: 'DesktopVirtualization - Scalingplans'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'Network: ExpressRouteCircuits'
+name: 'Network - ExpressRouteCircuits'
 
 on:
   workflow_dispatch:

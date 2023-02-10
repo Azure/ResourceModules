@@ -1,4 +1,4 @@
-name: 'Compute: ProximityPlacementGroups'
+name: 'Compute - ProximityPlacementGroups'
 
 on:
   workflow_dispatch:

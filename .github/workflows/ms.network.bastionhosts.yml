@@ -1,4 +1,4 @@
-name: 'Network: BastionHosts'
+name: 'Network - BastionHosts'
 
 on:
   workflow_dispatch:

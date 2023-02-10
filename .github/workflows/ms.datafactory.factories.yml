@@ -1,4 +1,4 @@
-name: 'DataFactory: Factories'
+name: 'DataFactory - Factories'
 
 on:
   workflow_dispatch:

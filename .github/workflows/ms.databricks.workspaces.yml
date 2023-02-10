@@ -1,4 +1,4 @@
-name: 'Databricks: Workspaces'
+name: 'Databricks - Workspaces'
 
 on:
   workflow_dispatch:

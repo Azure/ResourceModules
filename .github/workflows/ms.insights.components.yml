@@ -1,4 +1,4 @@
-name: 'Insights: Components'
+name: 'Insights - Components'
 
 on:
   workflow_dispatch:

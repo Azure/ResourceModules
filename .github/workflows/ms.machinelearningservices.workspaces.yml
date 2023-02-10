@@ -1,4 +1,4 @@
-name: 'MachineLearningServices: Workspaces'
+name: 'MachineLearningServices - Workspaces'
 
 on:
   workflow_dispatch:

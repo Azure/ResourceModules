@@ -1,4 +1,4 @@
-name: 'Network: RouteTables'
+name: 'Network - RouteTables'
 
 on:
   workflow_dispatch:

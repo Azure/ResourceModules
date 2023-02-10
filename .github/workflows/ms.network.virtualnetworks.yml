@@ -1,4 +1,4 @@
-name: 'Network: VirtualNetworks'
+name: 'Network - VirtualNetworks'
 
 on:
   workflow_dispatch:

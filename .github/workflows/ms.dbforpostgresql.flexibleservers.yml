@@ -1,4 +1,4 @@
-name: 'DbForPostgreSQL: FlexibleServers'
+name: 'DbForPostgreSQL - FlexibleServers'
 
 on:
   workflow_dispatch:

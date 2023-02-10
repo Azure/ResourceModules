@@ -1,4 +1,4 @@
-name: 'Network: PrivateEndpoints'
+name: 'Network - PrivateEndpoints'
 
 on:
   workflow_dispatch:

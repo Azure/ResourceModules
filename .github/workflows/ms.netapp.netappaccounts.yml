@@ -1,4 +1,4 @@
-name: 'NetApp: NetAppAccounts'
+name: 'NetApp - NetAppAccounts'
 
 on:
   workflow_dispatch:

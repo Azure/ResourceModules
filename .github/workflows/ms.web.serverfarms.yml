@@ -1,4 +1,4 @@
-name: 'Web: Serverfarms'
+name: 'Web - Serverfarms'
 
 on:
   workflow_dispatch:

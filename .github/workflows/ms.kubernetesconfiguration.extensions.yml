@@ -1,4 +1,4 @@
-name: 'KubernetesConfiguration: Extensions'
+name: 'KubernetesConfiguration - Extensions'
 
 on:
   workflow_dispatch:

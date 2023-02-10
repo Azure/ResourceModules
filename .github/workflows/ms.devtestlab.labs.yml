@@ -1,4 +1,4 @@
-name: 'DevTestLab: Labs'
+name: 'DevTestLab - Labs'
 
 on:
   workflow_dispatch:

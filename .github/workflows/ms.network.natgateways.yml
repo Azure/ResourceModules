@@ -1,4 +1,4 @@
-name: 'Network: NatGateways'
+name: 'Network - NatGateways'
 
 on:
   workflow_dispatch:

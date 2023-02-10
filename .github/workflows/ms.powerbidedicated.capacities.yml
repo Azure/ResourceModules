@@ -1,4 +1,4 @@
-name: 'PowerBiDedicated: Capacities'
+name: 'PowerBiDedicated - Capacities'
 
 on:
   workflow_dispatch:

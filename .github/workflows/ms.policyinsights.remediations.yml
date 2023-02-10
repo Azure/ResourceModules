@@ -1,4 +1,4 @@
-name: 'Policy Insights: Remediations'
+name: 'PolicyInsights - Remediations'
 
 on:
   workflow_dispatch:

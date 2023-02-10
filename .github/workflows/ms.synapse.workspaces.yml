@@ -1,4 +1,4 @@
-name: 'Synapse: Workspaces'
+name: 'Synapse - Workspaces'
 
 on:
   workflow_dispatch:

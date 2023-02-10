@@ -1,4 +1,4 @@
-name: 'Authorization: RoleDefinitions'
+name: 'Authorization - RoleDefinitions'
 
 on:
   workflow_dispatch:

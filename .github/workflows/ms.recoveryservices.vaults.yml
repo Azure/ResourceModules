@@ -1,4 +1,4 @@
-name: 'RecoveryServices: Vaults'
+name: 'RecoveryServices - Vaults'
 
 on:
   workflow_dispatch:

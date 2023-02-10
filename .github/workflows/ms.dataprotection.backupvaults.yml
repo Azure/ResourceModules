@@ -1,4 +1,4 @@
-name: 'DataProtection: BackupVaults'
+name: 'DataProtection - BackupVaults'
 
 on:
   workflow_dispatch:

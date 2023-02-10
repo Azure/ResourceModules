@@ -1,4 +1,4 @@
-name: 'Network: NetworkInterfaces'
+name: 'Network - NetworkInterfaces'
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: 'Network: FirewallPolicies'
+name: 'Network - FirewallPolicies'
 
 on:
   workflow_dispatch:

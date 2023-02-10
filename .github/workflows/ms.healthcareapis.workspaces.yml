@@ -1,4 +1,4 @@
-name: 'HealthcareApis: Workspaces'
+name: 'HealthcareApis - Workspaces'
 
 on:
   workflow_dispatch:

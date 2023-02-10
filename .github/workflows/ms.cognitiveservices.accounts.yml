@@ -1,4 +1,4 @@
-name: 'CognitiveServices: Accounts'
+name: 'CognitiveServices - Accounts'
 
 on:
   workflow_dispatch:

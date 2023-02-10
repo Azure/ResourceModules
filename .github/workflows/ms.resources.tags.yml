@@ -1,4 +1,4 @@
-name: 'Resources: Tags'
+name: 'Resources - Tags'
 
 on:
   workflow_dispatch:

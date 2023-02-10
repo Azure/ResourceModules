@@ -1,4 +1,4 @@
-name: 'Automation: AutomationAccounts'
+name: 'Automation - AutomationAccounts'
 
 on:
   workflow_dispatch:

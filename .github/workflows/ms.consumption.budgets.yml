@@ -1,5 +1,5 @@
-name: 'Consumption: Budgets'
-
+name: 'Consumption - Budgets'
+ -
 on:
   workflow_dispatch:
     inputs:

@@ -1,4 +1,4 @@
-name: 'Synapse: PrivateLinkHubs'
+name: 'Synapse - PrivateLinkHubs'
 
 on:
   workflow_dispatch:

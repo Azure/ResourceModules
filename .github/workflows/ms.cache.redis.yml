@@ -1,4 +1,4 @@
-name: 'Cache: Redis'
+name: 'Cache - Redis'
 
 on:
   workflow_dispatch:

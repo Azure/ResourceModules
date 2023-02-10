@@ -1,4 +1,4 @@
-name: 'SignalR Service: Web PubSub'
+name: 'SignalRService - WebPubSub'
 
 on:
   workflow_dispatch:

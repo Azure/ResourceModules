@@ -1,4 +1,4 @@
-name: 'Network: Connections'
+name: 'Network - Connections'
 
 on:
   workflow_dispatch:

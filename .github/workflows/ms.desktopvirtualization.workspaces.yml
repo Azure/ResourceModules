@@ -1,4 +1,4 @@
-name: 'DesktopVirtualization: Workspaces'
+name: 'DesktopVirtualization - Workspaces'
 
 on:
   workflow_dispatch:

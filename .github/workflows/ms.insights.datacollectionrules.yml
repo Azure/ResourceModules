@@ -1,4 +1,4 @@
-name: 'Insights: DataCollectionRules'
+name: 'Insights - DataCollectionRules'
 
 on:
   workflow_dispatch:

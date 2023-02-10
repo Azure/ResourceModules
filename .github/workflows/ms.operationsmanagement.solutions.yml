@@ -1,4 +1,4 @@
-name: 'OperationsManagement: Solutions'
+name: 'OperationsManagement - Solutions'
 
 on:
   workflow_dispatch:
