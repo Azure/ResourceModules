@@ -73,7 +73,7 @@ output resourceGroupName string = resourceGroup().name
 @description('The resource ID of the disk.')
 output resourceId string = sshPublicKey.id
 
-@description('The name of the disk.')
+@description('The name of the Public SSH Key.')
 output name string = sshPublicKey.name
 
 @description('The location the resource was deployed into.')
