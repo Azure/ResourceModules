@@ -89,5 +89,6 @@ module testDeployment '../../deploy.bicep' = {
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
     }
+    enableDnsForwarding: true
   }
 }

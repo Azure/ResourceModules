@@ -66,6 +66,30 @@ param asn int = 65815
 @description('Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network.')
 param vpnClientAddressPoolPrefix string = ''
 
+@description('Optional. Configures this gateway to accept traffic from remote Virtual WAN networks.')
+param allowVirtualWanTraffic bool = false
+
+@description('Optional. Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity to Azure Virtual WAN.')
+param allowRemoteVnetTraffic bool = false
+
+@description('Optional. disableIPSecReplayProtection flag. Used for VPN Gateways.')
+param disableIPSecReplayProtection bool = false
+
+@description('Optional. Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways.')
+param enableDnsForwarding bool = false
+
+@description('Optional. Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering.')
+param enablePrivateIpAddress bool = false
+
+@description('Optional. The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.')
+param gatewayDefaultSiteLocalNetworkGatewayId string = ''
+
+@description('Optional. NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only.')
+param natRules array = []
+
+@description('Optional. EnableBgpRouteTranslationForNat flag. Can only be used when "natRules" are enabled on the Virtual Network Gateway.')
+param enableBgpRouteTranslationForNat bool = false
+
 @description('Optional. Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided.')
 param clientRootCertData string = ''
 
@@ -335,20 +359,30 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     ipConfigurations: ipConfiguration
     activeActive: isActiveActiveValid
+    allowRemoteVnetTraffic: allowRemoteVnetTraffic
+    allowVirtualWanTraffic: allowVirtualWanTraffic
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
+    disableIPSecReplayProtection: disableIPSecReplayProtection
+    enableDnsForwarding: enableDnsForwarding
+    enablePrivateIpAddress: enablePrivateIpAddress
+    enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
+    gatewayType: virtualNetworkGatewayType
+    gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
+      id: gatewayDefaultSiteLocalNetworkGatewayId
+    } : null
+    natRules: natRules
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
     }
-    gatewayType: virtualNetworkGatewayType
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
   }
