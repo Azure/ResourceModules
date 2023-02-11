@@ -302,6 +302,7 @@ param fluxReleaseTrain string = 'Stable'
 param fluxVersion string = ''
 
 @description('Optional. Configuration settings that are sensitive, as name-value pairs for configuring this extension.')
+@secure()
 param fluxConfigurationProtectedSettings object = {}
 
 @description('Optional. Configuration settings, as name-value pairs for configuring this extension.')

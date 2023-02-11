@@ -11,6 +11,7 @@ param clusterName string
 param location string = resourceGroup().location
 
 @description('Optional. Configuration settings that are sensitive, as name-value pairs for configuring this extension.')
+@secure()
 param configurationProtectedSettings object = {}
 
 @description('Optional. Configuration settings, as name-value pairs for configuring this extension.')
