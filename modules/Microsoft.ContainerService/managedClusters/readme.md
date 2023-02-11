@@ -1056,7 +1056,74 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 </details>
 <p>
 
-<h3>Example 4: Minflux</h3>
+<h3>Example 4: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmmin'
+  params: {
+    // Required parameters
+    name: 'csmmin001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmmin001"
+    },
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 5: Minflux</h3>
 
 <details>
 
