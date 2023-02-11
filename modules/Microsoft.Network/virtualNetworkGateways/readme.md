@@ -570,40 +570,36 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     lock: 'CanNotDelete'
     natRules: [
       {
+        externalMappings: [
+          {
+            addressSpace: '192.168.0.0/24'
+            portRange: '100'
+          }
+        ]
+        internalMappings: [
+          {
+            addressSpace: '10.100.0.0/24'
+            portRange: '100'
+          }
+        ]
+        mode: 'IngressSnat'
         name: 'nat-rule-1-static-IngressSnat'
-        properties: {
-          externalMappings: [
-            {
-              addressSpace: '192.168.0.0/24'
-              portRange: '100'
-            }
-          ]
-          internalMappings: [
-            {
-              addressSpace: '10.100.0.0/24'
-              portRange: '100'
-            }
-          ]
-          mode: 'IngressSnat'
-          type: 'Static'
-        }
+        type: 'Static'
       }
       {
+        externalMappings: [
+          {
+            addressSpace: '10.200.0.0/26'
+          }
+        ]
+        internalMappings: [
+          {
+            addressSpace: '172.16.0.0/26'
+          }
+        ]
+        mode: 'EgressSnat'
         name: 'nat-rule-2-dynamic-EgressSnat'
-        properties: {
-          externalMappings: [
-            {
-              addressSpace: '10.200.0.0/26'
-            }
-          ]
-          internalMappings: [
-            {
-              addressSpace: '172.16.0.0/26'
-            }
-          ]
-          mode: 'EgressSnat'
-          type: 'Dynamic'
-        }
+        type: 'Dynamic'
       }
     ]
     publicIpZones: [
@@ -695,40 +691,36 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "natRules": {
       "value": [
         {
+          "externalMappings": [
+            {
+              "addressSpace": "192.168.0.0/24",
+              "portRange": "100"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "10.100.0.0/24",
+              "portRange": "100"
+            }
+          ],
+          "mode": "IngressSnat",
           "name": "nat-rule-1-static-IngressSnat",
-          "properties": {
-            "externalMappings": [
-              {
-                "addressSpace": "192.168.0.0/24",
-                "portRange": "100"
-              }
-            ],
-            "internalMappings": [
-              {
-                "addressSpace": "10.100.0.0/24",
-                "portRange": "100"
-              }
-            ],
-            "mode": "IngressSnat",
-            "type": "Static"
-          }
+          "type": "Static"
         },
         {
+          "externalMappings": [
+            {
+              "addressSpace": "10.200.0.0/26"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "172.16.0.0/26"
+            }
+          ],
+          "mode": "EgressSnat",
           "name": "nat-rule-2-dynamic-EgressSnat",
-          "properties": {
-            "externalMappings": [
-              {
-                "addressSpace": "10.200.0.0/26"
-              }
-            ],
-            "internalMappings": [
-              {
-                "addressSpace": "172.16.0.0/26"
-              }
-            ],
-            "mode": "EgressSnat",
-            "type": "Dynamic"
-          }
+          "type": "Dynamic"
         }
       ]
     },
