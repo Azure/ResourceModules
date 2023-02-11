@@ -75,7 +75,7 @@ param allowRemoteVnetTraffic bool = false
 @description('Optional. disableIPSecReplayProtection flag. Used for VPN Gateways.')
 param disableIPSecReplayProtection bool = false
 
-@description('Optional. Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways.')
+@description('Optional. Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. The DNS forwarding feature flag must be enabled on the current subscription.')
 param enableDnsForwarding bool = false
 
 @description('Optional. Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering.')
@@ -371,14 +371,13 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
     disableIPSecReplayProtection: disableIPSecReplayProtection
-    enableDnsForwarding: enableDnsForwarding
+    enableDnsForwarding: virtualNetworkGatewayType == 'ExpressRoute' ? enableDnsForwarding : null
     enablePrivateIpAddress: enablePrivateIpAddress
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
     gatewayType: virtualNetworkGatewayType
     gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
       id: gatewayDefaultSiteLocalNetworkGatewayId
     } : null
-    natRules: natRules
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
@@ -390,6 +389,20 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
     publicIPAddress
   ]
 }
+
+module virtualNetworkGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+  name: '${deployment().name}-NATRule-${index}'
+  params: {
+    name: natRule.name
+    virtualNetworkGatewayName: virtualNetworkGateway.name
+    externalMappings: contains(natRule, 'externalMappings') ? natRule.externalMappings : []
+    internalMappings: contains(natRule, 'internalMappings') ? natRule.internalMappings : []
+    ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
+    mode: contains(natRule, 'mode') ? natRule.mode : ''
+    type: contains(natRule, 'type') ? natRule.type : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'

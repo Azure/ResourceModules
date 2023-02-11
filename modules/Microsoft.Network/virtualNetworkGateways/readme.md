@@ -19,6 +19,7 @@ This module deploys a virtual network gateway.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 | `Microsoft.Network/virtualNetworkGateways` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworkGateways) |
+| `Microsoft.Network/virtualNetworkGateways/natRules` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworkGateways/natRules) |
 
 ## Parameters
 
@@ -53,13 +54,13 @@ This module deploys a virtual network gateway.
 | `enableBgp` | bool | `True` |  | Value to specify if BGP is enabled or not. |
 | `enableBgpRouteTranslationForNat` | bool | `False` |  | EnableBgpRouteTranslationForNat flag. Can only be used when "natRules" are enabled on the Virtual Network Gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableDnsForwarding` | bool | `False` |  | Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. |
+| `enableDnsForwarding` | bool | `False` |  | Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. The DNS forwarding feature flag must be enabled on the current subscription. |
 | `enablePrivateIpAddress` | bool | `False` |  | Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering. |
 | `gatewayDefaultSiteLocalNetworkGatewayId` | string | `''` |  | The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting. |
 | `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
+| `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
 | `publicIpdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `publicIpDiagnosticSettingsName` | string | `'diagnosticSettings'` |  | The name of the diagnostic setting, if deployed. |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
@@ -435,7 +436,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       '<<namePrefix>>-dm-nvger'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableDnsForwarding: true
     gatewayPipName: '<<namePrefix>>-pip-nvger'
     roleAssignments: [
       {
@@ -505,9 +505,6 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "enableDnsForwarding": {
-      "value": true
     },
     "gatewayPipName": {
       "value": "<<namePrefix>>-pip-nvger"
