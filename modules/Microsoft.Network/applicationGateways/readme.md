@@ -17,7 +17,7 @@ This module deploys Network ApplicationGateways.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/applicationGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/applicationGateways) |
+| `Microsoft.Network/applicationGateways` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/applicationGateways) |
 
 ## Parameters
 
@@ -36,6 +36,7 @@ This module deploys Network ApplicationGateways.
 | `autoscaleMinCapacity` | int | `-1` |  | Lower bound on number of Application Gateway capacity. |
 | `backendAddressPools` | array | `[]` |  | Backend address pool of the application gateway resource. |
 | `backendHttpSettingsCollection` | array | `[]` |  | Backend http settings of the application gateway resource. |
+| `backendSettingsCollection` | array | `[]` |  | Backend settings of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits). |
 | `capacity` | int | `2` |  | The number of Application instances to be configured. |
 | `customErrorConfigurations` | array | `[]` |  | Custom error configurations of the application gateway resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -56,6 +57,7 @@ This module deploys Network ApplicationGateways.
 | `frontendPorts` | array | `[]` |  | Frontend ports of the application gateway resource. |
 | `gatewayIPConfigurations` | array | `[]` |  | Subnets of the application gateway resource. |
 | `httpListeners` | array | `[]` |  | Http listeners of the application gateway resource. |
+| `listeners` | array | `[]` |  | Listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits). |
 | `loadDistributionPolicies` | array | `[]` |  | Load distribution policies of the application gateway resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -65,6 +67,7 @@ This module deploys Network ApplicationGateways.
 | `requestRoutingRules` | array | `[]` |  | Request routing rules of the application gateway resource. |
 | `rewriteRuleSets` | array | `[]` |  | Rewrite rules for the application gateway resource. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `routingRules` | array | `[]` |  | Routing rules of the application gateway resource. |
 | `sku` | string | `'WAF_Medium'` | `[Standard_Large, Standard_Medium, Standard_Small, Standard_v2, WAF_Large, WAF_Medium, WAF_v2]` | The name of the SKU for the Application Gateway. |
 | `sslCertificates` | array | `[]` |  | SSL certificates of the application gateway resource. |
 | `sslPolicyCipherSuites` | array | `[TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384]` | `[TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384]` | Ssl cipher suites to be enabled in the specified order to application gateway. |
@@ -294,6 +297,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
+    backendSettingsCollection: []
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -422,6 +426,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
+    listeners: []
     lock: 'CanNotDelete'
     probes: [
       {
@@ -547,6 +552,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    routingRules: []
     sku: 'WAF_v2'
     sslCertificates: [
       {
@@ -640,6 +646,9 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           }
         }
       ]
+    },
+    "backendSettingsCollection": {
+      "value": []
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -791,6 +800,9 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       ]
     },
+    "listeners": {
+      "value": []
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -925,6 +937,9 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "routingRules": {
+      "value": []
     },
     "sku": {
       "value": "WAF_v2"

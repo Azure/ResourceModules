@@ -113,6 +113,15 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
+    backendSettingsCollection: [
+
+    ]
+    listeners: [
+
+    ]
+    routingRules: [
+
+    ]
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
