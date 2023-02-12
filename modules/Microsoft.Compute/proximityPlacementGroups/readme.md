@@ -14,9 +14,9 @@ This template deploys a proximity placement group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/proximityPlacementGroups` | [2022-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-08-01/proximityPlacementGroups) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Compute/proximityPlacementGroups` | [2022-08-01](https://docs.microsoft.com/en-us/azure/templates) |
 
 ## Parameters
 
@@ -35,9 +35,9 @@ This template deploys a proximity placement group.
 | `intent` | object | `{object}` |  | Specifies the user intent of the proximity placement group. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `proximityPlacementGroupType` | string | `'Standard'` | `[Standard, Ultra]` | Specifies the type of the proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the proximity placement group resource. |
+| `type` | string | `'Standard'` | `[Standard, Ultra]` | Specifies the type of the proximity placement group. |
 | `zones` | array | `[]` |  | Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the proximity placement group can be created. |
 
 
@@ -188,7 +188,6 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
       ]
     }
     lock: 'CanNotDelete'
-    proximityPlacementGroupType: 'Standard'
     roleAssignments: [
       {
         principalIds: [
@@ -202,6 +201,7 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
       TagA: 'Would you kindly...'
       TagB: 'Tags for sale'
     }
+    type: 'Standard'
     zones: [
       '1'
     ]
@@ -248,9 +248,6 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
     "lock": {
       "value": "CanNotDelete"
     },
-    "proximityPlacementGroupType": {
-      "value": "Standard"
-    },
     "roleAssignments": {
       "value": [
         {
@@ -267,6 +264,9 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
         "TagA": "Would you kindly...",
         "TagB": "Tags for sale"
       }
+    },
+    "type": {
+      "value": "Standard"
     },
     "zones": {
       "value": [

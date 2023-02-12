@@ -13,8 +13,8 @@ This module deploys CDN Profiles Endpoint.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Cdn/profiles/endpoints` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints) |
-| `Microsoft.Cdn/profiles/endpoints/origins` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints/origins) |
+| `Microsoft.Cdn/profiles/endpoints` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles) |
+| `Microsoft.Cdn/profiles/endpoints/origins` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles) |
 
 ## Parameters
 
@@ -22,8 +22,8 @@ This module deploys CDN Profiles Endpoint.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `endpointProperties` | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
 | `name` | string | Name of the endpoint under the profile which is unique globally. |
+| `properties` | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
 
 **Conditional parameters**
 
