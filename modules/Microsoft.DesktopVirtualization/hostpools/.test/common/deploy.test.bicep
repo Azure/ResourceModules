@@ -66,9 +66,9 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    hostpoolDescription: 'My first AVD Host Pool'
-    hostpoolFriendlyName: 'AVDv2'
-    hostpoolType: 'Pooled'
+    description: 'My first AVD Host Pool'
+    friendlyName: 'AVDv2'
+    type: 'Pooled'
     loadBalancerType: 'BreadthFirst'
     location: location
     lock: 'CanNotDelete'
