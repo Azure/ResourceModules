@@ -32,6 +32,7 @@ This module deploys an Azure virtual desktop host pool.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `customRdpProperty` | string | `'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'` |  | Host Pool RDP properties. |
+| `description` | string | `''` |  | The description of the Host Pool to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AgentHealthStatus, allLogs, Checkpoint, Connection, Error, HostRegistration, Management]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -40,9 +41,7 @@ This module deploys an Azure virtual desktop host pool.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `hostpoolDescription` | string | `''` |  | The description of the Host Pool to be created. |
-| `hostpoolFriendlyName` | string | `''` |  | The friendly name of the Host Pool to be created. |
-| `hostpoolType` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
+| `friendlyName` | string | `''` |  | The friendly name of the Host Pool to be created. |
 | `loadBalancerType` | string | `'BreadthFirst'` | `[BreadthFirst, DepthFirst, Persistent]` | Type of load balancer algorithm. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -53,6 +52,7 @@ This module deploys an Azure virtual desktop host pool.
 | `startVMOnConnect` | bool | `False` |  | Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tokenValidityLength` | string | `'PT8H'` |  | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
+| `type` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `validationEnvironment` | bool | `False` |  | Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment. |
 | `vmTemplate` | object | `{object}` |  | The necessary information for adding more VMs to this Host Pool. |
 
@@ -282,15 +282,14 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     name: '<<namePrefix>>dvhpcom001'
     // Non-required parameters
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
+    description: 'My first AVD Host Pool'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    hostpoolDescription: 'My first AVD Host Pool'
-    hostpoolFriendlyName: 'AVDv2'
-    hostpoolType: 'Pooled'
+    friendlyName: 'AVDv2'
     loadBalancerType: 'BreadthFirst'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -305,6 +304,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    type: 'Pooled'
     vmTemplate: {
       customImageId: '<customImageId>'
       domain: 'domainname.onmicrosoft.com'
@@ -346,6 +346,9 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     "customRdpProperty": {
       "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
     },
+    "description": {
+      "value": "My first AVD Host Pool"
+    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -364,14 +367,8 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "hostpoolDescription": {
-      "value": "My first AVD Host Pool"
-    },
-    "hostpoolFriendlyName": {
+    "friendlyName": {
       "value": "AVDv2"
-    },
-    "hostpoolType": {
-      "value": "Pooled"
     },
     "loadBalancerType": {
       "value": "BreadthFirst"
@@ -398,6 +395,9 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "type": {
+      "value": "Pooled"
     },
     "vmTemplate": {
       "value": {
