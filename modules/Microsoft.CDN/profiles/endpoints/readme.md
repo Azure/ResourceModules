@@ -13,8 +13,8 @@ This module deploys CDN Profiles Endpoint.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Cdn/profiles/endpoints` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles) |
-| `Microsoft.Cdn/profiles/endpoints/origins` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/profiles) |
+| `Microsoft.Cdn/profiles/endpoints` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints) |
+| `Microsoft.Cdn/profiles/endpoints/origins` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Cdn/2021-06-01/profiles/endpoints/origins) |
 
 ## Parameters
 
