@@ -100,5 +100,20 @@ module testDeployment '../../deploy.bicep' = {
         ram: 8
       }
     }
+    agentUpdate: {
+      type: 'Scheduled'
+      useSessionHostLocalTime: false
+      maintenanceWindowTimeZone: 'Alaskan Standard Time'
+      maintenanceWindows: [
+        {
+          hour: 7
+          dayOfWeek: 'Friday'
+        }
+        {
+          hour: 8
+          dayOfWeek: 'Saturday'
+        }
+      ]
+    }
   }
 }

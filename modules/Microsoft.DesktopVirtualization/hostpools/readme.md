@@ -287,6 +287,21 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>dvhpcom001'
     // Non-required parameters
+    agentUpdate: {
+      maintenanceWindows: [
+        {
+          dayOfWeek: 'Friday'
+          hour: 7
+        }
+        {
+          dayOfWeek: 'Saturday'
+          hour: 8
+        }
+      ]
+      maintenanceWindowTimeZone: 'Alaskan Standard Time'
+      type: 'Scheduled'
+      useSessionHostLocalTime: false
+    }
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
     description: 'My first AVD Host Pool'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -349,6 +364,23 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
       "value": "<<namePrefix>>dvhpcom001"
     },
     // Non-required parameters
+    "agentUpdate": {
+      "value": {
+        "maintenanceWindows": [
+          {
+            "dayOfWeek": "Friday",
+            "hour": 7
+          },
+          {
+            "dayOfWeek": "Saturday",
+            "hour": 8
+          }
+        ],
+        "maintenanceWindowTimeZone": "Alaskan Standard Time",
+        "type": "Scheduled",
+        "useSessionHostLocalTime": false
+      }
+    },
     "customRdpProperty": {
       "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
     },
@@ -423,6 +455,51 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
           "ram": 8
         }
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>dvhpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>dvhpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

@@ -98,7 +98,9 @@ param startVMOnConnect bool = false
 param roleAssignments array = []
 
 @sys.description('Optional. The session host configuration for updating agent, monitoring agent, and stack component.')
-param agentUpdate object = {}
+param agentUpdate object = {
+  useSessionHostLocalTime: true
+}
 
 @sys.description('Optional. The ring number of HostPool.')
 param ring int = -1
