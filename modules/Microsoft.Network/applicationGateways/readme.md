@@ -297,7 +297,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
-    backendSettingsCollection: []
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -426,7 +425,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
-    listeners: []
     lock: 'CanNotDelete'
     probes: [
       {
@@ -539,7 +537,37 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           redirectConfiguration: {
             id: '<id>'
           }
+          rewriteRuleSet: {
+            id: '<id>'
+          }
           ruleType: 'Basic'
+        }
+      }
+    ]
+    rewriteRuleSets: [
+      {
+        id: '<id>'
+        name: 'customRewrite'
+        properties: {
+          rewriteRules: [
+            {
+              actionSet: {
+                requestHeaderConfigurations: [
+                  {
+                    headerName: 'Content-Type'
+                    headerValue: 'JSON'
+                  }
+                  {
+                    headerName: 'someheader'
+                  }
+                ]
+                responseHeaderConfigurations: []
+              }
+              conditions: []
+              name: 'NewRewrite'
+              ruleSequence: 100
+            }
+          ]
         }
       }
     ]
@@ -552,7 +580,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    routingRules: []
     sku: 'WAF_v2'
     sslCertificates: [
       {
@@ -566,8 +593,25 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       '<managedIdentityResourceId>': {}
     }
     webApplicationFirewallConfiguration: {
-      disabledRuleGroups: []
+      disabledRuleGroups: [
+        {
+          ruleGroupName: 'Known-CVEs'
+        }
+        {
+          ruleGroupName: 'REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION'
+        }
+        {
+          ruleGroupName: 'REQUEST-941-APPLICATION-ATTACK-XSS'
+        }
+      ]
       enabled: true
+      exclusions: [
+        {
+          matchVariable: 'RequestHeaderNames'
+          selector: 'hola'
+          selectorMatchOperator: 'StartsWith'
+        }
+      ]
       fileUploadLimitInMb: 100
       firewallMode: 'Detection'
       maxRequestBodySizeInKb: 128
@@ -646,9 +690,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           }
         }
       ]
-    },
-    "backendSettingsCollection": {
-      "value": []
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -800,9 +841,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       ]
     },
-    "listeners": {
-      "value": []
-    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -922,7 +960,39 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
             "redirectConfiguration": {
               "id": "<id>"
             },
+            "rewriteRuleSet": {
+              "id": "<id>"
+            },
             "ruleType": "Basic"
+          }
+        }
+      ]
+    },
+    "rewriteRuleSets": {
+      "value": [
+        {
+          "id": "<id>",
+          "name": "customRewrite",
+          "properties": {
+            "rewriteRules": [
+              {
+                "actionSet": {
+                  "requestHeaderConfigurations": [
+                    {
+                      "headerName": "Content-Type",
+                      "headerValue": "JSON"
+                    },
+                    {
+                      "headerName": "someheader"
+                    }
+                  ],
+                  "responseHeaderConfigurations": []
+                },
+                "conditions": [],
+                "name": "NewRewrite",
+                "ruleSequence": 100
+              }
+            ]
           }
         }
       ]
@@ -937,9 +1007,6 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           "roleDefinitionIdOrName": "Reader"
         }
       ]
-    },
-    "routingRules": {
-      "value": []
     },
     "sku": {
       "value": "WAF_v2"
@@ -961,8 +1028,25 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
     },
     "webApplicationFirewallConfiguration": {
       "value": {
-        "disabledRuleGroups": [],
+        "disabledRuleGroups": [
+          {
+            "ruleGroupName": "Known-CVEs"
+          },
+          {
+            "ruleGroupName": "REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION"
+          },
+          {
+            "ruleGroupName": "REQUEST-941-APPLICATION-ATTACK-XSS"
+          }
+        ],
         "enabled": true,
+        "exclusions": [
+          {
+            "matchVariable": "RequestHeaderNames",
+            "selector": "hola",
+            "selectorMatchOperator": "StartsWith"
+          }
+        ],
         "fileUploadLimitInMb": 100,
         "firewallMode": "Detection",
         "maxRequestBodySizeInKb": 128,
