@@ -97,6 +97,33 @@ param startVMOnConnect bool = false
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
+@sys.description('Optional. The session host configuration for updating agent, monitoring agent, and stack component.')
+param agentUpdate object = {}
+
+@sys.description('Optional. The ring number of HostPool.')
+param ring int = -1
+
+@sys.description('Optional. URL to customer ADFS server for signing WVD SSO certificates.')
+param ssoadfsAuthority string = ''
+
+@sys.description('Optional. ClientId for the registered Relying Party used to issue WVD SSO certificates.')
+param ssoClientId string = ''
+
+@sys.description('Optional. Path to Azure KeyVault storing the secret used for communication to ADFS.')
+#disable-next-line secure-secrets-in-params
+param ssoClientSecretKeyVaultPath string = ''
+
+@sys.description('Optional. The type of single sign on Secret Type.')
+@allowed([
+  ''
+  'Certificate'
+  'CertificateInKeyVault'
+  'SharedKey'
+  'SharedKeyInKeyVault'
+])
+#disable-next-line secure-secrets-in-params
+param ssoSecretType string = ''
+
 @sys.description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
   'allLogs'
@@ -148,7 +175,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
+resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2022-09-09' = {
   name: name
   location: location
   tags: tags
@@ -169,6 +196,12 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
       registrationTokenOperation: 'Update'
     }
     vmTemplate: ((!empty(vmTemplate)) ? null : string(vmTemplate))
+    agentUpdate: agentUpdate
+    ring: ring != -1 ? ring : null
+    ssoadfsAuthority: ssoadfsAuthority
+    ssoClientId: ssoClientId
+    ssoClientSecretKeyVaultPath: ssoClientSecretKeyVaultPath
+    ssoSecretType: !empty(ssoSecretType) ? ssoSecretType : null
   }
 }
 

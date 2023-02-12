@@ -94,7 +94,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource workspace 'Microsoft.DesktopVirtualization/workspaces@2021-07-12' = {
+resource workspace 'Microsoft.DesktopVirtualization/workspaces@2022-09-09' = {
   name: name
   location: location
   tags: tags
