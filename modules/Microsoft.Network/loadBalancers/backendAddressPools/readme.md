@@ -33,8 +33,8 @@ This module deploys load balancer backend address pools.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `addresses` | array | `[]` | An array of backend addresses. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `loadBalancerBackendAddresses` | array | `[]` | An array of backend addresses. |
 | `tunnelInterfaces` | array | `[]` | An array of gateway load balancer tunnel interfaces. |
 
 

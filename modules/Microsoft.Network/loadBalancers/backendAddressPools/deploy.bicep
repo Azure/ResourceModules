@@ -5,7 +5,7 @@ param loadBalancerName string
 param name string
 
 @description('Optional. An array of backend addresses.')
-param loadBalancerBackendAddresses array = []
+param addresses array = []
 
 @description('Optional. An array of gateway load balancer tunnel interfaces.')
 param tunnelInterfaces array = []
@@ -32,7 +32,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
 resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2021-08-01' = {
   name: name
   properties: {
-    loadBalancerBackendAddresses: loadBalancerBackendAddresses
+    loadBalancerBackendAddresses: addresses
     tunnelInterfaces: tunnelInterfaces
   }
   parent: loadBalancer
