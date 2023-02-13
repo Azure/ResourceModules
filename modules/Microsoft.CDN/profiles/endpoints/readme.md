@@ -22,8 +22,8 @@ This module deploys CDN Profiles Endpoint.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `endpointProperties` | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
 | `name` | string | Name of the endpoint under the profile which is unique globally. |
+| `properties` | object | Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details). |
 
 **Conditional parameters**
 

@@ -1,17 +1,17 @@
 @minLength(1)
-@description('Required. Name of the Azure Compute Gallery.')
+@sys.description('Required. Name of the Azure Compute Gallery.')
 param name string
 
-@description('Optional. Location for all resources.')
+@sys.description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Description of the Azure Shared Image Gallery.')
-param galleryDescription string = ''
+@sys.description('Optional. Description of the Azure Shared Image Gallery.')
+param description string = ''
 
-@description('Optional. Applications to create.')
+@sys.description('Optional. Applications to create.')
 param applications array = []
 
-@description('Optional. Images to create.')
+@sys.description('Optional. Images to create.')
 param images array = []
 
 @allowed([
@@ -19,16 +19,16 @@ param images array = []
   'CanNotDelete'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
+@sys.description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Tags for all resources.')
+@sys.description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -50,7 +50,7 @@ resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   location: location
   tags: tags
   properties: {
-    description: galleryDescription
+    description: description
     identifier: {}
   }
 }
@@ -84,7 +84,7 @@ module galleries_applications 'applications/deploy.bicep' = [for (application, i
     name: application.name
     galleryName: gallery.name
     supportedOSType: contains(application, 'supportOSType') ? application.supportedOSType : 'Windows'
-    applicationDefinitionDescription: contains(application, 'applicationDefinitionDescription') ? application.applicationDefinitionDescription : ''
+    description: contains(application, 'description') ? application.description : ''
     eula: contains(application, 'eula') ? application.eula : ''
     privacyStatementUri: contains(application, 'privacyStatementUri') ? application.privacyStatementUri : ''
     releaseNoteUri: contains(application, 'releaseNoteUri') ? application.releaseNoteUri : ''
@@ -113,7 +113,7 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     maxRecommendedMemory: contains(image, 'maxRecommendedMemory') ? image.maxRecommendedMemory : 16
     hyperVGeneration: contains(image, 'hyperVGeneration') ? image.hyperVGeneration : 'V1'
     securityType: contains(image, 'securityType') ? image.securityType : 'Standard'
-    imageDefinitionDescription: contains(image, 'imageDefinitionDescription') ? image.imageDefinitionDescription : ''
+    description: contains(image, 'description') ? image.description : ''
     eula: contains(image, 'eula') ? image.eula : ''
     privacyStatementUri: contains(image, 'privacyStatementUri') ? image.privacyStatementUri : ''
     releaseNoteUri: contains(image, 'releaseNoteUri') ? image.releaseNoteUri : ''
@@ -128,14 +128,14 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
   }
 }]
 
-@description('The resource ID of the deployed image gallery.')
+@sys.description('The resource ID of the deployed image gallery.')
 output resourceId string = gallery.id
 
-@description('The resource group of the deployed image gallery.')
+@sys.description('The resource group of the deployed image gallery.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed image gallery.')
+@sys.description('The name of the deployed image gallery.')
 output name string = gallery.name
 
-@description('The location the resource was deployed into.')
+@sys.description('The location the resource was deployed into.')
 output location string = gallery.location
