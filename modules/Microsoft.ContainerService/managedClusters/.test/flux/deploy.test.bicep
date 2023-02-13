@@ -90,13 +90,11 @@ module testDeployment '../../deploy.bicep' = {
             apps: {
               path: './apps/staging'
               dependsOn: [
-                {
-                  kustomizationName: 'infra'
-                }
+                'infra'
               ]
               timeoutInSeconds: 600
               syncIntervalInSeconds: 600
-              retryIntervalInSeconds: 600
+              retryIntervalInSeconds: 120
               prune: true
             }
           }

@@ -684,7 +684,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
             apps: {
               path: './apps/staging'
               prune: true
-              retryIntervalInSeconds: 600
+              retryIntervalInSeconds: 120
               syncIntervalInSeconds: 600
               timeoutInSeconds: 600
             }
@@ -772,13 +772,11 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
             "kustomizations": {
               "apps": {
                 "dependsOn": [
-                  {
-                    "kustomizationName": "infra"
-                  }
+                  "infra"
                 ],
                 "path": "./apps/staging",
                 "prune": true,
-                "retryIntervalInSeconds": 600,
+                "retryIntervalInSeconds": 120,
                 "syncIntervalInSeconds": 600,
                 "timeoutInSeconds": 600
               },
