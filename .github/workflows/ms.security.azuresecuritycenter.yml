@@ -3,6 +3,16 @@ name: 'Security - AzureSecurityCenter'
 on:
   workflow_dispatch:
     inputs:
+      staticValidation:
+        type: boolean
+        description: 'Execute static validation'
+        required: false
+        default: true
+      deploymentValidation:
+        type: boolean
+        description: 'Execute deployment validation'
+        required: false
+        default: true
       removeDeployment:
         type: boolean
         description: 'Remove deployed module'
