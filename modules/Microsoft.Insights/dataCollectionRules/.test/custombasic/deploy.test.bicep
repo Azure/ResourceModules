@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     dataCollectionEndpointId: resourceGroupResources.outputs.dataCollectionEndpointResourceId
-    dataCollectionRuleDescription: 'Collecting custom text logs without ingestion-time transformation.'
+    description: 'Collecting custom text logs without ingestion-time transformation.'
     dataFlows: [
       {
         streams: [

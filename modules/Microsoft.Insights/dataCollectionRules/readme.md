@@ -34,7 +34,7 @@ This module deploys DataCollection Rules.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dataCollectionEndpointId` | string | `''` |  | The resource ID of the data collection endpoint that this rule can be used with. |
-| `dataCollectionRuleDescription` | string | `''` |  | Description of the data collection rule. |
+| `description` | string | `''` |  | Description of the data collection rule. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string | `'Linux'` | `[Linux, Windows]` | The kind of the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -218,7 +218,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     name: '<<namePrefix>>idcrcusadv001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
-    dataCollectionRuleDescription: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
+    description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     lock: 'CanNotDelete'
@@ -335,7 +335,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     "dataCollectionEndpointId": {
       "value": "<dataCollectionEndpointId>"
     },
-    "dataCollectionRuleDescription": {
+    "description": {
       "value": "Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \"<DateTime>,<EventLevel>,<EventCode>,<Message>\", for example: \"2023-01-25T20:15:05Z,ERROR,404,Page not found\""
     },
     "enableDefaultTelemetry": {
@@ -457,7 +457,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     name: '<<namePrefix>>idcrcusbas001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
-    dataCollectionRuleDescription: 'Collecting custom text logs without ingestion-time transformation.'
+    description: 'Collecting custom text logs without ingestion-time transformation.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     lock: 'CanNotDelete'
@@ -558,7 +558,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     "dataCollectionEndpointId": {
       "value": "<dataCollectionEndpointId>"
     },
-    "dataCollectionRuleDescription": {
+    "description": {
       "value": "Collecting custom text logs without ingestion-time transformation."
     },
     "enableDefaultTelemetry": {
@@ -657,7 +657,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     name: '<<namePrefix>>idcrcusiis001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
-    dataCollectionRuleDescription: 'Collecting IIS logs.'
+    description: 'Collecting IIS logs.'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     lock: 'CanNotDelete'
@@ -737,7 +737,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     "dataCollectionEndpointId": {
       "value": "<dataCollectionEndpointId>"
     },
-    "dataCollectionRuleDescription": {
+    "description": {
       "value": "Collecting IIS logs."
     },
     "enableDefaultTelemetry": {
@@ -942,7 +942,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     }
     name: '<<namePrefix>>idcrlin001'
     // Non-required parameters
-    dataCollectionRuleDescription: 'Collecting Linux-specific performance counters and Linux Syslog'
+    description: 'Collecting Linux-specific performance counters and Linux Syslog'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Linux'
     lock: 'CanNotDelete'
@@ -1142,7 +1142,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       "value": "<<namePrefix>>idcrlin001"
     },
     // Non-required parameters
-    "dataCollectionRuleDescription": {
+    "description": {
       "value": "Collecting Linux-specific performance counters and Linux Syslog"
     },
     "enableDefaultTelemetry": {
@@ -1432,7 +1432,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
     }
     name: '<<namePrefix>>idcrwin001'
     // Non-required parameters
-    dataCollectionRuleDescription: 'Collecting Windows-specific performance counters and Windows Event Logs'
+    description: 'Collecting Windows-specific performance counters and Windows Event Logs'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
     lock: 'CanNotDelete'
@@ -1586,7 +1586,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       "value": "<<namePrefix>>idcrwin001"
     },
     // Non-required parameters
-    "dataCollectionRuleDescription": {
+    "description": {
       "value": "Collecting Windows-specific performance counters and Windows Event Logs"
     },
     "enableDefaultTelemetry": {

@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     dataCollectionEndpointId: resourceGroupResources.outputs.dataCollectionEndpointResourceId
-    dataCollectionRuleDescription: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): "<DateTime>,<EventLevel>,<EventCode>,<Message>", for example: "2023-01-25T20:15:05Z,ERROR,404,Page not found"'
+    description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): "<DateTime>,<EventLevel>,<EventCode>,<Message>", for example: "2023-01-25T20:15:05Z,ERROR,404,Page not found"'
     dataFlows: [
       {
         streams: [
