@@ -104,8 +104,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
-| `flux` | object | `{object}` |  | Settings and configurations for the flux extension. |
 | `fluxConfigurationProtectedSettings` | secureObject | `{object}` |  | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
+| `fluxExtension` | object | `{object}` |  | Settings and configurations for the flux extension. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
@@ -656,7 +656,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    flux: {
+    fluxExtension: {
       configurations: [
         {
           gitRepository: {
@@ -708,8 +708,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         'notification-controller.enabled': 'true'
         'source-controller.enabled': 'true'
       }
-      releaseTrain: 'Stable'
-      version: ''
     }
     systemAssignedIdentity: true
   }
@@ -746,7 +744,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "flux": {
+    "fluxExtension": {
       "value": {
         "configurations": [
           {
@@ -803,9 +801,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "kustomize-controller.enabled": "true",
           "notification-controller.enabled": "true",
           "source-controller.enabled": "true"
-        },
-        "releaseTrain": "Stable",
-        "version": ""
+        }
       }
     },
     "systemAssignedIdentity": {

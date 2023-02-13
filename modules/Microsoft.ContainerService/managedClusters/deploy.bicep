@@ -300,7 +300,7 @@ param diskEncryptionSetID string = ''
 param fluxConfigurationProtectedSettings object = {}
 
 @description('Optional. Settings and configurations for the flux extension.')
-param flux object = {}
+param fluxExtension object = {}
 
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
@@ -560,20 +560,20 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(flux)) {
+module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxExtension)) {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
     configurationProtectedSettings: !empty(fluxConfigurationProtectedSettings) ? fluxConfigurationProtectedSettings : {}
-    configurationSettings: contains(flux, 'configurationSettings') ? flux.configurationSettings : {}
+    configurationSettings: contains(fluxExtension, 'configurationSettings') ? fluxExtension.configurationSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     extensionType: 'microsoft.flux'
-    fluxConfigurations: flux.configurations
+    fluxConfigurations: fluxExtension.configurations
     location: location
     name: 'flux'
     releaseNamespace: 'flux-system'
-    releaseTrain: contains(flux, 'releaseTrain') ? flux.releaseTrain : 'Stable'
-    version: contains(flux, 'version') ? flux.version : ''
+    releaseTrain: contains(fluxExtension, 'releaseTrain') ? fluxExtension.releaseTrain : 'Stable'
+    version: contains(fluxExtension, 'version') ? fluxExtension.version : ''
   }
 }
 

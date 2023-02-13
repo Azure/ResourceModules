@@ -43,9 +43,7 @@ module testDeployment '../../deploy.bicep' = {
         mode: 'System'
       }
     ]
-    flux: {
-      releaseTrain: 'Stable'
-      version: ''
+    fluxExtension: {
       configurationSettings: {
         'helm-controller.enabled': 'true'
         'source-controller.enabled': 'true'
