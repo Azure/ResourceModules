@@ -13,7 +13,7 @@ This module deploys Resources Tags on a resource group scope.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/tags) |
+| `Microsoft.Resources/tags` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/tags) |
 
 ## Parameters
 
