@@ -5,11 +5,11 @@ on:
     inputs:
       workflowInput:
         type: string
-        description: 'Input from the workflow caller in Json format'
+        description: 'Input from the workflow caller in JSON format'
         required: true
       moduleTestFilePaths:
         type: string
-        description: 'List of relative path to the module test files in Json format'
+        description: 'List of relative path to the module test files in JSON format'
         required: true
       modulePath:
         type: string
