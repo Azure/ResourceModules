@@ -60,7 +60,7 @@ param certificatesToBeInstalled array = []
   'Low'
   'Spot'
 ])
-param vmPriority string = 'Regular'
+param priority string = 'Regular'
 
 @description('Optional. Specifies the eviction policy for the low priority virtual machine. Will result in \'Deallocate\' eviction policy.')
 param enableEvictionPolicy bool = false
@@ -497,9 +497,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
       id: proximityPlacementGroupResourceId
     } : null
-    priority: vmPriority
+    priority: priority
     evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
-    billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? {
+    billingProfile: !empty(priority) && !empty(maxPriceForLowPriorityVm) ? {
       maxPrice: maxPriceForLowPriorityVm
     } : null
     host: !empty(dedicatedHostId) ? {
