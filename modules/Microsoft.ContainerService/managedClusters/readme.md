@@ -104,11 +104,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
+| `flux` | object | `{object}` |  | Settings and configurations for the flux extension. |
 | `fluxConfigurationProtectedSettings` | secureObject | `{object}` |  | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
-| `fluxConfigurations` | array | `[]` |  | A list of flux configuraitons. |
-| `fluxConfigurationSettings` | object | `{object}` |  | Configuration settings, as name-value pairs for configuring this extension. |
-| `fluxReleaseTrain` | string | `'Stable'` |  | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
-| `fluxVersion` | string | `''` |  | Version of the extension for this extension, if it is "pinned" to a specific version. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
@@ -659,56 +656,60 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     ]
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fluxConfigurations: [
-      {
-        gitRepository: {
-          repositoryRef: {
-            branch: 'main'
+    flux: {
+      configurations: [
+        {
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/mspnp/aks-baseline'
           }
-          sshKnownHosts: ''
-          syncIntervalInSeconds: 300
-          timeoutInSeconds: 180
-          url: 'https://github.com/mspnp/aks-baseline'
+          namespace: 'flux-system'
         }
-        namespace: 'flux-system'
+        {
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+          }
+          kustomizations: {
+            apps: {
+              path: './apps/staging'
+              prune: true
+              retryIntervalInSeconds: 600
+              syncIntervalInSeconds: 600
+              timeoutInSeconds: 600
+            }
+            infra: {
+              dependsOn: []
+              path: './infrastructure'
+              prune: true
+              syncIntervalInSeconds: 600
+              timeoutInSeconds: 600
+              validation: 'none'
+            }
+          }
+          namespace: 'flux-system-helm'
+        }
+      ]
+      configurationSettings: {
+        'helm-controller.enabled': 'true'
+        'image-automation-controller.enabled': 'false'
+        'image-reflector-controller.enabled': 'false'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'true'
+        'source-controller.enabled': 'true'
       }
-      {
-        gitRepository: {
-          repositoryRef: {
-            branch: 'main'
-          }
-          sshKnownHosts: ''
-          syncIntervalInSeconds: 300
-          timeoutInSeconds: 180
-          url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
-        }
-        kustomizations: {
-          apps: {
-            path: './apps/staging'
-            prune: true
-            retryIntervalInSeconds: 600
-            syncIntervalInSeconds: 600
-            timeoutInSeconds: 600
-          }
-          infra: {
-            dependsOn: []
-            path: './infrastructure'
-            prune: true
-            syncIntervalInSeconds: 600
-            timeoutInSeconds: 600
-            validation: 'none'
-          }
-        }
-        namespace: 'flux-system-helm'
-      }
-    ]
-    fluxConfigurationSettings: {
-      'helm-controller.enabled': 'true'
-      'image-automation-controller.enabled': 'false'
-      'image-reflector-controller.enabled': 'false'
-      'kustomize-controller.enabled': 'true'
-      'notification-controller.enabled': 'true'
-      'source-controller.enabled': 'true'
+      releaseTrain: 'Stable'
+      version: ''
     }
     systemAssignedIdentity: true
   }
@@ -745,64 +746,66 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "fluxConfigurations": {
-      "value": [
-        {
-          "gitRepository": {
-            "repositoryRef": {
-              "branch": "main"
-            },
-            "sshKnownHosts": "",
-            "syncIntervalInSeconds": 300,
-            "timeoutInSeconds": 180,
-            "url": "https://github.com/mspnp/aks-baseline"
-          },
-          "namespace": "flux-system"
-        },
-        {
-          "gitRepository": {
-            "repositoryRef": {
-              "branch": "main"
-            },
-            "sshKnownHosts": "",
-            "syncIntervalInSeconds": 300,
-            "timeoutInSeconds": 180,
-            "url": "https://github.com/Azure/gitops-flux2-kustomize-helm-mt"
-          },
-          "kustomizations": {
-            "apps": {
-              "dependsOn": [
-                {
-                  "kustomizationName": "infra"
-                }
-              ],
-              "path": "./apps/staging",
-              "prune": true,
-              "retryIntervalInSeconds": 600,
-              "syncIntervalInSeconds": 600,
-              "timeoutInSeconds": 600
-            },
-            "infra": {
-              "dependsOn": [],
-              "path": "./infrastructure",
-              "prune": true,
-              "syncIntervalInSeconds": 600,
-              "timeoutInSeconds": 600,
-              "validation": "none"
-            }
-          },
-          "namespace": "flux-system-helm"
-        }
-      ]
-    },
-    "fluxConfigurationSettings": {
+    "flux": {
       "value": {
-        "helm-controller.enabled": "true",
-        "image-automation-controller.enabled": "false",
-        "image-reflector-controller.enabled": "false",
-        "kustomize-controller.enabled": "true",
-        "notification-controller.enabled": "true",
-        "source-controller.enabled": "true"
+        "configurations": [
+          {
+            "gitRepository": {
+              "repositoryRef": {
+                "branch": "main"
+              },
+              "sshKnownHosts": "",
+              "syncIntervalInSeconds": 300,
+              "timeoutInSeconds": 180,
+              "url": "https://github.com/mspnp/aks-baseline"
+            },
+            "namespace": "flux-system"
+          },
+          {
+            "gitRepository": {
+              "repositoryRef": {
+                "branch": "main"
+              },
+              "sshKnownHosts": "",
+              "syncIntervalInSeconds": 300,
+              "timeoutInSeconds": 180,
+              "url": "https://github.com/Azure/gitops-flux2-kustomize-helm-mt"
+            },
+            "kustomizations": {
+              "apps": {
+                "dependsOn": [
+                  {
+                    "kustomizationName": "infra"
+                  }
+                ],
+                "path": "./apps/staging",
+                "prune": true,
+                "retryIntervalInSeconds": 600,
+                "syncIntervalInSeconds": 600,
+                "timeoutInSeconds": 600
+              },
+              "infra": {
+                "dependsOn": [],
+                "path": "./infrastructure",
+                "prune": true,
+                "syncIntervalInSeconds": 600,
+                "timeoutInSeconds": 600,
+                "validation": "none"
+              }
+            },
+            "namespace": "flux-system-helm"
+          }
+        ],
+        "configurationSettings": {
+          "helm-controller.enabled": "true",
+          "image-automation-controller.enabled": "false",
+          "image-reflector-controller.enabled": "false",
+          "kustomize-controller.enabled": "true",
+          "notification-controller.enabled": "true",
+          "source-controller.enabled": "true"
+        },
+        "releaseTrain": "Stable",
+        "version": ""
       }
     },
     "systemAssignedIdentity": {

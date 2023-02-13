@@ -295,21 +295,13 @@ param tags object = {}
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
-@description('Optional. ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true".')
-param fluxReleaseTrain string = 'Stable'
-
-@description('Optional. Version of the extension for this extension, if it is "pinned" to a specific version.')
-param fluxVersion string = ''
-
 @description('Optional. Configuration settings that are sensitive, as name-value pairs for configuring this extension.')
 @secure()
 param fluxConfigurationProtectedSettings object = {}
 
-@description('Optional. Configuration settings, as name-value pairs for configuring this extension.')
-param fluxConfigurationSettings object = {}
+@description('Optional. Settings and configurations for the flux extension.')
+param flux object = {}
 
-@description('Optional. A list of flux configuraitons.')
-param fluxConfigurations array = []
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
   'allLogs'
@@ -568,20 +560,20 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxConfigurations)) {
+module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(flux)) {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name
     configurationProtectedSettings: !empty(fluxConfigurationProtectedSettings) ? fluxConfigurationProtectedSettings : {}
-    configurationSettings: !empty(fluxConfigurationSettings) ? fluxConfigurationSettings : {}
+    configurationSettings: contains(flux, 'configurationSettings') ? flux.configurationSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     extensionType: 'microsoft.flux'
-    fluxConfigurations: fluxConfigurations
+    fluxConfigurations: flux.configurations
     location: location
     name: 'flux'
     releaseNamespace: 'flux-system'
-    releaseTrain: !empty(fluxReleaseTrain) ? fluxReleaseTrain : 'Stable'
-    version: !empty(fluxVersion) ? fluxVersion : ''
+    releaseTrain: contains(flux, 'releaseTrain') ? flux.releaseTrain : 'Stable'
+    version: contains(flux, 'version') ? flux.version : ''
   }
 }
 
