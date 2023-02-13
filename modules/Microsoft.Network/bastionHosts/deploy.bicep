@@ -158,9 +158,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(publicIPR
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
     diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
-      'DDoSProtectionNotifications'
-      'DDoSMitigationFlowLogs'
-      'DDoSMitigationReports'
+      'allLogs'
     ]
     diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? publicIPAddressObject.diagnosticMetricsToEnable : [
       'AllMetrics'

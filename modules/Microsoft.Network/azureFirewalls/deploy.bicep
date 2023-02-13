@@ -215,14 +215,8 @@ module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' 
     ]) : [
       'AllMetrics'
     ]
-    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogCategoriesToEnable)) ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
-      'DDoSProtectionNotifications'
-      'DDoSMitigationFlowLogs'
-      'DDoSMitigationReports'
-    ]) : [
-      'DDoSProtectionNotifications'
-      'DDoSMitigationFlowLogs'
-      'DDoSMitigationReports'
+    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
+      'allLogs'
     ]
     location: location
     diagnosticStorageAccountId: diagnosticStorageAccountId
