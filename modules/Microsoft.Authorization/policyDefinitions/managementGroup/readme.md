@@ -13,7 +13,7 @@ With this module you can create policy definitions on a management group level.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
+| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
 
 ## Parameters
 

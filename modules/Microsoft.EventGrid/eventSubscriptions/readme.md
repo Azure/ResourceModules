@@ -14,7 +14,7 @@ This module deploys EventGrid EventSubscriptions.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventGrid/eventSubscriptions` | [2022-06-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2022-06-15/eventSubscriptions) |
+| `Microsoft.EventGrid/eventSubscriptions` | [2022-06-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2022-06-15/eventSubscriptions) |
 
 ## Parameters
 

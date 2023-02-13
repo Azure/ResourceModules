@@ -13,7 +13,7 @@ This module deploys a Service Fabric Cluster Application Type.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
+| `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
 
 ## Parameters
 

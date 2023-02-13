@@ -31,7 +31,7 @@ The Domain Services module pipeline is expected to fail in our development/valid
 
 Therefore, the module was manually tested in a dedicated environment.
 
-For the general prerequisites, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
+For the general prerequisites, please refer to the [official docs](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
 ## Microsoft.Management/managementGroups
 

@@ -12,7 +12,7 @@ Since tty is not supported within a pipelune run, az devops login is using the t
 - Azure CLI extension devops 0.18.0
 - Repository for which the pipeline needs to be configured.
 - The '<ProjectName>' Build Service needs 'Edit build pipeline' permissions
-Reference: https://docs.microsoft.com/en-us/azure/devops/pipelines/policies/permissions?view=azure-devops#pipeline-permissions
+Reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/policies/permissions?view=azure-devops#pipeline-permissions
 
 The script can be run as often as you want without breaking anything. Pipelines that already exist will be skipped.
 
@@ -37,7 +37,7 @@ It is recommended to create the service connection using oAuth.
 .PARAMETER AzureDevOpsPAT
 Required. The access token with appropriate permissions to create Azure Pipelines.
 Usually the System.AccessToken from an Azure Pipeline instance run has sufficient permissions as well.
-Reference: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml#how-do-i-determine-the-job-authorization-scope-of-my-yaml-pipeline
+Reference: https://learn.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml#how-do-i-determine-the-job-authorization-scope-of-my-yaml-pipeline
 Needs at least the permissions:
 - Agent Pool:           Read
 - Build:                Read & execute

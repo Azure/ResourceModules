@@ -14,7 +14,7 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-10-01/workspaces/computes) |
+| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-10-01/workspaces/computes) |
 
 ## Parameters
 
@@ -61,7 +61,7 @@ Will be ignored in case a resource ID is provided.
 ```json
 "properties": {
     "value": {
-        // See https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
+        // See https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
     }
 }
 ```
@@ -74,7 +74,7 @@ Will be ignored in case a resource ID is provided.
 
 ```bicep
 properties: {
-    // See https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
+    // See https://learn.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
 }
 ```
 

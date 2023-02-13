@@ -193,7 +193,7 @@ Modules provided in this library have telemetry enabled by default. To learn mor
 [Wiki]: <https://github.com/Azure/Modules/wiki>
 [ProjectSetup]: <https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions>
 [GitHubDocs]: <https://docs.github.com/>
-[AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
+[AzureDevOpsDocs]: <https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops>
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png
@@ -204,14 +204,14 @@ Modules provided in this library have telemetry enabled by default. To learn mor
 [Az]: <https://img.shields.io/powershellgallery/v/Az.svg?style=flat-square&label=Az>
 [AzGallery]: <https://www.powershellgallery.com/packages/Az/>
 [PowerShellCore]: <https://github.com/PowerShell/PowerShell/releases/latest>
-[InstallAzPs]: <https://docs.microsoft.com/en-us/powershell/azure/install-az-ps>
-[AzureResourceManager]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
-[TemplateSpecs]: <https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>
+[InstallAzPs]: <https://learn.microsoft.com/en-us/powershell/azure/install-az-ps>
+[AzureResourceManager]: <https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview>
+[TemplateSpecs]: <https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs>
 
 [ESLZ]: <https://github.com/Azure/Enterprise-Scale>
-[AzureSecurityBenchmark]: <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/security-governance-and-compliance#azure-security-benchmark>
+[AzureSecurityBenchmark]: <https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/enterprise-scale/security-governance-and-compliance#azure-security-benchmark>
 [ESLZWorkloadTemplatesLibrary]: <https://github.com/Azure/Enterprise-Scale/tree/main/workloads>
 
 <!-- Docs -->
-[MicrosoftAzureDocs]: <https://docs.microsoft.com/en-us/azure/>
-[PowerShellDocs]: <https://docs.microsoft.com/en-us/powershell/>
+[MicrosoftAzureDocs]: <https://learn.microsoft.com/en-us/azure/>
+[PowerShellDocs]: <https://learn.microsoft.com/en-us/powershell/>
