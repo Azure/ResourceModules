@@ -23,6 +23,7 @@ This template deploys a log analytics workspace.
 | `Microsoft.OperationalInsights/workspaces/linkedStorageAccounts` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedStorageAccounts) |
 | `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
 | `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
+| `Microsoft.OperationalInsights/workspaces/tables` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2022-10-01/workspaces/tables) |
 | `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
 
 ## Parameters
@@ -66,6 +67,7 @@ This template deploys a log analytics workspace.
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
 | `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
+| `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
@@ -615,6 +617,58 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         ]
       }
     ]
+    tables: [
+      {
+        name: 'CustomTableBasic_CL'
+        retentionInDays: 60
+        schema: {
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+          name: 'CustomTableBasic_CL'
+        }
+        totalRetentionInDays: 90
+      }
+      {
+        name: 'CustomTableAdvanced_CL'
+        schema: {
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventTime'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventLevel'
+              type: 'String'
+            }
+            {
+              name: 'EventCode'
+              type: 'Int'
+            }
+            {
+              name: 'Message'
+              type: 'String'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+          name: 'CustomTableAdvanced_CL'
+        }
+      }
+    ]
     useResourcePermissions: true
   }
 }
@@ -804,6 +858,60 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
             "WADServiceFabric*EventTable",
             "WADWindowsEventLogsTable"
           ]
+        }
+      ]
+    },
+    "tables": {
+      "value": [
+        {
+          "name": "CustomTableBasic_CL",
+          "retentionInDays": 60,
+          "schema": {
+            "columns": [
+              {
+                "name": "TimeGenerated",
+                "type": "DateTime"
+              },
+              {
+                "name": "RawData",
+                "type": "String"
+              }
+            ],
+            "name": "CustomTableBasic_CL"
+          },
+          "totalRetentionInDays": 90
+        },
+        {
+          "name": "CustomTableAdvanced_CL",
+          "schema": {
+            "columns": [
+              {
+                "name": "TimeGenerated",
+                "type": "DateTime"
+              },
+              {
+                "name": "EventTime",
+                "type": "DateTime"
+              },
+              {
+                "name": "EventLevel",
+                "type": "String"
+              },
+              {
+                "name": "EventCode",
+                "type": "Int"
+              },
+              {
+                "name": "Message",
+                "type": "String"
+              },
+              {
+                "name": "RawData",
+                "type": "String"
+              }
+            ],
+            "name": "CustomTableAdvanced_CL"
+          }
         }
       ]
     },

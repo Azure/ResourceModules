@@ -199,5 +199,57 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     useResourcePermissions: true
+    tables: [
+      {
+        name: 'CustomTableBasic_CL'
+        schema: {
+          name: 'CustomTableBasic_CL'
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+        }
+        totalRetentionInDays: 90
+        retentionInDays: 60
+      }
+      {
+        name: 'CustomTableAdvanced_CL'
+        schema: {
+          name: 'CustomTableAdvanced_CL'
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventTime'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventLevel'
+              type: 'String'
+            }
+            {
+              name: 'EventCode'
+              type: 'Int'
+            }
+            {
+              name: 'Message'
+              type: 'String'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+        }
+      }
+    ]
   }
 }
