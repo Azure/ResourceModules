@@ -13,7 +13,7 @@ This module deploys a private endpoint private DNS zone group
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 

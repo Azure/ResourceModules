@@ -14,6 +14,7 @@ param location string = resourceGroup().location
 param bucket object = {}
 
 @description('Optional. Key-value pairs of protected configuration settings for the configuration.')
+@secure()
 param configurationProtectedSettings object = {}
 
 @description('Optional. Parameters to reconcile to the GitRepository source kind type.')

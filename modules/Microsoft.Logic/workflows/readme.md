@@ -14,10 +14,10 @@ This module deploys a Logic App resource.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Logic/workflows` | [2019-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Logic/workflows` | [2019-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows) |
 
 ## Parameters
 
@@ -163,7 +163,7 @@ This module deploys a Logic App resource.
 
 ### Parameter Usage `workflow*`
 
-- To use the below parameters, see the following [documentation.](https://docs.microsoft.com/en-us/azure/logic-apps/logic-apps-workflow-definition-language)
+- To use the below parameters, see the following [documentation.](https://learn.microsoft.com/en-us/azure/logic-apps/logic-apps-workflow-definition-language)
   - `workflowActions`
   - `workflowOutputs`
   - `workflowParameters`

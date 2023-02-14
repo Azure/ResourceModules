@@ -13,7 +13,7 @@ This module deploys RecoveryServices Vaults ReplicationAlertSettings.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationAlertSettings) |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationAlertSettings) |
 
 ## Parameters
 
