@@ -10,8 +10,8 @@ on:
 jobs:
   manage-issues:
     runs-on: ubuntu-latest
-    # permissions:
-    #   issues: write
+    permissions:
+      issues: write
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
@@ -36,5 +36,3 @@ jobs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-IssueForWorkflow @functionInput -Verbose # -WhatIf
-        # env:
-        #   GH_TOKEN: ${{ github.token }}
