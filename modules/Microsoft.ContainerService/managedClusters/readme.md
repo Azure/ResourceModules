@@ -477,6 +477,59 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     diskEncryptionSetID: '<diskEncryptionSetID>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxExtension: {
+      configurations: [
+        {
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/mspnp/aks-baseline'
+          }
+          namespace: 'flux-system'
+        }
+        {
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+          }
+          kustomizations: {
+            apps: {
+              path: './apps/staging'
+              prune: true
+              retryIntervalInSeconds: 120
+              syncIntervalInSeconds: 600
+              timeoutInSeconds: 600
+            }
+            infra: {
+              dependsOn: []
+              path: './infrastructure'
+              prune: true
+              syncIntervalInSeconds: 600
+              timeoutInSeconds: 600
+              validation: 'none'
+            }
+          }
+          namespace: 'flux-system-helm'
+        }
+      ]
+      configurationSettings: {
+        'helm-controller.enabled': 'true'
+        'image-automation-controller.enabled': 'false'
+        'image-reflector-controller.enabled': 'false'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'true'
+        'source-controller.enabled': 'true'
+      }
+    }
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -610,140 +663,6 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "systemAssignedIdentity": {
-      "value": true
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Flux</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmmf2'
-  params: {
-    // Required parameters
-    name: 'csmmf2001'
-    primaryAgentPoolProfile: [
-      {
-        count: 1
-        mode: 'System'
-        name: 'systempool'
-        vmSize: 'Standard_DS2_v2'
-      }
-    ]
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fluxExtension: {
-      configurations: [
-        {
-          gitRepository: {
-            repositoryRef: {
-              branch: 'main'
-            }
-            sshKnownHosts: ''
-            syncIntervalInSeconds: 300
-            timeoutInSeconds: 180
-            url: 'https://github.com/mspnp/aks-baseline'
-          }
-          namespace: 'flux-system'
-        }
-        {
-          gitRepository: {
-            repositoryRef: {
-              branch: 'main'
-            }
-            sshKnownHosts: ''
-            syncIntervalInSeconds: 300
-            timeoutInSeconds: 180
-            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
-          }
-          kustomizations: {
-            apps: {
-              path: './apps/staging'
-              prune: true
-              retryIntervalInSeconds: 120
-              syncIntervalInSeconds: 600
-              timeoutInSeconds: 600
-            }
-            infra: {
-              dependsOn: []
-              path: './infrastructure'
-              prune: true
-              syncIntervalInSeconds: 600
-              timeoutInSeconds: 600
-              validation: 'none'
-            }
-          }
-          namespace: 'flux-system-helm'
-        }
-      ]
-      configurationSettings: {
-        'helm-controller.enabled': 'true'
-        'image-automation-controller.enabled': 'false'
-        'image-reflector-controller.enabled': 'false'
-        'kustomize-controller.enabled': 'true'
-        'notification-controller.enabled': 'true'
-        'source-controller.enabled': 'true'
-      }
-    }
-    systemAssignedIdentity: true
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "csmmf2001"
-    },
-    "primaryAgentPoolProfile": {
-      "value": [
-        {
-          "count": 1,
-          "mode": "System",
-          "name": "systempool",
-          "vmSize": "Standard_DS2_v2"
-        }
-      ]
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "fluxExtension": {
       "value": {
         "configurations": [
@@ -802,6 +721,20 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
       }
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "systemAssignedIdentity": {
       "value": true
     }
@@ -812,7 +745,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 </details>
 <p>
 
-<h3>Example 3: Kubenet</h3>
+<h3>Example 2: Kubenet</h3>
 
 <details>
 
@@ -1053,7 +986,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 </details>
 <p>
 
-<h3>Example 4: Min</h3>
+<h3>Example 3: Min</h3>
 
 <details>
 
