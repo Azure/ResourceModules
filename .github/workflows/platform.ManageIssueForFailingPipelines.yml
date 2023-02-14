@@ -1,9 +1,9 @@
 name: '.Platform: Manage issues for failing pipelines'
 
 on:
-  push:
-    branches:
-      - users/erikag/gh-token
+  # push:
+  #   branches:
+  #     - users/erikag/gh-token
   schedule:
     - cron: '30 5 * * *' # Every day at 5:30 am
 
@@ -37,5 +37,3 @@ jobs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-IssueForWorkflow @functionInput -Verbose # -WhatIf
-        # env:
-        #   GH_TOKEN: ${{ github.token }}
