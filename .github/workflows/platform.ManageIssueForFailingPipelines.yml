@@ -18,7 +18,8 @@ jobs:
         with:
           fetch-depth: 0
       - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         name: Manage issues
         shell: pwsh
         run: |
@@ -36,3 +37,5 @@ jobs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-IssueForWorkflow @functionInput -Verbose # -WhatIf
+        # env:
+        #   GH_TOKEN: ${{ github.token }}
