@@ -13,7 +13,7 @@ This module deploys PolicyInsights Remediations ManagementGroup.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.PolicyInsights/remediations` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.PolicyInsights/2021-10-01/remediations) |
+| `Microsoft.PolicyInsights/remediations` | [2021-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.PolicyInsights/2021-10-01/remediations) |
 
 ## Parameters
 

@@ -8,7 +8,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Required. Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).')
-param endpointProperties object
+param properties object
 
 @description('Optional. Endpoint tags.')
 param tags object = {}
@@ -38,11 +38,11 @@ resource endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = {
   parent: profile
   name: name
   location: location
-  properties: endpointProperties
+  properties: properties
   tags: tags
 }
 
-module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperties.origins: {
+module endpoint_origins 'origins/deploy.bicep' = [for origin in properties.origins: {
   name: '${name}-origins-${origin.name}'
   params: {
     profileName: profile.name
