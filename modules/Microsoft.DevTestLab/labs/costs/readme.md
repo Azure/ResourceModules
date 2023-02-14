@@ -15,7 +15,7 @@ Manage lab costs by setting a spending target that can be viewed in the Monthly 
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DevTestLab/labs/costs` | [2018-09-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/costs) |
+| `Microsoft.DevTestLab/labs/costs` | [2018-09-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DevTestLab/2018-09-15/labs/costs) |
 
 ## Parameters
 

@@ -13,7 +13,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
 
 ## Parameters
 
@@ -38,8 +38,8 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | `enableAutoScaling` | bool | `False` |  | Whether to enable auto-scaler. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableEncryptionAtHost` | bool | `False` |  | This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption. For security reasons, this setting should be enabled. |
-| `enableFIPS` | bool | `False` |  | See Add a FIPS-enabled node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details. |
-| `enableNodePublicIP` | bool | `False` |  | Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). |
+| `enableFIPS` | bool | `False` |  | See Add a FIPS-enabled node pool (https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details. |
+| `enableNodePublicIP` | bool | `False` |  | Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). |
 | `enableUltraSSD` | bool | `False` |  | Whether to enable UltraSSD. |
 | `gpuInstanceProfile` | string | `''` | `['', MIG1g, MIG2g, MIG3g, MIG4g, MIG7g]` | GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. |
 | `kubeletDiskType` | string | `''` |  | Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. |
@@ -51,18 +51,18 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | `nodeLabels` | object | `{object}` |  | The node labels to be persisted across all nodes in agent pool. |
 | `nodePublicIpPrefixId` | string | `''` |  | ResourceId of the node PublicIPPrefix. |
 | `nodeTaints` | array | `[]` |  | The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule. |
-| `orchestratorVersion` | string | `''` |  | As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool). |
+| `orchestratorVersion` | string | `''` |  | As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool). |
 | `osDiskSizeGB` | int | `0` |  | OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified. |
-| `osDiskType` | string | `''` | `['', Ephemeral, Managed]` | The default is "Ephemeral" if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to "Managed". May not be changed after creation. For more information see Ephemeral OS (https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#ephemeral-os). |
+| `osDiskType` | string | `''` | `['', Ephemeral, Managed]` | The default is "Ephemeral" if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to "Managed". May not be changed after creation. For more information see Ephemeral OS (https://learn.microsoft.com/en-us/azure/aks/cluster-configuration#ephemeral-os). |
 | `osSku` | string | `''` | `['', CBLMariner, Ubuntu]` | Specifies an OS SKU. This value must not be specified if OSType is Windows. |
 | `osType` | string | `'Linux'` | `[Linux, Windows]` | The operating system type. The default is Linux. |
 | `podSubnetId` | string | `''` |  | Subnet ID for the pod IPs. If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}. |
 | `proximityPlacementGroupId` | string | `''` |  | The ID for the Proximity Placement Group. |
-| `scaleDownMode` | string | `'Delete'` | `[Deallocate, Delete]` | Describes how VMs are added to or removed from Agent Pools. See billing states (https://docs.microsoft.com/en-us/azure/virtual-machines/states-billing). |
+| `scaleDownMode` | string | `'Delete'` | `[Deallocate, Delete]` | Describes how VMs are added to or removed from Agent Pools. See billing states (https://learn.microsoft.com/en-us/azure/virtual-machines/states-billing). |
 | `scaleSetEvictionPolicy` | string | `'Delete'` | `[Deallocate, Delete]` | The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more information about eviction see spot VMs. |
 | `scaleSetPriority` | string | `''` | `['', Regular, Spot]` | The Virtual Machine Scale Set priority. |
 | `sourceResourceId` | string | `''` |  | This is the ARM ID of the source object to be used to create the target object. |
-| `spotMaxPrice` | int | `-1` |  | Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://docs.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing). |
+| `spotMaxPrice` | int | `-1` |  | Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing). |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `type` | string | `''` |  | The type of Agent Pool. |
 | `vmSize` | string | `'Standard_D2s_v3'` |  | VM size. VM size availability varies by region. If a node contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on restricted VM sizes, see: /azure/aks/quotas-skus-regions. |

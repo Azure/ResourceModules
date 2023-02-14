@@ -13,7 +13,7 @@ This module deploys a Custom Function App into a Static Site using the linkedBac
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/staticSites/linkedBackends` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/staticSites/linkedBackends) |
+| `Microsoft.Web/staticSites/linkedBackends` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/staticSites/linkedBackends) |
 
 ## Parameters
 

@@ -59,7 +59,7 @@ module testDeployment '../../deploy.bicep' = {
     zones: [
       '1'
     ]
-    proximityPlacementGroupType: 'Standard'
+    type: 'Standard'
     tags: {
       TagA: 'Would you kindly...'
       TagB: 'Tags for sale'

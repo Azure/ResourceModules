@@ -2,7 +2,7 @@
 
 ## Microsoft Support Policy
 
-If issues are encountered when deploying these Bicep modules users will be able to engage Microsoft support via their usual channels. Please provide correlation IDs where possible when contacting support to be able to investigate the issue effectively and in a timely fashion. For instructions on how to get deployments and correlation ID, please follow this link [here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history?tabs=azure-portal#get-deployments-and-correlation-id).
+If issues are encountered when deploying these Bicep modules users will be able to engage Microsoft support via their usual channels. Please provide correlation IDs where possible when contacting support to be able to investigate the issue effectively and in a timely fashion. For instructions on how to get deployments and correlation ID, please follow this link [here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deployment-history?tabs=azure-portal#get-deployments-and-correlation-id).
 
 Following list of issues are within the scope of Microsoft support:
 
@@ -28,7 +28,7 @@ For help and questions about using this project, please submit a GitHub issue wi
 <!-- Local -->
 [ProjectSetup]: <https://docs.github.com/en/communities/>
 [GitHubDocs]: <https://docs.github.com/>
-[AzureDevOpsDocs]: <https://docs.microsoft.com/en-us/azure/devops/?view=azure-devops>
+[AzureDevOpsDocs]: <https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops>
 [GitHubIssues]: <https://github.com/Azure/Modules/issues>
 [Contributing]: CONTRIBUTING.md
 [AzureIcon]: docs/media/MicrosoftAzure-32px.png

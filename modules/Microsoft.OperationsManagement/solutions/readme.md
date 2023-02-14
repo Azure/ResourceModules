@@ -14,7 +14,7 @@ This module deploys OperationsManagement Solutions.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
+| `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
 
 ## Parameters
 
