@@ -132,6 +132,7 @@ param sslPolicyCipherSuites array = [
   'TLSv1_0'
   'TLSv1_1'
   'TLSv1_2'
+  'TLSv1_3'
 ])
 param sslPolicyMinProtocolVersion string = 'TLSv1_2'
 
@@ -140,6 +141,8 @@ param sslPolicyMinProtocolVersion string = 'TLSv1_2'
   'AppGwSslPolicy20150501'
   'AppGwSslPolicy20170401'
   'AppGwSslPolicy20170401S'
+  'AppGwSslPolicy20220101'
+  'AppGwSslPolicy20220101S'
   ''
 ])
 param sslPolicyName string = ''
@@ -147,6 +150,7 @@ param sslPolicyName string = ''
 @description('Optional. Type of Ssl Policy.')
 @allowed([
   'Custom'
+  'CustomV2'
   'Predefined'
 ])
 param sslPolicyType string = 'Custom'
@@ -274,7 +278,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -326,7 +330,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
     }, (enableFips ? {
       enableFips: enableFips
     } : {}),
-    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration }: {})
+    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration } : {})
   )
   zones: zones
 }
