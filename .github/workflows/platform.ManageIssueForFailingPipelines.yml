@@ -10,8 +10,8 @@ on:
 jobs:
   manage-issues:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
+    # permissions:
+    #   issues: write
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v3
