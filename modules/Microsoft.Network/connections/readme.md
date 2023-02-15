@@ -338,7 +338,6 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
       id: '<id>'
     }
     // Non-required parameters
-    dpdTimeoutSeconds: 30
     enableBgp: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -373,9 +372,6 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
       }
     },
     // Non-required parameters
-    "dpdTimeoutSeconds": {
-      "value": 30
-    },
     "enableBgp": {
       "value": false
     },

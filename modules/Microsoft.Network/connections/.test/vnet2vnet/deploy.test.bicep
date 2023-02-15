@@ -65,6 +65,5 @@ module testDeployment '../../deploy.bicep' = {
     }
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     vpnSharedKey: password
-    dpdTimeoutSeconds: 30
   }
 }
