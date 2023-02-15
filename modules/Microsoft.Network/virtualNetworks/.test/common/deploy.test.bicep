@@ -32,9 +32,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-kekoz-msi-${serviceShort}'
-    routeTableName: 'dep-kekoz-rt-${serviceShort}'
-    networkSecurityGroupName: 'dep-kekoz-nsg-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
+    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
   }
 }
 
@@ -44,10 +44,10 @@ module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnost
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'depkekozdiasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-kekoz-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-kekoz-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-kekoz-evhns-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
     location: location
   }
 }
@@ -61,7 +61,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'kekoz${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     addressPrefixes: [
       '10.0.0.0/16'
     ]
@@ -92,7 +92,7 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         addressPrefix: '10.0.0.0/24'
-        name: 'kekoz-az-subnet-x-001'
+        name: '<<namePrefix>>-az-subnet-x-001'
         networkSecurityGroupId: nestedDependencies.outputs.networkSecurityGroupResourceId
         roleAssignments: [
           {
@@ -123,11 +123,11 @@ module testDeployment '../../deploy.bicep' = {
             }
           }
         ]
-        name: 'kekoz-az-subnet-x-002'
+        name: '<<namePrefix>>-az-subnet-x-002'
       }
       {
         addressPrefix: '10.0.6.0/24'
-        name: 'kekoz-az-subnet-x-003'
+        name: '<<namePrefix>>-az-subnet-x-003'
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
