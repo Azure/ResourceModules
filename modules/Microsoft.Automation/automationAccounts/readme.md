@@ -469,7 +469,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         description: 'Test runbook'
         name: 'TestRunbook'
-        runbookType: 'PowerShell'
+        type: 'PowerShell'
         uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
         version: '1.0.0.0'
       }
@@ -686,7 +686,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         {
           "description": "Test runbook",
           "name": "TestRunbook",
-          "runbookType": "PowerShell",
+          "type": "PowerShell",
           "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
           "version": "1.0.0.0"
         }

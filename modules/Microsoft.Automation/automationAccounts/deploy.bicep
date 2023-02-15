@@ -228,7 +228,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     name: schedule.name
     automationAccountName: automationAccount.name
     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
-    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    description: contains(schedule, 'description') ? schedule.description : ''
     expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
     frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
     interval: contains(schedule, 'interval') ? schedule.interval : 0
