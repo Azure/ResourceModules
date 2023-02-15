@@ -56,7 +56,7 @@ module testDeployment '../../deploy.bicep' = {
     deviceProperties: {
       linkSpeedInMbps: 0
     }
-    vpnSiteLinks: [
+    links: [
       {
         name: '<<namePrefix>>-vSite-${serviceShort}'
         properties: {

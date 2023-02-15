@@ -32,7 +32,7 @@ param o365Policy object = {}
 param enableDefaultTelemetry bool = true
 
 @description('Optional. List of all VPN site links.')
-param vpnSiteLinks array = []
+param links array = []
 
 @allowed([
   ''
@@ -73,7 +73,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-08-01' = {
     virtualWan: {
       id: virtualWanId
     }
-    vpnSiteLinks: !empty(vpnSiteLinks) ? vpnSiteLinks : null
+    vpnSiteLinks: !empty(links) ? links : null
   }
 }
 

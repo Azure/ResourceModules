@@ -42,12 +42,12 @@ This module deploys a VPN Site.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
+| `links` | array | `[]` |  | List of all VPN site links. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `o365Policy` | object | `{object}` |  | The Office365 breakout policy. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `vpnSiteLinks` | array | `[]` |  | List of all VPN site links. |
 
 
 ### Parameter Usage `o365Policy`
@@ -353,28 +353,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       linkSpeedInMbps: 0
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    lock: 'CanNotDelete'
-    o365Policy: {
-      breakOutCategories: {
-        allow: true
-        default: true
-        optimize: true
-      }
-    }
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      tagA: 'valueA'
-      tagB: 'valueB'
-    }
-    vpnSiteLinks: [
+    links: [
       {
         name: '<<namePrefix>>-vSite-nvscom'
         properties: {
@@ -404,6 +383,27 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         }
       }
     ]
+    lock: 'CanNotDelete'
+    o365Policy: {
+      breakOutCategories: {
+        allow: true
+        default: true
+        optimize: true
+      }
+    }
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      tagA: 'valueA'
+      tagB: 'valueB'
+    }
   }
 }
 ```
@@ -436,36 +436,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "o365Policy": {
-      "value": {
-        "breakOutCategories": {
-          "allow": true,
-          "default": true,
-          "optimize": true
-        }
-      }
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "tagA": "valueA",
-        "tagB": "valueB"
-      }
-    },
-    "vpnSiteLinks": {
+    "links": {
       "value": [
         {
           "name": "<<namePrefix>>-vSite-nvscom",
@@ -496,6 +467,35 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           }
         }
       ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "o365Policy": {
+      "value": {
+        "breakOutCategories": {
+          "allow": true,
+          "default": true,
+          "optimize": true
+        }
+      }
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "tagA": "valueA",
+        "tagB": "valueB"
+      }
     }
   }
 }
