@@ -17,7 +17,7 @@ param dnsServers array = []
 param ddosProtectionPlanId string = ''
 
 @description('Optional. Virtual Network Peerings configurations.')
-param virtualNetworkPeerings array = []
+param peerings array = []
 
 @description('Optional. Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property.')
 param vnetEncryption bool = false
@@ -213,7 +213,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
 }]
 
 // Local to Remote peering
-module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: {
+module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in peerings: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
   params: {
     localVnetName: virtualNetwork.name
@@ -229,11 +229,11 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
 }]
 
 // Remote to local peering (reverse)
-module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
+module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in peerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
   scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[2], split(peering.remoteVirtualNetworkId, '/')[4])
   params: {
-    localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))
+    localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))!
     remoteVirtualNetworkId: virtualNetwork.id
     name: contains(peering, 'remotePeeringName') ? peering.remotePeeringName : '${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'
     allowForwardedTraffic: contains(peering, 'remotePeeringAllowForwardedTraffic') ? peering.remotePeeringAllowForwardedTraffic : true
