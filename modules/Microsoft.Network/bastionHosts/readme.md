@@ -33,6 +33,7 @@ This module deploys a bastion host.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `bastionSubnetPublicIpResourceId` | string | `''` |  | The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, BastionAuditLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -49,7 +50,6 @@ This module deploys a bastion host.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
-| `publicIPResourceID` | string | `''` |  | The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
 | `skuType` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
@@ -316,7 +316,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     name: '<<namePrefix>>nbhcom001'
     vNetId: '<vNetId>'
     // Non-required parameters
-    azureBastionSubnetPublicIpId: '<azureBastionSubnetPublicIpId>'
+    bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -363,8 +363,8 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       "value": "<vNetId>"
     },
     // Non-required parameters
-    "azureBastionSubnetPublicIpId": {
-      "value": "<azureBastionSubnetPublicIpId>"
+    "bastionSubnetPublicIpResourceId": {
+      "value": "<bastionSubnetPublicIpResourceId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -439,6 +439,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
+      allocationMethod: 'Static'
       diagnosticLogCategoriesToEnable: [
         'DDoSMitigationFlowLogs'
         'DDoSMitigationReports'
@@ -448,7 +449,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         'AllMetrics'
       ]
       name: '<<namePrefix>>nbhctmpip001-pip'
-      publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
@@ -491,6 +491,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     },
     "publicIPAddressObject": {
       "value": {
+        "allocationMethod": "Static",
         "diagnosticLogCategoriesToEnable": [
           "DDoSMitigationFlowLogs",
           "DDoSMitigationReports",
@@ -500,7 +501,6 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
           "AllMetrics"
         ],
         "name": "<<namePrefix>>nbhctmpip001-pip",
-        "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {

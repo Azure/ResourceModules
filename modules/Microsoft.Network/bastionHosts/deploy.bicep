@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param vNetId string
 
 @description('Optional. The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet.')
-param publicIPResourceID string = ''
+param bastionSubnetPublicIpResourceId string = ''
 
 @description('Optional. Specifies if a Public IP should be created by default if one is not provided.')
 param isCreateDefaultPublicIP bool = true
@@ -120,11 +120,11 @@ var subnetVar = {
 }
 var existingPip = {
   publicIPAddress: {
-    id: publicIPResourceID
+    id: bastionSubnetPublicIpResourceId
   }
 }
 var newPip = {
-  publicIPAddress: (empty(publicIPResourceID) && isCreateDefaultPublicIP) ? {
+  publicIPAddress: (empty(bastionSubnetPublicIpResourceId) && isCreateDefaultPublicIP) ? {
     id: publicIPAddress.outputs.resourceId
   } : null
 }
@@ -133,7 +133,7 @@ var ipConfigurations = [
   {
     name: 'IpConfAzureBastionSubnet'
     //Use existing Public IP, new Public IP created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnetVar, !empty(publicIPResourceID) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    properties: union(subnetVar, !empty(bastionSubnetPublicIpResourceId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
   }
 ]
 
@@ -153,7 +153,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(publicIPResourceID) && isCreateDefaultPublicIP) {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(bastionSubnetPublicIpResourceId) && isCreateDefaultPublicIP) {
   name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'

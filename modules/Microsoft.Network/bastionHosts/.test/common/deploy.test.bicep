@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     vNetId: nestedDependencies.outputs.virtualNetworkResourceId
-    azureBastionSubnetPublicIpId: nestedDependencies.outputs.publicIPResourceId
+    bastionSubnetPublicIpResourceId: nestedDependencies.outputs.publicIPResourceId
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
