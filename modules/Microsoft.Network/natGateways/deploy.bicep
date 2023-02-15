@@ -124,7 +124,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPubli
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
-    publicIPAllocationMethod: 'Static'
+    allocationMethod: 'Static'
     publicIPPrefixResourceId: natGatewayPublicIPPrefixId
     tags: tags
     skuName: 'Standard'

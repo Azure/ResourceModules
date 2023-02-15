@@ -61,8 +61,8 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    virtualNetworkGatewaySku: 'ErGw1AZ'
-    virtualNetworkGatewayType: 'ExpressRoute'
+    sku: 'ErGw1AZ'
+    type: 'ExpressRoute'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId

@@ -24,7 +24,7 @@ param domainNameLabel array = []
   'Vpn'
   'ExpressRoute'
 ])
-param virtualNetworkGatewayType string
+param type string
 
 @description('Required. The SKU of the Gateway.')
 @allowed([
@@ -42,7 +42,7 @@ param virtualNetworkGatewayType string
   'ErGw2AZ'
   'ErGw3AZ'
 ])
-param virtualNetworkGatewaySku string
+param sku string
 
 @description('Optional. Specifies the VPN type.')
 @allowed([
@@ -217,10 +217,10 @@ var zoneRedundantSkus = [
   'ErGw2AZ'
   'ErGw3AZ'
 ]
-var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
-var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
+var gatewayPipSku = contains(zoneRedundantSkus, sku) ? 'Standard' : 'Basic'
+var gatewayPipAllocationMethod = contains(zoneRedundantSkus, sku) ? 'Static' : 'Dynamic'
 
-var isActiveActiveValid = virtualNetworkGatewayType != 'ExpressRoute' ? activeActive : false
+var isActiveActiveValid = type != 'ExpressRoute' ? activeActive : false
 var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
   activeGatewayPipName
@@ -228,9 +228,9 @@ var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
 ]
 
-var vpnTypeVar = virtualNetworkGatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
+var vpnTypeVar = type != 'ExpressRoute' ? vpnType : 'PolicyBased'
 
-var isBgpValid = virtualNetworkGatewayType != 'ExpressRoute' ? enableBgp : false
+var isBgpValid = type != 'ExpressRoute' ? enableBgp : false
 var bgpSettings = {
   asn: asn
 }
@@ -349,11 +349,11 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
-    publicIPAllocationMethod: gatewayPipAllocationMethod
+    allocationMethod: gatewayPipAllocationMethod
     publicIPPrefixResourceId: !empty(publicIPPrefixResourceId) ? publicIPPrefixResourceId : ''
     tags: tags
     skuName: gatewayPipSku
-    zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : []
+    zones: contains(zoneRedundantSkus, sku) ? publicIpZones : []
   }
 }]
 
@@ -371,16 +371,16 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
     disableIPSecReplayProtection: disableIPSecReplayProtection
-    enableDnsForwarding: virtualNetworkGatewayType == 'ExpressRoute' ? enableDnsForwarding : null
+    enableDnsForwarding: type == 'ExpressRoute' ? enableDnsForwarding : null
     enablePrivateIpAddress: enablePrivateIpAddress
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
-    gatewayType: virtualNetworkGatewayType
+    gatewayType: type
     gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
       id: gatewayDefaultSiteLocalNetworkGatewayId
     } : null
     sku: {
-      name: virtualNetworkGatewaySku
-      tier: virtualNetworkGatewaySku
+      name: sku
+      tier: sku
     }
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
