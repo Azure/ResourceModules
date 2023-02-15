@@ -19,6 +19,23 @@ param ddosProtectionPlanId string = ''
 @description('Optional. Virtual Network Peerings configurations.')
 param virtualNetworkPeerings array = []
 
+@description('Optional. Indicates if VM protection is enabled for all the subnets in the virtual network.')
+param enableVmProtection bool = false
+
+@description('Optional. Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property.')
+param vnetEncryption bool = false
+
+@allowed([
+  'AllowUnencrypted'
+  'DropUnencrypted'
+])
+@description('Optional. If the encrypted VNet allows VM that does not support encryption. Can only be used when vnetEncryption is enabled.')
+param vnetEncryptionEnforcement string = 'AllowUnencrypted'
+
+@maxValue(30)
+@description('Optional. The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes. Default value 0 will set the property to null.')
+param flowTimeoutInMinutes int = 0
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -126,7 +143,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -137,6 +154,12 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-08-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServersVar : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
+    enableVmProtection: enableVmProtection
+    encryption: vnetEncryption == true ? {
+      enabled: vnetEncryption
+      enforcement: vnetEncryptionEnforcement
+    } : null
+    flowTimeoutInMinutes: flowTimeoutInMinutes != 0 ? flowTimeoutInMinutes : null
     subnets: [for subnet in subnets: {
       name: subnet.name
       properties: {
