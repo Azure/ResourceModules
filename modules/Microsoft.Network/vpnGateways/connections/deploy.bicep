@@ -42,7 +42,7 @@ param connectionBandwidth int = 10
   'IKEv1'
   'IKEv2'
 ])
-param vpnConnectionProtocolType string = 'IKEv2'
+param protocolType string = 'IKEv2'
 
 @description('Optional. SharedKey for the VPN connection.')
 param sharedKey string = ''
@@ -87,7 +87,7 @@ resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2021-08-01'
     trafficSelectorPolicies: trafficSelectorPolicies
     useLocalAzureIpAddress: useLocalAzureIpAddress
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    vpnConnectionProtocolType: vpnConnectionProtocolType
+    vpnConnectionProtocolType: protocolType
     vpnLinkConnections: vpnLinkConnections
   }
 }

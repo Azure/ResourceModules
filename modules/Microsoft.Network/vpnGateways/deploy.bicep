@@ -23,7 +23,7 @@ param enableBgpRouteTranslationForNat bool = false
 param isRoutingPreferenceInternet bool = false
 
 @description('Optional. The scale unit for this VPN gateway.')
-param vpnGatewayScaleUnit int = 2
+param scaleUnit int = 2
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -61,7 +61,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-08-01' = {
     bgpSettings: bgpSettings
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
     isRoutingPreferenceInternet: isRoutingPreferenceInternet
-    vpnGatewayScaleUnit: vpnGatewayScaleUnit
+    vpnGatewayScaleUnit: scaleUnit
     virtualHub: {
       id: virtualHubResourceId
     }
@@ -106,7 +106,7 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey : ''
     useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
-    vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
+    protocolType: contains(connection, 'protocolType') ? connection.protocolType : 'IKEv2'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
