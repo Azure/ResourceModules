@@ -176,7 +176,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -199,6 +199,7 @@ module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [fo
     name: backendAddressPool.name
     tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
     addresses: contains(backendAddressPool, 'addresses') && !empty(backendAddressPool.addresses) ? backendAddressPool.addresses : []
+    drainPeriodInSeconds: contains(backendAddressPool, 'drainPeriodInSeconds') ? backendAddressPool.drainPeriodInSeconds : 0
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

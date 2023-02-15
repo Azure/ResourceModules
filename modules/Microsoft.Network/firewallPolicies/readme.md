@@ -14,8 +14,8 @@ This module deploys Firewall Policies.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/firewallPolicies) |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/firewallPolicies/ruleCollectionGroups) |
+| `Microsoft.Network/firewallPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/firewallPolicies) |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Parameters
 
@@ -29,6 +29,8 @@ This module deploys Firewall Policies.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `allowSqlRedirect` | bool | `False` |  | A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port 11000-11999. |
+| `autoLearnPrivateRanges` | string | `'Disabled'` | `[Disabled, Enabled]` | The operation mode for automatically learning private ranges to not be SNAT. |
 | `basePolicyResourceId` | string | `''` |  | Resource ID of the base policy. |
 | `bypassTrafficSettings` | array | `[]` |  | List of rules for traffic to bypass. |
 | `certificateName` | string | `''` |  | Name of the CA certificate. |
@@ -161,6 +163,8 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
     // Required parameters
     name: '<<namePrefix>>nfpcom001'
     // Non-required parameters
+    allowSqlRedirect: true
+    autoLearnPrivateRanges: 'Enabled'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ruleCollectionGroups: [
       {
@@ -221,6 +225,12 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
       "value": "<<namePrefix>>nfpcom001"
     },
     // Non-required parameters
+    "allowSqlRedirect": {
+      "value": true
+    },
+    "autoLearnPrivateRanges": {
+      "value": "Enabled"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },

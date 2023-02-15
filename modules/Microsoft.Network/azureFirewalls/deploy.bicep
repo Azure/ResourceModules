@@ -233,7 +233,7 @@ module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' 
   }
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-08-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
   name: name
   location: location
   zones: length(zones) == 0 ? null : zones

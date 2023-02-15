@@ -19,17 +19,17 @@ This module deploys a recovery service vault.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults) |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupconfig) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems) |
-| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupPolicies) |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/backupstorageconfig) |
-| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationAlertSettings) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationPolicies) |
+| `Microsoft.RecoveryServices/vaults` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults) |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupconfig) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupPolicies) |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupstorageconfig) |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationAlertSettings) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics/replicationProtectionContainers) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationPolicies) |
 
 ## Parameters
 

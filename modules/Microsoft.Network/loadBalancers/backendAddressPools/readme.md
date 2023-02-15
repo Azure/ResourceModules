@@ -13,7 +13,7 @@ This module deploys load balancer backend address pools.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/backendAddressPools` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/loadBalancers/backendAddressPools) |
+| `Microsoft.Network/loadBalancers/backendAddressPools` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/loadBalancers/backendAddressPools) |
 
 ## Parameters
 
@@ -34,6 +34,7 @@ This module deploys load balancer backend address pools.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `addresses` | array | `[]` | An array of backend addresses. |
+| `drainPeriodInSeconds` | int | `0` | Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tunnelInterfaces` | array | `[]` | An array of gateway load balancer tunnel interfaces. |
 
