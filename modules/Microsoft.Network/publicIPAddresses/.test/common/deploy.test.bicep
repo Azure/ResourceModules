@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     lock: 'CanNotDelete'
-    publicIPAllocationMethod: 'Static'
+    allocationMethod: 'Static'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
