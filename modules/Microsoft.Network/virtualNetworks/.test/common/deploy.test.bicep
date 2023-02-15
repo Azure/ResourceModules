@@ -84,6 +84,7 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    flowTimeoutInMinutes: 20
     subnets: [
       {
         addressPrefix: '10.0.255.0/24'

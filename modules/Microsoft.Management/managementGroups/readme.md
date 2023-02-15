@@ -20,7 +20,7 @@ This module has some known **limitations**:
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Management/managementGroups` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups) |
+| `Microsoft.Management/managementGroups` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups) |
 
 ## Parameters
 
@@ -108,7 +108,7 @@ roleAssignments: [
 
 ## Considerations
 
-This template is using a **Tenant level deployment**, meaning the user/principal deploying it needs to have the [proper access](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-tenant#required-access)
+This template is using a **Tenant level deployment**, meaning the user/principal deploying it needs to have the [proper access](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-tenant#required-access)
 
 If owner access is excessive, the following rights roles will grant enough rights:
 

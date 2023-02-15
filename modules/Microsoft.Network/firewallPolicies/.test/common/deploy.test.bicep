@@ -76,5 +76,7 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
+    allowSqlRedirect: true
+    autoLearnPrivateRanges: 'Enabled'
   }
 }

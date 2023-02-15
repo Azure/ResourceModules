@@ -14,10 +14,10 @@ This module deploys Network ApplicationGateways.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/applicationGateways` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/applicationGateways) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/applicationGateways` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/applicationGateways) |
 
 ## Parameters
 
@@ -71,9 +71,9 @@ This module deploys Network ApplicationGateways.
 | `sku` | string | `'WAF_Medium'` | `[Standard_Large, Standard_Medium, Standard_Small, Standard_v2, WAF_Large, WAF_Medium, WAF_v2]` | The name of the SKU for the Application Gateway. |
 | `sslCertificates` | array | `[]` |  | SSL certificates of the application gateway resource. |
 | `sslPolicyCipherSuites` | array | `[TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384]` | `[TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384]` | Ssl cipher suites to be enabled in the specified order to application gateway. |
-| `sslPolicyMinProtocolVersion` | string | `'TLSv1_2'` | `[TLSv1_0, TLSv1_1, TLSv1_2]` | Ssl protocol enums. |
-| `sslPolicyName` | string | `''` | `['', AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S]` | Ssl predefined policy name enums. |
-| `sslPolicyType` | string | `'Custom'` | `[Custom, Predefined]` | Type of Ssl Policy. |
+| `sslPolicyMinProtocolVersion` | string | `'TLSv1_2'` | `[TLSv1_0, TLSv1_1, TLSv1_2, TLSv1_3]` | Ssl protocol enums. |
+| `sslPolicyName` | string | `''` | `['', AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S, AppGwSslPolicy20220101, AppGwSslPolicy20220101S]` | Ssl predefined policy name enums. |
+| `sslPolicyType` | string | `'Custom'` | `[Custom, CustomV2, Predefined]` | Type of Ssl Policy. |
 | `sslProfiles` | array | `[]` |  | SSL profiles of the application gateway resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `trustedClientCertificates` | array | `[]` |  | Trusted client certificates of the application gateway resource. |

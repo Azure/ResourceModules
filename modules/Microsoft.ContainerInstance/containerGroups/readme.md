@@ -16,8 +16,8 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.ContainerInstance/containerGroups` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-10-01/containerGroups) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.ContainerInstance/containerGroups` | [2021-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-10-01/containerGroups) |
 
 ## Parameters
 

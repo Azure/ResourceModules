@@ -80,6 +80,6 @@ module testDeployment '../../deploy.bicep' = {
     }
     hostPoolType: 'Pooled'
     friendlyName: 'My Scaling Plan'
-    scalingplanDescription: 'My Scaling Plan Description'
+    description: 'My Scaling Plan Description'
   }
 }

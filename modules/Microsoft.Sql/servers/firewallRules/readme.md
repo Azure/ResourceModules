@@ -13,7 +13,7 @@ This module deploys an SQL Server Firewall rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/firewallRules` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/firewallRules) |
+| `Microsoft.Sql/servers/firewallRules` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/firewallRules) |
 
 ## Parameters
 

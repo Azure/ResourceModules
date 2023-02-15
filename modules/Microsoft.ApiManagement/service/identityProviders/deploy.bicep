@@ -8,33 +8,33 @@ param enableDefaultTelemetry bool = true
 param enableIdentityProviders bool = false
 
 @description('Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string.')
-param identityProviderAllowedTenants array = []
+param allowedTenants array = []
 
 @description('Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C.')
-param identityProviderAuthority string = ''
+param authority string = ''
 
 @description('Conditional. Client ID of the Application in the external Identity Provider. Required if identity provider is used.')
-param identityProviderClientId string = ''
+param clientId string = ''
 
 @description('Conditional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
 @secure()
-param identityProviderClientSecret string = ''
+param clientSecret string = ''
 
 @description('Optional. Password Reset Policy Name. Only applies to AAD B2C Identity Provider.')
 #disable-next-line secure-secrets-in-params // Not a secret
-param identityProviderPasswordResetPolicyName string = ''
+param passwordResetPolicyName string = ''
 
 @description('Optional. Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderProfileEditingPolicyName string = ''
+param profileEditingPolicyName string = ''
 
 @description('Optional. Signin Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderSignInPolicyName string = ''
+param signInPolicyName string = ''
 
 @description('Optional. The TenantId to use instead of Common when logging into Active Directory.')
-param identityProviderSignInTenant string = ''
+param signInTenant string = ''
 
 @description('Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider.')
-param identityProviderSignUpPolicyName string = ''
+param signUpPolicyName string = ''
 
 @description('Optional. Identity Provider Type identifier.')
 @allowed([
@@ -45,12 +45,12 @@ param identityProviderSignUpPolicyName string = ''
   'microsoft'
   'twitter'
 ])
-param identityProviderType string = 'aad'
+param type string = 'aad'
 
 @description('Required. Identity provider name.')
 param name string
 
-var isAadB2C = (identityProviderType == 'aadB2C')
+var isAadB2C = (type == 'aadB2C')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -72,16 +72,16 @@ resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@202
   name: name
   parent: service
   properties: {
-    type: identityProviderType
-    signinTenant: identityProviderSignInTenant
-    allowedTenants: identityProviderAllowedTenants
-    authority: identityProviderAuthority
-    signupPolicyName: isAadB2C ? identityProviderSignUpPolicyName : null
-    signinPolicyName: isAadB2C ? identityProviderSignInPolicyName : null
-    profileEditingPolicyName: isAadB2C ? identityProviderProfileEditingPolicyName : null
-    passwordResetPolicyName: isAadB2C ? identityProviderPasswordResetPolicyName : null
-    clientId: identityProviderClientId
-    clientSecret: identityProviderClientSecret
+    type: type
+    signinTenant: signInTenant
+    allowedTenants: allowedTenants
+    authority: authority
+    signupPolicyName: isAadB2C ? signUpPolicyName : null
+    signinPolicyName: isAadB2C ? signInPolicyName : null
+    profileEditingPolicyName: isAadB2C ? profileEditingPolicyName : null
+    passwordResetPolicyName: isAadB2C ? passwordResetPolicyName : null
+    clientId: clientId
+    clientSecret: clientSecret
   }
 }
 

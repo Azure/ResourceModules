@@ -13,7 +13,7 @@ This module deploys Virtual Network Gateways NATRules
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualNetworkGateways/natRules` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworkGateways/natRules) |
+| `Microsoft.Network/virtualNetworkGateways/natRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworkGateways/natRules) |
 
 ## Parameters
 

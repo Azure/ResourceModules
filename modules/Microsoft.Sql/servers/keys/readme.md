@@ -13,7 +13,7 @@ This module deploys a key for a SQL server.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/keys` | [2022-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/keys) |
+| `Microsoft.Sql/servers/keys` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/keys) |
 
 ## Parameters
 

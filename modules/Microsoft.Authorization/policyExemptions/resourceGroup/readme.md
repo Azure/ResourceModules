@@ -13,7 +13,7 @@ With this module you can create policy exemptions on a resource group level.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
+| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
 
 ## Parameters
 

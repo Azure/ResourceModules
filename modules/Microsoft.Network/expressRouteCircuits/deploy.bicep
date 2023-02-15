@@ -53,6 +53,18 @@ param vlanId int = 0
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. Allow classic operations. You can connect to virtual networks in the classic deployment model by setting allowClassicOperations to true.')
+param allowClassicOperations bool = false
+
+@description('Optional. The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct. Default value of 0 will set the property to null.')
+param bandwidthInGbps int = 0
+
+@description('Optional. The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct.')
+param expressRoutePortResourceId string = ''
+
+@description('Optional. Flag denoting global reach status. To enable ExpressRoute Global Reach between different geopolitical regions, your circuits must be Premium SKU.')
+param globalReachEnabled bool = false
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -163,7 +175,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01' = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -173,6 +185,12 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01
     family: skuTier == 'Local' ? 'UnlimitedData' : skuFamily
   }
   properties: {
+    allowClassicOperations: allowClassicOperations
+    globalReachEnabled: globalReachEnabled
+    bandwidthInGbps: bandwidthInGbps != 0 ? bandwidthInGbps : null
+    expressRoutePort: !empty(expressRoutePortResourceId) ? {
+      id: expressRoutePortResourceId
+    } : null
     serviceProviderProperties: {
       serviceProviderName: serviceProviderName
       peeringLocation: peeringLocation
