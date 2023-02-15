@@ -19,9 +19,6 @@ param ddosProtectionPlanId string = ''
 @description('Optional. Virtual Network Peerings configurations.')
 param virtualNetworkPeerings array = []
 
-@description('Optional. Indicates if VM protection is enabled for all the subnets in the virtual network.')
-param enableVmProtection bool = false
-
 @description('Optional. Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property.')
 param vnetEncryption bool = false
 
@@ -154,7 +151,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServersVar : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
-    enableVmProtection: enableVmProtection
     encryption: vnetEncryption == true ? {
       enabled: vnetEncryption
       enforcement: vnetEncryptionEnforcement

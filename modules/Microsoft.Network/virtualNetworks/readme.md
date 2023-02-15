@@ -46,7 +46,6 @@ This template deploys a virtual network (vNet).
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsServers` | array | `[]` |  | DNS Servers associated to the Virtual Network. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `enableVmProtection` | bool | `False` |  | Indicates if VM protection is enabled for all the subnets in the virtual network. |
 | `flowTimeoutInMinutes` | int | `0` |  | The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes. Default value 0 will set the property to null. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -391,7 +390,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.1.5'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    enableVmProtection: true
     flowTimeoutInMinutes: 20
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -499,9 +497,6 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "enableVmProtection": {
-      "value": true
     },
     "flowTimeoutInMinutes": {
       "value": 20
