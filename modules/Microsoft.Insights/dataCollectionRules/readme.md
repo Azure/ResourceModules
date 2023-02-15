@@ -195,7 +195,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
           ]
           format: 'text'
           name: 'CustomTableAdvanced_CL'
-          samplingFrequencyInSeconds: 10
+          samplingFrequencyInSeconds: 60
           settings: {
             text: {
               recordStartTimestampFormat: 'ISO 8601'
@@ -305,7 +305,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             ],
             "format": "text",
             "name": "CustomTableAdvanced_CL",
-            "samplingFrequencyInSeconds": 10,
+            "samplingFrequencyInSeconds": 60,
             "settings": {
               "text": {
                 "recordStartTimestampFormat": "ISO 8601"
@@ -434,7 +434,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
           ]
           format: 'text'
           name: 'CustomTableBasic_CL'
-          samplingFrequencyInSeconds: 10
+          samplingFrequencyInSeconds: 60
           settings: {
             text: {
               recordStartTimestampFormat: 'ISO 8601'
@@ -528,7 +528,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             ],
             "format": "text",
             "name": "CustomTableBasic_CL",
-            "samplingFrequencyInSeconds": 10,
+            "samplingFrequencyInSeconds": 60,
             "settings": {
               "text": {
                 "recordStartTimestampFormat": "ISO 8601"
@@ -827,7 +827,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             'Processor(*)\\% User Time'
           ]
           name: 'perfCounterDataSource10'
-          samplingFrequencyInSeconds: 10
+          samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
           ]
@@ -1022,7 +1022,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
               "Processor(*)\\% User Time"
             ],
             "name": "perfCounterDataSource10",
-            "samplingFrequencyInSeconds": 10,
+            "samplingFrequencyInSeconds": 60,
             "streams": [
               "Microsoft-InsightsMetrics"
             ]

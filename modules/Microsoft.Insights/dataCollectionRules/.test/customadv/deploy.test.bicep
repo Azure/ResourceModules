@@ -65,7 +65,7 @@ module testDeployment '../../deploy.bicep' = {
       logFiles: [
         {
           name: 'CustomTableAdvanced_CL'
-          samplingFrequencyInSeconds: 10
+          samplingFrequencyInSeconds: 60
           streams: [
             'Custom-CustomTableAdvanced_CL'
           ]
