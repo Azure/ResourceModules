@@ -73,7 +73,7 @@ module privateDnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: aRecord.name
-    aRecords: contains(aRecord, 'aRecords') ? aRecord.aRecords : []
+    records: contains(aRecord, 'records') ? aRecord.records : []
     metadata: contains(aRecord, 'metadata') ? aRecord.metadata : {}
     ttl: contains(aRecord, 'ttl') ? aRecord.ttl : 3600
     roleAssignments: contains(aRecord, 'roleAssignments') ? aRecord.roleAssignments : []
@@ -86,7 +86,7 @@ module privateDnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaa
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: aaaaRecord.name
-    aaaaRecords: contains(aaaaRecord, 'aaaaRecords') ? aaaaRecord.aaaaRecords : []
+    records: contains(aaaaRecord, 'records') ? aaaaRecord.records : []
     metadata: contains(aaaaRecord, 'metadata') ? aaaaRecord.metadata : {}
     ttl: contains(aaaaRecord, 'ttl') ? aaaaRecord.ttl : 3600
     roleAssignments: contains(aaaaRecord, 'roleAssignments') ? aaaaRecord.roleAssignments : []
@@ -99,7 +99,7 @@ module privateDnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in 
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: cnameRecord.name
-    cnameRecord: contains(cnameRecord, 'cnameRecord') ? cnameRecord.cnameRecord : {}
+    records: contains(cnameRecord, 'records') ? cnameRecord.records : {}
     metadata: contains(cnameRecord, 'metadata') ? cnameRecord.metadata : {}
     ttl: contains(cnameRecord, 'ttl') ? cnameRecord.ttl : 3600
     roleAssignments: contains(cnameRecord, 'roleAssignments') ? cnameRecord.roleAssignments : []
@@ -113,7 +113,7 @@ module privateDnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
     privateDnsZoneName: privateDnsZone.name
     name: mxRecord.name
     metadata: contains(mxRecord, 'metadata') ? mxRecord.metadata : {}
-    mxRecords: contains(mxRecord, 'mxRecords') ? mxRecord.mxRecords : []
+    records: contains(mxRecord, 'records') ? mxRecord.records : []
     ttl: contains(mxRecord, 'ttl') ? mxRecord.ttl : 3600
     roleAssignments: contains(mxRecord, 'roleAssignments') ? mxRecord.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -126,7 +126,7 @@ module privateDnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
     privateDnsZoneName: privateDnsZone.name
     name: ptrRecord.name
     metadata: contains(ptrRecord, 'metadata') ? ptrRecord.metadata : {}
-    ptrRecords: contains(ptrRecord, 'ptrRecords') ? ptrRecord.ptrRecords : []
+    records: contains(ptrRecord, 'records') ? ptrRecord.records : []
     ttl: contains(ptrRecord, 'ttl') ? ptrRecord.ttl : 3600
     roleAssignments: contains(ptrRecord, 'roleAssignments') ? ptrRecord.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -139,7 +139,7 @@ module privateDnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
     privateDnsZoneName: privateDnsZone.name
     name: soaRecord.name
     metadata: contains(soaRecord, 'metadata') ? soaRecord.metadata : {}
-    soaRecord: contains(soaRecord, 'soaRecord') ? soaRecord.soaRecord : {}
+    records: contains(soaRecord, 'records') ? soaRecord.records : {}
     ttl: contains(soaRecord, 'ttl') ? soaRecord.ttl : 3600
     roleAssignments: contains(soaRecord, 'roleAssignments') ? soaRecord.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -152,7 +152,7 @@ module privateDnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
     privateDnsZoneName: privateDnsZone.name
     name: srvRecord.name
     metadata: contains(srvRecord, 'metadata') ? srvRecord.metadata : {}
-    srvRecords: contains(srvRecord, 'srvRecords') ? srvRecord.srvRecords : []
+    records: contains(srvRecord, 'records') ? srvRecord.records : []
     ttl: contains(srvRecord, 'ttl') ? srvRecord.ttl : 3600
     roleAssignments: contains(srvRecord, 'roleAssignments') ? srvRecord.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -165,7 +165,7 @@ module privateDnsZone_TXT 'TXT/deploy.bicep' = [for (txtRecord, index) in txt: {
     privateDnsZoneName: privateDnsZone.name
     name: txtRecord.name
     metadata: contains(txtRecord, 'metadata') ? txtRecord.metadata : {}
-    txtRecords: contains(txtRecord, 'txtRecords') ? txtRecord.txtRecords : []
+    records: contains(txtRecord, 'records') ? txtRecord.records : []
     ttl: contains(txtRecord, 'ttl') ? txtRecord.ttl : 3600
     roleAssignments: contains(txtRecord, 'roleAssignments') ? txtRecord.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry

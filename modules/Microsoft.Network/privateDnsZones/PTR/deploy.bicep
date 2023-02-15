@@ -8,7 +8,7 @@ param name string
 param metadata object = {}
 
 @description('Optional. The list of PTR records in the record set.')
-param ptrRecords array = []
+param records array = []
 
 @description('Optional. The TTL (time-to-live) of the records in the record set.')
 param ttl int = 3600
@@ -53,7 +53,7 @@ resource PTR 'Microsoft.Network/privateDnsZones/PTR@2020-06-01' = {
   parent: privateDnsZone
   properties: {
     metadata: metadata
-    ptrRecords: ptrRecords
+    ptrRecords: records
     ttl: ttl
   }
 }

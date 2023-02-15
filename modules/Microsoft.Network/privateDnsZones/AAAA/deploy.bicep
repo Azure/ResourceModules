@@ -5,7 +5,7 @@ param privateDnsZoneName string
 param name string
 
 @description('Optional. The list of AAAA records in the record set.')
-param aaaaRecords array = []
+param records array = []
 
 @description('Optional. The metadata attached to the record set.')
 param metadata object = {}
@@ -39,7 +39,7 @@ resource AAAA 'Microsoft.Network/privateDnsZones/AAAA@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
-    aaaaRecords: aaaaRecords
+    aaaaRecords: records
     metadata: metadata
     ttl: ttl
   }

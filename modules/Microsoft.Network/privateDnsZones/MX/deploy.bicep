@@ -8,7 +8,7 @@ param name string
 param metadata object = {}
 
 @description('Optional. The list of MX records in the record set.')
-param mxRecords array = []
+param records array = []
 
 @description('Optional. The TTL (time-to-live) of the records in the record set.')
 param ttl int = 3600
@@ -40,7 +40,7 @@ resource MX 'Microsoft.Network/privateDnsZones/MX@2020-06-01' = {
   parent: privateDnsZone
   properties: {
     metadata: metadata
-    mxRecords: mxRecords
+    mxRecords: records
     ttl: ttl
   }
 }

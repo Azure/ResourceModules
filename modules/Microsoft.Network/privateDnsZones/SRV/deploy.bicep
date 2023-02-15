@@ -8,7 +8,7 @@ param name string
 param metadata object = {}
 
 @description('Optional. The list of SRV records in the record set.')
-param srvRecords array = []
+param records array = []
 
 @description('Optional. The TTL (time-to-live) of the records in the record set.')
 param ttl int = 3600
@@ -40,7 +40,7 @@ resource SRV 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
   parent: privateDnsZone
   properties: {
     metadata: metadata
-    srvRecords: srvRecords
+    srvRecords: records
     ttl: ttl
   }
 }

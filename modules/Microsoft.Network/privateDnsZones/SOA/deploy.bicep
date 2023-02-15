@@ -8,7 +8,7 @@ param name string
 param metadata object = {}
 
 @description('Optional. A SOA record.')
-param soaRecord object = {}
+param records object = {}
 
 @description('Optional. The TTL (time-to-live) of the records in the record set.')
 param ttl int = 3600
@@ -40,7 +40,7 @@ resource SOA 'Microsoft.Network/privateDnsZones/SOA@2020-06-01' = {
   parent: privateDnsZone
   properties: {
     metadata: metadata
-    soaRecord: soaRecord
+    soaRecord: records
     ttl: ttl
   }
 }

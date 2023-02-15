@@ -49,7 +49,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001.com'
     a: [
       {
-        aRecords: [
+        records: [
           {
             ipv4Address: '10.240.4.4'
           }
@@ -69,7 +69,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     aaaa: [
       {
-        aaaaRecords: [
+        records: [
           {
             ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
           }
@@ -80,7 +80,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     cname: [
       {
-        cnameRecord: {
+        records: {
           cname: 'test'
         }
         name: 'CNAME_test'
@@ -99,7 +99,7 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     mx: [
       {
-        mxRecords: [
+        records: [
           {
             exchange: 'contoso.com'
             preference: 100
@@ -121,7 +121,7 @@ module testDeployment '../../deploy.bicep' = {
     ptr: [
       {
         name: 'PTR_contoso'
-        ptrRecords: [
+        records: [
           {
             ptrdname: 'contoso.com'
           }
@@ -159,7 +159,7 @@ module testDeployment '../../deploy.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
-        soaRecord: {
+        records: {
           email: 'azureprivatedns-host.microsoft.com'
           expireTime: 2419200
           host: 'azureprivatedns.net'
@@ -183,7 +183,7 @@ module testDeployment '../../deploy.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
-        srvRecords: [
+        records: [
           {
             port: 9332
             priority: 0
@@ -207,7 +207,7 @@ module testDeployment '../../deploy.bicep' = {
           }
         ]
         ttl: 3600
-        txtRecords: [
+        records: [
           {
             value: [
               'test'
