@@ -16,7 +16,7 @@ This module deploys a VPN Site.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/vpnSites` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnSites) |
+| `Microsoft.Network/vpnSites` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/vpnSites) |
 
 ## Parameters
 
@@ -46,6 +46,7 @@ This module deploys a VPN Site.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `o365Policy` | object | `{object}` |  | The Office365 breakout policy. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `siteKey` | string | `''` |  | The key for vpn-site that can be used for connections. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnSiteLinks` | array | `[]` |  | List of all VPN site links. |
 
@@ -370,6 +371,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    siteKey: '<siteKey>'
     tags: {
       tagA: 'valueA'
       tagB: 'valueB'
@@ -458,6 +460,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "siteKey": {
+      "value": "<siteKey>"
     },
     "tags": {
       "value": {
