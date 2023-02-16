@@ -254,7 +254,7 @@ module database_backupShortTermRetentionPolicies 'backupShortTermRetentionPolici
   }
 }
 
-module database_longTermBackupRetention 'backupLongTermRetentionPolicies/deploy.bicep' = {
+module database_backupLongTermRetentionPolicies 'backupLongTermRetentionPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
   params: {
     serverName: serverName
