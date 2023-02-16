@@ -248,13 +248,10 @@ module database_shortTermBackupRetention 'backupShortTermRetentionPolicies/deplo
   name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
   params: {
     serverName: serverName
-    databaseName: name
+    databaseName: database.name
     diffBackupIntervalInHours: backupDifferentialInterval
     retentionDays: backupLogRetentionDays
   }
-  dependsOn: [
-    database
-  ]
 }
 
 module database_longTermBackupRetention 'backupLongTermRetentionPolicies/deploy.bicep' = {
