@@ -36,5 +36,11 @@ resource backupLongTermRetentionPolicy 'Microsoft.Sql/servers/databases/backupLo
   }
 }
 
-@description('The resource group of the deployed azure sql backup policy.')
+@description('The resource group the long-term policy was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The name of the long-term policy.')
+output name string = backupLongTermRetentionPolicy.name
+
+@description('The resource ID of the long-term policy.')
+output resourceId string = backupLongTermRetentionPolicy.id
