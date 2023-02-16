@@ -87,7 +87,7 @@ resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2021-08-01'
     trafficSelectorPolicies: trafficSelectorPolicies
     useLocalAzureIpAddress: useLocalAzureIpAddress
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    vpnConnectionProtocolType: protocolType
+    vpnprotocolType: protocolType
     vpnLinkConnections: vpnLinkConnections
   }
 }
