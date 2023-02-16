@@ -28,5 +28,11 @@ resource backupShortTermRetentionPolicy 'Microsoft.Sql/servers/databases/backupS
   }
 }
 
-@description('The resource group of the deployed azure sql backup policy.')
+@description('The resource group the short-term policy was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The name of the short-term policy.')
+output name string = backupShortTermRetentionPolicy.name
+
+@description('The resource ID of the short-term policy.')
+output resourceId string = backupShortTermRetentionPolicy.id
