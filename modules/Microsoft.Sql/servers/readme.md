@@ -439,44 +439,102 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
-    // Required parameters
-    name: 'tfsbx-sqlscom'
-    // Non-required parameters
+    name: '<<namePrefix>>-sqlscom'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
       {
         backupLogRetentionDays: 14
-        backupMonthlyRetention: 'P5M'
+        backupWeeklyRetention: 'P4W'
         capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
+        diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+        diagnosticEventHubName: '<diagnosticEventHubName>'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+        diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         elasticPoolId: '<elasticPoolId>'
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: 'tfsbx-sqlscomdb-001'
+        name: '<<namePrefix>>-sqlscomdb-001'
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
-        tags: {
-          costallocation: 'test'
-        }
       }
     ]
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: 'tfsbx-sqlscom-ep-001'
+        name: '<<namePrefix>>-sqlscom-ep-001'
         skuCapacity: 10
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
-        tags: {
-          costallocation: 'test'
-        }
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    firewallRules: [
+      {
+        endIpAddress: '0.0.0.0'
+        name: 'AllowAllWindowsAzureIps'
+        startIpAddress: '0.0.0.0'
+      }
+    ]
+    keys: [
+      {
+        name: '<name>'
+        serverKeyType: 'AzureKeyVault'
+        uri: '<uri>'
+      }
+    ]
     location: '<location>'
-    tags: {
-      costallocation: 'test'
+    lock: 'CanNotDelete'
+    primaryUserAssignedIdentityId: '<primaryUserAssignedIdentityId>'
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        service: 'sqlServer'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    securityAlertPolicies: [
+      {
+        emailAccountAdmins: true
+        name: 'Default'
+        state: 'Enabled'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    virtualNetworkRules: [
+      {
+        ignoreMissingVnetServiceEndpoint: true
+        name: 'newVnetRule1'
+        virtualNetworkSubnetId: '<virtualNetworkSubnetId>'
+      }
+    ]
+    vulnerabilityAssessmentsObj: {
+      emailSubscriptionAdmins: true
+      name: 'default'
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      recurringScansIsEnabled: true
+      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
     }
   }
 }
@@ -494,11 +552,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    // Required parameters
     "name": {
-      "value": "tfsbx-sqlscom"
+      "value": "<<namePrefix>>-sqlscom"
     },
-    // Non-required parameters
     "administratorLogin": {
       "value": "adminUserName"
     },
@@ -509,18 +565,20 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "backupLogRetentionDays": 14,
-          "backupMonthlyRetention": "P5M",
+          "backupWeeklyRetention": "P4W",
           "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
+          "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
+          "diagnosticEventHubName": "<diagnosticEventHubName>",
+          "diagnosticLogsRetentionInDays": 7,
+          "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
+          "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "elasticPoolId": "<elasticPoolId>",
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "tfsbx-sqlscomdb-001",
+          "name": "<<namePrefix>>-sqlscomdb-001",
           "skuName": "ElasticPool",
-          "skuTier": "GeneralPurpose",
-          "tags": {
-            "costallocation": "test"
-          }
+          "skuTier": "GeneralPurpose"
         }
       ]
     },
@@ -528,25 +586,103 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "tfsbx-sqlscom-ep-001",
+          "name": "<<namePrefix>>-sqlscom-ep-001",
           "skuCapacity": 10,
           "skuName": "GP_Gen5",
-          "skuTier": "GeneralPurpose",
-          "tags": {
-            "costallocation": "test"
-          }
+          "skuTier": "GeneralPurpose"
         }
       ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "firewallRules": {
+      "value": [
+        {
+          "endIpAddress": "0.0.0.0",
+          "name": "AllowAllWindowsAzureIps",
+          "startIpAddress": "0.0.0.0"
+        }
+      ]
+    },
+    "keys": {
+      "value": [
+        {
+          "name": "<name>",
+          "serverKeyType": "AzureKeyVault",
+          "uri": "<uri>"
+        }
+      ]
+    },
     "location": {
       "value": "<location>"
     },
-    "tags": {
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "primaryUserAssignedIdentityId": {
+      "value": "<primaryUserAssignedIdentityId>"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "service": "sqlServer",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "securityAlertPolicies": {
+      "value": [
+        {
+          "emailAccountAdmins": true,
+          "name": "Default",
+          "state": "Enabled"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
       "value": {
-        "costallocation": "test"
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "virtualNetworkRules": {
+      "value": [
+        {
+          "ignoreMissingVnetServiceEndpoint": true,
+          "name": "newVnetRule1",
+          "virtualNetworkSubnetId": "<virtualNetworkSubnetId>"
+        }
+      ]
+    },
+    "vulnerabilityAssessmentsObj": {
+      "value": {
+        "emailSubscriptionAdmins": true,
+        "name": "default",
+        "recurringScansEmails": [
+          "test1@contoso.com",
+          "test2@contoso.com"
+        ],
+        "recurringScansIsEnabled": true,
+        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
       }
     }
   }
