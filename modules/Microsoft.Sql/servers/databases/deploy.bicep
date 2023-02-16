@@ -244,7 +244,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
   scope: database
 }
 
-module database_shortTermBackupRetention 'backupShortTermRetentionPolicies/deploy.bicep' = if ((backupDifferentialInterval != 24) || (backupLogRetentionDays != 7)) {
+module database_shortTermBackupRetention 'backupShortTermRetentionPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
   params: {
     serverName: serverName
@@ -257,7 +257,7 @@ module database_shortTermBackupRetention 'backupShortTermRetentionPolicies/deplo
   ]
 }
 
-module database_longTermBackupRetention 'backupLongTermRetentionPolicies/deploy.bicep' = if ((!empty(backupWeeklyRetention)) || (!empty(backupMonthlyRetention)) || (!empty(backupYearlyRetention))) {
+module database_longTermBackupRetention 'backupLongTermRetentionPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
   params: {
     serverName: serverName
