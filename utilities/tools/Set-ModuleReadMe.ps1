@@ -1566,8 +1566,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
 
-    $isTopLevelModule = $fullModuleIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
-    if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
+    $hasTests = (Get-ChildItem -Path (Join-Path -Path $moduleRoot -ChildPath '.test') -Recurse -Include 'deploy.test.*').count -gt 0
+    if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
         # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{
