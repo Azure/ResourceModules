@@ -515,8 +515,6 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
       "value": [
         {
           "name": "<<namePrefix>>-az-evh-x-001"
-        },
-        {
           "authorizationRules": [
             {
               "name": "RootManageSharedAccessKey",
