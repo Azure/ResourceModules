@@ -1034,7 +1034,7 @@ function Set-DeploymentExamplesSection {
                 }
 
                 # Remove any dependsOn as it it test specific
-                if ($detected = ($formattedBicepExample | Select-String '^\s*dependsOn:\s*\[\s*$' | ForEach-Object { $_.LineNumber - 1 })) {
+                if ($detected = ($formattedBicepExample | Select-String "^\s{$moduleDeploymentPropertyIndent}dependsOn:\s*\[\s*$" | ForEach-Object { $_.LineNumber - 1 })) {
                     $dependsOnStartIndex = $detected[0]
 
                     # Find out where the 'dependsOn' ends
