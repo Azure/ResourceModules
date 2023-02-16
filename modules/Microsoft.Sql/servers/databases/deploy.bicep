@@ -261,15 +261,12 @@ module database_longTermBackupRetention 'backupLongTermRetentionPolicies/deploy.
   name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
   params: {
     serverName: serverName
-    databaseName: name
+    databaseName: database.name
     weeklyRetention: backupWeeklyRetention
     monthlyRetention: backupMonthlyRetention
     yearlyRetention: backupYearlyRetention
     weekOfYear: backupYearlyRetentionWeek
   }
-  dependsOn: [
-    database
-  ]
 }
 
 @description('The name of the deployed database.')
