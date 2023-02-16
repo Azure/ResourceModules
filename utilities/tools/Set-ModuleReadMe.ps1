@@ -1566,8 +1566,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
 
-    $TestFolderPath = Join-Path $moduleRoot '.test'
-    $hasTests = (Test-Path $TestFolderPath) ? (Get-ChildItem -Path $TestFolderPath -Recurse -Include 'deploy.test.*').count -gt 0 : $false
+    $testFolderPath = Join-Path $moduleRoot '.test'
+    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'deploy.test.*').count -gt 0 : $false
     if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
         # Handle [Deployment examples] section
         # ===================================
