@@ -445,7 +445,12 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     databases: [
       {
         backupLogRetentionDays: 14
-        backupWeeklyRetention: 'P4W'
+        backupLongTermRetentionPolicies: {
+          monthlyRetention: 'P6M'
+        }
+        backupShortTermRetentionPolicies: {
+          retentionDays: 14
+        }
         capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -565,7 +570,12 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "backupLogRetentionDays": 14,
-          "backupWeeklyRetention": "P4W",
+          "backupLongTermRetentionPolicies": {
+            "monthlyRetention": "P6M"
+          },
+          "backupShortTermRetentionPolicies": {
+            "retentionDays": 14
+          },
           "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
           "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",

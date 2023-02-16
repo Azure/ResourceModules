@@ -158,26 +158,11 @@ param isLedgerOn bool = false
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
 
-@description('Optional. Differential backup interval in hours.')
-param backupDifferentialInterval int = 24
+@description('Optional. The short term backup retention policies to create for the database.')
+param backupShortTermRetentionPolicies object = {}
 
-@description('Optional. Poin-in-time backup retention in days.')
-@maxValue(35)
-param backupLogRetentionDays int = 7
-
-@description('Optional. Monthly retention in ISO 8601 duration format.')
-param backupWeeklyRetention string = ''
-
-@description('Optional. Weekly retention in ISO 8601 duration format.')
-param backupMonthlyRetention string = ''
-
-@description('Optional. Backup week of year to keep for yearly retention.')
-@minValue(1)
-@maxValue(53)
-param backupYearlyRetentionWeek int = 1
-
-@description('Optional. Yearly retention in ISO 8601 duration format.')
-param backupYearlyRetention string = ''
+@description('Optional. The long term backup retention policies to create for the database.')
+param backupLongTermRetentionPolicies object = {}
 
 // The SKU object must be built in a variable
 // The alternative, 'null' as default values, leads to non-terminating deployments
@@ -249,8 +234,8 @@ module database_backupShortTermRetentionPolicies 'backupShortTermRetentionPolici
   params: {
     serverName: serverName
     databaseName: database.name
-    diffBackupIntervalInHours: backupDifferentialInterval
-    retentionDays: backupLogRetentionDays
+    diffBackupIntervalInHours: contains(backupShortTermRetentionPolicies, 'diffBackupIntervalInHours') ? backupShortTermRetentionPolicies.diffBackupIntervalInHours : 24
+    retentionDays: contains(backupShortTermRetentionPolicies, 'retentionDays') ? backupShortTermRetentionPolicies.retentionDays : 7
   }
 }
 
@@ -259,10 +244,10 @@ module database_backupLongTermRetentionPolicies 'backupLongTermRetentionPolicies
   params: {
     serverName: serverName
     databaseName: database.name
-    weeklyRetention: backupWeeklyRetention
-    monthlyRetention: backupMonthlyRetention
-    yearlyRetention: backupYearlyRetention
-    weekOfYear: backupYearlyRetentionWeek
+    weeklyRetention: contains(backupLongTermRetentionPolicies, 'weeklyRetention') ? backupLongTermRetentionPolicies.weeklyRetention : ''
+    monthlyRetention: contains(backupLongTermRetentionPolicies, 'monthlyRetention') ? backupLongTermRetentionPolicies.monthlyRetention : ''
+    yearlyRetention: contains(backupLongTermRetentionPolicies, 'yearlyRetention') ? backupLongTermRetentionPolicies.yearlyRetention : ''
+    weekOfYear: contains(backupLongTermRetentionPolicies, 'weekOfYear') ? backupLongTermRetentionPolicies.weekOfYear : 1
   }
 }
 
