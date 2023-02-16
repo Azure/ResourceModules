@@ -244,7 +244,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
   scope: database
 }
 
-module database_shortTermBackupRetention 'backupShortTermRetentionPolicies/deploy.bicep' = {
+module database_backupShortTermRetentionPolicies 'backupShortTermRetentionPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
   params: {
     serverName: serverName
