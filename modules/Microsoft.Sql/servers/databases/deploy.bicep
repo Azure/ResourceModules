@@ -158,6 +158,27 @@ param isLedgerOn bool = false
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
 
+@description('Optional. Differential backup interval in hours.')
+param backupDifferentialInterval int = 24
+
+@description('Optional. Poin-in-time backup retention in days.')
+@maxValue(35)
+param backupLogRetentionDays int = 7
+
+@description('Optional. Monthly retention in ISO 8601 duration format.')
+param backupWeeklyRetention string = ''
+
+@description('Optional. Weekly retention in ISO 8601 duration format.')
+param backupMonthlyRetention string = ''
+
+@description('Optional. Backup week of year to keep for yearly retention.')
+@minValue(1)
+@maxValue(53)
+param backupYearlyRetentionWeek int = 1
+
+@description('Optional. Yearly retention in ISO 8601 duration format.')
+param backupYearlyRetention string = ''
+
 // The SKU object must be built in a variable
 // The alternative, 'null' as default values, leads to non-terminating deployments
 var skuVar = union({
@@ -221,6 +242,34 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
     logs: diagnosticsLogs
   }
   scope: database
+}
+
+module database_shortTermBackupRetention 'backupShortTermRetentionPolicies/deploy.bicep' = if ((backupDifferentialInterval != 24) || (backupLogRetentionDays != 7)) {
+  name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
+  params: {
+    serverName: serverName
+    databaseName: name
+    diffBackupIntervalInHours: backupDifferentialInterval
+    retentionDays: backupLogRetentionDays
+  }
+  dependsOn: [
+    database
+  ]
+}
+
+module database_longTermBackupRetention 'backupLongTermRetentionPolicies/deploy.bicep' = if ((!empty(backupWeeklyRetention)) || (!empty(backupMonthlyRetention)) || (!empty(backupYearlyRetention))) {
+  name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
+  params: {
+    serverName: serverName
+    databaseName: name
+    weeklyRetention: backupWeeklyRetention
+    monthlyRetention: backupMonthlyRetention
+    yearlyRetention: backupYearlyRetention
+    weekOfYear: backupYearlyRetentionWeek
+  }
+  dependsOn: [
+    database
+  ]
 }
 
 @description('The name of the deployed database.')

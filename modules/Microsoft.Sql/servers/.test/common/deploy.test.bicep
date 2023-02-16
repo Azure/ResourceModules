@@ -116,6 +116,8 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/<<namePrefix>>-${serviceShort}/elasticPools/<<namePrefix>>-${serviceShort}-ep-001'
+        backupLogRetentionDays: 14
+        backupWeeklyRetention: 'P4W'
       }
     ]
     firewallRules: [

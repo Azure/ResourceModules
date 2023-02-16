@@ -180,6 +180,12 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
     elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    backupDifferentialInterval: contains(database, 'backupDifferentialInterval') ? database.backupDifferentialInterval : 24
+    backupLogRetentionDays: contains(database, 'backupLogRetentionDays') ? database.backupLogRetentionDays : 7
+    backupWeeklyRetention: contains(database, 'backupWeeklyRetention') ? database.backupWeeklyRetention : ''
+    backupMonthlyRetention: contains(database, 'backupMonthlyRetention') ? database.backupMonthlyRetention : ''
+    backupYearlyRetention: contains(database, 'backupYearlyRetention') ? database.backupYearlyRetention : ''
+    backupYearlyRetentionWeek: contains(database, 'backupYearlyRetentionWeek') ? database.backupYearlyRetentionWeek : 1
   }
   dependsOn: [
     server_elasticPools // Enables us to add databases to existing elastic pools
