@@ -25,9 +25,6 @@ param ipAddress string = ''
 @description('Optional. IsSecuritySite flag.')
 param isSecuritySite bool = false
 
-@description('Optional. The key for vpn-site that can be used for connections.')
-param siteKey string = ''
-
 @description('Optional. The Office365 breakout policy.')
 param o365Policy object = {}
 
@@ -72,7 +69,6 @@ resource vpnSite 'Microsoft.Network/vpnSites@2022-07-01' = {
     deviceProperties: !empty(deviceProperties) ? deviceProperties : null
     ipAddress: !empty(ipAddress) ? ipAddress : null
     isSecuritySite: isSecuritySite
-    siteKey: !empty(siteKey) ? siteKey : null
     o365Policy: !empty(o365Policy) ? o365Policy : null
     virtualWan: {
       id: virtualWanId

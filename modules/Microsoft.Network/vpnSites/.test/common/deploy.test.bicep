@@ -93,7 +93,6 @@ module testDeployment '../../deploy.bicep' = {
         default: true
       }
     }
-    siteKey: guid(serviceShort)
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
