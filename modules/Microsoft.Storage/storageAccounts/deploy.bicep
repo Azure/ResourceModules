@@ -38,6 +38,7 @@ param storageAccountKind string = 'StorageV2'
 param storageAccountSku string = 'Standard_GRS'
 
 @allowed([
+  'Premium'
   'Hot'
   'Cool'
 ])

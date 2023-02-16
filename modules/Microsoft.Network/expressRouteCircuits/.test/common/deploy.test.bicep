@@ -80,5 +80,6 @@ module testDeployment '../../deploy.bicep' = {
     ]
     skuFamily: 'MeteredData'
     skuTier: 'Standard'
+    allowClassicOperations: true
   }
 }

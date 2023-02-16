@@ -19,7 +19,7 @@ param location string = resourceGroup().location
 param roleAssignments array = []
 
 @description('Optional. The workspace\'s custom parameters.')
-param workspaceParameters object = {}
+param parameters object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -117,7 +117,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
   }
   properties: {
     managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupIdVar : managedResourceGroupId)
-    parameters: workspaceParameters
+    parameters: parameters
   }
 }
 

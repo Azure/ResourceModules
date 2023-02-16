@@ -66,6 +66,30 @@ param asn int = 65815
 @description('Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network.')
 param vpnClientAddressPoolPrefix string = ''
 
+@description('Optional. Configures this gateway to accept traffic from remote Virtual WAN networks.')
+param allowVirtualWanTraffic bool = false
+
+@description('Optional. Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity to Azure Virtual WAN.')
+param allowRemoteVnetTraffic bool = false
+
+@description('Optional. disableIPSecReplayProtection flag. Used for VPN Gateways.')
+param disableIPSecReplayProtection bool = false
+
+@description('Optional. Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. The DNS forwarding feature flag must be enabled on the current subscription.')
+param enableDnsForwarding bool = false
+
+@description('Optional. Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering.')
+param enablePrivateIpAddress bool = false
+
+@description('Optional. The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.')
+param gatewayDefaultSiteLocalNetworkGatewayId string = ''
+
+@description('Optional. NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only.')
+param natRules array = []
+
+@description('Optional. EnableBgpRouteTranslationForNat flag. Can only be used when "natRules" are enabled on the Virtual Network Gateway.')
+param enableBgpRouteTranslationForNat bool = false
+
 @description('Optional. Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided.')
 param clientRootCertData string = ''
 
@@ -291,6 +315,8 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
   ]
 } : null
 
+var enableReferencedModulesTelemetry = false
+
 // ================//
 // Deployments     //
 // ================//
@@ -310,7 +336,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 @batchSize(1)
 module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
   name: virtualGatewayPublicIpName
-  params :{
+  params: {
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
@@ -320,7 +346,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
     domainNameLabel: length(virtualGatewayPipNameVar) == length(domainNameLabel) ? domainNameLabel[index] : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
     publicIPAllocationMethod: gatewayPipAllocationMethod
@@ -333,20 +359,29 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     ipConfigurations: ipConfiguration
     activeActive: isActiveActiveValid
+    allowRemoteVnetTraffic: allowRemoteVnetTraffic
+    allowVirtualWanTraffic: allowVirtualWanTraffic
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
+    disableIPSecReplayProtection: disableIPSecReplayProtection
+    enableDnsForwarding: virtualNetworkGatewayType == 'ExpressRoute' ? enableDnsForwarding : null
+    enablePrivateIpAddress: enablePrivateIpAddress
+    enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
+    gatewayType: virtualNetworkGatewayType
+    gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
+      id: gatewayDefaultSiteLocalNetworkGatewayId
+    } : null
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
     }
-    gatewayType: virtualNetworkGatewayType
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
   }
@@ -354,6 +389,20 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08
     publicIPAddress
   ]
 }
+
+module virtualNetworkGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+  name: '${deployment().name}-NATRule-${index}'
+  params: {
+    name: natRule.name
+    virtualNetworkGatewayName: virtualNetworkGateway.name
+    externalMappings: contains(natRule, 'externalMappings') ? natRule.externalMappings : []
+    internalMappings: contains(natRule, 'internalMappings') ? natRule.internalMappings : []
+    ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
+    mode: contains(natRule, 'mode') ? natRule.mode : ''
+    type: contains(natRule, 'type') ? natRule.type : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'

@@ -58,7 +58,7 @@ function Set-ResourceTypesSection {
     foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
         # Validate if Reference URL is working
-        $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
+        $TemplatesBaseUrl = 'https://learn.microsoft.com/en-us/azure/templates'
         try {
             $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $resourceTypeObject.ApiVersion, $ResourceType
             $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
@@ -1566,8 +1566,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
 
-    $isTopLevelModule = $fullModuleIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
-    if ($SectionsToRefresh -contains 'Deployment examples' -and $isTopLevelModule) {
+    $hasTests = (Get-ChildItem -Path (Join-Path -Path $moduleRoot -ChildPath '.test') -Recurse -Include 'deploy.test.*').count -gt 0
+    if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
         # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{

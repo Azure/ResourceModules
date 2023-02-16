@@ -228,7 +228,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     name: schedule.name
     automationAccountName: automationAccount.name
     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
-    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    description: contains(schedule, 'description') ? schedule.description : ''
     expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
     frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
     interval: contains(schedule, 'interval') ? schedule.interval : 0
@@ -243,8 +243,8 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
   params: {
     name: runbook.name
     automationAccountName: automationAccount.name
-    runbookType: runbook.runbookType
-    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+    type: runbook.type
+    description: contains(runbook, 'description') ? runbook.description : ''
     uri: contains(runbook, 'uri') ? runbook.uri : ''
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location

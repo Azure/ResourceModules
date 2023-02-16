@@ -482,7 +482,7 @@ There are some constraints that needs to be considered when naming the deploymen
 
 While exceptions might be needed, the following guidance should be followed as much as possible:
 
-- When deploying more than one resource of the same referenced module is needed, we leverage loops using integer index and items in an array as per [Bicep loop syntax](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops#loop-syntax). In this case, we also use `-${index}` as a suffix of the deployment name to avoid race condition:
+- When deploying more than one resource of the same referenced module is needed, we leverage loops using integer index and items in an array as per [Bicep loop syntax](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/loops#loop-syntax). In this case, we also use `-${index}` as a suffix of the deployment name to avoid race condition:
 
   ```bicep
   module symbolic_name 'path/to/referenced/module/deploy.bicep' = [for (<item>, <index>) in <collection>: {
@@ -546,7 +546,7 @@ Its primary components are in order:
 - A **Parameters** section with a table containing all parameters, their type, default and allowed values if any, and their description.
 - Optionally, a **Parameter Usage** section that shows how to use complex structures such as parameter objects or array of objects, e.g., roleAssignments, tags, privateEndpoints.
 - An **Outputs** section with a table that describes all outputs the module template returns.
-- A **Template references** section listing relevant resources [Azure resource reference](https://docs.microsoft.com/en-us/azure/templates).
+- A **Template references** section listing relevant resources [Azure resource reference](https://learn.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations:
 
@@ -560,7 +560,7 @@ Module test files in CARML are implemented using comprehensive `.bicep` test fil
 Module test files follow these general guidelines:
 
 - A module should have as many module test files as it needs to evaluate all parts of the module's functionality.
-- Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+- Sensitive data should not be stored inside the module test file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [Key Vault reference](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
 
 Test folder guidelines:
 

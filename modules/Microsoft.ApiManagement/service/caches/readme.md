@@ -13,7 +13,7 @@ This module deploys an API Management Service Cache.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
+| `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
 
 ## Parameters
 
@@ -35,7 +35,7 @@ This module deploys an API Management Service Cache.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cacheDescription` | string | `''` | Cache description. |
+| `description` | string | `''` | Cache description. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 

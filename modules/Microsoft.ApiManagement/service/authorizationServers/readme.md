@@ -13,7 +13,7 @@ This module deploys API Management Service Authorization Servers.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/authorizationServers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/authorizationServers) |
+| `Microsoft.ApiManagement/service/authorizationServers` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/authorizationServers) |
 
 ### Resource dependency
 
@@ -28,8 +28,8 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `authorizationEndpoint` | string | OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>. |
-| `clientId` | secureString | Client or app ID registered with this authorization server. |
-| `clientSecret` | secureString | Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
+| `clientId` | securestring | Client or app ID registered with this authorization server. |
+| `clientSecret` | securestring | Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 | `grantTypes` | array | Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials. |
 | `name` | string | Identifier of the authorization server. |
 
