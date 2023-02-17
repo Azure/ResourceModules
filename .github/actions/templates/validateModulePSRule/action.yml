@@ -129,6 +129,9 @@ runs:
       if: always()
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output '::group::Output to GitHub job summaries'
+
         $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
 
         if (-not (Test-Path $mdPSRuleOutputFilePath)) {
@@ -139,3 +142,4 @@ runs:
           Write-Verbose ('Successfully printed out file [{0}] to Job Summaries' -f $mdPSRuleOutputFilePath) -Verbose
         }
 
+        Write-Output '::endgroup::'
