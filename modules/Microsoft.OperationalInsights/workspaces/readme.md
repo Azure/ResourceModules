@@ -4,11 +4,11 @@ This template deploys a log analytics workspace.
 
 ## Navigation
 
-- [Resource types](#resource-types)
-- [Parameters](#parameters)
-- [Outputs](#outputs)
-- [Cross-referenced modules](#cross-referenced-modules)
-- [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -70,6 +70,7 @@ This template deploys a log analytics workspace.
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
+
 
 ### Parameter Usage: `gallerySolutions`
 
