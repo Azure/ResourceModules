@@ -83,5 +83,9 @@ module testDeployment '../../deploy.bicep' = {
     ]
     workspaceDescription: 'This is my first AVD Workspace'
     workspaceFriendlyName: 'My first AVD Workspace'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
