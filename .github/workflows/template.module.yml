@@ -48,10 +48,10 @@ jobs:
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
   #########################
-  #   PsRule validation   #
+  #   PSRule validation   #
   #########################
   job_psrule_test:
-    name: 'PsRule pre-flight validation'
+    name: 'PSRule pre-flight validation'
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
