@@ -132,7 +132,7 @@ runs:
         # Grouping task logs
         Write-Output '::group::Output to GitHub job summaries'
 
-        $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
+        $mdPSRuleOutputFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath}}-PSRule-output.md'
 
         if (-not (Test-Path $mdPSRuleOutputFilePath)) {
           Write-Warning ('Input file [{0}] not found' -f $mdPSRuleOutputFilePath)
