@@ -180,8 +180,8 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
     elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    backupShortTermRetentionPolicies: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
-    backupLongTermRetentionPolicies: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
+    backupShortTermRetentionPolicy: contains(database, 'backupShortTermRetentionPolicy') ? database.backupShortTermRetentionPolicy : {}
+    backupLongTermRetentionPolicy: contains(database, 'backupLongTermRetentionPolicy') ? database.backupLongTermRetentionPolicy : {}
   }
   dependsOn: [
     server_elasticPools // Enables us to add databases to existing elastic pools

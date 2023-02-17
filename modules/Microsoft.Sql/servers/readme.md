@@ -445,10 +445,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     databases: [
       {
         backupLogRetentionDays: 14
-        backupLongTermRetentionPolicies: {
+        backupLongTermRetentionPolicy: {
           monthlyRetention: 'P6M'
         }
-        backupShortTermRetentionPolicies: {
+        backupShortTermRetentionPolicy: {
           retentionDays: 14
         }
         capacity: 0
@@ -570,10 +570,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       "value": [
         {
           "backupLogRetentionDays": 14,
-          "backupLongTermRetentionPolicies": {
+          "backupLongTermRetentionPolicy": {
             "monthlyRetention": "P6M"
           },
-          "backupShortTermRetentionPolicies": {
+          "backupShortTermRetentionPolicy": {
             "retentionDays": 14
           },
           "capacity": 0,
