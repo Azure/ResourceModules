@@ -2,14 +2,8 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Conditional. The name of the parent blob service. Required if the template is used in a standalone deployment.')
-param blobServicesName string = 'default'
-
 @description('Conditional. The name of the parent container to apply the policy to. Required if the template is used in a standalone deployment.')
 param containerName string
-
-@description('Optional. Name of the immutable policy.')
-param name string = 'default'
 
 @description('Optional. The immutability period for the blobs in the container since the policy creation, in days.')
 param immutabilityPeriodSinceCreationInDays int = 365
@@ -36,7 +30,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 
   resource blobServices 'blobServices@2021-09-01' existing = {
-    name: blobServicesName
+    name: 'default'
 
     resource container 'containers@2021-09-01' existing = {
       name: containerName
@@ -45,7 +39,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
 }
 
 resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2021-09-01' = {
-  name: name
+  name: 'default'
   parent: storageAccount::blobServices::container
   properties: {
     immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays

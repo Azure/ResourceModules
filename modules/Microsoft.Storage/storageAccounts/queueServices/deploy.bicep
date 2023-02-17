@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the queue service.')
-param name string = 'default'
-
 @description('Optional. Queues to create.')
 param queues array = []
 
@@ -48,7 +45,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+param diagnosticSettingsName string = 'default-diagnosticSettings'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -99,7 +96,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
 }
 
 resource queueServices 'Microsoft.Storage/storageAccounts/queueServices@2021-09-01' = {
-  name: name
+  name: 'default'
   parent: storageAccount
   properties: {}
 }
@@ -121,7 +118,6 @@ module queueServices_queues 'queues/deploy.bicep' = [for (queue, index) in queue
   name: '${deployment().name}-Queue-${index}'
   params: {
     storageAccountName: storageAccount.name
-    queueServicesName: queueServices.name
     name: queue.name
     metadata: contains(queue, 'metadata') ? queue.metadata : {}
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []

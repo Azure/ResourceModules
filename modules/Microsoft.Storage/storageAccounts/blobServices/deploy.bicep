@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the blob service.')
-param name string = 'default'
-
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
 param deleteRetentionPolicy bool = true
 
@@ -57,7 +54,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+param diagnosticSettingsName string = 'default-diagnosticSettings'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -108,7 +105,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
 }
 
 resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-09-01' = {
-  name: name
+  name: 'default'
   parent: storageAccount
   properties: {
     deleteRetentionPolicy: {
@@ -136,7 +133,6 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
   name: '${deployment().name}-Container-${index}'
   params: {
     storageAccountName: storageAccount.name
-    blobServicesName: blobServices.name
     name: container.name
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
