@@ -444,7 +444,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
       {
-        backupLogRetentionDays: 14
         backupLongTermRetentionPolicy: {
           monthlyRetention: 'P6M'
         }
