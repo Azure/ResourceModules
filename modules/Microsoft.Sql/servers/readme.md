@@ -568,7 +568,6 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     "databases": {
       "value": [
         {
-          "backupLogRetentionDays": 14,
           "backupLongTermRetentionPolicy": {
             "monthlyRetention": "P6M"
           },
