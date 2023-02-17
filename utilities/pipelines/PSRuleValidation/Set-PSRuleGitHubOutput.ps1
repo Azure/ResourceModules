@@ -42,7 +42,7 @@ function Set-PSRuleGitHubOutput {
     ###########################################
 
     if (-not (Test-Path $inputFilePath)) {
-        Write-Warning "Input File [$inputFilePath] not found"
+        Write-Warning ('Input File [{0}] not found' -f $inputFilePath)
         return ''
     } else {
 

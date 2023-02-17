@@ -142,8 +142,8 @@ runs:
           $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
 
           if (-not (Test-Path $mdPSRuleOutputFilePath)) {
-              Write-Warning "Input File [$inputFilePath] not found"
-              return ''
+            Write-Warning ('Input File [{0}] not found' -f $mdPSRuleOutputFilePath)
+            return ''
           } else {
             Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
           }
