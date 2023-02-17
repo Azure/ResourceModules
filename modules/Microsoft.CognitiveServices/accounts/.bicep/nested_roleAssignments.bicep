@@ -74,7 +74,7 @@ var builtInRoleNames = {
 }
 
 resource account 'Microsoft.CognitiveServices/accounts@2017-04-18' existing = {
-  name: last(split(resourceId, '/'))
+  name: last(split(resourceId, '/'))!
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
