@@ -132,20 +132,18 @@ runs:
 
     - name: 'Output to GitHub job summaries'
       if: always()
-      uses: azure/powershell@v1
-      with:
-        azPSVersion: 'latest'
-        inlineScript: |
-          # Grouping task logs
-          Write-Output '::group::Output to GitHub job summaries'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output '::group::Output to GitHub job summaries'
 
-          $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
+        $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
 
-          if (-not (Test-Path $mdPSRuleOutputFilePath)) {
-            Write-Warning ('Input File [{0}] not found' -f $mdPSRuleOutputFilePath)
-            return ''
-          } else {
-            Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
-          }
+        if (-not (Test-Path $mdPSRuleOutputFilePath)) {
+          Write-Warning ('Input File [{0}] not found' -f $mdPSRuleOutputFilePath)
+          return ''
+        } else {
+          Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
+        }
 
-          Write-Output '::endgroup::'
+        Write-Output '::endgroup::'
