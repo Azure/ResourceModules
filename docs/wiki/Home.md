@@ -111,10 +111,10 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 [githubdocs]: https://docs.github.com/
 [githubissues]: https://github.com/Azure/Modules/issues
-[azureresourcemanager]: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview
+[azureresourcemanager]: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview
 [bicep]: https://github.com/Azure/bicep
 
 <!-- Docs -->
 
-[microsoftazuredocs]: https://docs.microsoft.com/en-us/azure/
-[powershelldocs]: https://docs.microsoft.com/en-us/powershell/
+[microsoftazuredocs]: https://learn.microsoft.com/en-us/azure/
+[powershelldocs]: https://learn.microsoft.com/en-us/powershell/

@@ -58,6 +58,13 @@ param tier string = 'Standard'
 @description('Optional. List of private IP addresses/IP address ranges to not be SNAT.')
 param privateRanges array = []
 
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. The operation mode for automatically learning private ranges to not be SNAT.')
+param autoLearnPrivateRanges string = 'Disabled'
+
 @description('Optional. The operation mode for Threat Intel.')
 @allowed([
   'Alert'
@@ -65,6 +72,9 @@ param privateRanges array = []
   'Off'
 ])
 param threatIntelMode string = 'Off'
+
+@description('Optional. A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port 11000-11999.')
+param allowSqlRedirect bool = false
 
 @description('Optional. List of FQDNs for the ThreatIntel Allowlist.')
 param fqdns array = []
@@ -106,7 +116,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -140,8 +150,12 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-08-01' = {
       tier: tier
     }
     snat: !empty(privateRanges) ? {
+      autoLearnPrivateRanges: autoLearnPrivateRanges
       privateRanges: privateRanges
     } : null
+    sql: {
+      allowSqlRedirect: allowSqlRedirect
+    }
     threatIntelMode: threatIntelMode
     threatIntelWhitelist: {
       fqdns: fqdns

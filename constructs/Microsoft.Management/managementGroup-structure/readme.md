@@ -112,7 +112,7 @@ Describes the Management groups to be created. Each management group is represen
 
 ## Considerations
 
-This template is using a **Tenant level deployment**, meaning the user/principal deploying it needs to have the [proper access](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-tenant#required-access)
+This template is using a **Tenant level deployment**, meaning the user/principal deploying it needs to have the [proper access](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-to-tenant#required-access)
 
 > If owner access is excessive, the following rights roles will grant enough rights:
 > **Automation Job Operator** at **tenant** level (scope '/')<br>

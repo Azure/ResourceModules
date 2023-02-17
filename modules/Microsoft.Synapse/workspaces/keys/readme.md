@@ -14,7 +14,7 @@ This module deploys a Synapse Workspaces Key.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
+| `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
 
 ## Parameters
 
@@ -50,7 +50,7 @@ This module deploys a Synapse Workspaces Key.
 
 ## Template references
 
-- [Workspaces/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
+- [Workspaces/Keys](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
 
 ## Cross-referenced modules
 

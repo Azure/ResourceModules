@@ -13,7 +13,7 @@ This module deploys a Custom Domain into a Static Site.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/staticSites/customDomains` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/staticSites/customDomains) |
+| `Microsoft.Web/staticSites/customDomains` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/staticSites/customDomains) |
 
 ## Parameters
 

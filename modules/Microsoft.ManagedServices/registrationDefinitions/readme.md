@@ -19,8 +19,8 @@ remote/managing tenant.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
-| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
+| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
+| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
 
 ## Parameters
 
@@ -128,7 +128,7 @@ This module can be deployed both at subscription and resource group level:
 ### Permissions required to create delegations
 
 This deployment must be done by a non-guest account in the customer's tenant which has a role with the `Microsoft.Authorization/roleAssignments/write` permission,
-such as [`Owner`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) for the subscription being onboarded (or which contains the resource groups that are being onboarded).
+such as [`Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) for the subscription being onboarded (or which contains the resource groups that are being onboarded).
 
 If the subscription was created through the Cloud Solution Provider (CSP) program, any user who has the AdminAgent role in your service provider tenant can perform the deployment.
 
@@ -140,14 +140,14 @@ If the subscription was created through the Cloud Solution Provider (CSP) progra
 #### From customer side
 
 Users in the customer's tenant who have a role with the `Microsoft.Authorization/roleAssignments/write` permission, such as
-[`Owner`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) can remove service provider
+[`Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) can remove service provider
 access to that subscription (or to resource groups in that subscription). To do so, the user can go to the Service providers
 page of the Azure portal and delete the delegation.
 
 #### From managing tenant side
 
 Users in a managing tenant can remove access to delegated resources if they were granted the
-[`Managed Services Registration Assignment Delete Role`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#managed-services-registration-assignment-delete-role)
+[`Managed Services Registration Assignment Delete Role`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#managed-services-registration-assignment-delete-role)
 for the customer's resources. If this role was not assigned to any service provider users, the delegation can **only** be
 removed by a user in the customer's tenant.
 

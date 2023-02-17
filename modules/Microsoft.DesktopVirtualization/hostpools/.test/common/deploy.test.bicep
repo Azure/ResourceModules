@@ -38,7 +38,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -66,9 +66,9 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    hostpoolDescription: 'My first AVD Host Pool'
-    hostpoolFriendlyName: 'AVDv2'
-    hostpoolType: 'Pooled'
+    description: 'My first AVD Host Pool'
+    friendlyName: 'AVDv2'
+    type: 'Pooled'
     loadBalancerType: 'BreadthFirst'
     location: location
     lock: 'CanNotDelete'
@@ -100,9 +100,26 @@ module testDeployment '../../deploy.bicep' = {
         ram: 8
       }
     }
+<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
+=======
+    agentUpdate: {
+      type: 'Scheduled'
+      useSessionHostLocalTime: false
+      maintenanceWindowTimeZone: 'Alaskan Standard Time'
+      maintenanceWindows: [
+        {
+          hour: 7
+          dayOfWeek: 'Friday'
+        }
+        {
+          hour: 8
+          dayOfWeek: 'Saturday'
+        }
+      ]
+>>>>>>> 256b4b10ef1f210ecc80876c2d90dcdc5125d3bf
     }
   }
 }

@@ -59,9 +59,27 @@ module testDeployment '../../deploy.bicep' = {
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
     version: '0.5.2'
+<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+=======
+    fluxConfigurations: [
+      {
+        namespace: 'flux-system'
+        scope: 'cluster'
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
+        }
+      }
+    ]
+>>>>>>> 256b4b10ef1f210ecc80876c2d90dcdc5125d3bf
   }
 }
