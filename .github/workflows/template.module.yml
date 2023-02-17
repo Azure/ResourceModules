@@ -29,8 +29,8 @@ jobs:
   #   Static validation   #
   #########################
   job_module_static_validation:
-    runs-on: ubuntu-20.04
     name: 'Static validation'
+    runs-on: ubuntu-20.04
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
     steps:
       - name: 'Checkout'
@@ -47,12 +47,36 @@ jobs:
           modulePath: '${{ inputs.modulePath }}'
           moduleTestFilePath: '${{ env.moduleTestFilePath }}'
 
+  #########################
+  #   PsRule validation   #
+  #########################
+  job_psrule_test:
+    name: 'PsRule pre-flight validation'
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        moduleTestFilePaths: ${{ fromJson(inputs.moduleTestFilePaths) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: Set PSRule validation
+        uses: ./.github/actions/templates/validateModulePSRule
+        with:
+          moduleTestFilePath: ${{ matrix.moduleTestFilePaths }}
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+
   #############################
   #   Deployment validation   #
   #############################
   job_module_deploy_validation:
-    runs-on: ubuntu-20.04
     name: 'Deployment validation'
+    runs-on: ubuntu-20.04
     if: |
       !cancelled() &&
       (fromJson(inputs.workflowInput)).deploymentValidation == 'true' &&
@@ -86,8 +110,8 @@ jobs:
   ##################
   job_publish_module:
     name: 'Publishing'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || fromJson(inputs.workflowInput).prerelease == 'true'
     runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || fromJson(inputs.workflowInput).prerelease == 'true'
     needs:
       - job_module_deploy_validation
     steps:
