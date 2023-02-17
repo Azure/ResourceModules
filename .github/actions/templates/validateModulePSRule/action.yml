@@ -118,17 +118,12 @@ runs:
             skipPassedRulesReport   = $false
           }
 
-          Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
+          Write-Verbose "Set PS Rule Output with following parameters:`n $($ParameterInput | ConvertTo-Json -Depth 10)" -Verbose
 
           # Invoke Set PSRule Output Functionality
           $null = Set-PSRuleGitHubOutput @ParameterInput
 
           Write-Output '::endgroup::'
-
-    # - name: Output to GitHub job summaries
-    #   if: always()
-    #   shell: pwsh
-    #   run: Get-Content '${{ inputs.templateFilePath}}-PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY
 
     - name: 'Output to GitHub job summaries'
       if: always()
@@ -140,10 +135,11 @@ runs:
         $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
 
         if (-not (Test-Path $mdPSRuleOutputFilePath)) {
-          Write-Warning ('Input File [{0}] not found' -f $mdPSRuleOutputFilePath)
+          Write-Warning ('Input file [{0}] not found' -f $mdPSRuleOutputFilePath)
           return ''
         } else {
           Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
+          Write-Verbose ('Successfully printed out file [{0}] to Job Summaries' -f $mdPSRuleOutputFilePath)
         }
 
         Write-Output '::endgroup::'
