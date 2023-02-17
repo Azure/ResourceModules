@@ -92,12 +92,12 @@ runs:
     # Run analysis by using the PSRule GitHub action.
     - name: Run PSRule analysis
       uses: microsoft/ps-rule@v2.4.0
-      # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
+      continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
       with:
         modules: 'PSRule.Rules.Azure'
-        inputPath: '${{ inputs.templateFilePath}}'
+        inputPath: '${{ inputs.templateFilePath}}/'
         outputFormat: Csv
-        outputPath: '${{ inputs.templateFilePath}}-output.csv'
+        outputPath: '${{ inputs.templateFilePath}}/PSRule-output.csv'
 
     - name: 'Parse CSV content'
       if: always()
@@ -113,8 +113,8 @@ runs:
 
           # Populate parameter input
           $ParameterInput = @{
-            inputFilePath           = '${{ inputs.templateFilePath}}-output.csv'
-            outputFilePath          = '${{ inputs.templateFilePath}}-output.md'
+            inputFilePath           = '${{ inputs.templateFilePath}}/PSRule-output.csv'
+            outputFilePath          = '${{ inputs.templateFilePath}}/PSRule-output.md'
             skipPassedRulesReport   = $false
           }
 
@@ -128,4 +128,4 @@ runs:
     - name: Output to GitHub job summaries
       if: always()
       shell: pwsh
-      run: Get-Content '${{ inputs.templateFilePath}}-output.md' >> $env:GITHUB_STEP_SUMMARY
+      run: Get-Content '${{ inputs.templateFilePath}}/PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY

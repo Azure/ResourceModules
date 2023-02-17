@@ -57,7 +57,6 @@ jobs:
       fail-fast: false
       matrix:
         moduleTestFilePaths: ${{ fromJson(inputs.moduleTestFilePaths) }}
-    continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -84,7 +83,7 @@ jobs:
       needs.job_module_static_validation.result != 'failure'
     needs:
       - job_module_static_validation
-      - job_psrule_test
+      # - job_psrule_test # Ignoring dependency whilst PSRule gets bedded in, in this project
     strategy:
       fail-fast: false
       matrix:
