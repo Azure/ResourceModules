@@ -263,6 +263,15 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
+@description('Optional. Backend settings of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
+param backendSettingsCollection array = []
+
+@description('Optional. Listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
+param listeners array = []
+
+@description('Optional. Routing rules of the application gateway resource.')
+param routingRules array = []
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -291,6 +300,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' =
       } : null
       backendAddressPools: backendAddressPools
       backendHttpSettingsCollection: backendHttpSettingsCollection
+      backendSettingsCollection: backendSettingsCollection
       customErrorConfigurations: customErrorConfigurations
       enableHttp2: enableHttp2
       firewallPolicy: !empty(firewallPolicyId) ? {
@@ -306,10 +316,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' =
       }
       httpListeners: httpListeners
       loadDistributionPolicies: loadDistributionPolicies
+      listeners: listeners
       privateLinkConfigurations: privateLinkConfigurations
       probes: probes
       redirectConfigurations: redirectConfigurations
       requestRoutingRules: requestRoutingRules
+      routingRules: routingRules
       rewriteRuleSets: rewriteRuleSets
       sku: {
         name: sku

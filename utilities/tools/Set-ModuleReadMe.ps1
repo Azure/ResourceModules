@@ -1034,7 +1034,7 @@ function Set-DeploymentExamplesSection {
                 }
 
                 # Remove any dependsOn as it it test specific
-                if ($detected = ($formattedBicepExample | Select-String '^\s*dependsOn:\s*\[\s*$' | ForEach-Object { $_.LineNumber - 1 })) {
+                if ($detected = ($formattedBicepExample | Select-String "^\s{$moduleDeploymentPropertyIndent}dependsOn:\s*\[\s*$" | ForEach-Object { $_.LineNumber - 1 })) {
                     $dependsOnStartIndex = $detected[0]
 
                     # Find out where the 'dependsOn' ends
@@ -1566,7 +1566,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-CrossReferencesSection @inputObject
     }
 
-    $hasTests = (Get-ChildItem -Path (Join-Path -Path $moduleRoot -ChildPath '.test') -Recurse -Include 'deploy.test.*').count -gt 0
+    $testFolderPath = Join-Path $moduleRoot '.test'
+    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'deploy.test.*').count -gt 0 : $false
     if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
         # Handle [Deployment examples] section
         # ===================================

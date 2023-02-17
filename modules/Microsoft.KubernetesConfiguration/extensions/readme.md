@@ -33,8 +33,8 @@ For Details see [Prerequisites](https://learn.microsoft.com/en-us/azure/azure-ar
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
-| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
+| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
 
 ## Parameters
 
