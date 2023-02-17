@@ -1,28 +1,28 @@
 <#
-    .SYNOPSIS
-    Create image artifacts from a given image template
+.SYNOPSIS
+Create image artifacts from a given image template
 
-    .DESCRIPTION
-    Create image artifacts from a given image template
+.DESCRIPTION
+Create image artifacts from a given image template
 
-    .PARAMETER ImageTemplateName
-    Mandatory. The name of the image template
+.PARAMETER ImageTemplateName
+Mandatory. The name of the image template
 
-    .PARAMETER ImageTemplateResourceGroup
-    Mandatory. The resource group name of the image template
+.PARAMETER ImageTemplateResourceGroup
+Mandatory. The resource group name of the image template
 
-    .PARAMETER NoWait
-    Optional. Run the command asynchronously
+.PARAMETER NoWait
+Optional. Run the command asynchronously
 
-    .EXAMPLE
-    Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg'
+.EXAMPLE
+./Start-ImageTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg'
 
-    Create image artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and wait for their completion
+Create image artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and wait for their completion
 
-    .EXAMPLE
-    Start-AzImageBuilderTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -NoWait
+.EXAMPLE
+./Start-ImageTemplate -ImageTemplateName 'vhd-img-template-001-2022-07-29-15-54-01' -ImageTemplateResourceGroup 'validation-rg' -NoWait
 
-    Start the creation of artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and do not wait for their completion
+Start the creation of artifacts from image template 'vhd-img-template-001-2022-07-29-15-54-01' in resource group 'validation-rg' and do not wait for their completion
 #>
 
 [CmdletBinding(SupportsShouldProcess)]
@@ -62,8 +62,8 @@ begin {
 process {
     # Create image artifacts from existing image template
     $resourceActionInputObject = @{
-        ImageTemplateName   = $imageTemplateName
-        ResourceGroupName   = $imageTemplateResourceGroup
+        ImageTemplateName = $imageTemplateName
+        ResourceGroupName = $imageTemplateResourceGroup
     }
     if ($NoWait) {
         $resourceActionInputObject['NoWait'] = $true
