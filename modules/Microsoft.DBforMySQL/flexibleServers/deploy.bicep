@@ -260,13 +260,24 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+//resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+//  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+//  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+//}
+
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 
   resource cMKKey 'keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
     name: cMKKeyName
   }
+}
+
+//resource geoBackupCMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
+//  name: '${last(split(geoBackupCMKKeyVaultResourceId, '/'))}/${geoBackupCMKKeyName}'
+//  scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
+//}
 
 resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
   name: last(split(geoBackupCMKKeyVaultResourceId, '/'))
@@ -300,9 +311,9 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     createMode: createMode
     dataEncryption: !empty(cMKKeyName) ? {
       type: 'AzureKeyVault'
-      geoBackupKeyURI: geoRedundantBackup == 'Enabled' ? (!empty(geoBackupCMKKeyVersion) ? '${geoBackupCMKKeyVaultKey.properties.keyUri}/${geoBackupCMKKeyVersion}' : geoBackupCMKKeyVaultKey.properties.keyUriWithVersion) : null
+      geoBackupKeyURI: geoRedundantBackup == 'Enabled' ? (!empty(geoBackupCMKKeyVersion) ? '${geoBackupCMKKeyVault::geoBackupCMKKey.properties.keyUri}/${geoBackupCMKKeyVersion}' : geoBackupCMKKeyVault::geoBackupCMKKey.properties.keyUriWithVersion) : null
       geoBackupUserAssignedIdentityId: geoRedundantBackup == 'Enabled' ? geoBackupCMKUserAssignedIdentityResourceId : null
-      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
+      primaryKeyURI: !empty(cMKKeyVersion) ? '${cMKKeyVault::cMKKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVault::cMKKey.properties.keyUriWithVersion
       primaryUserAssignedIdentityId: cMKUserAssignedIdentityResourceId
     } : null
     highAvailability: {
