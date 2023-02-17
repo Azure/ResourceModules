@@ -51,7 +51,7 @@ jobs:
   #   PSRule validation   #
   #########################
   job_psrule_test:
-    name: 'PSRule pre-flight validation'
+    name: 'PSRule validation'
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false

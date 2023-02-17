@@ -12,7 +12,7 @@ env:
 
 jobs:
   psrule:
-    name: PSRule
+    name: 'PSRule validation'
     runs-on: ubuntu-20.04
     steps:
       # Analyze module library with PSRule
