@@ -387,5 +387,9 @@ module testDeployment '../../deploy.bicep' = {
       ruleSetType: 'OWASP'
       ruleSetVersion: '3.0'
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
