@@ -50,7 +50,7 @@ module testDeployment '../../deploy.bicep' = {
     dataSources: {
       performanceCounters: [
         {
-          name: 'perfCounterDataSource10'
+          name: 'perfCounterDataSource60'
           samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
@@ -75,15 +75,6 @@ module testDeployment '../../deploy.bicep' = {
             'Memory(*)\\% Available Swap Space'
             'Memory(*)\\Used MBytes Swap Space'
             'Memory(*)\\% Used Swap Space'
-          ]
-        }
-        {
-          name: 'perfCounterDataSource15'
-          samplingFrequencyInSeconds: 15
-          streams: [
-            'Microsoft-InsightsMetrics'
-          ]
-          counterSpecifiers: [
             'Logical Disk(*)\\% Free Inodes'
             'Logical Disk(*)\\% Used Inodes'
             'Logical Disk(*)\\Free Megabytes'

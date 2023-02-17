@@ -21,7 +21,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `Microsoft.Compute/virtualMachines` | [2021-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines) |
 | `Microsoft.Compute/virtualMachines/extensions` | [2021-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/networkInterfaces` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkInterfaces) |
+| `Microsoft.Network/networkInterfaces` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkInterfaces) |
 | `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 

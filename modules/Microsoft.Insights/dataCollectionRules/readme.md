@@ -806,34 +806,6 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       performanceCounters: [
         {
           counterSpecifiers: [
-            'Memory(*)\\% Available Memory'
-            'Memory(*)\\% Available Swap Space'
-            'Memory(*)\\% Used Memory'
-            'Memory(*)\\% Used Swap Space'
-            'Memory(*)\\Available MBytes Memory'
-            'Memory(*)\\Available MBytes Swap'
-            'Memory(*)\\Page Reads/sec'
-            'Memory(*)\\Page Writes/sec'
-            'Memory(*)\\Pages/sec'
-            'Memory(*)\\Used MBytes Swap Space'
-            'Memory(*)\\Used Memory MBytes'
-            'Processor(*)\\% DPC Time'
-            'Processor(*)\\% Idle Time'
-            'Processor(*)\\% Interrupt Time'
-            'Processor(*)\\% IO Wait Time'
-            'Processor(*)\\% Nice Time'
-            'Processor(*)\\% Privileged Time'
-            'Processor(*)\\% Processor Time'
-            'Processor(*)\\% User Time'
-          ]
-          name: 'perfCounterDataSource10'
-          samplingFrequencyInSeconds: 60
-          streams: [
-            'Microsoft-InsightsMetrics'
-          ]
-        }
-        {
-          counterSpecifiers: [
             'Logical Disk(*)\\% Free Inodes'
             'Logical Disk(*)\\% Free Space'
             'Logical Disk(*)\\% Used Inodes'
@@ -845,6 +817,17 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             'Logical Disk(*)\\Disk Writes/sec'
             'Logical Disk(*)\\Free Megabytes'
             'Logical Disk(*)\\Logical Disk Bytes/sec'
+            'Memory(*)\\% Available Memory'
+            'Memory(*)\\% Available Swap Space'
+            'Memory(*)\\% Used Memory'
+            'Memory(*)\\% Used Swap Space'
+            'Memory(*)\\Available MBytes Memory'
+            'Memory(*)\\Available MBytes Swap'
+            'Memory(*)\\Page Reads/sec'
+            'Memory(*)\\Page Writes/sec'
+            'Memory(*)\\Pages/sec'
+            'Memory(*)\\Used MBytes Swap Space'
+            'Memory(*)\\Used Memory MBytes'
             'Network(*)\\Total Bytes'
             'Network(*)\\Total Bytes Received'
             'Network(*)\\Total Bytes Transmitted'
@@ -853,9 +836,17 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             'Network(*)\\Total Packets Transmitted'
             'Network(*)\\Total Rx Errors'
             'Network(*)\\Total Tx Errors'
+            'Processor(*)\\% DPC Time'
+            'Processor(*)\\% Idle Time'
+            'Processor(*)\\% Interrupt Time'
+            'Processor(*)\\% IO Wait Time'
+            'Processor(*)\\% Nice Time'
+            'Processor(*)\\% Privileged Time'
+            'Processor(*)\\% Processor Time'
+            'Processor(*)\\% User Time'
           ]
-          name: 'perfCounterDataSource15'
-          samplingFrequencyInSeconds: 15
+          name: 'perfCounterDataSource60'
+          samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
           ]
@@ -1001,34 +992,6 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
         "performanceCounters": [
           {
             "counterSpecifiers": [
-              "Memory(*)\\% Available Memory",
-              "Memory(*)\\% Available Swap Space",
-              "Memory(*)\\% Used Memory",
-              "Memory(*)\\% Used Swap Space",
-              "Memory(*)\\Available MBytes Memory",
-              "Memory(*)\\Available MBytes Swap",
-              "Memory(*)\\Page Reads/sec",
-              "Memory(*)\\Page Writes/sec",
-              "Memory(*)\\Pages/sec",
-              "Memory(*)\\Used MBytes Swap Space",
-              "Memory(*)\\Used Memory MBytes",
-              "Processor(*)\\% DPC Time",
-              "Processor(*)\\% Idle Time",
-              "Processor(*)\\% Interrupt Time",
-              "Processor(*)\\% IO Wait Time",
-              "Processor(*)\\% Nice Time",
-              "Processor(*)\\% Privileged Time",
-              "Processor(*)\\% Processor Time",
-              "Processor(*)\\% User Time"
-            ],
-            "name": "perfCounterDataSource10",
-            "samplingFrequencyInSeconds": 60,
-            "streams": [
-              "Microsoft-InsightsMetrics"
-            ]
-          },
-          {
-            "counterSpecifiers": [
               "Logical Disk(*)\\% Free Inodes",
               "Logical Disk(*)\\% Free Space",
               "Logical Disk(*)\\% Used Inodes",
@@ -1040,6 +1003,17 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
               "Logical Disk(*)\\Disk Writes/sec",
               "Logical Disk(*)\\Free Megabytes",
               "Logical Disk(*)\\Logical Disk Bytes/sec",
+              "Memory(*)\\% Available Memory",
+              "Memory(*)\\% Available Swap Space",
+              "Memory(*)\\% Used Memory",
+              "Memory(*)\\% Used Swap Space",
+              "Memory(*)\\Available MBytes Memory",
+              "Memory(*)\\Available MBytes Swap",
+              "Memory(*)\\Page Reads/sec",
+              "Memory(*)\\Page Writes/sec",
+              "Memory(*)\\Pages/sec",
+              "Memory(*)\\Used MBytes Swap Space",
+              "Memory(*)\\Used Memory MBytes",
               "Network(*)\\Total Bytes",
               "Network(*)\\Total Bytes Received",
               "Network(*)\\Total Bytes Transmitted",
@@ -1047,10 +1021,18 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
               "Network(*)\\Total Packets Received",
               "Network(*)\\Total Packets Transmitted",
               "Network(*)\\Total Rx Errors",
-              "Network(*)\\Total Tx Errors"
+              "Network(*)\\Total Tx Errors",
+              "Processor(*)\\% DPC Time",
+              "Processor(*)\\% Idle Time",
+              "Processor(*)\\% Interrupt Time",
+              "Processor(*)\\% IO Wait Time",
+              "Processor(*)\\% Nice Time",
+              "Processor(*)\\% Privileged Time",
+              "Processor(*)\\% Processor Time",
+              "Processor(*)\\% User Time"
             ],
-            "name": "perfCounterDataSource15",
-            "samplingFrequencyInSeconds": 15,
+            "name": "perfCounterDataSource60",
+            "samplingFrequencyInSeconds": 60,
             "streams": [
               "Microsoft-InsightsMetrics"
             ]
@@ -1214,8 +1196,8 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             '\\System\\Processor Queue Length'
             '\\System\\System Up Time'
           ]
-          name: 'perfCounterDataSource10'
-          samplingFrequencyInSeconds: 10
+          name: 'perfCounterDataSource60'
+          samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
           ]
@@ -1276,8 +1258,8 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
               "\\System\\Processor Queue Length",
               "\\System\\System Up Time"
             ],
-            "name": "perfCounterDataSource10",
-            "samplingFrequencyInSeconds": 10,
+            "name": "perfCounterDataSource60",
+            "samplingFrequencyInSeconds": 60,
             "streams": [
               "Microsoft-InsightsMetrics"
             ]
@@ -1342,35 +1324,6 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
       performanceCounters: [
         {
           counterSpecifiers: [
-            '\\Memory\\% Committed Bytes In Use'
-            '\\Memory\\Available Bytes'
-            '\\Memory\\Cache Bytes'
-            '\\Memory\\Committed Bytes'
-            '\\Memory\\Page Faults/sec'
-            '\\Memory\\Pages/sec'
-            '\\Memory\\Pool Nonpaged Bytes'
-            '\\Memory\\Pool Paged Bytes'
-            '\\Process(_Total)\\Handle Count'
-            '\\Process(_Total)\\Thread Count'
-            '\\Process(_Total)\\Working Set'
-            '\\Process(_Total)\\Working Set - Private'
-            '\\Processor Information(_Total)\\% Privileged Time'
-            '\\Processor Information(_Total)\\% Processor Time'
-            '\\Processor Information(_Total)\\% User Time'
-            '\\Processor Information(_Total)\\Processor Frequency'
-            '\\System\\Context Switches/sec'
-            '\\System\\Processes'
-            '\\System\\Processor Queue Length'
-            '\\System\\System Up Time'
-          ]
-          name: 'perfCounterDataSource10'
-          samplingFrequencyInSeconds: 10
-          streams: [
-            'Microsoft-InsightsMetrics'
-          ]
-        }
-        {
-          counterSpecifiers: [
             '\\LogicalDisk(_Total)\\% Disk Read Time'
             '\\LogicalDisk(_Total)\\% Disk Time'
             '\\LogicalDisk(_Total)\\% Disk Write Time'
@@ -1389,6 +1342,14 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             '\\LogicalDisk(_Total)\\Disk Write Bytes/sec'
             '\\LogicalDisk(_Total)\\Disk Writes/sec'
             '\\LogicalDisk(_Total)\\Free Megabytes'
+            '\\Memory\\% Committed Bytes In Use'
+            '\\Memory\\Available Bytes'
+            '\\Memory\\Cache Bytes'
+            '\\Memory\\Committed Bytes'
+            '\\Memory\\Page Faults/sec'
+            '\\Memory\\Pages/sec'
+            '\\Memory\\Pool Nonpaged Bytes'
+            '\\Memory\\Pool Paged Bytes'
             '\\Network Interface(*)\\Bytes Received/sec'
             '\\Network Interface(*)\\Bytes Sent/sec'
             '\\Network Interface(*)\\Bytes Total/sec'
@@ -1397,9 +1358,21 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
             '\\Network Interface(*)\\Packets Received/sec'
             '\\Network Interface(*)\\Packets Sent/sec'
             '\\Network Interface(*)\\Packets/sec'
+            '\\Process(_Total)\\Handle Count'
+            '\\Process(_Total)\\Thread Count'
+            '\\Process(_Total)\\Working Set'
+            '\\Process(_Total)\\Working Set - Private'
+            '\\Processor Information(_Total)\\% Privileged Time'
+            '\\Processor Information(_Total)\\% Processor Time'
+            '\\Processor Information(_Total)\\% User Time'
+            '\\Processor Information(_Total)\\Processor Frequency'
+            '\\System\\Context Switches/sec'
+            '\\System\\Processes'
+            '\\System\\Processor Queue Length'
+            '\\System\\System Up Time'
           ]
-          name: 'perfCounterDataSource15'
-          samplingFrequencyInSeconds: 15
+          name: 'perfCounterDataSource60'
+          samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
           ]
@@ -1491,35 +1464,6 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
         "performanceCounters": [
           {
             "counterSpecifiers": [
-              "\\Memory\\% Committed Bytes In Use",
-              "\\Memory\\Available Bytes",
-              "\\Memory\\Cache Bytes",
-              "\\Memory\\Committed Bytes",
-              "\\Memory\\Page Faults/sec",
-              "\\Memory\\Pages/sec",
-              "\\Memory\\Pool Nonpaged Bytes",
-              "\\Memory\\Pool Paged Bytes",
-              "\\Process(_Total)\\Handle Count",
-              "\\Process(_Total)\\Thread Count",
-              "\\Process(_Total)\\Working Set",
-              "\\Process(_Total)\\Working Set - Private",
-              "\\Processor Information(_Total)\\% Privileged Time",
-              "\\Processor Information(_Total)\\% Processor Time",
-              "\\Processor Information(_Total)\\% User Time",
-              "\\Processor Information(_Total)\\Processor Frequency",
-              "\\System\\Context Switches/sec",
-              "\\System\\Processes",
-              "\\System\\Processor Queue Length",
-              "\\System\\System Up Time"
-            ],
-            "name": "perfCounterDataSource10",
-            "samplingFrequencyInSeconds": 10,
-            "streams": [
-              "Microsoft-InsightsMetrics"
-            ]
-          },
-          {
-            "counterSpecifiers": [
               "\\LogicalDisk(_Total)\\% Disk Read Time",
               "\\LogicalDisk(_Total)\\% Disk Time",
               "\\LogicalDisk(_Total)\\% Disk Write Time",
@@ -1538,6 +1482,14 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
               "\\LogicalDisk(_Total)\\Disk Write Bytes/sec",
               "\\LogicalDisk(_Total)\\Disk Writes/sec",
               "\\LogicalDisk(_Total)\\Free Megabytes",
+              "\\Memory\\% Committed Bytes In Use",
+              "\\Memory\\Available Bytes",
+              "\\Memory\\Cache Bytes",
+              "\\Memory\\Committed Bytes",
+              "\\Memory\\Page Faults/sec",
+              "\\Memory\\Pages/sec",
+              "\\Memory\\Pool Nonpaged Bytes",
+              "\\Memory\\Pool Paged Bytes",
               "\\Network Interface(*)\\Bytes Received/sec",
               "\\Network Interface(*)\\Bytes Sent/sec",
               "\\Network Interface(*)\\Bytes Total/sec",
@@ -1545,10 +1497,22 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/deploy.bice
               "\\Network Interface(*)\\Packets Received Errors",
               "\\Network Interface(*)\\Packets Received/sec",
               "\\Network Interface(*)\\Packets Sent/sec",
-              "\\Network Interface(*)\\Packets/sec"
+              "\\Network Interface(*)\\Packets/sec",
+              "\\Process(_Total)\\Handle Count",
+              "\\Process(_Total)\\Thread Count",
+              "\\Process(_Total)\\Working Set",
+              "\\Process(_Total)\\Working Set - Private",
+              "\\Processor Information(_Total)\\% Privileged Time",
+              "\\Processor Information(_Total)\\% Processor Time",
+              "\\Processor Information(_Total)\\% User Time",
+              "\\Processor Information(_Total)\\Processor Frequency",
+              "\\System\\Context Switches/sec",
+              "\\System\\Processes",
+              "\\System\\Processor Queue Length",
+              "\\System\\System Up Time"
             ],
-            "name": "perfCounterDataSource15",
-            "samplingFrequencyInSeconds": 15,
+            "name": "perfCounterDataSource60",
+            "samplingFrequencyInSeconds": 60,
             "streams": [
               "Microsoft-InsightsMetrics"
             ]
