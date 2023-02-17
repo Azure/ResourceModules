@@ -92,40 +92,40 @@ runs:
     # Run analysis by using the PSRule GitHub action.
     - name: Run PSRule analysis
       uses: microsoft/ps-rule@v2.4.0
-      # continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
+      continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
       with:
         modules: 'PSRule.Rules.Azure'
         inputPath: '${{ inputs.templateFilePath}}'
         outputFormat: Csv
         outputPath: '${{ inputs.templateFilePath}}-output.csv'
-        # option: '${{ env.modulePath }}/.test/vnet-ps-rule.yaml'
 
-    - name: 'Set PSRule Output'
+    - name: 'Parse CSV content'
       if: always()
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
         inlineScript: |
           # Grouping task logs
-          Write-Output '::group::Setting Output'
+          Write-Output '::group::Parse CSV content'
 
           # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleOutput.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'PSRuleValidation' 'Set-PSRuleGitHubOutput.ps1')
 
-          # Populate tokens
-          $Input = @{
-            inputFilePath = '${{ inputs.templateFilePath}}-output.csv'
-            outputFilePath = '${{ inputs.templateFilePath}}-output.md'
+          # Populate parameter input
+          $ParameterInput = @{
+            inputFilePath           = '${{ inputs.templateFilePath}}-output.csv'
+            outputFilePath          = '${{ inputs.templateFilePath}}-output.md'
+            skipPassedRulesReport   = $false
           }
 
           Write-Verbose "Set PS Rule Output with following parameters:`n $($Input | ConvertTo-Json -Depth 10)" -Verbose
 
           # Invoke Set PSRule Output Functionality
-          $null = Set-PSRuleOutput @Input
+          $null = Set-PSRuleGitHubOutput @ParameterInput
 
           Write-Output '::endgroup::'
 
-    - name: Output to Github summaries
-      shell: bash
-      if: always()
-      run: cat '${{ inputs.templateFilePath}}-output.md' >> $GITHUB_STEP_SUMMARY
+    - name: Output to GitHub job summaries
+        if: always()
+        shell: pwsh
+        run: Get-Content '${{ inputs.templateFilePath}}-output.md' >> $env:GITHUB_STEP_SUMMARY
