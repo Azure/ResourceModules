@@ -35,11 +35,10 @@ This module can be used to deploy a file share service into a storage account.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, StorageDelete, StorageRead, StorageWrite]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Transaction]` | `[Transaction]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `'default-diagnosticSettings'` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'default'` |  | The name of the queue service. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Queues to create. |
 
 
