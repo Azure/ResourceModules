@@ -43,7 +43,7 @@ configuration:
   AZURE_PARAMETER_FILE_EXPANSION: false
 
   # Enable automatic expansion of Azure Bicep source files.
-  AZURE_BICEP_FILE_EXPANSION: true
+  AZURE_BICEP_FILE_EXPANSION: false
 
   # Configures the number of seconds to wait for build Bicep files.
   AZURE_BICEP_FILE_EXPANSION_TIMEOUT: 10
