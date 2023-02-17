@@ -32,7 +32,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
-  name: last(split(storageAccountId, '/'))
+  name: last(split(storageAccountId, '/'))!
 }
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {

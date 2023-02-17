@@ -61,7 +61,7 @@ var builtInRoleNames = {
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: last(split(resourceId, '/'))
+  name: last(split(resourceId, '/'))!
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

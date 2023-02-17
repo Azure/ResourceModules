@@ -233,7 +233,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
   scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[2], split(peering.remoteVirtualNetworkId, '/')[4])
   params: {
-    localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))
+    localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))!
     remoteVirtualNetworkId: virtualNetwork.id
     name: contains(peering, 'remotePeeringName') ? peering.remotePeeringName : '${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'
     allowForwardedTraffic: contains(peering, 'remotePeeringAllowForwardedTraffic') ? peering.remotePeeringAllowForwardedTraffic : true

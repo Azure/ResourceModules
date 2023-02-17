@@ -1,7 +1,38 @@
-﻿param(
+﻿<#
+.SYNOPSIS
+Generate a new PFX Certificate and store it alongside its password as Secrets in the given Key Vault.
+
+.DESCRIPTION
+Generate a new PFX Certificate and store it alongside its password as Secrets in the given Key Vault.
+
+.PARAMETER KeyVaultName
+Mandatory. The name of the Key Vault to store the Certificate & Password in
+
+.PARAMETER ResourceGroupName
+Mandatory. The name of the Resource Group containing the Key Vault to store the Certificate & Password in
+
+.PARAMETER CertPWSecretName
+Mandatory. The name of the Secret to store the Certificate's password in
+
+.PARAMETER CertSecretName
+Mandatory. The name of the Secret to store the Secret in
+
+.EXAMPLE
+./Set-PfxCertificateInKeyVault.ps1 -KeyVaultName 'myVault' -ResourceGroupName 'vault-rg' -CertPWSecretName 'pfxCertificatePassword' -CertSecretName 'pfxBase64Certificate'
+
+Generate a Certificate and store it as the Secret 'pfxCertificatePassword' in the Key Vault 'vault-rg' of Resource Group 'storage-rg' alongside its password as the Secret 'pfxCertificatePassword'
+#>
+param(
+    [Parameter(Mandatory = $true)]
     [string] $KeyVaultName,
+
+    [Parameter(Mandatory = $true)]
     [string] $ResourceGroupName,
+
+    [Parameter(Mandatory = $true)]
     [string] $CertPWSecretName,
+
+    [Parameter(Mandatory = $true)]
     [string] $CertSecretName
 )
 

@@ -29,11 +29,6 @@ var enableReferencedModulesTelemetry = false
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -61,7 +56,10 @@ resource gremlinDatabase 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases
   name: name
   tags: tags
   parent: databaseAccount
-  identity: identity
+  identity: (identityType != 'None' ? {
+    type: identityType
+    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  } : null)!
   properties: {
     options: databaseOptions
     resource: {

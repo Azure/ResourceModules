@@ -25,7 +25,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
-  name: last(split(privateDNSResourceId, '/'))
+  name: last(split(privateDNSResourceId, '/'))!
   properties: {
     privateDnsZoneId: privateDNSResourceId
   }

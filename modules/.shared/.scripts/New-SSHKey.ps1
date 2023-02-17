@@ -1,5 +1,26 @@
-﻿param(
+﻿<#
+.SYNOPSIS
+Generate a new Public SSH Key or fetch it from an existing Public SSH Key resource.
+
+.DESCRIPTION
+Generate a new Public SSH Key or fetch it from an existing Public SSH Key resource.
+
+.PARAMETER SSHKeyName
+Mandatory. The name of the Public SSH Key Resource as it would be deployed in Azure
+
+.PARAMETER ResourceGroupName
+Mandatory. The resource group name of the Public SSH Key Resource as it would be deployed in Azure
+
+.EXAMPLE
+./New-SSHKey.ps1 -SSHKeyName 'myKeyResource' -ResourceGroupName 'ssh-rg'
+
+Generate a new Public SSH Key or fetch it from an existing Public SSH Key resource 'myKeyResource' in Resource Group 'ssh-rg'
+#>
+param(
+    [Parameter(Mandatory = $true)]
     [string] $SSHKeyName,
+
+    [Parameter(Mandatory = $true)]
     [string] $ResourceGroupName
 )
 
