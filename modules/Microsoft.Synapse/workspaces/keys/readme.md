@@ -14,25 +14,28 @@ This module deploys a Synapse Workspaces Key.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
+| `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `isActiveCMK` | bool | Used to activate the workspace after a customer managed key is provided. |
 | `name` | string | Encryption key name. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `workspaceName` | string | The name of the parent Synapse Workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `False` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `keyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `location` | string | `[resourceGroup().location]` | The geo-location where the resource lives. |
 
@@ -47,7 +50,7 @@ This module deploys a Synapse Workspaces Key.
 
 ## Template references
 
-- [Workspaces/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
+- [Workspaces/Keys](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
 
 ## Cross-referenced modules
 

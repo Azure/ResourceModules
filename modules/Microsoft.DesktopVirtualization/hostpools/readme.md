@@ -14,47 +14,56 @@ This module deploys an Azure virtual desktop host pool.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DesktopVirtualization/hostPools` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/hostPools) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.DesktopVirtualization/hostPools` | [2022-09-09](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-09-09/hostPools) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Host Pool. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `agentUpdate` | object | `{object}` |  | The session host configuration for updating agent, monitoring agent, and stack component. |
 | `customRdpProperty` | string | `'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'` |  | Host Pool RDP properties. |
+| `description` | string | `''` |  | The description of the Host Pool to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AgentHealthStatus, Checkpoint, Connection, Error, HostRegistration, Management]` | `[AgentHealthStatus, Checkpoint, Connection, Error, HostRegistration, Management]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AgentHealthStatus, allLogs, Checkpoint, Connection, Error, HostRegistration, Management]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `hostpoolDescription` | string | `''` |  | The description of the Host Pool to be created. |
-| `hostpoolFriendlyName` | string | `''` |  | The friendly name of the Host Pool to be created. |
-| `hostpoolType` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `friendlyName` | string | `''` |  | The friendly name of the Host Pool to be created. |
 | `loadBalancerType` | string | `'BreadthFirst'` | `[BreadthFirst, DepthFirst, Persistent]` | Type of load balancer algorithm. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxSessionLimit` | int | `99999` |  | Maximum number of sessions. |
 | `personalDesktopAssignmentType` | string | `''` | `['', Automatic, Direct]` | Set the type of assignment for a Personal Host Pool type. |
 | `preferredAppGroupType` | string | `'Desktop'` | `[Desktop, None, RailApplications]` | The type of preferred application group type, default to Desktop Application Group. |
+| `ring` | int | `-1` |  | The ring number of HostPool. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `ssoadfsAuthority` | string | `''` |  | URL to customer ADFS server for signing WVD SSO certificates. |
+| `ssoClientId` | string | `''` |  | ClientId for the registered Relying Party used to issue WVD SSO certificates. |
+| `ssoClientSecretKeyVaultPath` | string | `''` |  | Path to Azure KeyVault storing the secret used for communication to ADFS. |
+| `ssoSecretType` | string | `''` | `['', Certificate, CertificateInKeyVault, SharedKey, SharedKeyInKeyVault]` | The type of single sign on Secret Type. |
 | `startVMOnConnect` | bool | `False` |  | Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tokenValidityLength` | string | `'PT8H'` |  | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
+| `type` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `validationEnvironment` | bool | `False` |  | Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment. |
 | `vmTemplate` | object | `{object}` |  | The necessary information for adding more VMs to this Host Pool. |
 
 **Generated parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
@@ -265,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -273,41 +282,58 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Hostpools'
+  name: '${uniqueString(deployment().name, location)}-test-dvhpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-avdhp-x-001'
+    name: '<<namePrefix>>dvhpcom001'
     // Non-required parameters
+    agentUpdate: {
+      maintenanceWindows: [
+        {
+          dayOfWeek: 'Friday'
+          hour: 7
+        }
+        {
+          dayOfWeek: 'Saturday'
+          hour: 8
+        }
+      ]
+      maintenanceWindowTimeZone: 'Alaskan Standard Time'
+      type: 'Scheduled'
+      useSessionHostLocalTime: false
+    }
     customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    description: 'My first AVD Host Pool'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    hostpoolDescription: 'My first AVD Host Pool'
-    hostpoolFriendlyName: 'AVDv2'
-    hostpoolType: 'Pooled'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    friendlyName: 'AVDv2'
     loadBalancerType: 'BreadthFirst'
-    location: 'westeurope'
+    location: '<location>'
     lock: 'CanNotDelete'
     maxSessionLimit: 99999
     personalDesktopAssignmentType: 'Automatic'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    type: 'Pooled'
     vmTemplate: {
-      customImageId: null
+      customImageId: '<customImageId>'
       domain: 'domainname.onmicrosoft.com'
       galleryImageOffer: 'office-365'
       galleryImagePublisher: 'microsoftwindowsdesktop'
       galleryImageSKU: '20h1-evd-o365pp'
       imageType: 'Gallery'
-      imageUri: null
+      imageUri: '<imageUri>'
       namePrefix: 'avdv2'
       osDiskType: 'StandardSSD_LRS'
       useManagedDisks: true
@@ -335,41 +361,58 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-avdhp-x-001"
+      "value": "<<namePrefix>>dvhpcom001"
     },
     // Non-required parameters
+    "agentUpdate": {
+      "value": {
+        "maintenanceWindows": [
+          {
+            "dayOfWeek": "Friday",
+            "hour": 7
+          },
+          {
+            "dayOfWeek": "Saturday",
+            "hour": 8
+          }
+        ],
+        "maintenanceWindowTimeZone": "Alaskan Standard Time",
+        "type": "Scheduled",
+        "useSessionHostLocalTime": false
+      }
+    },
     "customRdpProperty": {
       "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;"
     },
+    "description": {
+      "value": "My first AVD Host Pool"
+    },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
     },
-    "hostpoolDescription": {
-      "value": "My first AVD Host Pool"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
-    "hostpoolFriendlyName": {
+    "friendlyName": {
       "value": "AVDv2"
-    },
-    "hostpoolType": {
-      "value": "Pooled"
     },
     "loadBalancerType": {
       "value": "BreadthFirst"
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -384,21 +427,25 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
+    "type": {
+      "value": "Pooled"
+    },
     "vmTemplate": {
       "value": {
-        "customImageId": null,
+        "customImageId": "<customImageId>",
         "domain": "domainname.onmicrosoft.com",
         "galleryImageOffer": "office-365",
         "galleryImagePublisher": "microsoftwindowsdesktop",
         "galleryImageSKU": "20h1-evd-o365pp",
         "imageType": "Gallery",
-        "imageUri": null,
+        "imageUri": "<imageUri>",
         "namePrefix": "avdv2",
         "osDiskType": "StandardSSD_LRS",
         "useManagedDisks": true,
@@ -408,6 +455,51 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
           "ram": 8
         }
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>dvhpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>dvhpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

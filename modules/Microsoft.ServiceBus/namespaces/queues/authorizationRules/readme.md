@@ -13,25 +13,28 @@ This module deploys an authorization rule for a service bus namespace queue.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules) |
+| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the service bus namepace queue. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `namespaceName` | string | The name of the parent Service Bus Namespace. Required if the template is used in a standalone deployment. |
 | `queueName` | string | The name of the parent Service Bus Namespace Queue. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
 
 

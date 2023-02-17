@@ -13,24 +13,27 @@ This module deploys ContainerRegistry Registries Replications.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerRegistry/registries/replications` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications) |
+| `Microsoft.ContainerRegistry/registries/replications` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/replications) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the replication. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `regionEndpointEnabled` | bool | `True` |  | Specifies whether the replication regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications. |
 | `tags` | object | `{object}` |  | Tags of the resource. |

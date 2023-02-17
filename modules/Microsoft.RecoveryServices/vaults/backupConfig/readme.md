@@ -13,19 +13,21 @@ This module deploys recovery services vault backup config.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupconfig) |
 
 ## Parameters
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enhancedSecurityState` | string | `'Enabled'` | `[Disabled, Enabled]` | Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
 | `isSoftDeleteFeatureStateEditable` | bool | `True` |  | Is soft delete feature state editable. |
 | `name` | string | `'vaultconfig'` |  | Name of the Azure Recovery Service Vault Backup Policy. |

@@ -132,6 +132,7 @@ param sslPolicyCipherSuites array = [
   'TLSv1_0'
   'TLSv1_1'
   'TLSv1_2'
+  'TLSv1_3'
 ])
 param sslPolicyMinProtocolVersion string = 'TLSv1_2'
 
@@ -140,6 +141,8 @@ param sslPolicyMinProtocolVersion string = 'TLSv1_2'
   'AppGwSslPolicy20150501'
   'AppGwSslPolicy20170401'
   'AppGwSslPolicy20170401S'
+  'AppGwSslPolicy20220101'
+  'AppGwSslPolicy20220101S'
   ''
 ])
 param sslPolicyName string = ''
@@ -147,6 +150,7 @@ param sslPolicyName string = ''
 @description('Optional. Type of Ssl Policy.')
 @allowed([
   'Custom'
+  'CustomV2'
   'Predefined'
 ])
 param sslPolicyType string = 'Custom'
@@ -186,16 +190,15 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ApplicationGatewayAccessLog'
   'ApplicationGatewayPerformanceLog'
   'ApplicationGatewayFirewallLog'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ApplicationGatewayAccessLog'
-  'ApplicationGatewayPerformanceLog'
-  'ApplicationGatewayFirewallLog'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -216,7 +219,7 @@ var identity = identityType != 'None' ? {
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -224,6 +227,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -249,7 +263,16 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Backend settings of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
+param backendSettingsCollection array = []
+
+@description('Optional. Listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
+param listeners array = []
+
+@description('Optional. Routing rules of the application gateway resource.')
+param routingRules array = []
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -264,7 +287,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -277,6 +300,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
       } : null
       backendAddressPools: backendAddressPools
       backendHttpSettingsCollection: backendHttpSettingsCollection
+      backendSettingsCollection: backendSettingsCollection
       customErrorConfigurations: customErrorConfigurations
       enableHttp2: enableHttp2
       firewallPolicy: !empty(firewallPolicyId) ? {
@@ -292,10 +316,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
       }
       httpListeners: httpListeners
       loadDistributionPolicies: loadDistributionPolicies
+      listeners: listeners
       privateLinkConfigurations: privateLinkConfigurations
       probes: probes
       redirectConfigurations: redirectConfigurations
       requestRoutingRules: requestRoutingRules
+      routingRules: routingRules
       rewriteRuleSets: rewriteRuleSets
       sku: {
         name: sku
@@ -313,14 +339,15 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
       trustedClientCertificates: trustedClientCertificates
       trustedRootCertificates: trustedRootCertificates
       urlPathMaps: urlPathMaps
-      webApplicationFirewallConfiguration: webApplicationFirewallConfiguration
     }, (enableFips ? {
       enableFips: enableFips
-    } : {}), {})
+    } : {}),
+    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration } : {})
+  )
   zones: zones
 }
 
-resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource applicationGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

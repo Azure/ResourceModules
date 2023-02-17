@@ -6,7 +6,7 @@ param name string
   'Standard'
   'Ultra'
 ])
-param proximityPlacementGroupType string = 'Standard'
+param type string = 'Standard'
 
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
@@ -25,8 +25,17 @@ param roleAssignments array = []
 @description('Optional. Tags of the proximity placement group resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the proximity placement group can be created.')
+param zones array = []
+
+@description('Optional. Describes colocation status of the Proximity Placement Group.')
+param colocationStatus object = {}
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. Specifies the user intent of the proximity placement group.')
+param intent object = {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -40,16 +49,19 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = {
+resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2022-08-01' = {
   name: name
   location: location
   tags: tags
+  zones: zones
   properties: {
-    proximityPlacementGroupType: proximityPlacementGroupType
+    proximityPlacementGroupType: type
+    colocationStatus: colocationStatus
+    intent: !empty(intent) ? intent : null
   }
 }
 
-resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

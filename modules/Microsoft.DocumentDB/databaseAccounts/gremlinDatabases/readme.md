@@ -13,25 +13,28 @@ This module deploys a GremlinDB within a CosmosDB account.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases) |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases/graphs) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases/graphs) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Gremlin database. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the parent Gremlin database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `graphs` | _[graphs](graphs/readme.md)_ array | `[]` | Array of graphs to deploy in the Gremlin database. |
 | `maxThroughput` | int | `4000` | Represents maximum throughput, the resource can scale up to. Cannot be set together with `throughput`. If `throughput` is set to something else than -1, this autoscale setting is ignored. |
 | `systemAssignedIdentity` | bool | `False` | Enables system assigned managed identity on the resource. |

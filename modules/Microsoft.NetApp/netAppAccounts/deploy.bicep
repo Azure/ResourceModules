@@ -40,7 +40,7 @@ param lock string = ''
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -77,7 +77,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-01-01' = {
   }
 }
 
-resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource netAppAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

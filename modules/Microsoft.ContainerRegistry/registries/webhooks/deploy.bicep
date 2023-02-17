@@ -37,7 +37,7 @@ param customHeaders object = {}
 @description('Optional. The scope of repositories where the event can be triggered. For example, \'foo:*\' means events for all tags under repository \'foo\'. \'foo:bar\' means events for \'foo:bar\' only. \'foo\' is equivalent to \'foo:latest\'. Empty means all events.')
 param scope string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -52,11 +52,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
+resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' existing = {
   name: registryName
 }
 
-resource webhook 'Microsoft.ContainerRegistry/registries/webhooks@2021-12-01-preview' = {
+resource webhook 'Microsoft.ContainerRegistry/registries/webhooks@2022-02-01-preview' = {
   name: name
   parent: registry
   location: location

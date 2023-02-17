@@ -13,11 +13,12 @@ This module deploys an API Management Service Cache.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
+| `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `connectionString` | string | Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}. |
@@ -25,15 +26,17 @@ This module deploys an API Management Service Cache.
 | `useFromLocation` | string | Location identifier to use cache from (should be either 'default' or valid Azure region identifier). |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cacheDescription` | string | `''` | Cache description. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `description` | string | `''` | Cache description. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 
 

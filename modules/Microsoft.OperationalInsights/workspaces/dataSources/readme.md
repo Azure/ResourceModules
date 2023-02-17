@@ -13,26 +13,29 @@ This template deploys a data source for a Log Analytics workspace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
+| `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `kind` | string | `'AzureActivityLog'` | `[AzureActivityLog, IISLogs, LinuxPerformanceCollection, LinuxPerformanceObject, LinuxSyslog, LinuxSyslogCollection, WindowsEvent, WindowsPerformanceCounter]` | The kind of the DataSource. |
 | `name` | string |  |  | Name of the solution. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `counterName` | string | `''` | Counter name to configure when kind is WindowsPerformanceCounter. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `eventLogName` | string | `''` | Windows event log name to configure when kind is WindowsEvent. |
 | `eventTypes` | array | `[]` | Windows event types to configure when kind is WindowsEvent. |
 | `instanceName` | string | `'*'` | Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |

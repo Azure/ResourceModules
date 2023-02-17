@@ -25,7 +25,7 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -59,7 +59,7 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
   }
 }]
 
-resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateLinkScope_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${privateLinkScope.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -85,6 +85,9 @@ module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoin
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

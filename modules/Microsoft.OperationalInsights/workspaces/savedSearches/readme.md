@@ -13,11 +13,12 @@ This template deploys a saved search for a Log Analytics workspace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
+| `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `category` | string | Query category. |
@@ -26,14 +27,16 @@ This template deploys a saved search for a Log Analytics workspace.
 | `query` | string | Kusto Query to be stored. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `etag` | string | `'*'` | The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag. |
 | `functionAlias` | string | `''` | The function alias if query serves as a function. |
 | `functionParameters` | string | `''` | The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions. |

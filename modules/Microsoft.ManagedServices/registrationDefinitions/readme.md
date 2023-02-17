@@ -19,12 +19,13 @@ remote/managing tenant.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
-| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
+| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
+| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `authorizations` | array | Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
@@ -33,9 +34,10 @@ remote/managing tenant.
 | `registrationDescription` | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>'. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `resourceGroupName` | string | `''` | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
@@ -126,7 +128,7 @@ This module can be deployed both at subscription and resource group level:
 ### Permissions required to create delegations
 
 This deployment must be done by a non-guest account in the customer's tenant which has a role with the `Microsoft.Authorization/roleAssignments/write` permission,
-such as [`Owner`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) for the subscription being onboarded (or which contains the resource groups that are being onboarded).
+such as [`Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) for the subscription being onboarded (or which contains the resource groups that are being onboarded).
 
 If the subscription was created through the Cloud Solution Provider (CSP) program, any user who has the AdminAgent role in your service provider tenant can perform the deployment.
 
@@ -138,14 +140,14 @@ If the subscription was created through the Cloud Solution Provider (CSP) progra
 #### From customer side
 
 Users in the customer's tenant who have a role with the `Microsoft.Authorization/roleAssignments/write` permission, such as
-[`Owner`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) can remove service provider
+[`Owner`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) can remove service provider
 access to that subscription (or to resource groups in that subscription). To do so, the user can go to the Service providers
 page of the Azure portal and delete the delegation.
 
 #### From managing tenant side
 
 Users in a managing tenant can remove access to delegated resources if they were granted the
-[`Managed Services Registration Assignment Delete Role`](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#managed-services-registration-assignment-delete-role)
+[`Managed Services Registration Assignment Delete Role`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#managed-services-registration-assignment-delete-role)
 for the customer's resources. If this role was not assigned to any service provider users, the delegation can **only** be
 removed by a user in the customer's tenant.
 
@@ -175,7 +177,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -183,29 +185,31 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
+  name: '${uniqueString(deployment().name)}-test-msrdcom'
   params: {
     // Required parameters
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - Subscription assignment'
+    name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -226,17 +230,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "authorizations": {
       "value": [
         {
-          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalId": "9740a11d-a508-4a83-8ed5-4cb5bff5154a",
           "principalIdDisplayName": "ResourceModules-Reader",
           "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
         {
-          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalId": "9bce07dd-ae3a-4062-a24d-33631a4b35e8",
           "principalIdDisplayName": "ResourceModules-Contributor",
           "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         {
-          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalId": "441519e3-00e5-4070-8ec8-4b8cddf6409a",
           "principalIdDisplayName": "ResourceModules-LHManagement",
           "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
@@ -246,10 +250,14 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - Subscription assignment"
+      "value": "Component Validation - <<namePrefix>>msrdcom Subscription assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -266,31 +274,32 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 
 ```bicep
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-RegistrationDefinitions'
+  name: '${uniqueString(deployment().name, location)}-test-msrdrg'
   params: {
     // Required parameters
     authorizations: [
       {
-        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'
         principalIdDisplayName: 'ResourceModules-Reader'
         roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
       }
       {
-        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalId: '9bce07dd-ae3a-4062-a24d-33631a4b35e8'
         principalIdDisplayName: 'ResourceModules-Contributor'
         roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
       {
-        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalId: '441519e3-00e5-4070-8ec8-4b8cddf6409a'
         principalIdDisplayName: 'ResourceModules-LHManagement'
         roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - Resource group assignment'
+    name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
-    resourceGroupName: 'validation-rg'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    resourceGroupName: '<resourceGroupName>'
   }
 }
 ```
@@ -311,17 +320,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
     "authorizations": {
       "value": [
         {
-          "principalId": "e87a249c-b53b-4685-94fe-863af522e4ee",
+          "principalId": "9740a11d-a508-4a83-8ed5-4cb5bff5154a",
           "principalIdDisplayName": "ResourceModules-Reader",
           "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
         },
         {
-          "principalId": "e2f126a7-136e-443f-b39f-f73ddfd146b1",
+          "principalId": "9bce07dd-ae3a-4062-a24d-33631a4b35e8",
           "principalIdDisplayName": "ResourceModules-Contributor",
           "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
         },
         {
-          "principalId": "87813317-fb25-4c76-91fe-783af429d109",
+          "principalId": "441519e3-00e5-4070-8ec8-4b8cddf6409a",
           "principalIdDisplayName": "ResourceModules-LHManagement",
           "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
         }
@@ -331,14 +340,17 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - Resource group assignment"
+      "value": "Component Validation - <<namePrefix>>msrdrg Resource group assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     }
   }
 }

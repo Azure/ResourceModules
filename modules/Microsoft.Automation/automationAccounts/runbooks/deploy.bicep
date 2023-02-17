@@ -1,7 +1,7 @@
-@description('Required. Name of the Automation Account runbook.')
+@sys.description('Required. Name of the Automation Account runbook.')
 param name string
 
-@description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
+@sys.description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @allowed([
@@ -11,34 +11,34 @@ param automationAccountName string
   'PowerShell'
   'PowerShellWorkflow'
 ])
-@description('Required. The type of the runbook.')
-param runbookType string
+@sys.description('Required. The type of the runbook.')
+param type string
 
-@description('Optional. The description of the runbook.')
-param runbookDescription string = ''
+@sys.description('Optional. The description of the runbook.')
+param description string = ''
 
-@description('Optional. The uri of the runbook content.')
+@sys.description('Optional. The uri of the runbook content.')
 param uri string = ''
 
-@description('Optional. The version of the runbook content.')
+@sys.description('Optional. The version of the runbook content.')
 param version string = ''
 
-@description('Optional. ID of the runbook storage account.')
+@sys.description('Optional. ID of the runbook storage account.')
 param scriptStorageAccountId string = ''
 
-@description('Generated. Time used as a basis for e.g. the schedule start date.')
+@sys.description('Generated. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
 
-@description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
+@sys.description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-@description('Optional. Location for all resources.')
+@sys.description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Tags of the Automation Account resource.')
+@sys.description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var accountSasProperties = {
@@ -66,7 +66,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)) {
-  name: last(split(scriptStorageAccountId, '/'))
+  name: last(split(scriptStorageAccountId, '/'))!
   scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
 }
 
@@ -81,20 +81,20 @@ resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' =
   location: location
   tags: tags
   properties: {
-    runbookType: runbookType
-    description: runbookDescription
+    runbookType: type
+    description: description
     publishContentLink: !empty(uri) ? publishContentLink : null
   }
 }
 
-@description('The name of the deployed runbook.')
+@sys.description('The name of the deployed runbook.')
 output name string = runbook.name
 
-@description('The resource ID of the deployed runbook.')
+@sys.description('The resource ID of the deployed runbook.')
 output resourceId string = runbook.id
 
-@description('The resource group of the deployed runbook.')
+@sys.description('The resource group of the deployed runbook.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The location the resource was deployed into.')
+@sys.description('The location the resource was deployed into.')
 output location string = runbook.location

@@ -46,7 +46,7 @@ param storageType string = 'GeoRedundant'
 ])
 param storageTypeState string = 'Locked'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Is soft delete feature state editable.')
@@ -64,11 +64,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' existing = {
   name: recoveryVaultName
 }
 
-resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2022-02-01' = {
+resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2022-04-01' = {
   name: name
   parent: rsv
   properties: {

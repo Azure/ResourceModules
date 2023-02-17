@@ -5,9 +5,8 @@ This requires several steps:
 1. [Configure your Azure environment](#1-configure-your-azure-environment)
 1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
 1. [Configure the CI environment](#3-configure-the-ci-environment)
-1. [Deploy dependencies](#4-deploy-dependencies)
-1. [Update module test files](#5-update-module-test-files)
-1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
+1. [Manual dependencies](#4-manual-dependencies)
+1. [(Optional) Convert library to ARM](#5-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps), make sure you also account for the specific requirements outlined below.
 
@@ -68,7 +67,7 @@ from a command-line of your choice (e.g., PowerShell).
 
 If you just want to have a copy of the repository's content, you can instead download it in `.zip` format. You can do this by navigating to the repository folder of your choice (for example, root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
- <img src="./media/GettingStarted/cloneDownloadRepo.JPG" alt="How to download repository" height="266">
+ <img src="./media/GettingStarted/cloneDownloadRepo.png" alt="How to download repository" height="266">
 
 Alternatively, you can also do the same with a specific release by navigating to the [releases](https://github.com/Azure/ResourceModules/releases) page, scroll to the `'Assets'` section at the bottom end of the release you'd like to get and download the packaged release (as it was when the release was created) with a simple click on the `'Source code'` package (e.g., `Source code (zip)`) itself.
 
@@ -260,13 +259,13 @@ For _Azure DevOps_, you have to perform the following environment-specific steps
 
 ### 3.2.1 Set up service connection
 
-The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
+The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
 
 It's name must match the one configured as `serviceConnection` in the [variable file](#323-set-up-variables-file)'s 'General' section.
 
 ### 3.2.2 Set up secrets in variable group
 
-The variable group `PLATFORM_VARIABLES` must be set up in Azure DevOps as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
+The variable group `PLATFORM_VARIABLES` must be set up in Azure DevOps as described [here](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
 
 Based on the information you gathered in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
 
@@ -330,7 +329,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `vstsFeedName` | `'ResourceModules'` | The name of the Azure DevOps universal packages feed to publish to. |
+| `vstsFeedName` | `'carml'` | The name of the Azure DevOps universal packages feed to publish to. |
 | `vstsFeedProject` | `'$(System.TeamProject)'` | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
 | `vstsFeedToken` | `'$(System.AccessToken)'` | The token used to publish universal packages into the feed above. |
 | `artifactsFeedDoPublish` | `'true'` | A central switch to enable/disable publishing to Universal packages. |
@@ -349,63 +348,53 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 ### 3.2.5 Azure Artifacts Universal Packages
 
-This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
+This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://learn.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
+
 #### The dependent components are
+
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
-   > Note: The default feed name is `ResourceModules` as configured in the [`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+   > **Note:** The official guidance to set up a feed can be found [here](https://learn.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops#create-public-feeds). The default feed name is `carml` as configured in the [`settings.yml`](https://github.com/Azure/ResourceModules/blob/main/settings.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+   >
+   > **Note:** It's also very important that the feed's 'Permissions' (Artifact Feed -> Feed settings -> Permissions) are set up so that the project's 'Build Service' has at least the role 'Contributor' to be able to publish artifacts ([ref](https://learn.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#permissions-table)).
 1. An Azure DevOps project to host the artifact feed
-   > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
-1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
+   > **Note:** There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://learn.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
+1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://learn.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
+
+Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1).
 
 </details>
 
 <p>
 
-# 4. Deploy dependencies
+# 4. Manual dependencies
 
 In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
-The repository comes with a platform pipeline, i.e., the '*dependencies pipeline*', that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
+Those resources are generally deployed by the module test files before the module to validate, so that you don't need to worry about setting up dependencies for each test and clean them up afterwards.
 
-Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
-
-> **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
-
-## 4.1 Manual Dependencies
-
-In special cases, manual actions may be required to provision certain resources that are not covered by the dependencies pipeline. In the following, you can find an overview of these resources, for which modules you need them and what you need to do:
+In special cases, manual actions may be required to provision certain resources whose deployment is not covered by the module test files. In the following, you can find an overview of which modules require special attention before being validated.
 
 ### Microsoft.Web/sites
 
-To successfully deploy the sites module using the `fa.parameters.json` parameter file, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the `functionAppCommon/deploy.test.bicep` test, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
-# 5. Update module test files
-
-Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
-
-Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline ran once.
-
-For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
+Finally, the elements described above must further be configured in the following files:
 
 | File | Parameter | Notes |
 | - | - | - |
-| `modules\Microsoft.CognitiveServices\accounts\.test\encr.parameters.json` | `encryption.value.keyVaultProperties.identityClientId` | |
-| `modules\Microsoft.Compute\virtualMachines\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachines\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachineScaleSets\.test\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Compute\virtualMachineScaleSets\.test\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `modules\Microsoft.Sql\managedInstances\.test\parameters.json` | `keys.value.uri` | |
-| `modules\Microsoft.Network\applicationGateways\.test\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
-| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `modules\Microsoft.Web\sites\.test\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
+| `modules/Microsoft.Web/sites/.test/common/deploy.bicep` | `appSettingsKeyValuePairs.EASYAUTH_SECRET` | Key Vault secret URI without version (e.g., 'https://Test-KeyVault.vault.azure.net/secrets/aBcDeFghIjK69Ln') |
+| `modules/Microsoft.Web/sites/.test/common/deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App (e.g., '11111111-1111-1111-1111-11111111111') |
+| `modules/Microsoft.Web/sites/.test/common/deploy.bicep` | `authSettingV2Configuration.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app (e.g., 'api://11111111-1111-1111-1111-11111111111') |
 
-</details>
+### Microsoft.ContainerInstance/containerGroup
 
-# 6. (Optional) Convert library to ARM
+To successfully run the Customer-Managed-Keys encryption test `encr/deploy.test.bicep` of the Container Instance module, you first need to register a Service Principal instance of the `Azure Container Instance Service` Azure application in your test Tenant. This can be achieved, for example, by running the command `New-AzADServicePrincipal -ApplicationId '6bb8e274-af5d-4df2-98a3-4fd78b4cafd9'`. For further information, please refer to the official [docs](https://learn.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci).
+
+Once the Service Principal is created, please update the `properties/principalId` of the `keyPermissions` deployment in the dependencies file `modules/Microsoft.ContainerInstance/containerGroups/.test/encr/dependencies.bicep` with its object ID. You can fetch the object ID using the command `(Get-AzADServicePrincipal -DisplayName 'Azure Container Instance Service').Id`.
+
+# 5. (Optional) Convert library to ARM
 
 Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate` we provide in path `utilities/tools` to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would when using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion).

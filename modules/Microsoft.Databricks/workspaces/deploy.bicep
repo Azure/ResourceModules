@@ -19,7 +19,7 @@ param location string = resourceGroup().location
 param roleAssignments array = []
 
 @description('Optional. The workspace\'s custom parameters.')
-param workspaceParameters object = {}
+param parameters object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -49,11 +49,12 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'dbfs'
   'clusters'
   'accounts'
@@ -66,22 +67,13 @@ param enableDefaultTelemetry bool = true
   'instancePools'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'dbfs'
-  'clusters'
-  'accounts'
-  'jobs'
-  'notebook'
-  'ssh'
-  'workspace'
-  'secrets'
-  'sqlPermissions'
-  'instancePools'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -90,8 +82,19 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
+
 var managedResourceGroupName = '${name}-rg'
-var managedResourceGroupId_var = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
+var managedResourceGroupIdVar = '${subscription().id}/resourceGroups/${managedResourceGroupName}'
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -113,12 +116,12 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
     name: pricingTier
   }
   properties: {
-    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupId_var : managedResourceGroupId)
-    parameters: workspaceParameters
+    managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupIdVar : managedResourceGroupId)
+    parameters: parameters
   }
 }
 
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

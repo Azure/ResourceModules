@@ -7,7 +7,7 @@ param name string = 'add'
 @description('Optional. An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault\'s tenant ID.')
 param accessPolicies array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
@@ -29,11 +29,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: keyVaultName
 }
 
-resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
+resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
   name: name
   parent: keyVault
   properties: {

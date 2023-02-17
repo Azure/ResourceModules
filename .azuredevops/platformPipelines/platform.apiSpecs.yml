@@ -1,0 +1,67 @@
+name: ".Platform - Update API Specs file"
+
+pr: none
+
+schedules:
+  - cron: "0 12 * * 0"
+    displayName: Weekly Sunday Update
+    branches:
+      include:
+        - main
+
+variables:
+  - template: "../../settings.yml"
+  - name: pipelinePrincipalGitUserName
+    value: "CARMLPipelinePrincipal"
+  - name: pipelinePrincipalGitUserEmail
+    value: "CARML@noreply.github.com"
+
+jobs:
+  - job: Update_API_Specs_file
+    displayName: Update API Specs file
+    pool:
+      ${{ if ne(variables.vmImage, '') }}:
+        vmImage: ${{ variables.vmImage }}
+      ${{ if ne(variables.poolName, '') }}:
+        name: ${{ variables.poolName }}
+    steps:
+      - checkout: self
+        persistCredentials: true
+
+      - task: AzurePowerShell@5
+        displayName: "Update file"
+        inputs:
+          azureSubscription: "$(serviceConnection)"
+          azurePowerShellVersion: "latestVersion"
+          preferredAzurePowerShellVersion: ""
+          pwsh: true
+          ScriptType: InlineScript
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'platform' 'Set-ApiSpecsFile.ps1')
+
+            $functionInput = @{
+              SpecsFilePath          = Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'src' 'apiSpecsList.json'
+              IncludePreview         = $true
+              IncludeExternalSources = $true
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Set-ApiSpecsFile @functionInput -Verbose
+
+      - task: PowerShell@2
+        displayName: "Push changes"
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            git config --global user.email '$(pipelinePrincipalGitUserEmail)'
+            git config --global user.name '$(pipelinePrincipalGitUserName)'
+
+            git add .
+            git status
+            git commit -m 'Push updated API Specs file'
+            git pull $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)
+            git push $(Build.Repository.Uri) HEAD:$(Build.SourceBranch)

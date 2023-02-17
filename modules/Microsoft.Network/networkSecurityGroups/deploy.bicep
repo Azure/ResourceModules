@@ -7,6 +7,9 @@ param location string = resourceGroup().location
 @description('Optional. Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed.')
 param securityRules array = []
 
+@description('Optional. When enabled, flows created from Network Security Group connections will be re-evaluated when rules are updates. Initial enablement will trigger re-evaluation. Network Security Group connection flushing is not available in all regions.')
+param flushConnection bool = false
+
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -38,17 +41,17 @@ param roleAssignments array = []
 @description('Optional. Tags of the NSG resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'NetworkSecurityGroupEvent'
   'NetworkSecurityGroupRuleCounter'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'NetworkSecurityGroupEvent'
-  'NetworkSecurityGroupRuleCounter'
+  'allLogs'
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
@@ -56,7 +59,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 var enableReferencedModulesTelemetry = false
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -64,6 +67,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -77,11 +91,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
+    flushConnection: flushConnection
     securityRules: [for securityRule in securityRules: {
       name: securityRule.name
       properties: {
@@ -129,7 +144,7 @@ module networkSecurityGroup_securityRules 'securityRules/deploy.bicep' = [for (s
   }
 }]
 
-resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${networkSecurityGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

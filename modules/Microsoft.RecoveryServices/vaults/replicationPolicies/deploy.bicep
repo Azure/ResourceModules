@@ -20,7 +20,7 @@ param multiVmSyncStatus string = 'Enable'
 @description('Optional. The duration in minutes until which the recovery points need to be stored.')
 param recoveryPointHistory int = 1440
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -35,7 +35,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource replicationPolicy 'Microsoft.RecoveryServices/vaults/replicationPolicies@2022-02-01' = {
+resource replicationPolicy 'Microsoft.RecoveryServices/vaults/replicationPolicies@2022-10-01' = {
   name: '${recoveryVaultName}/${name}'
   properties: {
     providerSpecificInput: {

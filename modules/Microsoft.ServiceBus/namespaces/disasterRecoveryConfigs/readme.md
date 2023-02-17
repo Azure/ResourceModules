@@ -13,20 +13,22 @@ This module deploys a disaster recovery config for a service bus Namespace
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs) |
+| `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs) |
 
 ## Parameters
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `alternateName` | string | `''` | Primary/Secondary eventhub namespace name, which is part of GEO DR pairing. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `name` | string | `'default'` | The name of the disaster recovery config. |
 | `partnerNamespaceResourceID` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing. |
 

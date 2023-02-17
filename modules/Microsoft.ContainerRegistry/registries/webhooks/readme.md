@@ -13,26 +13,29 @@ This module deploys ContainerRegistry Registries Webhooks.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerRegistry/registries/webhooks` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/webhooks) |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/webhooks) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `serviceUri` | string | The service URI for the webhook to post notifications. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `action` | array | `[chart_delete, chart_push, delete, push, quarantine]` |  | The list of actions that trigger the webhook to post notifications. |
 | `customHeaders` | object | `{object}` |  | Custom headers that will be added to the webhook notifications. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `name` | string | `[format('{0}webhook', parameters('registryName'))]` |  | The name of the registry webhook. |
 | `scope` | string | `''` |  | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |

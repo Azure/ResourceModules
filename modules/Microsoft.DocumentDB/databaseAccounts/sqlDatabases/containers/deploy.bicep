@@ -16,6 +16,9 @@ param tags object = {}
 @description('Optional. List of paths using which data within the container can be partitioned.')
 param paths array = []
 
+@description('Optional. Indexing policy of the container.')
+param indexingPolicy object = {}
+
 @description('Optional. Indicates the kind of algorithm used for partitioning.')
 @allowed([
   'Hash'
@@ -24,7 +27,7 @@ param paths array = []
 ])
 param kind string = 'Hash'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -39,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' existing = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
   name: databaseAccountName
 
   resource sqlDatabase 'sqlDatabases@2021-07-01-preview' existing = {
@@ -47,13 +50,14 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-previ
   }
 }
 
-resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-07-01-preview' = {
+resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-08-15' = {
   name: name
   parent: databaseAccount::sqlDatabase
   tags: tags
   properties: {
     resource: {
       id: name
+      indexingPolicy: !empty(indexingPolicy) ? indexingPolicy : null
       partitionKey: {
         paths: paths
         kind: kind

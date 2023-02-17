@@ -7,6 +7,7 @@ This section provides a guideline on how to use the CARML Bicep modules.
 - [Deploy template](#deploy-template)
   - [PowerShell](#powershell)
   - [Azure CLI](#azure-cli)
+  - [As nested deployment](#as-nested-deployment)
 - [Orchestrate deployment](#orchestrate-deployment)
 ---
 
@@ -22,9 +23,10 @@ This sub-section gives you an example on how to deploy a template from your loca
 <summary><i>Resource Group</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
-- **Bicep:** `targetScope = 'resourceGroup'`
+- **Bicep:** `targetScope = 'resourceGroup'` or empty (as default)
 - **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"`
 
+Using parameter file
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
@@ -40,7 +42,7 @@ $inputObject = @{
 New-AzResourceGroupDeployment @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroupdeployment).
 
 </details>
 
@@ -64,7 +66,7 @@ $inputObject = @{
 New-AzDeployment @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azdeployment).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/powershell/module/az.resources/new-azdeployment).
 
 </details>
 
@@ -89,7 +91,7 @@ $inputObject = @{
 New-AzManagementGroupDeployment @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azmanagementgroupdeployment).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/powershell/module/az.resources/new-azmanagementgroupdeployment).
 
 </details>
 
@@ -113,7 +115,7 @@ $inputObject = @{
 New-AzTenantDeployment @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
 
 </details>
 
@@ -123,7 +125,7 @@ For more information, please refer to the official [Microsoft docs](https://docs
 <summary><i>Resource Group</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
-- **Bicep:** `targetScope = 'resourceGroup'`
+- **Bicep:** `targetScope = 'resourceGroup'` or empty (as default)
 - **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"`
 
 ```bash
@@ -140,7 +142,7 @@ $inputObject = @(
 az deployment group create @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
 
 </details>
 
@@ -164,7 +166,7 @@ $inputObject = @(
 az deployment sub create @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/cli/azure/deployment/sub?view=azure-cli-latest#az-deployment-sub-create).
 
 </details>
 
@@ -189,7 +191,7 @@ $inputObject = @(
 az deployment mg create @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/mg?view=azure-cli-latest#az-deployment-mg-create).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/cli/azure/deployment/mg?view=azure-cli-latest#az-deployment-mg-create).
 
 </details>
 
@@ -213,9 +215,36 @@ $inputObject = @(
 az deployment tenant create @inputObject
 ```
 
-For more information, please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
+For more information, please refer to the official [Microsoft docs](https://learn.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
 
 </details>
+
+# As nested deployment
+
+You can also reference modules in another template using the below syntax. To deploy this 'orchestration template' you can again use the commands described [above](#deploy-template). You can also find further information in the 'Template Orchestration' section of [Solution Creation](./Solution%20creation) site.
+
+```bicep
+// Using local reference
+module testDeployment 'ResourceModules/modules/Microsoft.KeyVaults/vaults/deploy.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-example'
+  params: { ... }
+}
+
+// Using Template-Specs reference (with configuration file)
+module testDeployment 'ts/modules:microsoft.keyvaults.vaults:1.0.0' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-example'
+  params: { ... }
+}
+
+// Using Bicep reference
+module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/microsoft.keyvaults.vaults:1.0.0' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name)}-example'
+  params: { ... }
+}
+```
 
 ---
 

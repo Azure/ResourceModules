@@ -14,21 +14,23 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/flowLogs` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/flowLogs) |
+| `Microsoft.Network/networkWatchers/flowLogs` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/flowLogs) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `storageId` | string | Resource ID of the diagnostic storage account. |
 | `targetResourceId` | string | Resource ID of the NSG that must be enabled for Flow Logs. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enabled` | bool | `True` |  | If the flow log should be enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `formatVersion` | int | `2` | `[1, 2]` | The flow log format version. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `name` | string | `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]` |  | Name of the resource. |

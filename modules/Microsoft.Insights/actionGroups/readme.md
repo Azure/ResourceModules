@@ -14,18 +14,20 @@ This module deploys an Action Group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `microsoft.insights/actionGroups` | [2019-06-01](https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `groupShortName` | string | The short name of the action group. |
 | `name` | string | The name of the action group. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `armRoleReceivers` | array | `[]` | The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
@@ -34,7 +36,7 @@ This module deploys an Action Group.
 | `azureFunctionReceivers` | array | `[]` | The list of function receivers that are part of this action group. |
 | `emailReceivers` | array | `[]` | The list of email receivers that are part of this action group. |
 | `enabled` | bool | `True` | Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `itsmReceivers` | array | `[]` | The list of ITSM receivers that are part of this action group. |
 | `location` | string | `'global'` | Location for all resources. |
 | `logicAppReceivers` | array | `[]` | The list of logic app receivers that are part of this action group. |
@@ -47,7 +49,7 @@ This module deploys an Action Group.
 
 ### Parameter Usage: receivers
 
-See [Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
+See [Documentation](https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
 
 <details>
 
@@ -220,7 +222,7 @@ tags: {
     - SMSAction
     - AzureAppAction
     - VoiceAction
-- To understand the impact of the `useCommonAlertSchema` field, see [here](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
+- To understand the impact of the `useCommonAlertSchema` field, see [here](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
 
 ## Outputs
 
@@ -242,7 +244,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -250,11 +252,11 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-ActionGroups'
+  name: '${uniqueString(deployment().name, location)}-test-iagcom'
   params: {
     // Required parameters
-    groupShortName: 'azagweux001'
-    name: '<<namePrefix>>-az-ag-x-001'
+    groupShortName: 'agiagcom001'
+    name: '<<namePrefix>>iagcom001'
     // Non-required parameters
     emailReceivers: [
       {
@@ -268,10 +270,11 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         useCommonAlertSchema: true
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
@@ -301,10 +304,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "groupShortName": {
-      "value": "azagweux001"
+      "value": "agiagcom001"
     },
     "name": {
-      "value": "<<namePrefix>>-az-ag-x-001"
+      "value": "<<namePrefix>>iagcom001"
     },
     // Non-required parameters
     "emailReceivers": {
@@ -321,11 +324,14 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         }
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -339,6 +345,55 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
           "phoneNumber": "2345678901"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-iagmin'
+  params: {
+    // Required parameters
+    groupShortName: 'agiagmin001'
+    name: '<<namePrefix>>iagmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "groupShortName": {
+      "value": "agiagmin001"
+    },
+    "name": {
+      "value": "<<namePrefix>>iagmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

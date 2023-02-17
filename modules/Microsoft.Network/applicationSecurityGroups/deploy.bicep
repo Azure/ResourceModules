@@ -18,7 +18,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -33,14 +33,14 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-08-01' = {
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {}
 }
 
-resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${applicationSecurityGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

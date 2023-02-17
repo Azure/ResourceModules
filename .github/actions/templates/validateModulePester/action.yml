@@ -118,17 +118,23 @@ runs:
         $outputPathFile = 'testResults.xml'
         $outputPath = Join-Path $outputPathDirectory $outputPathFile
         Write-Verbose "Pester tests output: $outputPath" -Verbose
-        Write-Output ('::set-output name={0}::{1}' -f 'outputPath', $outputPath)
+        Write-Output ('{0}={1}' -f 'outputPath', $outputPath) >> $env:GITHUB_OUTPUT
 
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
+        $testContainerData = @{
+          moduleFolderPaths              = $moduleFolderPaths
+          tokenConfiguration             = $tokenConfiguration
+          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
+        }
+
+        Write-Verbose 'Invoke test with' -Verbose
+        Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
+
         Invoke-Pester -Configuration @{
           Run        = @{
-              Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
-              moduleFolderPaths  = $moduleFolderPaths
-              tokenConfiguration = $tokenConfiguration
-            }
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
           }
           TestResult = @{
             TestSuiteName = 'Module Tests'
@@ -142,7 +148,7 @@ runs:
         }
 
     - name: 'Publish Test Results'
-      uses: EnricoMi/publish-unit-test-result-action@v1
+      uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
       with:
-        files: '${{ steps.pester_run_step.outputs.outputPath }}'
+        junit_files: '${{ steps.pester_run_step.outputs.outputPath }}'

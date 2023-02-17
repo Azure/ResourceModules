@@ -14,56 +14,68 @@ This module deploys DBforPostgreSQL FlexibleServers.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DBforPostgreSQL/flexibleServers` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers) |
-| `Microsoft.DBforPostgreSQL/flexibleServers/configurations` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers/configurations) |
-| `Microsoft.DBforPostgreSQL/flexibleServers/databases` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers/databases) |
-| `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-01-20-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-01-20-preview/flexibleServers/firewallRules) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.DBforPostgreSQL/flexibleServers` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/configurations` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/configurations) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/databases` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/databases) |
+| `Microsoft.DBforPostgreSQL/flexibleServers/firewallRules` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforPostgreSQL/2022-12-01/flexibleServers/firewallRules) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  | The administrator login name of a server. Can only be specified when the PostgreSQL server is being created. |
-| `administratorLoginPassword` | secureString |  | The administrator login password. |
+| `administratorLoginPassword` | securestring |  | The administrator login password. |
 | `name` | string |  | The name of the PostgreSQL flexible server. |
 | `skuName` | string |  | The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3. |
 | `tier` | string | `[Burstable, GeneralPurpose, MemoryOptimized]` | The tier of the particular SKU. Tier must align with the "skuName" property. Example, tier cannot be "Burstable" if skuName is "Standard_D4s_v3". |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if 'cMKKeyName' is not empty. |
+| `pointInTimeUTC` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
+| `sourceServerResourceId` | string | `''` | Required if "createMode" is set to "PointInTimeRestore". |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if 'cMKKeyName' is not empty. |
+
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZone` | string | `''` | `['', 1, 2, 3]` | Availability zone information of the server. Default will have no preference set. |
-| `backupRetentionDays` | int | `7` |  | Backup retention days for the server. Default is 7 days. |
+| `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `configurations` | _[configurations](configurations/readme.md)_ array | `[]` |  | The configurations to create in the server. |
-| `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. If not provided, will be set to "Default". |
+| `createMode` | string | `'Default'` | `[Create, Default, PointInTimeRestore, Update]` | The mode to create a new PostgreSQL server. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[PostgreSQLLogs]` | `[PostgreSQLLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, PostgreSQLLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
-| `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Default is disabled. |
-| `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. Default is disabled. |
+| `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
+| `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maintenanceWindow` | object | `{object}` |  | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| `pointInTimeUTC` | string | `''` |  | Property required if "createMode" is set to "PointInTimeRestore". |
 | `privateDnsZoneArmResourceId` | string | `''` |  | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access" and required when "delegatedSubnetResourceId" is used. The Private DNS Zone must be lined to the Virtual Network referenced in "delegatedSubnetResourceId". |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sourceServerResourceId` | string | `''` |  | Property required if "createMode" is set to "PointInTimeRestore". |
-| `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. Default is 32GB. |
+| `storageSizeGB` | int | `32` | `[32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384]` | Max storage allowed for a server. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `version` | string | `'13'` | `[11, 12, 13, 14]` | PostgreSQL Server version. Default is 13. |
+| `version` | string | `'13'` | `[11, 12, 13, 14]` | PostgreSQL Server version. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -223,7 +235,7 @@ firewallRules:  [
 
 To override default server configurations on the PostgreSQL flexible server:
 
-- Use the following documentation as guidance for the available configurations: [PostgreSQL Server Configurations](https://docs.microsoft.com/en-us/azure/postgresql/single-server/how-to-configure-server-parameters-using-cli).
+- Use the following documentation as guidance for the available configurations: [PostgreSQL Server Configurations](https://learn.microsoft.com/en-us/azure/postgresql/single-server/how-to-configure-server-parameters-using-cli).
 
 <details>
 
@@ -309,6 +321,39 @@ databases:  [
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -336,20 +381,17 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FlexibleServers'
+  name: '${uniqueString(deployment().name, location)}-test-dfpsfsmin'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-postgresqlflexserver-min-001'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfsmin001'
     skuName: 'Standard_B2s'
     tier: 'Burstable'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -371,21 +413,20 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-postgresqlflexserver-min-001"
+      "value": "<<namePrefix>>dfpsfsmin001"
     },
     "skuName": {
       "value": "Standard_B2s"
     },
     "tier": {
       "value": "Burstable"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
@@ -401,18 +442,13 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FlexibleServers'
+  name: '${uniqueString(deployment().name, location)}-test-dfpsfspvt'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-postgresqlflexserver-private-001'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfspvt001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -438,14 +474,15 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         name: 'testdb2'
       }
     ]
-    delegatedSubnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-postgres/subnets/<<namePrefix>>-az-subnet-x-postgres'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     geoRedundantBackup: 'Enabled'
-    privateDnsZoneArmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<<namePrefix>>.postgres.database.azure.com'
+    privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
   }
 }
 ```
@@ -467,15 +504,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-postgresqlflexserver-private-001"
+      "value": "<<namePrefix>>dfpsfspvt001"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -511,28 +543,31 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "delegatedSubnetResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-postgres/subnets/<<namePrefix>>-az-subnet-x-postgres"
+      "value": "<delegatedSubnetResourceId>"
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "geoRedundantBackup": {
       "value": "Enabled"
     },
     "privateDnsZoneArmResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<<namePrefix>>.postgres.database.azure.com"
+      "value": "<privateDnsZoneArmResourceId>"
     }
   }
 }
@@ -548,23 +583,21 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
-}
-
 module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-FlexibleServers'
+  name: '${uniqueString(deployment().name, location)}-test-dfpsfsp'
   params: {
     // Required parameters
     administratorLogin: 'adminUserName'
-    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-    name: '<<namePrefix>>-az-postgresqlflexserver-public-001'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    name: '<<namePrefix>>dfpsfsp001'
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
     availabilityZone: '2'
     backupRetentionDays: 20
+    cMKKeyName: '<cMKKeyName>'
+    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     configurations: [
       {
         name: 'log_min_messages'
@@ -582,11 +615,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         name: 'testdb2'
       }
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallRules: [
       {
         endIpAddress: '0.0.0.0'
@@ -604,10 +638,13 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
         startIpAddress: '100.100.100.1'
       }
     ]
-    geoRedundantBackup: 'Enabled'
+    geoRedundantBackup: 'Disabled'
     highAvailability: 'SameZone'
-    location: 'westeurope'
+    location: '<location>'
     storageSizeGB: 1024
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     version: '14'
   }
 }
@@ -630,15 +667,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       "value": "adminUserName"
     },
     "administratorLoginPassword": {
-      "reference": {
-        "keyVault": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-        },
-        "secretName": "administratorLoginPassword"
-      }
+      "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-postgresqlflexserver-public-001"
+      "value": "<<namePrefix>>dfpsfsp001"
     },
     "skuName": {
       "value": "Standard_D2s_v3"
@@ -652,6 +684,15 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "backupRetentionDays": {
       "value": 20
+    },
+    "cMKKeyName": {
+      "value": "<cMKKeyName>"
+    },
+    "cMKKeyVaultResourceId": {
+      "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
     },
     "configurations": {
       "value": [
@@ -675,19 +716,22 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "firewallRules": {
       "value": [
@@ -709,16 +753,21 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
       ]
     },
     "geoRedundantBackup": {
-      "value": "Enabled"
+      "value": "Disabled"
     },
     "highAvailability": {
       "value": "SameZone"
     },
     "location": {
-      "value": "westeurope"
+      "value": "<location>"
     },
     "storageSizeGB": {
       "value": 1024
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     },
     "version": {
       "value": "14"

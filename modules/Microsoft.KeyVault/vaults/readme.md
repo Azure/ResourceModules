@@ -14,49 +14,51 @@ This module deploys a key vault and its child resources.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.KeyVault/vaults` | [2021-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-11-01-preview/vaults) |
-| `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
-| `Microsoft.KeyVault/vaults/keys` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys) |
-| `Microsoft.KeyVault/vaults/secrets` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.KeyVault/vaults` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults) |
+| `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
+| `Microsoft.KeyVault/vaults/keys` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/keys) |
+| `Microsoft.KeyVault/vaults/secrets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/secrets) |
+| `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Key Vault. Must be globally unique. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `accessPolicies` | _[accessPolicies](accessPolicies/readme.md)_ array | `[]` |  | Array of access policies object. |
 | `createMode` | string | `'default'` |  | The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `diagnosticLogCategoriesToEnable` | array | `[AuditEvent, AzurePolicyEvaluationDetails]` | `[AuditEvent, AzurePolicyEvaluationDetails]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AuditEvent, AzurePolicyEvaluationDetails]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enablePurgeProtection` | bool | `False` |  | Provide 'true' to enable Key Vault's purge protection feature. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enablePurgeProtection` | bool | `True` |  | Provide 'true' to enable Key Vault's purge protection feature. |
 | `enableRbacAuthorization` | bool | `False` |  | Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with RBAC. |
 | `enableSoftDelete` | bool | `True` |  | Switch to enable/disable Key Vault's soft delete feature. |
-| `enableVaultForDeployment` | bool | `True` | `[False, True]` | Specifies if the vault is enabled for deployment by script or compute. |
-| `enableVaultForDiskEncryption` | bool | `True` | `[False, True]` | Specifies if the azure platform has access to the vault for enabling disk encryption scenarios. |
-| `enableVaultForTemplateDeployment` | bool | `True` | `[False, True]` | Specifies if the vault is enabled for a template deployment. |
+| `enableVaultForDeployment` | bool | `True` |  | Specifies if the vault is enabled for deployment by script or compute. |
+| `enableVaultForDiskEncryption` | bool | `True` |  | Specifies if the azure platform has access to the vault for enabling disk encryption scenarios. |
+| `enableVaultForTemplateDeployment` | bool | `True` |  | Specifies if the vault is enabled for a template deployment. |
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | All keys to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
+| `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `secrets` | secureObject | `{object}` |  | All secrets to create. |
 | `softDeleteRetentionInDays` | int | `90` |  | softDelete data retention days. It accepts >=7 and <=90. |
@@ -177,10 +179,15 @@ tags: {
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+                "ignoreMissingVnetServiceEndpoint": false
             }
         ],
-        "ipRules": []
+        "ipRules": [
+            {
+                "value": "40.74.28.0/23"
+            }
+        ]
     }
 }
 ```
@@ -197,36 +204,16 @@ networkAcls: {
     defaultAction: 'Deny'
     virtualNetworkRules: [
         {
-            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+            ignoreMissingVnetServiceEndpoint: false
         }
     ]
-    ipRules: []
+    ipRules: [
+        {
+            value: '40.74.28.0/23'
+        }
+    ]
 }
-```
-
-</details>
-<p>
-
-### Parameter Usage: `vNetId`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"vNetId": {
-    "value": "/subscriptions/00000000/resourceGroups/resourceGroup"
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-vNetId: '/subscriptions/00000000/resourceGroups/resourceGroup'
 ```
 
 </details>
@@ -295,8 +282,8 @@ accessPolicies: [
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
 
@@ -315,7 +302,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -346,12 +343,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -359,6 +355,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -405,9 +411,9 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvcom'
+  name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
-    name: '<<namePrefix>>kvvcom001'
+    name: '<<namePrefix>>kvvcom002'
     accessPolicies: [
       {
         objectId: '<objectId>'
@@ -442,6 +448,8 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
     enableRbacAuthorization: false
     keys: [
       {
@@ -453,6 +461,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             principalIds: [
               '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -462,11 +471,15 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     networkAcls: {
       bypass: 'AzureServices'
       defaultAction: 'Deny'
-      ipRules: []
+      ipRules: [
+        {
+          value: '40.74.28.0/23'
+        }
+      ]
       virtualNetworkRules: [
         {
-          action: 'Allow'
           id: '<id>'
+          ignoreMissingVnetServiceEndpoint: false
         }
       ]
     }
@@ -486,6 +499,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         principalIds: [
           '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -501,6 +515,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               principalIds: [
                 '<managedIdentityPrincipalId>'
               ]
+              principalType: 'ServicePrincipal'
               roleDefinitionIdOrName: 'Reader'
             }
           ]
@@ -509,6 +524,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       ]
     }
     softDeleteRetentionInDays: 7
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -526,7 +545,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "<<namePrefix>>kvvcom001"
+      "value": "<<namePrefix>>kvvcom002"
     },
     "accessPolicies": {
       "value": [
@@ -574,6 +593,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
     "enableRbacAuthorization": {
       "value": false
     },
@@ -588,6 +613,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               "principalIds": [
                 "<managedIdentityPrincipalId>"
               ],
+              "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
           ]
@@ -601,11 +627,15 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
       "value": {
         "bypass": "AzureServices",
         "defaultAction": "Deny",
-        "ipRules": [],
+        "ipRules": [
+          {
+            "value": "40.74.28.0/23"
+          }
+        ],
         "virtualNetworkRules": [
           {
-            "action": "Allow",
-            "id": "<id>"
+            "id": "<id>",
+            "ignoreMissingVnetServiceEndpoint": false
           }
         ]
       }
@@ -629,6 +659,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           "principalIds": [
             "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -646,6 +677,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
                 "principalIds": [
                   "<managedIdentityPrincipalId>"
                 ],
+                "principalType": "ServicePrincipal",
                 "roleDefinitionIdOrName": "Reader"
               }
             ],
@@ -656,6 +688,12 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     },
     "softDeleteRetentionInDays": {
       "value": 7
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -672,9 +710,13 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 
 ```bicep
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-test-kvvmin'
+  name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
-    name: '<<namePrefix>>kvvmin001'
+    // Required parameters
+    name: '<<namePrefix>>kvvmin002'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
   }
 }
 ```
@@ -691,8 +733,99 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    // Required parameters
     "name": {
-      "value": "<<namePrefix>>kvvmin001"
+      "value": "<<namePrefix>>kvvmin002"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Pe</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-kvvpe'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>kvvpe001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePurgeProtection: false
+    privateEndpoints: [
+      {
+        privateDnsZoneGroup: {
+          privateDNSResourceIds: [
+            '<privateDNSResourceId>'
+          ]
+        }
+        service: 'vault'
+        subnetResourceId: '<subnetResourceId>'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>kvvpe001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "enablePurgeProtection": {
+      "value": false
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "privateDnsZoneGroup": {
+            "privateDNSResourceIds": [
+              "<privateDNSResourceId>"
+            ]
+          },
+          "service": "vault",
+          "subnetResourceId": "<subnetResourceId>"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

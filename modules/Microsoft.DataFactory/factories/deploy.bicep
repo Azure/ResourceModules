@@ -76,7 +76,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
@@ -85,11 +85,12 @@ param cMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
-@description('Optional. User assigned identity to use when fetching the customer managed key.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ActivityRuns'
   'PipelineRuns'
   'TriggerRuns'
@@ -101,15 +102,7 @@ param cMKUserAssignedIdentityResourceId string = ''
   'SSISIntegrationRuntimeLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ActivityRuns'
-  'PipelineRuns'
-  'TriggerRuns'
-  'SSISPackageEventMessages'
-  'SSISPackageExecutableStatistics'
-  'SSISPackageEventMessageContext'
-  'SSISPackageExecutionComponentPhases'
-  'SSISPackageExecutionDataStatistics'
-  'SSISIntegrationRuntimeLogs'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -123,7 +116,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -131,6 +124,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -148,7 +152,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
@@ -161,7 +165,7 @@ var identity = identityType != 'None' ? {
 var enableReferencedModulesTelemetry = false
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
@@ -229,7 +233,7 @@ module dataFactory_integrationRuntimes 'integrationRuntimes/deploy.bicep' = [for
   ]
 }]
 
-resource dataFactory_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource dataFactory_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${dataFactory.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -281,6 +285,9 @@ module dataFactory_privateEndpoints '../../Microsoft.Network/privateEndpoints/de
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

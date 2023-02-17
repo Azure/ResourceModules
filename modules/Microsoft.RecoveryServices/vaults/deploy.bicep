@@ -4,7 +4,7 @@ param name string
 @description('Optional. The storage configuration for the Azure Recovery Service Vault.')
 param backupStorageConfig object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
@@ -27,6 +27,9 @@ param replicationFabrics array = []
 @description('Optional. List of all replication policies.')
 @minLength(0)
 param replicationPolicies array = []
+
+@description('Optional. Replication alert settings.')
+param replicationAlertSettings object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -65,8 +68,9 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the Recovery Service Vault resource.')
 param tags object = {}
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'AzureBackupReport'
   'CoreAzureBackup'
   'AddonAzureBackupJobs'
@@ -83,20 +87,7 @@ param tags object = {}
   'AzureSiteRecoveryProtectedDiskDataChurn'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'AzureBackupReport'
-  'CoreAzureBackup'
-  'AddonAzureBackupJobs'
-  'AddonAzureBackupAlerts'
-  'AddonAzureBackupPolicy'
-  'AddonAzureBackupStorage'
-  'AddonAzureBackupProtectedInstance'
-  'AzureSiteRecoveryJobs'
-  'AzureSiteRecoveryEvents'
-  'AzureSiteRecoveryReplicatedItems'
-  'AzureSiteRecoveryReplicationStats'
-  'AzureSiteRecoveryRecoveryPoints'
-  'AzureSiteRecoveryReplicationDataUploadRate'
-  'AzureSiteRecoveryProtectedDiskDataChurn'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -113,7 +104,20 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+@description('Optional. Monitoring Settings of the vault.')
+param monitoringSettings object = {}
+
+@description('Optional. Security Settings of the vault.')
+param securitySettings object = {}
+
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = 'Disabled'
+
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -121,6 +125,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -153,16 +168,20 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
   name: name
   location: location
   tags: tags
-  identity: any(identity)
+  identity: identity
   sku: {
     name: 'RS0'
     tier: 'Standard'
   }
-  properties: {}
+  properties: {
+    monitoringSettings: !empty(monitoringSettings) ? monitoringSettings : null
+    securitySettings: !empty(securitySettings) ? securitySettings : null
+    publicNetworkAccess: publicNetworkAccess
+  }
 }
 
 module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
@@ -243,7 +262,19 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSettings)) {
+  name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
+  params: {
+    name: 'defaultAlertSetting'
+    recoveryVaultName: rsv.name
+    customEmailAddresses: contains(replicationAlertSettings, 'customEmailAddresses') ? replicationAlertSettings.customEmailAddresses : []
+    locale: contains(replicationAlertSettings, 'locale') ? replicationAlertSettings.locale : ''
+    sendToOwners: contains(replicationAlertSettings, 'sendToOwners') ? replicationAlertSettings.sendToOwners : 'Send'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+resource rsv_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -282,6 +313,9 @@ module rsv_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

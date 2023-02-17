@@ -1,7 +1,7 @@
 @description('Required. The name of the Flux Configuration.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. The name of the AKS cluster that should be configured.')
@@ -14,6 +14,7 @@ param location string = resourceGroup().location
 param bucket object = {}
 
 @description('Optional. Key-value pairs of protected configuration settings for the configuration.')
+@secure()
 param configurationProtectedSettings object = {}
 
 @description('Optional. Parameters to reconcile to the GitRepository source kind type.')
@@ -54,7 +55,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-07-01' existing = {
   name: clusterName
 }
 

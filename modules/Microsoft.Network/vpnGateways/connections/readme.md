@@ -13,26 +13,29 @@ This module deploys VPN Gateways Connections.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/vpnGateways/vpnConnections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways/vpnConnections) |
+| `Microsoft.Network/vpnGateways/vpnConnections` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnGateways/vpnConnections) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the VPN connection. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `vpnGatewayName` | string | The name of the parent VPN gateway this VPN connection is associated with. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionBandwidth` | int | `10` |  | Expected bandwidth in MBPS. |
 | `enableBgp` | bool | `False` |  | Enable BGP flag. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableInternetSecurity` | bool | `False` |  | Enable internet security. |
 | `enableRateLimiting` | bool | `False` |  | Enable rate limiting. |
 | `ipsecPolicies` | array | `[]` |  | The IPSec policies to be considered by this connection. |

@@ -33,7 +33,7 @@ param targetResourceTypes array = []
 param roleAssignments array = []
 
 @description('Required. The list of resource IDs that this scheduled query rule is scoped to.')
-param scopes array = []
+param scopes array
 
 @description('Optional. Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert.')
 @allowed([
@@ -54,8 +54,8 @@ param windowSize string = ''
 @description('Optional. Actions to invoke when the alert fires.')
 param actions array = []
 
-@description('Optional. The rule criteria that defines the conditions of the scheduled query rule.')
-param criterias object = {}
+@description('Required. The rule criteria that defines the conditions of the scheduled query rule.')
+param criterias object
 
 @description('Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert.')
 param suppressForMinutes string = ''
@@ -63,7 +63,7 @@ param suppressForMinutes string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -90,7 +90,6 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
     }
     autoMitigate: (kind == 'LogAlert') ? autoMitigate : null
     criteria: criterias
-
     description: alertDescription
     displayName: name
     enabled: enabled

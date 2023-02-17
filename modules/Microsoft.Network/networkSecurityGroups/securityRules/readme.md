@@ -13,11 +13,12 @@ This module deploys Network Security Group Security Rules.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkSecurityGroups/securityRules` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkSecurityGroups/securityRules) |
+| `Microsoft.Network/networkSecurityGroups/securityRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkSecurityGroups/securityRules) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `direction` | string | `[Inbound, Outbound]` | The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. |
@@ -26,11 +27,13 @@ This module deploys Network Security Group Security Rules.
 | `protocol` | string | `[*, Ah, Esp, Icmp, Tcp, Udp]` | Network protocol this rule applies to. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `networkSecurityGroupName` | string | The name of the parent network security group to deploy the security rule into. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `access` | string | `'Deny'` | `[Allow, Deny]` | Whether network traffic is allowed or denied. |
@@ -40,7 +43,7 @@ This module deploys Network Security Group Security Rules.
 | `destinationApplicationSecurityGroups` | array | `[]` |  | The application security group specified as destination. |
 | `destinationPortRange` | string | `''` |  | The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | `destinationPortRanges` | array | `[]` |  | The destination port ranges. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `sourceAddressPrefix` | string | `''` |  | The CIDR or source IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. If this is an ingress rule, specifies where network traffic originates from. |
 | `sourceAddressPrefixes` | array | `[]` |  | The CIDR or source IP ranges. |
 | `sourceApplicationSecurityGroups` | array | `[]` |  | The application security group specified as source. |

@@ -24,7 +24,10 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. The customIpPrefix that this prefix is associated with. A custom IP address prefix is a contiguous range of IP addresses owned by an external customer and provisioned into a subscription. When a custom IP prefix is in Provisioned, Commissioning, or Commissioned state, a linked public IP prefix can be created. Either as a subset of the custom IP prefix range or the entire range.')
+param customIPPrefix object = {}
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -39,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-08-01' = {
+resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -47,12 +50,13 @@ resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-08-01' = {
     name: 'Standard'
   }
   properties: {
+    customIPPrefix: !empty(customIPPrefix) ? customIPPrefix : null
     publicIPAddressVersion: 'IPv4'
     prefixLength: prefixLength
   }
 }
 
-resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${publicIpPrefix.name}-${lock}-lock'
   properties: {
     level: any(lock)

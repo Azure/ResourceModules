@@ -14,23 +14,27 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/galleries` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries) |
-| `Microsoft.Compute/galleries/images` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-10-01/galleries/images) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Compute/galleries` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries) |
+| `Microsoft.Compute/galleries/applications` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/applications) |
+| `Microsoft.Compute/galleries/images` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/images) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Shared Image Gallery. |
+| `name` | string | Name of the Azure Compute Gallery. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
+| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Applications to create. |
+| `description` | string | `''` |  | Description of the Azure Shared Image Gallery. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -158,7 +162,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Images</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -166,14 +170,33 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
+  name: '${uniqueString(deployment().name, location)}-test-cgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>azsigweuimages001'
+    name: '<<namePrefix>>cgcom001'
     // Non-required parameters
+    applications: [
+      {
+        name: '<<namePrefix>>-cgcom-appd-001'
+      }
+      {
+        name: '<<namePrefix>>-cgcom-appd-002'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        supportedOSType: 'Windows'
+      }
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-x-003'
+        name: '<<namePrefix>>-az-imgd-ws-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -181,7 +204,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-x-001'
+        name: '<<namePrefix>>-az-imgd-ws-002'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -189,8 +212,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         roleAssignments: [
           {
             principalIds: [
-              '<<deploymentSpId>>'
+              '<managedIdentityPrincipalId>'
             ]
+            principalType: 'ServicePrincipal'
             roleDefinitionIdOrName: 'Reader'
           }
         ]
@@ -198,11 +222,80 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       }
       {
         hyperVGeneration: 'V2'
+        isHibernateSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-003'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-hibernate'
+      }
+      {
+        hyperVGeneration: 'V2'
+        isAcceleratedNetworkSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-004'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-accnet'
+      }
+      {
+        hyperVGeneration: 'V2'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 4
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-wdtl-002'
+        offer: 'WindowsDesktop'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsDesktop'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        securityType: 'TrustedLaunch'
+        sku: 'Win11-21H2'
+      }
+      {
+        hyperVGeneration: 'V2'
         maxRecommendedMemory: 32
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 1
-        name: '<<namePrefix>>-az-imgd-x-002'
+        name: '<<namePrefix>>-az-imgd-us-001'
         offer: '0001-com-ubuntu-server-focal'
         osState: 'Generalized'
         osType: 'Linux'
@@ -210,94 +303,13 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         sku: '20_04-lts-gen2'
       }
     ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>azsigweuimages001"
-    },
-    // Non-required parameters
-    "images": {
-      "value": [
-        {
-          "name": "<<namePrefix>>-az-imgd-x-003"
-        },
-        {
-          "hyperVGeneration": "V1",
-          "maxRecommendedMemory": 16,
-          "maxRecommendedvCPUs": 8,
-          "minRecommendedMemory": 4,
-          "minRecommendedvCPUs": 2,
-          "name": "<<namePrefix>>-az-imgd-x-001",
-          "offer": "WindowsServer",
-          "osState": "Generalized",
-          "osType": "Windows",
-          "publisher": "MicrosoftWindowsServer",
-          "roleAssignments": [
-            {
-              "principalIds": [
-                "<<deploymentSpId>>"
-              ],
-              "roleDefinitionIdOrName": "Reader"
-            }
-          ],
-          "sku": "2022-datacenter-azure-edition"
-        },
-        {
-          "hyperVGeneration": "V2",
-          "maxRecommendedMemory": 32,
-          "maxRecommendedvCPUs": 4,
-          "minRecommendedMemory": 4,
-          "minRecommendedvCPUs": 1,
-          "name": "<<namePrefix>>-az-imgd-x-002",
-          "offer": "0001-com-ubuntu-server-focal",
-          "osState": "Generalized",
-          "osType": "Linux",
-          "publisher": "canonical",
-          "sku": "20_04-lts-gen2"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Galleries'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>azsigweux001'
-    // Non-required parameters
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -319,9 +331,143 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>azsigweux001"
+      "value": "<<namePrefix>>cgcom001"
     },
     // Non-required parameters
+    "applications": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-cgcom-appd-001"
+        },
+        {
+          "name": "<<namePrefix>>-cgcom-appd-002",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "supportedOSType": "Windows"
+        }
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "images": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-imgd-ws-001"
+        },
+        {
+          "hyperVGeneration": "V1",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-ws-002",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "isHibernateSupported": "true",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-ws-003",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition-hibernate"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "isAcceleratedNetworkSupported": "true",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-ws-004",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition-accnet"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 4,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-wdtl-002",
+          "offer": "WindowsDesktop",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsDesktop",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "securityType": "TrustedLaunch",
+          "sku": "Win11-21H2"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "maxRecommendedMemory": 32,
+          "maxRecommendedvCPUs": 4,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 1,
+          "name": "<<namePrefix>>-az-imgd-us-001",
+          "offer": "0001-com-ubuntu-server-focal",
+          "osState": "Generalized",
+          "osType": "Linux",
+          "publisher": "canonical",
+          "sku": "20_04-lts-gen2"
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -329,11 +475,57 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cgmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>cgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>cgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

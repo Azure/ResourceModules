@@ -51,6 +51,23 @@ param retentionPolicyStatus string = 'enabled'
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
 param retentionPolicyDays int = 15
 
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the policy for using ARM audience token for a container registr is enabled or not. Default is enabled.')
+param azureADAuthenticationAsArmPolicyStatus string = 'enabled'
+
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. Soft Delete policy status. Default is disabled.')
+param softDeletePolicyStatus string = 'disabled'
+
+@description('Optional. The number of days after which a soft-deleted item is permanently deleted.')
+param softDeletePolicyDays int = 7
+
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. Note, requires the \'acrSku\' to be \'Premium\'.')
 param dataEndpointEnabled bool = false
 
@@ -112,17 +129,17 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ContainerRegistryRepositoryEvents'
-  'ContainerRegistryLoginEvents'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -153,6 +170,9 @@ param diagnosticEventHubName string = ''
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. Enables registry-wide pull from unauthenticated clients. It\'s in preview and available in the Standard and Premium service tiers.')
+param anonymousPullEnabled bool = false
+
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Note, CMK requires the \'acrSku\' to be \'Premium\'.')
 param cMKKeyVaultResourceId string = ''
 
@@ -165,7 +185,7 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -173,6 +193,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -205,8 +236,8 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource encryptionIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
-  name: last(split(cMKUserAssignedIdentityResourceId, '/'))
+resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+  name: last(split(cMKUserAssignedIdentityResourceId, '/'))!
   scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
 
@@ -215,7 +246,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
+resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = {
   name: name
   location: location
   identity: identity
@@ -224,15 +255,19 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
     name: acrSku
   }
   properties: {
+    anonymousPullEnabled: anonymousPullEnabled
     adminUserEnabled: acrAdminUserEnabled
     encryption: !empty(cMKKeyName) ? {
       status: 'enabled'
       keyVaultProperties: {
-        identity: encryptionIdentity.properties.clientId
+        identity: cMKUserAssignedIdentity.properties.clientId
         keyIdentifier: !empty(cMKKeyVersion) ? '${cMKKeyVaultKey.properties.keyUri}/${cMKKeyVersion}' : cMKKeyVaultKey.properties.keyUriWithVersion
       }
     } : null
     policies: {
+      azureADAuthenticationAsArmPolicy: {
+        status: azureADAuthenticationAsArmPolicyStatus
+      }
       exportPolicy: acrSku == 'Premium' ? {
         status: exportPolicyStatus
       } : null
@@ -247,6 +282,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
         days: retentionPolicyDays
         status: retentionPolicyStatus
       } : null
+      softDeletePolicy: {
+        retentionDays: softDeletePolicyDays
+        status: softDeletePolicyStatus
+      }
     }
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkRuleSetIpRules) ? 'Disabled' : null)
@@ -293,7 +332,7 @@ module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webh
   }
 }]
 
-resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource registry_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${registry.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -345,6 +384,9 @@ module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

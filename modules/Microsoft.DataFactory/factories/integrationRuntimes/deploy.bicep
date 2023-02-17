@@ -17,7 +17,7 @@ param managedVirtualNetworkName string = ''
 @description('Optional. Integration Runtime type properties. Required if type is "Managed".')
 param typeProperties object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -32,7 +32,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-var managedVirtualNetwork_var = {
+var managedVirtualNetworkVar = {
   referenceName: type == 'Managed' ? managedVirtualNetworkName : null
   type: type == 'Managed' ? 'ManagedVirtualNetworkReference' : null
 }
@@ -46,7 +46,7 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
   parent: dataFactory
   properties: type == 'Managed' ? {
     type: type
-    managedVirtualNetwork: managedVirtualNetwork_var
+    managedVirtualNetwork: managedVirtualNetworkVar
     typeProperties: typeProperties
   } : {
     type: type

@@ -21,7 +21,7 @@ param assignableScopes array = []
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -37,7 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
+resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: guid(roleName, managementGroupId)
   properties: {
     roleName: roleName
@@ -57,7 +57,7 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
 output name string = roleDefinition.name
 
 @sys.description('The scope this Role Definition applies to.')
-output scope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+output scope string = managementGroup().id
 
 @sys.description('The resource ID of the Role Definition.')
-output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+output resourceId string = roleDefinition.id

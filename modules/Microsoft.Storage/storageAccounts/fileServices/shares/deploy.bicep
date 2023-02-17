@@ -8,8 +8,8 @@ param fileServicesName string = 'default'
 @description('Required. The name of the file share to create.')
 param name string
 
-@description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.')
-param sharedQuota int = 5120
+@description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5120 (5TB). For Large File Shares, the maximum size is 102400 (100TB).')
+param shareQuota int = 5120
 
 @allowed([
   'NFS'
@@ -29,7 +29,7 @@ param rootSquash string = 'NoRootSquash'
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -56,7 +56,7 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-0
   name: name
   parent: storageAccount::fileService
   properties: {
-    shareQuota: sharedQuota
+    shareQuota: shareQuota
     rootSquash: enabledProtocols == 'NFS' ? rootSquash : null
     enabledProtocols: enabledProtocols
   }

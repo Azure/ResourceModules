@@ -16,7 +16,7 @@ param registrationEnabled bool = false
 @description('Required. Link to another virtual network resource ID.')
 param virtualNetworkResourceId string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

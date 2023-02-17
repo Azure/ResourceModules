@@ -10,7 +10,10 @@ param loadBalancerBackendAddresses array = []
 @description('Optional. An array of gateway load balancer tunnel interfaces.')
 param tunnelInterfaces array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Amount of seconds Load Balancer waits for before sending RESET to client and backend address. if value is 0 then this property will be set to null. Subscription must register the feature Microsoft.Network/SLBAllowConnectionDraining before using this property.')
+param drainPeriodInSeconds int = 0
+
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -29,11 +32,12 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' existing = {
   name: loadBalancerName
 }
 
-resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2021-08-01' = {
+resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2022-07-01' = {
   name: name
   properties: {
     loadBalancerBackendAddresses: loadBalancerBackendAddresses
     tunnelInterfaces: tunnelInterfaces
+    drainPeriodInSeconds: drainPeriodInSeconds != 0 ? drainPeriodInSeconds : null
   }
   parent: loadBalancer
 }

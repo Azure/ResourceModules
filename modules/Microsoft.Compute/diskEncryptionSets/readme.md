@@ -14,13 +14,15 @@ This template deploys a disk encryption set.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/diskEncryptionSets` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/diskEncryptionSets) |
-| `Microsoft.KeyVault/vaults/accessPolicies` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Compute/diskEncryptionSets` | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/diskEncryptionSets) |
+| `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
+| `Microsoft.ManagedIdentity/userAssignedIdentities` | [2018-11-30](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `keyName` | string | Key URL (with version) pointing to a key or secret in KeyVault. |
@@ -28,15 +30,19 @@ This template deploys a disk encryption set.
 | `name` | string | The name of the disk encryption set that is being created. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionType` | string | `'EncryptionAtRestWithPlatformAndCustomerKeys'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
+| `federatedClientId` | string | `'None'` |  | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property. |
 | `keyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `rotationToLatestKeyVersionEnabled` | bool | `False` |  | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
+| `systemAssignedIdentity` | bool | `True` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the disk encryption resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -139,16 +145,50 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `identities` | object | The idenities of the disk encryption set. |
 | `keyVaultName` | string | The name of the key vault with the disk encryption key. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the disk encryption set. |
+| `principalId` | string | The principal ID of the disk encryption set. |
 | `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
 | `resourceId` | string | The resource ID of the disk encryption set. |
-| `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set. |
 
 ## Cross-referenced modules
 
@@ -165,7 +205,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Accesspolicies</h3>
 
 <details>
 
@@ -173,21 +213,27 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DiskEncryptionSets'
+  name: '${uniqueString(deployment().name, location)}-test-cdesap'
   params: {
     // Required parameters
-    keyName: 'keyEncryptionKey'
-    keyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-    name: '<<namePrefix>>-az-des-x-001'
+    keyName: '<keyName>'
+    keyVaultResourceId: '<keyVaultResourceId>'
+    name: '<<namePrefix>>cdesap001'
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -206,24 +252,121 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
   "parameters": {
     // Required parameters
     "keyName": {
-      "value": "keyEncryptionKey"
+      "value": "<keyName>"
     },
     "keyVaultResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+      "value": "<keyVaultResourceId>"
     },
     "name": {
-      "value": "<<namePrefix>>-az-des-x-001"
+      "value": "<<namePrefix>>cdesap001"
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cdescom'
+  params: {
+    // Required parameters
+    keyName: '<keyName>'
+    keyVaultResourceId: '<keyVaultResourceId>'
+    name: '<<namePrefix>>cdescom001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "keyName": {
+      "value": "<keyName>"
+    },
+    "keyVaultResourceId": {
+      "value": "<keyVaultResourceId>"
+    },
+    "name": {
+      "value": "<<namePrefix>>cdescom001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }

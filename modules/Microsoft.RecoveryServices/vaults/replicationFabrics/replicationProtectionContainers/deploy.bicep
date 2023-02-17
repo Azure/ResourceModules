@@ -10,7 +10,7 @@ param name string
 @description('Optional. Replication containers mappings to create.')
 param replicationContainerMappings array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -27,7 +27,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource replicationContainer 'Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers@2022-02-01' = {
+resource replicationContainer 'Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers@2022-10-01' = {
   name: '${recoveryVaultName}/${replicationFabricName}/${name}'
   properties: {
     providerSpecificInput: [

@@ -14,22 +14,24 @@ This module deploys Network Private Link Services.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateLinkServices` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/privateLinkServices) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/privateLinkServices` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/privateLinkServices) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the private link service to create. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoApproval` | object | `{object}` |  | The auto-approval list of the private link service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableProxyProtocol` | bool | `False` |  | Whether the private link service is enabled for proxy protocol or not. |
 | `extendedLocation` | object | `{object}` |  | The extended location of the load balancer. |
 | `fqdns` | array | `[]` |  | The list of Fqdn. |
@@ -154,7 +156,7 @@ loadBalancerFrontendIpConfigurations: [
 
 ### Parameter Usage: `extendedLocation`
 
-This is the Edge Zone ID of the Edge Zone corresponding to the region in which the resource is deployed. More information is available here: [Azure Edge Zone ID](https://docs.microsoft.com/en-us/azure/public-multi-access-edge-compute-mec/key-concepts#azure-edge-zone-id).
+This is the Edge Zone ID of the Edge Zone corresponding to the region in which the resource is deployed. More information is available here: [Azure Edge Zone ID](https://learn.microsoft.com/en-us/azure/public-multi-access-edge-compute-mec/key-concepts#azure-edge-zone-id).
 
 <details>
 
@@ -431,7 +433,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -439,125 +441,51 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkServices'
+  name: '${uniqueString(deployment().name, location)}-test-nplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-pls-min-001'
-    // Non-required parameters
-    ipConfigurations: [
-      {
-        name: 'minpls01'
-        properties: {
-          subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009'
-          }
-        }
-      }
-    ]
-    loadBalancerFrontendIpConfigurations: [
-      {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls-min'
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-pls-min-001"
-    },
-    // Non-required parameters
-    "ipConfigurations": {
-      "value": [
-        {
-          "name": "minpls01",
-          "properties": {
-            "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
-            }
-          }
-        }
-      ]
-    },
-    "loadBalancerFrontendIpConfigurations": {
-      "value": [
-        {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls-min"
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PrivateLinkServices'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-pls-001'
+    name: '<<namePrefix>>nplscom001'
     // Non-required parameters
     autoApproval: {
       subscriptions: [
         '*'
       ]
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enableProxyProtocol: true
     fqdns: [
-      '<<namePrefix>>.plsfqdn01.azure.privatelinkservice'
-      '<<namePrefix>>.plsfqdn02.azure.privatelinkserivce'
+      'nplscom.plsfqdn01.azure.privatelinkservice'
+      'nplscom.plsfqdn02.azure.privatelinkservice'
     ]
     ipConfigurations: [
       {
-        name: 'pls01'
+        name: 'nplscom01'
         properties: {
           primary: true
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009'
+            id: '<id>'
           }
         }
       }
     ]
     loadBalancerFrontendIpConfigurations: [
       {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls'
+        id: '<id>'
       }
     ]
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
         roleDefinitionIdOrName: 'Reader'
       }
     ]
     visibility: {
       subscriptions: [
-        '<<subscriptionId>>'
+        '<subscriptionId>'
       ]
     }
   }
@@ -578,7 +506,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-pls-001"
+      "value": "<<namePrefix>>nplscom001"
     },
     // Non-required parameters
     "autoApproval": {
@@ -588,24 +516,27 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
         ]
       }
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "enableProxyProtocol": {
       "value": true
     },
     "fqdns": {
       "value": [
-        "<<namePrefix>>.plsfqdn01.azure.privatelinkservice",
-        "<<namePrefix>>.plsfqdn02.azure.privatelinkserivce"
+        "nplscom.plsfqdn01.azure.privatelinkservice",
+        "nplscom.plsfqdn02.azure.privatelinkservice"
       ]
     },
     "ipConfigurations": {
       "value": [
         {
-          "name": "pls01",
+          "name": "nplscom01",
           "properties": {
             "primary": true,
             "privateIPAllocationMethod": "Dynamic",
             "subnet": {
-              "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-009"
+              "id": "<id>"
             }
           }
         }
@@ -614,7 +545,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "loadBalancerFrontendIpConfigurations": {
       "value": [
         {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-pls-001/frontendIPConfigurations/frontend-pls"
+          "id": "<id>"
         }
       ]
     },
@@ -625,7 +556,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
           "roleDefinitionIdOrName": "Reader"
         }
@@ -634,9 +565,88 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
     "visibility": {
       "value": {
         "subscriptions": [
-          "<<subscriptionId>>"
+          "<subscriptionId>"
         ]
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nplsmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nplsmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipConfigurations: [
+      {
+        name: 'nplsmin01'
+        properties: {
+          subnet: {
+            id: '<id>'
+          }
+        }
+      }
+    ]
+    loadBalancerFrontendIpConfigurations: [
+      {
+        id: '<id>'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nplsmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipConfigurations": {
+      "value": [
+        {
+          "name": "nplsmin01",
+          "properties": {
+            "subnet": {
+              "id": "<id>"
+            }
+          }
+        }
+      ]
+    },
+    "loadBalancerFrontendIpConfigurations": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
     }
   }
 }

@@ -17,38 +17,18 @@ param count int = 1
 param sourceResourceId string = ''
 
 @description('Optional. Whether to enable auto-scaler.')
-@allowed([
-  true
-  false
-])
 param enableAutoScaling bool = false
 
 @description('Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption. For security reasons, this setting should be enabled.')
-@allowed([
-  true
-  false
-])
 param enableEncryptionAtHost bool = false
 
-@description('Optional. See Add a FIPS-enabled node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details.')
-@allowed([
-  true
-  false
-])
+@description('Optional. See Add a FIPS-enabled node pool (https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details.')
 param enableFIPS bool = false
 
-@description('Optional. Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). The default is false.')
-@allowed([
-  true
-  false
-])
+@description('Optional. Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).')
 param enableNodePublicIP bool = false
 
 @description('Optional. Whether to enable UltraSSD.')
-@allowed([
-  true
-  false
-])
 param enableUltraSSD bool = false
 
 @description('Optional. GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU.')
@@ -86,13 +66,13 @@ param nodePublicIpPrefixId string = ''
 @description('Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.')
 param nodeTaints array = []
 
-@description('Optional. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).')
+@description('Optional. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://learn.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).')
 param orchestratorVersion string = ''
 
 @description('Optional. OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.')
 param osDiskSizeGB int = 0
 
-@description('Optional. The default is "Ephemeral" if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to "Managed". May not be changed after creation. For more information see Ephemeral OS (https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#ephemeral-os).')
+@description('Optional. The default is "Ephemeral" if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to "Managed". May not be changed after creation. For more information see Ephemeral OS (https://learn.microsoft.com/en-us/azure/aks/cluster-configuration#ephemeral-os).')
 @allowed([
   'Ephemeral'
   'Managed'
@@ -121,7 +101,7 @@ param podSubnetId string = ''
 @description('Optional. The ID for the Proximity Placement Group.')
 param proximityPlacementGroupId string = ''
 
-@description('Optional. Describes how VMs are added to or removed from Agent Pools. See billing states (https://docs.microsoft.com/en-us/azure/virtual-machines/states-billing).')
+@description('Optional. Describes how VMs are added to or removed from Agent Pools. See billing states (https://learn.microsoft.com/en-us/azure/virtual-machines/states-billing).')
 @allowed([
   'Deallocate'
   'Delete'
@@ -143,7 +123,7 @@ param scaleSetEvictionPolicy string = 'Delete'
 ])
 param scaleSetPriority string = ''
 
-@description('Optional. Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://docs.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing).')
+@description('Optional. Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any on-demand price. For more details on spot pricing, see spot VMs pricing (https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms#pricing).')
 param spotMaxPrice int = -1
 
 @description('Optional. Tags of the resource.')
@@ -172,7 +152,7 @@ var upgradeSettings = {
   maxSurge: maxSurge
 }
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -187,11 +167,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-06-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-06-01' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-09-01' = {
   name: name
   parent: managedCluster
   properties: {

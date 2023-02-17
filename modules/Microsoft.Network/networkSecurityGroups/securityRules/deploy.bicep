@@ -66,7 +66,7 @@ param sourcePortRange string = ''
 @sys.description('Optional. The source port ranges.')
 param sourcePortRanges array = []
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -81,11 +81,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' existing = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-07-01' existing = {
   name: networkSecurityGroupName
 }
 
-resource securityRule 'Microsoft.Network/networkSecurityGroups/securityRules@2021-08-01' = {
+resource securityRule 'Microsoft.Network/networkSecurityGroups/securityRules@2022-07-01' = {
   name: name
   parent: networkSecurityGroup
   properties: {

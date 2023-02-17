@@ -14,28 +14,31 @@ This module deploys a virtual network subnet.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/virtualNetworks/subnets` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/subnets) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks/subnets) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `addressPrefix` | string | The address prefix for the subnet. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `virtualNetworkName` | string | The name of the parent virtual network. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefixes` | array | `[]` |  | List of address prefixes for the subnet. |
 | `applicationGatewayIpConfigurations` | array | `[]` |  | Application gateway IP configurations of virtual network resource. |
 | `delegations` | array | `[]` |  | The delegations to enable on the subnet. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAllocations` | array | `[]` |  | Array of IpAllocation which reference this subnet. |
 | `name` | string |  |  | The Name of the subnet resource. |
 | `natGatewayId` | string | `''` |  | The resource ID of the NAT Gateway to use for the subnet. |
@@ -180,7 +183,7 @@ roleAssignments: [
 
 ## Considerations
 
-The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".
+The `privateEndpointNetworkPolicies` property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported, [reference](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview#limitations)). Default Value when not specified is "Enabled".
 
 ## Outputs
 

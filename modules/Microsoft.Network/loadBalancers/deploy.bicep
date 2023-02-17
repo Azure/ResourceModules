@@ -55,7 +55,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules.')
@@ -64,7 +64,7 @@ param inboundNatRules array = []
 @description('Optional. The outbound rules.')
 param outboundRules array = []
 
-var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
+var frontendIPConfigurationsVar = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
   name: frontendIPConfiguration.name
   properties: {
     subnet: contains(frontendIPConfiguration, 'subnetId') && !empty(frontendIPConfiguration.subnetId) ? {
@@ -85,7 +85,7 @@ var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in fron
   }
 }]
 
-var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
+var loadBalancingRulesVar = [for loadBalancingRule in loadBalancingRules: {
   name: loadBalancingRule.name
   properties: {
     backendAddressPool: {
@@ -108,7 +108,7 @@ var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
   }
 }]
 
-var outboundRules_var = [for outboundRule in outboundRules: {
+var outboundRulesVar = [for outboundRule in outboundRules: {
   name: outboundRule.name
   properties: {
     frontendIPConfigurations: [
@@ -126,7 +126,7 @@ var outboundRules_var = [for outboundRule in outboundRules: {
   }
 }]
 
-var probes_var = [for probe in probes: {
+var probesVar = [for probe in probes: {
   name: probe.name
   properties: {
     protocol: contains(probe, 'protocol') ? probe.protocol : 'Tcp'
@@ -176,7 +176,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -184,11 +184,11 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-08-01' = {
     name: loadBalancerSku
   }
   properties: {
-    frontendIPConfigurations: frontendIPConfigurations_var
-    loadBalancingRules: loadBalancingRules_var
+    frontendIPConfigurations: frontendIPConfigurationsVar
+    loadBalancingRules: loadBalancingRulesVar
     backendAddressPools: backendAddressPoolNames
-    outboundRules: outboundRules_var
-    probes: probes_var
+    outboundRules: outboundRulesVar
+    probes: probesVar
   }
 }
 
@@ -199,6 +199,7 @@ module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [fo
     name: backendAddressPool.name
     tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
     loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') && !empty(backendAddressPool.loadBalancerBackendAddresses) ? backendAddressPool.loadBalancerBackendAddresses : []
+    drainPeriodInSeconds: contains(backendAddressPool, 'drainPeriodInSeconds') ? backendAddressPool.drainPeriodInSeconds : 0
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -225,7 +226,7 @@ module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inbou
   ]
 }]
 
-resource loadBalancer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource loadBalancer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${loadBalancer.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -13,27 +13,28 @@ With this module you can create policy definitions on a subscription level.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
+| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters. |
 | `policyRule` | object | The Policy Rule details for the Policy Definition. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | The policy definition description. |
 | `displayName` | string | `''` |  | The display name of the policy definition. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
+| `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data, Microsoft.Network.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription. |
 
 
 ## Outputs

@@ -1,14 +1,17 @@
 @minLength(1)
-@description('Required. Name of the Azure Shared Image Gallery.')
+@sys.description('Required. Name of the Azure Compute Gallery.')
 param name string
 
-@description('Optional. Location for all resources.')
+@sys.description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Description of the Azure Shared Image Gallery.')
-param galleryDescription string = ''
+@sys.description('Optional. Description of the Azure Shared Image Gallery.')
+param description string = ''
 
-@description('Optional. Images to create.')
+@sys.description('Optional. Applications to create.')
+param applications array = []
+
+@sys.description('Optional. Images to create.')
 param images array = []
 
 @allowed([
@@ -16,16 +19,16 @@ param images array = []
   'CanNotDelete'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
+@sys.description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Tags for all resources.')
+@sys.description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
@@ -42,17 +45,17 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
+resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   name: name
   location: location
   tags: tags
   properties: {
-    description: galleryDescription
+    description: description
     identifier: {}
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource gallery_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${gallery.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -74,6 +77,25 @@ module gallery_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
   }
 }]
 
+// Applications
+module galleries_applications 'applications/deploy.bicep' = [for (application, index) in applications: {
+  name: '${uniqueString(deployment().name, location)}-Gallery-Application-${index}'
+  params: {
+    name: application.name
+    galleryName: gallery.name
+    supportedOSType: contains(application, 'supportOSType') ? application.supportedOSType : 'Windows'
+    description: contains(application, 'description') ? application.description : ''
+    eula: contains(application, 'eula') ? application.eula : ''
+    privacyStatementUri: contains(application, 'privacyStatementUri') ? application.privacyStatementUri : ''
+    releaseNoteUri: contains(application, 'releaseNoteUri') ? application.releaseNoteUri : ''
+    endOfLifeDate: contains(application, 'endOfLifeDate') ? application.endOfLifeDate : ''
+    roleAssignments: contains(application, 'roleAssignments') ? application.roleAssignments : []
+    customActions: contains(application, 'customActions') ? application.customActions : []
+    tags: contains(application, 'tags') ? application.tags : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 // Images
 module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Image-${index}'
@@ -90,7 +112,8 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     minRecommendedMemory: contains(image, 'minRecommendedMemory') ? image.minRecommendedMemory : 4
     maxRecommendedMemory: contains(image, 'maxRecommendedMemory') ? image.maxRecommendedMemory : 16
     hyperVGeneration: contains(image, 'hyperVGeneration') ? image.hyperVGeneration : 'V1'
-    imageDefinitionDescription: contains(image, 'imageDefinitionDescription') ? image.imageDefinitionDescription : ''
+    securityType: contains(image, 'securityType') ? image.securityType : 'Standard'
+    description: contains(image, 'description') ? image.description : ''
     eula: contains(image, 'eula') ? image.eula : ''
     privacyStatementUri: contains(image, 'privacyStatementUri') ? image.privacyStatementUri : ''
     releaseNoteUri: contains(image, 'releaseNoteUri') ? image.releaseNoteUri : ''
@@ -105,14 +128,14 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
   }
 }]
 
-@description('The resource ID of the deployed image gallery.')
+@sys.description('The resource ID of the deployed image gallery.')
 output resourceId string = gallery.id
 
-@description('The resource group of the deployed image gallery.')
+@sys.description('The resource group of the deployed image gallery.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed image gallery.')
+@sys.description('The name of the deployed image gallery.')
 output name string = gallery.name
 
-@description('The location the resource was deployed into.')
+@sys.description('The location the resource was deployed into.')
 output location string = gallery.location

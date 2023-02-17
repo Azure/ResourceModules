@@ -2,7 +2,7 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: '.Platform: Update ReadMe Module Tables'
+name: '.Platform: Update ReadMe status Tables'
 
 on:
   workflow_dispatch:
@@ -19,18 +19,21 @@ env:
   pipelinePrincipalGitUserEmail: 'CARML@noreply.github.com'
   relativeScriptPath_SetReadMeModuleTable: 'utilities/tools/platform/Set-ReadMeModuleTable.ps1'
   relativeScriptPath_SetModuleOverviewTable: 'utilities/tools/platform/Set-ModuleOverviewTable.ps1'
+  relativeScriptPath_SetReadMePlatformTable: 'utilities/tools/platform/Set-ReadMePlatformTable.ps1'
 
 jobs:
   job_update_readme:
     runs-on: ubuntu-20.04
-    name: 'Update module tables'
+    name: 'Update status tables'
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
-      - name: 'Update general ReadMe'
+
+      # Update the root ReadMe Module Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      - name: 'Update Module Pipelines table'
         shell: pwsh
         run: |
           # Load used functions
@@ -51,6 +54,7 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
+      # Update the `modules` folder ReadMe ([`/modules/readme.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
       - name: 'Update module folder ReadMe'
         shell: pwsh
         run: |
@@ -71,6 +75,7 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
+      # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - name: 'Update module outline'
         shell: pwsh
         run: |
@@ -86,6 +91,25 @@ jobs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Set-ModuleOverviewTable @functionInput -Verbose
+
+      # Update the root ReadMe Platform Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      - name: 'Update Platform Pipelines table'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE $env:relativeScriptPath_SetReadMePlatformTable)
+
+          $functionInput = @{
+            FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            Environment    = 'GitHub'
+          }
+
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Set-ReadMePlatformTable @functionInput -Verbose
 
       - name: 'Push changes'
         shell: pwsh

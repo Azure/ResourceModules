@@ -13,11 +13,12 @@ This module deploys a collection within a MongoDB.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections) |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/mongodbDatabases/collections) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `indexes` | array | Indexes for the collection. |
@@ -25,15 +26,17 @@ This module deploys a collection within a MongoDB.
 | `shardKey` | object | ShardKey for the collection. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseAccountName` | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
 | `mongodbDatabaseName` | string | The name of the parent mongodb database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `throughput` | int | `400` | Name of the mongodb database. |
 
 

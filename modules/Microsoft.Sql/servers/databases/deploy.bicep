@@ -47,16 +47,19 @@ param highAvailabilityReplicaCount int = 0
 @description('Optional. Minimal capacity that database will always have allocated.')
 param minCapacity string = ''
 
-@description('Optional. Time in minutes after which database is automatically paused.')
-param autoPauseDelay string = ''
+@description('Optional. Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.')
+param autoPauseDelay int = 0
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. The resource ID of the elastic pool containing this database.')
+param elasticPoolId string = ''
+
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -76,8 +79,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'SQLInsights'
   'AutomaticTuning'
   'QueryStoreRuntimeStatistics'
@@ -91,17 +95,7 @@ param diagnosticEventHubName string = ''
   'SQLSecurityAuditEvents'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'SQLInsights'
-  'AutomaticTuning'
-  'QueryStoreRuntimeStatistics'
-  'QueryStoreWaitStatistics'
-  'Errors'
-  'DatabaseWaitStatistics'
-  'Timeouts'
-  'Blocks'
-  'Deadlocks'
-  'DevOpsOperationsAudit'
-  'SQLSecurityAuditEvents'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -119,7 +113,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -127,6 +121,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -178,11 +183,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource server 'Microsoft.Sql/servers@2022-02-01-preview' existing = {
+resource server 'Microsoft.Sql/servers@2021-11-01' existing = {
   name: serverName
 }
 
-resource database 'Microsoft.Sql/servers/databases@2022-02-01-preview' = {
+resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
   name: name
   parent: server
   location: location
@@ -194,12 +199,13 @@ resource database 'Microsoft.Sql/servers/databases@2022-02-01-preview' = {
     zoneRedundant: zoneRedundant
     licenseType: licenseType
     readScale: readScale
-    minCapacity: !empty(minCapacity) ? json(minCapacity) : 0
-    autoPauseDelay: !empty(autoPauseDelay) ? json(autoPauseDelay) : 0
+    minCapacity: !empty(minCapacity) ? json(minCapacity) : 0 // The json() function is used to allow specifying a decimal value.
+    autoPauseDelay: autoPauseDelay
     highAvailabilityReplicaCount: highAvailabilityReplicaCount
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
     isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
+    elasticPoolId: elasticPoolId
   }
   sku: skuVar
 }

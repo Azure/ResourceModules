@@ -13,25 +13,28 @@ This module deploys an Azure Automation Account Module.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/modules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules) |
+| `Microsoft.Automation/automationAccounts/modules` | [2020-01-13-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Automation Account module. |
 | `uri` | string | Module package URI, e.g. https://www.powershellgallery.com/api/v2/package. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `tags` | object | `{object}` | Tags of the Automation Account resource. |
 | `version` | string | `'latest'` | Module version or specify latest to get the latest version. |

@@ -11,13 +11,13 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
-@description('Optional. User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
@@ -98,19 +98,18 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'JobLogs'
   'JobStreams'
   'DscNodeStatus'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'JobLogs'
-  'JobStreams'
-  'DscNodeStatus'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -126,7 +125,7 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 var enableReferencedModulesTelemetry = false
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -134,6 +133,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -165,12 +175,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
@@ -218,7 +228,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     name: schedule.name
     automationAccountName: automationAccount.name
     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
-    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    description: contains(schedule, 'description') ? schedule.description : ''
     expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
     frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
     interval: contains(schedule, 'interval') ? schedule.interval : 0
@@ -233,8 +243,8 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
   params: {
     name: runbook.name
     automationAccountName: automationAccount.name
-    runbookType: runbook.runbookType
-    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+    type: runbook.type
+    description: contains(runbook, 'description') ? runbook.description : ''
     uri: contains(runbook, 'uri') ? runbook.uri : ''
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
@@ -275,7 +285,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))!
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     resourceId: automationAccount.id
     tags: tags
@@ -290,7 +300,7 @@ module automationAccount_solutions '../../Microsoft.OperationsManagement/solutio
   params: {
     name: gallerySolution.name
     location: location
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))!
     product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
     publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -350,7 +360,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
   ]
 }]
 
-resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource automationAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${automationAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)
@@ -389,6 +399,9 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
     manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
     customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
+    ipConfigurations: contains(privateEndpoint, 'ipConfigurations') ? privateEndpoint.ipConfigurations : []
+    applicationSecurityGroups: contains(privateEndpoint, 'applicationSecurityGroups') ? privateEndpoint.applicationSecurityGroups : []
+    customNetworkInterfaceName: contains(privateEndpoint, 'customNetworkInterfaceName') ? privateEndpoint.customNetworkInterfaceName : ''
   }
 }]
 

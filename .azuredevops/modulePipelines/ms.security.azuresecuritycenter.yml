@@ -1,10 +1,18 @@
 name: 'Security - AzureSecurityCenter'
 
 parameters:
+  - name: staticValidation
+    displayName: Execute static validation
+    type: boolean
+    default: true
+  - name: deploymentValidation
+    displayName: Execute deployment validation
+    type: boolean
+    default: true
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Needs custom removals script
+    default: true # Note: Deployed resources under the Microsoft.Security resource provider are not removed
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -24,7 +32,7 @@ trigger:
       - '/modules/Microsoft.Security/azureSecurityCenter/*'
       - '/utilities/pipelines/*'
     exclude:
-      - '/utilities/pipelines/dependencies/*'
+      - '/utilities/pipelines/deploymentRemoval/*'
       - '/**/*.md'
 
 variables:
@@ -36,5 +44,7 @@ variables:
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
+      staticValidation: '${{ parameters.staticValidation }}'
+      deploymentValidation: '${{ parameters.deploymentValidation }}'
       removeDeployment: '${{ parameters.removeDeployment }}'
       prerelease: '${{ parameters.prerelease }}'

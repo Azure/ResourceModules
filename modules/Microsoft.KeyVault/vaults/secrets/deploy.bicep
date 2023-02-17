@@ -24,7 +24,7 @@ param contentType string = ''
 @secure()
 param value string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
@@ -42,11 +42,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: keyVaultName
 }
 
-resource secret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+resource secret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
   name: name
   parent: keyVault
   tags: tags

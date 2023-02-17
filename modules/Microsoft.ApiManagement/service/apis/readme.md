@@ -13,12 +13,13 @@ This module deploys API Management Service APIs.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis) |
-| `Microsoft.ApiManagement/service/apis/policies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies) |
+| `Microsoft.ApiManagement/service/apis` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis) |
+| `Microsoft.ApiManagement/service/apis/policies` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `displayName` | string | API name. Must be 1 to 300 characters long. |
@@ -26,11 +27,13 @@ This module deploys API Management Service APIs.
 | `path` | string | Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the API endpoint base URL specified during the service instance creation to form a public URL for this API. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiDescription` | string | `''` |  | Description of the API. May include HTML formatting tags. |
@@ -41,7 +44,7 @@ This module deploys API Management Service APIs.
 | `apiVersionDescription` | string | `''` |  | Description of the API Version. |
 | `apiVersionSetId` | string | `''` |  | Indicates the Version identifier of the API version set. |
 | `authenticationSettings` | object | `{object}` |  | Collection of authentication settings included into this API. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `format` | string | `'openapi'` | `[openapi, openapi-link, openapi+json, openapi+json-link, swagger-json, swagger-link-json, wadl-link-json, wadl-xml, wsdl, wsdl-link]` | Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Indicates if API revision is current API revision. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Array of Policies to apply to the Service API. |

@@ -6,21 +6,15 @@ This section provides an overview of the most impactful limitations and known is
 
 - [Module specific](#module-specific)
   - [Microsoft.AAD/DomainServices](#microsoftaaddomainservices)
-  - [Microsoft.KubernetesConfiguration/extensions](#microsoftkubernetesconfigurationextensions)
-  - [Microsoft.KubernetesConfiguration/fluxConfigurations](#microsoftkubernetesconfigurationfluxconfigurations)
   - [Microsoft.Management/managementGroups](#microsoftmanagementmanagementgroups)
-  - [Microsoft.Network/vpnGateways](#microsoftnetworkvpngateways)
-  - [Microsoft.Network/virtualHubs](#microsoftnetworkvirtualhubs)
-  - [Microsoft.Network/vpnSites](#microsoftnetworkvpnsites)
-  - [Microsoft.Network/connections](#microsoftnetworkconnections)
-  - [Microsoft.Synapse/workspaces](#microsoftsynapseworkspaces)
+  - [Microsoft.RecoveryServices/vaults](#microsoftrecoveryservicesvaults)
+  - [Microsoft.Network/networkManagers](#microsoftnetworknetworkmanagers)
 - [CI environment specific](#ci-environment-specific)
   - [Static validation](#static-validation)
   - [Deployment validation](#deployment-validation)
     - [Limited module test file set](#limited-module-test-file-set)
     - [Limited job execution time](#limited-job-execution-time)
   - [Publishing](#publishing)
-  - [Dependencies pipeline](#dependencies-pipeline)
 
 ---
 
@@ -37,20 +31,7 @@ The Domain Services module pipeline is expected to fail in our development/valid
 
 Therefore, the module was manually tested in a dedicated environment.
 
-For the general prerequisites, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
-
-## Microsoft.KubernetesConfiguration/extensions
-
-The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.KubernetesConfiguration/fluxConfigurations
-
-The module has a dependency on
-
-- a pre-existing AKS cluster (managed cluster)
-- a pre-existing Kubernetes Configuration extension deployment
-
-which we don't have deployed using the dependencies pipeline for cost reasons.
+For the general prerequisites, please refer to the [official docs](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
 ## Microsoft.Management/managementGroups
 
@@ -62,25 +43,17 @@ A related issue has been opened to the Bicep board [#6832](https://github.com/Az
 
 Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
 
-## Microsoft.Network/vpnGateways
+## Microsoft.RecoveryServices/vaults
 
-The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependencies pipeline for cost reasons.
+The Recovery Services Vaults module does not currently validate the identity property (system or user assigned identity).
 
-## Microsoft.Network/virtualHubs
+The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
+A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
 
-## Microsoft.Network/vpnSites
+## Microsoft.Network/networkManagers
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.Network/connections
-
-The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependencies pipeline for cost reasons.
-
-## Microsoft.Synapse/workspaces
-
-The change from Bicep version `v0.10.13` to `v0.10.61` introduced a new validation that causes a `scope` statement in the module to fail. This issue is tracked in the Bicep issue [8403](https://github.com/Azure/bicep/issues/8403). A new Bicep version will either resolve the issue, or, the module will be updated accordingly.
+In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
 
 ---
 
@@ -113,15 +86,5 @@ For modules that can take more than 6 hours to deploy, this restriction applies.
 ## Publishing
 
 This section outlines known issues that currently affect the CI environment publishing step.
-
-## Dependencies pipeline
-
-The dependencies pipeline currently fails on the Disk Encryption Set resource creation when deployed more than once.
-
-In the majority of cases you will only need to run the dependencies pipeline just once, as a prerequisite before using the module pipelines. It is then possible you will not experience this problem.
-
-> **Workaround**: In case you need to rerun the dependencies pipeline on top of existing resources created by the first run, please delete the Disk Encription Set resource before the rerun.
-
-Further details are tracked in issue [#1727](https://github.com/Azure/ResourceModules/issues/1727).
 
 ---

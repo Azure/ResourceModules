@@ -40,16 +40,16 @@ param thresholds array = [
   110
 ]
 
-@description('Optional. The list of email addresses to send the budget notification to when the thresholds are exceeded.')
+@description('Conditional. The list of email addresses to send the budget notification to when the thresholds are exceeded. Required if neither `contactRoles` nor `actionGroups` was provided.')
 param contactEmails array = []
 
-@description('Optional. The list of contact roles to send the budget notification to when the thresholds are exceeded.')
+@description('Conditional. The list of contact roles to send the budget notification to when the thresholds are exceeded. Required if neither `contactEmails` nor `actionGroups` was provided.')
 param contactRoles array = []
 
-@description('Optional. List of action group resource IDs that will receive the alert.')
+@description('Conditional. List of action group resource IDs that will receive the alert. Required if neither `contactEmails` nor `contactEmails` was provided.')
 param actionGroups array = []
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @sys.description('Optional. Location deployment metadata.')
@@ -82,7 +82,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource budget 'Microsoft.Consumption/budgets@2019-05-01' = {
+resource budget 'Microsoft.Consumption/budgets@2021-10-01' = {
   name: name
   properties: {
     category: category

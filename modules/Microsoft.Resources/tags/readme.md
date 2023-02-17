@@ -14,14 +14,15 @@ This module deploys Resources Tags on a subscription or resource group scope.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags) |
+| `Microsoft.Resources/tags` | [2021-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/tags) |
 
 ## Parameters
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
@@ -97,9 +98,8 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtmin'
   params: {
-
   }
 }
 ```
@@ -130,10 +130,11 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name, location)}-test-rtrg'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: false
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: '<resourceGroupName>'
     tags: {
       Test: 'Yes'
       TestToo: 'No'
@@ -154,11 +155,14 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "onlyUpdate": {
       "value": false
     },
     "resourceGroupName": {
-      "value": "validation-rg"
+      "value": "<resourceGroupName>"
     },
     "tags": {
       "value": {
@@ -181,7 +185,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 
 ```bicep
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Tags'
+  name: '${uniqueString(deployment().name)}-test-rtsub'
   params: {
     onlyUpdate: true
     tags: {

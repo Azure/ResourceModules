@@ -26,10 +26,6 @@ param skuTier string = 'Standard'
 param skuFamily string = 'MeteredData'
 
 @description('Optional. Enabled BGP peering type for the Circuit.')
-@allowed([
-  true
-  false
-])
 param peering bool = false
 
 @description('Optional. BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering.')
@@ -56,6 +52,18 @@ param vlanId int = 0
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
+
+@description('Optional. Allow classic operations. You can connect to virtual networks in the classic deployment model by setting allowClassicOperations to true.')
+param allowClassicOperations bool = false
+
+@description('Optional. The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct. Default value of 0 will set the property to null.')
+param bandwidthInGbps int = 0
+
+@description('Optional. The reference to the ExpressRoutePort resource when the circuit is provisioned on an ExpressRoutePort resource. Available when configuring Express Route Direct.')
+param expressRoutePortResourceId string = ''
+
+@description('Optional. Flag denoting global reach status. To enable ExpressRoute Global Reach between different geopolitical regions, your circuits must be Premium SKU.')
+param globalReachEnabled bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -88,15 +96,16 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'PeeringRouteLog'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'PeeringRouteLog'
+  'allLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -110,7 +119,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -118,6 +127,17 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
+    enabled: true
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
+  }
+] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -155,7 +175,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01' = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -165,6 +185,12 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01
     family: skuTier == 'Local' ? 'UnlimitedData' : skuFamily
   }
   properties: {
+    allowClassicOperations: allowClassicOperations
+    globalReachEnabled: globalReachEnabled
+    bandwidthInGbps: bandwidthInGbps != 0 ? bandwidthInGbps : null
+    expressRoutePort: !empty(expressRoutePortResourceId) ? {
+      id: expressRoutePortResourceId
+    } : null
     serviceProviderProperties: {
       serviceProviderName: serviceProviderName
       peeringLocation: peeringLocation
@@ -174,7 +200,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-08-01
   }
 }
 
-resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
     level: any(lock)

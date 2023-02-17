@@ -15,26 +15,28 @@ With this module you can create policy definitions across the management group o
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
+| `Microsoft.Authorization/policyDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
 | `policyRule` | object | The Policy Rule details for the Policy Definition. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string | `''` |  | The policy definition description. |
 | `displayName` | string | `''` |  | The display name of the policy definition. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
+| `mode` | string | `'All'` | `[All, Indexed, Microsoft.ContainerService.Data, Microsoft.KeyVault.Data, Microsoft.Kubernetes.Data, Microsoft.Network.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
 
@@ -136,7 +138,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Mg Min</h3>
+<h3>Example 1: Mg.Common</h3>
 
 <details>
 
@@ -144,99 +146,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
+  name: '${uniqueString(deployment().name)}-test-apdmgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-mg-min-policyDef'
-    policyRule: {
-      if: {
-        allOf: [
-          {
-            equals: 'Microsoft.KeyVault/vaults'
-            field: 'type'
-          }
-        ]
-      }
-      then: {
-        effect: '[parameters('effect')]'
-      }
-    }
-    // Non-required parameters
-    parameters: {
-      effect: {
-        allowedValues: [
-          'Audit'
-        ]
-        defaultValue: 'Audit'
-        type: 'String'
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-mg-min-policyDef"
-    },
-    "policyRule": {
-      "value": {
-        "if": {
-          "allOf": [
-            {
-              "equals": "Microsoft.KeyVault/vaults",
-              "field": "type"
-            }
-          ]
-        },
-        "then": {
-          "effect": "[parameters('effect')]"
-        }
-      }
-    },
-    // Non-required parameters
-    "parameters": {
-      "value": {
-        "effect": {
-          "allowedValues": [
-            "Audit"
-          ],
-          "defaultValue": "Audit",
-          "type": "String"
-        }
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Mg</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-mg-policyDef'
+    name: '<<namePrefix>>apdmgcom001'
     policyRule: {
       if: {
         allOf: [
@@ -246,7 +159,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           }
           {
             exists: 'false'
-            field: '[concat('tags[' parameters('tagName') ']')]'
+            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
           }
         ]
       }
@@ -254,9 +167,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         details: {
           operations: [
             {
-              field: '[concat('tags[' parameters('tagName') ']')]'
+              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
               operation: 'add'
-              value: '[parameters('tagValue')]'
+              value: '[parameters(\'tagValue\')]'
             }
           ]
           roleDefinitionIds: [
@@ -269,21 +182,21 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at the management group scope'
     displayName: '[DisplayName] This policy definition is deployed at the management group scope'
-    managementGroupId: '<<managementGroupId>>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
     }
     parameters: {
       tagName: {
         metadata: {
-          description: 'Name of the tag such as 'environment''
+          description: 'Name of the tag such as \'environment\''
           displayName: 'Tag Name'
         }
         type: 'String'
       }
       tagValue: {
         metadata: {
-          description: 'Value of the tag such as 'production''
+          description: 'Value of the tag such as \'environment\''
           displayName: 'Tag Value'
         }
         type: 'String'
@@ -307,7 +220,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-mg-policyDef"
+      "value": "<<namePrefix>>apdmgcom001"
     },
     "policyRule": {
       "value": {
@@ -319,7 +232,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             },
             {
               "exists": "false",
-              "field": "[concat('tags[', parameters('tagName'), ']')]"
+              "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]"
             }
           ]
         },
@@ -327,9 +240,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "details": {
             "operations": [
               {
-                "field": "[concat('tags[', parameters('tagName'), ']')]",
+                "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]",
                 "operation": "add",
-                "value": "[parameters('tagValue')]"
+                "value": "[parameters(\"tagValue\")]"
               }
             ],
             "roleDefinitionIds": [
@@ -347,8 +260,8 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at the management group scope"
     },
-    "managementGroupId": {
-      "value": "<<managementGroupId>>"
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "metadata": {
       "value": {
@@ -359,14 +272,14 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       "value": {
         "tagName": {
           "metadata": {
-            "description": "Name of the tag, such as 'environment'",
+            "description": "Name of the tag such as \"environment\"",
             "displayName": "Tag Name"
           },
           "type": "String"
         },
         "tagValue": {
           "metadata": {
-            "description": "Value of the tag, such as 'production'",
+            "description": "Value of the tag such as \"environment\"",
             "displayName": "Tag Value"
           },
           "type": "String"
@@ -380,7 +293,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 </details>
 <p>
 
-<h3>Example 3: Sub Min</h3>
+<h3>Example 2: Mg.Min</h3>
 
 <details>
 
@@ -388,10 +301,10 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
+  name: '${uniqueString(deployment().name)}-test-apdmgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-min-policyDef'
+    name: '<<namePrefix>>apdmgmin001'
     policyRule: {
       if: {
         allOf: [
@@ -402,10 +315,11 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         ]
       }
       then: {
-        effect: '[parameters('effect')]'
+        effect: '[parameters(\'effect\')]'
       }
     }
     // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     parameters: {
       effect: {
         allowedValues: [
@@ -415,7 +329,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         type: 'String'
       }
     }
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -434,7 +347,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-min-policyDef"
+      "value": "<<namePrefix>>apdmgmin001"
     },
     "policyRule": {
       "value": {
@@ -447,11 +360,14 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         },
         "then": {
-          "effect": "[parameters('effect')]"
+          "effect": "[parameters(\"effect\")]"
         }
       }
     },
     // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "parameters": {
       "value": {
         "effect": {
@@ -462,9 +378,6 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "type": "String"
         }
       }
-    },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
     }
   }
 }
@@ -473,7 +386,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 </details>
 <p>
 
-<h3>Example 4: Sub</h3>
+<h3>Example 3: Sub.Common</h3>
 
 <details>
 
@@ -481,10 +394,10 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 
 ```bicep
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-PolicyDefinitions'
+  name: '${uniqueString(deployment().name)}-test-apdsubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sub-policyDef'
+    name: '<<namePrefix>>apdsubcom001'
     policyRule: {
       if: {
         allOf: [
@@ -494,7 +407,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           }
           {
             exists: 'false'
-            field: '[concat('tags[' parameters('tagName') ']')]'
+            field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
           }
         ]
       }
@@ -502,9 +415,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         details: {
           operations: [
             {
-              field: '[concat('tags[' parameters('tagName') ']')]'
+              field: '[concat(\'tags[\' parameters(\'tagName\') \']\')]'
               operation: 'add'
-              value: '[parameters('tagValue')]'
+              value: '[parameters(\'tagValue\')]'
             }
           ]
           roleDefinitionIds: [
@@ -517,26 +430,26 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     // Non-required parameters
     description: '[Description] This policy definition is deployed at subscription scope'
     displayName: '[DisplayName] This policy definition is deployed at subscription scope'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     metadata: {
       category: 'Security'
     }
     parameters: {
       tagName: {
         metadata: {
-          description: 'Name of the tag such as 'environment''
+          description: 'Name of the tag such as \'environment\''
           displayName: 'Tag Name'
         }
         type: 'String'
       }
       tagValue: {
         metadata: {
-          description: 'Value of the tag such as 'production''
+          description: 'Value of the tag such as \'production\''
           displayName: 'Tag Value'
         }
         type: 'String'
       }
     }
-    subscriptionId: '<<subscriptionId>>'
   }
 }
 ```
@@ -555,7 +468,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sub-policyDef"
+      "value": "<<namePrefix>>apdsubcom001"
     },
     "policyRule": {
       "value": {
@@ -567,7 +480,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
             },
             {
               "exists": "false",
-              "field": "[concat('tags[', parameters('tagName'), ']')]"
+              "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]"
             }
           ]
         },
@@ -575,9 +488,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           "details": {
             "operations": [
               {
-                "field": "[concat('tags[', parameters('tagName'), ']')]",
+                "field": "[concat(\"tags[\", parameters(\"tagName\"), \"]\")]",
                 "operation": "add",
-                "value": "[parameters('tagValue')]"
+                "value": "[parameters(\"tagValue\")]"
               }
             ],
             "roleDefinitionIds": [
@@ -595,6 +508,9 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
     "displayName": {
       "value": "[DisplayName] This policy definition is deployed at subscription scope"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "metadata": {
       "value": {
         "category": "Security"
@@ -604,22 +520,112 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
       "value": {
         "tagName": {
           "metadata": {
-            "description": "Name of the tag, such as 'environment'",
+            "description": "Name of the tag such as \"environment\"",
             "displayName": "Tag Name"
           },
           "type": "String"
         },
         "tagValue": {
           "metadata": {
-            "description": "Value of the tag, such as 'production'",
+            "description": "Value of the tag such as \"production\"",
             "displayName": "Tag Value"
           },
           "type": "String"
         }
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Sub.Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-test-apdsubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>apdsubmin001'
+    policyRule: {
+      if: {
+        allOf: [
+          {
+            equals: 'Microsoft.KeyVault/vaults'
+            field: 'type'
+          }
+        ]
+      }
+      then: {
+        effect: '[parameters(\'effect\')]'
+      }
+    }
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    parameters: {
+      effect: {
+        allowedValues: [
+          'Audit'
+        ]
+        defaultValue: 'Audit'
+        type: 'String'
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>apdsubmin001"
     },
-    "subscriptionId": {
-      "value": "<<subscriptionId>>"
+    "policyRule": {
+      "value": {
+        "if": {
+          "allOf": [
+            {
+              "equals": "Microsoft.KeyVault/vaults",
+              "field": "type"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters(\"effect\")]"
+        }
+      }
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "parameters": {
+      "value": {
+        "effect": {
+          "allowedValues": [
+            "Audit"
+          ],
+          "defaultValue": "Audit",
+          "type": "String"
+        }
+      }
     }
   }
 }

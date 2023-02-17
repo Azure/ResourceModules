@@ -7,7 +7,7 @@ param connectionApi object = {}
 @description('Required. Connection name for connection. Example: \'azureblob\' when using blobs.  It can change depending on the resource.')
 param name string
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Customized parameter values for specific connections.')
@@ -74,7 +74,7 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -6,28 +6,30 @@ param appName string
 
 @description('Required. Type of site to deploy.')
 @allowed([
-  'functionapp'
-  'functionapp,linux'
-  'app'
+  'functionapp' // function app windows os
+  'functionapp,linux' // function app linux os
+  'functionapp,workflowapp' // logic app workflow
+  'functionapp,workflowapp,linux' // logic app docker container
+  'app' // normal web app
 ])
 param kind string
 
 @description('Required. The auth settings V2 configuration.')
 param authSettingV2Configuration object
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // =========== //
 // Existing resources //
 // =========== //
-resource app 'Microsoft.Web/sites@2020-12-01' existing = {
+resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   name: appName
 }
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -40,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appSettings 'Microsoft.Web/sites/config@2020-12-01' = {
+resource appSettings 'Microsoft.Web/sites/config@2022-03-01' = {
   name: 'authsettingsV2'
   kind: kind
   parent: app

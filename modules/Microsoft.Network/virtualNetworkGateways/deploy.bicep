@@ -66,7 +66,31 @@ param asn int = 65815
 @description('Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network.')
 param vpnClientAddressPoolPrefix string = ''
 
-@description('Optional. Client root certificate data used to authenticate VPN clients.')
+@description('Optional. Configures this gateway to accept traffic from remote Virtual WAN networks.')
+param allowVirtualWanTraffic bool = false
+
+@description('Optional. Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity to Azure Virtual WAN.')
+param allowRemoteVnetTraffic bool = false
+
+@description('Optional. disableIPSecReplayProtection flag. Used for VPN Gateways.')
+param disableIPSecReplayProtection bool = false
+
+@description('Optional. Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. The DNS forwarding feature flag must be enabled on the current subscription.')
+param enableDnsForwarding bool = false
+
+@description('Optional. Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering.')
+param enablePrivateIpAddress bool = false
+
+@description('Optional. The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.')
+param gatewayDefaultSiteLocalNetworkGatewayId string = ''
+
+@description('Optional. NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only.')
+param natRules array = []
+
+@description('Optional. EnableBgpRouteTranslationForNat flag. Can only be used when "natRules" are enabled on the Virtual Network Gateway.')
+param enableBgpRouteTranslationForNat bool = false
+
+@description('Optional. Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided.')
 param clientRootCertData string = ''
 
 @description('Optional. Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet.')
@@ -103,23 +127,23 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
 param publicIpdiagnosticLogCategoriesToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationFlowLogs'
-  'DDoSMitigationReports'
+  'allLogs'
 ]
 
-@description('Optional. The name of logs that will be streamed.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
+  'allLogs'
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -127,12 +151,11 @@ param publicIpdiagnosticLogCategoriesToEnable array = [
   'P2SDiagnosticLog'
 ])
 param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
-  'GatewayDiagnosticLog'
-  'TunnelDiagnosticLog'
-  'RouteDiagnosticLog'
-  'IKEDiagnosticLog'
-  'P2SDiagnosticLog'
+  'allLogs'
 ]
+
+@description('Optional. Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided.')
+param vpnClientAadConfiguration object = {}
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
@@ -153,7 +176,7 @@ param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
 // ================//
 
 // Diagnostic Variables
-var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+var virtualNetworkGatewayDiagnosticsLogsSpecified = [for category in filter(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -162,14 +185,16 @@ var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewa
   }
 }]
 
-var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesToEnable: {
-  category: category
-  enabled: true
-  retentionPolicy: {
+var virtualNetworkGatewayDiagnosticsLogs = contains(virtualNetworkGatewaydiagnosticLogCategoriesToEnable, 'allLogs') ? [
+  {
+    categoryGroup: 'allLogs'
     enabled: true
-    days: diagnosticLogsRetentionInDays
+    retentionPolicy: {
+      enabled: true
+      days: diagnosticLogsRetentionInDays
+    }
   }
-}]
+] : virtualNetworkGatewayDiagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -196,14 +221,14 @@ var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Sta
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
 
 var isActiveActiveValid = virtualNetworkGatewayType != 'ExpressRoute' ? activeActive : false
-var virtualGatewayPipName_var = isActiveActiveValid ? [
+var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
   activeGatewayPipName
 ] : [
   gatewayPipName
 ]
 
-var vpnType_var = virtualNetworkGatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
+var vpnTypeVar = virtualNetworkGatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
 
 var isBgpValid = virtualNetworkGatewayType != 'ExpressRoute' ? enableBgp : false
 var bgpSettings = {
@@ -251,20 +276,20 @@ var ipConfiguration = isActiveActiveValid ? [
   }
 ]
 
-var vpnClientConfiguration = {
+var vpnClientConfiguration = !empty(clientRootCertData) ? {
   vpnClientAddressPool: {
     addressPrefixes: [
       vpnClientAddressPoolPrefix
     ]
   }
-  vpnClientRootCertificates: !empty(clientRootCertData) ? [
+  vpnClientRootCertificates: [
     {
       name: 'RootCert1'
       properties: {
         PublicCertData: clientRootCertData
       }
     }
-  ] : null
+  ]
   vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? [
     {
       name: 'RevokedCert1'
@@ -273,7 +298,24 @@ var vpnClientConfiguration = {
       }
     }
   ] : null
-}
+} : !empty(vpnClientAadConfiguration) ? {
+  vpnClientAddressPool: {
+    addressPrefixes: [
+      vpnClientAddressPoolPrefix
+    ]
+  }
+  aadTenant: vpnClientAadConfiguration.aadTenant
+  aadAudience: vpnClientAadConfiguration.aadAudience
+  aadIssuer: vpnClientAadConfiguration.aadIssuer
+  vpnAuthenticationTypes: [
+    vpnClientAadConfiguration.vpnAuthenticationTypes
+  ]
+  vpnClientProtocols: [
+    vpnClientAadConfiguration.vpnClientProtocols
+  ]
+} : null
+
+var enableReferencedModulesTelemetry = false
 
 // ================//
 // Deployments     //
@@ -292,74 +334,77 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // Public IPs
 @batchSize(1)
-resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-08-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
   name: virtualGatewayPublicIpName
-  location: location
-  tags: tags
-  sku: {
-    name: gatewayPipSku
-  }
-  properties: {
+  params: {
+    name: virtualGatewayPublicIpName
+    diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
+    diagnosticMetricsToEnable: diagnosticMetricsToEnable
+    diagnosticSettingsName: publicIpDiagnosticSettingsName
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
+    domainNameLabel: length(virtualGatewayPipNameVar) == length(domainNameLabel) ? domainNameLabel[index] : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: location
+    lock: lock
     publicIPAllocationMethod: gatewayPipAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixResourceId) ? {
-      id: publicIPPrefixResourceId
-    } : null
-    dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? {
-      domainNameLabel: domainNameLabel[index]
-    } : null
+    publicIPPrefixResourceId: !empty(publicIPPrefixResourceId) ? publicIPPrefixResourceId : ''
+    tags: tags
+    skuName: gatewayPipSku
+    zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : []
   }
-  zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null
-}]
-
-@batchSize(1)
-resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (!empty(lock)) {
-  name: '${virtualGatewayPublicIpName}-${lock}-lock'
-  properties: {
-    level: any(lock)
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: virtualGatewayPublicIP[index]
-}]
-
-@batchSize(1)
-resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${virtualGatewayPublicIP[index].name}-${publicIpDiagnosticSettingsName}'
-  properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
-    logs: publicIpDiagnosticsLogs
-  }
-  scope: virtualGatewayPublicIP[index]
 }]
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     ipConfigurations: ipConfiguration
     activeActive: isActiveActiveValid
+    allowRemoteVnetTraffic: allowRemoteVnetTraffic
+    allowVirtualWanTraffic: allowVirtualWanTraffic
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
+    disableIPSecReplayProtection: disableIPSecReplayProtection
+    enableDnsForwarding: virtualNetworkGatewayType == 'ExpressRoute' ? enableDnsForwarding : null
+    enablePrivateIpAddress: enablePrivateIpAddress
+    enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
+    gatewayType: virtualNetworkGatewayType
+    gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
+      id: gatewayDefaultSiteLocalNetworkGatewayId
+    } : null
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
     }
-    gatewayType: virtualNetworkGatewayType
-    vpnType: vpnType_var
+    vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
   }
   dependsOn: [
-    virtualGatewayPublicIP
+    publicIPAddress
   ]
 }
 
-resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+module virtualNetworkGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+  name: '${deployment().name}-NATRule-${index}'
+  params: {
+    name: natRule.name
+    virtualNetworkGatewayName: virtualNetworkGateway.name
+    externalMappings: contains(natRule, 'externalMappings') ? natRule.externalMappings : []
+    internalMappings: contains(natRule, 'internalMappings') ? natRule.internalMappings : []
+    ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
+    mode: contains(natRule, 'mode') ? natRule.mode : ''
+    type: contains(natRule, 'type') ? natRule.type : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

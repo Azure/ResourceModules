@@ -1,7 +1,7 @@
 @description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string = ''
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.')
@@ -14,7 +14,7 @@ param keyVault object = {}
 param name string
 
 @description('Optional. Tags that when provided can be used to filter the NamedValue list. - string.')
-param namedValueTags array = []
+param tags array = []
 
 @description('Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false.')
 #disable-next-line secure-secrets-in-params // Not a secret
@@ -45,7 +45,7 @@ resource namedValue 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
   name: name
   parent: service
   properties: {
-    tags: !empty(namedValueTags) ? namedValueTags : null
+    tags: !empty(tags) ? tags : null
     secret: secret
     displayName: displayName
     value: keyVaultEmpty ? value : null

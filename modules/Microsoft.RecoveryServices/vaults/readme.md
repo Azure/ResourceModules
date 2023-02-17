@@ -14,30 +14,33 @@ This module deploys a recovery service vault.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.RecoveryServices/vaults` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults) |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupconfig) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers/protectedItems) |
-| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupPolicies) |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupstorageconfig) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/replicationPolicies) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.RecoveryServices/vaults` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults) |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupconfig) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupPolicies) |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupstorageconfig) |
+| `Microsoft.RecoveryServices/vaults/replicationAlertSettings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationAlertSettings) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics/replicationProtectionContainers) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-10-01/vaults/replicationPolicies) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Recovery Service Vault. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupConfig` | _[backupConfig](backupConfig/readme.md)_ object | `{object}` |  | The backup configuration. |
@@ -45,20 +48,24 @@ This module deploys a recovery service vault.
 | `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | The storage configuration for the Azure Recovery Service Vault. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[AddonAzureBackupAlerts, AddonAzureBackupJobs, AddonAzureBackupPolicy, AddonAzureBackupProtectedInstance, AddonAzureBackupStorage, allLogs, AzureBackupReport, AzureSiteRecoveryEvents, AzureSiteRecoveryJobs, AzureSiteRecoveryProtectedDiskDataChurn, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryReplicationStats, CoreAzureBackup]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Health]` | `[Health]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `monitoringSettings` | object | `{object}` |  | Monitoring Settings of the vault. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. |
+| `replicationAlertSettings` | _[replicationAlertSettings](replicationAlertSettings/readme.md)_ object | `{object}` |  | Replication alert settings. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `securitySettings` | object | `{object}` |  | Security Settings of the vault. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -809,8 +816,8 @@ userAssignedIdentities: {
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 <details>
 
@@ -829,7 +836,17 @@ To use Private Endpoint the following dependencies must be deployed:
                     "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
-            "customDnsConfigs": [ // Optional
+            "ipConfigurations":[
+                {
+                    "name": "myIPconfigTest02",
+                    "properties": {
+                        "groupId": "blob",
+                        "memberName": "blob",
+                        "privateIPAddress": "10.0.0.30"
+                    }
+                }
+            ],
+            "customDnsConfigs": [
                 {
                     "fqdn": "customname.test.local",
                     "ipAddresses": [
@@ -860,12 +877,11 @@ privateEndpoints:  [
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroups: {
+        privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
                 '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
-        // Optional
         customDnsConfigs: [
             {
                 fqdn: 'customname.test.local'
@@ -873,6 +889,16 @@ privateEndpoints:  [
                     '10.10.10.10'
                 ]
             }
+        ]
+        ipConfigurations:[
+          {
+            name: 'myIPconfigTest02'
+            properties: {
+              groupId: 'blob'
+              memberName: 'blob'
+              privateIPAddress: '10.0.0.30'
+            }
+          }
         ]
     }
     // Example showing only mandatory fields
@@ -911,7 +937,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Dr</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -919,202 +945,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Vaults'
+  name: '${uniqueString(deployment().name, location)}-test-rsvcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-rsv-dr-001'
-    // Non-required parameters
-    replicationFabrics: [
-      {
-        location: 'NorthEurope'
-        replicationContainers: [
-          {
-            name: 'ne-container1'
-            replicationContainerMappings: [
-              {
-                policyName: 'Default_values'
-                targetContainerName: 'pluto'
-                targetProtectionContainerId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-min-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2'
-              }
-            ]
-          }
-          {
-            name: 'ne-container2'
-            replicationContainerMappings: [
-              {
-                policyName: 'Default_values'
-                targetContainerFabricName: 'WE-2'
-                targetContainerName: 'we-container1'
-              }
-            ]
-          }
-        ]
-      }
-      {
-        location: 'WestEurope'
-        name: 'WE-2'
-        replicationContainers: [
-          {
-            name: 'we-container1'
-            replicationContainerMappings: [
-              {
-                policyName: 'Default_values'
-                targetContainerFabricName: 'NorthEurope'
-                targetContainerName: 'ne-container2'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-    replicationPolicies: [
-      {
-        name: 'Default_values'
-      }
-      {
-        appConsistentFrequencyInMinutes: 240
-        crashConsistentFrequencyInMinutes: 7
-        multiVmSyncStatus: 'Disable'
-        name: 'Custom_values'
-        recoveryPointHistory: 2880
-      }
-    ]
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-rsv-dr-001"
-    },
-    // Non-required parameters
-    "replicationFabrics": {
-      "value": [
-        {
-          "location": "NorthEurope",
-          "replicationContainers": [
-            {
-              "name": "ne-container1",
-              "replicationContainerMappings": [
-                {
-                  "policyName": "Default_values",
-                  "targetContainerName": "pluto",
-                  "targetProtectionContainerId": "/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-min-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2"
-                }
-              ]
-            },
-            {
-              "name": "ne-container2",
-              "replicationContainerMappings": [
-                {
-                  "policyName": "Default_values",
-                  "targetContainerFabricName": "WE-2",
-                  "targetContainerName": "we-container1"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "location": "WestEurope",
-          "name": "WE-2",
-          "replicationContainers": [
-            {
-              "name": "we-container1",
-              "replicationContainerMappings": [
-                {
-                  "policyName": "Default_values",
-                  "targetContainerFabricName": "NorthEurope",
-                  "targetContainerName": "ne-container2"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "replicationPolicies": {
-      "value": [
-        {
-          "name": "Default_values"
-        },
-        {
-          "appConsistentFrequencyInMinutes": 240,
-          "crashConsistentFrequencyInMinutes": 7,
-          "multiVmSyncStatus": "Disable",
-          "name": "Custom_values",
-          "recoveryPointHistory": 2880
-        }
-      ]
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Vaults'
-  params: {
-    name: '<<namePrefix>>-az-rsv-min-001'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "name": {
-      "value": "<<namePrefix>>-az-rsv-min-001"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 3: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-Vaults'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-rsv-x-001'
+    name: '<<namePrefix>>rsvcom001'
     // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -1354,34 +1188,52 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       crossRegionRestoreFlag: true
       storageModelType: 'GeoRedundant'
     }
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    monitoringSettings: {
+      azureMonitorAlertSettings: {
+        alertsForAllJobFailures: 'Enabled'
+      }
+      classicAlertSettings: {
+        alertsForCriticalOperations: 'Enabled'
+      }
+    }
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.siterecovery.windowsazure.com'
+            '<privateDNSResourceId>'
           ]
         }
         service: 'AzureSiteRecovery'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '<subnetResourceId>'
       }
     ]
+    replicationAlertSettings: {
+      customEmailAddresses: [
+        'test.user@testcompany.com'
+      ]
+      locale: 'en-US'
+      sendToOwners: 'Send'
+    }
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
-    userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    securitySettings: {
+      immutabilitySettings: {
+        state: 'Unlocked'
+      }
     }
   }
 }
@@ -1401,7 +1253,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-rsv-x-001"
+      "value": "<<namePrefix>>rsvcom001"
     },
     // Non-required parameters
     "backupConfig": {
@@ -1649,53 +1501,279 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       }
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "monitoringSettings": {
+      "value": {
+        "azureMonitorAlertSettings": {
+          "alertsForAllJobFailures": "Enabled"
+        },
+        "classicAlertSettings": {
+          "alertsForCriticalOperations": "Enabled"
+        }
+      }
     },
     "privateEndpoints": {
       "value": [
         {
           "privateDnsZoneGroup": {
             "privateDNSResourceIds": [
-              "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/privatelink.siterecovery.windowsazure.com"
+              "<privateDNSResourceId>"
             ]
           },
           "service": "AzureSiteRecovery",
-          "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+          "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "replicationAlertSettings": {
+      "value": {
+        "customEmailAddresses": [
+          "test.user@testcompany.com"
+        ],
+        "locale": "en-US",
+        "sendToOwners": "Send"
+      }
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
-    "systemAssignedIdentity": {
-      "value": true
-    },
-    "userAssignedIdentities": {
+    "securitySettings": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "immutabilitySettings": {
+          "state": "Unlocked"
+        }
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Dr</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-rsvdr'
+  params: {
+    // Required parameters
+    name: '<name>'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    replicationFabrics: [
+      {
+        location: 'NorthEurope'
+        replicationContainers: [
+          {
+            name: 'ne-container1'
+            replicationContainerMappings: [
+              {
+                policyName: 'Default_values'
+                targetContainerName: 'pluto'
+                targetProtectionContainerId: '<targetProtectionContainerId>'
+              }
+            ]
+          }
+          {
+            name: 'ne-container2'
+            replicationContainerMappings: [
+              {
+                policyName: 'Default_values'
+                targetContainerFabricName: 'WE-2'
+                targetContainerName: 'we-container1'
+              }
+            ]
+          }
+        ]
+      }
+      {
+        location: 'WestEurope'
+        name: 'WE-2'
+        replicationContainers: [
+          {
+            name: 'we-container1'
+            replicationContainerMappings: [
+              {
+                policyName: 'Default_values'
+                targetContainerFabricName: 'NorthEurope'
+                targetContainerName: 'ne-container2'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    replicationPolicies: [
+      {
+        name: 'Default_values'
+      }
+      {
+        appConsistentFrequencyInMinutes: 240
+        crashConsistentFrequencyInMinutes: 7
+        multiVmSyncStatus: 'Disable'
+        name: 'Custom_values'
+        recoveryPointHistory: 2880
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "replicationFabrics": {
+      "value": [
+        {
+          "location": "NorthEurope",
+          "replicationContainers": [
+            {
+              "name": "ne-container1",
+              "replicationContainerMappings": [
+                {
+                  "policyName": "Default_values",
+                  "targetContainerName": "pluto",
+                  "targetProtectionContainerId": "<targetProtectionContainerId>"
+                }
+              ]
+            },
+            {
+              "name": "ne-container2",
+              "replicationContainerMappings": [
+                {
+                  "policyName": "Default_values",
+                  "targetContainerFabricName": "WE-2",
+                  "targetContainerName": "we-container1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "location": "WestEurope",
+          "name": "WE-2",
+          "replicationContainers": [
+            {
+              "name": "we-container1",
+              "replicationContainerMappings": [
+                {
+                  "policyName": "Default_values",
+                  "targetContainerFabricName": "NorthEurope",
+                  "targetContainerName": "ne-container2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "replicationPolicies": {
+      "value": [
+        {
+          "name": "Default_values"
+        },
+        {
+          "appConsistentFrequencyInMinutes": 240,
+          "crashConsistentFrequencyInMinutes": 7,
+          "multiVmSyncStatus": "Disable",
+          "name": "Custom_values",
+          "recoveryPointHistory": 2880
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-rsvmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>rsvmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>rsvmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

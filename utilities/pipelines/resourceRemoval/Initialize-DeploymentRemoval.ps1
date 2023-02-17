@@ -18,9 +18,9 @@ Optional. The name of the resource group the deployment was happening in. Releva
 Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
 .EXAMPLE
-Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
+Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-rg'
 
-Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-parameters.json-rg' that was executed using template in path "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep"
+Remove the deployment 'virtualWans-20211204T1812029146Z' from resource group 'test-virtualWan-rg' that was executed using template in path "$home/ResourceModules/modules/Microsoft.Network/virtualWans/deploy.bicep"
 #>
 function Initialize-DeploymentRemoval {
 
@@ -56,16 +56,10 @@ function Initialize-DeploymentRemoval {
             $null = Set-AzContext -Subscription $subscriptionId
         }
 
-        if (-not (Split-Path (Split-Path $templateFilePath -Parent) -LeafBase)) {
-            # In case of new dependency approach (template is in subfolder)
-            $moduleName = Split-Path (Split-Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase
-        } else {
-            $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
-        }
-
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Authorization/locks',
+            'Microsoft.Authorization/roleAssignments',
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
             'Microsoft.Network/privateEndpoints',
@@ -73,42 +67,44 @@ function Initialize-DeploymentRemoval {
             'Microsoft.OperationalInsights/workspaces/linkedServices',
             'Microsoft.OperationalInsights/workspaces',
             'Microsoft.KeyVault/vaults',
+            'Microsoft.Authorization/policyExemptions',
+            'Microsoft.Authorization/policyAssignments',
+            'Microsoft.Authorization/policySetDefinitions',
+            'Microsoft.Authorization/policyDefinitions'
+            'Microsoft.Sql/managedInstances',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
-        Write-Verbose ('Template file path: [{0}]' -f $templateFilePath) -Verbose
-        Write-Verbose ('Module name: [{0}]' -f $moduleName) -Verbose
 
-        foreach ($deploymentName in $deploymentNames) {
-            Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
+        Write-Verbose ('Handling resource removal with deployment names [{0}]' -f ($deploymentNames -join ', ')) -Verbose
 
-            ### CODE LOCATION: Add custom removal sequence here
-            ## Add custom module-specific removal sequence following the example below
-            # switch ($moduleName) {
-            #     '<moduleName01>' {                # For example: 'virtualWans', 'automationAccounts'
-            #         $removalSequence += @(
-            #             '<resourceType01>',       # For example: 'Microsoft.Network/vpnSites', 'Microsoft.OperationalInsights/workspaces/linkedServices'
-            #             '<resourceType02>',
-            #             '<resourceType03>'
-            #         )
-            #         break
-            #     }
-            # }
+        ### CODE LOCATION: Add custom removal sequence here
+        ## Add custom module-specific removal sequence following the example below
+        # $moduleName = Split-Path (Split-Path (Split-Path $templateFilePath -Parent) -Parent) -LeafBase
+        # switch ($moduleName) {
+        #     '<moduleName01>' {                # For example: 'virtualWans', 'automationAccounts'
+        #         $removalSequence += @(
+        #             '<resourceType01>',       # For example: 'Microsoft.Network/vpnSites', 'Microsoft.OperationalInsights/workspaces/linkedServices'
+        #             '<resourceType02>',
+        #             '<resourceType03>'
+        #         )
+        #         break
+        #     }
+        # }
 
-            # Invoke removal
-            $inputObject = @{
-                DeploymentName   = $deploymentName
-                TemplateFilePath = $templateFilePath
-                RemovalSequence  = $removalSequence
-            }
-            if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
-                $inputObject['resourceGroupName'] = $resourceGroupName
-            }
-            if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
-                $inputObject['ManagementGroupId'] = $ManagementGroupId
-            }
-            Remove-Deployment @inputObject -Verbose
+        # Invoke removal
+        $inputObject = @{
+            DeploymentNames  = $DeploymentNames
+            TemplateFilePath = $templateFilePath
+            RemovalSequence  = $removalSequence
         }
+        if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+            $inputObject['resourceGroupName'] = $resourceGroupName
+        }
+        if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+            $inputObject['ManagementGroupId'] = $ManagementGroupId
+        }
+        Remove-Deployment @inputObject
     }
 
     end {

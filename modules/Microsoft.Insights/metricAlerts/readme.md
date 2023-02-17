@@ -14,24 +14,27 @@ This module deploys an alert based on metrics.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/metricAlerts` | [2018-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/metricAlerts` | [2018-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `criterias` | array | Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects. |
 | `name` | string | The name of the alert. |
 
 **Conditional parameters**
+
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `targetResourceRegion` | string | `''` | The region of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
 | `targetResourceType` | string | `''` | The resource type of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | The list of actions to take when alert triggers. |
@@ -39,7 +42,7 @@ This module deploys an alert based on metrics.
 | `alertDescription` | string | `''` |  | Description of the alert. |
 | `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be auto resolved or not. |
 | `enabled` | bool | `True` |  | Indicates whether this alert is enabled. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `evaluationFrequency` | string | `'PT5M'` | `[PT15M, PT1H, PT1M, PT30M, PT5M]` | how often the metric alert is evaluated represented in ISO 8601 duration format. |
 | `location` | string | `'global'` |  | Location for all resources. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -385,7 +388,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Parameters</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -393,7 +396,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-MetricAlerts'
+  name: '${uniqueString(deployment().name, location)}-test-imacom'
   params: {
     // Required parameters
     criterias: [
@@ -407,17 +410,19 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
         timeAggregation: 'Average'
       }
     ]
-    name: '<<namePrefix>>-az-ma-x-001'
+    name: '<<namePrefix>>imacom001'
     // Non-required parameters
     actions: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+      '<actionGroupResourceId>'
     ]
     alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -455,23 +460,27 @@ module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-ma-x-001"
+      "value": "<<namePrefix>>imacom001"
     },
     // Non-required parameters
     "actions": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+        "<actionGroupResourceId>"
       ]
     },
     "alertCriteriaType": {
       "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]

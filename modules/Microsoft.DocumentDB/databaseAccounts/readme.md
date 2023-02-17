@@ -14,26 +14,28 @@ This module deploys a DocumentDB database account and its child resources.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DocumentDB/databaseAccounts` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts) |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases) |
-| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-02-15-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-02-15-preview/databaseAccounts/gremlinDatabases/graphs) |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases) |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections) |
-| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | [2021-06-15](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases) |
-| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/sqlDatabases/containers) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.DocumentDB/databaseAccounts` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/gremlinDatabases/graphs) |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/mongodbDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/mongodbDatabases/collections) |
+| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/sqlDatabases) |
+| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | [2022-08-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2022-08-15/databaseAccounts/sqlDatabases/containers) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `locations` | array | Locations enabled for the Cosmos DB account. |
 | `name` | string | Name of the Database Account. |
 
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Enable automatic failover for regions. |
@@ -47,13 +49,13 @@ This module deploys a DocumentDB database account and its child resources.
 | `defaultConsistencyLevel` | string | `'Session'` | `[BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong]` | The default consistency level of the Cosmos DB account. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | `[CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Requests]` | `[Requests]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gremlinDatabases` | _[gremlinDatabases](gremlinDatabases/readme.md)_ array | `[]` |  | Gremlin Databases configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -550,7 +552,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
+  name: '${uniqueString(deployment().name, location)}-test-dddagrm'
   params: {
     // Required parameters
     locations: [
@@ -565,62 +567,72 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>-az-cdb-gremlindb-001'
+    name: '<<namePrefix>>dddagrm002'
     // Non-required parameters
     capabilitiesToAdd: [
       'EnableGremlin'
     ]
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gremlinDatabases: [
       {
         graphs: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'car_collection'
             partitionKeyPaths: [
               '/car_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'truck_collection'
             partitionKeyPaths: [
               '/truck_id'
             ]
           }
         ]
-        name: '<<namePrefix>>-az-gdb-x-001'
+        name: '<<namePrefix>>-gdb-dddagrm-001'
       }
       {
         collections: [
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bike_collection'
             partitionKeyPaths: [
               '/bike_id'
             ]
           }
           {
-            automaticIndexing: true
+            indexingPolicy: {
+              automatic: true
+            }
             name: 'bicycle_collection'
             partitionKeyPaths: [
               '/bicycle_id'
             ]
           }
         ]
-        name: '<<namePrefix>>-az-gdb-x-002'
+        name: '<<namePrefix>>-gdb-dddagrm-002'
       }
     ]
-    location: 'West Europe'
+    location: '<location>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -657,7 +669,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-cdb-gremlindb-001"
+      "value": "<<namePrefix>>dddagrm002"
     },
     // Non-required parameters
     "capabilitiesToAdd": {
@@ -666,71 +678,83 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "gremlinDatabases": {
       "value": [
         {
           "graphs": [
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "car_collection",
               "partitionKeyPaths": [
                 "/car_id"
               ]
             },
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "truck_collection",
               "partitionKeyPaths": [
                 "/truck_id"
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-gdb-x-001"
+          "name": "<<namePrefix>>-gdb-dddagrm-001"
         },
         {
           "collections": [
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "bike_collection",
               "partitionKeyPaths": [
                 "/bike_id"
               ]
             },
             {
-              "automaticIndexing": true,
+              "indexingPolicy": {
+                "automatic": true
+              },
               "name": "bicycle_collection",
               "partitionKeyPaths": [
                 "/bicycle_id"
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-gdb-x-002"
+          "name": "<<namePrefix>>-gdb-dddagrm-002"
         }
       ]
     },
     "location": {
-      "value": "West Europe"
+      "value": "<location>"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -753,7 +777,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
+  name: '${uniqueString(deployment().name, location)}-test-dddamng'
   params: {
     // Required parameters
     locations: [
@@ -768,14 +792,15 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>-az-cdb-mongodb-001'
+    name: '<<namePrefix>>dddamng001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    location: 'West Europe'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
     mongodbDatabases: [
       {
         collections: [
@@ -866,7 +891,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             }
           }
         ]
-        name: '<<namePrefix>>-az-mdb-x-001'
+        name: '<<namePrefix>>-mdb-dddamng-001'
       }
       {
         collections: [
@@ -957,14 +982,15 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             }
           }
         ]
-        name: '<<namePrefix>>-az-mdb-x-002'
+        name: '<<namePrefix>>-mdb-dddamng-002'
       }
     ]
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1001,26 +1027,29 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-cdb-mongodb-001"
+      "value": "<<namePrefix>>dddamng001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
-      "value": "West Europe"
+      "value": "<location>"
     },
     "mongodbDatabases": {
       "value": [
@@ -1113,7 +1142,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               }
             }
           ],
-          "name": "<<namePrefix>>-az-mdb-x-001"
+          "name": "<<namePrefix>>-mdb-dddamng-001"
         },
         {
           "collections": [
@@ -1204,7 +1233,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               }
             }
           ],
-          "name": "<<namePrefix>>-az-mdb-x-002"
+          "name": "<<namePrefix>>-mdb-dddamng-002"
         }
       ]
     },
@@ -1212,8 +1241,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -1236,7 +1266,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
+  name: '${uniqueString(deployment().name, location)}-test-dddapln'
   params: {
     // Required parameters
     locations: [
@@ -1251,19 +1281,21 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>-az-cdb-plain-001'
+    name: '<<namePrefix>>dddapln001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1299,23 +1331,26 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-cdb-plain-001"
+      "value": "<<namePrefix>>dddapln001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -1324,8 +1359,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -1345,7 +1381,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 
 ```bicep
 module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-DatabaseAccounts'
+  name: '${uniqueString(deployment().name, location)}-test-dddasql'
   params: {
     // Required parameters
     locations: [
@@ -1360,19 +1396,21 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>-az-cdb-sqldb-001'
+    name: '<<namePrefix>>dddasql001'
     // Non-required parameters
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-    location: 'West Europe'
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    location: '<location>'
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -1380,6 +1418,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         containers: [
           {
+            indexingPolicy: {
+              automatic: true
+            }
             kind: 'Hash'
             name: 'container-001'
             paths: [
@@ -1387,15 +1428,15 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             ]
           }
         ]
-        name: '<<namePrefix>>-az-sql-x-001'
+        name: '<<namePrefix>>-sql-dddasql-001'
       }
       {
         containers: []
-        name: '<<namePrefix>>-az-sql-x-002'
+        name: '<<namePrefix>>-sql-dddasql-002'
       }
     ]
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -1429,33 +1470,37 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       ]
     },
     "name": {
-      "value": "<<namePrefix>>-az-cdb-sqldb-001"
+      "value": "<<namePrefix>>dddasql001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
     "diagnosticEventHubName": {
-      "value": "adp-<<namePrefix>>-az-evh-x-001"
+      "value": "<diagnosticEventHubName>"
     },
     "diagnosticLogsRetentionInDays": {
       "value": 7
     },
     "diagnosticStorageAccountId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+      "value": "<diagnosticStorageAccountId>"
     },
     "diagnosticWorkspaceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "location": {
-      "value": "West Europe"
+      "value": "<location>"
     },
     "roleAssignments": {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -1465,6 +1510,9 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [
             {
+              "indexingPolicy": {
+                "automatic": true
+              },
               "kind": "Hash",
               "name": "container-001",
               "paths": [
@@ -1472,17 +1520,17 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               ]
             }
           ],
-          "name": "<<namePrefix>>-az-sql-x-001"
+          "name": "<<namePrefix>>-sql-dddasql-001"
         },
         {
           "containers": [],
-          "name": "<<namePrefix>>-az-sql-x-002"
+          "name": "<<namePrefix>>-sql-dddasql-002"
         }
       ]
     },
     "userAssignedIdentities": {
       "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }

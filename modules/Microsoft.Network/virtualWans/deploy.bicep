@@ -26,7 +26,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @allowed([
@@ -49,7 +49,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualWan 'Microsoft.Network/virtualWans@2021-08-01' = {
+resource virtualWan 'Microsoft.Network/virtualWans@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -61,7 +61,7 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-08-01' = {
   }
 }
 
-resource virtualWan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualWan_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualWan.name}-${lock}-lock'
   properties: {
     level: any(lock)

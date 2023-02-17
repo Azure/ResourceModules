@@ -15,7 +15,9 @@ param location string = resourceGroup().location
 @sys.description('Optional. Specifies the sku, also referred as "edition". Required for creating a compute resource.')
 @allowed([
   'Basic'
-  'Enterprise'
+  'Free'
+  'Premium'
+  'Standard'
   ''
 ])
 param sku string = ''
@@ -56,7 +58,7 @@ param computeType string
 @sys.description('Optional. The properties of the compute. Will be ignored in case "resourceId" is set.')
 param properties object = {}
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Identity
@@ -79,13 +81,13 @@ var identity = identityType != 'None' ? {
 // ============================= //
 // Existing resources references //
 // ============================= //
-resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' existing = {
+resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2022-10-01' existing = {
   name: machineLearningWorkspaceName
 }
 
-// =========== //
-// Deployments //
-// =========== //
+// ============ //
+// Dependencies //
+// ============ //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -98,7 +100,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-01-01-preview' = if (deployCompute == true) {
+resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-10-01' = if (deployCompute == true) {
   name: name
   location: location
   tags: empty(resourceId) ? tags : any(null)

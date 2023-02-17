@@ -19,8 +19,37 @@ param virtualNetworkGatewayConnectionType string = 'IPsec'
 @description('Optional. Value to specify if BGP is enabled or not.')
 param enableBgp bool = false
 
+@allowed([
+  'Default'
+  'InitiatorOnly'
+  'ResponderOnly'
+])
+@description('Optional. The connection mode for this connection. Available for IPSec connections.')
+param connectionMode string = 'Default'
+
+@allowed([
+  'IKEv1'
+  'IKEv2'
+])
+@description('Optional. Connection protocol used for this connection. Available for IPSec connections.')
+param connectionProtocol string = 'IKEv2'
+
+@minValue(9)
+@maxValue(3600)
+@description('Optional. The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds.')
+param dpdTimeoutSeconds int = 45
+
 @description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
+
+@description('Optional. Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection type is Express Route.')
+param enablePrivateLinkFastPath bool = false
+
+@description('Optional. Bypass ExpressRoute Gateway for data forwarding. Only available when connection type is Express Route.')
+param expressRouteGatewayBypass bool = false
+
+@description('Optional. Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property.')
+param useLocalAzureIpAddress bool = false
 
 @description('Optional. The IPSec Policies to be considered by this connection.')
 param customIPSecPolicy object = {
@@ -48,7 +77,7 @@ param lock string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 @description('Required. The primary Virtual Network Gateway.')
@@ -63,7 +92,7 @@ param peer object = {}
 @description('Optional. The local network gateway. Used for connection type [IPsec].')
 param localNetworkGateway2 object = {}
 
-var customIPSecPolicy_var = [
+var customIPSecPolicyVar = [
   {
     saLifeTimeSeconds: customIPSecPolicy.saLifeTimeSeconds
     saDataSizeKilobytes: customIPSecPolicy.saDataSizeKilobytes
@@ -88,25 +117,31 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource connection 'Microsoft.Network/connections@2021-08-01' = {
+resource connection 'Microsoft.Network/connections@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     connectionType: virtualNetworkGatewayConnectionType
+    connectionMode: virtualNetworkGatewayConnectionType == 'IPsec' ? connectionMode : null
+    connectionProtocol: virtualNetworkGatewayConnectionType == 'IPsec' ? connectionProtocol : null
+    dpdTimeoutSeconds: virtualNetworkGatewayConnectionType == 'IPsec' ? dpdTimeoutSeconds : null
+    enablePrivateLinkFastPath: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? enablePrivateLinkFastPath : null
+    expressRouteGatewayBypass: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? expressRouteGatewayBypass : null
     virtualNetworkGateway1: virtualNetworkGateway1
     virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
     localNetworkGateway2: virtualNetworkGatewayConnectionType == 'IPsec' ? localNetworkGateway2 : null
     peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
     sharedKey: virtualNetworkGatewayConnectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy_var : customIPSecPolicy.ipsecEncryption
+    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicyVar : customIPSecPolicy.ipsecEncryption
     routingWeight: routingWeight != -1 ? routingWeight : null
     enableBgp: enableBgp
+    useLocalAzureIpAddress: virtualNetworkGatewayConnectionType == 'IPsec' ? useLocalAzureIpAddress : null
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: any(lock)

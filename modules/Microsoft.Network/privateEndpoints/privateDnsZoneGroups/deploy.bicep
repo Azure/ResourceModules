@@ -9,7 +9,7 @@ param privateDNSResourceIds array
 @description('Optional. The name of the private DNS zone group.')
 param name string = 'default'
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -25,17 +25,17 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 var privateDnsZoneConfigs = [for privateDNSResourceId in privateDNSResourceIds: {
-  name: last(split(privateDNSResourceId, '/'))
+  name: last(split(privateDNSResourceId, '/'))!
   properties: {
     privateDnsZoneId: privateDNSResourceId
   }
 }]
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-08-01' existing = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2022-07-01' existing = {
   name: privateEndpointName
 }
 
-resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-08-01' = {
+resource privateDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2022-07-01' = {
   name: name
   parent: privateEndpoint
   properties: {

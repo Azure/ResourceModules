@@ -14,25 +14,32 @@ This module deploys a VPN Site.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/vpnSites` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/vpnSites) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Network/vpnSites` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/vpnSites) |
 
 ## Parameters
 
 **Required parameters**
+
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the VPN Site. |
 | `virtualWanId` | string | Resource ID of the virtual WAN to link to. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `addressPrefixes` | array | An array of IP address ranges that can be used by subnets of the virtual network. Required if no bgpProperties or VPNSiteLinks are configured. |
+| `bgpProperties` | object | BGP settings details. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. Required if no addressPrefixes or VPNSiteLinks are configured. |
+
 **Optional parameters**
+
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `addressPrefixes` | array | `[]` |  | An array of IP address ranges that can be used by subnets of the virtual network. Must be provided if no bgpProperties or VPNSiteLinks are configured. |
-| `bgpProperties` | object | `{object}` |  | BGP settings details. Must be provided if no addressPrefixes or VPNSiteLinks are configured. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `deviceProperties` | object | `{object}` |  | List of properties of the device. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
@@ -328,7 +335,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
 
 <details>
 
@@ -336,72 +343,16 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VpnSites'
+  name: '${uniqueString(deployment().name, location)}-test-nvscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-az-vSite-min-001'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
-    // Non-required parameters
-    addressPrefixes: [
-      '10.0.0.0/16'
-    ]
-    ipAddress: '1.2.3.4'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>-az-vSite-min-001"
-    },
-    "virtualWanId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
-    },
-    // Non-required parameters
-    "addressPrefixes": {
-      "value": [
-        "10.0.0.0/16"
-      ]
-    },
-    "ipAddress": {
-      "value": "1.2.3.4"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Parameters</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-VpnSites'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>-az-vSite-x-001'
-    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+    name: '<<namePrefix>>-nvscom'
+    virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
       linkSpeedInMbps: 0
     }
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     o365Policy: {
       breakOutCategories: {
@@ -413,8 +364,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     roleAssignments: [
       {
         principalIds: [
-          '<<deploymentSpId>>'
+          '<managedIdentityPrincipalId>'
         ]
+        principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
@@ -424,7 +376,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '<<namePrefix>>-az-vSite-x-001'
+        name: '<<namePrefix>>-vSite-nvscom'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -470,16 +422,19 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-az-vSite-x-001"
+      "value": "<<namePrefix>>-nvscom"
     },
     "virtualWanId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001"
+      "value": "<virtualWanId>"
     },
     // Non-required parameters
     "deviceProperties": {
       "value": {
         "linkSpeedInMbps": 0
       }
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "lock": {
       "value": "CanNotDelete"
@@ -497,8 +452,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       "value": [
         {
           "principalIds": [
-            "<<deploymentSpId>>"
+            "<managedIdentityPrincipalId>"
           ],
+          "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
@@ -512,7 +468,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-vSite-x-001",
+          "name": "<<namePrefix>>-vSite-nvscom",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -540,6 +496,67 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           }
         }
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nvsmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-nvsmin'
+    virtualWanId: '<virtualWanId>'
+    // Non-required parameters
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddress: '1.2.3.4'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-nvsmin"
+    },
+    "virtualWanId": {
+      "value": "<virtualWanId>"
+    },
+    // Non-required parameters
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddress": {
+      "value": "1.2.3.4"
     }
   }
 }
