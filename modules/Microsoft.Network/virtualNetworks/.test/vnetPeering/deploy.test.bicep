@@ -68,5 +68,9 @@ module testDeployment '../../deploy.bicep' = {
         useRemoteGateways: false
       }
     ]
+    tags:{
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

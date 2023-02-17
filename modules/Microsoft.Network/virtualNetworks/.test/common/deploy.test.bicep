@@ -131,5 +131,9 @@ module testDeployment '../../deploy.bicep' = {
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
     ]
+    tags:{
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
