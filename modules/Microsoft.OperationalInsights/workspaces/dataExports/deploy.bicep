@@ -1,0 +1,78 @@
+// ============== //
+//   Parameters   //
+// ============== //
+
+@description('Required. The data export rule name.')
+@minLength(4)
+@maxLength(63)
+param name string
+
+@description('Conditional. The name of the parent workspaces. Required if the template is used in a standalone deployment.')
+param workspaceName string
+
+@description('Optional. The latest data export rule modification time.')
+param createdDate string = ''
+
+@description('Optional. The data export rule ID.')
+param dataExportId string = ''
+
+@description('Optional. Destination properties.')
+param destination object = {}
+
+@description('Optional. Active when enabled.')
+param enable bool = ''
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+@description('Optional. Date and time when the export was last modified.')
+param lastModifiedDate string = ''
+
+@description('Optional. An array of tables to export, for example: [“Heartbeat, SecurityEvent”].')
+param tableNames array = []
+
+// =============== //
+//   Deployments   //
+// =============== //
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
+resource workspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+  name: workspaceName
+}
+
+resource dataExport 'Microsoft.OperationalInsights/workspaces/dataExports@2020-08-01' = {
+  parent: workspace
+  name: name
+  properties: {
+    createdDate: createdDate
+    dataExportId: dataExportId
+    destination: destination
+    enable: enable
+    lastModifiedDate: lastModifiedDate
+    tableNames: tableNames
+  }
+}
+
+// =========== //
+//   Outputs   //
+// =========== //
+
+@description('The name of the dataExport.')
+output name string = dataExport.name
+
+@description('The resource ID of the dataExport.')
+output resourceId string = dataExport.id
+
+@description('The name of the resource group the dataExport was created in.')
+output resourceGroupName string = resourceGroup().name
