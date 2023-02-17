@@ -117,5 +117,9 @@ module testDeployment '../../deploy.bicep' = {
         serviceUri: 'https://www.contoso.com/webhook'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
