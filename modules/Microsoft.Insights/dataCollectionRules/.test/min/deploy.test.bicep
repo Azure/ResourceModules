@@ -39,8 +39,8 @@ module testDeployment '../../deploy.bicep' = {
     dataSources: {
       performanceCounters: [
         {
-          name: 'perfCounterDataSource10'
-          samplingFrequencyInSeconds: 10
+          name: 'perfCounterDataSource60'
+          samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
           ]
