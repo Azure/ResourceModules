@@ -38,7 +38,9 @@ This module deploys a long term retention policy for a Azure SQL Database.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `resourceGroupName` | string | The resource group of the deployed azure sql backup policy. |
+| `name` | string | The name of the long-term policy. |
+| `resourceGroupName` | string | The resource group the long-term policy was deployed into. |
+| `resourceId` | string | The resource ID of the long-term policy. |
 
 ## Cross-referenced modules
 

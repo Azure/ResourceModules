@@ -36,7 +36,9 @@ This module deploys a short term retention policy for a Azure SQL Database.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `resourceGroupName` | string | The resource group of the deployed azure sql backup policy. |
+| `name` | string | The name of the short-term policy. |
+| `resourceGroupName` | string | The resource group the short-term policy was deployed into. |
+| `resourceId` | string | The resource ID of the short-term policy. |
 
 ## Cross-referenced modules
 
