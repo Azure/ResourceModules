@@ -161,5 +161,9 @@ module testDeployment '../../deploy.bicep' = {
         virtualNetworkSubnetId: nestedDependencies.outputs.serviceEndpointSubnetResourceId
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

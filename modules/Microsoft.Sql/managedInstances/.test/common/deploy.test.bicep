@@ -139,6 +139,10 @@ module testDeployment '../../deploy.bicep' = {
       ]
       recurringScansIsEnabled: true
       vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+      tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     }
   }
 }
