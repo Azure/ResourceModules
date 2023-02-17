@@ -178,7 +178,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
   name: '${deployment().name}-BackupShortTRetPol'
   params: {
     managedInstanceName: managedInstanceName
-    databaseName: last(split(database.name, '/'))
+    databaseName: last(split(database.name, '/'))!
     name: backupShortTermRetentionPoliciesObj.name
     retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -189,7 +189,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   name: '${deployment().name}-BackupLongTRetPol'
   params: {
     managedInstanceName: managedInstanceName
-    databaseName: last(split(database.name, '/'))
+    databaseName: last(split(database.name, '/'))!
     name: backupLongTermRetentionPoliciesObj.name
     weekOfYear: contains(backupLongTermRetentionPoliciesObj, 'weekOfYear') ? backupLongTermRetentionPoliciesObj.weekOfYear : 5
     weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'
