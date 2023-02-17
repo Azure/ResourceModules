@@ -224,8 +224,8 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = i
 }
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  parent: cMKKeyVault
-  name: cMKKeyName
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
