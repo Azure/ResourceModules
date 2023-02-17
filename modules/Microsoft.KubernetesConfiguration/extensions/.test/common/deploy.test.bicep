@@ -59,5 +59,9 @@ module testDeployment '../../deploy.bicep' = {
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
     version: '0.5.2'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
