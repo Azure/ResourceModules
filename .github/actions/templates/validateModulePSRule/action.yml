@@ -139,6 +139,13 @@ runs:
           # Grouping task logs
           Write-Output '::group::Output to GitHub job summaries'
 
-          Get-Content '${{ inputs.templateFilePath}}-PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY
+          $mdPSRuleOutputFilePath = '${{ inputs.templateFilePath}}-PSRule-output.md'
+
+          if (-not (Test-Path $mdPSRuleOutputFilePath)) {
+              Write-Warning "Input File [$inputFilePath] not found"
+              return ''
+          } else {
+            Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
+          }
 
           Write-Output '::endgroup::'
