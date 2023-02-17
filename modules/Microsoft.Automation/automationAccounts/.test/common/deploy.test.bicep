@@ -228,5 +228,9 @@ module testDeployment '../../deploy.bicep' = {
         value: '\'TestEncryptedValue\''
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

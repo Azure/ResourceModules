@@ -93,5 +93,9 @@ module testDeployment '../../deploy.bicep' = {
     storageAccessIdentity: nestedDependencies.outputs.managedIdentityResourceId
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
