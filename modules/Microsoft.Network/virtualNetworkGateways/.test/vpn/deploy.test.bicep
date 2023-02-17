@@ -86,5 +86,9 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     vpnType: 'RouteBased'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
