@@ -28,6 +28,7 @@ This module deploys a long term retention policy for a Azure SQL Database.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `monthlyRetention` | string | `''` | Weekly retention in ISO 8601 duration format. |
 | `weeklyRetention` | string | `''` | Monthly retention in ISO 8601 duration format. |
 | `weekOfYear` | int | `1` | Week of year backup to keep for yearly retention. |

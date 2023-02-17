@@ -29,6 +29,7 @@ This module deploys a short term retention policy for a Azure SQL Database.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `diffBackupIntervalInHours` | int | `24` | Differential backup interval in hours. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `retentionDays` | int | `7` | Poin-in-time retention in days. |
 
 
