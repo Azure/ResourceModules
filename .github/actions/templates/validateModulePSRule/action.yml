@@ -126,6 +126,6 @@ runs:
           Write-Output '::endgroup::'
 
     - name: Output to GitHub job summaries
-        if: always()
-        shell: pwsh
-        run: Get-Content '${{ inputs.templateFilePath}}-output.md' >> $env:GITHUB_STEP_SUMMARY
+      if: always()
+      shell: pwsh
+      run: Get-Content '${{ inputs.templateFilePath}}-output.md' >> $env:GITHUB_STEP_SUMMARY
