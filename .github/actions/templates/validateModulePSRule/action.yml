@@ -118,7 +118,7 @@ runs:
             skipPassedRulesReport   = $false
           }
 
-          Write-Verbose "Set PS Rule Output with following parameters:`n $($ParameterInput | ConvertTo-Json -Depth 10)" -Verbose
+          Write-Verbose ('Set PS Rule Output with following parameters:`n{0}' -f (ConvertTo-Json $ParameterInput -Depth 10)) -Verbose
 
           # Invoke Set PSRule Output Functionality
           $null = Set-PSRuleGitHubOutput @ParameterInput
