@@ -128,4 +128,4 @@ runs:
     - name: Output to GitHub job summaries
       if: always()
       shell: pwsh
-      run: Get-Content '${{ inputs.templateFilePath}}/PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY
+      run: Get-Content '${{ inputs.templateFilePath}}-PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY
