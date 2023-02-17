@@ -260,14 +260,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-}
 
-resource geoBackupCMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
-  name: '${last(split(geoBackupCMKKeyVaultResourceId, '/'))}/${geoBackupCMKKeyName}'
+  resource cMKKey 'keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+    name: cMKKeyName
+  }
+
+resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
+  name: last(split(geoBackupCMKKeyVaultResourceId, '/'))
   scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
+
+  resource geoBackupCMKKey 'keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
+    name: geoBackupCMKKeyName
+  }
 }
 
 resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview' = {
