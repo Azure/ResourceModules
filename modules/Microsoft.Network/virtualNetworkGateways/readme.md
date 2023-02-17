@@ -14,11 +14,12 @@ This module deploys a virtual network gateway.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
-| `Microsoft.Network/virtualNetworkGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworkGateways) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
+| `Microsoft.Network/virtualNetworkGateways` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworkGateways) |
+| `Microsoft.Network/virtualNetworkGateways/natRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworkGateways/natRules) |
 
 ## Parameters
 
@@ -37,6 +38,8 @@ This module deploys a virtual network gateway.
 | :-- | :-- | :-- | :-- | :-- |
 | `activeActive` | bool | `True` |  | Value to specify if the Gateway should be deployed in active-active or active-passive configuration. |
 | `activeGatewayPipName` | string | `[format('{0}-pip2', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
+| `allowRemoteVnetTraffic` | bool | `False` |  | Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity to Azure Virtual WAN. |
+| `allowVirtualWanTraffic` | bool | `False` |  | Configures this gateway to accept traffic from remote Virtual WAN networks. |
 | `asn` | int | `65815` |  | ASN value. |
 | `clientRevokedCertThumbprint` | string | `''` |  | Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet. |
 | `clientRootCertData` | string | `''` |  | Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided. |
@@ -46,12 +49,18 @@ This module deploys a virtual network gateway.
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `disableIPSecReplayProtection` | bool | `False` |  | disableIPSecReplayProtection flag. Used for VPN Gateways. |
 | `domainNameLabel` | array | `[]` |  | DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com. |
 | `enableBgp` | bool | `True` |  | Value to specify if BGP is enabled or not. |
+| `enableBgpRouteTranslationForNat` | bool | `False` |  | EnableBgpRouteTranslationForNat flag. Can only be used when "natRules" are enabled on the Virtual Network Gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDnsForwarding` | bool | `False` |  | Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. The DNS forwarding feature flag must be enabled on the current subscription. |
+| `enablePrivateIpAddress` | bool | `False` |  | Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering. |
+| `gatewayDefaultSiteLocalNetworkGatewayId` | string | `''` |  | The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting. |
 | `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
 | `publicIpdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `publicIpDiagnosticSettingsName` | string | `'diagnosticSettings'` |  | The name of the diagnostic setting, if deployed. |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
@@ -539,21 +548,60 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   params: {
     // Required parameters
     name: '<<namePrefix>>nvgvpn001'
-    virtualNetworkGatewaySku: 'VpnGw1AZ'
+    virtualNetworkGatewaySku: 'VpnGw2AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     activeActive: true
+    allowRemoteVnetTraffic: true
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    disableIPSecReplayProtection: true
     domainNameLabel: [
       '<<namePrefix>>-dm-nvgvpn'
     ]
+    enableBgpRouteTranslationForNat: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    enablePrivateIpAddress: true
+    gatewayDefaultSiteLocalNetworkGatewayId: '<gatewayDefaultSiteLocalNetworkGatewayId>'
     lock: 'CanNotDelete'
+    natRules: [
+      {
+        externalMappings: [
+          {
+            addressSpace: '192.168.0.0/24'
+            portRange: '100'
+          }
+        ]
+        internalMappings: [
+          {
+            addressSpace: '10.100.0.0/24'
+            portRange: '100'
+          }
+        ]
+        mode: 'IngressSnat'
+        name: 'nat-rule-1-static-IngressSnat'
+        type: 'Static'
+      }
+      {
+        externalMappings: [
+          {
+            addressSpace: '10.200.0.0/26'
+          }
+        ]
+        internalMappings: [
+          {
+            addressSpace: '172.16.0.0/26'
+          }
+        ]
+        mode: 'EgressSnat'
+        name: 'nat-rule-2-dynamic-EgressSnat'
+        type: 'Dynamic'
+      }
+    ]
     publicIpZones: [
       '1'
     ]
@@ -587,7 +635,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
       "value": "<<namePrefix>>nvgvpn001"
     },
     "virtualNetworkGatewaySku": {
-      "value": "VpnGw1AZ"
+      "value": "VpnGw2AZ"
     },
     "virtualNetworkGatewayType": {
       "value": "Vpn"
@@ -597,6 +645,9 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     },
     // Non-required parameters
     "activeActive": {
+      "value": true
+    },
+    "allowRemoteVnetTraffic": {
       "value": true
     },
     "diagnosticEventHubAuthorizationRuleId": {
@@ -614,16 +665,64 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "disableIPSecReplayProtection": {
+      "value": true
+    },
     "domainNameLabel": {
       "value": [
         "<<namePrefix>>-dm-nvgvpn"
       ]
     },
+    "enableBgpRouteTranslationForNat": {
+      "value": true
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "enablePrivateIpAddress": {
+      "value": true
+    },
+    "gatewayDefaultSiteLocalNetworkGatewayId": {
+      "value": "<gatewayDefaultSiteLocalNetworkGatewayId>"
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "natRules": {
+      "value": [
+        {
+          "externalMappings": [
+            {
+              "addressSpace": "192.168.0.0/24",
+              "portRange": "100"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "10.100.0.0/24",
+              "portRange": "100"
+            }
+          ],
+          "mode": "IngressSnat",
+          "name": "nat-rule-1-static-IngressSnat",
+          "type": "Static"
+        },
+        {
+          "externalMappings": [
+            {
+              "addressSpace": "10.200.0.0/26"
+            }
+          ],
+          "internalMappings": [
+            {
+              "addressSpace": "172.16.0.0/26"
+            }
+          ],
+          "mode": "EgressSnat",
+          "name": "nat-rule-2-dynamic-EgressSnat",
+          "type": "Dynamic"
+        }
+      ]
     },
     "publicIpZones": {
       "value": [

@@ -158,6 +158,12 @@ param isLedgerOn bool = false
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
 
+@description('Optional. The short term backup retention policy to create for the database.')
+param backupShortTermRetentionPolicy object = {}
+
+@description('Optional. The long term backup retention policy to create for the database.')
+param backupLongTermRetentionPolicy object = {}
+
 // The SKU object must be built in a variable
 // The alternative, 'null' as default values, leads to non-terminating deployments
 var skuVar = union({
@@ -221,6 +227,28 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
     logs: diagnosticsLogs
   }
   scope: database
+}
+
+module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
+  params: {
+    serverName: serverName
+    databaseName: database.name
+    diffBackupIntervalInHours: contains(backupShortTermRetentionPolicy, 'diffBackupIntervalInHours') ? backupShortTermRetentionPolicy.diffBackupIntervalInHours : 24
+    retentionDays: contains(backupShortTermRetentionPolicy, 'retentionDays') ? backupShortTermRetentionPolicy.retentionDays : 7
+  }
+}
+
+module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
+  params: {
+    serverName: serverName
+    databaseName: database.name
+    weeklyRetention: contains(backupLongTermRetentionPolicy, 'weeklyRetention') ? backupLongTermRetentionPolicy.weeklyRetention : ''
+    monthlyRetention: contains(backupLongTermRetentionPolicy, 'monthlyRetention') ? backupLongTermRetentionPolicy.monthlyRetention : ''
+    yearlyRetention: contains(backupLongTermRetentionPolicy, 'yearlyRetention') ? backupLongTermRetentionPolicy.yearlyRetention : ''
+    weekOfYear: contains(backupLongTermRetentionPolicy, 'weekOfYear') ? backupLongTermRetentionPolicy.weekOfYear : 1
+  }
 }
 
 @description('The name of the deployed database.')

@@ -13,8 +13,10 @@ This module deploys an Azure SQL Server Database.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Sql/servers/databases` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/databases) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Sql/servers/databases` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/databases) |
+| `Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases/backupLongTermRetentionPolicies) |
+| `Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases/backupShortTermRetentionPolicies) |
 
 ## Parameters
 
@@ -35,6 +37,8 @@ This module deploys an Azure SQL Server Database.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoPauseDelay` | int | `0` |  | Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled. |
+| `backupLongTermRetentionPolicy` | object | `{object}` |  | The long term backup retention policy to create for the database. |
+| `backupShortTermRetentionPolicy` | object | `{object}` |  | The short term backup retention policy to create for the database. |
 | `collation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | The collation of the database. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

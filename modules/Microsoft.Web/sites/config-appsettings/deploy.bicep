@@ -53,12 +53,12 @@ resource app 'Microsoft.Web/sites@2022-03-01' existing = {
 }
 
 resource appInsight 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightId)) {
-  name: last(split(appInsightId, '/'))
+  name: last(split(appInsightId, '/'))!
   scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = if (!empty(storageAccountId)) {
-  name: last(split(storageAccountId, '/'))
+  name: last(split(storageAccountId, '/'))!
   scope: resourceGroup(split(storageAccountId, '/')[2], split(storageAccountId, '/')[4])
 }
 

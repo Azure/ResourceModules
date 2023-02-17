@@ -14,9 +14,9 @@ This module deploys a Maintenance Configuration.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Maintenance/maintenanceConfigurations` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Maintenance/2021-05-01/maintenanceConfigurations) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Maintenance/maintenanceConfigurations` | [2021-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Maintenance/2021-05-01/maintenanceConfigurations) |
 
 ## Parameters
 

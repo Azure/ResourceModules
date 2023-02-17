@@ -778,7 +778,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
 
         It '[<moduleFolderName>] Template schema version should be the latest' -TestCases $deploymentFolderTestCases {
             # the actual value changes depending on the scope of the template (RG, subscription, MG, tenant) !!
-            # https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-syntax
+            # https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-syntax
             param(
                 [string] $moduleFolderName,
                 [hashtable] $templateContent
@@ -812,7 +812,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
         }
 
         It '[<moduleFolderName>] All apiVersion properties should be set to a static, hard-coded value' -TestCases $deploymentFolderTestCases {
-            #https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-best-practices
+            #https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-best-practices
             param(
                 [string] $moduleFolderName,
                 [hashtable] $templateContent

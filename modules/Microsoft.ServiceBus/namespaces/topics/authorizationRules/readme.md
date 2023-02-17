@@ -13,7 +13,7 @@ This module deploys an authorization rule for a service bus namespace topic.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules) |
+| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | [2021-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules) |
 
 ## Parameters
 

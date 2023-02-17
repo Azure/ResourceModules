@@ -1,5 +1,5 @@
 
-Bicep is [ready for production use](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/frequently-asked-questions#is-this-ready-for-production-use) starting with version 0.3. It is supported by Microsoft support plans and has parity with what can be accomplished with ARM Templates.
+Bicep is [ready for production use](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/frequently-asked-questions#is-this-ready-for-production-use) starting with version 0.3. It is supported by Microsoft support plans and has parity with what can be accomplished with ARM Templates.
 
 However, for users who still prefer using ARM templates over Bicep, the CARML library provides a script that uses the Bicep Toolkit translator/compiler to support the conversion of CARML Bicep modules to ARM/JSON Templates.
 
