@@ -1011,60 +1011,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Minprem</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssaminprem'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>ssaminprem001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    storageAccountAccessTier: 'Premium'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>ssaminprem001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "storageAccountAccessTier": {
-      "value": "Premium"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 5: Nfs</h3>
+<h3>Example 4: Nfs</h3>
 
 <details>
 
@@ -1199,7 +1146,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: V1</h3>
+<h3>Example 5: V1</h3>
 
 <details>
 
