@@ -66,7 +66,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)) {
-  name: last(split(scriptStorageAccountId, '/'))
+  name: last(split(scriptStorageAccountId, '/'))!
   scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
 }
 

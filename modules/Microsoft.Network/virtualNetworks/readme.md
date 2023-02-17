@@ -18,9 +18,9 @@ This template deploys a virtual network (vNet).
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/virtualNetworks` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks) |
-| `Microsoft.Network/virtualNetworks/subnets` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/subnets) |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/virtualNetworkPeerings) |
+| `Microsoft.Network/virtualNetworks` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks/subnets) |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
@@ -46,12 +46,15 @@ This template deploys a virtual network (vNet).
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsServers` | array | `[]` |  | DNS Servers associated to the Virtual Network. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `flowTimeoutInMinutes` | int | `0` |  | The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes. Default value 0 will set the property to null. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Virtual Network Peerings configurations. |
+| `vnetEncryption` | bool | `False` |  | Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property. |
+| `vnetEncryptionEnforcement` | string | `'AllowUnencrypted'` | `[AllowUnencrypted, DropUnencrypted]` | If the encrypted VNet allows VM that does not support encryption. Can only be used when vnetEncryption is enabled. |
 
 
 ### Parameter Usage: `subnets`
@@ -387,6 +390,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.1.5'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    flowTimeoutInMinutes: 20
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -493,6 +497,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "flowTimeoutInMinutes": {
+      "value": 20
     },
     "lock": {
       "value": "CanNotDelete"

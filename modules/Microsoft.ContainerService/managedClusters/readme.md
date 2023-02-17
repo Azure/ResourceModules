@@ -503,6 +503,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           }
           kustomizations: {
             apps: {
+              dependsOn: [
+                'infra'
+              ]
               path: './apps/staging'
               prune: true
               retryIntervalInSeconds: 120

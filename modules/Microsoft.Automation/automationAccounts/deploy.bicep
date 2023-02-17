@@ -175,12 +175,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
@@ -285,7 +285,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))!
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     resourceId: automationAccount.id
     tags: tags
@@ -300,7 +300,7 @@ module automationAccount_solutions '../../Microsoft.OperationsManagement/solutio
   params: {
     name: gallerySolution.name
     location: location
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))!
     product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
     publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
     enableDefaultTelemetry: enableReferencedModulesTelemetry

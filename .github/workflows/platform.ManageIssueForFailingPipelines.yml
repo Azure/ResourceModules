@@ -30,7 +30,7 @@ jobs:
             Repo              = "${{ github.repository_owner }}/${{ github.event.repository.name }}"
             LimitNumberOfRuns = 500
             LimitInDays       = 2
-            IgnoreWorkflows   = @('AAD: DomainServices')
+            IgnoreWorkflows   = @('AAD - DomainServices')
           }
 
           Write-Verbose "Invoke task with" -Verbose
