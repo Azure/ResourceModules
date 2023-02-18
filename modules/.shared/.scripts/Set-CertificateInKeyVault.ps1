@@ -11,17 +11,23 @@ Mandatory. The name of the Key Vault to add a new certificate to, or fetch the s
 .PARAMETER CertName
 Mandatory. The name of the certificate to generate or fetch the secret reference from
 
-.EXAMPLE
-./Set-CertificateInKeyVault.ps1 -KeyVaultName 'myVault' -CertName 'myCert'
+.PARAMETER CertSubjectName
+Optional. The subject distinguished name is the name of the user of the certificate. The distinguished name for the certificate is a textual representation of the subject or issuer of the certificate. Default name is "CN=fabrikam.com"
 
-Generate a new Key Vault Certificate or fetch its secret reference if already existing as 'myCert' in Key Vault 'myVault'
+.EXAMPLE
+./Set-CertificateInKeyVault.ps1 -KeyVaultName 'myVault' -CertName 'myCert' -CertSubjectName 'CN=fabrikam.com'
+
+Generate a new Key Vault Certificate with the default or provided subject name, or fetch its secret reference if already existing as 'myCert' in Key Vault 'myVault'
 #>
 param(
     [Parameter(Mandatory = $true)]
     [string] $KeyVaultName,
 
     [Parameter(Mandatory = $true)]
-    [string] $CertName
+    [string] $CertName,
+
+    [Parameter(Mandatory = $false)]
+    [string] $CertSubjectName = 'CN=fabrikam.com'
 )
 
 $certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertName -ErrorAction 'SilentlyContinue'
@@ -29,7 +35,7 @@ $certificate = Get-AzKeyVaultCertificate -VaultName $KeyVaultName -Name $CertNam
 if (-not $certificate) {
     $policyInputObject = @{
         SecretContentType = 'application/x-pkcs12'
-        SubjectName       = 'CN=fabrikam.com'
+        SubjectName       = $CertSubjectName
         IssuerName        = 'Self'
         ValidityInMonths  = 12
         ReuseKeyOnRenewal = $true
