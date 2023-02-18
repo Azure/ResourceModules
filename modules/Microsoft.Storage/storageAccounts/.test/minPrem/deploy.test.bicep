@@ -38,7 +38,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    allowBlobPublicAccess: false
-    storageAccountAccessTier: 'Premium'
+    storageAccountSku: 'Premium_LRS'
   }
 }

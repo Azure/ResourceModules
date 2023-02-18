@@ -42,7 +42,7 @@ param storageAccountSku string = 'Standard_GRS'
   'Hot'
   'Cool'
 ])
-@description('Optional. Storage Account Access Tier.')
+@description('Optional. Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type.')
 param storageAccountAccessTier string = 'Hot'
 
 @allowed([
