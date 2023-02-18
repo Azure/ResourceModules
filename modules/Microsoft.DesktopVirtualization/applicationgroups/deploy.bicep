@@ -119,7 +119,7 @@ resource appGroup_hostpool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12
   name: hostpoolName
 }
 
-resource appGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-10-14-preview' = {
+resource appGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-09-09' = {
   name: name
   location: location
   tags: tags

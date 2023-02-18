@@ -48,23 +48,23 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-10-14-preview' existing = {
+resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-09-09' existing = {
   name: appGroupName
 }
 
-resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2022-10-14-preview' = {
-  name: name
-  parent: applicationGroup
-  properties: {
-    description: description
-    friendlyName: friendlyName
-    filePath: filePath
-    commandLineSetting: commandLineSetting
-    commandLineArguments: commandLineArguments
-    showInPortal: showInPortal
-    iconPath: iconPath
-    iconIndex: iconIndex
-  }
+resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2022-09-09 = {
+name: name
+parent: applicationGroup
+properties: {
+description: description
+friendlyName: friendlyName
+filePath: filePath
+commandLineSetting: commandLineSetting
+commandLineArguments: commandLineArguments
+showInPortal: showInPortal
+iconPath: iconPath
+iconIndex: iconIndex
+}
 }
 
 @sys.description('The resource ID of the deployed Application.')
