@@ -52,19 +52,19 @@ resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@202
   name: appGroupName
 }
 
-resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2022-09-09 = {
-name: name
-parent: applicationGroup
-properties: {
-description: description
-friendlyName: friendlyName
-filePath: filePath
-commandLineSetting: commandLineSetting
-commandLineArguments: commandLineArguments
-showInPortal: showInPortal
-iconPath: iconPath
-iconIndex: iconIndex
-}
+resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2022-09-09' = {
+  name: name
+  parent: applicationGroup
+  properties: {
+    description: description
+    friendlyName: friendlyName
+    filePath: filePath
+    commandLineSetting: commandLineSetting
+    commandLineArguments: commandLineArguments
+    showInPortal: showInPortal
+    iconPath: iconPath
+    iconIndex: iconIndex
+  }
 }
 
 @sys.description('The resource ID of the deployed Application.')
