@@ -21,6 +21,9 @@ param friendlyName string = ''
 @sys.description('Optional. The description of the Application Group to be created.')
 param description string = ''
 
+@sys.description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
 @sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
@@ -94,6 +97,12 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
 
 var enableReferencedModulesTelemetry = false
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -114,6 +123,7 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-10-14-
   name: name
   location: location
   tags: tags
+  identity: identity
   properties: {
     hostPoolArmPath: appGroup_hostpool.id
     friendlyName: friendlyName
