@@ -63,7 +63,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12' existing = {
+resource appGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-10-14-preview' existing = {
   name: last(split(resourceId, '/'))!
 }
 

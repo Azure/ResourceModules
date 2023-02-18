@@ -25,7 +25,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
     }
 }
 
-resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2021-07-12' = {
+resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-10-14-preview' = {
     name: applicationGroupName
     location: location
     properties: {
