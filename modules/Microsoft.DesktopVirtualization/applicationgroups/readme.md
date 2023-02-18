@@ -16,8 +16,8 @@ This module deploys an Azure virtual desktop application group.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DesktopVirtualization/applicationGroups` | [2021-07-12](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups) |
-| `Microsoft.DesktopVirtualization/applicationGroups/applications` | [2021-07-12](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups/applications) |
+| `Microsoft.DesktopVirtualization/applicationGroups` | [2022-10-14-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-10-14-preview/applicationGroups) |
+| `Microsoft.DesktopVirtualization/applicationGroups/applications` | [2022-10-14-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-10-14-preview/applicationGroups/applications) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -48,6 +48,7 @@ This module deploys an Azure virtual desktop application group.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -223,6 +224,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    systemAssignedIdentity: true
   }
 }
 ```
@@ -310,6 +312,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
     }
   }
 }
