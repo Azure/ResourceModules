@@ -4,10 +4,10 @@ This module deploys Log Analytics Workspace Tables.
 
 ## Navigation
 
-- [Resource Types](#resource-types)
-- [Parameters](#parameters)
-- [Outputs](#outputs)
-- [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -40,6 +40,7 @@ This module deploys Log Analytics Workspace Tables.
 | `schema` | object | `{object}` |  | Table's schema. |
 | `searchResults` | object | `{object}` |  | Parameters of the search job that initiated this table. |
 | `totalRetentionInDays` | int | `-1` |  | The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention. |
+
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 

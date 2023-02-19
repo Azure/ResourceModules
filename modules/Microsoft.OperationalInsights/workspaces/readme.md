@@ -18,6 +18,7 @@ This template deploys a log analytics workspace.
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.OperationalInsights/workspaces` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2021-06-01/workspaces) |
+| `Microsoft.OperationalInsights/workspaces/dataExports` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataExports) |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
 | `Microsoft.OperationalInsights/workspaces/linkedStorageAccounts` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedStorageAccounts) |
@@ -45,6 +46,7 @@ This template deploys a log analytics workspace.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dailyQuotaGb` | int | `-1` |  | The workspace daily quota for ingestion. |
+| `dataExports` | _[dataExports](dataExports/readme.md)_ array | `[]` |  | LAW data export instances to be deployed. |
 | `dataRetention` | int | `365` |  | Number of days data will be retained for. |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -67,7 +69,7 @@ This template deploys a log analytics workspace.
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
 | `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
-| `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to deployed. |
+| `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to be deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
@@ -480,6 +482,32 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     name: '<<namePrefix>>oiwcom001'
     // Non-required parameters
     dailyQuotaGb: 10
+    dataExports: [
+      {
+        destination: {
+          metaData: {
+            eventHubName: '<eventHubName>'
+          }
+          resourceId: '<resourceId>'
+        }
+        enable: true
+        name: 'eventHubExport'
+        tableNames: [
+          'Alert'
+          'InsightsMetrics'
+        ]
+      }
+      {
+        destination: {
+          resourceId: '<resourceId>'
+        }
+        enable: true
+        name: 'storageAccountExport'
+        tableNames: [
+          'Operation'
+        ]
+      }
+    ]
     dataSources: [
       {
         eventLogName: 'Application'
@@ -693,6 +721,34 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     // Non-required parameters
     "dailyQuotaGb": {
       "value": 10
+    },
+    "dataExports": {
+      "value": [
+        {
+          "destination": {
+            "metaData": {
+              "eventHubName": "<eventHubName>"
+            },
+            "resourceId": "<resourceId>"
+          },
+          "enable": true,
+          "name": "eventHubExport",
+          "tableNames": [
+            "Alert",
+            "InsightsMetrics"
+          ]
+        },
+        {
+          "destination": {
+            "resourceId": "<resourceId>"
+          },
+          "enable": true,
+          "name": "storageAccountExport",
+          "tableNames": [
+            "Operation"
+          ]
+        }
+      ]
     },
     "dataSources": {
       "value": [

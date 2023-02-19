@@ -34,6 +34,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
     automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-ehw-${serviceShort}'
+    eventHubName: 'dep-<<namePrefix>>-eh-${serviceShort}'
   }
 }
 
@@ -249,6 +251,32 @@ module testDeployment '../../deploy.bicep' = {
             }
           ]
         }
+      }
+    ]
+    dataExports: [
+      {
+        name: 'eventHubExport'
+        enable: true
+        destination: {
+          resourceId: nestedDependencies.outputs.eventHubNamespaceResourceId
+          metaData: {
+            eventHubName: nestedDependencies.outputs.eventHubName
+          }
+        }
+        tableNames: [
+          'Alert'
+          'InsightsMetrics'
+        ]
+      }
+      {
+        name: 'storageAccountExport'
+        enable: true
+        destination: {
+          resourceId: nestedDependencies.outputs.storageAccountResourceId
+        }
+        tableNames: [
+          'Operation'
+        ]
       }
     ]
   }

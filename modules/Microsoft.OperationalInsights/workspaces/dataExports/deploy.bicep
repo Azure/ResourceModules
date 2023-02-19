@@ -10,23 +10,14 @@ param name string
 @description('Conditional. The name of the parent workspaces. Required if the template is used in a standalone deployment.')
 param workspaceName string
 
-@description('Optional. The latest data export rule modification time.')
-param createdDate string = ''
-
-@description('Optional. The data export rule ID.')
-param dataExportId string = ''
-
 @description('Optional. Destination properties.')
 param destination object = {}
 
 @description('Optional. Active when enabled.')
-param enable bool = ''
+param enable bool = false
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
-
-@description('Optional. Date and time when the export was last modified.')
-param lastModifiedDate string = ''
 
 @description('Optional. An array of tables to export, for example: [“Heartbeat, SecurityEvent”].')
 param tableNames array = []
@@ -55,11 +46,8 @@ resource dataExport 'Microsoft.OperationalInsights/workspaces/dataExports@2020-0
   parent: workspace
   name: name
   properties: {
-    createdDate: createdDate
-    dataExportId: dataExportId
     destination: destination
     enable: enable
-    lastModifiedDate: lastModifiedDate
     tableNames: tableNames
   }
 }

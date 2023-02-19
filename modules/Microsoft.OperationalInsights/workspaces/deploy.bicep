@@ -25,10 +25,13 @@ param linkedStorageAccounts array = []
 @description('Optional. Kusto Query Language searches to save.')
 param savedSearches array = []
 
+@description('Optional. LAW data export instances to be deployed.')
+param dataExports array = []
+
 @description('Optional. LAW data sources to configure.')
 param dataSources array = []
 
-@description('Optional. LAW custom tables to deployed.')
+@description('Optional. LAW custom tables to be deployed.')
 param tables array = []
 
 @description('Optional. List of gallerySolutions to be created in the log analytics workspace.')
@@ -247,6 +250,18 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
   dependsOn: [
     logAnalyticsWorkspace_linkedStorageAccounts
   ]
+}]
+
+module logAnalyticsWorkspace_dataExports 'dataExports/deploy.bicep' = [for (dataExport, index) in dataExports: {
+  name: '${uniqueString(deployment().name, location)}-LAW-DataExport-${index}'
+  params: {
+    workspaceName: logAnalyticsWorkspace.name
+    name: dataExport.name
+    destination: contains(dataExport, 'destination') ? dataExport.destination : {}
+    enable: contains(dataExport, 'enable') ? dataExport.enable : false
+    tableNames: contains(dataExport, 'tableNames') ? dataExport.tableNames : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
 }]
 
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
