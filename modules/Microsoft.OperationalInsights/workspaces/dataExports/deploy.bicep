@@ -19,7 +19,7 @@ param enable bool = false
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. An array of tables to export, for example: [“Heartbeat, SecurityEvent”].')
+@description('Optional. An array of tables to export, for example: [\'Heartbeat\', \'SecurityEvent\'].')
 param tableNames array = []
 
 // =============== //

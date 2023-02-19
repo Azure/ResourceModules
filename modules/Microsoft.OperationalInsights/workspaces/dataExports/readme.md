@@ -37,7 +37,7 @@ This module deploys OperationalInsights Workspaces DataExports.
 | `destination` | object | `{object}` | Destination properties. |
 | `enable` | bool | `False` | Active when enabled. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `tableNames` | array | `[]` | An array of tables to export, for example: [ΓÇ£Heartbeat, SecurityEventΓÇ¥]. |
+| `tableNames` | array | `[]` | An array of tables to export, for example: ['Heartbeat', 'SecurityEvent']. |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
