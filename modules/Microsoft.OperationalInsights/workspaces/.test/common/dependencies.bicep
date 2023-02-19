@@ -7,7 +7,7 @@ param storageAccountName string
 @description('Required. The name of the Automation Account to create.')
 param automationAccountName string
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
   sku: {
@@ -16,7 +16,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   kind: 'StorageV2'
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2021-06-22' = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' = {
   name: automationAccountName
   location: location
   properties: {
