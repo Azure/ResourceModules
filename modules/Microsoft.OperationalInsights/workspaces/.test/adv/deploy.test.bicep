@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.operationalinsights.workspaces-${serviceSho
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'oiwcom'
+param serviceShort string = 'oiwadv'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -34,6 +34,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
     automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-ehw-${serviceShort}'
+    eventHubName: 'dep-<<namePrefix>>-eh-${serviceShort}'
   }
 }
 
@@ -199,5 +201,83 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     useResourcePermissions: true
+    tables: [
+      {
+        name: 'CustomTableBasic_CL'
+        schema: {
+          name: 'CustomTableBasic_CL'
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+        }
+        totalRetentionInDays: 90
+        retentionInDays: 60
+      }
+      {
+        name: 'CustomTableAdvanced_CL'
+        schema: {
+          name: 'CustomTableAdvanced_CL'
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventTime'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventLevel'
+              type: 'String'
+            }
+            {
+              name: 'EventCode'
+              type: 'Int'
+            }
+            {
+              name: 'Message'
+              type: 'String'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+        }
+      }
+    ]
+    dataExports: [
+      {
+        name: 'eventHubExport'
+        enable: true
+        destination: {
+          resourceId: nestedDependencies.outputs.eventHubNamespaceResourceId
+          metaData: {
+            eventHubName: nestedDependencies.outputs.eventHubName
+          }
+        }
+        tableNames: [
+          'Alert'
+          'InsightsMetrics'
+        ]
+      }
+      {
+        name: 'storageAccountExport'
+        enable: true
+        destination: {
+          resourceId: nestedDependencies.outputs.storageAccountResourceId
+        }
+        tableNames: [
+          'Operation'
+        ]
+      }
+    ]
   }
 }
