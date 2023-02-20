@@ -18,9 +18,6 @@ param initialWorkspaceAdminObjectID string = ''
 @description('Required. Resource ID of the default ADLS Gen2 storage account.')
 param defaultDataLakeStorageAccountResourceId string
 
-@description('Required. Name of the default ADLS Gen2 storage account.')
-param defaultDataLakeStorageAccountName string
-
 @description('Required. The default ADLS Gen2 file system.')
 param defaultDataLakeStorageFilesystem string
 
@@ -200,7 +197,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     } : null
     defaultDataLakeStorage: {
       resourceId: defaultDataLakeStorageAccountResourceId
-      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.${environment().suffixes.storage}'
+      accountUrl: 'https://${split(defaultDataLakeStorageAccountResourceId, '/')[-1]}.dfs.${environment().suffixes.storage}'
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
