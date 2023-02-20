@@ -199,5 +199,9 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     useResourcePermissions: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

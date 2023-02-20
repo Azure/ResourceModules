@@ -345,5 +345,9 @@ module testDeployment '../../deploy.bicep' = {
         state: 'Unlocked'
       }
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
