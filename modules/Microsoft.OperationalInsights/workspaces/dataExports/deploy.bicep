@@ -62,5 +62,5 @@ output name string = dataExport.name
 @description('The resource ID of the data export.')
 output resourceId string = dataExport.id
 
-@description('The name of the resource group the dataExport was created in.')
+@description('The name of the resource group the data export was created in.')
 output resourceGroupName string = resourceGroup().name
