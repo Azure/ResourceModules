@@ -280,7 +280,7 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empt
 //}
 
 resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
-  name: last(split(geoBackupCMKKeyVaultResourceId, '/'))
+  name: last(split(geoBackupCMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
 
   resource geoBackupCMKKey 'keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
