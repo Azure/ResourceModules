@@ -59,7 +59,7 @@ resource dataExport 'Microsoft.OperationalInsights/workspaces/dataExports@2020-0
 @description('The name of the dataExport.')
 output name string = dataExport.name
 
-@description('The resource ID of the dataExport.')
+@description('The resource ID of the data export.')
 output resourceId string = dataExport.id
 
 @description('The name of the resource group the dataExport was created in.')
