@@ -33,7 +33,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     name: storageAccountName
     location: location
     sku: {
@@ -44,10 +44,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
         isHnsEnabled: true
     }
 
-    resource blobService 'blobServices@2021-09-01' = {
+    resource blobService 'blobServices@2022-09-01' = {
         name: 'default'
 
-        resource container 'containers@2021-09-01' = {
+        resource container 'containers@2022-09-01' = {
             name: 'synapsews'
         }
     }
