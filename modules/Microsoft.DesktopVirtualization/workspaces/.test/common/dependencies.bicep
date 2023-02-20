@@ -15,7 +15,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
+resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2022-09-09' = {
     name: hostPoolName
     location: location
     properties: {
@@ -25,7 +25,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
     }
 }
 
-resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2021-07-12' = {
+resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-09-09' = {
     name: applicationGroupName
     location: location
     properties: {
