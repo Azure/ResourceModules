@@ -487,7 +487,7 @@ userAssignedIdentities: {
 | `name` | string | The name of the deployed log analytics workspace. |
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `systemAssignedIdentityPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

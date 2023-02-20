@@ -1,7 +1,6 @@
-# OperationalInsights Workspaces DataExports `[Microsoft.OperationalInsights/workspaces/dataExports]`
+# Log Analytics Workspace Data Exports `[Microsoft.OperationalInsights/workspaces/dataExports]`
 
-This module deploys OperationalInsights Workspaces DataExports.
-// TODO: Replace Resource and fill in description
+This module deploys Log Analytics Workspace Data Exports.
 
 ## Navigation
 
@@ -40,17 +39,13 @@ This module deploys OperationalInsights Workspaces DataExports.
 | `tableNames` | array | `[]` | An array of tables to export, for example: ['Heartbeat', 'SecurityEvent']. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the dataExport. |
-| `resourceGroupName` | string | The name of the resource group the dataExport was created in. |
-| `resourceId` | string | The resource ID of the dataExport. |
+| `name` | string | The name of the data export. |
+| `resourceGroupName` | string | The name of the resource group the data export was created in. |
+| `resourceId` | string | The resource ID of the data export. |
 
 ## Cross-referenced modules
 

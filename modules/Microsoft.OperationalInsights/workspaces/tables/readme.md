@@ -42,10 +42,6 @@ This module deploys Log Analytics Workspace Tables.
 | `totalRetentionInDays` | int | `-1` |  | The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
