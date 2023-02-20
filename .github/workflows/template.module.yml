@@ -53,6 +53,7 @@ jobs:
   job_psrule_test:
     name: 'PSRule validation'
     runs-on: ubuntu-20.04
+    if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
     strategy:
       fail-fast: false
       matrix:
