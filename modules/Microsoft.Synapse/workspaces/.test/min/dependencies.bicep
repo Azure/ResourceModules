@@ -24,6 +24,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     }
 }
 
+@description('The resource ID of the created Storage Account.')
+output storageAccountId string = storageAccount.id
+
 @description('The name of the created Storage Account.')
 output storageAccountName string = storageAccount.name
 

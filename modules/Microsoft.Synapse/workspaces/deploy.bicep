@@ -15,6 +15,9 @@ param azureADOnlyAuthentication bool = false
 @description('Optional. AAD object ID of initial workspace admin.')
 param initialWorkspaceAdminObjectID string = ''
 
+@description('Required. Resource ID of the default ADLS Gen2 storage account.')
+param defaultDataLakeStorageAccountResourceId string
+
 @description('Required. Name of the default ADLS Gen2 storage account.')
 param defaultDataLakeStorageAccountName string
 
@@ -196,6 +199,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectID
     } : null
     defaultDataLakeStorage: {
+      resourceId: defaultDataLakeStorageAccountResourceId
       accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.${environment().suffixes.storage}'
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
