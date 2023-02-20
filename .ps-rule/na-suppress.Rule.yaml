@@ -1,0 +1,24 @@
+---
+# Synopsis: Suppress Rules for Not Available resources
+apiVersion: github.com/microsoft/PSRule/v1
+kind: SuppressionGroup
+metadata:
+  name: 'SuppressNA'
+spec:
+  rule:
+   - Azure.Resource.UseTags
+  if:
+    name: '.'
+    contains:
+      - 'policyAssignments' #Tags not available
+      - 'policyDefinitions'  #Tags not available
+      - 'policyExemptions' #Tags not available
+      - 'policySetDefinitions' #Tags not available
+      - 'managementGroups' #Tags not available
+      - 'registrationDefinitions'  #Tags not available
+      - 'registrationAssignments' #Tags not available
+      - 'remediations' #Tags not available
+      - 'fluxConfigurations' #Tags not available
+      - 'solutions' #Tags not available
+      - 'pricings' #Tags not available
+
