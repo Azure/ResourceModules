@@ -69,8 +69,10 @@ This template deploys a log analytics workspace.
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
 | `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to be deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
 
@@ -443,6 +445,39 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -452,6 +487,7 @@ tags: {
 | `name` | string | The name of the deployed log analytics workspace. |
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
@@ -697,6 +733,9 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
       }
     ]
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
     useResourcePermissions: true
   }
 }
@@ -971,6 +1010,11 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
       ]
     },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
     "useResourcePermissions": {
       "value": true
     }
@@ -1113,6 +1157,15 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     lock: 'CanNotDelete'
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     savedSearches: [
       {
         category: 'VDC Saved Searches'
@@ -1132,6 +1185,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         ]
       }
     ]
+    systemAssignedIdentity: true
     useResourcePermissions: true
   }
 }
@@ -1301,6 +1355,17 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "publicNetworkAccessForQuery": {
       "value": "Disabled"
     },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "savedSearches": {
       "value": [
         {
@@ -1323,6 +1388,9 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           ]
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
     },
     "useResourcePermissions": {
       "value": true

@@ -34,6 +34,7 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
     automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -199,5 +200,15 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     useResourcePermissions: true
+    systemAssignedIdentity: true
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }

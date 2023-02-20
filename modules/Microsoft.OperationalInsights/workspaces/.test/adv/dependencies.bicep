@@ -13,6 +13,9 @@ param eventHubNamespaceName string
 @description('Required. The name of the Event Hub to create.')
 param eventHubName string
 
+@description('Required. The name of the Managed Identity to create.')
+param managedIdentityName string
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
@@ -58,6 +61,11 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' = 
   }
 }
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityName
+  location: location
+}
+
 @description('The resource ID of the created Storage Account.')
 output storageAccountResourceId string = storageAccount.id
 
@@ -69,3 +77,9 @@ output eventHubNamespaceResourceId string = eventHubNamespace.id
 
 @description('The name of the created Eventhub.')
 output eventHubName string = eventHubNamespace::eventHub.name
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId
+
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id

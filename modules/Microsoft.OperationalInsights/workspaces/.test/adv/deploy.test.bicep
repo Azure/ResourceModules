@@ -36,6 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
     automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
     eventHubNamespaceName: 'dep-<<namePrefix>>-ehw-${serviceShort}'
     eventHubName: 'dep-<<namePrefix>>-eh-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -279,5 +280,8 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
   }
 }

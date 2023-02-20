@@ -60,6 +60,12 @@ param publicNetworkAccessForIngestion string = 'Enabled'
 ])
 param publicNetworkAccessForQuery string = 'Enabled'
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. Set to \'true\' to use resource or workspace permissions and \'false\' (or leave empty) to require workspace permissions.')
 param useResourcePermissions bool = false
 
@@ -154,6 +160,13 @@ var logAnalyticsSearchVersion = 1
 
 var enableReferencedModulesTelemetry = false
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -186,6 +199,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
     forceCmkForQuery: forceCmkForQuery
   }
+  identity: identity
 }
 
 resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
@@ -348,3 +362,6 @@ output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.custome
 
 @description('The location the resource was deployed into.')
 output location string = logAnalyticsWorkspace.location
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(logAnalyticsWorkspace.identity, 'principalId') ? logAnalyticsWorkspace.identity.principalId : ''
