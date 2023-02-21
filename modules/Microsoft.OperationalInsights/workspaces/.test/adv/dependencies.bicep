@@ -7,6 +7,12 @@ param storageAccountName string
 @description('Required. The name of the Automation Account to create.')
 param automationAccountName string
 
+@description('Required. The name of the Event Hub Workspace to create.')
+param eventHubNamespaceName string
+
+@description('Required. The name of the Event Hub to create.')
+param eventHubName string
+
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
@@ -29,6 +35,32 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' 
   }
 }
 
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' = {
+  name: eventHubNamespaceName
+  location: location
+  sku: {
+    name: 'Basic'
+    tier: 'Basic'
+    capacity: 1
+  }
+  properties: {
+    minimumTlsVersion: '1.2'
+    publicNetworkAccess: 'Enabled'
+    disableLocalAuth: false
+    isAutoInflateEnabled: false
+    maximumThroughputUnits: 0
+    kafkaEnabled: false
+    zoneRedundant: true
+  }
+
+  resource eventHub 'eventhubs@2022-10-01-preview' = {
+    name: eventHubName
+    properties: {
+      messageRetentionInDays: 1
+    }
+  }
+}
+
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
   name: managedIdentityName
   location: location
@@ -39,6 +71,12 @@ output storageAccountResourceId string = storageAccount.id
 
 @description('The resource ID of the created Automation Account.')
 output automationAccountResourceId string = automationAccount.id
+
+@description('The resource ID of the created Eventhub Namespace.')
+output eventHubNamespaceResourceId string = eventHubNamespace.id
+
+@description('The name of the created Eventhub.')
+output eventHubName string = eventHubNamespace::eventHub.name
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
