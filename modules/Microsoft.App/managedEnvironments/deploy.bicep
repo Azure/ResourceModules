@@ -26,6 +26,58 @@ param logsDestination string = 'log-analytics'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool
 
+/*
+@description('Optional. Application Insights connection string used by Dapr to export Service to Service communication telemetry.')
+param daprAIConnectionString string
+
+@description('Optional. Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry.')
+@secure()
+param daprAIInstrumentationKey string
+*/
+
+@description('Optional. CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges.')
+param dockerBridgeCidr string = ''
+
+@description('Optional. Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.')
+param infrastructureSubnetId string = ''
+
+@description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property.')
+param internal bool = false
+
+@allowed([
+  'LoadBalancer'
+  'UserDefinedRouting'
+])
+@description('Optional. Outbound type for the cluster.')
+param outBoundType string = 'LoadBalancer'
+
+@description('Optional. Virtual Appliance IP used as the Egress controller for the Environment.')
+param virtualNetworkApplianceIp string = ''
+
+@description('Optional. IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges.')
+param platformReservedCidr string = ''
+
+@description('Optional. An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server.')
+param platformReservedDnsIP string = ''
+
+@description('Optional. Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges.')
+param runtimeSubnetId string = ''
+
+@description('Optional. Whether or not this Managed Environment is zone-redundant.')
+param zoneRedundant bool = false
+
+/*
+@description('Optional. Certificate password.')
+@secure()
+param certificatePassword string = ''
+
+@description('Optional. Certificate value for this.')
+param certificateValue string = ''
+
+@description('Optional. Dns suffix for the environment domain.')
+param dnsSuffix string = ''
+*/
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -57,6 +109,28 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-previe
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
+    //daprAIConnectionString: daprAIConnectionString
+    //daprAIInstrumentationKey: daprAIInstrumentationKey
+    /*
+    customDomainConfiguration: {
+      certificatePassword: certificatePassword
+      certificateValue: !empty(certificateValue) ? certificateValue : null
+      dnsSuffix: dnsSuffix
+    }
+    */
+    vnetConfiguration: {
+      dockerBridgeCidr: dockerBridgeCidr
+      infrastructureSubnetId: infrastructureSubnetId
+      internal: internal
+      outboundSettings: {
+        outBoundType: outBoundType
+        virtualNetworkApplianceIp: virtualNetworkApplianceIp
+      }
+      platformReservedCidr: platformReservedCidr
+      platformReservedDnsIP: platformReservedDnsIP
+      runtimeSubnetId: runtimeSubnetId
+    }
+    zoneRedundant: zoneRedundant
   }
 }
 
