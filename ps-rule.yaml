@@ -32,12 +32,12 @@ output:
     - 'en-US'
 
 input:
+  ignoreUnchangedPath: true
   pathIgnore:
     # Ignore other files in the repository.
     - '**/*'
     # Do not ignore tests.
     - '!modules/**/*.test.bicep'
-  ignoreUnchangedPath: true
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
