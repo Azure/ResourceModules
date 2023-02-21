@@ -84,6 +84,6 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     scaleUnits: 4
-    skuType: 'Standard'
+    skuName: 'Standard'
   }
 }

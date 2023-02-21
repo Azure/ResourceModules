@@ -52,7 +52,7 @@ This module deploys a bastion host.
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the Public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
-| `skuType` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
+| `skuName` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -338,7 +338,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       }
     ]
     scaleUnits: 4
-    skuType: 'Standard'
+    skuName: 'Standard'
   }
 }
 ```
@@ -413,7 +413,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     "scaleUnits": {
       "value": 4
     },
-    "skuType": {
+    "skuName": {
       "value": "Standard"
     }
   }

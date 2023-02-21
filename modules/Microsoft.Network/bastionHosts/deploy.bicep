@@ -46,7 +46,7 @@ param lock string = ''
   'Standard'
 ])
 @description('Optional. The SKU of this Bastion Host.')
-param skuType string = 'Basic'
+param skuName string = 'Basic'
 
 @description('Optional. Choose to disable or enable Copy Paste.')
 param disableCopyPaste bool = false
@@ -104,9 +104,9 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   }
 ] : diagnosticsLogsSpecified
 
-var enableTunneling = skuType == 'Standard' ? true : null
+var enableTunneling = skuName == 'Standard' ? true : null
 
-var scaleUnitsVar = skuType == 'Basic' ? 2 : scaleUnits
+var scaleUnitsVar = skuName == 'Basic' ? 2 : scaleUnits
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureBastionSubnet for different uses cases:
@@ -171,8 +171,8 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(bastionSu
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
-    version: contains(publicIPAddressObject, 'publicIPAddressVersion') ? publicIPAddressObject.publicIPAddressVersion : 'IPv4'
-    allocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? publicIPAddressObject.publicIPAllocationMethod : 'Static'
+    publicIPAddressVersion: contains(publicIPAddressObject, 'publicIPAddressVersion') ? publicIPAddressObject.publicIPAddressVersion : 'IPv4'
+    publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? publicIPAddressObject.publicIPAllocationMethod : 'Static'
     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? publicIPAddressObject.publicIPPrefixResourceId : ''
     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? publicIPAddressObject.roleAssignments : []
     skuName: contains(publicIPAddressObject, 'skuName') ? publicIPAddressObject.skuName : 'Standard'
@@ -182,7 +182,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(bastionSu
   }
 }
 
-var bastionpropertiesVar = skuType == 'Standard' ? {
+var bastionpropertiesVar = skuName == 'Standard' ? {
   scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
   enableTunneling: enableTunneling
@@ -200,7 +200,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   location: location
   tags: tags
   sku: {
-    name: skuType
+    name: skuName
   }
   properties: bastionpropertiesVar
 }

@@ -349,7 +349,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
-    allocationMethod: gatewayPipAllocationMethod
+    publicIPAllocationMethod: gatewayPipAllocationMethod
     publicIPPrefixResourceId: !empty(publicIPPrefixResourceId) ? publicIPPrefixResourceId : ''
     tags: tags
     skuName: gatewayPipSku
