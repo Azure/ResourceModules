@@ -37,6 +37,7 @@ input:
     - '**/*'
     # Do not ignore tests.
     - '!modules/**/*.test.bicep'
+  ignoreUnchangedPath: true
 
 configuration:
   # Enable automatic expansion of Azure parameter files.
