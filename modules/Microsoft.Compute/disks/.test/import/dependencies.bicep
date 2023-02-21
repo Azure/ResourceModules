@@ -24,7 +24,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
   kind: 'StorageV2'
@@ -34,9 +34,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   properties: {
     allowBlobPublicAccess: false
   }
-  resource blobServices 'blobServices@2021-09-01' = {
+  resource blobServices 'blobServices@2022-09-01' = {
     name: 'default'
-    resource container 'containers@2021-09-01' = {
+    resource container 'containers@2022-09-01' = {
       name: 'vhds'
       properties: {
         publicAccess: 'None'
