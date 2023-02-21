@@ -11,9 +11,17 @@ param location string = resourceGroup().location
   'UltraSSD_LRS'
   'Premium_ZRS'
   'Premium_ZRS'
+  'PremiumV2_LRS'
 ])
 @description('Required. The disks sku name. Can be .')
 param sku string
+
+@allowed([
+  'x64'
+  'Arm64'
+])
+@description('Optional. CPU architecture supported by an OS disk.')
+param architecture string = 'x64'
 
 @description('Optional. Set to true to enable bursting beyond the provisioned performance target of the disk.')
 param burstingEnabled bool = false
@@ -35,6 +43,16 @@ param completionPercent int = 100
 ])
 @description('Optional. Sources of a disk creation.')
 param createOption string = 'Empty'
+
+@allowed([
+  'SCSI'
+  'SCSI, NVME'
+  'NVME, SCSI'
+  'NVME'
+  ''
+])
+@description('Optional. The disk controllers that an OS disk supports. If set it can be SCSI or SCSI, NVME or NVME, SCSI.')
+param diskControllerTypes string = ''
 
 @description('Optional. A relative uri containing either a Platform Image Repository or user image reference.')
 param imageReferenceId string = ''
@@ -84,6 +102,9 @@ param maxShares int = 1
 @description('Optional. Policy for accessing the disk via network.')
 param networkAccessPolicy string = 'DenyAll'
 
+@description('Optional. Setting this property to true improves reliability and performance of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of the virtual machine.')
+param optimizedForFrequentAttach bool = false
+
 @allowed([
   'Windows'
   'Linux'
@@ -91,6 +112,9 @@ param networkAccessPolicy string = 'DenyAll'
 ])
 @description('Optional. Sources of a disk creation.')
 param osType string = ''
+
+@description('Optional. Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective performance target. This flag can only be set on disk creation time and cannot be disabled after enabled.')
+param performancePlus bool = false
 
 @allowed([
   'Disabled'
@@ -119,7 +143,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -131,7 +155,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource disk 'Microsoft.Compute/disks@2021-08-01' = {
+resource disk 'Microsoft.Compute/disks@2022-07-02' = {
   name: name
   location: location
   tags: tags
@@ -152,6 +176,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
       sourceUri: createOption == 'Import' ? sourceUri : null
       storageAccountId: createOption == 'Import' ? storageAccountId : null
       uploadSizeBytes: createOption == 'Upload' ? uploadSizeBytes : null
+      performancePlus: performancePlus
     }
     diskIOPSReadWrite: contains(sku, 'Ultra') ? diskIOPSReadWrite : null
     diskMBpsReadWrite: contains(sku, 'Ultra') ? diskMBpsReadWrite : null
@@ -159,10 +184,13 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
     hyperVGeneration: empty(osType) ? null : hyperVGeneration
     maxShares: maxShares
     networkAccessPolicy: networkAccessPolicy
+    optimizedForFrequentAttach: optimizedForFrequentAttach
     osType: empty(osType) ? any(null) : osType
     publicNetworkAccess: publicNetworkAccess
     supportedCapabilities: empty(osType) ? {} : {
       acceleratedNetwork: acceleratedNetwork
+      architecture: empty(architecture) ? null : architecture
+      diskControllerTypes: empty(diskControllerTypes) ? null : diskControllerTypes
     }
   }
 }
