@@ -29,7 +29,6 @@
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allocationMethod` | string | `'Dynamic'` | `[Dynamic, Static]` | The public IP address allocation method. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -43,13 +42,14 @@
 | `fqdn` | string | `''` |  | The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `publicIPAddressVersion` | string | `'IPv4'` | `[IPv4, IPv6]` | IP address version. |
+| `publicIPAllocationMethod` | string | `'Dynamic'` | `[Dynamic, Static]` | The public IP address allocation method. |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `reverseFqdn` | string | `''` |  | The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS record is created pointing from the IP address in the in-addr.arpa domain to the reverse FQDN. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `skuName` | string | `'Basic'` | `[Basic, Standard]` | Name of a public IP address SKU. |
 | `skuTier` | string | `'Regional'` | `[Global, Regional]` | Tier of a public IP address SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `version` | string | `'IPv4'` | `[IPv4, IPv6]` | IP address version. |
 | `zones` | array | `[]` |  | A list of availability zones denoting the IP allocated for the resource needs to come from. |
 
 
@@ -187,7 +187,6 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     // Required parameters
     name: '<<namePrefix>>npiacom001'
     // Non-required parameters
-    allocationMethod: 'Static'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -195,6 +194,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    publicIPAllocationMethod: 'Static'
     roleAssignments: [
       {
         principalIds: [
@@ -231,9 +231,6 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
       "value": "<<namePrefix>>npiacom001"
     },
     // Non-required parameters
-    "allocationMethod": {
-      "value": "Static"
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -254,6 +251,9 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "publicIPAllocationMethod": {
+      "value": "Static"
     },
     "roleAssignments": {
       "value": [

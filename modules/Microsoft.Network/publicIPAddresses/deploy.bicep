@@ -9,7 +9,7 @@ param publicIPPrefixResourceId string = ''
   'Dynamic'
   'Static'
 ])
-param allocationMethod string = 'Dynamic'
+param publicIPAllocationMethod string = 'Dynamic'
 
 @description('Optional. Name of a public IP address SKU.')
 @allowed([
@@ -33,7 +33,7 @@ param zones array = []
   'IPv4'
   'IPv6'
 ])
-param version string = 'IPv4'
+param publicIPAddressVersion string = 'IPv4'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -160,8 +160,8 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2022-07-01' = {
       fqdn: fqdn
       reverseFqdn: reverseFqdn
     } : null
-    publicIPAddressVersion: version
-    publicIPAllocationMethod: allocationMethod
+    publicIPAddressVersion: publicIPAddressVersion
+    publicIPAllocationMethod: publicIPAllocationMethod
     publicIPPrefix: !empty(publicIPPrefixResourceId) ? {
       id: publicIPPrefixResourceId
     } : null
