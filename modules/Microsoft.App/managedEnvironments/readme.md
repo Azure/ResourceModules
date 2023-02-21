@@ -123,7 +123,72 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Min</h3>
+<h3>Example 1: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-mcappcom'
+  params: {
+    // Required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    logAnalticsWorkspaceName: '<logAnalticsWorkspaceName>'
+    name: 'dep-<<namePrefix>>-menv-mcappcom001'
+    resourceGroupLAWorkspace: '<resourceGroupLAWorkspace>'
+    // Non-required parameters
+    infrastructureSubnetId: '<infrastructureSubnetId>'
+    location: '<location>'
+    skuName: 'Consumption'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "logAnalticsWorkspaceName": {
+      "value": "<logAnalticsWorkspaceName>"
+    },
+    "name": {
+      "value": "dep-<<namePrefix>>-menv-mcappcom001"
+    },
+    "resourceGroupLAWorkspace": {
+      "value": "<resourceGroupLAWorkspace>"
+    },
+    // Non-required parameters
+    "infrastructureSubnetId": {
+      "value": "<infrastructureSubnetId>"
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "skuName": {
+      "value": "Consumption"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
 
 <details>
 
