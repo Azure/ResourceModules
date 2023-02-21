@@ -32,11 +32,20 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges. |
 | `enableDefaultTelemetry` | bool |  |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `infrastructureSubnetId` | string | `''` |  | Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges. |
+| `internal` | bool | `False` |  | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `logsDestination` | string | `'log-analytics'` |  | Logs destination. |
+| `outBoundType` | string | `'LoadBalancer'` | `[LoadBalancer, UserDefinedRouting]` | Outbound type for the cluster. |
+| `platformReservedCidr` | string | `''` |  | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges. |
+| `platformReservedDnsIP` | string | `''` |  | An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `runtimeSubnetId` | string | `''` |  | Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges. |
 | `skuName` | string | `'Consumption'` | `[Consumption, Premium]` | Managed environment Sku. |
+| `virtualNetworkApplianceIp` | string | `''` |  | Virtual Appliance IP used as the Egress controller for the Environment. |
+| `zoneRedundant` | bool | `False` |  | Whether or not this Managed Environment is zone-redundant. |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
@@ -196,16 +205,15 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
 
 ```bicep
 module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcapp'
+  name: '${uniqueString(deployment().name, location)}-test-mcappmin'
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     logAnalticsWorkspaceName: '<logAnalticsWorkspaceName>'
-    name: '<<namePrefix>>--menv-mcapp001'
+    name: '<<namePrefix>>--menv-mcappmin001'
     resourceGroupLAWorkspace: '<resourceGroupLAWorkspace>'
     // Non-required parameters
     location: '<location>'
-    logsDestination: 'log-analytics'
     skuName: 'Consumption'
   }
 }
@@ -231,7 +239,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
       "value": "<logAnalticsWorkspaceName>"
     },
     "name": {
-      "value": "<<namePrefix>>--menv-mcapp001"
+      "value": "<<namePrefix>>--menv-mcappmin001"
     },
     "resourceGroupLAWorkspace": {
       "value": "<resourceGroupLAWorkspace>"
@@ -239,9 +247,6 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     // Non-required parameters
     "location": {
       "value": "<location>"
-    },
-    "logsDestination": {
-      "value": "log-analytics"
     },
     "skuName": {
       "value": "Consumption"
