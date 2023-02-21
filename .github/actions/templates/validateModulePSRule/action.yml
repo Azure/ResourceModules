@@ -82,7 +82,7 @@ runs:
             TokenSuffix  = '${{ env.tokenSuffix }}'
           }
 
-          Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+          Write-Verbose ("Convert Tokens Input:`n {0}" -f ($ConvertTokensInputs | ConvertTo-Json -Depth 10)) -Verbose
 
           # Invoke Token Replacement Functionality [For Module]
           $null = Convert-TokensInFileList @ConvertTokensInputs
@@ -135,7 +135,7 @@ runs:
         $mdPSRuleOutputFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath}}-PSRule-output.md'
 
         if (-not (Test-Path $mdPSRuleOutputFilePath)) {
-          Write-Warning ('Input file [{0}] not found' -f $mdPSRuleOutputFilePath)
+          Write-Warning ('Input file [{0}] not found. Please check if the previous task threw an error and try again.' -f $mdPSRuleOutputFilePath)
           return ''
         } else {
           Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
