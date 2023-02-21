@@ -109,7 +109,7 @@ This section provides an overview of the library's feature set.
 | 94 | MS.Network<p>virtualWans | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 80 |
 | 95 | MS.Network<p>vpnGateways |  | :white_check_mark: | :white_check_mark: |  |  |  | [L1:2] | 104 |
 | 96 | MS.Network<p>vpnSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 88 |
-| 97 | MS.OperationalInsights<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:5] | 271 |
+| 97 | MS.OperationalInsights<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:7] | 312 |
 | 98 | MS.OperationsManagement<p>solutions |  |  |  |  |  |  |  | 50 |
 | 99 | MS.PolicyInsights<p>remediations |  |  |  |  |  |  | [L1:3] | 103 |
 | 100 | MS.PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
@@ -134,7 +134,7 @@ This section provides an overview of the library's feature set.
 | 119 | MS.Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 120 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3, L2:2] | 380 |
 | 121 | MS.Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 95 | 93 | 104 | 51 | 23 | 2 | 184 | 21253 |
+| Sum | | 95 | 93 | 104 | 51 | 23 | 2 | 186 | 21294 |
 
 ## Legend
 
