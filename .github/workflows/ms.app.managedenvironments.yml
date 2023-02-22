@@ -36,7 +36,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.App\managedEnvironments'
+  modulePath: 'modules/Microsoft.App/managedEnvironments'
   workflowPath: '.github/workflows/ms.app.managedenvironments.yml'
 
 concurrency:
