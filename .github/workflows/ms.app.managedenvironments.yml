@@ -76,7 +76,7 @@ jobs:
     name: 'Module'
     needs:
       - job_initialize_pipeline
-    uses: ./.github/workflows/template.module.yml
+    uses: .github/workflows/template.module.yml
     with:
       workflowInput: '${{ needs.job_initialize_pipeline.outputs.workflowInput }}'
       moduleTestFilePaths: '${{ needs.job_initialize_pipeline.outputs.moduleTestFilePaths }}'
