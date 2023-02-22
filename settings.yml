@@ -44,7 +44,7 @@ variables:
   # Deployment validation #
   # --------------------- #
 
-  location: 'West Europe' # The default location to test deploy resources to
+  location: 'East US' # The default location to test deploy resources to
 
   #############################
   ##   Publishing settings   ##
@@ -80,7 +80,7 @@ variables:
   ##   Connection settings   ##
   #############################
 
-  serviceConnection: 'CARML-CSU-Tenant-Connection'
+  serviceConnection: 'MCAPS-Hybrid-LukeSnoddy-CARML'
 
   ################
   ##   Source   ##
@@ -99,7 +99,7 @@ variables:
   # --------------------------- #
 
   artifactsFeedDoPublish: true # Set to true, if you would like to publish modules as Universal Packages (in Azure DevOps Artifacts)
-  vstsFeedName: 'carml' # The name of the Azure DevOps universal packages feed to publish to
+  vstsFeedName: 'lukesnoddy-carml' # The name of the Azure DevOps universal packages feed to publish to
   vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
   vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above
 
