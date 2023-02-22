@@ -27,13 +27,14 @@ az provider register --namespace Microsoft.ContainerService
 az provider register --namespace Microsoft.KubernetesConfiguration
 ```
 
-For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2)
+For Details see [Prerequisites](https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
+| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
 
 ## Parameters
 
@@ -49,9 +50,10 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
+| `configurationProtectedSettings` | secureObject | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `fluxConfigurations` | array | `[]` | A list of flux configuraitons. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created. |
 | `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
@@ -69,7 +71,11 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | Local reference |
 
 ## Deployment examples
 
@@ -101,6 +107,20 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
       'source-controller.enabled': 'true'
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxConfigurations: [
+      {
+        gitRepository: {
+          repositoryRef: {
+            branch: 'main'
+          }
+          sshKnownHosts: ''
+          syncIntervalInSeconds: 300
+          timeoutInSeconds: 180
+          url: 'https://github.com/mspnp/aks-baseline'
+        }
+        namespace: 'flux-system'
+      }
+    ]
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
     version: '0.5.2'
@@ -142,6 +162,22 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "fluxConfigurations": {
+      "value": [
+        {
+          "gitRepository": {
+            "repositoryRef": {
+              "branch": "main"
+            },
+            "sshKnownHosts": "",
+            "syncIntervalInSeconds": 300,
+            "timeoutInSeconds": 180,
+            "url": "https://github.com/mspnp/aks-baseline"
+          },
+          "namespace": "flux-system"
+        }
+      ]
     },
     "releaseNamespace": {
       "value": "flux-system"

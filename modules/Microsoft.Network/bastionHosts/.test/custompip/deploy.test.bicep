@@ -57,7 +57,7 @@ module testDeployment '../../deploy.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
+      name: '<<namePrefix>>${serviceShort}001-pip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [

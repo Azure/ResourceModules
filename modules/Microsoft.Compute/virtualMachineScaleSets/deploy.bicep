@@ -448,7 +448,9 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
       licenseType: empty(licenseType) ? null : licenseType
       priority: vmPriority
       evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
-      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
+      billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? {
+        maxPrice: maxPriceForLowPriorityVm
+      } : null
       scheduledEventsProfile: scheduledEventsProfile
     }
     overprovision: overprovision
@@ -502,7 +504,7 @@ module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extens
 }
 
 resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
-  name: last(split(monitoringWorkspaceId, '/'))
+  name: last(split(monitoringWorkspaceId, '/'))!
   scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 

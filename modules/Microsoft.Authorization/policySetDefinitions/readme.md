@@ -16,7 +16,7 @@ With this module you can create policy set definitions across the management gro
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policySetDefinitions` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions) |
+| `Microsoft.Authorization/policySetDefinitions` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions) |
 
 ## Parameters
 

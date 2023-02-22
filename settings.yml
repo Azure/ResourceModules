@@ -91,7 +91,6 @@ variables:
   modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
   pipelineFunctionsPath: 'utilities/pipelines'
 
-
   #############################
   ##   Publishing settings   ##
   #############################

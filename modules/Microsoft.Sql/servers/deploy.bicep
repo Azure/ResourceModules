@@ -158,7 +158,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     skuSize: contains(database, 'skuSize') ? database.skuSize : ''
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
-    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : 0
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
@@ -180,6 +180,8 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticSettingsName: contains(database, 'diagnosticSettingsName') ? database.diagnosticSettingsName : '${database.name}-diagnosticSettings'
     elasticPoolId: contains(database, 'elasticPoolId') ? database.elasticPoolId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    backupShortTermRetentionPolicy: contains(database, 'backupShortTermRetentionPolicy') ? database.backupShortTermRetentionPolicy : {}
+    backupLongTermRetentionPolicy: contains(database, 'backupLongTermRetentionPolicy') ? database.backupLongTermRetentionPolicy : {}
   }
   dependsOn: [
     server_elasticPools // Enables us to add databases to existing elastic pools

@@ -13,7 +13,7 @@ This module deploys ContainerRegistry Registries Webhooks.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerRegistry/registries/webhooks` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/webhooks) |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2022-02-01-preview/registries/webhooks) |
 
 ## Parameters
 

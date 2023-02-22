@@ -57,7 +57,7 @@ var builtInRoleNames = {
 }
 
 resource rsv 'Microsoft.RecoveryServices/vaults@2022-09-10' existing = {
-  name: last(split(resourceId, '/'))
+  name: last(split(resourceId, '/'))!
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
