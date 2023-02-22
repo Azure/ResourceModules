@@ -57,8 +57,6 @@ The branch `users/fblix_jpeasier/rsvIdentity` has been used to testing and conta
 
 For more details, refer to the issue in the Bicep repository ([#9662](https://github.com/Azure/bicep/issues/9662)) and to our internal issue [#2391](https://github.com/Azure/ResourceModules/issues/2391).
 
-A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
-
 ## Microsoft.Network/networkManagers
 
 In order to deploy a Network Manager with the `networkManagerScopes` property set to `managementGroups`, you need to register the `Microsoft.Network` resource provider at the Management Group first ([ref](https://learn.microsoft.com/en-us/rest/api/resources/providers/register-at-management-group-scope)).
