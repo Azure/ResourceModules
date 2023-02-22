@@ -30,7 +30,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.app.managedenvironments.yml'
-      - 'modules/Microsoft.App\managedEnvironments/**'
+      - 'modules/Microsoft.App/managedEnvironments/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
