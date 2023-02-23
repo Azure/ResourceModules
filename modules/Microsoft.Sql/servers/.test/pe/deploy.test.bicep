@@ -36,7 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'adp-<<namePrefix>>-vnet-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     location: location
   }
 }

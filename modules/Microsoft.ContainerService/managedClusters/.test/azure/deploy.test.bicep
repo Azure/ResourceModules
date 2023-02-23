@@ -45,7 +45,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -158,5 +158,63 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    fluxExtension: {
+      configurationSettings: {
+        'helm-controller.enabled': 'true'
+        'source-controller.enabled': 'true'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'true'
+        'image-automation-controller.enabled': 'false'
+        'image-reflector-controller.enabled': 'false'
+      }
+      configurations: [
+        {
+          namespace: 'flux-system'
+          scope: 'cluster'
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/mspnp/aks-baseline'
+          }
+        }
+        {
+          namespace: 'flux-system-helm'
+          scope: 'cluster'
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+          }
+          kustomizations: {
+            infra: {
+              path: './infrastructure'
+              dependsOn: []
+              timeoutInSeconds: 600
+              syncIntervalInSeconds: 600
+              validation: 'none'
+              prune: true
+            }
+            apps: {
+              path: './apps/staging'
+              dependsOn: [
+                'infra'
+              ]
+              timeoutInSeconds: 600
+              syncIntervalInSeconds: 600
+              retryIntervalInSeconds: 120
+              prune: true
+            }
+          }
+        }
+      ]
+    }
   }
 }

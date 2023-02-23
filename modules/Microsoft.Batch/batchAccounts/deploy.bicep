@@ -189,7 +189,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource keyVaultReferenceKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(keyVaultReferenceResourceId)) {
-  name: last(split(keyVaultReferenceResourceId, '/'))
+  name: last(split(keyVaultReferenceResourceId, '/'))!
   scope: resourceGroup(split(keyVaultReferenceResourceId, '/')[2], split(keyVaultReferenceResourceId, '/')[4])
 }
 

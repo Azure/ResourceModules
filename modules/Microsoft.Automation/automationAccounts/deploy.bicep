@@ -175,12 +175,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
+  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
@@ -228,7 +228,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     name: schedule.name
     automationAccountName: automationAccount.name
     advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
-    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    description: contains(schedule, 'description') ? schedule.description : ''
     expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
     frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
     interval: contains(schedule, 'interval') ? schedule.interval : 0
@@ -243,8 +243,8 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
   params: {
     name: runbook.name
     automationAccountName: automationAccount.name
-    runbookType: runbook.runbookType
-    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+    type: runbook.type
+    description: contains(runbook, 'description') ? runbook.description : ''
     uri: contains(runbook, 'uri') ? runbook.uri : ''
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
@@ -285,7 +285,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))!
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     resourceId: automationAccount.id
     tags: tags
@@ -300,7 +300,7 @@ module automationAccount_solutions '../../Microsoft.OperationsManagement/solutio
   params: {
     name: gallerySolution.name
     location: location
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))!
     product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
     publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
     enableDefaultTelemetry: enableReferencedModulesTelemetry

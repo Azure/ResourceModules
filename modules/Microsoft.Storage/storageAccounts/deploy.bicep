@@ -38,10 +38,11 @@ param storageAccountKind string = 'StorageV2'
 param storageAccountSku string = 'Standard_GRS'
 
 @allowed([
+  'Premium'
   'Hot'
   'Cool'
 ])
-@description('Optional. Storage Account Access Tier.')
+@description('Conditional. Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type.')
 param storageAccountAccessTier string = 'Hot'
 
 @allowed([
@@ -234,7 +235,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 

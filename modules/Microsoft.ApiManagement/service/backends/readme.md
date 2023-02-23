@@ -13,7 +13,7 @@ This module deploys API Management Service Backends.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/backends` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends) |
+| `Microsoft.ApiManagement/service/backends` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends) |
 
 ### Resource dependency
 
@@ -40,8 +40,8 @@ The following resources are required to be able to deploy this resource.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `backendDescription` | string | `''` | Backend Description. |
 | `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
+| `description` | string | `''` | Backend Description. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `protocol` | string | `'http'` | Backend communication protocol. - http or soap. |
 | `proxy` | object | `{object}` | Backend Proxy Contract Properties. |

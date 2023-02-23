@@ -6,7 +6,7 @@ param name string
   'Standard'
   'Ultra'
 ])
-param proximityPlacementGroupType string = 'Standard'
+param type string = 'Standard'
 
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
@@ -55,7 +55,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   tags: tags
   zones: zones
   properties: {
-    proximityPlacementGroupType: proximityPlacementGroupType
+    proximityPlacementGroupType: type
     colocationStatus: colocationStatus
     intent: !empty(intent) ? intent : null
   }

@@ -13,7 +13,7 @@ This module deploys EventHub Namespaces NetworkRuleSets.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/networkRuleSets` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/networkRuleSets) |
+| `Microsoft.EventHub/namespaces/networkRuleSets` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/networkRuleSets) |
 
 ## Parameters
 

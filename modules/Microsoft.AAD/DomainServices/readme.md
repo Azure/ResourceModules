@@ -15,10 +15,10 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AAD/domainServices` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices) |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.AAD/domainServices` | [2021-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -32,8 +32,8 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `pfxCertificate` | secureString | `''` | The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days. |
-| `pfxCertificatePassword` | secureString | `''` | The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled. |
+| `pfxCertificate` | securestring | `''` | The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days. |
+| `pfxCertificatePassword` | securestring | `''` | The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled. |
 
 **Optional parameters**
 
@@ -177,7 +177,7 @@ tags: {
     | AllowSyncWithAzureAD | TCP | `*` | `AzureActiveDirectoryDomainServices` | `443` | `*` |
     | AllowPSRemoting | TCP | `*` | `AzureActiveDirectoryDomainServices` | `5986` | `*` |
 - Associating a route table to the AADDS subnet is not recommended
-- The network used for AADDS must have its DNS Servers [configured](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)
+- The network used for AADDS must have its DNS Servers [configured](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)
 - Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.
 
 ### Create self-signed certificate for secure LDAP
