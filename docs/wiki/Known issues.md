@@ -53,8 +53,6 @@ Upon cleanup the system-assigned identity will not be removed.
 
 When the deployment is then run again it fails, because Azure tries to attach this rogue service principal as a system-assigned identity.
 
-The branch `users/fblix_jpeasier/rsvIdentity` has been used to testing and contains failing and succeeding samples.
-
 Since the behavior is inconsistent via Api (depending on spacing and whether capital letters are used), a ticket on the bicep repository has been opened for that. For more details, refer to the issue in the bicep repository ([#9662](https://github.com/Azure/bicep/issues/9662)).
 
 A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
