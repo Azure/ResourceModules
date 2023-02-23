@@ -226,8 +226,12 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
     enableClientCertificate: enableClientCertificate ? true : null
     disableGateway: disableGateway
     virtualNetworkType: virtualNetworkType
-    virtualNetworkConfiguration: !empty(subnetResourceId) ? json('{"subnetResourceId": "${subnetResourceId}"}') : null
-    apiVersionConstraint: !empty(minApiVersion) ? json('{"minApiVersion": "${minApiVersion}"}') : null
+    virtualNetworkConfiguration: !empty(subnetResourceId) ? {
+      subnetResourceId: subnetResourceId
+    } : null
+    apiVersionConstraint: !empty(minApiVersion) ? {
+      minApiVersion: minApiVersion
+    } : null
     restore: restore
   }
 }
@@ -313,7 +317,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
   params: {
     apiManagementServiceName: apiManagementService.name
     url: contains(backend, 'url') ? backend.url : ''
-    backendDescription: contains(backend, 'backendDescription') ? backend.backendDescription : ''
+    description: contains(backend, 'description') ? backend.description : ''
     credentials: contains(backend, 'credentials') ? backend.credentials : {}
     name: backend.name
     protocol: contains(backend, 'protocol') ? backend.protocol : 'http'
@@ -333,7 +337,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
   name: '${uniqueString(deployment().name, location)}-Apim-Cache-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
-    cacheDescription: contains(cache, 'cacheDescription') ? cache.cacheDescription : ''
+    description: contains(cache, 'description') ? cache.description : ''
     connectionString: cache.connectionString
     name: cache.name
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
@@ -348,16 +352,16 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     apiManagementServiceName: apiManagementService.name
     name: identityProvider.name
     enableIdentityProviders: contains(identityProvider, 'enableIdentityProviders') ? identityProvider.enableIdentityProviders : false
-    identityProviderAllowedTenants: contains(identityProvider, 'identityProviderAllowedTenants') ? identityProvider.identityProviderAllowedTenants : []
-    identityProviderAuthority: contains(identityProvider, 'identityProviderAuthority') ? identityProvider.identityProviderAuthority : ''
-    identityProviderClientId: contains(identityProvider, 'identityProviderClientId') ? identityProvider.identityProviderClientId : ''
-    identityProviderClientSecret: contains(identityProvider, 'identityProviderClientSecret') ? identityProvider.identityProviderClientSecret : ''
-    identityProviderPasswordResetPolicyName: contains(identityProvider, 'identityProviderPasswordResetPolicyName') ? identityProvider.identityProviderPasswordResetPolicyName : ''
-    identityProviderProfileEditingPolicyName: contains(identityProvider, 'identityProviderProfileEditingPolicyName') ? identityProvider.identityProviderProfileEditingPolicyName : ''
-    identityProviderSignInPolicyName: contains(identityProvider, 'identityProviderSignInPolicyName') ? identityProvider.identityProviderSignInPolicyName : ''
-    identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
-    identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
-    identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
+    allowedTenants: contains(identityProvider, 'allowedTenants') ? identityProvider.allowedTenants : []
+    authority: contains(identityProvider, 'authority') ? identityProvider.authority : ''
+    clientId: contains(identityProvider, 'clientId') ? identityProvider.clientId : ''
+    clientSecret: contains(identityProvider, 'clientSecret') ? identityProvider.clientSecret : ''
+    passwordResetPolicyName: contains(identityProvider, 'passwordResetPolicyName') ? identityProvider.passwordResetPolicyName : ''
+    profileEditingPolicyName: contains(identityProvider, 'profileEditingPolicyName') ? identityProvider.profileEditingPolicyName : ''
+    signInPolicyName: contains(identityProvider, 'signInPolicyName') ? identityProvider.signInPolicyName : ''
+    signInTenant: contains(identityProvider, 'signInTenant') ? identityProvider.signInTenant : ''
+    signUpPolicyName: contains(identityProvider, 'signUpPolicyName') ? identityProvider.signUpPolicyName : ''
+    type: contains(identityProvider, 'type') ? identityProvider.type : 'aad'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -369,7 +373,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     displayName: namedValue.displayName
     keyVault: contains(namedValue, 'keyVault') ? namedValue.keyVault : {}
     name: namedValue.name
-    namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
+    tags: contains(namedValue, 'tags') ? namedValue.tags : []
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -404,7 +408,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
     approvalRequired: contains(product, 'approvalRequired') ? product.approvalRequired : false
     groups: contains(product, 'groups') ? product.groups : []
     name: product.name
-    productDescription: contains(product, 'productDescription') ? product.productDescription : ''
+    description: contains(product, 'description') ? product.description : ''
     state: contains(product, 'state') ? product.state : 'published'
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1

@@ -13,7 +13,7 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/privateLinkScopes/scopedResources` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-07-01-preview/privateLinkScopes/scopedResources) |
+| `Microsoft.Insights/privateLinkScopes/scopedResources` | [2021-07-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-07-01-preview/privateLinkScopes/scopedResources) |
 
 ## Parameters
 

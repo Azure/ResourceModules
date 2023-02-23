@@ -47,8 +47,8 @@ param highAvailabilityReplicaCount int = 0
 @description('Optional. Minimal capacity that database will always have allocated.')
 param minCapacity string = ''
 
-@description('Optional. Time in minutes after which database is automatically paused.')
-param autoPauseDelay string = ''
+@description('Optional. Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled.')
+param autoPauseDelay int = 0
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -158,6 +158,12 @@ param isLedgerOn bool = false
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
 
+@description('Optional. The short term backup retention policy to create for the database.')
+param backupShortTermRetentionPolicy object = {}
+
+@description('Optional. The long term backup retention policy to create for the database.')
+param backupLongTermRetentionPolicy object = {}
+
 // The SKU object must be built in a variable
 // The alternative, 'null' as default values, leads to non-terminating deployments
 var skuVar = union({
@@ -199,8 +205,8 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     zoneRedundant: zoneRedundant
     licenseType: licenseType
     readScale: readScale
-    minCapacity: !empty(minCapacity) ? json(minCapacity) : 0
-    autoPauseDelay: !empty(autoPauseDelay) ? json(autoPauseDelay) : 0
+    minCapacity: !empty(minCapacity) ? json(minCapacity) : 0 // The json() function is used to allow specifying a decimal value.
+    autoPauseDelay: autoPauseDelay
     highAvailabilityReplicaCount: highAvailabilityReplicaCount
     requestedBackupStorageRedundancy: any(requestedBackupStorageRedundancy)
     isLedgerOn: isLedgerOn
@@ -221,6 +227,28 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
     logs: diagnosticsLogs
   }
   scope: database
+}
+
+module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
+  params: {
+    serverName: serverName
+    databaseName: database.name
+    diffBackupIntervalInHours: contains(backupShortTermRetentionPolicy, 'diffBackupIntervalInHours') ? backupShortTermRetentionPolicy.diffBackupIntervalInHours : 24
+    retentionDays: contains(backupShortTermRetentionPolicy, 'retentionDays') ? backupShortTermRetentionPolicy.retentionDays : 7
+  }
+}
+
+module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
+  params: {
+    serverName: serverName
+    databaseName: database.name
+    weeklyRetention: contains(backupLongTermRetentionPolicy, 'weeklyRetention') ? backupLongTermRetentionPolicy.weeklyRetention : ''
+    monthlyRetention: contains(backupLongTermRetentionPolicy, 'monthlyRetention') ? backupLongTermRetentionPolicy.monthlyRetention : ''
+    yearlyRetention: contains(backupLongTermRetentionPolicy, 'yearlyRetention') ? backupLongTermRetentionPolicy.yearlyRetention : ''
+    weekOfYear: contains(backupLongTermRetentionPolicy, 'weekOfYear') ? backupLongTermRetentionPolicy.weekOfYear : 1
+  }
 }
 
 @description('The name of the deployed database.')

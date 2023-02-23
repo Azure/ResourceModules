@@ -8,17 +8,15 @@ param name string
 param location string = resourceGroup().location
 
 @description('Required. Endpoint properties (see https://learn.microsoft.com/en-us/azure/templates/microsoft.cdn/profiles/endpoints?pivots=deployment-language-bicep#endpointproperties for details).')
-param endpointProperties object
+param properties object
 
 @description('Optional. Endpoint tags.')
 param tags object = {}
 
-resource profile 'Microsoft.Cdn/profiles@2021-06-01' existing = {
-  name: profileName
-}
-
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -32,15 +30,19 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource profile 'Microsoft.Cdn/profiles@2021-06-01' existing = {
+  name: profileName
+}
+
 resource endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = {
   parent: profile
   name: name
   location: location
-  properties: endpointProperties
+  properties: properties
   tags: tags
 }
 
-module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperties.origins: {
+module endpoint_origins 'origins/deploy.bicep' = [for origin in properties.origins: {
   name: '${name}-origins-${origin.name}'
   params: {
     profileName: profile.name
@@ -55,8 +57,8 @@ module endpoint_origins 'origins/deploy.bicep' = [for origin in endpointProperti
     originHostHeader: contains(origin.properties, 'originHostHeader') ? origin.properties.originHostHeader : ''
     privateLinkAlias: contains(origin.properties, 'privateLinkAlias') ? origin.properties.privateLinkAlias : ''
     privateLinkLocation: contains(origin.properties, 'privateLinkLocation') ? origin.properties.privateLinkLocation : ''
-    privateLinkResourceId: contains(origin.properties, 'privateLinkResourceId') ? origin.properties.privateLinkResourceId : ''    
-    enableDefaultTelemetry: enableDefaultTelemetry
+    privateLinkResourceId: contains(origin.properties, 'privateLinkResourceId') ? origin.properties.privateLinkResourceId : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

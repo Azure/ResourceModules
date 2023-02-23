@@ -42,7 +42,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -353,6 +353,9 @@ module testDeployment '../../deploy.bicep' = {
             id: '${appGWExpectedResourceID}/redirectConfigurations/httpRedirect8080'
           }
           ruleType: 'Basic'
+          rewriteRuleSet: {
+            id: '${appGWExpectedResourceID}/rewriteRuleSets/customRewrite'
+          }
         }
       }
     ]
@@ -377,8 +380,34 @@ module testDeployment '../../deploy.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    rewriteRuleSets: [
+      {
+        name: 'customRewrite'
+        id: '${appGWExpectedResourceID}/rewriteRuleSets/customRewrite'
+        properties: {
+          rewriteRules: [
+            {
+              ruleSequence: 100
+              conditions: []
+              name: 'NewRewrite'
+              actionSet: {
+                requestHeaderConfigurations: [
+                  {
+                    headerName: 'Content-Type'
+                    headerValue: 'JSON'
+                  }
+                  {
+                    headerName: 'someheader'
+                  }
+                ]
+                responseHeaderConfigurations: []
+              }
+            }
+          ]
+        }
+      }
+    ]
     webApplicationFirewallConfiguration: {
-      disabledRuleGroups: []
       enabled: true
       fileUploadLimitInMb: 100
       firewallMode: 'Detection'
@@ -386,6 +415,24 @@ module testDeployment '../../deploy.bicep' = {
       requestBodyCheck: true
       ruleSetType: 'OWASP'
       ruleSetVersion: '3.0'
+      disabledRuleGroups: [
+        {
+          ruleGroupName: 'Known-CVEs'
+        }
+        {
+          ruleGroupName: 'REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION'
+        }
+        {
+          ruleGroupName: 'REQUEST-941-APPLICATION-ATTACK-XSS'
+        }
+      ]
+      exclusions: [
+        {
+          matchVariable: 'RequestHeaderNames'
+          selectorMatchOperator: 'StartsWith'
+          selector: 'hola'
+        }
+      ]
     }
   }
 }

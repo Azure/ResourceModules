@@ -14,11 +14,11 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/galleries` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries) |
-| `Microsoft.Compute/galleries/applications` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/applications) |
-| `Microsoft.Compute/galleries/images` | [2022-03-03](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/images) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Compute/galleries` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries) |
+| `Microsoft.Compute/galleries/applications` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/applications) |
+| `Microsoft.Compute/galleries/images` | [2022-03-03](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-03-03/galleries/images) |
 
 ## Parameters
 
@@ -33,8 +33,8 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Applications to create. |
+| `description` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -222,6 +222,52 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
       }
       {
         hyperVGeneration: 'V2'
+        isHibernateSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-003'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-hibernate'
+      }
+      {
+        hyperVGeneration: 'V2'
+        isAcceleratedNetworkSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-004'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-accnet'
+      }
+      {
+        hyperVGeneration: 'V2'
         maxRecommendedMemory: 16
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
@@ -337,6 +383,52 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
             }
           ],
           "sku": "2022-datacenter-azure-edition"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "isHibernateSupported": "true",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-ws-003",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition-hibernate"
+        },
+        {
+          "hyperVGeneration": "V2",
+          "isAcceleratedNetworkSupported": "true",
+          "maxRecommendedMemory": 16,
+          "maxRecommendedvCPUs": 8,
+          "minRecommendedMemory": 4,
+          "minRecommendedvCPUs": 2,
+          "name": "<<namePrefix>>-az-imgd-ws-004",
+          "offer": "WindowsServer",
+          "osState": "Generalized",
+          "osType": "Windows",
+          "publisher": "MicrosoftWindowsServer",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ],
+          "sku": "2022-datacenter-azure-edition-accnet"
         },
         {
           "hyperVGeneration": "V2",

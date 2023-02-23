@@ -13,7 +13,7 @@ This module deploys an SQL Server Security Alert Policy.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/securityAlertPolicies` | [2022-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/securityAlertPolicies) |
+| `Microsoft.Sql/servers/securityAlertPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/securityAlertPolicies) |
 
 ## Parameters
 
@@ -39,7 +39,7 @@ This module deploys an SQL Server Security Alert Policy.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `retentionDays` | int | `0` |  | Specifies the number of days to keep in the Threat Detection audit logs. |
 | `state` | string | `'Disabled'` | `[Disabled, Enabled]` | Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
-| `storageAccountAccessKey` | secureString | `''` |  | Specifies the identifier key of the Threat Detection audit storage account.. |
+| `storageAccountAccessKey` | securestring | `''` |  | Specifies the identifier key of the Threat Detection audit storage account.. |
 | `storageEndpoint` | string | `''` |  | Specifies the blob storage endpoint. This blob storage will hold all Threat Detection audit logs. |
 
 
