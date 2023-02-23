@@ -26,8 +26,8 @@ This section outlines known issues that currently affect the modules.
 
 The Domain Services module pipeline is expected to fail in our development/validation environment for a few reasons:
 
--  The leveraged service principal doesn't have the required permissions to actually deploy the service in the used tenant.
--  The referenced (optional) `pfxCertificate` and password don't actually exist in the specified Key Vault - unless uploaded manually.
+- The leveraged service principal doesn't have the required permissions to actually deploy the service in the used tenant.
+- The referenced (optional) `pfxCertificate` and password don't actually exist in the specified Key Vault - unless uploaded manually.
 
 Therefore, the module was manually tested in a dedicated environment.
 
