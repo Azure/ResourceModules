@@ -271,7 +271,7 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empt
   name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 
-  resource cMKKey 'keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+  resource cMKKey 'keys@2022-07-01' existing = if (!empty(cMKKeyName)) {
     name: cMKKeyName
   }
 }
