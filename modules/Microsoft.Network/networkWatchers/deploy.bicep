@@ -42,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2022-07-01' = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2022-05-01' = {
   name: name
   location: location
   tags: tags
