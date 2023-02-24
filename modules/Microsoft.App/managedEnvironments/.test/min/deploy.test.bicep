@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.managedEnvironments-testing1-${serviceShort}-rg'
+param resourceGroupName string = 'ms.managedEnvironments-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -31,8 +31,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    logAnalticsWorkspaceName: 'dep-skhan2-law-${serviceShort}'
-    //logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     location: location
   }
 }

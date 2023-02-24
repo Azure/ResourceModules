@@ -34,8 +34,8 @@ module nestedDependencies 'dependencies.bicep' = {
     logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     location: location
     virutalNetworkAddressPrefix: '10.0.0.0/16'
-    virutalNetworkname: 'dep-skhan1-vnet-${serviceShort}'
-    subnetName: 'dep-skhan1-subnet-${serviceShort}'
+    virutalNetworkname: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    subnetName: 'dep-<<namePrefix>>-subnet-${serviceShort}'
     subnetAddressPrefix: '10.0.0.0/23'
   }
 }
