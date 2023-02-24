@@ -246,6 +246,13 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
 
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -286,10 +293,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     name: skuName
     tier: tier
   }
-  identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
-    userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
-  }
+  identity: identity
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
