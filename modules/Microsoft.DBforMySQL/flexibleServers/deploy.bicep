@@ -287,7 +287,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     tier: tier
   }
   identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : null
+    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
   }
   properties: {
