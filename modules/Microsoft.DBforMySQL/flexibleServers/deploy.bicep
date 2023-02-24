@@ -260,11 +260,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-//resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
-//  name: '${last(split(cMKKeyVaultResourceId, '/'))}/${cMKKeyName}'
-//  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-//}
-
 resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId)) {
   name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
@@ -274,16 +269,11 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empt
   }
 }
 
-//resource geoBackupCMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
-//  name: '${last(split(geoBackupCMKKeyVaultResourceId, '/'))}/${geoBackupCMKKeyName}'
-//  scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
-//}
-
 resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
   name: last(split(geoBackupCMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
 
-  resource geoBackupCMKKey 'keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId) && !empty(geoBackupCMKKeyName)) {
+  resource geoBackupCMKKey 'keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyName)) {
     name: geoBackupCMKKeyName
   }
 }
@@ -297,7 +287,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview
     tier: tier
   }
   identity: {
-    type: !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+    type: !empty(userAssignedIdentities) ? 'UserAssigned' : null
     userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : {}
   }
   properties: {
