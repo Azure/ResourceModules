@@ -76,7 +76,7 @@ param certificateValue string = ''
 @description('Optional. Dns suffix for the environment domain.')
 param dnsSuffix string = ''
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -93,7 +93,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   scope: resourceGroup('${resourceGroupLAWorkspace}')
 }
 
-resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
+resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   name: name
   location: location
   sku: {
