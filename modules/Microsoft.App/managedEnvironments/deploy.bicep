@@ -66,7 +66,6 @@ param runtimeSubnetId string = ''
 @description('Optional. Whether or not this Managed Environment is zone-redundant.')
 param zoneRedundant bool = false
 
-/*
 @description('Optional. Certificate password.')
 @secure()
 param certificatePassword string = ''
@@ -77,7 +76,6 @@ param certificateValue string = ''
 
 @description('Optional. Dns suffix for the environment domain.')
 param dnsSuffix string = ''
-*/
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -112,13 +110,11 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-previe
     }
     //daprAIConnectionString: daprAIConnectionString
     //daprAIInstrumentationKey: daprAIInstrumentationKey
-    /*
     customDomainConfiguration: {
       certificatePassword: certificatePassword
       certificateValue: !empty(certificateValue) ? certificateValue : null
       dnsSuffix: dnsSuffix
     }
-    */
     vnetConfiguration: {
       dockerBridgeCidr: dockerBridgeCidr
       infrastructureSubnetId: infrastructureSubnetId
