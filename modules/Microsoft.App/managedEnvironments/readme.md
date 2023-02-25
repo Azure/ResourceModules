@@ -32,8 +32,8 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `daprAIConnectionString` | secureString | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
-| `daprAIInstrumentationKey` | secureString | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
+| `daprAIConnectionString` | string | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
+| `daprAIInstrumentationKey` | string | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
 | `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges. |
 | `enableDefaultTelemetry` | bool |  |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `infrastructureSubnetId` | string | `''` |  | Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges. |
