@@ -43,6 +43,7 @@ param infrastructureSubnetId string = ''
 @description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property.')
 param internal bool = false
 
+/*
 @allowed([
   'LoadBalancer'
   'UserDefinedRouting'
@@ -52,6 +53,7 @@ param outBoundType string = 'LoadBalancer'
 
 @description('Optional. Virtual Appliance IP used as the Egress controller for the Environment.')
 param virtualNetworkApplianceIp string = ''
+*/
 
 @description('Optional. IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges.')
 param platformReservedCidr string = ''
@@ -118,10 +120,12 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-previe
       dockerBridgeCidr: dockerBridgeCidr
       infrastructureSubnetId: infrastructureSubnetId
       internal: internal
+      /*
       outboundSettings: {
         outBoundType: outBoundType
         virtualNetworkApplianceIp: virtualNetworkApplianceIp
       }
+      */
       platformReservedCidr: platformReservedCidr
       platformReservedDnsIP: platformReservedDnsIP
       runtimeSubnetId: runtimeSubnetId
