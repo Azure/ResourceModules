@@ -27,9 +27,11 @@ param logsDestination string = 'log-analytics'
 param enableDefaultTelemetry bool
 
 @description('Optional. Application Insights connection string used by Dapr to export Service to Service communication telemetry.')
+@secure()
 param daprAIConnectionString string = ''
 
 @description('Optional. Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry.')
+@secure()
 param daprAIInstrumentationKey string = ''
 
 @description('Optional. CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges.')
