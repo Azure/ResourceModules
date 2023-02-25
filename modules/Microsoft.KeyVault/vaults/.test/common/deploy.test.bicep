@@ -100,7 +100,7 @@ module testDeployment '../../deploy.bicep' = {
     enableRbacAuthorization: false
     keys: [
       {
-        attributesExp: 1702648632
+        attributesExp: 1725109032
         attributesNbf: 10000
         name: 'keyName'
         roleAssignments: [
@@ -112,6 +112,29 @@ module testDeployment '../../deploy.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
+        rotationPolicy: {
+          attributes: {
+            expiryTime: 'P2Y'
+          }
+          lifetimeActions: [
+            {
+              trigger: {
+                timeBeforeExpiry: 'P2M'
+              }
+              action: {
+                type: 'Rotate'
+              }
+            }
+            {
+              trigger: {
+                timeBeforeExpiry: 'P30D'
+              }
+              action: {
+                type: 'Notify'
+              }
+            }
+          ]
+        }
       }
     ]
     lock: 'CanNotDelete'
