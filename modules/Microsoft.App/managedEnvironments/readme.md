@@ -15,7 +15,7 @@ This module deploys App ManagedEnvironments.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.App/managedEnvironments` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-10-01/managedEnvironments) |
+| `Microsoft.App/managedEnvironments` | [2022-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-06-01-preview/managedEnvironments) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters

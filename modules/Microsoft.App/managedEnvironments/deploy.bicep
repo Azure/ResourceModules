@@ -93,7 +93,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   scope: resourceGroup('${resourceGroupLAWorkspace}')
 }
 
-resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
+resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
   name: name
   location: location
   sku: {
