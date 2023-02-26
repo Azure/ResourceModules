@@ -504,6 +504,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
+    restrictOutboundNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         principalIds: [
@@ -644,6 +645,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": "Disabled"
     },
     "roleAssignments": {
       "value": [
