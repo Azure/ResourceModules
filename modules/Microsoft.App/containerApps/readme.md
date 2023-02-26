@@ -331,7 +331,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       memory: '0.5Gi'
     }
     environmentId: '<environmentId>'
-    name: '<<namePrefix>>mcapp001'
+    name: 'khan-mcapp001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -368,7 +368,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "<<namePrefix>>mcapp001"
+      "value": "khan-mcapp001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
