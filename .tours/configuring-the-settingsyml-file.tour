@@ -1,0 +1,97 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Configuring the settings.yml file",
+  "steps": [
+    {
+      "file": "settings.yml",
+      "description": "This prefix is used by the CI environment you validate your modules in, and doesn't affect the naming of any resources you deploy as part of any multi-module solutions (applications/workloads) based on the modules. Replace the value of the localToken_namePrefix with a different value:\r\ne.g. localToken_namePrefix: 'cntso'.\r\n\r\nNote: The value should be a 3-5 character long string like cntso. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.\r\n\r\nNote: The CI pipelines automatically removes the localToken_ prefix from the name when processing the tokens replacement.\r\n\r\nNote: We highly encourage you to use the 'Check namePrefix availability' script ([see the documentation here](https://github.com/Azure/ResourceModules/blob/main/docs/wiki/Getting%20started%20-%20Check%20NamePrefix%20availability.md)) to check if the intended resource name will be available, based on the provided prefix.",
+      "line": 16,
+      "title": "Name Prefix"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The default location to deploy resources to and store deployment metadata in. If no location is specified in the deploying module test file, this location is used.",
+      "line": 47,
+      "title": "Location"
+    },
+    {
+      "file": "settings.yml",
+      "description": "A central switch to enable/disable publishing to template-specs.",
+      "line": 61,
+      "title": "Template-specs Do Publish"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The resource group to host the created template-specs.",
+      "line": 62,
+      "title": "Template-specs Resource Group Name"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The location of the resource group to host the template-specs in. A new resource group is created in the specified location if it does not exist.",
+      "line": 63,
+      "title": "Template-specs Resource Group Location"
+    },
+    {
+      "file": "settings.yml",
+      "description": "A description to add to the published template specs.",
+      "line": 64,
+      "title": "Template-specs Description"
+    },
+    {
+      "file": "settings.yml",
+      "description": "A central switch to enable/disable publishing to the private Bicep registry.",
+      "line": 70,
+      "title": "Private Bicep Registry - Do Publish"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The container registry to publish Bicep templates to.\r\nNOTE: Must be globally unique.",
+      "line": 71,
+      "title": "Private Bicep Registry - Name"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The resource group of the container registry to publish Bicep templates to. A new resource group with the specified name is created if it does not yet exist.",
+      "line": 72,
+      "title": "Private Bicep Registry - Resource Group Name"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The location of the resource group of the container registry to publish Bicep templates to. A new resource group is created in the specified location if it does not exist.",
+      "line": 73,
+      "title": "Private Bicep Registry - Resource Group Location"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The service connection that points to the subscription to test in and publish to.",
+      "line": 83,
+      "title": "Service Connection"
+    },
+    {
+      "file": "settings.yml",
+      "description": "A central switch to enable/disable publishing to Universal packages.",
+      "line": 102,
+      "title": "Universal Packages - Artifacts Feed Do Publish"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The name of the Azure DevOps universal packages feed to publish to.",
+      "line": 103,
+      "title": "Universal Packages - VSTS Feed Name"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The project that hosts the feed. The feed must be created in Azure DevOps ahead of time.",
+      "line": 104,
+      "title": "Universal Packages - VSTS Feed Project"
+    },
+    {
+      "file": "settings.yml",
+      "description": "The token used to publish universal packages into the feed above.",
+      "line": 105,
+      "title": "Universal Packages - VSTS Feed Token"
+    }
+  ],
+  "ref": "users/csidebotham/sample-code-tour"
+}
