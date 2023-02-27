@@ -59,7 +59,9 @@ This module deploys App ContainerApps.
 | `maxInactiveRevisions` | int | `0` |  | Max inactive revisions a Container App can have. |
 | `registries` | array | `[]` |  | Collection of private container registry credentials for containers used by the Container app. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
+| `scaleMaxReplicas` | int | `1` |  | Maximum number of container replicas. Defaults to 10 if not set. |
 | `scaleMinReplicas` | int | `0` |  | Minimum number of container replicas. |
+| `scaleRules` | array | `[]` |  | Scaling rules. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trafficLabel` | string | `'label-1'` |  | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes |

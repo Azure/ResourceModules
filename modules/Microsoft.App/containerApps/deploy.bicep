@@ -34,8 +34,14 @@ param containersEnv array = []
 @description('Required. Container App resources.')
 param containerResources object
 
+@description('Optional. Maximum number of container replicas. Defaults to 10 if not set.')
+param scaleMaxReplicas int = 1
+
 @description('Optional. Minimum number of container replicas.')
 param scaleMinReplicas int = 0
+
+@description('Optional. Scaling rules.')
+param scaleRules array = []
 
 @allowed([
   'Multiple'
@@ -203,7 +209,9 @@ resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
         }
       ]
       scale: {
+        maxReplicas: scaleMaxReplicas
         minReplicas: scaleMinReplicas
+        rules: !empty(scaleRules) ? scaleRules : null
       }
     }
   }
