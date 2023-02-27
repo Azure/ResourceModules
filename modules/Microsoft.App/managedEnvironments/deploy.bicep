@@ -137,7 +137,7 @@ module managedEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' 
   }
 }]
 
-@description('The name of the resource group the Container Apps was deployed into.')
+@description('The name of the resource group the Container Apps Managed Environment was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
