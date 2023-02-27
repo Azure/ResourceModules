@@ -54,5 +54,9 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     skuName: 'Consumption'
     infrastructureSubnetId: nestedDependencies.outputs.subnetResourceId
+    lock: 'CanNotDelete'
+    tags: {
+      Env: 'test'
+    }
   }
 }

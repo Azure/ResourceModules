@@ -199,7 +199,11 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     // Non-required parameters
     infrastructureSubnetId: '<infrastructureSubnetId>'
     location: '<location>'
+    lock: 'CanNotDelete'
     skuName: 'Consumption'
+    tags: {
+      Env: 'test'
+    }
   }
 }
 ```
@@ -236,8 +240,16 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "location": {
       "value": "<location>"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
     "skuName": {
       "value": "Consumption"
+    },
+    "tags": {
+      "value": {
+        "Env": "test"
+      }
     }
   }
 }
