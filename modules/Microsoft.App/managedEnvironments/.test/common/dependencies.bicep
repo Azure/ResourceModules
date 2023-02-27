@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Required. The name of the Log Analytics Workspace.')
-param logAnalticsWorkspaceName string
+param logAnalyticsWorkspaceName string
 
 @description('Required. The name of the virtual network name.')
 param virutalNetworkname string
