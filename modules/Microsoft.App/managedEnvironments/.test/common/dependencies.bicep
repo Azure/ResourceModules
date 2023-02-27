@@ -17,7 +17,7 @@ param virutalNetworkAddressPrefix string
 param subnetAddressPrefix string
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: logAnalticsWorkspaceName
+  name: logAnalyticsWorkspaceName 
   location: location
   properties: any({
     retentionInDays: 30
