@@ -7,17 +7,14 @@ param logAnalyticsWorkspaceName string
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-@description('Required. The name of the subnet.')
-param subnetName string
+var managedEnvironmentsubnet = 'environmentSubnet'
 
-@description('Required. Virtual network address prefix.')
-param virutalNetworkAddressPrefix string
+var addressPrefix = '10.0.0.0/16'
 
-@description('Required. Subnet address prefix.')
-param subnetAddressPrefix string
+var subnetAddressPrefix = '10.0.0.0/23'
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: logAnalyticsWorkspaceName 
+  name: logAnalyticsWorkspaceName
   location: location
   properties: any({
     retentionInDays: 30
@@ -31,17 +28,17 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
-  name: virutalNetworkname
+  name: virtualNetworkName
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        virutalNetworkAddressPrefix
+        addressPrefix
       ]
     }
     subnets: [
       {
-        name: subnetName
+        name: managedEnvironmentsubnet
         properties: {
           addressPrefix: subnetAddressPrefix
         }
@@ -52,10 +49,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 }
 
 @description('The principal ID of the created Managed Environment.')
-output logAnalticsWorkspaceName string = logAnalyticsWorkspace.name
-
-@description('The principal ID of the created Managed Environment.')
-output logAnaltyicsWorkspaceId string = logAnalyticsWorkspace.id
+output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
 
 @description('Virtual network resource ID')
 output virtualNetworkResourceId string = virtualNetwork.id

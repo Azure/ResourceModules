@@ -5,7 +5,7 @@ targetScope = 'subscription'
 // ========== //
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.managedEnvironments-${serviceShort}-rg'
+param resourceGroupName string = 'ms.app.managedenvironments-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -31,12 +31,10 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    location: location
-    virutalNetworkAddressPrefix: '10.0.0.0/16'
-    virutalNetworkname: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    subnetName: 'dep-<<namePrefix>>-subnet-${serviceShort}'
-    subnetAddressPrefix: '10.0.0.0/23'
+    logAnalyticsWorkspaceName: 'dep-skhan-law-${serviceShort}'
+    virtualNetworkName: 'dep-skhan-vnet-${serviceShort}'
+    //logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    //virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
@@ -49,7 +47,8 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    //name: '<<namePrefix>>${serviceShort}001'
+    name: 'skhan${serviceShort}001'
     logAnalyticsWorkspaceName: nestedDependencies.outputs.logAnalyticsWorkspaceName
     resourceGroupLAWorkspace: resourceGroup.name
     location: location

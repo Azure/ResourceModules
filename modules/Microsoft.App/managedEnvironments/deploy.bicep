@@ -2,7 +2,7 @@
 param name string
 
 @description('Required. Existing Log Analytics Workspace name.')
-param logAnalticsWorkspaceName string
+param logAnalyticsWorkspaceName string
 
 @description('Required. Existing resource group name of the Log Analytics Workspace .')
 param resourceGroupLAWorkspace string
@@ -44,7 +44,7 @@ param dockerBridgeCidr string = ''
 param infrastructureSubnetId string = ''
 
 @description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property.')
-param internal bool = true
+param internal bool = false
 
 @description('Optional. Configuration used to control the Environment Egress outbound traffic.')
 param vnetOutboundSettings object = {}
@@ -96,7 +96,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
 }
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
-  name: logAnalticsWorkspaceName
+  name: logAnalyticsWorkspaceName
   scope: resourceGroup('${resourceGroupLAWorkspace}')
 }
 

@@ -16,6 +16,7 @@ This module deploys App ManagedEnvironments.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.App/managedEnvironments` | [2022-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-06-01-preview/managedEnvironments) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
 ## Parameters
@@ -24,32 +25,34 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalticsWorkspaceName` | string | Existing Log Analytics Workspace name. |
-| `name` | string | Environment name for Container Apps. |
+| `logAnalyticsWorkspaceName` | string | Existing Log Analytics Workspace name. |
+| `name` | string | Name of the Container Apps Managed Environment. |
 | `resourceGroupLAWorkspace` | string | Existing resource group name of the Log Analytics Workspace . |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `certificatePassword` | string | `''` |  | Certificate password. |
-| `certificateValue` | string | `''` |  | Certificate value for this. |
-| `daprAIConnectionString` | string | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
-| `daprAIInstrumentationKey` | string | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
+| `certificatePassword` | secureString | `''` |  | Certificate password. |
+| `certificateValue` | secureString | `''` |  | Certificate value for this. |
+| `daprAIConnectionString` | secureString | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
+| `daprAIInstrumentationKey` | secureString | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
 | `dnsSuffix` | string | `''` |  | Dns suffix for the environment domain. |
 | `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges. |
 | `enableDefaultTelemetry` | bool |  |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `infrastructureSubnetId` | string | `''` |  | Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges. |
 | `internal` | bool | `False` |  | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logsDestination` | string | `'log-analytics'` |  | Logs destination. |
 | `platformReservedCidr` | string | `''` |  | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges. |
 | `platformReservedDnsIP` | string | `''` |  | An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `runtimeSubnetId` | string | `''` |  | Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges. |
 | `skuName` | string | `'Consumption'` | `[Consumption, Premium]` | Managed environment Sku. |
-| `tags` | object | `{object}` |  | Resource tags. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
 | `vnetOutboundSettings` | object | `{object}` |  | Configuration used to control the Environment Egress outbound traffic. |
+| `workloadProfiles` | array | `[]` |  | Workload profiles configured for the Managed Environment. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this Managed Environment is zone-redundant. |
 
 
@@ -164,7 +167,7 @@ tags: {
 | `location` | string | The location the resource was deployed into. |
 | `logAnalyticsWorkspaceName` | string | The name of the Log analytics workspace name. |
 | `name` | string | Managed Envrionment Name. |
-| `resourceGroupName` | string | The name of the resource group the Container Apps was deployed into. |
+| `resourceGroupName` | string | The name of the resource group the Container Apps Managed Environment was deployed into. |
 | `resourceId` | string | Managed environment ID. |
 
 ## Cross-referenced modules
@@ -186,12 +189,12 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcappcom'
+  name: '${uniqueString(deployment().name, location)}-test-amecom'
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalticsWorkspaceName: '<logAnalticsWorkspaceName>'
-    name: 'dep-<<namePrefix>>-menv-mcappcom001'
+    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
+    name: 'skhanamecom001'
     resourceGroupLAWorkspace: '<resourceGroupLAWorkspace>'
     // Non-required parameters
     infrastructureSubnetId: '<infrastructureSubnetId>'
@@ -217,11 +220,11 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "logAnalticsWorkspaceName": {
-      "value": "<logAnalticsWorkspaceName>"
+    "logAnalyticsWorkspaceName": {
+      "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "dep-<<namePrefix>>-menv-mcappcom001"
+      "value": "skhanamecom001"
     },
     "resourceGroupLAWorkspace": {
       "value": "<resourceGroupLAWorkspace>"
@@ -251,12 +254,12 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
 
 ```bicep
 module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcappmin'
+  name: '${uniqueString(deployment().name, location)}-test-amemin'
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalticsWorkspaceName: '<logAnalticsWorkspaceName>'
-    name: '<<namePrefix>>--menv-mcappmin001'
+    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
+    name: '<<namePrefix>>amemin001'
     resourceGroupLAWorkspace: '<resourceGroupLAWorkspace>'
     // Non-required parameters
     location: '<location>'
@@ -281,11 +284,11 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "logAnalticsWorkspaceName": {
-      "value": "<logAnalticsWorkspaceName>"
+    "logAnalyticsWorkspaceName": {
+      "value": "<logAnalyticsWorkspaceName>"
     },
     "name": {
-      "value": "<<namePrefix>>--menv-mcappmin001"
+      "value": "<<namePrefix>>amemin001"
     },
     "resourceGroupLAWorkspace": {
       "value": "<resourceGroupLAWorkspace>"
