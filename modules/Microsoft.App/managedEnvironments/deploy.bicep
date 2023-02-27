@@ -30,7 +30,7 @@ param logsDestination string = 'log-analytics'
 param enableDefaultTelemetry bool
 
 @description('Optional. Application Insights connection string used by Dapr to export Service to Service communication telemetry.')
-//@secure()
+@secure()
 param daprAIConnectionString string = ''
 
 @description('Optional. Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry.')
