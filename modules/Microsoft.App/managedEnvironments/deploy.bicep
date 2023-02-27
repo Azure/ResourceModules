@@ -43,7 +43,7 @@ param infrastructureSubnetId string = ''
 @description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property.')
 param internal bool = false
 
-@description('Optional. Configuration used to control the Environment Egress outbound traffic')
+@description('Optional. Configuration used to control the Environment Egress outbound traffic.')
 param vnetOutboundSettings object = {}
 
 @description('Optional. IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges.')

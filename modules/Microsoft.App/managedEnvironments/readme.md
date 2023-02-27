@@ -48,7 +48,7 @@ This module deploys App ManagedEnvironments.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `runtimeSubnetId` | string | `''` |  | Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges. |
 | `skuName` | string | `'Consumption'` | `[Consumption, Premium]` | Managed environment Sku. |
-| `vnetOutboundSettings` | object | `{object}` |  | Configuration used to control the Environment Egress outbound traffic |
+| `vnetOutboundSettings` | object | `{object}` |  | Configuration used to control the Environment Egress outbound traffic. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this Managed Environment is zone-redundant. |
 
 
