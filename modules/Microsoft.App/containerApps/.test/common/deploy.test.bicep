@@ -49,6 +49,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
     name: '<<namePrefix>>${serviceShort}001'
+    tags: {
+      Env: 'test'
+    }
     enableDefaultTelemetry: enableDefaultTelemetry
     environmentId: nestedDependencies.outputs.managedEnvironmentId
     containerName: 'simple-hello-world-container'

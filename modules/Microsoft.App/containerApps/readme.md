@@ -251,6 +251,9 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
+    tags: {
+      Env: 'test'
+    }
     userAssignedIdentities: {
       '<managedIdentityId>': {}
     }
@@ -299,6 +302,11 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
+    "tags": {
+      "value": {
+        "Env": "test"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityId>": {}
@@ -333,6 +341,9 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
+    tags: {
+      Env: 'test'
+    }
   }
 }
 ```
@@ -374,6 +385,11 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     },
     "location": {
       "value": "<location>"
+    },
+    "tags": {
+      "value": {
+        "Env": "test"
+      }
     }
   }
 }
