@@ -299,7 +299,184 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Encr</h3>
+<h3>Example 1: Common</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgcom'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+      {
+        name: '<<namePrefix>>-az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>cicgcom001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+    lock: 'CanNotDelete'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        },
+        {
+          "name": "<<namePrefix>>-az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>cicgcom001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Encr</h3>
 
 <details>
 
@@ -480,6 +657,326 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgmin'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>cicgmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>cicgmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Private</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cicgprivate'
+  params: {
+    // Required parameters
+    containers: [
+      {
+        name: '<<namePrefix>>-az-aci-x-001'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '80'
+              protocol: 'Tcp'
+            }
+            {
+              port: '443'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 4
+            }
+          }
+          volumeMounts: [
+            {
+              mountPath: '/mnt/empty'
+              name: 'my-name'
+            }
+          ]
+        }
+      }
+      {
+        name: '<<namePrefix>>-az-aci-x-002'
+        properties: {
+          command: []
+          environmentVariables: []
+          image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+          ports: [
+            {
+              port: '8080'
+              protocol: 'Tcp'
+            }
+          ]
+          resources: {
+            requests: {
+              cpu: 2
+              memoryInGB: 2
+            }
+          }
+        }
+      }
+    ]
+    name: '<<namePrefix>>cicgprivate001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    ipAddressPorts: [
+      {
+        port: 80
+        protocol: 'Tcp'
+      }
+      {
+        port: 443
+        protocol: 'Tcp'
+      }
+      {
+        port: '8080'
+        protocol: 'Tcp'
+      }
+    ]
+    ipAddressType: 'Private'
+    lock: 'CanNotDelete'
+    subnetId: '<subnetId>'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    volumes: [
+      {
+        emptyDir: {}
+        name: 'my-name'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "containers": {
+      "value": [
+        {
+          "name": "<<namePrefix>>-az-aci-x-001",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "80",
+                "protocol": "Tcp"
+              },
+              {
+                "port": "443",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 4
+              }
+            },
+            "volumeMounts": [
+              {
+                "mountPath": "/mnt/empty",
+                "name": "my-name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "<<namePrefix>>-az-aci-x-002",
+          "properties": {
+            "command": [],
+            "environmentVariables": [],
+            "image": "mcr.microsoft.com/azuredocs/aci-helloworld",
+            "ports": [
+              {
+                "port": "8080",
+                "protocol": "Tcp"
+              }
+            ],
+            "resources": {
+              "requests": {
+                "cpu": 2,
+                "memoryInGB": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "name": {
+      "value": "<<namePrefix>>cicgprivate001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "ipAddressPorts": {
+      "value": [
+        {
+          "port": 80,
+          "protocol": "Tcp"
+        },
+        {
+          "port": 443,
+          "protocol": "Tcp"
+        },
+        {
+          "port": "8080",
+          "protocol": "Tcp"
+        }
+      ]
+    },
+    "ipAddressType": {
+      "value": "Private"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "subnetId": {
+      "value": "<subnetId>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "volumes": {
+      "value": [
+        {
+          "emptyDir": {},
+          "name": "my-name"
+        }
+      ]
     }
   }
 }
