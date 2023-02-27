@@ -49,7 +49,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 }
 
 @description('The principal ID of the created Managed Environment.')
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
+output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
 
 @description('Virtual network resource ID')
 output virtualNetworkResourceId string = virtualNetwork.id

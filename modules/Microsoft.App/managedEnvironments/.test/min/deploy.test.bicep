@@ -45,8 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    logAnalyticsWorkspaceName: nestedDependencies.outputs.logAnalyticsWorkspaceName
-    resourceGroupLAWorkspace: resourceGroup.name
+    logAnalyticsWorkspaceResourceId: nestedDependencies.outputs.logAnalyticsWorkspaceId
     location: location
     skuName: 'Consumption'
   }

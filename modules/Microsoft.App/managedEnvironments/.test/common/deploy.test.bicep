@@ -31,10 +31,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    logAnalyticsWorkspaceName: 'dep-skhan-law-${serviceShort}'
-    virtualNetworkName: 'dep-skhan-vnet-${serviceShort}'
-    //logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    //virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
   }
 }
 
@@ -47,10 +45,8 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    //name: '<<namePrefix>>${serviceShort}001'
-    name: 'skhan${serviceShort}001'
-    logAnalyticsWorkspaceName: nestedDependencies.outputs.logAnalyticsWorkspaceName
-    resourceGroupLAWorkspace: resourceGroup.name
+    name: '<<namePrefix>>${serviceShort}001'
+    logAnalyticsWorkspaceResourceId: nestedDependencies.outputs.logAnalyticsWorkspaceId
     location: location
     skuName: 'Consumption'
     infrastructureSubnetId: nestedDependencies.outputs.subnetResourceId

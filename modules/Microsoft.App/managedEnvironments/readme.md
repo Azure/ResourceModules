@@ -25,9 +25,8 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | Existing Log Analytics Workspace name. |
+| `logAnalyticsWorkspaceResourceId` | string | Existing Log Analytics Workspace resource Id. |
 | `name` | string | Name of the Container Apps Managed Environment. |
-| `resourceGroupLAWorkspace` | string | Existing resource group name of the Log Analytics Workspace . |
 
 **Optional parameters**
 
@@ -193,9 +192,8 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
-    name: 'skhanamecom001'
-    resourceGroupLAWorkspace: '<resourceGroupLAWorkspace>'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
+    name: '<<namePrefix>>amecom001'
     // Non-required parameters
     infrastructureSubnetId: '<infrastructureSubnetId>'
     location: '<location>'
@@ -224,14 +222,11 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "logAnalyticsWorkspaceName": {
-      "value": "<logAnalyticsWorkspaceName>"
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
-      "value": "skhanamecom001"
-    },
-    "resourceGroupLAWorkspace": {
-      "value": "<resourceGroupLAWorkspace>"
+      "value": "<<namePrefix>>amecom001"
     },
     // Non-required parameters
     "infrastructureSubnetId": {
@@ -270,9 +265,8 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalyticsWorkspaceName: '<logAnalyticsWorkspaceName>'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     name: '<<namePrefix>>amemin001'
-    resourceGroupLAWorkspace: '<resourceGroupLAWorkspace>'
     // Non-required parameters
     location: '<location>'
     skuName: 'Consumption'
@@ -296,14 +290,11 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "logAnalyticsWorkspaceName": {
-      "value": "<logAnalyticsWorkspaceName>"
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
       "value": "<<namePrefix>>amemin001"
-    },
-    "resourceGroupLAWorkspace": {
-      "value": "<resourceGroupLAWorkspace>"
     },
     // Non-required parameters
     "location": {
