@@ -135,10 +135,10 @@ param corsPolicyMaxAge int = 0
 @description('Optional. Rules to restrict incoming IP address.')
 param ipSecurityRestrictions array = []
 
-@description('Optional. Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes')
+@description('Optional. Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes.')
 param trafficLabel string = 'label-1'
 
-@description('Optional. Indicates that the traffic weight belongs to a latest stable revision')
+@description('Optional. Indicates that the traffic weight belongs to a latest stable revision.')
 param trafficLatestRevision bool = true
 
 @description('Optional. Name of a revision.')

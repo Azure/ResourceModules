@@ -64,8 +64,8 @@ This module deploys App ContainerApps.
 | `scaleRules` | array | `[]` |  | Scaling rules. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `trafficLabel` | string | `'label-1'` |  | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes |
-| `trafficLatestRevision` | bool | `True` |  | Indicates that the traffic weight belongs to a latest stable revision |
+| `trafficLabel` | string | `'label-1'` |  | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes. |
+| `trafficLatestRevision` | bool | `True` |  | Indicates that the traffic weight belongs to a latest stable revision. |
 | `trafficRevisionName` | string | `''` |  | Name of a revision. |
 | `trafficWeight` | int | `100` |  | Traffic weight assigned to a revision. |
 | `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource ids and The dictionary values can be empty objects ({}) in requests. |
