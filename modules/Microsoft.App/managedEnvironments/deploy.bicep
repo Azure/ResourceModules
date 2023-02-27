@@ -10,7 +10,7 @@ param resourceGroupLAWorkspace string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Resource tags.')
+@description('Optional. Tags of the resource.')
 param tags object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
@@ -44,7 +44,7 @@ param dockerBridgeCidr string = ''
 param infrastructureSubnetId string = ''
 
 @description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property.')
-param internal bool = false
+param internal bool = true
 
 @description('Optional. Configuration used to control the Environment Egress outbound traffic.')
 param vnetOutboundSettings object = {}
@@ -72,6 +72,17 @@ param certificateValue string = ''
 @description('Optional. Dns suffix for the environment domain.')
 param dnsSuffix string = ''
 
+@allowed([
+  ''
+  'CanNotDelete'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = ''
+
+@description('Optional. Workload profiles configured for the Managed Environment.')
+param workloadProfiles array = []
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -92,7 +103,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
 resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
   name: name
   location: location
-  tags: !empty(tags) ? tags : null
+  tags: tags
   sku: {
     name: skuName
   }
@@ -120,6 +131,7 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-previe
       platformReservedDnsIP: platformReservedDnsIP
       runtimeSubnetId: runtimeSubnetId
     }
+    workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
     zoneRedundant: zoneRedundant
   }
 }
@@ -136,6 +148,15 @@ module managedEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' 
     resourceId: managedEnvironment.id
   }
 }]
+
+resource managedEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${managedEnvironment.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: managedEnvironment
+}
 
 @description('The name of the resource group the Container Apps Managed Environment was deployed into.')
 output resourceGroupName string = resourceGroup().name

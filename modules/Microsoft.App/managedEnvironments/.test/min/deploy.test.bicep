@@ -31,7 +31,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    //logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    logAnalticsWorkspaceName: 'dep-skhan-law-${serviceShort}'
     location: location
   }
 }
@@ -45,7 +46,8 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    //name: '<<namePrefix>>${serviceShort}001'
+    name: 'skhan${serviceShort}001'
     logAnalticsWorkspaceName: nestedDependencies.outputs.logAnalticsWorkspaceName
     resourceGroupLAWorkspace: resourceGroup.name
     location: location
