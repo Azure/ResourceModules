@@ -59,6 +59,7 @@
 | `gitRepositoryName` | string | `''` |  | The repository name. |
 | `gitRepoType` | string | `'FactoryVSTSConfiguration'` |  | Repository type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
 | `gitRootFolder` | string | `'/'` |  | The root folder path name. Default is '/'. |
+| `globalParameters` | object | `{object}` |  | List of Global Parameters for the factory. |
 | `integrationRuntimes` | _[integrationRuntimes](integrationRuntimes/readme.md)_ array | `[]` |  | An array of objects for the configuration of an Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -403,6 +404,12 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitConfigureLater: true
+    globalParameters: {
+      testParameter1: {
+        type: 'String'
+        value: 'testValue1'
+      }
+    }
     integrationRuntimes: [
       {
         managedVirtualNetworkName: 'default'
@@ -505,6 +512,14 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     },
     "gitConfigureLater": {
       "value": true
+    },
+    "globalParameters": {
+      "value": {
+        "testParameter1": {
+          "type": "String",
+          "value": "testValue1"
+        }
+      }
     },
     "integrationRuntimes": {
       "value": [
