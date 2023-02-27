@@ -62,7 +62,7 @@ param runtimeSubnetId string = ''
 param zoneRedundant bool = false
 
 @description('Optional. Certificate password.')
-//@secure()
+@secure()
 param certificatePassword string = ''
 
 @description('Optional. Certificate value for this.')
