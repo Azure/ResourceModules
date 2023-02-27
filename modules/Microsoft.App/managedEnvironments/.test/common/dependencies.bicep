@@ -4,7 +4,7 @@ param location string = resourceGroup().location
 @description('Required. The name of the Log Analytics Workspace to create.')
 param logAnalyticsWorkspaceName string
 
-@description('Required. The name of the virtual network name.')
+@description('Required. The name of the Virtual Network to create.')
 param virutalNetworkname string
 
 @description('Required. The name of the subnet.')
