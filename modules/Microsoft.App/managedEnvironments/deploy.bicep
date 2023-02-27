@@ -66,7 +66,7 @@ param zoneRedundant bool = false
 param certificatePassword string = ''
 
 @description('Optional. Certificate value for this.')
-//@secure()
+@secure()
 param certificateValue string = ''
 
 @description('Optional. Dns suffix for the environment domain.')
