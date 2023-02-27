@@ -307,7 +307,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicgencr'
+  name: '${uniqueString(deployment().name, location)}-test-cicgenc'
   params: {
     // Required parameters
     containers: [
@@ -356,7 +356,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgencr001'
+    name: '<<namePrefix>>cicgenc001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -443,7 +443,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgencr001"
+      "value": "<<namePrefix>>cicgenc001"
     },
     // Non-required parameters
     "cMKKeyName": {
