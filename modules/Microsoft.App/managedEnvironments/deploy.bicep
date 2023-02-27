@@ -125,7 +125,7 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-previe
 }
 
 module managedEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-Domain-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ManagedEnvironment-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
