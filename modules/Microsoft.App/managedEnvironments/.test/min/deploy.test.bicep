@@ -45,7 +45,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>--menv-${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     logAnalticsWorkspaceName: nestedDependencies.outputs.logAnalticsWorkspaceName
     resourceGroupLAWorkspace: resourceGroup.name
     location: location
