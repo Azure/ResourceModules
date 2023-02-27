@@ -135,9 +135,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2022-09-01'
   properties: union({
       containers: containers
       encryptionProperties: !empty(cMKKeyName) ? {
-        identity: {
-          userAssignedIdentity: cMKUserAssignedIdentityResourceId
-        }
+        identity: cMKUserAssignedIdentityResourceId
         keyName: cMKKeyName
         keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
         vaultBaseUrl: cmkKeyVault.properties.vaultUri
