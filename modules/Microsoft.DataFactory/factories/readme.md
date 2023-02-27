@@ -447,6 +447,9 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         }
         service: 'dataFactory'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          application: 'CARML'
+        }
       }
     ]
     roleAssignments: [
@@ -569,7 +572,10 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
             ]
           },
           "service": "dataFactory",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "application": "CARML"
+          }
         }
       ]
     },

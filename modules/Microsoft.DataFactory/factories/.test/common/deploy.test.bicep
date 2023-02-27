@@ -119,6 +119,9 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'dataFactory'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          application: 'CARML'
+        }
       }
     ]
     roleAssignments: [
