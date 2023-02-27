@@ -483,7 +483,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicgecr'
+  name: '${uniqueString(deployment().name, location)}-test-cicgencr'
   params: {
     // Required parameters
     containers: [
@@ -532,7 +532,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgecr001'
+    name: '<<namePrefix>>cicgencr001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -618,7 +618,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgecr001"
+      "value": "<<namePrefix>>cicgencr001"
     },
     // Non-required parameters
     "cMKKeyName": {

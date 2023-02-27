@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.containerinstance.containergroups-${service
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'cicgecr'
+param serviceShort string = 'cicgencr'
 
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
