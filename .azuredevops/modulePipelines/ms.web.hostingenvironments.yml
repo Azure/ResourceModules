@@ -1,4 +1,4 @@
-name: 'Web - HostingEnvironments'
+name: "Web - HostingEnvironments"
 
 parameters:
   - name: staticValidation
@@ -27,25 +27,25 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
-      - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Web/hostingEnvironments/*'
-      - '/utilities/pipelines/*'
+      - "/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml"
+      - "/.azuredevops/pipelineTemplates/*.yml"
+      - "/modules/Microsoft.Web/hostingEnvironments/*"
+      - "/utilities/pipelines/*"
     exclude:
-      - '/utilities/pipelines/deploymentRemoval/*'
-      - '/**/*.md'
+      - "/utilities/pipelines/deploymentRemoval/*"
+      - "/**/*.md"
 
 variables:
-  - template: '../../settings.yml'
-  - group: 'PLATFORM_VARIABLES'
+  - template: "../../settings.yml"
+  - group: "PLATFORM_VARIABLES"
   - name: modulePath
-    value: '/modules/Microsoft.Web/hostingEnvironments'
+    value: "/modules/Microsoft.Web/hostingEnvironments"
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
     parameters:
-      staticValidation: '${{ parameters.staticValidation }}'
-      deploymentValidation: '${{ parameters.deploymentValidation }}'
-      removeDeployment: '${{ parameters.removeDeployment }}'
-      prerelease: '${{ parameters.prerelease }}'
-      defaultJobTimeoutInMinutes: 180
+      staticValidation: "${{ parameters.staticValidation }}"
+      deploymentValidation: "${{ parameters.deploymentValidation }}"
+      removeDeployment: "${{ parameters.removeDeployment }}"
+      prerelease: "${{ parameters.prerelease }}"
+      defaultJobTimeoutInMinutes: 360
