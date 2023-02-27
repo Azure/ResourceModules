@@ -29,7 +29,7 @@ param ingressAllowInsecure bool = true
 param ingressTargetPort int = 80
 
 @description('Optional. Container environment variables.')
-param containersEnv array = []
+param environmentVar array = []
 
 @description('Required. Container App resources.')
 param containerResources object
@@ -159,6 +159,24 @@ param containerArgs array = []
 @description('Optional. Container start command.')
 param containerStartCommand array = []
 
+@description('Optional. List of probes for the container.')
+param containerAppProbe array = []
+
+@description('Optional. Container volume mounts.')
+param containerVolumeMounts array = []
+
+@description('Optional. List of specialized containers that run before app containers.')
+param initContainersTemplate array = []
+
+@description('Optional. User friendly suffix that is appended to the revision name.')
+param revisionSuffix string = ''
+
+@description('Optional. List of volume definitions for the Container App.')
+param volumes array = []
+
+@description('Optional. Workload profile type to pin for container app execution.')
+param workloadProfileType string = ''
+
 resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
   name: name
   tags: tags
@@ -207,15 +225,21 @@ resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
           name: containerName
           image: containerImage
           resources: containerResources
-          env: containersEnv
+          env: !empty(environmentVar) ? environmentVar : null
+          probes: !empty(containerAppProbe) ? containerAppProbe : null
+          volumeMounts: !empty(containerVolumeMounts) ? containerVolumeMounts : null
         }
       ]
+      initContainers: !empty(initContainersTemplate) ? initContainersTemplate : null
+      revisionSuffix: revisionSuffix
       scale: {
         maxReplicas: scaleMaxReplicas
         minReplicas: scaleMinReplicas
         rules: !empty(scaleRules) ? scaleRules : null
       }
+      volumes: !empty(volumes) ? volumes : null
     }
+    workloadProfileType: workloadProfileType
   }
 }
 
