@@ -70,11 +70,6 @@ This module deploys App ContainerApps.
 | `trafficWeight` | int | `100` |  | Traffic weight assigned to a revision. |
 | `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource ids and The dictionary values can be empty objects ({}) in requests. |
 
-**custom domain bindings for Container Apps hostnames parameters**
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
