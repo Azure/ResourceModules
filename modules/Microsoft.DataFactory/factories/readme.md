@@ -459,6 +459,9 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      application: 'CARML'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -583,6 +586,11 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "application": "CARML"
+      }
     },
     "userAssignedIdentities": {
       "value": {
