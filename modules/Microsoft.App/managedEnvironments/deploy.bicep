@@ -34,7 +34,7 @@ param enableDefaultTelemetry bool
 param daprAIConnectionString string = ''
 
 @description('Optional. Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry.')
-//@secure()
+@secure()
 param daprAIInstrumentationKey string = ''
 
 @description('Optional. CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges.')
