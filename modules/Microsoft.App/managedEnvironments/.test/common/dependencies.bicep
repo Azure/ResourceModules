@@ -1,4 +1,4 @@
-@description('Required. The location to deploy to.')
+@description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 @description('Required. The name of the Log Analytics Workspace to create.')
