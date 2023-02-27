@@ -139,10 +139,10 @@ param trafficLabel string = 'label-1'
 @description('Optional. Indicates that the traffic weight belongs to a latest stable revision')
 param trafficLatestRevision bool = true
 
-@description('Optional. Name of a revision')
+@description('Optional. Name of a revision.')
 param trafficRevisionName string = ''
 
-@description('Optional. Traffic weight assigned to a revision	')
+@description('Optional. Traffic weight assigned to a revision.')
 param trafficWeight int = 100
 
 @description('Optional. Dapr configuration for the Container App.')
