@@ -11,7 +11,7 @@ param containerImage string
 param containerName string
 
 @description('Optional. Bool indicating if app exposes an external http endpoint, default true.')
-param ingressExternal bool = false
+param ingressExternal bool = true
 
 @allowed([
   'auto'
@@ -23,10 +23,10 @@ param ingressExternal bool = false
 param ingressTransport string = 'auto'
 
 @description('Optional. Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections.')
-param ingressAllowInsecure bool = false
+param ingressAllowInsecure bool = true
 
 @description('Optional. Target Port in containers for traffic from ingress, default 80.')
-param ingressTargetPort int = 6379
+param ingressTargetPort int = 80
 
 @description('Optional. Container environment variables.')
 param containersEnv array = []
@@ -100,24 +100,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 ])
 param clientCertificateMode string = 'ignore'
 
-@description('Optinal. Custom domain bindings for Container Apps hostnames.')
-param customDomainsName string = ''
-
-@description('Optinal. Custom domain Resource Id of the Certificate to be bound to this hostname.')
-param customDomainsCertificateId string = ''
-
-@description('Optinal. Custom Domain binding type.')
-@allowed([
-  'Disabled'
-  'SniEnabled'
-])
-param customDomainsBindingType string = 'Disabled'
+@description('custom domain bindings for Container Apps hostnames.')
+param customDomains array = []
 
 @description('Optional. Exposed Port in containers for TCP traffic from ingress.')
 param exposedPort int = 0
-
-@description('Optional. Traffic weights for apps revisions.')
-param traffic array = []
 
 @description('Optional. Cors policy to allow credentials or not.')
 param corsPolicyAllowCredentials bool = false
@@ -137,21 +124,32 @@ param corsPolicyExposeHeaders array = []
 @description('Optional. Cors policy to max time client can cache the result.')
 param corsPolicyMaxAge int = 0
 
-@description('Optional. Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL Allow or ALL Deny.')
-@allowed([
-  'Allow'
-  'Deny'
-])
-param ipSecurityRestrictionsAction string = 'Allow'
+@description('Optional. Rules to restrict incoming IP address.')
+param ipSecurityRestrictions array = []
 
-@description('Optional. Describe the IP restriction rule that is being sent to the container-app. This is an optional field.')
-param ipSecurityRestrictionsDescription string = ''
+@description('Optional. Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes')
+param trafficLabel string = 'label-1'
 
-@description('Optional. Cidr notation to match incoming IP address.')
-param ipSecurityRestrictionsIpAddressRange string = ''
+@description('Optional. Indicates that the traffic weight belongs to a latest stable revision')
+param trafficLatestRevision bool = true
 
-@description('Optional. Name for the IP restriction rule.')
-param ipSecurityRestrictionsName string = ''
+@description('Optional. Name of a revision')
+param trafficRevisionName string = ''
+
+@description('Optional. Traffic weight assigned to a revision	')
+param trafficWeight int = 100
+
+@description('Optional. Dapr configuration for the Container App.')
+param dapr object = {}
+
+@description('Optional. Max inactive revisions a Container App can have.')
+param maxInactiveRevisions int = 0
+
+@description('Optional. Container start command arguments.')
+param containerArgs array = []
+
+@description('Optional. Container start command.')
+param containerStartCommand array = []
 
 resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
   name: name
@@ -162,8 +160,7 @@ resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
     environmentId: environmentId
     configuration: {
       activeRevisionsMode: activeRevisionsMode
-      secrets: []
-      registries: !empty(registries) ? registries : null
+      dapr: !empty(dapr) ? dapr : null
       ingress: {
         allowInsecure: ingressAllowInsecure
         clientCertificateMode: clientCertificateMode
@@ -175,31 +172,30 @@ resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
           exposeHeaders: corsPolicyExposeHeaders
           maxAge: corsPolicyMaxAge
         }
-        customDomains: [
-          {
-            name: customDomainsName
-            certificateId: customDomainsCertificateId
-            bindingType: customDomainsBindingType
-          }
-        ]
+        customDomains: !empty(customDomains) ? customDomains : null
         exposedPort: exposedPort
         external: ingressExternal
-        ipSecurityRestrictions: [
+        ipSecurityRestrictions: !empty(ipSecurityRestrictions) ? ipSecurityRestrictions : null
+        targetPort: ingressTargetPort
+        traffic: [
           {
-            action: ipSecurityRestrictionsAction
-            description: ipSecurityRestrictionsDescription
-            ipAddressRange: ipSecurityRestrictionsIpAddressRange
-            name: ipSecurityRestrictionsName
+            label: trafficLabel
+            latestRevision: trafficLatestRevision
+            revisionName: trafficRevisionName
+            weight: trafficWeight
           }
         ]
-        targetPort: ingressTargetPort
-        traffic: traffic
         transport: ingressTransport
       }
+      maxInactiveRevisions: maxInactiveRevisions
+      registries: !empty(registries) ? registries : null
+      secrets: []
     }
     template: {
       containers: [
         {
+          args: !empty(containerArgs) ? containerArgs : null
+          command: !empty(containerStartCommand) ? containerStartCommand : null
           name: containerName
           image: containerImage
           resources: containerResources

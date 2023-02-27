@@ -37,40 +37,41 @@ This module deploys App ContainerApps.
 | :-- | :-- | :-- | :-- | :-- |
 | `activeRevisionsMode` | string | `'Single'` | `[Multiple, Single]` | ActiveRevisionsMode controls how active revisions are handled for the Container app. |
 | `clientCertificateMode` | string | `'ignore'` | `[accept, ignore, require]` | Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate on forwarding. Accept indicates server forwards client certificate but does not require a client certificate. Require indicates server requires a client certificate. |
+| `containerArgs` | array | `[]` |  | Container start command arguments. |
 | `containersEnv` | array | `[]` |  | Container environment variables. |
+| `containerStartCommand` | array | `[]` |  | Container start command. |
 | `corsPolicyAllowCredentials` | bool | `False` |  | Cors policy to allow credentials or not. |
 | `corsPolicyAllowedHeaders` | array | `[]` |  | Cors policy to allowed HTTP headers. |
 | `corsPolicyAllowedMethods` | array | `[]` |  | Cors policy to allowed HTTP methods. |
 | `corsPolicyAllowedOrigins` | array | `[]` |  | Cors policy to allowed orgins. |
 | `corsPolicyExposeHeaders` | array | `[]` |  | Cors policy to expose HTTP headers. |
 | `corsPolicyMaxAge` | int | `0` |  | Cors policy to max time client can cache the result. |
+| `dapr` | object | `{object}` |  | Dapr configuration for the Container App. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID), default false. |
 | `exposedPort` | int | `0` |  | Exposed Port in containers for TCP traffic from ingress. |
-| `ingressAllowInsecure` | bool | `False` |  | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections. |
-| `ingressExternal` | bool | `False` |  | Bool indicating if app exposes an external http endpoint, default true. |
-| `ingressTargetPort` | int | `6379` |  | Target Port in containers for traffic from ingress, default 80. |
+| `ingressAllowInsecure` | bool | `True` |  | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections. |
+| `ingressExternal` | bool | `True` |  | Bool indicating if app exposes an external http endpoint, default true. |
+| `ingressTargetPort` | int | `80` |  | Target Port in containers for traffic from ingress, default 80. |
 | `ingressTransport` | string | `'auto'` | `[auto, http, http2, tcp]` | Ingress transport protocol, default auto. |
-| `ipSecurityRestrictionsAction` | string | `'Allow'` | `[Allow, Deny]` | Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL Allow or ALL Deny. |
-| `ipSecurityRestrictionsDescription` | string | `''` |  | Describe the IP restriction rule that is being sent to the container-app. This is an optional field. |
-| `ipSecurityRestrictionsIpAddressRange` | string | `''` |  | Cidr notation to match incoming IP address. |
-| `ipSecurityRestrictionsName` | string | `''` |  | Name for the IP restriction rule. |
+| `ipSecurityRestrictions` | array | `[]` |  | Rules to restrict incoming IP address. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `maxInactiveRevisions` | int | `0` |  | Max inactive revisions a Container App can have. |
 | `registries` | array | `[]` |  | Collection of private container registry credentials for containers used by the Container app. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
 | `scaleMinReplicas` | int | `0` |  | Minimum number of container replicas. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `traffic` | array | `[]` |  | Traffic weights for apps revisions. |
+| `trafficLabel` | string | `'label-1'` |  | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes |
+| `trafficLatestRevision` | bool | `True` |  | Indicates that the traffic weight belongs to a latest stable revision |
+| `trafficRevisionName` | string | `''` |  | Name of a revision |
+| `trafficWeight` | int | `100` |  | Traffic weight assigned to a revision	 |
 | `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource ids and The dictionary values can be empty objects ({}) in requests. |
 
-**Optinal parameters**
+**custom domain bindings for Container Apps hostnames parameters**
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `customDomainsBindingType` | string | `'Disabled'` | `[Disabled, SniEnabled]` | Custom Domain binding type. |
-| `customDomainsCertificateId` | string | `''` |  | Custom domain Resource Id of the Certificate to be bound to this hostname. |
-| `customDomainsName` | string | `''` |  | Custom domain bindings for Container Apps hostnames. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
@@ -238,7 +239,7 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcapp'
+  name: '${uniqueString(deployment().name, location)}-test-mcappcom'
   params: {
     // Required parameters
     containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
@@ -248,7 +249,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       memory: '0.5Gi'
     }
     environmentId: '<environmentId>'
-    name: '<<namePrefix>>mcapp001'
+    name: '<<namePrefix>>mcappcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -289,7 +290,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "<<namePrefix>>mcapp001"
+      "value": "<<namePrefix>>mcappcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -321,7 +322,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
 
 ```bicep
 module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-mcapp'
+  name: '${uniqueString(deployment().name, location)}-test-mcappmin'
   params: {
     // Required parameters
     containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
@@ -331,7 +332,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       memory: '0.5Gi'
     }
     environmentId: '<environmentId>'
-    name: 'khan-mcapp001'
+    name: 'khan-mcappmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -368,7 +369,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "khan-mcapp001"
+      "value": "khan-mcappmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
