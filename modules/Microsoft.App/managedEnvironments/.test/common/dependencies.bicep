@@ -61,4 +61,4 @@ output logAnaltyicsWorkspaceId string = logAnalyticsWorkspace.id
 output virtualNetworkResourceId string = virtualNetwork.id
 
 @description('Subnet resource ID')
-output subnetResourceId string = '${virtualNetwork.id}/subnets/${subnetName}'
+output subnetResourceId string = virtualNetwork.properties.subnets[0].id
