@@ -1,4 +1,4 @@
-name: 'Container Apps'
+name: 'App - ContainerApps'
 
 on:
   workflow_dispatch:
