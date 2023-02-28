@@ -206,7 +206,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
   }
 }
 
-resource containerAppsLock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+resource containerApp_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${containerApps.name}-${lock}-lock'
   properties: {
     level: any(lock)
