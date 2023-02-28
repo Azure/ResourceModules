@@ -105,13 +105,13 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
     name: skuName
   }
   properties: {
-    appLogsConfiguration: !empty(logAnalyticsWorkspaceResourceId) ? {
+    appLogsConfiguration: {
       destination: logsDestination
-      logAnalyticsConfiguration: {
+      logAnalyticsConfiguration: !empty(logAnalyticsWorkspaceResourceId) ? {
         customerId: logAnalyticsWorkspace.properties.customerId
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
-      }
-    } : {}
+      } : null
+    }
     daprAIConnectionString: daprAIConnectionString
     daprAIInstrumentationKey: daprAIInstrumentationKey
     customDomainConfiguration: {
