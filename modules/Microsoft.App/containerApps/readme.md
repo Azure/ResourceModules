@@ -233,17 +233,12 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     // Non-required parameters
     containers: [
       {
-        args: ''
-        command: ''
-        env: []
         image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
         name: 'simple-hello-world-container'
-        probes: []
         resources: {
           cpu: '0.25'
           memory: '0.5Gi'
         }
-        volumeMounts: []
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -290,17 +285,12 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     "containers": {
       "value": [
         {
-          "args": "",
-          "command": "",
-          "env": [],
           "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
           "name": "simple-hello-world-container",
-          "probes": [],
           "resources": {
             "cpu": "0.25",
             "memory": "0.5Gi"
-          },
-          "volumeMounts": []
+          }
         }
       ]
     },
