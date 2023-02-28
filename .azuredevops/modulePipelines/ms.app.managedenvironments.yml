@@ -27,7 +27,7 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.apimanagement.service.yml'
+      - '/.azuredevops/modulePipelines/ms.app.managedenvironments.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.ApiManagement/service/*'
       - '/utilities/pipelines/*'
