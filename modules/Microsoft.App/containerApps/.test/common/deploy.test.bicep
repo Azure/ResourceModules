@@ -60,7 +60,7 @@ module testDeployment '../../deploy.bicep' = {
     secrets: {
       secureList: [
         {
-          name: 'customTest'
+          name: 'customtest'
           value: guid(deployment().name)
         }
       ]
@@ -70,9 +70,27 @@ module testDeployment '../../deploy.bicep' = {
         name: 'simple-hello-world-container'
         image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
         resources: {
-          cpu: '0.25'
+          // workaround as 'float' values are not supported in Bicep, yet the resource providers expects them. Related issue: https://github.com/Azure/bicep/issues/1386
+          cpu: json('0.25')
           memory: '0.5Gi'
         }
+        probes: [
+          {
+            type: 'Liveness'
+            httpGet: {
+              path: '/health'
+              port: 8080
+              httpHeaders: [
+                {
+                  name: 'Custom-Header'
+                  value: 'Awesome'
+                }
+              ]
+            }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          }
+        ]
         // args: ''
         // command: ''
         // env: []

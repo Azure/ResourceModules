@@ -235,8 +235,25 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       {
         image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
         name: 'simple-hello-world-container'
+        probes: [
+          {
+            httpGet: {
+              httpHeaders: [
+                {
+                  name: 'Custom-Header'
+                  value: 'Awesome'
+                }
+              ]
+              path: '/health'
+              port: 8080
+            }
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            type: 'Liveness'
+          }
+        ]
         resources: {
-          cpu: '0.25'
+          cpu: '<cpu>'
           memory: '0.5Gi'
         }
       }
@@ -247,7 +264,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     secrets: {
       secureList: [
         {
-          name: 'customTest'
+          name: 'customtest'
           value: '<value>'
         }
       ]
@@ -287,8 +304,25 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
         {
           "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
           "name": "simple-hello-world-container",
+          "probes": [
+            {
+              "httpGet": {
+                "httpHeaders": [
+                  {
+                    "name": "Custom-Header",
+                    "value": "Awesome"
+                  }
+                ],
+                "path": "/health",
+                "port": 8080
+              },
+              "initialDelaySeconds": 3,
+              "periodSeconds": 3,
+              "type": "Liveness"
+            }
+          ],
           "resources": {
-            "cpu": "0.25",
+            "cpu": "<cpu>",
             "memory": "0.5Gi"
           }
         }
@@ -307,7 +341,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       "value": {
         "secureList": [
           {
-            "name": "customTest",
+            "name": "customtest",
             "value": "<value>"
           }
         ]
