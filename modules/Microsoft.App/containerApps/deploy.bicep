@@ -10,7 +10,7 @@ param containerImage string
 @description('Required. Custom container name.')
 param containerName string
 
-@description('Optional. Bool indicating if app exposes an external http endpoint, default true.')
+@description('Optional. Bool indicating if app exposes an external http endpoint.')
 param ingressExternal bool = true
 
 @allowed([
