@@ -212,7 +212,7 @@ resource containerApp_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!emp
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: containerApps
+  scope: containerApp
 }
 
 module containerApp_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
