@@ -33,9 +33,9 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     location: location
-    logAnalticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     managedEnvironmentName: 'dep-<<namePrefix>>-menv-${serviceShort}'
-    miName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -53,7 +53,7 @@ module testDeployment '../../deploy.bicep' = {
       Env: 'test'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
-    environmentId: nestedDependencies.outputs.managedEnvironmentId
+    environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
     containerName: 'simple-hello-world-container'
     containerResources: {
       cpu: '0.25'
@@ -62,7 +62,7 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     lock: 'CanNotDelete'
     userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
   }
 }
