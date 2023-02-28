@@ -10,7 +10,6 @@ param virtualNetworkName string
 var managedEnvironmentsubnet = 'environmentSubnet'
 
 var addressPrefix = '10.0.0.0/16'
-
 var subnetAddressPrefix = '10.0.0.0/23'
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
@@ -48,11 +47,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 
 }
 
-@description('The principal ID of the created Managed Environment.')
-output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
+@description('The resource ID of the created Log Analytics Workspace.')
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
 
-@description('Virtual network resource ID')
-output virtualNetworkResourceId string = virtualNetwork.id
-
-@description('Subnet resource ID')
+@description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id

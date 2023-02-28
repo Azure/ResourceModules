@@ -52,7 +52,7 @@ module testDeployment '../../deploy.bicep' = {
       Env: 'test'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
-    environmentId: nestedDependencies.outputs.managedEnvironmentId
+    environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
     containerName: 'simple-hello-world-container'
     containerResources: {
       cpu: '0.25'

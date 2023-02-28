@@ -1,7 +1,6 @@
 # App ManagedEnvironments `[Microsoft.App/managedEnvironments]`
 
 This module deploys App ManagedEnvironments.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -32,10 +31,10 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `certificatePassword` | secureString | `''` |  | Password of the certificate used by the custom domain. |
-| `certificateValue` | secureString | `''` |  | Certificate to use for the custom domain. PFX or PEM. |
-| `daprAIConnectionString` | secureString | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
-| `daprAIInstrumentationKey` | secureString | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
+| `certificatePassword` | securestring | `''` |  | Password of the certificate used by the custom domain. |
+| `certificateValue` | securestring | `''` |  | Certificate to use for the custom domain. PFX or PEM. |
+| `daprAIConnectionString` | securestring | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
+| `daprAIInstrumentationKey` | securestring | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
 | `dnsSuffix` | string | `''` |  | DNS suffix for the environment domain. |
 | `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges. |
 | `enableDefaultTelemetry` | bool |  |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -54,10 +53,6 @@ This module deploys App ManagedEnvironments.
 | `workloadProfiles` | array | `[]` |  | Workload profiles configured for the Managed Environment. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this Managed Environment is zone-redundant. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 

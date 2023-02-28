@@ -98,34 +98,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-@description('Optional. Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate on forwarding. Accept indicates server forwards client certificate but does not require a client certificate. Require indicates server requires a client certificate.')
-@allowed([
-  'accept'
-  'ignore'
-  'require'
-])
-param clientCertificateMode string = 'ignore'
+@description('Optional. Custom domain bindings for Container App hostnames.')
+param customDomains array = []
 
 @description('Optional. Exposed Port in containers for TCP traffic from ingress.')
 param exposedPort int = 0
-
-@description('Optional. Cors policy to allow credentials or not.')
-param corsPolicyAllowCredentials bool = false
-
-@description('Optional. Cors policy to allowed HTTP headers.')
-param corsPolicyAllowedHeaders array = []
-
-@description('Optional. Cors policy to allowed HTTP methods.')
-param corsPolicyAllowedMethods array = []
-
-@description('Optional. Cors policy to allowed orgins.')
-param corsPolicyAllowedOrigins array = []
-
-@description('Optional. Cors policy to expose HTTP headers.')
-param corsPolicyExposeHeaders array = []
-
-@description('Optional. Cors policy to max time client can cache the result.')
-param corsPolicyMaxAge int = 0
 
 @description('Optional. Rules to restrict incoming IP address.')
 param ipSecurityRestrictions array = []
@@ -184,16 +161,7 @@ resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
       dapr: !empty(dapr) ? dapr : null
       ingress: {
         allowInsecure: ingressAllowInsecure
-        clientCertificateMode: clientCertificateMode
-        corsPolicy: {
-          allowCredentials: corsPolicyAllowCredentials
-          allowedHeaders: corsPolicyAllowedHeaders
-          allowedMethods: corsPolicyAllowedMethods
-          allowedOrigins: corsPolicyAllowedOrigins
-          exposeHeaders: corsPolicyExposeHeaders
-          maxAge: corsPolicyMaxAge
-        }
-        //customDomains: !empty(customDomains) ? customDomains : null
+        customDomains: !empty(customDomains) ? customDomains : null
         exposedPort: exposedPort
         external: ingressExternal
         ipSecurityRestrictions: !empty(ipSecurityRestrictions) ? ipSecurityRestrictions : null

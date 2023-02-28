@@ -18,8 +18,5 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
   })
 }
 
-@description('The principal ID of the created Managed Environment.')
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
-
-@description('The principal ID of the created Managed Environment.')
-output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id
+@description('The resource ID of the created Log Analytics Workspace.')
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id

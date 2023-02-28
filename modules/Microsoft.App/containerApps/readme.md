@@ -1,7 +1,6 @@
 # App ContainerApps `[Microsoft.App/containerApps]`
 
-This module deploys App ContainerApps.
-// TODO: Replace Resource and fill in description
+This module deploys Container Apps.
 
 ## Navigation
 
@@ -36,28 +35,26 @@ This module deploys App ContainerApps.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `activeRevisionsMode` | string | `'Single'` | `[Multiple, Single]` | ActiveRevisionsMode controls how active revisions are handled for the Container app. |
-| `clientCertificateMode` | string | `'ignore'` | `[accept, ignore, require]` | Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate on forwarding. Accept indicates server forwards client certificate but does not require a client certificate. Require indicates server requires a client certificate. |
+| `containerAppProbe` | array | `[]` |  | List of probes for the container. |
 | `containerArgs` | array | `[]` |  | Container start command arguments. |
-| `containersEnv` | array | `[]` |  | Container environment variables. |
 | `containerStartCommand` | array | `[]` |  | Container start command. |
-| `corsPolicyAllowCredentials` | bool | `False` |  | Cors policy to allow credentials or not. |
-| `corsPolicyAllowedHeaders` | array | `[]` |  | Cors policy to allowed HTTP headers. |
-| `corsPolicyAllowedMethods` | array | `[]` |  | Cors policy to allowed HTTP methods. |
-| `corsPolicyAllowedOrigins` | array | `[]` |  | Cors policy to allowed orgins. |
-| `corsPolicyExposeHeaders` | array | `[]` |  | Cors policy to expose HTTP headers. |
-| `corsPolicyMaxAge` | int | `0` |  | Cors policy to max time client can cache the result. |
+| `containerVolumeMounts` | array | `[]` |  | Container volume mounts. |
+| `customDomains` | array | `[]` |  | Custom domain bindings for Container App hostnames. |
 | `dapr` | object | `{object}` |  | Dapr configuration for the Container App. |
-| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID), default false. |
+| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `environmentVar` | array | `[]` |  | Container environment variables. |
 | `exposedPort` | int | `0` |  | Exposed Port in containers for TCP traffic from ingress. |
 | `ingressAllowInsecure` | bool | `True` |  | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections. |
-| `ingressExternal` | bool | `True` |  | Bool indicating if app exposes an external http endpoint, default true. |
-| `ingressTargetPort` | int | `80` |  | Target Port in containers for traffic from ingress, default 80. |
-| `ingressTransport` | string | `'auto'` | `[auto, http, http2, tcp]` | Ingress transport protocol, default auto. |
+| `ingressExternal` | bool | `True` |  | Bool indicating if app exposes an external http endpoint. |
+| `ingressTargetPort` | int | `80` |  | Target Port in containers for traffic from ingress. |
+| `ingressTransport` | string | `'auto'` | `[auto, http, http2, tcp]` | Ingress transport protocol. |
+| `initContainersTemplate` | array | `[]` |  | List of specialized containers that run before app containers. |
 | `ipSecurityRestrictions` | array | `[]` |  | Rules to restrict incoming IP address. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxInactiveRevisions` | int | `0` |  | Max inactive revisions a Container App can have. |
 | `registries` | array | `[]` |  | Collection of private container registry credentials for containers used by the Container app. |
+| `revisionSuffix` | string | `''` |  | User friendly suffix that is appended to the revision name. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute. |
 | `scaleMaxReplicas` | int | `1` |  | Maximum number of container replicas. Defaults to 10 if not set. |
 | `scaleMinReplicas` | int | `0` |  | Minimum number of container replicas. |
@@ -69,11 +66,9 @@ This module deploys App ContainerApps.
 | `trafficRevisionName` | string | `''` |  | Name of a revision. |
 | `trafficWeight` | int | `100` |  | Traffic weight assigned to a revision. |
 | `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource ids and The dictionary values can be empty objects ({}) in requests. |
+| `volumes` | array | `[]` |  | List of volume definitions for the Container App. |
+| `workloadProfileType` | string | `''` |  | Workload profile type to pin for container app execution. |
 
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 
@@ -255,7 +250,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       Env: 'test'
     }
     userAssignedIdentities: {
-      '<managedIdentityId>': {}
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -309,7 +304,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     },
     "userAssignedIdentities": {
       "value": {
-        "<managedIdentityId>": {}
+        "<managedIdentityResourceId>": {}
       }
     }
   }
