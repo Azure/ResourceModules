@@ -94,8 +94,8 @@ param dapr object = {}
 @description('Optional. Max inactive revisions a Container App can have.')
 param maxInactiveRevisions int = 0
 
-@description('Optional. List of container definitions for the Container App.')
-param containers array = []
+@description('Required. List of container definitions for the Container App.')
+param containers array
 
 @description('Optional. List of specialized containers that run before app containers.')
 param initContainersTemplate array = []
@@ -166,7 +166,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
       secrets: secretList
     }
     template: {
-      containers: !empty(containers) ? containers : null
+      containers: containers
       initContainers: !empty(initContainersTemplate) ? initContainersTemplate : null
       revisionSuffix: revisionSuffix
       scale: {

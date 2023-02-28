@@ -24,6 +24,7 @@ This module deploys Container Apps.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `containers` | array | List of container definitions for the Container App. |
 | `environmentId` | string | Resource ID of environment. |
 | `name` | string | Name of the Container App. |
 
@@ -32,7 +33,6 @@ This module deploys Container Apps.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `activeRevisionsMode` | string | `'Single'` | `[Multiple, Single]` | ActiveRevisionsMode controls how active revisions are handled for the Container app. |
-| `containers` | array | `[]` |  | List of container definitions for the Container App. |
 | `customDomains` | array | `[]` |  | Custom domain bindings for Container App hostnames. |
 | `dapr` | object | `{object}` |  | Dapr configuration for the Container App. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -228,11 +228,11 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mcappcom'
   params: {
     // Required parameters
-    environmentId: '<environmentId>'
-    name: '<<namePrefix>>mcappcom001'
-    // Non-required parameters
     containers: [
       {
+        args: ''
+        command: ''
+        env: []
         image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
         name: 'simple-hello-world-container'
         probes: [
@@ -256,8 +256,12 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
           cpu: '<cpu>'
           memory: '0.5Gi'
         }
+        volumeMounts: []
       }
     ]
+    environmentId: '<environmentId>'
+    name: '<<namePrefix>>mcappcom001'
+    // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
@@ -292,16 +296,12 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "environmentId": {
-      "value": "<environmentId>"
-    },
-    "name": {
-      "value": "<<namePrefix>>mcappcom001"
-    },
-    // Non-required parameters
     "containers": {
       "value": [
         {
+          "args": "",
+          "command": "",
+          "env": [],
           "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
           "name": "simple-hello-world-container",
           "probes": [
@@ -324,10 +324,18 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
           "resources": {
             "cpu": "<cpu>",
             "memory": "0.5Gi"
-          }
+          },
+          "volumeMounts": []
         }
       ]
     },
+    "environmentId": {
+      "value": "<environmentId>"
+    },
+    "name": {
+      "value": "<<namePrefix>>mcappcom001"
+    },
+    // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -375,6 +383,16 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mcappmin'
   params: {
     // Required parameters
+    containers: [
+      {
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        name: 'simple-hello-world-container'
+        resources: {
+          cpu: '<cpu>'
+          memory: '0.5Gi'
+        }
+      }
+    ]
     environmentId: '<environmentId>'
     name: '<<namePrefix>>mcappmin001'
     // Non-required parameters
@@ -400,6 +418,18 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "containers": {
+      "value": [
+        {
+          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
+          "name": "simple-hello-world-container",
+          "resources": {
+            "cpu": "<cpu>",
+            "memory": "0.5Gi"
+          }
+        }
+      ]
+    },
     "environmentId": {
       "value": "<environmentId>"
     },

@@ -52,5 +52,16 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
     location: location
+    containers: [
+      {
+        name: 'simple-hello-world-container'
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        resources: {
+          // workaround as 'float' values are not supported in Bicep, yet the resource providers expects them. Related issue: https://github.com/Azure/bicep/issues/1386
+          cpu: json('0.25')
+          memory: '0.5Gi'
+        }
+      }
+    ]
   }
 }
