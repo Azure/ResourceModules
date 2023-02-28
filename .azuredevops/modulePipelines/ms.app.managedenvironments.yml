@@ -1,4 +1,4 @@
-name: 'Container Apps - Managed Environment'
+name: 'App - Managed Environments'
 
 parameters:
   - name: staticValidation
