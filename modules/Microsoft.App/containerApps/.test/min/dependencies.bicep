@@ -1,4 +1,4 @@
-@description('Required. The location to deploy to.')
+@description('Required. The location to deploy resources to.')
 param location string = resourceGroup().location
 
 @description('Required. The name of the Managed Environment for Container Apps to create.')
