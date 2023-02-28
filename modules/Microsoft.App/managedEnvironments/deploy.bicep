@@ -62,7 +62,7 @@ param zoneRedundant bool = false
 @secure()
 param certificatePassword string = ''
 
-@description('Optional. Certificate value for this.')
+@description('Optional. Certificate to use for the custom domain. PFX or PEM.')
 @secure()
 param certificateValue string = ''
 
