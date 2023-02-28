@@ -110,7 +110,7 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
       logAnalyticsConfiguration: !empty(logAnalyticsWorkspaceResourceId) ? {
         customerId: logAnalyticsWorkspace.properties.customerId
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
-      } : null
+      } : {}
     }
     daprAIConnectionString: daprAIConnectionString
     daprAIInstrumentationKey: daprAIInstrumentationKey
