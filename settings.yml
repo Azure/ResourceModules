@@ -80,7 +80,7 @@ variables:
   ##   Connection settings   ##
   #############################
 
-  serviceConnection: 'skhan-service-connection'
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ################
   ##   Source   ##
