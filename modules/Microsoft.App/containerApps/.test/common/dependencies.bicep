@@ -1,14 +1,17 @@
 @description('Required. The location to deploy to.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Log Analytics Workspace.')
-param logAnalticsWorkspaceName string
+@description('Required. The name of the Log Analytics Workspace to create.')
+param logAnalyticsWorkspaceName string
 
-@description('Required. The name of the managed environment for Container Apps.')
+@description('Required. The name of the Managed Environment for Container Apps to create.')
 param managedEnvironmentName string
 
+@description('Required. The name of the managed identity to create.')
+param managedIdentityName string
+
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
-  name: logAnalticsWorkspaceName
+  name: logAnalyticsWorkspaceName
   location: location
   properties: any({
     retentionInDays: 30
@@ -38,22 +41,13 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   }
 }
 
-@description('The unique guid for this managedIdentity')
-param managedIdentityId string = newGuid()
-
-@description('Optional. Identity name')
-param miName string
-
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
-  name: miName
+  name: managedIdentityName
   location: location
 }
 
-@description('The ManagedIdenitty ID of the created container apps.')
-output managedIdentityId string = managedIdentity.id
+@description('The resource ID of the created Managed Identity.')
+output managedIdentityResourceId string = managedIdentity.id
 
-@description('The principal ID of the created Managed Environment.')
-output managedEnvironmentId string = managedEnvironment.id
-
-@description('The principal ID of the created Managed Environment.')
-output logAnaltyicsWorkspaceId string = logAnalyticsWorkspace.id
+@description('The resource ID of the created Managed Environment.')
+output managedEnvironmentResourceId string = managedEnvironment.id
