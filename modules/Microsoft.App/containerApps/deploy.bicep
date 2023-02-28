@@ -149,7 +149,7 @@ param volumes array = []
 @description('Optional. Workload profile type to pin for container app execution.')
 param workloadProfileType string = ''
 
-resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
   name: name
   tags: tags
   location: location
