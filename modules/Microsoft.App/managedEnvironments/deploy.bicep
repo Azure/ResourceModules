@@ -17,7 +17,7 @@ param roleAssignments array = []
   'Consumption'
   'Premium'
 ])
-@description('Optional. Managed environment Sku.')
+@description('Optional. Managed environment SKU.')
 param skuName string = 'Consumption'
 
 @description('Optional. Logs destination.')
