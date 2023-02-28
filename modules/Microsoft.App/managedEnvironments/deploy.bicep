@@ -66,7 +66,7 @@ param certificatePassword string = ''
 @secure()
 param certificateValue string = ''
 
-@description('Optional. Dns suffix for the environment domain.')
+@description('Optional. DNS suffix for the environment domain.')
 param dnsSuffix string = ''
 
 @allowed([
