@@ -25,7 +25,7 @@ param ingressTransport string = 'auto'
 @description('Optional. Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections.')
 param ingressAllowInsecure bool = true
 
-@description('Optional. Target Port in containers for traffic from ingress, default 80.')
+@description('Optional. Target Port in containers for traffic from ingress.')
 param ingressTargetPort int = 80
 
 @description('Optional. Container environment variables.')
