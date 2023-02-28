@@ -73,11 +73,11 @@ module testDeployment '../../deploy.bicep' = {
           cpu: '0.25'
           memory: '0.5Gi'
         }
-        args: ''
-        command: ''
-        env: []
-        probes: []
-        volumeMounts: []
+        // args: ''
+        // command: ''
+        // env: []
+        // probes: []
+        // volumeMounts: []
       }
     ]
   }
