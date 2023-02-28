@@ -24,7 +24,6 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceResourceId` | string | Existing Log Analytics Workspace resource ID. |
 | `name` | string | Name of the Container Apps Managed Environment. |
 
 **Optional parameters**
@@ -42,6 +41,7 @@ This module deploys App ManagedEnvironments.
 | `internal` | bool | `False` |  | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `logAnalyticsWorkspaceResourceId` | string | `''` |  | Existing Log Analytics Workspace resource ID. |
 | `logsDestination` | string | `'log-analytics'` |  | Logs destination. |
 | `platformReservedCidr` | string | `''` |  | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges. |
 | `platformReservedDnsIP` | string | `''` |  | An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. |
@@ -159,10 +159,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `logAnalyticsWorkspaceName` | string | The name of the Log analytics workspace name. |
-| `name` | string | Managed Envrionment Name. |
-| `resourceGroupName` | string | The name of the resource group the Container Apps Managed Environment was deployed into. |
-| `resourceId` | string | Managed environment ID. |
+| `name` | string | The name of the Managed Environment. |
+| `resourceGroupName` | string | The name of the resource group the Managed Environment was deployed into. |
+| `resourceId` | string | The resource ID of the Managed Environment. |
 
 ## Cross-referenced modules
 
@@ -187,12 +186,12 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     name: '<<namePrefix>>amecom001'
     // Non-required parameters
     infrastructureSubnetId: '<infrastructureSubnetId>'
     location: '<location>'
     lock: 'CanNotDelete'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     skuName: 'Consumption'
     tags: {
       Env: 'test'
@@ -217,9 +216,6 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "logAnalyticsWorkspaceResourceId": {
-      "value": "<logAnalyticsWorkspaceResourceId>"
-    },
     "name": {
       "value": "<<namePrefix>>amecom001"
     },
@@ -232,6 +228,9 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "skuName": {
       "value": "Consumption"
@@ -260,11 +259,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     name: '<<namePrefix>>amemin001'
-    // Non-required parameters
-    location: '<location>'
-    skuName: 'Consumption'
   }
 }
 ```
@@ -285,18 +280,8 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "logAnalyticsWorkspaceResourceId": {
-      "value": "<logAnalyticsWorkspaceResourceId>"
-    },
     "name": {
       "value": "<<namePrefix>>amemin001"
-    },
-    // Non-required parameters
-    "location": {
-      "value": "<location>"
-    },
-    "skuName": {
-      "value": "Consumption"
     }
   }
 }

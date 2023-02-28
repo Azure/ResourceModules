@@ -1,8 +1,8 @@
 @description('Required. Name of the Container Apps Managed Environment.')
 param name string
 
-@description('Required. Existing Log Analytics Workspace resource ID.')
-param logAnalyticsWorkspaceResourceId string
+@description('Optional. Existing Log Analytics Workspace resource ID.')
+param logAnalyticsWorkspaceResourceId string = ''
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -92,7 +92,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = if (!empty(logAnalyticsWorkspaceResourceId)) {
   name: last(split(logAnalyticsWorkspaceResourceId, '/'))!
   scope: resourceGroup(split(logAnalyticsWorkspaceResourceId, '/')[2], split(logAnalyticsWorkspaceResourceId, '/')[4])
 }
@@ -105,13 +105,13 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-previe
     name: skuName
   }
   properties: {
-    appLogsConfiguration: {
+    appLogsConfiguration: !empty(logAnalyticsWorkspace) ? {
       destination: logsDestination
       logAnalyticsConfiguration: {
         customerId: logAnalyticsWorkspace.properties.customerId
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
-    }
+    } : null
     daprAIConnectionString: daprAIConnectionString
     daprAIInstrumentationKey: daprAIInstrumentationKey
     customDomainConfiguration: {
@@ -155,17 +155,14 @@ resource managedEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if
   scope: managedEnvironment
 }
 
-@description('The name of the resource group the Container Apps Managed Environment was deployed into.')
+@description('The name of the resource group the Managed Environment was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
 output location string = managedEnvironment.location
 
-@description('Managed Envrionment Name.')
+@description('The name of the Managed Environment.')
 output name string = managedEnvironment.name
 
-@description('Managed environment ID.')
+@description('The resource ID of the Managed Environment.')
 output resourceId string = managedEnvironment.id
-
-@description('The name of the Log analytics workspace name.')
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name

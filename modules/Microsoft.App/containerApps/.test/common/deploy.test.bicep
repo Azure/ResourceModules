@@ -33,7 +33,6 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
     location: location
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     managedEnvironmentName: 'dep-<<namePrefix>>-menv-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }

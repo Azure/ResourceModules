@@ -208,9 +208,9 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Container Apps name. |
-| `resourceGroupName` | string | The name of the resource group the Container Apps was deployed into. |
-| `resourceId` | string | The resource ID of the Container Apps. |
+| `name` | string | The name of the Container App. |
+| `resourceGroupName` | string | The name of the resource group the Container App was deployed into. |
+| `resourceId` | string | The resource ID of the Container App. |
 
 ## Cross-referenced modules
 

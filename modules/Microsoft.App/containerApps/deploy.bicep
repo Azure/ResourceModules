@@ -228,13 +228,13 @@ module containerApps_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
   }
 }]
 
-@description('The resource ID of the Container Apps.')
+@description('The resource ID of the Container App.')
 output resourceId string = containerApps.id
 
-@description('The name of the resource group the Container Apps was deployed into.')
+@description('The name of the resource group the Container App was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the Container Apps name.')
+@description('The name of the Container App.')
 output name string = containerApps.name
 
 @description('The location the resource was deployed into.')
