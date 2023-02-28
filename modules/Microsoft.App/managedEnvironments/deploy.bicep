@@ -104,34 +104,62 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
   sku: {
     name: skuName
   }
-  properties: union({
-      daprAIConnectionString: daprAIConnectionString
-      daprAIInstrumentationKey: daprAIInstrumentationKey
-      customDomainConfiguration: {
-        certificatePassword: certificatePassword
-        certificateValue: !empty(certificateValue) ? certificateValue : null
-        dnsSuffix: dnsSuffix
+  properties: {
+    appLogsConfiguration: !empty(logAnalyticsWorkspaceResourceId) ? {
+      destination: logsDestination
+      logAnalyticsConfiguration: {
+        customerId: logAnalyticsWorkspace.properties.customerId
+        sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
-      vnetConfiguration: {
-        dockerBridgeCidr: dockerBridgeCidr
-        infrastructureSubnetId: infrastructureSubnetId
-        internal: internal
-        outboundSettings: !empty(vnetOutboundSettings) ? vnetOutboundSettings : null
-        platformReservedCidr: platformReservedCidr
-        platformReservedDnsIP: platformReservedDnsIP
-        runtimeSubnetId: runtimeSubnetId
-      }
-      workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
-      zoneRedundant: zoneRedundant
-    }, (!empty(logAnalyticsWorkspaceResourceId) ? {
-      appLogsConfiguration: {
-        destination: logsDestination
-        logAnalyticsConfiguration: {
-          customerId: logAnalyticsWorkspace.properties.customerId
-          sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
-        }
-      }
-    } : {}))
+    } : {}
+    daprAIConnectionString: daprAIConnectionString
+    daprAIInstrumentationKey: daprAIInstrumentationKey
+    customDomainConfiguration: {
+      certificatePassword: certificatePassword
+      certificateValue: !empty(certificateValue) ? certificateValue : null
+      dnsSuffix: dnsSuffix
+    }
+    vnetConfiguration: {
+      dockerBridgeCidr: dockerBridgeCidr
+      infrastructureSubnetId: infrastructureSubnetId
+      internal: internal
+      outboundSettings: !empty(vnetOutboundSettings) ? vnetOutboundSettings : null
+      platformReservedCidr: platformReservedCidr
+      platformReservedDnsIP: platformReservedDnsIP
+      runtimeSubnetId: runtimeSubnetId
+    }
+    workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
+    zoneRedundant: zoneRedundant
+  }
+
+  // properties: union({
+  //   daprAIConnectionString: daprAIConnectionString
+  //   daprAIInstrumentationKey: daprAIInstrumentationKey
+  //   customDomainConfiguration: {
+  //     certificatePassword: certificatePassword
+  //     certificateValue: !empty(certificateValue) ? certificateValue : null
+  //     dnsSuffix: dnsSuffix
+  //   }
+  //   vnetConfiguration: {
+  //     dockerBridgeCidr: dockerBridgeCidr
+  //     infrastructureSubnetId: infrastructureSubnetId
+  //     internal: internal
+  //     outboundSettings: !empty(vnetOutboundSettings) ? vnetOutboundSettings : null
+  //     platformReservedCidr: platformReservedCidr
+  //     platformReservedDnsIP: platformReservedDnsIP
+  //     runtimeSubnetId: runtimeSubnetId
+  //   }
+  //   workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
+  //   zoneRedundant: zoneRedundant
+  // }, (!empty(logAnalyticsWorkspaceResourceId) ? {
+  //   appLogsConfiguration: {
+  //     destination: logsDestination
+  //     logAnalyticsConfiguration: {
+  //       customerId: logAnalyticsWorkspace.properties.customerId
+  //       sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
+  //     }
+  //   }
+  // } : {}))
 }
 
 module managedEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
