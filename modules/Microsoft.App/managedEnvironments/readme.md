@@ -32,11 +32,11 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `certificatePassword` | secureString | `''` |  | Certificate password. |
-| `certificateValue` | secureString | `''` |  | Certificate value for this. |
+| `certificatePassword` | secureString | `''` |  | Password of the certificate used by the custom domain. |
+| `certificateValue` | secureString | `''` |  | Certificate to use for the custom domain. PFX or PEM. |
 | `daprAIConnectionString` | secureString | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
 | `daprAIInstrumentationKey` | secureString | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
-| `dnsSuffix` | string | `''` |  | Dns suffix for the environment domain. |
+| `dnsSuffix` | string | `''` |  | DNS suffix for the environment domain. |
 | `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges. |
 | `enableDefaultTelemetry` | bool |  |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `infrastructureSubnetId` | string | `''` |  | Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges. |
@@ -48,7 +48,7 @@ This module deploys App ManagedEnvironments.
 | `platformReservedDnsIP` | string | `''` |  | An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `runtimeSubnetId` | string | `''` |  | Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges. |
-| `skuName` | string | `'Consumption'` | `[Consumption, Premium]` | Managed environment Sku. |
+| `skuName` | string | `'Consumption'` | `[Consumption, Premium]` | Managed environment SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vnetOutboundSettings` | object | `{object}` |  | Configuration used to control the Environment Egress outbound traffic. |
 | `workloadProfiles` | array | `[]` |  | Workload profiles configured for the Managed Environment. |
