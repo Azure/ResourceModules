@@ -70,7 +70,7 @@ param registries array = []
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource ids and The dictionary values can be empty objects ({}) in requests.')
+@description('Optional. The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests.')
 param userAssignedIdentities object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute.')
@@ -149,7 +149,7 @@ param volumes array = []
 @description('Optional. Workload profile type to pin for container app execution.')
 param workloadProfileType string = ''
 
-resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
   name: name
   tags: tags
   location: location
@@ -206,17 +206,17 @@ resource containerApps 'Microsoft.App/containerApps@2022-06-01-preview' = {
   }
 }
 
-resource containerAppsLock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+resource containerApp_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${containerApps.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: containerApps
+  scope: containerApp
 }
 
-module containerApps_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-containerApps-Rbac-${index}'
+module containerApp_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-containerApp-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
