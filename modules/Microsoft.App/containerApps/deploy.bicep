@@ -166,7 +166,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
       secrets: secretList
     }
     template: {
-      containers: containers
+      containers: !empty(containers) ? containers : null
       initContainers: !empty(initContainersTemplate) ? initContainersTemplate : null
       revisionSuffix: revisionSuffix
       scale: {
