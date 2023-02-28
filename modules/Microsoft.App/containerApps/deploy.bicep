@@ -79,25 +79,6 @@ param roleAssignments array = []
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
-
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
-
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
-  properties: {
-    mode: 'Incremental'
-    template: {
-      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
-      contentVersion: '1.0.0.0'
-      resources: []
-    }
-  }
-}
-
 @description('Optional. Custom domain bindings for Container App hostnames.')
 param customDomains array = []
 
@@ -140,6 +121,10 @@ param containerVolumeMounts array = []
 @description('Optional. List of specialized containers that run before app containers.')
 param initContainersTemplate array = []
 
+@description('Optional. The secrets of the Container App.')
+@secure()
+param secrets object = {}
+
 @description('Optional. User friendly suffix that is appended to the revision name.')
 param revisionSuffix string = ''
 
@@ -148,6 +133,27 @@ param volumes array = []
 
 @description('Optional. Workload profile type to pin for container app execution.')
 param workloadProfileType string = ''
+
+var secretList = !empty(secrets) ? secrets.secureList : []
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
   name: name
@@ -178,7 +184,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
       }
       maxInactiveRevisions: maxInactiveRevisions
       registries: !empty(registries) ? registries : null
-      secrets: []
+      secrets: secretList
     }
     template: {
       containers: [
@@ -207,7 +213,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
 }
 
 resource containerApp_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${containerApps.name}-${lock}-lock'
+  name: '${containerApp.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -224,18 +230,18 @@ module containerApp_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: containerApps.id
+    resourceId: containerApp.id
   }
 }]
 
 @description('The resource ID of the Container App.')
-output resourceId string = containerApps.id
+output resourceId string = containerApp.id
 
 @description('The name of the resource group the Container App was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The name of the Container App.')
-output name string = containerApps.name
+output name string = containerApp.name
 
 @description('The location the resource was deployed into.')
-output location string = containerApps.location
+output location string = containerApp.location

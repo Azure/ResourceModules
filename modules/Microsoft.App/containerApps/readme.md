@@ -14,7 +14,7 @@ This module deploys Container Apps.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.App/containerApps` | [2022-06-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-06-01-preview/containerApps) |
+| `Microsoft.App/containerApps` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.App/2022-10-01/containerApps) |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 
@@ -59,13 +59,14 @@ This module deploys Container Apps.
 | `scaleMaxReplicas` | int | `1` |  | Maximum number of container replicas. Defaults to 10 if not set. |
 | `scaleMinReplicas` | int | `0` |  | Minimum number of container replicas. |
 | `scaleRules` | array | `[]` |  | Scaling rules. |
+| `secrets` | secureObject | `{object}` |  | The secrets of the Container App. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trafficLabel` | string | `'label-1'` |  | Associates a traffic label with a revision. Label name should be consist of lower case alphanumeric characters or dashes. |
 | `trafficLatestRevision` | bool | `True` |  | Indicates that the traffic weight belongs to a latest stable revision. |
 | `trafficRevisionName` | string | `''` |  | Name of a revision. |
 | `trafficWeight` | int | `100` |  | Traffic weight assigned to a revision. |
-| `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource ids and The dictionary values can be empty objects ({}) in requests. |
+| `userAssignedIdentities` | object | `{object}` |  | The set of user assigned identities associated with the resource, the userAssignedIdentities dictionary keys will be ARM resource IDs and The dictionary values can be empty objects ({}) in requests. |
 | `volumes` | array | `[]` |  | List of volume definitions for the Container App. |
 | `workloadProfileType` | string | `''` |  | Workload profile type to pin for container app execution. |
 
