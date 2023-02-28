@@ -58,7 +58,7 @@ param runtimeSubnetId string = ''
 @description('Optional. Whether or not this Managed Environment is zone-redundant.')
 param zoneRedundant bool = false
 
-@description('Optional. Certificate password.')
+@description('Optional. Password of the certificate used by the custom domain.')
 @secure()
 param certificatePassword string = ''
 
