@@ -1,7 +1,7 @@
 @description('Required. The location to deploy to.')
 param location string = resourceGroup().location
 
-@description('Required. The name of the Managed Environment for Container Apps to create.')
+@description('Required. The name of the Managed Environment to create.')
 param managedEnvironmentName string
 
 resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
