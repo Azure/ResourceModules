@@ -100,6 +100,7 @@ The following module usage examples are retrieved from the content of the files 
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rtmin'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -115,7 +116,11 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {}
+  "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    }
+  }
 }
 ```
 
@@ -187,6 +192,7 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rtsub'
   params: {
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     onlyUpdate: true
     tags: {
       Test: 'Yes'
@@ -208,6 +214,9 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "onlyUpdate": {
       "value": true
     },
