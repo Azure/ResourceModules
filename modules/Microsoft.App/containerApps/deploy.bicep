@@ -19,7 +19,7 @@ param ingressExternal bool = true
   'http2'
   'tcp'
 ])
-@description('Optional. Ingress transport protocol, default auto.')
+@description('Optional. Ingress transport protocol.')
 param ingressTransport string = 'auto'
 
 @description('Optional. Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections.')
