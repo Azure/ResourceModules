@@ -230,9 +230,6 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     // Required parameters
     containers: [
       {
-        args: ''
-        command: ''
-        env: []
         image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
         name: 'simple-hello-world-container'
         probes: [
@@ -256,7 +253,6 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
           cpu: '<cpu>'
           memory: '0.5Gi'
         }
-        volumeMounts: []
       }
     ]
     environmentId: '<environmentId>'
@@ -299,9 +295,6 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     "containers": {
       "value": [
         {
-          "args": "",
-          "command": "",
-          "env": [],
           "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
           "name": "simple-hello-world-container",
           "probes": [
@@ -324,8 +317,7 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
           "resources": {
             "cpu": "<cpu>",
             "memory": "0.5Gi"
-          },
-          "volumeMounts": []
+          }
         }
       ]
     },

@@ -91,10 +91,6 @@ module testDeployment '../../deploy.bicep' = {
             periodSeconds: 3
           }
         ]
-        args: ''
-        command: ''
-        env: []
-        volumeMounts: []
       }
     ]
   }
