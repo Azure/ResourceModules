@@ -4,12 +4,6 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Required. Container image tag.')
-param containerImage string
-
-@description('Required. Custom container name.')
-param containerName string
-
 @description('Optional. Bool indicating if app exposes an external http endpoint.')
 param ingressExternal bool = true
 
@@ -27,12 +21,6 @@ param ingressAllowInsecure bool = true
 
 @description('Optional. Target Port in containers for traffic from ingress.')
 param ingressTargetPort int = 80
-
-@description('Optional. Container environment variables.')
-param environmentVar array = []
-
-@description('Required. Container App resources.')
-param containerResources object
 
 @description('Optional. Maximum number of container replicas. Defaults to 10 if not set.')
 param scaleMaxReplicas int = 1
@@ -106,17 +94,8 @@ param dapr object = {}
 @description('Optional. Max inactive revisions a Container App can have.')
 param maxInactiveRevisions int = 0
 
-@description('Optional. Container start command arguments.')
-param containerArgs array = []
-
-@description('Optional. Container start command.')
-param containerStartCommand array = []
-
-@description('Optional. List of probes for the container.')
-param containerAppProbe array = []
-
-@description('Optional. Container volume mounts.')
-param containerVolumeMounts array = []
+@description('Optional. List of container definitions for the Container App.')
+param containers array = []
 
 @description('Optional. List of specialized containers that run before app containers.')
 param initContainersTemplate array = []
@@ -187,18 +166,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-10-01' = {
       secrets: secretList
     }
     template: {
-      containers: [
-        {
-          args: !empty(containerArgs) ? containerArgs : null
-          command: !empty(containerStartCommand) ? containerStartCommand : null
-          name: containerName
-          image: containerImage
-          resources: containerResources
-          env: !empty(environmentVar) ? environmentVar : null
-          probes: !empty(containerAppProbe) ? containerAppProbe : null
-          volumeMounts: !empty(containerVolumeMounts) ? containerVolumeMounts : null
-        }
-      ]
+      containers: containers
       initContainers: !empty(initContainersTemplate) ? initContainersTemplate : null
       revisionSuffix: revisionSuffix
       scale: {

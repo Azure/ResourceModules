@@ -24,9 +24,6 @@ This module deploys Container Apps.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `containerImage` | string | Container image tag. |
-| `containerName` | string | Custom container name. |
-| `containerResources` | object | Container App resources. |
 | `environmentId` | string | Resource ID of environment. |
 | `name` | string | Name of the Container App. |
 
@@ -35,14 +32,10 @@ This module deploys Container Apps.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `activeRevisionsMode` | string | `'Single'` | `[Multiple, Single]` | ActiveRevisionsMode controls how active revisions are handled for the Container app. |
-| `containerAppProbe` | array | `[]` |  | List of probes for the container. |
-| `containerArgs` | array | `[]` |  | Container start command arguments. |
-| `containerStartCommand` | array | `[]` |  | Container start command. |
-| `containerVolumeMounts` | array | `[]` |  | Container volume mounts. |
+| `containers` | array | `[]` |  | List of container definitions for the Container App. |
 | `customDomains` | array | `[]` |  | Custom domain bindings for Container App hostnames. |
 | `dapr` | object | `{object}` |  | Dapr configuration for the Container App. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `environmentVar` | array | `[]` |  | Container environment variables. |
 | `exposedPort` | int | `0` |  | Exposed Port in containers for TCP traffic from ingress. |
 | `ingressAllowInsecure` | bool | `True` |  | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections. |
 | `ingressExternal` | bool | `True` |  | Bool indicating if app exposes an external http endpoint. |
@@ -235,18 +228,35 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mcappcom'
   params: {
     // Required parameters
-    containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-    containerName: 'simple-hello-world-container'
-    containerResources: {
-      cpu: '0.25'
-      memory: '0.5Gi'
-    }
     environmentId: '<environmentId>'
     name: '<<namePrefix>>mcappcom001'
     // Non-required parameters
+    containers: [
+      {
+        args: ''
+        command: ''
+        env: []
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        name: 'simple-hello-world-container'
+        probes: []
+        resources: {
+          cpu: '0.25'
+          memory: '0.5Gi'
+        }
+        volumeMounts: []
+      }
+    ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     lock: 'CanNotDelete'
+    secrets: {
+      secureList: [
+        {
+          name: 'customTest'
+          value: '<value>'
+        }
+      ]
+    }
     tags: {
       Env: 'test'
     }
@@ -270,18 +280,6 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "containerImage": {
-      "value": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
-    },
-    "containerName": {
-      "value": "simple-hello-world-container"
-    },
-    "containerResources": {
-      "value": {
-        "cpu": "0.25",
-        "memory": "0.5Gi"
-      }
-    },
     "environmentId": {
       "value": "<environmentId>"
     },
@@ -289,6 +287,23 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       "value": "<<namePrefix>>mcappcom001"
     },
     // Non-required parameters
+    "containers": {
+      "value": [
+        {
+          "args": "",
+          "command": "",
+          "env": [],
+          "image": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest",
+          "name": "simple-hello-world-container",
+          "probes": [],
+          "resources": {
+            "cpu": "0.25",
+            "memory": "0.5Gi"
+          },
+          "volumeMounts": []
+        }
+      ]
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -297,6 +312,16 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "secrets": {
+      "value": {
+        "secureList": [
+          {
+            "name": "customTest",
+            "value": "<value>"
+          }
+        ]
+      }
     },
     "tags": {
       "value": {
@@ -326,15 +351,15 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mcappmin'
   params: {
     // Required parameters
+    environmentId: '<environmentId>'
+    name: 'khan-mcappmin001'
+    // Non-required parameters
     containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
     containerName: 'simple-hello-world-container'
     containerResources: {
       cpu: '0.25'
       memory: '0.5Gi'
     }
-    environmentId: '<environmentId>'
-    name: 'khan-mcappmin001'
-    // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     tags: {
@@ -357,6 +382,13 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "environmentId": {
+      "value": "<environmentId>"
+    },
+    "name": {
+      "value": "khan-mcappmin001"
+    },
+    // Non-required parameters
     "containerImage": {
       "value": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
     },
@@ -369,13 +401,6 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
         "memory": "0.5Gi"
       }
     },
-    "environmentId": {
-      "value": "<environmentId>"
-    },
-    "name": {
-      "value": "khan-mcappmin001"
-    },
-    // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },

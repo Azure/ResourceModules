@@ -46,22 +46,39 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
     name: '<<namePrefix>>${serviceShort}001'
     tags: {
       Env: 'test'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
-    containerName: 'simple-hello-world-container'
-    containerResources: {
-      cpu: '0.25'
-      memory: '0.5Gi'
-    }
     location: location
     lock: 'CanNotDelete'
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    secrets: {
+      secureList: [
+        {
+          name: 'customTest'
+          value: guid(deployment().name)
+        }
+      ]
+    }
+    containers: [
+      {
+        name: 'simple-hello-world-container'
+        image: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
+        resources: {
+          cpu: '0.25'
+          memory: '0.5Gi'
+        }
+        args: ''
+        command: ''
+        env: []
+        probes: []
+        volumeMounts: []
+      }
+    ]
   }
 }
