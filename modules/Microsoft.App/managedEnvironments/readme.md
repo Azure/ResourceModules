@@ -24,7 +24,7 @@ This module deploys App ManagedEnvironments.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceResourceId` | string | Existing Log Analytics Workspace resource Id. |
+| `logAnalyticsWorkspaceResourceId` | string | Existing Log Analytics Workspace resource ID. |
 | `name` | string | Name of the Container Apps Managed Environment. |
 
 **Optional parameters**

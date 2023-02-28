@@ -1,7 +1,7 @@
 @description('Required. Name of the Container Apps Managed Environment.')
 param name string
 
-@description('Required. Existing Log Analytics Workspace resource Id.')
+@description('Required. Existing Log Analytics Workspace resource ID.')
 param logAnalyticsWorkspaceResourceId string
 
 @description('Optional. Location for all Resources.')
@@ -80,12 +80,6 @@ param lock string = ''
 @description('Optional. Workload profiles configured for the Managed Environment.')
 param workloadProfiles array = []
 
-var splitLawId = split(logAnalyticsWorkspaceResourceId, '/')
-
-var logAnalyticsWorkspacename = splitLawId[8]
-
-var logAnalyticsWorkspaceRGName = splitLawId[4]
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -99,8 +93,8 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
 }
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
-  name: logAnalyticsWorkspacename
-  scope: resourceGroup('${logAnalyticsWorkspaceRGName}')
+  name: last(split(logAnalyticsWorkspaceResourceId, '/'))!
+  scope: resourceGroup(split(logAnalyticsWorkspaceResourceId, '/')[2], split(logAnalyticsWorkspaceResourceId, '/')[4])
 }
 
 resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-06-01-preview' = {
