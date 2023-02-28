@@ -215,7 +215,7 @@ resource containerAppsLock 'Microsoft.Authorization/locks@2020-05-01' = if (!emp
   scope: containerApps
 }
 
-module containerApps_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module containerApp_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-containerApps-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
