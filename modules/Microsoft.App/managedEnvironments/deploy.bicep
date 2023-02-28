@@ -92,7 +92,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = if (!empty(logAnalyticsWorkspaceResourceId)) {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(logAnalyticsWorkspaceResourceId)) {
   name: last(split(logAnalyticsWorkspaceResourceId, '/'))!
   scope: resourceGroup(split(logAnalyticsWorkspaceResourceId, '/')[2], split(logAnalyticsWorkspaceResourceId, '/')[4])
 }
@@ -105,7 +105,7 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
     name: skuName
   }
   properties: {
-    appLogsConfiguration: !empty(logAnalyticsWorkspace) ? {
+    appLogsConfiguration: !empty(logAnalyticsWorkspaceResourceId) ? {
       destination: logsDestination
       logAnalyticsConfiguration: {
         customerId: logAnalyticsWorkspace.properties.customerId
