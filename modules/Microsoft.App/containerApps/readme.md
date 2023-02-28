@@ -352,14 +352,8 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
   params: {
     // Required parameters
     environmentId: '<environmentId>'
-    name: 'khan-mcappmin001'
+    name: '<<namePrefix>>mcappmin001'
     // Non-required parameters
-    containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-    containerName: 'simple-hello-world-container'
-    containerResources: {
-      cpu: '0.25'
-      memory: '0.5Gi'
-    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     tags: {
@@ -386,21 +380,9 @@ module containerApps './Microsoft.App/containerApps/deploy.bicep' = {
       "value": "<environmentId>"
     },
     "name": {
-      "value": "khan-mcappmin001"
+      "value": "<<namePrefix>>mcappmin001"
     },
     // Non-required parameters
-    "containerImage": {
-      "value": "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
-    },
-    "containerName": {
-      "value": "simple-hello-world-container"
-    },
-    "containerResources": {
-      "value": {
-        "cpu": "0.25",
-        "memory": "0.5Gi"
-      }
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },

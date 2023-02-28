@@ -45,18 +45,12 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    containerImage: 'mcr.microsoft.com/azuredocs/containerapps-helloworld:latest'
-    name: 'khan-${serviceShort}001'
+    name: '<<namePrefix>>${serviceShort}001'
     tags: {
       Env: 'test'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     environmentId: nestedDependencies.outputs.managedEnvironmentResourceId
-    containerName: 'simple-hello-world-container'
-    containerResources: {
-      cpu: '0.25'
-      memory: '0.5Gi'
-    }
     location: location
   }
 }
