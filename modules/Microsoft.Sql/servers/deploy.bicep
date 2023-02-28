@@ -77,6 +77,14 @@ param privateEndpoints array = []
 ])
 param publicNetworkAccess string = ''
 
+@description('Optional. Whether or not to restrict outbound network access for this server.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param restrictOutboundNetworkAccess string = ''
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -121,6 +129,7 @@ resource server 'Microsoft.Sql/servers@2022-05-01-preview' = {
     minimalTlsVersion: minimalTlsVersion
     primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
+    restrictOutboundNetworkAccess: !empty(restrictOutboundNetworkAccess) ? restrictOutboundNetworkAccess : null
   }
 }
 
