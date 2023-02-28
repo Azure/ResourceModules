@@ -1,4 +1,4 @@
-name: 'Container Apps - Managed Environments'
+name: 'App - Managed Environments'
 
 on:
   workflow_dispatch:
