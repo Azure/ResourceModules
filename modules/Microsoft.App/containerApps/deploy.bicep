@@ -106,11 +106,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 ])
 param clientCertificateMode string = 'ignore'
 
-/*
-@description('custom domain bindings for Container Apps hostnames.')
-param customDomains array = []
-*/
-
 @description('Optional. Exposed Port in containers for TCP traffic from ingress.')
 param exposedPort int = 0
 
