@@ -95,6 +95,9 @@ param cMKKeyName string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
 param cMKKeyVersion string = ''
 
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -124,7 +127,7 @@ resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = i
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01' = {
+resource containergroup 'Microsoft.ContainerInstance/containerGroups@2022-09-01' = {
   name: name
   location: location
   identity: identity
@@ -132,6 +135,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-10-01'
   properties: union({
       containers: containers
       encryptionProperties: !empty(cMKKeyName) ? {
+        identity: cMKUserAssignedIdentityResourceId
         keyName: cMKKeyName
         keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVaultKey.properties.keyUriWithVersion, '/'))
         vaultBaseUrl: cmkKeyVault.properties.vaultUri

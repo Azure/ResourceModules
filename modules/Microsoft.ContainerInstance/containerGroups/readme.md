@@ -17,7 +17,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.ContainerInstance/containerGroups` | [2021-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-10-01/containerGroups) |
+| `Microsoft.ContainerInstance/containerGroups` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2022-09-01/containerGroups) |
 
 ## Parameters
 
@@ -30,9 +30,10 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 **Conditional parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `ipAddressPorts` | array | Ports to open on the public IP address. Must include all ports assigned on container level. Required if `ipAddressType` is set to `public`. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
+| `ipAddressPorts` | array | `[]` | Ports to open on the public IP address. Must include all ports assigned on container level. Required if `ipAddressType` is set to `public`. |
 
 **Optional parameters**
 
@@ -483,7 +484,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
 
 ```bicep
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cicgecr'
+  name: '${uniqueString(deployment().name, location)}-test-cicgenc'
   params: {
     // Required parameters
     containers: [
@@ -532,10 +533,11 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
         }
       }
     ]
-    name: '<<namePrefix>>cicgecr001'
+    name: '<<namePrefix>>cicgenc001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
+    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddressPorts: [
       {
@@ -618,7 +620,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       ]
     },
     "name": {
-      "value": "<<namePrefix>>cicgecr001"
+      "value": "<<namePrefix>>cicgenc001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -626,6 +628,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     },
     "cMKKeyVaultResourceId": {
       "value": "<cMKKeyVaultResourceId>"
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "value": "<cMKUserAssignedIdentityResourceId>"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
