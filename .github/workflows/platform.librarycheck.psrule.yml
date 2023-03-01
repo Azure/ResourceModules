@@ -12,7 +12,7 @@ env:
 
 jobs:
   psrule:
-    name: PSRule
+    name: 'PSRule validation'
     runs-on: ubuntu-20.04
     steps:
       # Analyze module library with PSRule
@@ -106,4 +106,18 @@ jobs:
       - name: Output to GitHub job summaries
         if: always()
         shell: pwsh
-        run: Get-Content '${{ env.modulesPath }}/PSRule-output.md' >> $env:GITHUB_STEP_SUMMARY
+        run: |
+          # Grouping task logs
+          Write-Output '::group::Output to GitHub job summaries'
+
+          $mdPSRuleOutputFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.modulesPath }}/PSRule-output.md'
+
+          if (-not (Test-Path $mdPSRuleOutputFilePath)) {
+            Write-Warning ('Input file [{0}] not found' -f $mdPSRuleOutputFilePath)
+            return ''
+          } else {
+            Get-Content $mdPSRuleOutputFilePath >> $env:GITHUB_STEP_SUMMARY
+            Write-Verbose ('Successfully printed out file [{0}] to Job Summaries' -f $mdPSRuleOutputFilePath) -Verbose
+          }
+
+          Write-Output '::endgroup::'
