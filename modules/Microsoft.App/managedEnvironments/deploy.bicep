@@ -120,6 +120,12 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
       dnsSuffix: dnsSuffix
     }
     vnetConfiguration: {
+      internal: internal
+      infrastructureSubnetId: !empty(infrastructureSubnetId) && internal == true ? infrastructureSubnetId : null
+      dockerBridgeCidr: !empty(infrastructureSubnetId) && internal == true ? dockerBridgeCidr : null
+      platformReservedCidr: !empty(infrastructureSubnetId) && internal == true ? platformReservedCidr : null
+      platformReservedDnsIP: !empty(infrastructureSubnetId) && internal == true ? platformReservedDnsIP : null
+    }
       dockerBridgeCidr: dockerBridgeCidr
       infrastructureSubnetId: infrastructureSubnetId
       internal: internal
