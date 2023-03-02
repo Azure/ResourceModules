@@ -11,21 +11,20 @@ spec:
     type: '.'
     in:
       - Microsoft.OperationsManagement/solutions
-    # contains:
-    #   - 'policyAssignments' #Tags not available
-    #   - 'policyDefinitions'  #Tags not available
-    #   - 'policyExemptions' #Tags not available
-    #   - 'policySetDefinitions' #Tags not available
-    #   - 'managementGroups' #Tags not available
-    #   - 'registrationDefinitions'  #Tags not available
-    #   - 'registrationAssignments' #Tags not available
-    #   - 'remediations' #Tags not available
-    #   - 'fluxConfigurations' #Tags not available
-    #   - 'solutions' #Tags not available
-    #   - 'pricings' #Tags not available
-    #   - 'azureautomation' #AzureAutomation solution Tags not available
-    #   - 'updates' #updates solution Tags not available
-    #   - 'NetworkWatcherRG' # Tags not available
-    #   - 'postgres.database.azure.com'
-    #   - 'AZR-000166' #ONLY FOR TEST
+      - Microsoft.ManagedServices/registrationDefinitions
+      - Microsoft.ManagedServices/registrationAssignments
+      - Microsoft.Management/managementGroups
+      - Microsoft.Resources/resourceGroups
+      - Microsoft.Network/networkWatchers
+      - Microsoft.PolicyInsights/remediations
+      - Microsoft.KubernetesConfiguration/fluxConfigurations
+      - Microsoft.KubernetesConfiguration/extensions
+      - Microsoft.Sql/managedInstances
+      - Microsoft.Network/privateDnsZones
+      - Microsoft.Authorization/policyAssignments
+      - Microsoft.Authorization/policyDefinitions
+      - Microsoft.Authorization/policyExemptions
+      - Microsoft.Authorization/policySetDefinitions
+      - Microsoft.Security/pricings
+
 
