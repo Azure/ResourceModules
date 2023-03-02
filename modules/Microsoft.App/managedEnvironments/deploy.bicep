@@ -40,7 +40,7 @@ param dockerBridgeCidr string = ''
 @description('Conditional. Resource ID of a subnet for infrastructure components. This is used to deploy the environment into a virtual network. Must not overlap with any other provided IP ranges. Required if "internal" is set to true.')
 param infrastructureSubnetId string = ''
 
-@description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property.')
+@description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. If set to true, then "infrastructureSubnetId" must be provided.')
 param internal bool = false
 
 @description('Optional. Configuration used to control the Environment Egress outbound traffic.')
