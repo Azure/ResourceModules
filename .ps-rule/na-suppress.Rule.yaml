@@ -25,4 +25,5 @@ spec:
       - 'updates' #updates solution Tags not available
       - 'NetworkWatcherRG' # Tags not available
       - 'postgres.database.azure.com'
+      - 'AZR-000166' #ONLY FOR TEST
 
