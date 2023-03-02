@@ -64,7 +64,8 @@ module testDeployment '../../deploy.bicep' = {
     lock: 'CanNotDelete'
     skuName: 'Premium'
     tags: {
-      test: 'true'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     roleAssignments: [
       {
