@@ -171,5 +171,6 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    restrictOutboundNetworkAccess: 'Disabled'
   }
 }

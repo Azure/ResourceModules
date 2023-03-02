@@ -68,7 +68,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspaceName
 }
 

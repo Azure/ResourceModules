@@ -48,11 +48,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2021-09-03-preview' existing = {
+resource applicationGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-09-09' existing = {
   name: appGroupName
 }
 
-resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2021-07-12' = {
+resource application 'Microsoft.DesktopVirtualization/applicationGroups/applications@2022-09-09' = {
   name: name
   parent: applicationGroup
   properties: {

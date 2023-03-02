@@ -268,6 +268,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     tags: contains(key, 'tags') ? key.tags : {}
     roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    rotationPolicy: contains(key, 'rotationPolicy') ? key.rotationPolicy : {}
   }
 }]
 
