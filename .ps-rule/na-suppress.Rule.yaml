@@ -8,22 +8,24 @@ spec:
   rule:
    - Azure.Resource.UseTags
   if:
-    name: '.'
-    contains:
-      - 'policyAssignments' #Tags not available
-      - 'policyDefinitions'  #Tags not available
-      - 'policyExemptions' #Tags not available
-      - 'policySetDefinitions' #Tags not available
-      - 'managementGroups' #Tags not available
-      - 'registrationDefinitions'  #Tags not available
-      - 'registrationAssignments' #Tags not available
-      - 'remediations' #Tags not available
-      - 'fluxConfigurations' #Tags not available
-      - 'solutions' #Tags not available
-      - 'pricings' #Tags not available
-      - 'azureautomation' #AzureAutomation solution Tags not available
-      - 'updates' #updates solution Tags not available
-      - 'NetworkWatcherRG' # Tags not available
-      - 'postgres.database.azure.com'
-      - 'AZR-000166' #ONLY FOR TEST
+    type: '.'
+    in:
+      - Microsoft.OperationsManagement/solutions
+    # contains:
+    #   - 'policyAssignments' #Tags not available
+    #   - 'policyDefinitions'  #Tags not available
+    #   - 'policyExemptions' #Tags not available
+    #   - 'policySetDefinitions' #Tags not available
+    #   - 'managementGroups' #Tags not available
+    #   - 'registrationDefinitions'  #Tags not available
+    #   - 'registrationAssignments' #Tags not available
+    #   - 'remediations' #Tags not available
+    #   - 'fluxConfigurations' #Tags not available
+    #   - 'solutions' #Tags not available
+    #   - 'pricings' #Tags not available
+    #   - 'azureautomation' #AzureAutomation solution Tags not available
+    #   - 'updates' #updates solution Tags not available
+    #   - 'NetworkWatcherRG' # Tags not available
+    #   - 'postgres.database.azure.com'
+    #   - 'AZR-000166' #ONLY FOR TEST
 
