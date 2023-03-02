@@ -96,9 +96,5 @@ module testDeployment '../../deploy.bicep' = {
     ipsslAddressCount: 2
     kind: 'ASEv2'
     multiSize: 'Standard_D1_V2'
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
   }
 }
