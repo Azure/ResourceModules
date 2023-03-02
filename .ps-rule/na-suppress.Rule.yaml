@@ -21,5 +21,8 @@ spec:
       - 'fluxConfigurations' #Tags not available
       - 'solutions' #Tags not available
       - 'pricings' #Tags not available
-      - 'azureautomation' #Tags not available
+      - 'azureautomation' #AzureAutomation solution Tags not available
+      - 'updates' #updates solution Tags not available
+      - 'NetworkWatcherRG' # Tags not available
+      - 'postgres.database.azure.com'
 
