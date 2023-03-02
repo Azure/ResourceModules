@@ -49,7 +49,7 @@ param vnetOutboundSettings object = {}
 @description('Optional. IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges.')
 param platformReservedCidr string = ''
 
-@description('Optional. An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server.')
+@description('Optional. An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform.')
 param platformReservedDnsIP string = ''
 
 @description('Optional. Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges.')
