@@ -34,7 +34,7 @@ param daprAIConnectionString string = ''
 @secure()
 param daprAIInstrumentationKey string = ''
 
-@description('Optional. CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges.')
+@description('Optional. CIDR notation IP range assigned to the Docker bridge, network. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform.')
 param dockerBridgeCidr string = ''
 
 @description('Optional. Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.')
