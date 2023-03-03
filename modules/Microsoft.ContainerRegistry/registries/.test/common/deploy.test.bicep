@@ -82,6 +82,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     networkRuleSetIpRules: [

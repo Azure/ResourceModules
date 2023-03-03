@@ -62,6 +62,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'sqlServer'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     tags: {

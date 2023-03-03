@@ -79,6 +79,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'redisCache'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     publicNetworkAccess: 'Enabled'

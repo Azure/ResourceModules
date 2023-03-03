@@ -321,6 +321,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'AzureSiteRecovery'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [

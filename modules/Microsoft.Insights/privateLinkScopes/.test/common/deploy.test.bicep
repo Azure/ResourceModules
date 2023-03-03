@@ -63,6 +63,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'azuremonitor'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [

@@ -88,6 +88,10 @@ module testDeployment '../../deploy.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageAccessIdentity: nestedDependencies.outputs.managedIdentityResourceId
