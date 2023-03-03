@@ -158,7 +158,6 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
-<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
