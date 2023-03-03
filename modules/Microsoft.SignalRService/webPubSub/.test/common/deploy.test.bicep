@@ -82,6 +82,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'webpubsub'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     resourceLogConfigurationsToEnable: [
