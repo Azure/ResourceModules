@@ -160,7 +160,7 @@ PSRule allows skipping rules on two levels:
 - **Suppression Groups**: PSRule can use [Suppression Groups](https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_SuppressionGroups/) to suppress rules based on a condition. Suppression groups can be leveraged when some of the rules in the baseline are not relevant under specific conditions, e.g., only for specific resources. They are stored in the `.ps-rule` repo root folder in `.yaml` format. In particular:
    - [.ps-rule\dep-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/dep-suppress.Rule.yaml): Lists rules to be ignored for resources deployed as dependencies
    - [.ps-rule\min-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/min-suppress.Rule.yaml): Lists rules to be ignored for resources deployed by the min tests
-
+   - [.ps-rule\na-suppress.Rule.yaml](https://github.com/Azure/ResourceModules/blob/main/.ps-rule/na-suppress.Rule.yaml): Lists rules to be ignored for resources not supporting Tags
 ### Output
 
 To better outline failed rules and allow fixing incompliant resources quickly, the pipeline leverages the script [utilities\pipelines\PSRuleValidation\Set-PSRuleGitHubOutput.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/PSRuleValidation/Set-PSRuleGitHubOutput.ps1) to aggregate PSRule output into Custom Markdown content and display it to the Actions run summary page.
