@@ -100,7 +100,6 @@ module testDeployment '../../deploy.bicep' = {
         ram: 8
       }
     }
-<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
