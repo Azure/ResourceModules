@@ -161,7 +161,6 @@ module testDeployment '../../deploy.bicep' = {
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
-=======
     fluxExtension: {
       configurationSettings: {
         'helm-controller.enabled': 'true'
