@@ -106,11 +106,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appGroup_hostpool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' existing = {
+resource appGroup_hostpool 'Microsoft.DesktopVirtualization/hostPools@2022-09-09' existing = {
   name: hostpoolName
 }
 
-resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12' = {
+resource appGroup 'Microsoft.DesktopVirtualization/applicationGroups@2022-09-09' = {
   name: name
   location: location
   tags: tags

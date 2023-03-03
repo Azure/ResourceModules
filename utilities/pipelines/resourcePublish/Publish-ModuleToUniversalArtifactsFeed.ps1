@@ -121,12 +121,12 @@ function Publish-ModuleToUniversalArtifactsFeed {
         if ($PSCmdlet.ShouldProcess("Universal Package Feed entry [$universalPackageModuleName] version [$ModuleVersion] to feed [$VstsOrganizationUri/$VstsFeedProject/$VstsFeedName]", 'Publish')) {
             $env:AZURE_DEVOPS_EXT_PAT = $BearerToken
             $inputObject = @(
-                '--organization', "$VstsOrganizationUri",
-                '--feed', "$VstsFeedName",
-                '--scope', "$feedScope",
-                '--name', "$universalPackageModuleName",
-                '--version', "$ModuleVersion",
-                '--path', "$TemplateFilePath",
+                '--organization', $VstsOrganizationUri,
+                '--feed', $VstsFeedName,
+                '--scope', $feedScope,
+                '--name', $universalPackageModuleName,
+                '--version', $ModuleVersion,
+                '--path', (Split-Path $TemplateFilePath -Parent),
                 '--description', "$universalPackageModuleName Module",
                 '--verbose'
             )

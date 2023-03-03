@@ -42,6 +42,9 @@ param gitCollaborationBranch string = 'main'
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
 
+@description('Optional. List of Global Parameters for the factory.')
+param globalParameters object = {}
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -196,6 +199,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
       }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
         projectName: gitProjectName
       } : {}), {})
+    globalParameters: !empty(globalParameters) ? globalParameters : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     encryption: !empty(cMKKeyName) ? {
       identity: {

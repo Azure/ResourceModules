@@ -17,9 +17,9 @@
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/networkWatchers` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers) |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/connectionMonitors) |
-| `Microsoft.Network/networkWatchers/flowLogs` | [2021-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/networkWatchers/flowLogs) |
+| `Microsoft.Network/networkWatchers` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkWatchers) |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkWatchers/connectionMonitors) |
+| `Microsoft.Network/networkWatchers/flowLogs` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkWatchers/flowLogs) |
 
 ## Parameters
 
@@ -176,8 +176,8 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
             type: 'AzureVM'
           }
           {
-            address: 'www.office.com'
-            name: 'Office Portal'
+            address: 'www.bing.com'
+            name: 'Bing'
             type: 'ExternalAddress'
           }
         ]
@@ -193,7 +193,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
                 '200'
               ]
             }
-            name: 'HTTP Test'
+            name: 'HTTP Bing Test'
             protocol: 'Http'
             successThreshold: {
               checksFailedPercent: 5
@@ -205,15 +205,15 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         testGroups: [
           {
             destinations: [
-              'Office Portal'
+              'Bing'
             ]
             disable: false
-            name: 'TestHTTPBing'
+            name: 'test-http-Bing'
             sources: [
               '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
-              'HTTP Test'
+              'HTTP Bing Test'
             ]
           }
         ]
@@ -274,8 +274,8 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               "type": "AzureVM"
             },
             {
-              "address": "www.office.com",
-              "name": "Office Portal",
+              "address": "www.bing.com",
+              "name": "Bing",
               "type": "ExternalAddress"
             }
           ],
@@ -291,7 +291,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
                   "200"
                 ]
               },
-              "name": "HTTP Test",
+              "name": "HTTP Bing Test",
               "protocol": "Http",
               "successThreshold": {
                 "checksFailedPercent": 5,
@@ -303,15 +303,15 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
           "testGroups": [
             {
               "destinations": [
-                "Office Portal"
+                "Bing"
               ],
               "disable": false,
-              "name": "TestHTTPBing",
+              "name": "test-http-Bing",
               "sources": [
                 "<<namePrefix>>-subnet-001(${resourceGroup.name})"
               ],
               "testConfigurations": [
-                "HTTP Test"
+                "HTTP Bing Test"
               ]
             }
           ],
