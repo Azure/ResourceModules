@@ -103,7 +103,6 @@ module testDeployment '../../deploy.bicep' = {
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
-=======
     agentUpdate: {
       type: 'Scheduled'
       useSessionHostLocalTime: false
