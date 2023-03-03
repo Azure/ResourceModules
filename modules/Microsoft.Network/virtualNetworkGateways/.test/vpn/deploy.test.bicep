@@ -91,7 +91,6 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-=======
     enablePrivateIpAddress: true
     gatewayDefaultSiteLocalNetworkGatewayId: nestedDependencies.outputs.localNetworkGatewayResourceId
     disableIPSecReplayProtection: true
