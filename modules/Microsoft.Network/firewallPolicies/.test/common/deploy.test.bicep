@@ -76,7 +76,6 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
-<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
