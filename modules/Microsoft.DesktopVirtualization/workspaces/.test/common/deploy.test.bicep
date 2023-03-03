@@ -81,16 +81,13 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-<<<<<<< HEAD
     workspaceDescription: 'This is my first AVD Workspace'
     workspaceFriendlyName: 'My first AVD Workspace'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-=======
     description: 'This is my first AVD Workspace'
     friendlyName: 'My first AVD Workspace'
->>>>>>> 256b4b10ef1f210ecc80876c2d90dcdc5125d3bf
   }
 }

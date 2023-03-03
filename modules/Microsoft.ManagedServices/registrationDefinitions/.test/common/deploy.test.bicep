@@ -38,6 +38,5 @@ module testDeployment '../../deploy.bicep' = {
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
     registrationDescription: 'Managed by Lighthouse'
-    
   }
 }

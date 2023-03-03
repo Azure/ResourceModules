@@ -72,7 +72,6 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-
     sku: 'Standard'
     stagingEnvironmentPolicy: 'Enabled'
     systemAssignedIdentity: true

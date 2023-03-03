@@ -59,7 +59,6 @@ module testDeployment '../../deploy.bicep' = {
     releaseNamespace: 'flux-system'
     releaseTrain: 'Stable'
     version: '0.5.2'
-
     fluxConfigurations: [
       {
         namespace: 'flux-system'

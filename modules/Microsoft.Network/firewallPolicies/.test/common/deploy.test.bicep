@@ -76,14 +76,11 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
-<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-=======
     allowSqlRedirect: true
     autoLearnPrivateRanges: 'Enabled'
->>>>>>> 256b4b10ef1f210ecc80876c2d90dcdc5125d3bf
   }
 }

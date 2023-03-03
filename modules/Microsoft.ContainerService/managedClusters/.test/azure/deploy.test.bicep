@@ -158,11 +158,9 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
-<<<<<<< HEAD
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
-=======
     fluxExtension: {
       configurationSettings: {
         'helm-controller.enabled': 'true'
@@ -220,7 +218,6 @@ module testDeployment '../../deploy.bicep' = {
           }
         }
       ]
->>>>>>> 256b4b10ef1f210ecc80876c2d90dcdc5125d3bf
     }
   }
 }
