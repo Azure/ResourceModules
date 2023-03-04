@@ -77,8 +77,8 @@ module testDeployment '../../deploy.bicep' = {
             type: 'AzureVM'
           }
           {
-            address: 'www.office.com'
-            name: 'Office Portal'
+            address: 'www.bing.com'
+            name: 'Bing'
             type: 'ExternalAddress'
           }
         ]
@@ -93,7 +93,7 @@ module testDeployment '../../deploy.bicep' = {
                 '200'
               ]
             }
-            name: 'HTTP Test'
+            name: 'HTTP Bing Test'
             protocol: 'Http'
             successThreshold: {
               checksFailedPercent: 5
@@ -105,15 +105,15 @@ module testDeployment '../../deploy.bicep' = {
         testGroups: [
           {
             destinations: [
-              'Office Portal'
+              'Bing'
             ]
             disable: false
-            name: 'TestHTTPBing'
+            name: 'test-http-Bing'
             sources: [
               '<<namePrefix>>-subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
-              'HTTP Test'
+              'HTTP Bing Test'
             ]
           }
         ]

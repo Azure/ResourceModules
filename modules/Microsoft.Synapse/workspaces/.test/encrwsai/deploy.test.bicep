@@ -17,6 +17,9 @@ param serviceShort string = 'swensa'
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -55,5 +58,6 @@ module testDeployment '../../deploy.bicep' = {
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKUseSystemAssignedIdentity: true
     encryptionActivateWorkspace: true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
