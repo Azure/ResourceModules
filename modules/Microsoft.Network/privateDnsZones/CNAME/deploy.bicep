@@ -5,7 +5,7 @@ param privateDnsZoneName string
 param name string
 
 @description('Optional. A CNAME record.')
-param records object = {}
+param cnameRecord object = {}
 
 @description('Optional. The metadata attached to the record set.')
 param metadata object = {}
@@ -39,7 +39,7 @@ resource CNAME 'Microsoft.Network/privateDnsZones/CNAME@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
-    cnameRecord: records
+    cnameRecord: cnameRecord
     metadata: metadata
     ttl: ttl
   }
