@@ -9,7 +9,7 @@ param location string = resourceGroup().location
   'Basic'
   'Standard'
 ])
-param sku string = 'Standard'
+param skuName string = 'Standard'
 
 @description('Required. Array of objects containing all frontend IP configurations.')
 @minLength(1)
@@ -181,7 +181,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-07-01' = {
   location: location
   tags: tags
   sku: {
-    name: sku
+    name: skuName
   }
   properties: {
     frontendIPConfigurations: frontendIPConfigurationsVar
@@ -198,7 +198,7 @@ module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [fo
     loadBalancerName: loadBalancer.name
     name: backendAddressPool.name
     tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
-    addresses: contains(backendAddressPool, 'addresses') && !empty(backendAddressPool.addresses) ? backendAddressPool.addresses : []
+    loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') && !empty(backendAddressPool.loadBalancerBackendAddresses) ? backendAddressPool.loadBalancerBackendAddresses : []
     drainPeriodInSeconds: contains(backendAddressPool, 'drainPeriodInSeconds') ? backendAddressPool.drainPeriodInSeconds : 0
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
