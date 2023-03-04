@@ -82,10 +82,10 @@ resource keyVaultServicePermissions 'Microsoft.Authorization/roleAssignments@202
 }
 resource keyVaultDataPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Data-Admin-RoleAssignment')
-    scope: keyVault
+    scope: keyVault::key
     properties: {
         principalId: managedIdentity.properties.principalId
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483') // Key Vault Administrator
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
         principalType: 'ServicePrincipal'
     }
 }
