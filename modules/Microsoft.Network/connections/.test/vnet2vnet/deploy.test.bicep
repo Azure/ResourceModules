@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     virtualNetworkGateway2: {
       id: nestedDependencies.outputs.secondaryVNETGatewayResourceID
     }
-    type: 'Vnet2Vnet'
+    connectionType: 'Vnet2Vnet'
     vpnSharedKey: password
   }
 }
