@@ -24,7 +24,7 @@ param domainNameLabel array = []
   'Vpn'
   'ExpressRoute'
 ])
-param type string
+param gatewayType string
 
 @description('Required. The SKU of the Gateway.')
 @allowed([
@@ -220,7 +220,7 @@ var zoneRedundantSkus = [
 var gatewayPipSku = contains(zoneRedundantSkus, sku) ? 'Standard' : 'Basic'
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, sku) ? 'Static' : 'Dynamic'
 
-var isActiveActiveValid = type != 'ExpressRoute' ? activeActive : false
+var isActiveActiveValid = gatewayType != 'ExpressRoute' ? activeActive : false
 var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
   activeGatewayPipName
@@ -228,9 +228,9 @@ var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
 ]
 
-var vpnTypeVar = type != 'ExpressRoute' ? vpnType : 'PolicyBased'
+var vpnTypeVar = gatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
 
-var isBgpValid = type != 'ExpressRoute' ? enableBgp : false
+var isBgpValid = gatewayType != 'ExpressRoute' ? enableBgp : false
 var bgpSettings = {
   asn: asn
 }
@@ -371,10 +371,10 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
     disableIPSecReplayProtection: disableIPSecReplayProtection
-    enableDnsForwarding: type == 'ExpressRoute' ? enableDnsForwarding : null
+    enableDnsForwarding: gatewayType == 'ExpressRoute' ? enableDnsForwarding : null
     enablePrivateIpAddress: enablePrivateIpAddress
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
-    gatewayType: type
+    gatewayType: gatewayType
     gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
       id: gatewayDefaultSiteLocalNetworkGatewayId
     } : null

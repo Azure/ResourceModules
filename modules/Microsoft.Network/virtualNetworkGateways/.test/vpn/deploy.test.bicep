@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     sku: 'VpnGw2AZ'
-    type: 'Vpn'
+    gatewayType: 'Vpn'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId
     activeActive: true
     diagnosticLogsRetentionInDays: 7
