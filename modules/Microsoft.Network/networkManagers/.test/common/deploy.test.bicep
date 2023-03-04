@@ -63,11 +63,11 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
-    scopeAccesses: [
+    networkManagerScopeAccesses: [
       'Connectivity'
       'SecurityAdmin'
     ]
-    scopes: {
+    networkManagerScopes: {
       subscriptions: [
         subscription().id
       ]
