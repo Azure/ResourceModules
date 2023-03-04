@@ -43,9 +43,6 @@ param infrastructureSubnetId string = ''
 @description('Optional. Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. If set to true, then "infrastructureSubnetId" must be provided.')
 param internal bool = false
 
-@description('Optional. Configuration used to control the Environment Egress outbound traffic.')
-param vnetOutboundSettings object = {}
-
 @description('Optional. IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform.')
 param platformReservedCidr string = ''
 
@@ -122,7 +119,6 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
       dockerBridgeCidr: !empty(infrastructureSubnetId) && internal == true ? dockerBridgeCidr : null
       platformReservedCidr: !empty(infrastructureSubnetId) && internal == true ? platformReservedCidr : null
       platformReservedDnsIP: !empty(infrastructureSubnetId) && internal == true ? platformReservedDnsIP : null
-      outboundSettings: !empty(vnetOutboundSettings) ? vnetOutboundSettings : null
     }
     workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
     zoneRedundant: zoneRedundant
