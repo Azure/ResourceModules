@@ -1,7 +1,7 @@
 @description('Required. Name of the Container Apps Managed Environment.')
 param name string
 
-@description('Optional. Existing Log Analytics Workspace resource ID.')
+@description('Required. Existing Log Analytics Workspace resource ID. Note: This value is not required as per the resource type. However, not providing it currently causes an issue that is tracked [here](https://github.com/Azure/bicep/issues/9990).')
 param logAnalyticsWorkspaceResourceId string = ''
 
 @description('Optional. Location for all Resources.')

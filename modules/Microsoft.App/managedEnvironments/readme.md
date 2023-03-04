@@ -22,9 +22,16 @@ This module deploys App ManagedEnvironments.
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the Container Apps Managed Environment. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `logAnalyticsWorkspaceResourceId` | string | `''` | Existing Log Analytics Workspace resource ID. Note: This value is not required as per the resource type. However, not providing it currently causes an issue that is tracked [here](https://github.com/Azure/bicep/issues/9990). |
+| `name` | string |  | Name of the Container Apps Managed Environment. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `infrastructureSubnetId` | string | `''` | Resource ID of a subnet for infrastructure components. This is used to deploy the environment into a virtual network. Must not overlap with any other provided IP ranges. Required if "internal" is set to true. |
 
 **Optional parameters**
 
@@ -35,18 +42,15 @@ This module deploys App ManagedEnvironments.
 | `daprAIConnectionString` | securestring | `''` |  | Application Insights connection string used by Dapr to export Service to Service communication telemetry. |
 | `daprAIInstrumentationKey` | securestring | `''` |  | Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry. |
 | `dnsSuffix` | string | `''` |  | DNS suffix for the environment domain. |
-| `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP ranges. |
+| `dockerBridgeCidr` | string | `''` |  | CIDR notation IP range assigned to the Docker bridge, network. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | `enableDefaultTelemetry` | bool |  |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `infrastructureSubnetId` | string | `''` |  | Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges. |
-| `internal` | bool | `False` |  | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property. |
+| `internal` | bool | `False` |  | Boolean indicating the environment only has an internal load balancer. These environments do not have a public static IP resource. If set to true, then "infrastructureSubnetId" must be provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `logAnalyticsWorkspaceResourceId` | string | `''` |  | Existing Log Analytics Workspace resource ID. |
 | `logsDestination` | string | `'log-analytics'` |  | Logs destination. |
-| `platformReservedCidr` | string | `''` |  | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with any other provided IP ranges. |
-| `platformReservedDnsIP` | string | `''` |  | An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. |
+| `platformReservedCidr` | string | `''` |  | IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any other provided IP ranges and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
+| `platformReservedDnsIP` | string | `''` |  | An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `runtimeSubnetId` | string | `''` |  | Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges. |
 | `skuName` | string | `'Consumption'` | `[Consumption, Premium]` | Managed environment SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vnetOutboundSettings` | object | `{object}` |  | Configuration used to control the Environment Egress outbound traffic. |
