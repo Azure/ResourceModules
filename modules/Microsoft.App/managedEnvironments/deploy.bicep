@@ -52,9 +52,6 @@ param platformReservedCidr string = ''
 @description('Optional. An IP address from the IP range defined by "platformReservedCidr" that will be reserved for the internal DNS server. It must not be the first address in the range and can only be used when the environment is deployed into a virtual network. If not provided, it will be set with a default value by the platform.')
 param platformReservedDnsIP string = ''
 
-@description('Optional. Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges.')
-param runtimeSubnetId string = ''
-
 @description('Optional. Whether or not this Managed Environment is zone-redundant.')
 param zoneRedundant bool = false
 
@@ -125,47 +122,11 @@ resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' = {
       dockerBridgeCidr: !empty(infrastructureSubnetId) && internal == true ? dockerBridgeCidr : null
       platformReservedCidr: !empty(infrastructureSubnetId) && internal == true ? platformReservedCidr : null
       platformReservedDnsIP: !empty(infrastructureSubnetId) && internal == true ? platformReservedDnsIP : null
-    }
-      dockerBridgeCidr: dockerBridgeCidr
-      infrastructureSubnetId: infrastructureSubnetId
-      internal: internal
       outboundSettings: !empty(vnetOutboundSettings) ? vnetOutboundSettings : null
-      platformReservedCidr: platformReservedCidr
-      platformReservedDnsIP: platformReservedDnsIP
-      runtimeSubnetId: runtimeSubnetId
     }
     workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
     zoneRedundant: zoneRedundant
   }
-
-  // properties: union({
-  //   daprAIConnectionString: daprAIConnectionString
-  //   daprAIInstrumentationKey: daprAIInstrumentationKey
-  //   customDomainConfiguration: {
-  //     certificatePassword: certificatePassword
-  //     certificateValue: !empty(certificateValue) ? certificateValue : null
-  //     dnsSuffix: dnsSuffix
-  //   }
-  //   vnetConfiguration: {
-  //     dockerBridgeCidr: dockerBridgeCidr
-  //     infrastructureSubnetId: infrastructureSubnetId
-  //     internal: internal
-  //     outboundSettings: !empty(vnetOutboundSettings) ? vnetOutboundSettings : null
-  //     platformReservedCidr: platformReservedCidr
-  //     platformReservedDnsIP: platformReservedDnsIP
-  //     runtimeSubnetId: runtimeSubnetId
-  //   }
-  //   workloadProfiles: !empty(workloadProfiles) ? workloadProfiles : null
-  //   zoneRedundant: zoneRedundant
-  // }, (!empty(logAnalyticsWorkspaceResourceId) ? {
-  //   appLogsConfiguration: {
-  //     destination: logsDestination
-  //     logAnalyticsConfiguration: {
-  //       customerId: logAnalyticsWorkspace.properties.customerId
-  //       sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
-  //     }
-  //   }
-  // } : {}))
 }
 
 module managedEnvironment_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
