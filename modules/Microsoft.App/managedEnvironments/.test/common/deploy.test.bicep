@@ -48,7 +48,12 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     logAnalyticsWorkspaceResourceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
     location: location
-    skuName: 'Consumption'
+    skuName: 'Premium'
+    internal: true
+    infrastructureSubnetId: nestedDependencies.outputs.subnetResourceId
+    dockerBridgeCidr: '172.16.0.1/28'
+    platformReservedCidr: '172.17.17.0/24'
+    platformReservedDnsIP: '172.17.17.17'
     infrastructureSubnetId: nestedDependencies.outputs.subnetResourceId
     lock: 'CanNotDelete'
     tags: {
