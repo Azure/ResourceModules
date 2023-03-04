@@ -22,10 +22,10 @@ This module deploys App ManagedEnvironments.
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceResourceId` | string | `''` | Existing Log Analytics Workspace resource ID. Note: This value is not required as per the resource type. However, not providing it currently causes an issue that is tracked [here](https://github.com/Azure/bicep/issues/9990). |
-| `name` | string |  | Name of the Container Apps Managed Environment. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `logAnalyticsWorkspaceResourceId` | string | Existing Log Analytics Workspace resource ID. Note: This value is not required as per the resource type. However, not providing it currently causes an issue that is tracked [here](https://github.com/Azure/bicep/issues/9990). |
+| `name` | string | Name of the Container Apps Managed Environment. |
 
 **Conditional parameters**
 
@@ -189,6 +189,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     name: '<<namePrefix>>amecom001'
     // Non-required parameters
     dockerBridgeCidr: '172.16.0.1/28'
@@ -196,7 +197,6 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     internal: true
     location: '<location>'
     lock: 'CanNotDelete'
-    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
     skuName: 'Premium'
@@ -223,6 +223,9 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
+    },
     "name": {
       "value": "<<namePrefix>>amecom001"
     },
@@ -241,9 +244,6 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "logAnalyticsWorkspaceResourceId": {
-      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "platformReservedCidr": {
       "value": "172.17.17.0/24"
@@ -278,6 +278,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
   params: {
     // Required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
     name: '<<namePrefix>>amemin001'
   }
 }
@@ -298,6 +299,9 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     // Required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "logAnalyticsWorkspaceResourceId": {
+      "value": "<logAnalyticsWorkspaceResourceId>"
     },
     "name": {
       "value": "<<namePrefix>>amemin001"
