@@ -7,8 +7,6 @@ param logAnalyticsWorkspaceName string
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
-var managedEnvironmentsubnet = 'environmentSubnet'
-
 var addressPrefix = '10.0.0.0/16'
 var subnetAddressPrefix = '10.0.0.0/23'
 
@@ -37,7 +35,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
     }
     subnets: [
       {
-        name: managedEnvironmentsubnet
+        name: 'defaultSubnet'
         properties: {
           addressPrefix: subnetAddressPrefix
         }
