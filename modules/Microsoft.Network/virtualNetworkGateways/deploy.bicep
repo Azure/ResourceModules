@@ -42,7 +42,7 @@ param gatewayType string
   'ErGw2AZ'
   'ErGw3AZ'
 ])
-param sku string
+param skuName string
 
 @description('Optional. Specifies the VPN type.')
 @allowed([
@@ -217,8 +217,8 @@ var zoneRedundantSkus = [
   'ErGw2AZ'
   'ErGw3AZ'
 ]
-var gatewayPipSku = contains(zoneRedundantSkus, sku) ? 'Standard' : 'Basic'
-var gatewayPipAllocationMethod = contains(zoneRedundantSkus, sku) ? 'Static' : 'Dynamic'
+var gatewayPipSku = contains(zoneRedundantSkus, skuName) ? 'Standard' : 'Basic'
+var gatewayPipAllocationMethod = contains(zoneRedundantSkus, skuName) ? 'Static' : 'Dynamic'
 
 var isActiveActiveValid = gatewayType != 'ExpressRoute' ? activeActive : false
 var virtualGatewayPipNameVar = isActiveActiveValid ? [
@@ -353,7 +353,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     publicIPPrefixResourceId: !empty(publicIPPrefixResourceId) ? publicIPPrefixResourceId : ''
     tags: tags
     skuName: gatewayPipSku
-    zones: contains(zoneRedundantSkus, sku) ? publicIpZones : []
+    zones: contains(zoneRedundantSkus, skuName) ? publicIpZones : []
   }
 }]
 
@@ -379,8 +379,8 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
       id: gatewayDefaultSiteLocalNetworkGatewayId
     } : null
     sku: {
-      name: sku
-      tier: sku
+      name: skuName
+      tier: skuName
     }
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null

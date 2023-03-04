@@ -29,7 +29,7 @@ This module deploys a virtual network gateway.
 | :-- | :-- | :-- | :-- |
 | `gatewayType` | string | `[ExpressRoute, Vpn]` | Specifies the gateway type. E.g. VPN, ExpressRoute. |
 | `name` | string |  | Specifies the Virtual Network Gateway name. |
-| `sku` | string | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ]` | The SKU of the Gateway. |
+| `skuName` | string | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ]` | The SKU of the Gateway. |
 | `vNetResourceId` | string |  | Virtual Network resource ID. |
 
 **Optional parameters**
@@ -279,7 +279,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     // Required parameters
     gatewayType: 'Vpn'
     name: '<<namePrefix>>nvngavpn001'
-    sku: 'VpnGw2AZ'
+    skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     activeActive: false
@@ -339,7 +339,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "name": {
       "value": "<<namePrefix>>nvngavpn001"
     },
-    "sku": {
+    "skuName": {
       "value": "VpnGw2AZ"
     },
     "vNetResourceId": {
@@ -424,7 +424,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     // Required parameters
     gatewayType: 'ExpressRoute'
     name: '<<namePrefix>>nvger001'
-    sku: 'ErGw1AZ'
+    skuName: 'ErGw1AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -476,7 +476,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "name": {
       "value": "<<namePrefix>>nvger001"
     },
-    "sku": {
+    "skuName": {
       "value": "ErGw1AZ"
     },
     "vNetResourceId": {
@@ -549,7 +549,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     // Required parameters
     gatewayType: 'Vpn'
     name: '<<namePrefix>>nvgvpn001'
-    sku: 'VpnGw2AZ'
+    skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     activeActive: true
@@ -637,7 +637,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
     "name": {
       "value": "<<namePrefix>>nvgvpn001"
     },
-    "sku": {
+    "skuName": {
       "value": "VpnGw2AZ"
     },
     "vNetResourceId": {
