@@ -106,7 +106,7 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey : ''
     useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
-    protocolType: contains(connection, 'protocolType') ? connection.protocolType : 'IKEv2'
+    vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

@@ -207,11 +207,11 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         enableInternetSecurity: true
         enableRateLimiting: false
         name: '<name>'
-        protocolType: 'IKEv2'
         remoteVpnSiteResourceId: '<remoteVpnSiteResourceId>'
         routingWeight: 0
         useLocalAzureIpAddress: false
         usePolicyBasedTrafficSelectors: false
+        vpnConnectionProtocolType: 'IKEv2'
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -271,11 +271,11 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
           "enableInternetSecurity": true,
           "enableRateLimiting": false,
           "name": "<name>",
-          "protocolType": "IKEv2",
           "remoteVpnSiteResourceId": "<remoteVpnSiteResourceId>",
           "routingWeight": 0,
           "useLocalAzureIpAddress": false,
-          "usePolicyBasedTrafficSelectors": false
+          "usePolicyBasedTrafficSelectors": false,
+          "vpnConnectionProtocolType": "IKEv2"
         }
       ]
     },

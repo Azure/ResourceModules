@@ -59,7 +59,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'Connection-${last(split(nestedDependencies.outputs.vpnSiteResourceId, '/'))}'
         remoteVpnSiteResourceId: nestedDependencies.outputs.vpnSiteResourceId
         enableInternetSecurity: true
-        protocolType: 'IKEv2'
+        vpnConnectionProtocolType: 'IKEv2'
         enableRateLimiting: false
         useLocalAzureIpAddress: false
         usePolicyBasedTrafficSelectors: false
