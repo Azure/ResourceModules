@@ -117,7 +117,7 @@ This section provides an overview of the library's feature set.
 | 102 | MS.Purview<p>accounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 290 |
 | 103 | MS.RecoveryServices<p>vaults | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:7, L2:2, L3:1] | 299 |
 | 104 | MS.Resources<p>deploymentScripts |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 111 |
-| 105 | MS.Resources<p>resourceGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 67 |
+| 105 | MS.Resources<p>resourceGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 66 |
 | 106 | MS.Resources<p>tags |  |  | :white_check_mark: |  |  |  | [L1:2] | 51 |
 | 107 | MS.Security<p>azureSecurityCenter |  |  |  |  |  |  |  | 217 |
 | 108 | MS.ServiceBus<p>namespaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:6, L2:2] | 340 |
@@ -135,7 +135,7 @@ This section provides an overview of the library's feature set.
 | 120 | MS.Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 121 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3, L2:2] | 380 |
 | 122 | MS.Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 96 | 94 | 105 | 52 | 23 | 2 | 189 | 21673 |
+| Sum | | 96 | 94 | 105 | 52 | 23 | 2 | 189 | 21672 |
 
 ## Legend
 
