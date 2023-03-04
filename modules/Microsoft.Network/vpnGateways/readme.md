@@ -40,8 +40,8 @@ This module deploys VPN Gateways.
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
-| `scaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
 
 ### Parameter Usage: `bgpSettings`

@@ -23,7 +23,7 @@ param enableBgpRouteTranslationForNat bool = false
 param isRoutingPreferenceInternet bool = false
 
 @description('Optional. The scale unit for this VPN gateway.')
-param scaleUnit int = 2
+param vpnGatewayScaleUnit int = 2
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -61,7 +61,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2022-07-01' = {
     bgpSettings: bgpSettings
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
     isRoutingPreferenceInternet: isRoutingPreferenceInternet
-    vpnGatewayScaleUnit: scaleUnit
+    vpnGatewayScaleUnit: vpnGatewayScaleUnit
     virtualHub: {
       id: virtualHubResourceId
     }
