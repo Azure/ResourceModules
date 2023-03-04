@@ -191,11 +191,15 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     name: '<<namePrefix>>amecom001'
     // Non-required parameters
+    dockerBridgeCidr: '172.16.0.1/28'
     infrastructureSubnetId: '<infrastructureSubnetId>'
+    internal: true
     location: '<location>'
     lock: 'CanNotDelete'
     logAnalyticsWorkspaceResourceId: '<logAnalyticsWorkspaceResourceId>'
-    skuName: 'Consumption'
+    platformReservedCidr: '172.17.17.0/24'
+    platformReservedDnsIP: '172.17.17.17'
+    skuName: 'Premium'
     tags: {
       Env: 'test'
     }
@@ -223,8 +227,14 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
       "value": "<<namePrefix>>amecom001"
     },
     // Non-required parameters
+    "dockerBridgeCidr": {
+      "value": "172.16.0.1/28"
+    },
     "infrastructureSubnetId": {
       "value": "<infrastructureSubnetId>"
+    },
+    "internal": {
+      "value": true
     },
     "location": {
       "value": "<location>"
@@ -235,8 +245,14 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     "logAnalyticsWorkspaceResourceId": {
       "value": "<logAnalyticsWorkspaceResourceId>"
     },
+    "platformReservedCidr": {
+      "value": "172.17.17.0/24"
+    },
+    "platformReservedDnsIP": {
+      "value": "172.17.17.17"
+    },
     "skuName": {
-      "value": "Consumption"
+      "value": "Premium"
     },
     "tags": {
       "value": {
