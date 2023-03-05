@@ -1,4 +1,4 @@
-@description('Required. Resource Name.')
+@description('Required. The name of the Digital Twin Instance.')
 @minLength(3)
 @maxLength(63)
 param name string
@@ -127,7 +127,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource digitaltwin 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' = {
+resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' = {
   name: name
   location: location
   identity: identity
@@ -137,8 +137,8 @@ resource digitaltwin 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' =
   }
 }
 
-resource eventhubendpointid 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventhubEndpoint) && contains(eventhubEndpoint, 'EventHubURI'))) {
-  name: contains(eventhubEndpoint, 'EndpointName') ? '${digitaltwin.name}/${eventhubEndpoint.EndpointName}Id' : '${digitaltwin.name}/EventHubEndpointId'
+resource digitalTwinsInstance_eventHubEndpointId 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventhubEndpoint) && contains(eventhubEndpoint, 'EventHubURI'))) {
+  name: contains(eventhubEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${eventhubEndpoint.EndpointName}Id' : '${digitalTwinsInstance.name}/EventHubEndpointId'
   properties: {
     endpointType: 'EventHub'
     authenticationType: 'IdentityBased'
@@ -147,8 +147,8 @@ resource eventhubendpointid 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoi
   }
 }
 
-resource eventhubendpointkey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventhubEndpoint)) && contains(eventhubEndpoint, 'EventHubConnectionStringPrimaryKey')) {
-  name: contains(eventhubEndpoint, 'EndpointName') ? '${digitaltwin.name}/${eventhubEndpoint.EndpointName}Key' : '${digitaltwin.name}/EventHubEndpointKey'
+resource digitalTwinsInstance_eventHubEndpointKey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventhubEndpoint)) && contains(eventhubEndpoint, 'EventHubConnectionStringPrimaryKey')) {
+  name: contains(eventhubEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${eventhubEndpoint.EndpointName}Key' : '${digitalTwinsInstance.name}/EventHubEndpointKey'
   properties: {
     endpointType: 'EventHub'
     authenticationType: 'KeyBased'
@@ -157,8 +157,8 @@ resource eventhubendpointkey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpo
   }
 }
 
-resource eventgridendpointid 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventgridEndpoint) && contains(eventgridEndpoint, 'EventGridTopicEndpoint')) && contains(eventgridEndpoint, 'EventGridAccessKey1')) {
-  name: contains(eventgridEndpoint, 'EndpointName') ? '${digitaltwin.name}/${eventgridEndpoint.EndpointName}' : '${digitaltwin.name}/EventGridEndpoint'
+resource digitalTwinsInstance_eventGridEndpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventgridEndpoint) && contains(eventgridEndpoint, 'EventGridTopicEndpoint')) && contains(eventgridEndpoint, 'EventGridAccessKey1')) {
+  name: contains(eventgridEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${eventgridEndpoint.EndpointName}' : '${digitalTwinsInstance.name}/EventGridEndpoint'
   properties: {
     endpointType: 'EventGrid'
     authenticationType: 'KeyBased'
@@ -168,8 +168,8 @@ resource eventgridendpointid 'Microsoft.DigitalTwins/digitalTwinsInstances/endpo
   }
 }
 
-resource servicebusendpointid 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(servicebusEndpoint)) && contains(servicebusEndpoint, 'ServiceBusEndpointUri')) {
-  name: contains(servicebusEndpoint, 'EndpointName') ? '${digitaltwin.name}/${servicebusEndpoint.EndpointName}Id' : '${digitaltwin.name}/ServiceBusEndpointId'
+resource digitalTwinsInstance_ServiceBusEndpointId 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(servicebusEndpoint)) && contains(servicebusEndpoint, 'ServiceBusEndpointUri')) {
+  name: contains(servicebusEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${servicebusEndpoint.EndpointName}Id' : '${digitalTwinsInstance.name}/ServiceBusEndpointId'
   properties: {
     endpointType: 'ServiceBus'
     authenticationType: 'IdentityBased'
@@ -178,8 +178,8 @@ resource servicebusendpointid 'Microsoft.DigitalTwins/digitalTwinsInstances/endp
   }
 }
 
-resource servicebusendpointkey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(servicebusEndpoint)) && contains(servicebusEndpoint, 'ServiceBusPrimaryConnectionString')) {
-  name: contains(servicebusEndpoint, 'EndpointName') ? '${digitaltwin.name}/${servicebusEndpoint.EndpointName}Key' : '${digitaltwin.name}/ServiceBusEndpointKey'
+resource digitalTwinsInstance_ServiceBusEndpointKey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(servicebusEndpoint)) && contains(servicebusEndpoint, 'ServiceBusPrimaryConnectionString')) {
+  name: contains(servicebusEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${servicebusEndpoint.EndpointName}Key' : '${digitalTwinsInstance.name}/ServiceBusEndpointKey'
   properties: {
     endpointType: 'ServiceBus'
     authenticationType: 'KeyBased'
@@ -188,14 +188,14 @@ resource servicebusendpointkey 'Microsoft.DigitalTwins/digitalTwinsInstances/end
   }
 }
 
-module digitaltwin_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-DigitalTwin-PrivateEndpoint-${index}'
+module digitalTwinsInstance_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-digitalTwinsInstance-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(digitaltwin.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: digitaltwin.id
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(digitalTwinsInstance.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: digitalTwinsInstance.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
@@ -208,16 +208,16 @@ module digitaltwin_privateEndpoints '../../Microsoft.Network/privateEndpoints/de
   }
 }]
 
-resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
-  name: '${digitaltwin.name}-${lock}-lock'
+resource digitalTwinsInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${digitalTwinsInstance.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: digitaltwin
+  scope: digitalTwinsInstance
 }
 
-resource digitaltwin_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource digitalTwinsInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -227,10 +227,10 @@ resource digitaltwin_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: digitaltwin
+  scope: digitalTwinsInstance
 }
 
-module digitaltwin_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module digitalTwinsInstance_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -239,21 +239,21 @@ module digitaltwin_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for 
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: digitaltwin.id
+    resourceId: digitalTwinsInstance.id
   }
 }]
 
-@description('The resource ID of the Digital Twin.')
-output resourceId string = digitaltwin.id
+@description('The resource ID of the Digital Twins Instance.')
+output resourceId string = digitalTwinsInstance.id
 
-@description('The name of the resource group the key vault was created in.')
+@description('The name of the resource group the resource was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the Digital Twin.')
-output name string = digitaltwin.name
+@description('The name of the Digital Twins Instance.')
+output name string = digitalTwinsInstance.name
 
-@description('The hostname of the Digital Twin.')
-output hostname string = digitaltwin.properties.hostName
+@description('The hostname of the Digital Twins Instance.')
+output hostname string = digitalTwinsInstance.properties.hostName
 
 @description('The location the resource was deployed into.')
-output location string = digitaltwin.location
+output location string = digitalTwinsInstance.location
