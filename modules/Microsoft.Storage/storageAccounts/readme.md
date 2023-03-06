@@ -43,11 +43,12 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
-| `enableHierarchicalNamespace` | bool | `False` | If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
+| `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
+| `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true. |
+| `storageAccountAccessTier` | string | `'Hot'` | `[Cool, Hot, Premium]` | Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type. |
 
 **Optional parameters**
 
@@ -89,7 +90,6 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
 | `requireInfrastructureEncryption` | bool | `True` |  | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `storageAccountAccessTier` | string | `'Hot'` | `[Cool, Hot, Premium]` | Storage Account Access Tier. |
 | `storageAccountKind` | string | `'StorageV2'` | `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]` | Type of Storage Account to create. |
 | `storageAccountSku` | string | `'Standard_GRS'` | `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]` | Storage Account Sku Name. |
 | `supportsHttpsTrafficOnly` | bool | `True` |  | Allows HTTPS traffic only to storage service if sets to true. |
@@ -1011,60 +1011,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Minprem</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-ssaminprem'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>ssaminprem001'
-    // Non-required parameters
-    allowBlobPublicAccess: false
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    storageAccountAccessTier: 'Premium'
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>ssaminprem001"
-    },
-    // Non-required parameters
-    "allowBlobPublicAccess": {
-      "value": false
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "storageAccountAccessTier": {
-      "value": "Premium"
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 5: Nfs</h3>
+<h3>Example 4: Nfs</h3>
 
 <details>
 
@@ -1199,7 +1146,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 6: V1</h3>
+<h3>Example 5: V1</h3>
 
 <details>
 
