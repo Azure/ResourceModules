@@ -74,7 +74,7 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSResourceId
           ]
         }
-        service: 'digitalTwinsInstance'
+        service: 'API'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]

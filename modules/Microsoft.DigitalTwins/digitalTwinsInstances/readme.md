@@ -507,7 +507,7 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
             '<privateDNSResourceId>'
           ]
         }
-        service: 'digitalTwinsInstance'
+        service: 'API'
         subnetResourceId: '<subnetResourceId>'
       }
     ]
@@ -574,7 +574,7 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
               "<privateDNSResourceId>"
             ]
           },
-          "service": "digitalTwinsInstance",
+          "service": "API",
           "subnetResourceId": "<subnetResourceId>"
         }
       ]
