@@ -18,7 +18,6 @@ jobs:
         with:
           fetch-depth: 0
       - env:
-          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ github.token }}
         name: Manage issues
         shell: pwsh
