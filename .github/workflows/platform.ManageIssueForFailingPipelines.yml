@@ -5,7 +5,7 @@ on:
     branches:
       - users/erikag/gh-token
   schedule:
-    - cron: '30 5 * * *' # Every day at 5:30 am
+    - cron: '30 5 * * *' # Every day at 5:30 aml
 
 jobs:
   manage-issues:
