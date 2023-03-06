@@ -32,6 +32,7 @@ This module deploys Digital Twin Instance Endpoints.
 | `connectionStringSecondaryKey` | securestring | `''` | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
 | `deadLetterSecret` | securestring | `''` | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |
 | `deadLetterUri` | string | `''` | Dead letter storage URL for identity-based authentication. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpointUri` | string | `''` | The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'. |
 | `entityPath` | string | `''` | The EventHub name in the EventHub namespace for identity-based authentication. |
 | `name` | string | `'EventHubEndpoint'` | The name of the Digital Twin Endpoint. |

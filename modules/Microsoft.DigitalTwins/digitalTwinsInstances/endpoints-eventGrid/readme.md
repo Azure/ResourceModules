@@ -38,6 +38,7 @@ This module deploys Digital Twin Instance Endpoints.
 | `authenticationType` | string | `'KeyBased'` | Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified. |
 | `deadLetterSecret` | securestring | `''` | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |
 | `deadLetterUri` | string | `''` | Dead letter storage URL for identity-based authentication. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'EventGridEndpoint'` | The name of the Digital Twin Endpoint. |
 
 

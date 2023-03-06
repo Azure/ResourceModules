@@ -149,6 +149,7 @@ module digitalTwinsInstance_eventHubEndpoint 'endpoints-eventHub/deploy.bicep' =
     deadLetterUri: contains(eventHubEndpoint, 'deadLetterUri') ? eventHubEndpoint.deadLetterUri : ''
     endpointUri: contains(eventHubEndpoint, 'endpointUri') ? eventHubEndpoint.endpointUri : ''
     entityPath: contains(eventHubEndpoint, 'entityPath') ? eventHubEndpoint.entityPath : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -163,6 +164,7 @@ module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/deploy.bicep'
     accessKey2: contains(eventGridEndpoint, 'accessKey2') ? eventGridEndpoint.accessKey2 : ''
     deadLetterSecret: contains(eventGridEndpoint, 'deadLetterSecret') ? eventGridEndpoint.deadLetterSecret : ''
     deadLetterUri: contains(eventGridEndpoint, 'deadLetterUri') ? eventGridEndpoint.deadLetterUri : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -178,6 +180,7 @@ module digitalTwinsInstance_serviceBusEndpoint 'endpoints-serviceBus/deploy.bice
     entityPath: contains(serviceBusEndpoint, 'entityPath') ? serviceBusEndpoint.entityPath : ''
     primaryConnectionString: contains(serviceBusEndpoint, 'primaryConnectionString') ? serviceBusEndpoint.primaryConnectionString : ''
     secondaryConnectionString: contains(serviceBusEndpoint, 'secondaryConnectionString') ? serviceBusEndpoint.secondaryConnectionString : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
