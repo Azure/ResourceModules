@@ -69,10 +69,12 @@ param enableDefaultTelemetry bool = true
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'allLogs'
-  'ADTModelsOperation'
-  'ADTQueryOperation'
-  'ADTEventRoutesOperation'
-  'ADTDigitalTwinsOperation'
+  'DigitalTwinsOperation'
+  'EventRoutesOperation'
+  'DataHistoryOperation'
+  'ModelsOperation'
+  'QueryOperation'
+  'ResourceProviderOperation'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'
