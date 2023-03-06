@@ -1,6 +1,6 @@
-# DigitalTwins DigitalTwinInstances `[Microsoft.DigitalTwins/digitalTwinsInstances]`
+# DigitalTwin Instances `[Microsoft.DigitalTwins/digitalTwinsInstances]`
 
-This module deploys Azure Digital Twins Instances and  Digital Twins Endpoints.
+This module deploys Azure Digital Twins Instances.
 
 ## Navigation
 
@@ -18,7 +18,7 @@ This module deploys Azure Digital Twins Instances and  Digital Twins Endpoints.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DigitalTwins/digitalTwinsInstances` | [2022-05-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2022-05-31/digitalTwinsInstances) |
-| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2022-05-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2022-05-31/digitalTwinsInstances/endpoints) |
+| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2022-10-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2022-10-31/digitalTwinsInstances/endpoints) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
@@ -44,14 +44,14 @@ This module deploys Azure Digital Twins Instances and  Digital Twins Endpoints.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `eventgridEndpoint` | object | `{object}` |  | Event Grid Endpoint. |
-| `eventhubEndpoint` | object | `{object}` |  | Event Hub Endpoint. |
+| `eventGridEndpoint` | object | `{object}` |  | Event Grid Endpoint. |
+| `eventHubEndpoint` | object | `{object}` |  | Event Hub Endpoint. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `servicebusEndpoint` | object | `{object}` |  | Service Bus Endpoint. |
+| `serviceBusEndpoint` | object | `{object}` |  | Service Bus Endpoint. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |

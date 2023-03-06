@@ -24,13 +24,13 @@ param systemAssignedIdentity bool = false
 param userAssignedIdentities object = {}
 
 @description('Optional. Event Hub Endpoint.')
-param eventhubEndpoint object = {}
+param eventHubEndpoint object = {}
 
 @description('Optional. Event Grid Endpoint.')
-param eventgridEndpoint object = {}
+param eventGridEndpoint object = {}
 
 @description('Optional. Service Bus Endpoint.')
-param servicebusEndpoint object = {}
+param serviceBusEndpoint object = {}
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
@@ -137,54 +137,47 @@ resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2022
   }
 }
 
-resource digitalTwinsInstance_eventHubEndpointId 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventhubEndpoint) && contains(eventhubEndpoint, 'EventHubURI'))) {
-  name: contains(eventhubEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${eventhubEndpoint.EndpointName}Id' : '${digitalTwinsInstance.name}/EventHubEndpointId'
-  properties: {
-    endpointType: 'EventHub'
-    authenticationType: 'IdentityBased'
-    endpointUri: !empty(eventhubEndpoint.EventHubURI) ? eventhubEndpoint.EventHubURI : ''
-    entityPath: contains(eventhubEndpoint, 'EventHubEntityPath') ? eventhubEndpoint.EventHubEntityPath : ''
+module digitalTwinsInstance_eventHubEndpoint 'endpoints-eventHub/deploy.bicep' = if (!empty(eventHubEndpoint)) {
+  name: '${uniqueString(deployment().name, location)}-DigitalTwinsInstance-Endpoints-EventHub'
+  params: {
+    digitalTwinInstanceName: digitalTwinsInstance.name
+    name: contains(eventHubEndpoint, 'name') ? eventHubEndpoint.name : 'EventHubEndpoint'
+    authenticationType: contains(eventHubEndpoint, 'authenticationType') ? eventHubEndpoint.authenticationType : 'KeyBased'
+    connectionStringPrimaryKey: contains(eventHubEndpoint, 'connectionStringPrimaryKey') ? eventHubEndpoint.connectionStringPrimaryKey : ''
+    connectionStringSecondaryKey: contains(eventHubEndpoint, 'connectionStringSecondaryKey') ? eventHubEndpoint.connectionStringSecondaryKey : ''
+    deadLetterSecret: contains(eventHubEndpoint, 'deadLetterSecret') ? eventHubEndpoint.deadLetterSecret : ''
+    deadLetterUri: contains(eventHubEndpoint, 'deadLetterUri') ? eventHubEndpoint.deadLetterUri : ''
+    endpointUri: contains(eventHubEndpoint, 'endpointUri') ? eventHubEndpoint.endpointUri : ''
+    entityPath: contains(eventHubEndpoint, 'entityPath') ? eventHubEndpoint.entityPath : ''
   }
 }
 
-resource digitalTwinsInstance_eventHubEndpointKey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventhubEndpoint)) && contains(eventhubEndpoint, 'EventHubConnectionStringPrimaryKey')) {
-  name: contains(eventhubEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${eventhubEndpoint.EndpointName}Key' : '${digitalTwinsInstance.name}/EventHubEndpointKey'
-  properties: {
-    endpointType: 'EventHub'
-    authenticationType: 'KeyBased'
-    connectionStringPrimaryKey: contains(eventhubEndpoint, 'EventHubConnectionStringPrimaryKey') ? eventhubEndpoint.EventHubConnectionStringPrimaryKey : ''
-    connectionStringSecondaryKey: contains(eventhubEndpoint, 'EventHubConnectionStringSecondaryKey') ? eventhubEndpoint.EventHubConnectionStringSecondaryKey : ''
+module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/deploy.bicep' = if (!empty(eventGridEndpoint)) {
+  name: '${uniqueString(deployment().name, location)}-DigitalTwinsInstance-Endpoints-EventGrid'
+  params: {
+    digitalTwinInstanceName: digitalTwinsInstance.name
+    name: contains(eventGridEndpoint, 'name') ? eventGridEndpoint.name : 'EventGridEndpoint'
+    authenticationType: contains(eventGridEndpoint, 'authenticationType') ? eventGridEndpoint.authenticationType : 'KeyBased'
+    topicEndpoint: contains(eventGridEndpoint, 'topicEndpoint') ? eventGridEndpoint.topicEndpoint : ''
+    accessKey1: contains(eventGridEndpoint, 'accessKey1') ? eventGridEndpoint.accessKey1 : ''
+    accessKey2: contains(eventGridEndpoint, 'accessKey2') ? eventGridEndpoint.accessKey2 : ''
+    deadLetterSecret: contains(eventGridEndpoint, 'deadLetterSecret') ? eventGridEndpoint.deadLetterSecret : ''
+    deadLetterUri: contains(eventGridEndpoint, 'deadLetterUri') ? eventGridEndpoint.deadLetterUri : ''
   }
 }
 
-resource digitalTwinsInstance_eventGridEndpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(eventgridEndpoint) && contains(eventgridEndpoint, 'EventGridTopicEndpoint')) && contains(eventgridEndpoint, 'EventGridAccessKey1')) {
-  name: contains(eventgridEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${eventgridEndpoint.EndpointName}' : '${digitalTwinsInstance.name}/EventGridEndpoint'
-  properties: {
-    endpointType: 'EventGrid'
-    authenticationType: 'KeyBased'
-    accessKey1: contains(eventgridEndpoint, 'EventGridAccessKey1') ? eventgridEndpoint.EventGridAccessKey1 : ''
-    accessKey2: contains(eventgridEndpoint, 'EventGridAccessKey2') ? eventgridEndpoint.EventGridAccessKey2 : ''
-    TopicEndpoint: contains(eventgridEndpoint, 'EventGridTopicEndpoint') ? eventgridEndpoint.EventGridTopicEndpoint : ''
-  }
-}
-
-resource digitalTwinsInstance_ServiceBusEndpointId 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(servicebusEndpoint)) && contains(servicebusEndpoint, 'ServiceBusEndpointUri')) {
-  name: contains(servicebusEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${servicebusEndpoint.EndpointName}Id' : '${digitalTwinsInstance.name}/ServiceBusEndpointId'
-  properties: {
-    endpointType: 'ServiceBus'
-    authenticationType: 'IdentityBased'
-    endpointUri: contains(servicebusEndpoint, 'ServiceBusEndpointUri') ? servicebusEndpoint.ServiceBusEndpointUri : ''
-    entityPath: contains(servicebusEndpoint, 'ServiceBusEntityPath') ? servicebusEndpoint.ServiceBusEntityPath : ''
-  }
-}
-
-resource digitalTwinsInstance_ServiceBusEndpointKey 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-05-31' = if ((!empty(servicebusEndpoint)) && contains(servicebusEndpoint, 'ServiceBusPrimaryConnectionString')) {
-  name: contains(servicebusEndpoint, 'EndpointName') ? '${digitalTwinsInstance.name}/${servicebusEndpoint.EndpointName}Key' : '${digitalTwinsInstance.name}/ServiceBusEndpointKey'
-  properties: {
-    endpointType: 'ServiceBus'
-    authenticationType: 'KeyBased'
-    primaryConnectionString: contains(servicebusEndpoint, 'ServiceBusPrimaryConnectionString') ? servicebusEndpoint.ServiceBusPrimaryConnectionString : ''
-    secondaryConnectionString: contains(servicebusEndpoint, 'ServiceBusSecondaryConnectionString') ? servicebusEndpoint.ServiceBusSecondaryConnectionString : ''
+module digitalTwinsInstance_serviceBusEndpoint 'endpoints-serviceBus/deploy.bicep' = if (!empty(serviceBusEndpoint)) {
+  name: '${uniqueString(deployment().name, location)}-DigitalTwinsInstance-Endpoints-ServiceBus'
+  params: {
+    digitalTwinInstanceName: digitalTwinsInstance.name
+    name: contains(serviceBusEndpoint, 'name') ? serviceBusEndpoint.name : 'ServiceBusEndpoint'
+    authenticationType: contains(serviceBusEndpoint, 'authenticationType') ? serviceBusEndpoint.authenticationType : ''
+    deadLetterSecret: contains(serviceBusEndpoint, 'deadLetterSecret') ? serviceBusEndpoint.deadLetterSecret : ''
+    deadLetterUri: contains(serviceBusEndpoint, 'deadLetterUri') ? serviceBusEndpoint.deadLetterUri : ''
+    endpointUri: contains(serviceBusEndpoint, 'endpointUri') ? serviceBusEndpoint.endpointUri : ''
+    entityPath: contains(serviceBusEndpoint, 'entityPath') ? serviceBusEndpoint.entityPath : ''
+    primaryConnectionString: contains(serviceBusEndpoint, 'primaryConnectionString') ? serviceBusEndpoint.primaryConnectionString : ''
+    secondaryConnectionString: contains(serviceBusEndpoint, 'secondaryConnectionString') ? serviceBusEndpoint.secondaryConnectionString : ''
   }
 }
 
