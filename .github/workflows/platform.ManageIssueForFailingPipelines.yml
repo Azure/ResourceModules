@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - users/erikag/gh-token
-  # schedule:
-  #   - cron: '30 5 * * *' # Every day at 5:30 am
+  schedule:
+    - cron: '30 5 * * *' # Every day at 5:30 am
 
 jobs:
   manage-issues:
