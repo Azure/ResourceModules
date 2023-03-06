@@ -26,15 +26,27 @@ param domainNameLabel array = []
 ])
 param virtualNetworkGatewayType string
 
+@description('Optional. The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN.')
+@allowed([
+  'Generation1'
+  'Generation2'
+  'None'
+])
+param vpnGatewayGeneration string = 'None'
+
 @description('Required. The SKU of the Gateway.')
 @allowed([
   'Basic'
   'VpnGw1'
   'VpnGw2'
   'VpnGw3'
+  'VpnGw4'
+  'VpnGw5'
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
   'Standard'
   'HighPerformance'
   'UltraPerformance'
@@ -384,6 +396,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
     }
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
+    vpnGatewayGeneration: virtualNetworkGatewayType == 'Vpn' ? vpnGatewayGeneration : 'None'
   }
   dependsOn: [
     publicIPAddress
