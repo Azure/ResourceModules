@@ -110,6 +110,31 @@ param diagnosticMetricsToEnable array = [
   'WorkloadManagement'
 ]
 
+@description('Optional. Specifies the mode of database creation.')
+@allowed([
+  'Default'
+  'Copy'
+  'OnlineSecondary'
+  'PointInTimeRestore'
+  'Recovery'
+  'Restore'
+  'RestoreLongTermRetentionBackup'
+  'Secondary'
+])
+param createMode string = 'Default'
+
+@description('Optional. Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore.')
+param sourceDatabaseId string = ''
+
+@description('Optional. The time that the database was deleted when restoring a deleted database.')
+param sourceDatabaseDeletionDate string = ''
+
+@description('Optional. Resource ID of backup if createMode set to RestoreLongTermRetentionBackup.')
+param recoveryServicesRecoveryPointId string = ''
+
+@description('Optional. Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore.')
+param restorePointInTime string = ''
+
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -212,6 +237,11 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
     elasticPoolId: elasticPoolId
+    createMode: createMode
+    sourceDatabaseId: !empty(sourceDatabaseId) ? sourceDatabaseId : null
+    sourceDatabaseDeletionDate: !empty(sourceDatabaseDeletionDate) ? sourceDatabaseDeletionDate : null
+    recoveryServicesRecoveryPointId: !empty(recoveryServicesRecoveryPointId) ? recoveryServicesRecoveryPointId : null
+    restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
   }
   sku: skuVar
 }

@@ -191,6 +191,11 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     backupShortTermRetentionPolicy: contains(database, 'backupShortTermRetentionPolicy') ? database.backupShortTermRetentionPolicy : {}
     backupLongTermRetentionPolicy: contains(database, 'backupLongTermRetentionPolicy') ? database.backupLongTermRetentionPolicy : {}
+    createMode: contains(database, 'createMode') ? database.createMode : 'Default'
+    sourceDatabaseId: contains(database, 'sourceDatabaseId') ? database.sourceDatabaseId : ''
+    sourceDatabaseDeletionDate: contains(database, 'sourceDatabaseDeletionDate') ? database.sourceDatabaseDeletionDate : ''
+    recoveryServicesRecoveryPointId: contains(database, 'recoveryServicesRecoveryPointId') ? database.recoveryServicesRecoveryPointId : ''
+    restorePointInTime: contains(database, 'restorePointInTime') ? database.restorePointInTime : ''
   }
   dependsOn: [
     server_elasticPools // Enables us to add databases to existing elastic pools
