@@ -14,22 +14,3 @@ $inputObject = @{
 }
 New-AzSubscriptionDeployment @inputObject
 
-
-
-az ad sp create-for-rbac --name 'token454sp' --role 'Contributor' --scopes '/subscriptions/00461249-f3ba-465e-855e-d64aac4eb75f' --output 'json'
-{
-    'appId': 'b3ac6846-3af4-490c-bdbb-4326ef34682e',
-    'displayName': 'token454sp',
-    'password': 'zvk8Q~Ru_XKl.wof0qgLOdmwFghTy9S49gC9ydAO',
-    'tenant': '29208c38-8fc5-4a03-89e2-9b6e8e4b388b'
-}
-az role assignment create --assignee 'b3ac6846-3af4-490c-bdbb-4326ef34682e' --role 'User Access Administrator' --subscriptuion '00461249-f3ba-465e-855e-d64aac4eb75f'
-
-# --scope argument will become required for creating a role assignment in the breaking change release of the fall of 2023. Please explicitly specify --scope.
-
-az ad sp list --display-name 'token454sp' --query '[].id' --output tsv
-
-# 4f22ec4b-c6f7-4f18-879a-ec78f3136323
-
-
-{ 'clientId': 'b3ac6846-3af4-490c-bdbb-4326ef34682e', 'clientSecret': 'zvk8Q~Ru_XKl.wof0qgLOdmwFghTy9S49gC9ydAO', 'subscriptionId': '00461249-f3ba-465e-855e-d64aac4eb75f', 'tenantId': '29208c38-8fc5-4a03-89e2-9b6e8e4b388b' }
