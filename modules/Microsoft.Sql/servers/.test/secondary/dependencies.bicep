@@ -26,7 +26,7 @@ module serverDeployment '../../deploy.bicep' = {
 }
 
 @description('The resource ID of the created database.')
-output databaseId string = resourceId('Microsoft.Sql/servers/databases', serverDeployment.outputs.name, databaseName)
+output databaseResourceId string = resourceId('Microsoft.Sql/servers/databases', serverDeployment.outputs.name, databaseName)
 
 @description('The name of the created database.')
 output databaseName string = databaseName
