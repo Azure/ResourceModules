@@ -1,9 +1,6 @@
 @description('Required. The name of the server.')
 param serverName string
 
-@description('Required. The name of the database.')
-param databaseName string
-
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
