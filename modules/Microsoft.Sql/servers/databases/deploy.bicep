@@ -238,7 +238,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
     elasticPoolId: elasticPoolId
     createMode: createMode
-    sourceDatabaseId: !empty(sourceDatabaseId) ? sourceDatabaseId : null
+    sourceDatabaseId: !empty(sourceDatabaseResourceId) ? sourceDatabaseResourceId : null
     sourceDatabaseDeletionDate: !empty(sourceDatabaseDeletionDate) ? sourceDatabaseDeletionDate : null
     recoveryServicesRecoveryPointId: !empty(recoveryServicesRecoveryPointId) ? recoveryServicesRecoveryPointId : null
     restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
