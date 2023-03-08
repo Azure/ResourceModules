@@ -7,15 +7,12 @@ param databaseName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-@description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'sqlsec'
-
 @description('Optional. The password to leverage for the login.')
 @secure()
 param password string = newGuid()
 
 module serverDeployment '../../deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
+  name: '${uniqueString(deployment().name, location)}-test'
   params: {
     name: serverName
     administratorLogin: 'adminUserName'
