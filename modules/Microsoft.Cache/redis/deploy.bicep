@@ -224,7 +224,7 @@ resource redisCache_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty
 }
 
 resource redisCache_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(diagnosticWorkspaceId) ? null : diagnosticWorkspaceId
