@@ -419,34 +419,34 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' 
       }
       ingressApplicationGateway: {
         enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
-        config: {
+        config: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId) ? {
           applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
           effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
-        }
+        } : null
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
-        config: {
+        config: omsAgentEnabled && !empty(monitoringWorkspaceId) ? {
           logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
-        }
+        } : null
       }
       aciConnectorLinux: {
         enabled: aciConnectorLinuxEnabled
       }
       azurepolicy: {
         enabled: azurePolicyEnabled
-        config: {
+        config: azurePolicyEnabled ? {
           version: azurePolicyVersion
-        }
+        } : null
       }
       kubeDashboard: {
         enabled: kubeDashboardEnabled
       }
       azureKeyvaultSecretsProvider: {
         enabled: enableKeyvaultSecretsProvider
-        config: {
+        config: enableKeyvaultSecretsProvider ? {
           enableSecretRotation: enableSecretRotation
-        }
+        } : null
       }
     }
     oidcIssuerProfile: enableOidcIssuerProfile ? {
