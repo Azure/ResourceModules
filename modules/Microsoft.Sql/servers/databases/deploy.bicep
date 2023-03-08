@@ -130,7 +130,7 @@ param sourceDatabaseResourceId string = ''
 param sourceDatabaseDeletionDate string = ''
 
 @description('Optional. Resource ID of backup if createMode set to RestoreLongTermRetentionBackup.')
-param recoveryServicesRecoveryPointId string = ''
+param recoveryServicesRecoveryPointResourceId string = ''
 
 @description('Optional. Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore.')
 param restorePointInTime string = ''
