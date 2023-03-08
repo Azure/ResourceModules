@@ -9,7 +9,7 @@ param location string = resourceGroup().location
   'Basic'
   'Standard'
 ])
-param loadBalancerSku string = 'Standard'
+param skuName string = 'Standard'
 
 @description('Required. Array of objects containing all frontend IP configurations.')
 @minLength(1)
@@ -181,7 +181,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-07-01' = {
   location: location
   tags: tags
   sku: {
-    name: loadBalancerSku
+    name: skuName
   }
   properties: {
     frontendIPConfigurations: frontendIPConfigurationsVar

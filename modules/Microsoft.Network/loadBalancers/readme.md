@@ -44,13 +44,13 @@ This module deploys a load balancer.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `inboundNatRules` | _[inboundNatRules](inboundNatRules/readme.md)_ array | `[]` |  | Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
-| `loadBalancerSku` | string | `'Standard'` | `[Basic, Standard]` | Name of a load balancer SKU. |
 | `loadBalancingRules` | array | `[]` |  | Array of objects containing all load balancing rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `outboundRules` | array | `[]` |  | The outbound rules. |
 | `probes` | array | `[]` |  | Array of objects containing all probes, these are references in the load balancing rules. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `skuName` | string | `'Standard'` | `[Basic, Standard]` | Name of a load balancer SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -780,7 +780,6 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         name: 'inboundNatRule2'
       }
     ]
-    loadBalancerSku: 'Standard'
     loadBalancingRules: [
       {
         backendAddressPoolName: 'servers'
@@ -815,6 +814,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    skuName: 'Standard'
   }
 }
 ```
@@ -889,9 +889,6 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         }
       ]
     },
-    "loadBalancerSku": {
-      "value": "Standard"
-    },
     "loadBalancingRules": {
       "value": [
         {
@@ -931,6 +928,9 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "skuName": {
+      "value": "Standard"
     }
   }
 }

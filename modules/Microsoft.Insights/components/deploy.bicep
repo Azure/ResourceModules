@@ -6,7 +6,7 @@ param name string
   'web'
   'other'
 ])
-param appInsightsType string = 'web'
+param applicationType string = 'web'
 
 @description('Required. Resource ID of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
 param workspaceResourceId string
@@ -77,7 +77,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   tags: tags
   kind: kind
   properties: {
-    Application_Type: appInsightsType
+    Application_Type: applicationType
     WorkspaceResourceId: workspaceResourceId
     publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
