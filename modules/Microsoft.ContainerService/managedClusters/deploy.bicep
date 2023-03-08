@@ -419,7 +419,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' 
       }
       ingressApplicationGateway: {
         enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
-        config: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId) ?{
+        config: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId) ? {
           applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
           effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
         } : null
