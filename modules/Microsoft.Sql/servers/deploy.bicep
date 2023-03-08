@@ -194,7 +194,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     createMode: contains(database, 'createMode') ? database.createMode : 'Default'
     sourceDatabaseResourceId: contains(database, 'sourceDatabaseResourceId') ? database.sourceDatabaseResourceId : ''
     sourceDatabaseDeletionDate: contains(database, 'sourceDatabaseDeletionDate') ? database.sourceDatabaseDeletionDate : ''
-    recoveryServicesRecoveryPointId: contains(database, 'recoveryServicesRecoveryPointId') ? database.recoveryServicesRecoveryPointId : ''
+    recoveryServicesRecoveryPointResourceId: contains(database, 'recoveryServicesRecoveryPointResourceId') ? database.recoveryServicesRecoveryPointResourceId : ''
     restorePointInTime: contains(database, 'restorePointInTime') ? database.restorePointInTime : ''
   }
   dependsOn: [
