@@ -59,7 +59,7 @@ This module deploys an Azure SQL Server Database.
 | `maxSizeBytes` | int | `34359738368` |  | The max size of the database expressed in bytes. |
 | `minCapacity` | string | `''` |  | Minimal capacity that database will always have allocated. |
 | `readScale` | string | `'Disabled'` | `[Disabled, Enabled]` | The state of read-only routing. |
-| `recoveryServicesRecoveryPointId` | string | `''` |  | Resource ID of backup if createMode set to RestoreLongTermRetentionBackup. |
+| `recoveryServicesRecoveryPointResourceId` | string | `''` |  | Resource ID of backup if createMode set to RestoreLongTermRetentionBackup. |
 | `requestedBackupStorageRedundancy` | string | `''` | `['', Geo, Local, Zone]` | The storage account type to be used to store backups for this database. |
 | `restorePointInTime` | string | `''` |  | Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore. |
 | `sampleName` | string | `''` |  | The name of the sample schema to apply when creating this database. |
@@ -69,7 +69,7 @@ This module deploys an Azure SQL Server Database.
 | `skuSize` | string | `''` |  | Size of the particular SKU. |
 | `skuTier` | string | `'GeneralPurpose'` |  | The skuTier or edition of the particular SKU. |
 | `sourceDatabaseDeletionDate` | string | `''` |  | The time that the database was deleted when restoring a deleted database. |
-| `sourceDatabaseId` | string | `''` |  | Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore. |
+| `sourceDatabaseResourceId` | string | `''` |  | Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this database is zone redundant. |
 

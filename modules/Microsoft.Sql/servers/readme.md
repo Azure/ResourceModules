@@ -804,7 +804,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         name: '<name>'
         skuName: 'Basic'
         skuTier: 'Basic'
-        sourceDatabaseId: '<sourceDatabaseId>'
+        sourceDatabaseResourceId: '<sourceDatabaseResourceId>'
       }
     ]
   }
@@ -842,7 +842,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "name": "<name>",
           "skuName": "Basic",
           "skuTier": "Basic",
-          "sourceDatabaseId": "<sourceDatabaseId>"
+          "sourceDatabaseResourceId": "<sourceDatabaseResourceId>"
         }
       ]
     }
