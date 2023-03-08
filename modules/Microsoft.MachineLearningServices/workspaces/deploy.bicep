@@ -103,8 +103,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@sys.description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@sys.description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 @sys.description('Optional. The description of this workspace.')
 param description string = ''

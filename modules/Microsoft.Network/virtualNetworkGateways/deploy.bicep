@@ -178,7 +178,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
-param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+param diagnosticSettingsName string = ''
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
@@ -427,7 +427,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: virtualNetworkGatewayDiagnosticSettingsName
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
