@@ -18,7 +18,6 @@ param serviceShort string = 'sqlsec'
 @secure()
 param password string = newGuid()
 
-
 // ============ //
 // Dependencies //
 // ============ //
@@ -35,7 +34,6 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     serverName: '<<namePrefix>>-${serviceShort}-pri'
-    databaseName: 'db1'
   }
 }
 
@@ -57,7 +55,7 @@ module testDeployment '../../deploy.bicep' = {
         skuName: 'Basic'
         maxSizeBytes: 2147483648
         createMode: 'Secondary'
-        sourceDatabaseId: nestedDependencies.outputs.databaseId
+        sourceDatabaseResourceId: nestedDependencies.outputs.databaseResourceId
       }
     ]
   }
