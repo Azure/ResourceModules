@@ -82,7 +82,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
-param publicIpDiagnosticSettingsName string = ''
+param diagnosticSettingsName string = ''
 
 var natGatewayPropertyPublicIPPrefixes = [for publicIpPrefix in publicIpPrefixes: {
   id: az.resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
@@ -114,7 +114,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPubli
     name: !empty(natGatewayPipName) ? natGatewayPipName : '${name}-pip'
     diagnosticLogCategoriesToEnable: diagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
-    diagnosticSettingsName: !empty(publicIpDiagnosticSettingsName) ? publicIpDiagnosticSettingsName : (!empty(natGatewayPipName) ? '${natGatewayPipName}-diagnosticSettings : '${name}-pip-diagnosticSettings')
+    diagnosticSettingsName: !empty(diagnosticSettingsName) ? diagnosticSettingsName : (!empty(natGatewayPipName) ? '${natGatewayPipName}-diagnosticSettings' : '${name}-pip-diagnosticSettings')
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
