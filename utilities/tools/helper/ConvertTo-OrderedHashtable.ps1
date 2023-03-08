@@ -1,3 +1,5 @@
+#requires -version 7.3
+
 <#
 .SYNOPSIS
 Convert a given JSON string into an ordered HashTable.

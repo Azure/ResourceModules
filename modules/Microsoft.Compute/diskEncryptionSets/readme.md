@@ -14,6 +14,7 @@ This template deploys a disk encryption set.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Compute/diskEncryptionSets` | [2022-07-02](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-07-02/diskEncryptionSets) |
 | `Microsoft.KeyVault/vaults/accessPolicies` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults/accessPolicies) |
@@ -29,6 +30,13 @@ This template deploys a disk encryption set.
 | `keyVaultResourceId` | string | Resource ID of the KeyVault containing the key or secret. |
 | `name` | string | The name of the disk encryption set that is being created. |
 
+**Conditional parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `systemAssignedIdentity` | bool | `True` | Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty. |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to "false". |
+
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -38,11 +46,10 @@ This template deploys a disk encryption set.
 | `federatedClientId` | string | `'None'` |  | Multi-tenant application client ID to access key vault in a different tenant. Setting the value to "None" will clear the property. |
 | `keyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `rotationToLatestKeyVersionEnabled` | bool | `False` |  | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
-| `systemAssignedIdentity` | bool | `True` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the disk encryption resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -306,6 +313,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
     name: '<<namePrefix>>cdescom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         principalIds: [
@@ -315,7 +323,10 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
+    tags: {
+      TagKey: 'TagValue'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -349,6 +360,9 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -361,7 +375,12 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
       ]
     },
     "systemAssignedIdentity": {
-      "value": true
+      "value": false
+    },
+    "tags": {
+      "value": {
+        "TagKey": "TagValue"
+      }
     },
     "userAssignedIdentities": {
       "value": {

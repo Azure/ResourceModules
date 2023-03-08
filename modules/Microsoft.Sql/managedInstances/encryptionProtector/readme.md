@@ -19,10 +19,9 @@ This module deploys an encryption protector for a SQL managed instance.
 
 **Required parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string | `'current'` | The name of the encryptionProtector. |
-| `serverKeyName` | string |  | The name of the SQL managed instance key. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serverKeyName` | string | The name of the SQL managed instance key. |
 
 **Conditional parameters**
 

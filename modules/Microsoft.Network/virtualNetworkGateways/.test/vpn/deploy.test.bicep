@@ -62,6 +62,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    vpnGatewayGeneration: 'Generation2'
     virtualNetworkGatewaySku: 'VpnGw2AZ'
     virtualNetworkGatewayType: 'Vpn'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId

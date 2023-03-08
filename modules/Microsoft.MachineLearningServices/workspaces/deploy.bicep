@@ -239,7 +239,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : 'Enabled')
     serviceManagedResourcesSettings: serviceManagedResourcesSettings
-    sharedPrivateLinkResources: sharedPrivateLinkResources
+    sharedPrivateLinkResources: sharedPrivateLinkResources // Note: This property is not idempotent. Neither with [] or `null`
   }
 }
 
