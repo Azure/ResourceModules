@@ -198,8 +198,8 @@ param cMKUserAssignedIdentityResourceId string = ''
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
 param cMKKeyVersion string = ''
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
