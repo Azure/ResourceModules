@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Conditional. The name of the parent queue service. Required if the template is used in a standalone deployment.')
-param queueServicesName string = 'default'
-
 @description('Required. The name of the storage queue to deploy.')
 param name string
 
@@ -33,7 +30,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 
   resource queueServices 'queueServices@2021-09-01' existing = {
-    name: queueServicesName
+    name: 'default'
   }
 }
 

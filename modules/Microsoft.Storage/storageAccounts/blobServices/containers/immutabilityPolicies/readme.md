@@ -19,11 +19,10 @@ This module deploys an Immutability Policy for a blob container
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `blobServicesName` | string | `'default'` | The name of the parent blob service. Required if the template is used in a standalone deployment. |
-| `containerName` | string |  | The name of the parent container to apply the policy to. Required if the template is used in a standalone deployment. |
-| `storageAccountName` | string |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `containerName` | string | The name of the parent container to apply the policy to. Required if the template is used in a standalone deployment. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -32,7 +31,6 @@ This module deploys an Immutability Policy for a blob container
 | `allowProtectedAppendWrites` | bool | `True` | This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `immutabilityPeriodSinceCreationInDays` | int | `365` | The immutability period for the blobs in the container since the policy creation, in days. |
-| `name` | string | `'default'` | Name of the immutable policy. |
 
 
 ## Outputs
