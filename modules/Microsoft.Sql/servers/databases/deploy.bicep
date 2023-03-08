@@ -240,7 +240,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     createMode: createMode
     sourceDatabaseId: !empty(sourceDatabaseResourceId) ? sourceDatabaseResourceId : null
     sourceDatabaseDeletionDate: !empty(sourceDatabaseDeletionDate) ? sourceDatabaseDeletionDate : null
-    recoveryServicesRecoveryPointId: !empty(recoveryServicesRecoveryPointId) ? recoveryServicesRecoveryPointId : null
+    recoveryServicesRecoveryPointId: !empty(recoveryServicesRecoveryPointResourceId) ? recoveryServicesRecoveryPointResourceId : null
     restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
   }
   sku: skuVar
