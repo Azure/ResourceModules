@@ -47,7 +47,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     displayName: 'azuremonitorlogs'
     name: 'azuremonitor'
-    connectionApi: {
+    api: {
       id: '${subscription().id}/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
 
     }

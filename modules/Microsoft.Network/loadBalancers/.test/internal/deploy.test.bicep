@@ -95,7 +95,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'inboundNatRule2'
       }
     ]
-    loadBalancerSku: 'Standard'
+    skuName: 'Standard'
     loadBalancingRules: [
       {
         backendAddressPoolName: 'servers'
