@@ -8,25 +8,29 @@ param location string = resourceGroup().location
 @secure()
 param password string = newGuid()
 
-module serverDeployment '../../deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test'
-  params: {
-    name: serverName
+resource server 'Microsoft.Sql/servers@2021-11-01' = {
+  name: serverName
+  location: location
+  properties: {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
-    databases: [
-      {
-        name: databaseName
-        skuTier: 'Basic'
-        skuName: 'Basic'
-        maxSizeBytes: 2147483648
-      }
-    ]
+  }
+
+  resource database 'databases@2021-11-01' = {
+    name: 'db1'
+    location: location
+    sku: {
+      name: 'Basic'
+      tier: 'Basic'
+    }
+    properties: {
+      maxSizeBytes: 2147483648
+    }
   }
 }
 
 @description('The resource ID of the created database.')
-output databaseResourceId string = resourceId('Microsoft.Sql/servers/databases', serverDeployment.outputs.name, databaseName)
+output databaseResourceId string = server::database.id
 
 @description('The name of the created database.')
-output databaseName string = databaseName
+output databaseName string = 'db1'
