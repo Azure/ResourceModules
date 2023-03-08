@@ -28,7 +28,7 @@ This module deploys a virtual network gateway.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | Specifies the Virtual Network Gateway name. |
-| `virtualNetworkGatewaySku` | string | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ]` | The SKU of the Gateway. |
+| `virtualNetworkGatewaySku` | string | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ, VpnGw4, VpnGw4AZ, VpnGw5, VpnGw5AZ]` | The SKU of the Gateway. |
 | `virtualNetworkGatewayType` | string | `[ExpressRoute, Vpn]` | Specifies the gateway type. E.g. VPN, ExpressRoute. |
 | `vNetResourceId` | string |  | Virtual Network resource ID. |
 
@@ -71,6 +71,7 @@ This module deploys a virtual network gateway.
 | `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `vpnClientAadConfiguration` | object | `{object}` |  | Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided. |
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
+| `vpnGatewayGeneration` | string | `'None'` | `[Generation1, Generation2, None]` | The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
 
@@ -613,6 +614,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    vpnGatewayGeneration: 'Generation2'
     vpnType: 'RouteBased'
   }
 }
@@ -738,6 +740,9 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "vpnGatewayGeneration": {
+      "value": "Generation2"
     },
     "vpnType": {
       "value": "RouteBased"
