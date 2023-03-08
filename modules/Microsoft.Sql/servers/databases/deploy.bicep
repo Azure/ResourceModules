@@ -124,7 +124,7 @@ param diagnosticMetricsToEnable array = [
 param createMode string = 'Default'
 
 @description('Optional. Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore.')
-param sourceDatabaseId string = ''
+param sourceDatabaseResourceId string = ''
 
 @description('Optional. The time that the database was deleted when restoring a deleted database.')
 param sourceDatabaseDeletionDate string = ''
