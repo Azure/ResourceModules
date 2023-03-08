@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Conditional. The name of the parent table service. Required if the template is used in a standalone deployment.')
-param tableServicesName string = 'default'
-
 @description('Required. Name of the table.')
 param name string
 
@@ -27,7 +24,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 
   resource tableServices 'tableServices@2021-09-01' existing = {
-    name: tableServicesName
+    name: 'default'
   }
 }
 

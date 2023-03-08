@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the table service.')
-param name string = 'default'
-
 @description('Optional. tables to create.')
 param tables array = []
 
@@ -47,8 +44,11 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
+
+// The name of the table service
+var name = 'default'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -105,7 +105,7 @@ resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2021-09-
 }
 
 resource tableServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -120,9 +120,8 @@ resource tableServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
 module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in tables: {
   name: '${deployment().name}-Table-${index}'
   params: {
-    storageAccountName: storageAccount.name
-    tableServicesName: tableServices.name
     name: tableName
+    storageAccountName: storageAccount.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

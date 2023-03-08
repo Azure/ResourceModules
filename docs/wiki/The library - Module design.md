@@ -391,6 +391,9 @@ Within a bicep file, use the following conventions:
   - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
   - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
   - `Generated` - The parameter value is generated within the module and should not be specified as input.
+- If parameters map to resource properties, they should not contain the resource's name as it would introduce redundancy. For example, the `name` property of the Key Vault module should be just that and not `keyVaultName`. The rationale is that the consumers know that the name is for the Key Vault if they deploy its module.
+- Further, if a property value allows a single value only, there is no need to introduce a parameter for it. Instead it can be hardcoded into the deployment. For example, the name of a blobServices resource can only be `default`. Hence we can implement its name property directly as `name: 'default'`.
+  > Special case _Diagnostic Settings_: In cases where the resource name can be hardcoded, also the default value for the diagnostic settings name is affected. In those cases, we recommend to introduce an additional variable `'var name = '<theHardcodedValue>'`' (e.g., `var name = 'default'`) to be used both in the main resource's name (e.g., `'name: name'`), as well as the diagnostic settings name: `'name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'`'. To make this value obvious, the description of the `'diagnosticSettingsName'` input parameter should be updated to: `'@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')'`
 
 ## Variables
 
@@ -591,9 +594,11 @@ Dependency file (`dependencies.bicep`) guidelines:
 
 - The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
 - Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
+
   - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
     > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
+
   - If you need a Deployment Script to set additional non-template resources up (for example certificates/files, etc.), we recommend to store it as a file in the shared `modules/.shared/.scripts` folder and load it using the template function `loadTextContent()` (for example: `scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')`). This approach makes it easier to test & validate the logic and further allows reusing the same logic accross multiple test cases.
 
 # Telemetry
