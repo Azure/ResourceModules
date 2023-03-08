@@ -33,4 +33,4 @@ resource server 'Microsoft.Sql/servers@2021-11-01' = {
 output databaseResourceId string = server::database.id
 
 @description('The name of the created database.')
-output databaseName string = 'db1'
+output databaseName string = server::database.name
