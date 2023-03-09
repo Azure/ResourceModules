@@ -111,7 +111,7 @@ roleAssignments: [
 
 - The two subnets also need the delegation to service `Microsoft.Databricks/workspaces`
 
-### Parameter Usage: `workspaceParameters`
+### Parameter Usage: `parameters`
 
 - Include only those elements (e.g. amlWorkspaceId) as object if specified, otherwise remove it
 
@@ -120,7 +120,7 @@ roleAssignments: [
 <summary>Parameter JSON format</summary>
 
 ```json
-"workspaceParameters": {
+"parameters": {
     "value": {
         "amlWorkspaceId": {
             "value": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.MachineLearningServices/workspaces/xxx"
@@ -148,7 +148,7 @@ roleAssignments: [
 <summary>Bicep format</summary>
 
 ```bicep
-workspaceParameters: {
+parameters: {
     amlWorkspaceId: {
         value: '/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.MachineLearningServices/workspaces/xxx'
     }

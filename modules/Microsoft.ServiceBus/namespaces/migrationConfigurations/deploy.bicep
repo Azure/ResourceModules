@@ -3,9 +3,6 @@
 @maxLength(50)
 param namespaceName string
 
-@description('Optional. The name of the migration configuration.')
-param name string = '$default'
-
 @description('Required. Name to access Standard Namespace after migration.')
 param postMigrationName string
 
@@ -32,7 +29,7 @@ resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
 }
 
 resource migrationConfiguration 'Microsoft.ServiceBus/namespaces/migrationConfigurations@2017-04-01' = {
-  name: name
+  name: '$default'
   parent: namespace
   properties: {
     targetNamespace: targetNamespaceResourceId

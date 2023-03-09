@@ -29,7 +29,6 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
-      - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.virtualnetworks.yml'
       - 'modules/Microsoft.Network/virtualNetworks/**'
       - 'utilities/pipelines/**'
@@ -69,7 +68,6 @@ jobs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
       modulePath: '${{ env.modulePath }}'
-
 
   ##############################
   #   Call reusable workflow   #

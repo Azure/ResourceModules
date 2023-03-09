@@ -35,7 +35,6 @@ This module deploys an administrator for the SQL managed instance
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'ActiveDirectory'` | The name of the managed instance administrator. |
 | `tenantId` | string | `''` | Tenant ID of the managed instance administrator. |
 
 

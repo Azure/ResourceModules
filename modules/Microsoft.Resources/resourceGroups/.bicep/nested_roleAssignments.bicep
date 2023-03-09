@@ -5,7 +5,7 @@ param principalIds array
 param roleDefinitionIdOrName string
 
 @sys.description('Required. The resource ID of the resource to apply the role assignment to.')
-param resourceId string
+param resourceId string = resourceGroup().id
 
 @sys.description('Optional. The principal type of the assigned principal ID.')
 @allowed([

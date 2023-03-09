@@ -167,6 +167,7 @@ module testDeployment '../../deploy.bicep' = {
         virtualNetworkSubnetId: nestedDependencies.outputs.serviceEndpointSubnetResourceId
       }
     ]
+    restrictOutboundNetworkAccess: 'Disabled'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'

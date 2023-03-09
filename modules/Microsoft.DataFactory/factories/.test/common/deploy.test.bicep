@@ -63,6 +63,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    tags: {
+      application: 'CARML'
+    }
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
@@ -72,6 +75,12 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     gitConfigureLater: true
+    globalParameters: {
+      testParameter1: {
+        type: 'String'
+        value: 'testValue1'
+      }
+    }
     integrationRuntimes: [
       {
         managedVirtualNetworkName: 'default'
@@ -110,6 +119,9 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'dataFactory'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          application: 'CARML'
+        }
       }
     ]
     roleAssignments: [

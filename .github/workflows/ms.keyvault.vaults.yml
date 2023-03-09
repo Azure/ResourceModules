@@ -69,7 +69,6 @@ jobs:
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
       modulePath: '${{ env.modulePath }}'
 
-
   ##############################
   #   Call reusable workflow   #
   ##############################

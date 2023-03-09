@@ -12,7 +12,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2021-07-12' = {
+resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2022-09-09' = {
     name: hostPoolName
     location: location
     properties: {

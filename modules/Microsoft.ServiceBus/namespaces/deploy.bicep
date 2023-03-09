@@ -234,7 +234,6 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
   name: '${uniqueString(deployment().name, location)}-MigrationConfigurations'
   params: {
     namespaceName: serviceBusNamespace.name
-    name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
     postMigrationName: migrationConfigurations.postMigrationName
     targetNamespaceResourceId: migrationConfigurations.targetNamespace
     enableDefaultTelemetry: enableReferencedModulesTelemetry

@@ -90,6 +90,7 @@ module testDeployment '../../deploy.bicep' = {
         name: '<<namePrefix>>-az-evh-x-001'
       }
       {
+        name: '<<namePrefix>>-az-evh-x-002'
         authorizationRules: [
           {
             name: 'RootManageSharedAccessKey'
@@ -123,7 +124,6 @@ module testDeployment '../../deploy.bicep' = {
           }
         ]
         messageRetentionInDays: 1
-        name: '<<namePrefix>>-az-evh-x-002'
         partitionCount: 2
         roleAssignments: [
           {

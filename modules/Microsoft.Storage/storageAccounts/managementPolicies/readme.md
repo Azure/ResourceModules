@@ -34,7 +34,6 @@ This module can be used to deploy a management policies into a storage account.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'default'` | The name of the storage container to deploy. |
 
 
 ### Parameter Usage: `rules`
