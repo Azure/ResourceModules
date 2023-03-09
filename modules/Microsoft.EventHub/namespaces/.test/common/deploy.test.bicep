@@ -163,6 +163,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
