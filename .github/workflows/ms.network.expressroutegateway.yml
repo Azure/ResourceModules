@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - main
+      #- main
       - users/fblix-jpeasier/expressRouteGateway
     paths:
       - '.github/actions/templates/**'
