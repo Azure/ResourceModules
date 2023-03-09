@@ -31,13 +31,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.expressroutegateway.yml'
-      - 'modules/Microsoft.Network/expressroutegateway/**'
+      - 'modules/Microsoft.Network/expressRouteGateway/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/expressroutegateway'
+  modulePath: 'modules/Microsoft.Network/expressRouteGateway'
   workflowPath: '.github/workflows/ms.network.expressroutegateway.yml'
 
 concurrency:
