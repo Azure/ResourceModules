@@ -6,13 +6,13 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.applicationgateways-${serviceShort}-rg'
+param resourceGroupName string = 'ms.network.expressRouteGateway-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nagcom'
+param serviceShort string = 'nerg'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -62,6 +62,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    tags: {
+      hello: 'world'
+    }
     minAutoScale: 2
     maxAutoScale: 3
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId

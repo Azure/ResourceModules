@@ -194,15 +194,18 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module expressRouteGateway './Microsoft.Network/expressRouteGateway/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nagcom'
+  name: '${uniqueString(deployment().name, location)}-test-nerg'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nagcom001'
+    name: '<<namePrefix>>nerg001'
     virtualHubId: '<virtualHubId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     maxAutoScale: 3
     minAutoScale: 2
+    tags: {
+      hello: 'world'
+    }
   }
 }
 ```
@@ -221,7 +224,7 @@ module expressRouteGateway './Microsoft.Network/expressRouteGateway/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nagcom001"
+      "value": "<<namePrefix>>nerg001"
     },
     "virtualHubId": {
       "value": "<virtualHubId>"
@@ -235,6 +238,11 @@ module expressRouteGateway './Microsoft.Network/expressRouteGateway/deploy.bicep
     },
     "minAutoScale": {
       "value": 2
+    },
+    "tags": {
+      "value": {
+        "hello": "world"
+      }
     }
   }
 }
