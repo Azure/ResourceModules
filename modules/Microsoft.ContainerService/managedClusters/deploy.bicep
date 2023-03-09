@@ -144,6 +144,9 @@ param aciConnectorLinuxEnabled bool = false
 @description('Optional. Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled.')
 param azurePolicyEnabled bool = true
 
+@description('Optional. Specifies whether the openServiceMesh add-on is enabled or not.')
+param openServiceMeshEnabled bool = false
+
 @description('Optional. Specifies the azure policy version to use.')
 param azurePolicyVersion string = 'v2'
 
@@ -438,6 +441,10 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' 
         config: azurePolicyEnabled ? {
           version: azurePolicyVersion
         } : null
+      }
+      openServiceMesh: {
+        enabled: openServiceMeshEnabled
+        config: openServiceMeshEnabled ? {} : null
       }
       kubeDashboard: {
         enabled: kubeDashboardEnabled

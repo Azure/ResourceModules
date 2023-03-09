@@ -147,6 +147,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
+    openServiceMeshEnabled: true
     lock: 'CanNotDelete'
     roleAssignments: [
       {
