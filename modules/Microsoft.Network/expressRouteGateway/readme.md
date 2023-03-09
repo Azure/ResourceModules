@@ -1,4 +1,4 @@
-# Network Application Gateways `[Microsoft.Network/expressRouteGateways]`
+# Network Application Gateways `[Microsoft.Network/expressRouteGateway]`
 
 This module deploys Network ApplicationGateways.
 
@@ -193,7 +193,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module expressRouteGateways './Microsoft.Network/expressRouteGateways/deploy.bicep' = {
+module expressRouteGateway './Microsoft.Network/expressRouteGateway/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nagcom'
   params: {
     // Required parameters
