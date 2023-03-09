@@ -54,3 +54,15 @@ resource expressRouteGateway 'Microsoft.Network/expressRouteGateways@2022-07-01'
     }
   }
 }
+
+@description('The resource ID of the ExpressRoute Gateway.')
+output resourceId string = expressRouteGateway.id
+
+@description('The resource group of the ExpressRoute Gateway was deployed into.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The name of the ExpressRoute Gateway.')
+output name string = expressRouteGateway.name
+
+@description('The location the resource was deployed into.')
+output location string = expressRouteGateway.location

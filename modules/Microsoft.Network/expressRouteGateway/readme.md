@@ -172,8 +172,12 @@ userAssignedIdentities: {
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the ExpressRoute Gateway. |
+| `resourceGroupName` | string | The resource group of the ExpressRoute Gateway was deployed into. |
+| `resourceId` | string | The resource ID of the ExpressRoute Gateway. |
 
 ## Cross-referenced modules
 
