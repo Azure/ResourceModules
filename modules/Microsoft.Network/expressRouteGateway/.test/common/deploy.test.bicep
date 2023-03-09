@@ -62,6 +62,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    tags: {
+      hello: 'world'
+    }
     minAutoScale: 2
     maxAutoScale: 3
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId

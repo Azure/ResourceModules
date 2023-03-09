@@ -29,6 +29,7 @@ This module deploys Network ApplicationGateways.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `allowNonVirtualWanTraffic` | bool | `False` | Configures this gateway to accept traffic from non Virtual WAN networks. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expressRouteConnections` | array | `[]` | List of ExpressRoute connections to the ExpressRoute gateway. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
