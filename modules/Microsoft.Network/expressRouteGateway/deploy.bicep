@@ -7,6 +7,7 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Firewall policy resource.')
 param tags object = {}
 
+@description('Optional. Configures this gateway to accept traffic from non Virtual WAN networks.')
 param allowNonVirtualWanTraffic bool = false
 
 @description('Optional. Maximum number of scale units deployed for ExpressRoute gateway.')
