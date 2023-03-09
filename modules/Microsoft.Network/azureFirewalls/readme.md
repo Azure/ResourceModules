@@ -766,10 +766,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafhub'
+  name: '${uniqueString(deployment().name, location)}-test-hubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafhub001'
+    name: '<<namePrefix>>hubcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallPolicyId: '<firewallPolicyId>'
@@ -797,7 +797,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafhub001"
+      "value": "<<namePrefix>>hubcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -831,10 +831,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafhub'
+  name: '${uniqueString(deployment().name, location)}-test-hubmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafhub001'
+    name: '<<namePrefix>>hubmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubIPAddresses: {
@@ -861,7 +861,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafhub001"
+      "value": "<<namePrefix>>hubmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
