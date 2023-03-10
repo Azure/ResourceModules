@@ -226,6 +226,10 @@ module testDeployment '../../deploy.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
   dependsOn: [
     nestedDependencies // Required to leverage `existing` SSH key reference

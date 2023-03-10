@@ -51,7 +51,6 @@ module testDeployment '../../deploy.bicep' = {
     tags: {
       resourceType: 'Service Fabric'
       clusterName: '<<namePrefix>>${serviceShort}001'
-
     }
     addOnFeatures: [
       'RepairManager'

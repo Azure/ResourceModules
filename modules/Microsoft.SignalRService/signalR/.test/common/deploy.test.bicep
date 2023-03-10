@@ -64,6 +64,10 @@ module testDeployment '../../deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-${serviceShort}-001'
+          tags: {
+            Environment: 'Non-Prod'
+            Role: 'DeploymentValidation'
+          }
         }
       ]
       publicNetwork: {
@@ -83,6 +87,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'signalr'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     resourceLogConfigurationsToEnable: [

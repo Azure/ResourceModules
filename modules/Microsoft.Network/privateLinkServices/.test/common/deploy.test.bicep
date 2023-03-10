@@ -89,5 +89,9 @@ module testDeployment '../../deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

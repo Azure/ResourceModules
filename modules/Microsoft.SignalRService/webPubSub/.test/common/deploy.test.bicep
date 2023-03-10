@@ -63,6 +63,10 @@ module testDeployment '../../deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-${serviceShort}-001'
+          tags: {
+            Environment: 'Non-Prod'
+            Role: 'DeploymentValidation'
+          }
         }
       ]
       publicNetwork: {
@@ -82,6 +86,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'webpubsub'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     resourceLogConfigurationsToEnable: [
@@ -98,7 +106,8 @@ module testDeployment '../../deploy.bicep' = {
     sku: 'Standard_S1'
     systemAssignedIdentity: true
     tags: {
-      purpose: 'test'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

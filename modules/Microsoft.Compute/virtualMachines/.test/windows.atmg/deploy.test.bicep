@@ -80,5 +80,9 @@ module testDeployment '../../deploy.bicep' = {
     vmSize: 'Standard_DS2_v2'
     adminPassword: password
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

@@ -103,5 +103,9 @@ module testDeployment '../../deploy.bicep' = {
     userMsiName: nestedDependencies.outputs.managedIdentityName
     userMsiResourceGroup: resourceGroupName
     vmSize: 'Standard_D2s_v3'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

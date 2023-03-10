@@ -100,6 +100,9 @@ module testDeployment '../../deploy.bicep' = {
         ram: 8
       }
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     agentUpdate: {
       type: 'Scheduled'
       useSessionHostLocalTime: false

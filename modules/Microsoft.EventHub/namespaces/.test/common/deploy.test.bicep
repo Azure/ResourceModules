@@ -163,6 +163,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -177,6 +181,10 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

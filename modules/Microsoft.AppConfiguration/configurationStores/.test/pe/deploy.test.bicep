@@ -58,8 +58,16 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'configurationStores'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     softDeleteRetentionInDays: 1
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

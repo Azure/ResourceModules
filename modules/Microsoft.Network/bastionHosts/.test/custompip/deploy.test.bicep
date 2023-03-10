@@ -72,5 +72,9 @@ module testDeployment '../../deploy.bicep' = {
       skuName: 'Standard'
       skuTier: 'Regional'
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
