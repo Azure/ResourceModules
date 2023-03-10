@@ -289,6 +289,10 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
         }
         service: 'azuremonitor'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -306,6 +310,10 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
         name: 'scoped1'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -339,7 +347,11 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
             ]
           },
           "service": "azuremonitor",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -361,6 +373,12 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
           "name": "scoped1"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

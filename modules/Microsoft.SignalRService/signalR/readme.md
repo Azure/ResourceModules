@@ -308,6 +308,10 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-srssrcom-001'
+          tags: {
+            Environment: 'Non-Prod'
+            Role: 'DeploymentValidation'
+          }
         }
       ]
       publicNetwork: {
@@ -327,6 +331,10 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
         }
         service: 'signalr'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     resourceLogConfigurationsToEnable: [
@@ -399,7 +407,11 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-<<namePrefix>>-srssrcom-001"
+            "name": "pe-<<namePrefix>>-srssrcom-001",
+            "tags": {
+              "Environment": "Non-Prod",
+              "Role": "DeploymentValidation"
+            }
           }
         ],
         "publicNetwork": {
@@ -420,7 +432,11 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
             ]
           },
           "service": "signalr",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },

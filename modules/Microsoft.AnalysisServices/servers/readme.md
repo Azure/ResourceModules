@@ -199,6 +199,10 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       }
     ]
     skuName: 'S0'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -254,6 +258,12 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     },
     "skuName": {
       "value": "S0"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -540,6 +540,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
         service: 'blob'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     queueServices: {
@@ -593,6 +597,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         'table1'
         'table2'
       ]
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -759,7 +767,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             ]
           },
           "service": "blob",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -827,6 +839,12 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -874,11 +892,19 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
         service: 'blob'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     requireInfrastructureEncryption: true
     storageAccountSku: 'Standard_LRS'
     systemAssignedIdentity: false
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -937,7 +963,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             ]
           },
           "service": "blob",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -949,6 +979,12 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": false
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -1053,6 +1089,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     storageAccountSku: 'Premium_LRS'
     supportsHttpsTrafficOnly: false
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -1134,6 +1174,12 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": true
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -1162,6 +1208,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     storageAccountKind: 'Storage'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -1191,6 +1241,12 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "storageAccountKind": {
       "value": "Storage"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -205,6 +205,10 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
       }
     ]
     skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     zones: [
       '1'
       '2'
@@ -268,6 +272,12 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
     },
     "skuName": {
       "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "zones": {
       "value": [

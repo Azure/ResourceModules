@@ -93,6 +93,10 @@ module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep
       eventTimeToLive: '120'
       maxDeliveryAttempts: 10
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -144,6 +148,12 @@ module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep
       "value": {
         "eventTimeToLive": "120",
         "maxDeliveryAttempts": 10
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

@@ -505,6 +505,10 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
         }
         service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -517,6 +521,10 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       }
     ]
     systemAssignedIdentity: false
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -625,7 +633,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
             ]
           },
           "service": "amlworkspace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -642,6 +654,12 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
     },
     "systemAssignedIdentity": {
       "value": false
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -686,9 +704,17 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
         }
         service: 'amlworkspace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     systemAssignedIdentity: false
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -749,12 +775,22 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
             ]
           },
           "service": "amlworkspace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
     "systemAssignedIdentity": {
       "value": false
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

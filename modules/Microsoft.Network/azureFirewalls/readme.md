@@ -341,6 +341,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
   }
 }
@@ -373,6 +377,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "vNetId": {
       "value": "<vNetId>"
@@ -495,6 +505,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
     zones: [
       '1'
@@ -642,6 +656,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       ]
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "vNetId": {
       "value": "<vNetId>"
     },
@@ -697,6 +717,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       skuName: 'Standard'
       skuTier: 'Regional'
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
   }
 }
@@ -748,6 +772,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "skuTier": "Regional"
       }
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "vNetId": {
       "value": "<vNetId>"
     }
@@ -777,6 +807,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       publicIPs: {
         count: 1
       }
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     virtualHubId: '<virtualHubId>'
   }
@@ -811,6 +845,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "publicIPs": {
           "count": 1
         }
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     },
     "virtualHubId": {
