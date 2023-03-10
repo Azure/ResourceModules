@@ -502,6 +502,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
         service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     restrictOutboundNetworkAccess: 'Disabled'
@@ -522,6 +526,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -642,7 +650,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -671,6 +683,12 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -730,8 +748,16 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
         service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -771,9 +797,19 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

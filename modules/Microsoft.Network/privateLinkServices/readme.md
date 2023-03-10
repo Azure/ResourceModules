@@ -483,6 +483,10 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     visibility: {
       subscriptions: [
         '<subscriptionId>'
@@ -561,6 +565,12 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/deploy.bicep
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "visibility": {
       "value": {

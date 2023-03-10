@@ -286,6 +286,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         phoneNumber: '2345678901'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -345,6 +349,12 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
           "phoneNumber": "2345678901"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

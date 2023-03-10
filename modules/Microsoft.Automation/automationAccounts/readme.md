@@ -445,6 +445,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         }
         service: 'Webhook'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
       {
         privateDnsZoneGroup: {
@@ -454,6 +458,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         }
         service: 'DSCAndHybridWorker'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -543,6 +551,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -657,7 +669,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
             ]
           },
           "service": "Webhook",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         },
         {
           "privateDnsZoneGroup": {
@@ -666,7 +682,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
             ]
           },
           "service": "DSCAndHybridWorker",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -766,6 +786,12 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

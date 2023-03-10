@@ -191,7 +191,8 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
       }
     ]
     tags: {
-      Test: 'Yes'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -233,7 +234,8 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "Test": "Yes"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

@@ -215,6 +215,10 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -273,6 +277,12 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -307,6 +317,10 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -350,6 +364,12 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -385,6 +405,10 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     ]
     sourceUri: '<sourceUri>'
     storageAccountId: '<storageAccountId>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -431,6 +455,12 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
     },
     "storageAccountId": {
       "value": "<storageAccountId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

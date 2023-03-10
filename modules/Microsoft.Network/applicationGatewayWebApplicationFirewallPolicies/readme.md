@@ -130,6 +130,10 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
       mode: 'Prevention'
       state: 'Enabled'
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -175,6 +179,12 @@ module applicationGatewayWebApplicationFirewallPolicies './Microsoft.Network/app
         "fileUploadLimitInMb": 10,
         "mode": "Prevention",
         "state": "Enabled"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

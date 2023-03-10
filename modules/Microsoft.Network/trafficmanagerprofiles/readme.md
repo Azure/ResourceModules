@@ -292,6 +292,10 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -347,6 +351,12 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

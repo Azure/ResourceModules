@@ -413,6 +413,10 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-srswpscom-001'
+          tags: {
+            Environment: 'Non-Prod'
+            Role: 'DeploymentValidation'
+          }
         }
       ]
       publicNetwork: {
@@ -432,6 +436,10 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         }
         service: 'webpubsub'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     resourceLogConfigurationsToEnable: [
@@ -448,7 +456,8 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     sku: 'Standard_S1'
     systemAssignedIdentity: true
     tags: {
-      purpose: 'test'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -502,7 +511,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-<<namePrefix>>-srswpscom-001"
+            "name": "pe-<<namePrefix>>-srswpscom-001",
+            "tags": {
+              "Environment": "Non-Prod",
+              "Role": "DeploymentValidation"
+            }
           }
         ],
         "publicNetwork": {
@@ -523,7 +536,11 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
             ]
           },
           "service": "webpubsub",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -550,7 +567,8 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "purpose": "test"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }
@@ -628,9 +646,17 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
         }
         service: 'webpubsub'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     sku: 'Standard_S1'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -664,12 +690,22 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
             ]
           },
           "service": "webpubsub",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
     "sku": {
       "value": "Standard_S1"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -303,11 +303,19 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         ]
         service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageAccessIdentity: '<storageAccessIdentity>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -374,7 +382,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
             }
           ],
           "service": "batchAccount",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -386,6 +398,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -421,10 +439,18 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         }
         service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageAccessIdentity: '<storageAccessIdentity>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -473,7 +499,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
             ]
           },
           "service": "batchAccount",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -482,6 +512,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

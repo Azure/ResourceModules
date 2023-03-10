@@ -218,6 +218,10 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     ]
     skuFamily: 'MeteredData'
     skuTier: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -288,6 +292,12 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
     },
     "skuTier": {
       "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

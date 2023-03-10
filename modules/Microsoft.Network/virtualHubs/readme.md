@@ -158,6 +158,10 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -220,6 +224,12 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

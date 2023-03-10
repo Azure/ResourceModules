@@ -546,6 +546,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -745,6 +749,12 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -852,6 +862,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -981,6 +995,12 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

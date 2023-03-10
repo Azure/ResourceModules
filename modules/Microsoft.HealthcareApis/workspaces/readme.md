@@ -508,6 +508,10 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     location: '<location>'
     lock: ''
     publicNetworkAccess: 'Enabled'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -616,6 +620,12 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
     },
     "publicNetworkAccess": {
       "value": "Enabled"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
