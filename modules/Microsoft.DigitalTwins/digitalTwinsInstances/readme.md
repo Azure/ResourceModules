@@ -315,10 +315,11 @@ Deployment of Digital Twins Event Hub Endpoint. Identity based authentication.
 <summary>Bicep format</summary>
 
 ```bicep
-  EndpointName: '<Endpoint Name>'
-  EventHubEntityPath: 'evh1' // Event Hub Name
-  EventHubURI: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
-```
+  eventhubEndpoint: {
+    EndpointName: '<Endpoint Name>'
+    EventHubEntityPath: 'evh1' // Event Hub Name
+    EventHubURI: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+  }
 
 </details>
 <p>
