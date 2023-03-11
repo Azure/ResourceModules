@@ -380,11 +380,12 @@ Deployment of Digital Twins Event Grid Endpoint.
 <summary>Bicep format</summary>
 
 ```bicep
-  EndpointName: '<Endpoint Name>'
-  EventGridTopicEndpoint: 'https://xyz.<region>.eventgrid.azure.net/api/events'
-  EventGridAccessKey1: '<Event Grid Topic Access Key 1>'
-  EventGridAccessKey2: '<Event Grid Topic Access Key 2>'
-```
+  eventgridEndpoint: {
+    EndpointName: '<Endpoint Name>'
+    EventGridTopicEndpoint: 'https://xyz.<region>.eventgrid.azure.net/api/events'
+    EventGridAccessKey1: '<Event Grid Topic Access Key 1>'
+    EventGridAccessKey2: '<Event Grid Topic Access Key 2>'
+  }
 
 </details>
 <p>
