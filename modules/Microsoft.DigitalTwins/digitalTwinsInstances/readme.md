@@ -348,10 +348,11 @@ Deployment of Digital Twins Event Hub Endpoint. Key based authentication.
 <summary>Bicep format</summary>
 
 ```bicep
-   EndpointName: '<Endpoint Name>'
-   EventHubConnectionStringPrimaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-KEY>=;EntityPath=<Event-Hub Name>'
-   EventHubConnectionStringSecondaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-Key>;EntityPath=<Event-Hub Name>'
-```
+  eventhubEndpoint: {
+    EndpointName: '<Endpoint Name>'
+    EventHubConnectionStringPrimaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-KEY>=;EntityPath=<Event-Hub Name>'
+    EventHubConnectionStringSecondaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-Key>;EntityPath=<Event-Hub Name>'
+  }
 </details>
 <p>
 
