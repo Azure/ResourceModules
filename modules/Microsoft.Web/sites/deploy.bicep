@@ -28,7 +28,7 @@ param httpsOnly bool = true
 param clientAffinityEnabled bool = true
 
 @description('Optional. The resource ID of the app service environment to use for this resource.')
-param appServiceEnvironmentId string = ''
+param appServiceEnvironmentResourceId string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -50,10 +50,10 @@ param virtualNetworkSubnetId string = ''
 param siteConfig object = {}
 
 @description('Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.')
-param storageAccountId string = ''
+param storageAccountResourceId string = ''
 
 @description('Optional. Resource ID of the app insight to leverage for this resource.')
-param appInsightId string = ''
+param appInsightResourceId string = ''
 
 @description('Optional. For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons.')
 param setAzureWebJobsDashboard bool = contains(kind, 'functionapp') ? true : false
@@ -259,8 +259,8 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
     serverFarmId: serverFarmResourceId
     clientAffinityEnabled: clientAffinityEnabled
     httpsOnly: httpsOnly
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
-      id: appServiceEnvironmentId
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentResourceId) ? {
+      id: appServiceEnvironmentResourceId
     } : null
     storageAccountRequired: storageAccountRequired
     keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : null
@@ -285,8 +285,8 @@ module app_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSetting
   params: {
     appName: app.name
     kind: kind
-    storageAccountId: storageAccountId
-    appInsightId: appInsightId
+    storageAccountResourceId: storageAccountResourceId
+    appInsightResourceId: appInsightResourceId
     setAzureWebJobsDashboard: setAzureWebJobsDashboard
     appSettingsKeyValuePairs: appSettingsKeyValuePairs
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -313,7 +313,7 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     kind: kind
     serverFarmResourceId: serverFarmResourceId
     httpsOnly: contains(slot, 'httpsOnly') ? slot.httpsOnly : httpsOnly
-    appServiceEnvironmentId: !empty(appServiceEnvironmentId) ? appServiceEnvironmentId : ''
+    appServiceEnvironmentResourceId: !empty(appServiceEnvironmentResourceId) ? appServiceEnvironmentResourceId : ''
     clientAffinityEnabled: contains(slot, 'clientAffinityEnabled') ? slot.clientAffinityEnabled : clientAffinityEnabled
     systemAssignedIdentity: contains(slot, 'systemAssignedIdentity') ? slot.systemAssignedIdentity : systemAssignedIdentity
     userAssignedIdentities: contains(slot, 'userAssignedIdentities') ? slot.userAssignedIdentities : userAssignedIdentities
@@ -321,8 +321,8 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     storageAccountRequired: contains(slot, 'storageAccountRequired') ? slot.storageAccountRequired : storageAccountRequired
     virtualNetworkSubnetId: contains(slot, 'virtualNetworkSubnetId') ? slot.virtualNetworkSubnetId : virtualNetworkSubnetId
     siteConfig: contains(slot, 'siteConfig') ? slot.siteConfig : siteConfig
-    storageAccountId: contains(slot, 'storageAccountId') ? slot.storageAccountId : storageAccountId
-    appInsightId: contains(slot, 'appInsightId') ? slot.appInsightId : appInsightId
+    storageAccountResourceId: contains(slot, 'storageAccountResourceId') ? slot.storageAccountResourceId : storageAccountResourceId
+    appInsightResourceId: contains(slot, 'appInsightResourceId') ? slot.appInsightResourceId : appInsightResourceId
     setAzureWebJobsDashboard: contains(slot, 'setAzureWebJobsDashboard') ? slot.setAzureWebJobsDashboard : setAzureWebJobsDashboard
     authSettingV2Configuration: contains(slot, 'authSettingV2Configuration') ? slot.authSettingV2Configuration : authSettingV2Configuration
     enableDefaultTelemetry: enableReferencedModulesTelemetry

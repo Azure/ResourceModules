@@ -31,7 +31,7 @@ param httpsOnly bool = true
 param clientAffinityEnabled bool = true
 
 @description('Optional. The resource ID of the app service environment to use for this resource.')
-param appServiceEnvironmentId string = ''
+param appServiceEnvironmentResourceId string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -53,10 +53,10 @@ param virtualNetworkSubnetId string = ''
 param siteConfig object = {}
 
 @description('Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.')
-param storageAccountId string = ''
+param storageAccountResourceId string = ''
 
 @description('Optional. Resource ID of the app insight to leverage for this resource.')
-param appInsightId string = ''
+param appInsightResourceId string = ''
 
 @description('Optional. For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons.')
 param setAzureWebJobsDashboard bool = contains(kind, 'functionapp') ? true : false
@@ -271,8 +271,8 @@ resource slot 'Microsoft.Web/sites/slots@2022-03-01' = {
     serverFarmId: serverFarmResourceId
     clientAffinityEnabled: clientAffinityEnabled
     httpsOnly: httpsOnly
-    hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
-      id: appServiceEnvironmentId
+    hostingEnvironmentProfile: !empty(appServiceEnvironmentResourceId) ? {
+      id: appServiceEnvironmentResourceId
     } : null
     storageAccountRequired: storageAccountRequired
     keyVaultReferenceIdentity: !empty(keyVaultAccessIdentityResourceId) ? keyVaultAccessIdentityResourceId : any(null)
@@ -302,8 +302,8 @@ module slot_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSettin
     slotName: slot.name
     appName: app.name
     kind: kind
-    storageAccountId: storageAccountId
-    appInsightId: appInsightId
+    storageAccountResourceId: storageAccountResourceId
+    appInsightResourceId: appInsightResourceId
     setAzureWebJobsDashboard: setAzureWebJobsDashboard
     appSettingsKeyValuePairs: appSettingsKeyValuePairs
     enableDefaultTelemetry: enableReferencedModulesTelemetry
