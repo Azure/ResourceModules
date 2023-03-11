@@ -1,7 +1,7 @@
 @description('Required. Name of the Azure Bastion resource.')
 param name string
 
-@description('Optional. The idle timeout of the nat gateway.')
+@description('Optional. The idle timeout of the NAT gateway.')
 param idleTimeoutInMinutes int = 5
 
 @description('Optional. Use to have a new Public IP Address created for the NAT Gateway.')
@@ -11,10 +11,10 @@ param natGatewayPublicIpAddress bool = false
 param natGatewayPipName string = ''
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param natGatewayPublicIPPrefixId string = ''
+param publicIPPrefixResourceId string = ''
 
 @description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com.')
-param natGatewayDomainNameLabel string = ''
+param domainNameLabel string = ''
 
 @description('Optional. Existing Public IP Address resource names to use for the NAT Gateway.')
 param publicIpAddresses array = []
@@ -84,11 +84,11 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var natGatewayPropertyPublicIPPrefixes = [for publicIpPrefix in publicIpPrefixes: {
+var publicIPPrefixResourceIds = [for publicIpPrefix in publicIpPrefixes: {
   id: az.resourceId('Microsoft.Network/publicIPPrefixes', publicIpPrefix)
 }]
 
-var natGatewayPropertyPublicIPAddresses = [for publicIpAddress in publicIpAddresses: {
+var publicIPAddressResourceIds = [for publicIpAddress in publicIpAddresses: {
   id: az.resourceId('Microsoft.Network/publicIPAddresses', publicIpAddress)
 }]
 
@@ -120,12 +120,12 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPubli
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    domainNameLabel: natGatewayDomainNameLabel
+    domainNameLabel: domainNameLabel
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: location
     lock: lock
     publicIPAllocationMethod: 'Static'
-    publicIPPrefixResourceId: natGatewayPublicIPPrefixId
+    publicIPPrefixResourceId: publicIPPrefixResourceId
     tags: tags
     skuName: 'Standard'
   }
@@ -142,8 +142,8 @@ resource natGateway 'Microsoft.Network/natGateways@2022-07-01' = {
   }
   properties: {
     idleTimeoutInMinutes: idleTimeoutInMinutes
-    publicIpPrefixes: natGatewayPropertyPublicIPPrefixes
-    publicIpAddresses: natGatewayPropertyPublicIPAddresses
+    publicIpPrefixes: publicIPPrefixResourceIds
+    publicIpAddresses: publicIPAddressResourceIds
   }
   zones: zones
 }
