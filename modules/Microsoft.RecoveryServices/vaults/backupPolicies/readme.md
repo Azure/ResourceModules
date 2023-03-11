@@ -21,8 +21,8 @@ This module deploys a Backup Policy for a Recovery Services Vault
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `backupPolicyProperties` | object | Configuration of the Azure Recovery Service Vault Backup Policy. |
 | `name` | string | Name of the Azure Recovery Service Vault Backup Policy. |
+| `properties` | object | Configuration of the Azure Recovery Service Vault Backup Policy. |
 
 **Conditional parameters**
 

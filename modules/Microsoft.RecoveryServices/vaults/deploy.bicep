@@ -241,7 +241,7 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
   params: {
     recoveryVaultName: rsv.name
     name: backupPolicy.name
-    backupPolicyProperties: backupPolicy.properties
+    properties: backupPolicy.properties
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

@@ -42,7 +42,7 @@ This module deploys a NAT gateway.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `domainNameLabel` | string | `''` |  | DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `idleTimeoutInMinutes` | int | `5` |  | The idle timeout of the nat gateway. |
+| `idleTimeoutInMinutes` | int | `5` |  | The idle timeout of the NAT gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natGatewayPipName` | string | `''` |  | Specifies the name of the Public IP used by the NAT Gateway. If it's not provided, a '-pip' suffix will be appended to the Bastion's name. |
