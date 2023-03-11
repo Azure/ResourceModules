@@ -415,10 +415,11 @@ Deployment of Digital Twins Service Bus Endpoint. Identity based authentication.
 <summary>Bicep format</summary>
 
 ```bicep
+  servicebusEndpoint: {
     EndpointName: '<Endpoint Name>'
     ServiceBusEndpointUri: 'sb://xyz.servicebus.windows.net' //Service Bus URI, including sb://
     ServiceBusEntityPath: '<Service Bus Entity Path>'
-```
+  }
 
 </details>
 <p>
