@@ -449,10 +449,11 @@ Deployment of Digital Twins Service Bus Endpoint. Key based authentication.
 <summary>Bicep format</summary>
 
 ```bicep
+  servicebusEndpoint: {
     EndpointName: '<Endpoint Name>'
     ServiceBusPrimaryConnectionString: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>'
     ServiceBusSecondaryConnectionString: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>'
-```
+  }
 
 </details>
 <p>
