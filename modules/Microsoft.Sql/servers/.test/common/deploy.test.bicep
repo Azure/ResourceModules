@@ -89,7 +89,7 @@ module testDeployment '../../deploy.bicep' = {
         'test1@contoso.com'
         'test2@contoso.com'
       ]
-      vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+      storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
     }
     elasticPools: [
       {
