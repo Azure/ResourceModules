@@ -817,3 +817,74 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 </details>
 <p>
+
+<h3>Example 4: Secondary</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlsec'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-sqlsec-sec'
+    // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    databases: [
+      {
+        createMode: 'Secondary'
+        maxSizeBytes: 2147483648
+        name: '<name>'
+        skuName: 'Basic'
+        skuTier: 'Basic'
+        sourceDatabaseResourceId: '<sourceDatabaseResourceId>'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-sqlsec-sec"
+    },
+    // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "databases": {
+      "value": [
+        {
+          "createMode": "Secondary",
+          "maxSizeBytes": 2147483648,
+          "name": "<name>",
+          "skuName": "Basic",
+          "skuTier": "Basic",
+          "sourceDatabaseResourceId": "<sourceDatabaseResourceId>"
+        }
+      ]
+    }
+  }
+}
+```
+
+</details>
+<p>

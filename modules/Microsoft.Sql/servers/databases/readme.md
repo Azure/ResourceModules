@@ -40,6 +40,7 @@ This module deploys an Azure SQL Server Database.
 | `backupLongTermRetentionPolicy` | object | `{object}` |  | The long term backup retention policy to create for the database. |
 | `backupShortTermRetentionPolicy` | object | `{object}` |  | The short term backup retention policy to create for the database. |
 | `collation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | The collation of the database. |
+| `createMode` | string | `'Default'` | `[Copy, Default, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup, Secondary]` | Specifies the mode of database creation. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AutomaticTuning, Blocks, DatabaseWaitStatistics, Deadlocks, DevOpsOperationsAudit, Errors, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, SQLInsights, SQLSecurityAuditEvents, Timeouts]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -58,13 +59,17 @@ This module deploys an Azure SQL Server Database.
 | `maxSizeBytes` | int | `34359738368` |  | The max size of the database expressed in bytes. |
 | `minCapacity` | string | `''` |  | Minimal capacity that database will always have allocated. |
 | `readScale` | string | `'Disabled'` | `[Disabled, Enabled]` | The state of read-only routing. |
+| `recoveryServicesRecoveryPointResourceId` | string | `''` |  | Resource ID of backup if createMode set to RestoreLongTermRetentionBackup. |
 | `requestedBackupStorageRedundancy` | string | `''` | `['', Geo, Local, Zone]` | The storage account type to be used to store backups for this database. |
+| `restorePointInTime` | string | `''` |  | Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore. |
 | `sampleName` | string | `''` |  | The name of the sample schema to apply when creating this database. |
 | `skuCapacity` | int | `-1` |  | Capacity of the particular SKU. |
 | `skuFamily` | string | `''` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `skuName` | string | `'GP_Gen5_2'` |  | The name of the SKU. |
 | `skuSize` | string | `''` |  | Size of the particular SKU. |
 | `skuTier` | string | `'GeneralPurpose'` |  | The skuTier or edition of the particular SKU. |
+| `sourceDatabaseDeletionDate` | string | `''` |  | The time that the database was deleted when restoring a deleted database. |
+| `sourceDatabaseResourceId` | string | `''` |  | Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this database is zone redundant. |
 
