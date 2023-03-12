@@ -413,10 +413,6 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-srswpscom-001'
-          tags: {
-            Environment: 'Non-Prod'
-            Role: 'DeploymentValidation'
-          }
         }
       ]
       publicNetwork: {
@@ -511,11 +507,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-<<namePrefix>>-srswpscom-001",
-            "tags": {
-              "Environment": "Non-Prod",
-              "Role": "DeploymentValidation"
-            }
+            "name": "pe-<<namePrefix>>-srswpscom-001"
           }
         ],
         "publicNetwork": {
