@@ -308,10 +308,6 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-srssrcom-001'
-          tags: {
-            Environment: 'Non-Prod'
-            Role: 'DeploymentValidation'
-          }
         }
       ]
       publicNetwork: {
@@ -349,6 +345,10 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
       }
     ]
     sku: 'Standard_S1'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -404,11 +404,7 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-<<namePrefix>>-srssrcom-001",
-            "tags": {
-              "Environment": "Non-Prod",
-              "Role": "DeploymentValidation"
-            }
+            "name": "pe-<<namePrefix>>-srssrcom-001"
           }
         ],
         "publicNetwork": {
@@ -454,6 +450,12 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     },
     "sku": {
       "value": "Standard_S1"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
