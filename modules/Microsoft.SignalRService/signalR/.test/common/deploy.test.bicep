@@ -105,8 +105,5 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     sku: 'Standard_S1'
-    tags: {
-      purpose: 'test'
-    }
   }
 }

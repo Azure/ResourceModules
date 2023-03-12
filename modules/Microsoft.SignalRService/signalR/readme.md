@@ -349,9 +349,6 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
       }
     ]
     sku: 'Standard_S1'
-    tags: {
-      purpose: 'test'
-    }
   }
 }
 ```
@@ -457,11 +454,6 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     },
     "sku": {
       "value": "Standard_S1"
-    },
-    "tags": {
-      "value": {
-        "purpose": "test"
-      }
     }
   }
 }
