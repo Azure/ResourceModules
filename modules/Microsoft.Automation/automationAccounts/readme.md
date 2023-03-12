@@ -486,8 +486,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         advancedSchedule: {}
         expiryTime: '9999-12-31T13:00'
-        frequency: 'Minute'
-        interval: 15
+        frequency: 'Hour'
+        interval: 12
         name: 'TestSchedule'
         startTime: ''
         timeZone: 'Europe/Berlin'
@@ -717,8 +717,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         {
           "advancedSchedule": {},
           "expiryTime": "9999-12-31T13:00",
-          "frequency": "Minute",
-          "interval": 15,
+          "frequency": "Hour",
+          "interval": 12,
           "name": "TestSchedule",
           "startTime": "",
           "timeZone": "Europe/Berlin"
