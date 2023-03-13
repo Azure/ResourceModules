@@ -46,7 +46,7 @@ resource expressRouteGateway 'Microsoft.Network/expressRouteGateways@2022-07-01'
     autoScaleConfiguration: {
       bounds: {
         max: maxAutoScale
-        min: minAutoScale
+        min: autoScaleConfigurationBoundsMin
       }
     }
     expressRouteConnections: expressRouteConnections
