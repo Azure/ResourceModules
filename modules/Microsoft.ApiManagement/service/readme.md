@@ -334,6 +334,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -405,6 +409,12 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -550,6 +560,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -739,6 +753,12 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

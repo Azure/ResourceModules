@@ -311,7 +311,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    tags: '<tags>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -453,7 +456,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
       ]
     },
     "tags": {
-      "value": "<tags>"
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

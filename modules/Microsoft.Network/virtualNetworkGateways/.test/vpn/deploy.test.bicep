@@ -88,6 +88,10 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     vpnType: 'RouteBased'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     enablePrivateIpAddress: true
     gatewayDefaultSiteLocalNetworkGatewayId: nestedDependencies.outputs.localNetworkGatewayResourceId
     disableIPSecReplayProtection: true

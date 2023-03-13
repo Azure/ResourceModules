@@ -1028,6 +1028,10 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     scaleSetFaultDomain: 1
     skuCapacity: 1
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     upgradePolicyMode: 'Manual'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -1223,6 +1227,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "upgradePolicyMode": {
       "value": "Manual"
@@ -1451,6 +1461,10 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         path: '/home/scaleSetAdmin/.ssh/authorized_keys'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -1549,6 +1563,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
           "path": "/home/scaleSetAdmin/.ssh/authorized_keys"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -1676,6 +1696,10 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     ]
     skuCapacity: 1
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     upgradePolicyMode: 'Manual'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -1860,6 +1884,12 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "upgradePolicyMode": {
       "value": "Manual"

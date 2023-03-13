@@ -1212,6 +1212,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         }
         service: 'AzureSiteRecovery'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     replicationAlertSettings: {
@@ -1234,6 +1238,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
       immutabilitySettings: {
         state: 'Unlocked'
       }
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -1540,7 +1548,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
             ]
           },
           "service": "AzureSiteRecovery",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -1569,6 +1581,12 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         "immutabilitySettings": {
           "state": "Unlocked"
         }
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }
@@ -1647,6 +1665,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         recoveryPointHistory: 2880
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -1729,6 +1751,12 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           "recoveryPointHistory": 2880
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

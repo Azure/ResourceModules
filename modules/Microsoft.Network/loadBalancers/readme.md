@@ -580,6 +580,10 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -724,6 +728,12 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -815,6 +825,10 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
       }
     ]
     skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -931,6 +945,12 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
     },
     "skuName": {
       "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

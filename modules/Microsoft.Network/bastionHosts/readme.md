@@ -339,6 +339,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     ]
     scaleUnits: 4
     skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -415,6 +419,12 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     },
     "skuName": {
       "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -461,6 +471,10 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
       ]
       skuName: 'Standard'
       skuTier: 'Regional'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -513,6 +527,12 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         ],
         "skuName": "Standard",
         "skuTier": "Regional"
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

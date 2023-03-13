@@ -209,6 +209,10 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -264,6 +268,12 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

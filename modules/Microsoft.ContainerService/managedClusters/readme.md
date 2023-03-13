@@ -115,6 +115,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Name of the resource group containing agent pool nodes. |
 | `omsAgentEnabled` | bool | `True` |  | Specifies whether the OMS agent is enabled. |
+| `openServiceMeshEnabled` | bool | `False` |  | Specifies whether the openServiceMesh add-on is enabled or not. |
 | `podIdentityProfileAllowNetworkPluginKubenet` | bool | `False` |  | Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing. |
 | `podIdentityProfileEnable` | bool | `False` |  | Whether the pod identity addon is enabled. |
 | `podIdentityProfileUserAssignedIdentities` | array | `[]` |  | The pod identities to use in the cluster. |
@@ -534,6 +535,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       }
     }
     lock: 'CanNotDelete'
+    openServiceMeshEnabled: true
     roleAssignments: [
       {
         principalIds: [
@@ -544,6 +546,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -727,6 +733,9 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "lock": {
       "value": "CanNotDelete"
     },
+    "openServiceMeshEnabled": {
+      "value": true
+    },
     "roleAssignments": {
       "value": [
         {
@@ -740,6 +749,12 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -847,6 +862,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -976,6 +995,12 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

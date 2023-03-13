@@ -74,5 +74,9 @@ module testDeployment '../../deploy.bicep' = {
         phoneNumber: '2345678901'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

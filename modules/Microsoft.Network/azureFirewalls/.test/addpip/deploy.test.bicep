@@ -54,5 +54,9 @@ module testDeployment '../../deploy.bicep' = {
         publicIPAddressResourceId: nestedDependencies.outputs.publicIPResourceId
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

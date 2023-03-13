@@ -545,6 +545,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
         service: 'sites'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -701,7 +705,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             ]
           },
           "service": "sites",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -835,6 +843,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
         service: 'sites'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -872,6 +884,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             }
             service: 'sites'
             subnetResourceId: '<subnetResourceId>'
+            tags: {
+              Environment: 'Non-Prod'
+              Role: 'DeploymentValidation'
+            }
           }
         ]
         roleAssignments: [
@@ -958,7 +974,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             ]
           },
           "service": "sites",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -1001,7 +1021,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
                 ]
               },
               "service": "sites",
-              "subnetResourceId": "<subnetResourceId>"
+              "subnetResourceId": "<subnetResourceId>",
+              "tags": {
+                "Environment": "Non-Prod",
+                "Role": "DeploymentValidation"
+              }
             }
           ],
           "roleAssignments": [

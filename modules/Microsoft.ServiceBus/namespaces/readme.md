@@ -439,6 +439,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     queues: [
@@ -484,7 +488,8 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     skuName: 'Premium'
     systemAssignedIdentity: true
     tags: {
-      test: 'true'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     topics: [
       {
@@ -614,7 +619,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -670,7 +679,8 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "test": "true"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     },
     "topics": {
@@ -785,6 +795,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     ]
     skuName: 'Premium'
     systemAssignedIdentity: false
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -881,6 +895,12 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": false
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -961,9 +981,17 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     skuName: 'Premium'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -997,12 +1025,22 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
     "skuName": {
       "value": "Premium"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

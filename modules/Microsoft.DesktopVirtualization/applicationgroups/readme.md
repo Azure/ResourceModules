@@ -223,6 +223,10 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -310,6 +314,12 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

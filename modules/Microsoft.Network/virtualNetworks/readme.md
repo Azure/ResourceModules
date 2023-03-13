@@ -448,6 +448,10 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -563,6 +567,12 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
           "privateLinkServiceNetworkPolicies": "Enabled"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -660,6 +670,10 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         name: 'GatewaySubnet'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -711,6 +725,12 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
           "name": "GatewaySubnet"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

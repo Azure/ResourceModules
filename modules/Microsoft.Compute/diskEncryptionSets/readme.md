@@ -238,6 +238,10 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -285,6 +289,12 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
     "systemAssignedIdentity": {
       "value": true
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -325,7 +335,8 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
     ]
     systemAssignedIdentity: false
     tags: {
-      TagKey: 'TagValue'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -379,7 +390,8 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
     },
     "tags": {
       "value": {
-        "TagKey": "TagValue"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     },
     "userAssignedIdentities": {

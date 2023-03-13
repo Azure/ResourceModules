@@ -483,6 +483,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     geoRedundantBackup: 'Enabled'
     privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -568,6 +572,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "privateDnsZoneArmResourceId": {
       "value": "<privateDnsZoneArmResourceId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -642,6 +652,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     highAvailability: 'SameZone'
     location: '<location>'
     storageSizeGB: 1024
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -763,6 +777,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "storageSizeGB": {
       "value": 1024
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

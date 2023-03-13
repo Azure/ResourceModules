@@ -305,6 +305,10 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vpnClientAadConfiguration: {
       aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
       aadIssuer: '<aadIssuer>'
@@ -388,6 +392,12 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "vpnClientAadConfiguration": {
       "value": {
@@ -614,6 +624,10 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vpnGatewayGeneration: 'Generation2'
     vpnType: 'RouteBased'
   }
@@ -740,6 +754,12 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "vpnGatewayGeneration": {
       "value": "Generation2"

@@ -58,6 +58,10 @@ module testDeployment '../../deploy.bicep' = {
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKKeyName: nestedDependencies.outputs.keyVaultEncryptionKeyName
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }

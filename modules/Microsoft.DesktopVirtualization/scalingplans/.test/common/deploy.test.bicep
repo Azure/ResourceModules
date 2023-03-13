@@ -76,7 +76,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     tags: {
       Environment: 'Non-Prod'
-      Company: 'Contoso'
+      Role: 'DeploymentValidation'
     }
     hostPoolType: 'Pooled'
     friendlyName: 'My Scaling Plan'

@@ -374,6 +374,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
         }
         service: 'SQL'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -457,7 +461,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
             ]
           },
           "service": "SQL",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -581,6 +589,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryption: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -625,6 +637,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     },
     "encryption": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -655,6 +673,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedVirtualNetwork: true
     preventDataExfiltration: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -698,6 +720,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     },
     "preventDataExfiltration": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

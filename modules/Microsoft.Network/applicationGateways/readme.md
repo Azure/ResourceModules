@@ -589,6 +589,10 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
         }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -1020,6 +1024,12 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
           }
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

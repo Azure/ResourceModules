@@ -261,6 +261,10 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
         }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -379,6 +383,12 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           }
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

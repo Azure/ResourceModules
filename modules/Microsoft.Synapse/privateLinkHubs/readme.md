@@ -288,6 +288,10 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
         }
         service: 'Web'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -305,6 +309,10 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
         roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -341,7 +349,11 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
             ]
           },
           "service": "Web",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -361,6 +373,12 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
           "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

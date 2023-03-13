@@ -515,6 +515,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -695,7 +699,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             ]
           },
           "service": "vault",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -821,6 +829,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     tags: {
@@ -863,7 +875,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             ]
           },
           "service": "vault",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },

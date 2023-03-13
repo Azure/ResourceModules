@@ -327,6 +327,10 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
         }
         service: 'signalr'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     resourceLogConfigurationsToEnable: [
@@ -342,7 +346,8 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     ]
     sku: 'Standard_S1'
     tags: {
-      purpose: 'test'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -420,7 +425,11 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
             ]
           },
           "service": "signalr",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -444,7 +453,8 @@ module signalR './Microsoft.SignalRService/signalR/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "purpose": "test"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

@@ -144,6 +144,9 @@ param aciConnectorLinuxEnabled bool = false
 @description('Optional. Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled.')
 param azurePolicyEnabled bool = true
 
+@description('Optional. Specifies whether the openServiceMesh add-on is enabled or not.')
+param openServiceMeshEnabled bool = false
+
 @description('Optional. Specifies the azure policy version to use.')
 param azurePolicyVersion string = 'v2'
 
@@ -419,34 +422,38 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' 
       }
       ingressApplicationGateway: {
         enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
-        config: {
+        config: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId) ? {
           applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
           effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
-        }
+        } : null
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
-        config: {
+        config: omsAgentEnabled && !empty(monitoringWorkspaceId) ? {
           logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
-        }
+        } : null
       }
       aciConnectorLinux: {
         enabled: aciConnectorLinuxEnabled
       }
       azurepolicy: {
         enabled: azurePolicyEnabled
-        config: {
+        config: azurePolicyEnabled ? {
           version: azurePolicyVersion
-        }
+        } : null
+      }
+      openServiceMesh: {
+        enabled: openServiceMeshEnabled
+        config: openServiceMeshEnabled ? {} : null
       }
       kubeDashboard: {
         enabled: kubeDashboardEnabled
       }
       azureKeyvaultSecretsProvider: {
         enabled: enableKeyvaultSecretsProvider
-        config: {
+        config: enableKeyvaultSecretsProvider ? {
           enableSecretRotation: enableSecretRotation
-        }
+        } : null
       }
     }
     oidcIssuerProfile: enableOidcIssuerProfile ? {
