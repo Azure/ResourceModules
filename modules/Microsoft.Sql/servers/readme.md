@@ -723,7 +723,68 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Pe</h3>
+<h3>Example 3: Fog</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlfog'
+  params: {
+    // Required parameters
+    name: '<name>'
+    // Non-required parameters
+    databases: '<databases>'
+    failoverPolicy: 'Manual'
+    failoverWithDataLossGracePeriodMinutes: 60
+    partnerServerId: '<partnerServerId>'
+    serverName: '<serverName>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<name>"
+    },
+    // Non-required parameters
+    "databases": {
+      "value": "<databases>"
+    },
+    "failoverPolicy": {
+      "value": "Manual"
+    },
+    "failoverWithDataLossGracePeriodMinutes": {
+      "value": 60
+    },
+    "partnerServerId": {
+      "value": "<partnerServerId>"
+    },
+    "serverName": {
+      "value": "<serverName>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Pe</h3>
 
 <details>
 
