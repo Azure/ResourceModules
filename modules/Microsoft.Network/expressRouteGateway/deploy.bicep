@@ -11,10 +11,10 @@ param tags object = {}
 param allowNonVirtualWanTraffic bool = false
 
 @description('Optional. Maximum number of scale units deployed for ExpressRoute gateway.')
-param maxAutoScale int = 2
+param autoScaleConfigurationBoundsMax int = 2
 
 @description('Optional. Minimum number of scale units deployed for ExpressRoute gateway.')
-param minAutoScale int = 2
+param autoScaleConfigurationBoundsMin int = 2
 
 @description('Optional. List of ExpressRoute connections to the ExpressRoute gateway.')
 param expressRouteConnections array = []

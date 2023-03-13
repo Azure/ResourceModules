@@ -30,11 +30,11 @@ This module deploys Expess Route Gateways.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `allowNonVirtualWanTraffic` | bool | `False` | Configures this gateway to accept traffic from non Virtual WAN networks. |
+| `autoScaleConfigurationBoundsMax` | int | `2` | Maximum number of scale units deployed for ExpressRoute gateway. |
+| `autoScaleConfigurationBoundsMin` | int | `2` | Minimum number of scale units deployed for ExpressRoute gateway. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expressRouteConnections` | array | `[]` | List of ExpressRoute connections to the ExpressRoute gateway. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `maxAutoScale` | int | `2` | Maximum number of scale units deployed for ExpressRoute gateway. |
-| `minAutoScale` | int | `2` | Minimum number of scale units deployed for ExpressRoute gateway. |
 | `tags` | object | `{object}` | Tags of the Firewall policy resource. |
 
 
@@ -199,15 +199,15 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module expressRouteGateway './Microsoft.Network/expressRouteGateway/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nerg'
+  name: '${uniqueString(deployment().name, location)}-test-nergcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nerg001'
+    name: '<<namePrefix>>nergcom001'
     virtualHubId: '<virtualHubId>'
     // Non-required parameters
+    autoScaleConfigurationBoundsMax: 3
+    autoScaleConfigurationBoundsMin: 2
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    maxAutoScale: 3
-    minAutoScale: 2
     tags: {
       hello: 'world'
     }
@@ -229,20 +229,20 @@ module expressRouteGateway './Microsoft.Network/expressRouteGateway/deploy.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nerg001"
+      "value": "<<namePrefix>>nergcom001"
     },
     "virtualHubId": {
       "value": "<virtualHubId>"
     },
     // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "maxAutoScale": {
+    "autoScaleConfigurationBoundsMax": {
       "value": 3
     },
-    "minAutoScale": {
+    "autoScaleConfigurationBoundsMin": {
       "value": 2
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "tags": {
       "value": {

@@ -15,7 +15,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2022-07-01' = {
     name: virtualHubName
     location: location
     properties: {
-        addressPrefix: addressPrefix
+        addressPrefix: '10.0.0.0/16'
         virtualWan: {
             id: virtualWan.id
         }

@@ -49,8 +49,8 @@ module testDeployment '../../deploy.bicep' = {
     tags: {
       hello: 'world'
     }
-    minAutoScale: 2
-    maxAutoScale: 3
+    autoScaleConfigurationBoundsMin: 2
+    autoScaleConfigurationBoundsMax: 3
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId
   }
 }
