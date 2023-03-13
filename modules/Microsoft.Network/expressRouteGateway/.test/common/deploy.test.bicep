@@ -34,7 +34,6 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualWANName: 'dep-<<namePrefix>>-vwan-${serviceShort}'
     virtualHubName: 'dep-<<namePrefix>>-hub-${serviceShort}'
-    addressPrefix: '10.0.0.0/16'
   }
 }
 // ============== //
