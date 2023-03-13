@@ -3,10 +3,6 @@ param virtualWANName string
 
 @description('Required. The name of the virtual Hub to create.')
 param virtualHubName string
-
-@description('Required. The address prefix of the virtual Hub to create.')
-param addressPrefix string
-
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
