@@ -45,7 +45,7 @@ resource expressRouteGateway 'Microsoft.Network/expressRouteGateways@2022-07-01'
     allowNonVirtualWanTraffic: allowNonVirtualWanTraffic
     autoScaleConfiguration: {
       bounds: {
-        max: maxAutoScale
+        max: autoScaleConfigurationBoundsMax
         min: autoScaleConfigurationBoundsMin
       }
     }
