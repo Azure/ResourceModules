@@ -391,8 +391,8 @@ Within a bicep file, use the following conventions:
   - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
   - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
   - `Generated` - The parameter value is generated within the module and should not be specified as input.
-- If parameters map to resource properties, they should not contain the resource's name as it would introduce redundancy.
-  > For example, the `name` property of the Key Vault module should be just that and not `keyVaultName`. The rationale is that the consumers know that the name is for the Key Vault if they deploy its module.
+- Parameters mapping to resource properties should align with resource property names as much as possible and should not artifictially include a resource type's name prefix to avoid redundancy.
+  > For example, the input parameter of the Key Vault module which maps to the `name` resource property should be just `name` and not `keyVaultName`. The rationale is that the consumers know that the name is for the Key Vault if they deploy its module.
 - If a property value allows a single value only, there is no need to introduce a parameter for it. Instead it can be hardcoded into the deployment.
   > For example, the name of a Blob Container Immutability Policy resource can only be `default`. Hence we can implement its name property directly as `name: 'default'`.
 - If a property value allows a single value only, but the value is used in more than one place, a variable should be introduced to be leveraged in the multiple occurrences.
