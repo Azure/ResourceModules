@@ -65,9 +65,6 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' = 
     name: eventHubNamespaceName
     location: location
     properties: {
-        sku: {
-            name: 'Standard'
-        }
         zoneRedundant: false
         isAutoInflateEnabled: false
         maximumThroughputUnits: 0
@@ -78,7 +75,6 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' =
     name: eventHubName
     parent: eventHubNamespace
 }
-
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
