@@ -8,10 +8,10 @@ param virtualNetworkName string
 param managedIdentityName string
 
 @description('Optional. The name of the policy assignment.')
-param policyAssignmentName string = 'Configure your Storage account public access to be disallowed'
+param policyAssignmentName string = '${resourceGroup().name}-Configure storage accounts to disable public network access'
 
 @description('Optional. The policy definition Id to be assigned.')
-param policyDefinitionId string = '/providers/Microsoft.Authorization/roleDefinitions/17d1049b-9a84-46fb-8f53-869881c3d3ab'
+param policyDefinitionId string = '/providers/Microsoft.Authorization/policyDefinitions/a06d0189-92e8-4dba-b0c4-08d7669fce7d'
 
 var addressPrefix = '10.0.0.0/16'
 
