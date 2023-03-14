@@ -34,6 +34,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    eventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}01'
+    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}01'
   }
 }
 
