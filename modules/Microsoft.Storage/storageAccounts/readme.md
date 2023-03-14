@@ -585,7 +585,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     systemAssignedIdentity: true
     tableServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -820,7 +820,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Standard_LRS"
     },
     "systemAssignedIdentity": {
