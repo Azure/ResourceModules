@@ -61,6 +61,11 @@ module testDeployment '../../deploy.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
+    eventHubEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: nestedDependencies.outputs.eventhubNamespaceName
+      entityPath: nestedDependencies.outputs.eventhubName
+    }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     diagnosticLogsRetentionInDays: 7

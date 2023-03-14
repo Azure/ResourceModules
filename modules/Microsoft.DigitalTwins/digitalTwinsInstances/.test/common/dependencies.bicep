@@ -84,3 +84,7 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
+
+output eventhubNamespaceName string = eventHubNamespace.name
+
+output eventhubName string = eventHub.name
