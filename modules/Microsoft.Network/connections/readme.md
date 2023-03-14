@@ -342,6 +342,10 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     enableBgp: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     virtualNetworkGateway2: {
       id: '<id>'
     }
@@ -383,6 +387,12 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "virtualNetworkGateway2": {
       "value": {

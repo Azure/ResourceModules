@@ -92,5 +92,9 @@ module testDeployment '../../deploy.bicep' = {
     ]
     suppressForMinutes: 'PT5M'
     windowSize: 'PT5M'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

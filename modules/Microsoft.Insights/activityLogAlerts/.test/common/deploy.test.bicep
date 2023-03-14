@@ -79,5 +79,9 @@ module testDeployment '../../deploy.bicep' = {
     scopes: [
       subscription().id
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

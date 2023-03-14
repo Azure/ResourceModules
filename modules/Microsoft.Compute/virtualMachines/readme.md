@@ -1204,6 +1204,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -1452,6 +1456,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": true
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -1489,11 +1499,19 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             name: 'ipconfig01'
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
+              tags: {
+                Environment: 'Non-Prod'
+                Role: 'DeploymentValidation'
+              }
             }
             subnetResourceId: '<subnetResourceId>'
           }
         ]
         nicSuffix: '-nic-01'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     osDisk: {
@@ -1516,6 +1534,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -1551,12 +1573,20 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             {
               "name": "ipconfig01",
               "pipConfiguration": {
-                "publicIpNameSuffix": "-pip-01"
+                "publicIpNameSuffix": "-pip-01",
+                "tags": {
+                  "Environment": "Non-Prod",
+                  "Role": "DeploymentValidation"
+                }
               },
               "subnetResourceId": "<subnetResourceId>"
             }
           ],
-          "nicSuffix": "-nic-01"
+          "nicSuffix": "-nic-01",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -1597,6 +1627,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "path": "/home/localAdminUser/.ssh/authorized_keys"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -1922,6 +1958,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -2185,6 +2225,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": true
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -2240,6 +2286,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmwinatmg'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -2310,6 +2360,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>cvmwinatmg"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -2491,6 +2547,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
     name: '<<namePrefix>>cvmwincmk'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -2574,6 +2634,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "name": {
       "value": "<<namePrefix>>cvmwincmk"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -52,9 +52,6 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
-    tags: {
-      TagKey: 'TagValue'
-    }
     keyName: nestedDependencies.outputs.keyName
     keyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     roleAssignments: [
@@ -69,6 +66,10 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: false
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

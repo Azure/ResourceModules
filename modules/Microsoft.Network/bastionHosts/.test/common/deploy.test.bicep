@@ -85,5 +85,9 @@ module testDeployment '../../deploy.bicep' = {
     ]
     scaleUnits: 4
     skuName: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

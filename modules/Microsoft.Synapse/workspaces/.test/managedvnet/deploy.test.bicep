@@ -53,6 +53,11 @@ module testDeployment '../../deploy.bicep' = {
     allowedAadTenantIdsForLinking: [
       tenant().tenantId
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     enableDefaultTelemetry: enableDefaultTelemetry
+
   }
 }

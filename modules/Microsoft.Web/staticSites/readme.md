@@ -388,6 +388,10 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         }
         service: 'staticSites'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -402,6 +406,10 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     sku: 'Standard'
     stagingEnvironmentPolicy: 'Enabled'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -464,7 +472,11 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
             ]
           },
           "service": "staticSites",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -487,6 +499,12 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

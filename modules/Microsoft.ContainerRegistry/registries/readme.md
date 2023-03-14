@@ -414,6 +414,10 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         }
         service: 'registry'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     quarantinePolicyStatus: 'enabled'
@@ -435,6 +439,10 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     softDeletePolicyDays: 7
     softDeletePolicyStatus: 'disabled'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     trustPolicyStatus: 'enabled'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -516,7 +524,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
             ]
           },
           "service": "registry",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -550,6 +562,12 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "trustPolicyStatus": {
       "value": "enabled"
@@ -593,6 +611,10 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicNetworkAccess: 'Disabled'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -634,6 +656,12 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
     },
     "publicNetworkAccess": {
       "value": "Disabled"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -716,8 +744,16 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         }
         service: 'registry'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -754,9 +790,19 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
             ]
           },
           "service": "registry",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

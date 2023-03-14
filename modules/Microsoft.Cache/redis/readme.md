@@ -390,6 +390,10 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
         }
         service: 'redisCache'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     publicNetworkAccess: 'Enabled'
@@ -463,7 +467,11 @@ module redis './Microsoft.Cache/redis/deploy.bicep' = {
             ]
           },
           "service": "redisCache",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },

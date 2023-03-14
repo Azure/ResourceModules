@@ -282,6 +282,10 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
         }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -331,6 +335,12 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
           }
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

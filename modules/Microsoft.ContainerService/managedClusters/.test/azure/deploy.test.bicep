@@ -147,6 +147,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
+    openServiceMeshEnabled: true
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -158,6 +159,10 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     fluxExtension: {
       configurationSettings: {
         'helm-controller.enabled': 'true'

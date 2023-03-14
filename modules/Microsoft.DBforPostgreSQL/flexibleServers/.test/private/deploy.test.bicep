@@ -99,5 +99,9 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     geoRedundantBackup: 'Enabled'
     privateDnsZoneArmResourceId: nestedDependencies.outputs.privateDNSResourceId
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
