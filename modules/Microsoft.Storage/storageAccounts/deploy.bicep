@@ -8,6 +8,9 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
+@description('Optional. Array of policy exemption objects that contain the \'name\' and \'policyAssignmentId\' to policy exemptions on this resource.')
+param policyExemptions array = []
+
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
@@ -338,6 +341,38 @@ module storageAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
+resource storageAccount_policyExemptions 'Microsoft.Authorization/policyExemptions@2022-07-01-preview' = [for policyExemption in policyExemptions: if (!empty(policyExemptions)) {
+  name: policyExemption.name
+  properties: {
+    assignmentScopeValidation: contains(policyExemption, 'assignmentScopeValidation') ? policyExemption.assignmentScopeValidation : ''
+    displayName: contains(policyExemption, 'displayName') ? policyExemption.description : ''
+    description: contains(policyExemption, 'description') ? policyExemption.description : ''
+    metadata: contains(policyExemption, 'metadata') ? policyExemption.metadata : ''
+    policyAssignmentId: policyExemption.policyAssignmentId
+    policyDefinitionReferenceIds: contains(policyExemption, 'policyDefinitionReferenceIds') ? policyExemption.policyDefinitionReferenceIds : null
+    exemptionCategory: contains(policyExemption, 'exemptionCategory') ? policyExemption.exemptionCategory : null
+    expiresOn: contains(policyExemption, 'expiresOn') ? policyExemption.expiresOn : ''
+  }
+  scope: storageAccount
+}]
+
+/*
+module storageAccount_policyExemptions_Module '.bicep/nested_policyExemptions.bicep' = [for (policyExemption, index) in policyExemptions: {
+  name: '${uniqueString(deployment().name, location)}-storage-policyException-${index}'
+  params: {
+    name: policyExemption.name
+    assignmentScopeValidation: contains(policyExemption, 'assignmentScopeValidation') ? policyExemption.assignmentScopeValidation : ''
+    displayName: contains(policyExemption, 'displayName') ? policyExemption.description : ''
+    description: contains(policyExemption, 'description') ? policyExemption.description : ''
+    resourceId: storageAccount.id
+    metadata: contains(policyExemption, 'metadata') ? policyExemption.metadata : ''
+    policyAssignmentId: policyExemption.policyAssignmentId
+    policyDefinitionReferenceIds: contains(policyExemption, 'policyDefinitionReferenceIds') ? policyExemption.policyDefinitionReferenceIds : null
+    exemptionCategory: contains(policyExemption, 'exemptionCategory') ? policyExemption.exemptionCategory : null
+    expiresOn: contains(policyExemption, 'expiresOn') ? policyExemption.expiresOn : ''
+  }
+}]
+*/
 module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StorageAccount-PrivateEndpoint-${index}'
   params: {
