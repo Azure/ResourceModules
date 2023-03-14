@@ -8,7 +8,7 @@ param virtualNetworkName string
 param managedIdentityName string
 
 @description('Optional. The name of the policy assignment.')
-param policyAssignmentName string = '${resourceGroup().name}-DisableStoragePublicNetworkAccess'
+param policyAssignmentName string = 'DisableStoragePublicNetworkAccess'
 
 @description('Optional. The policy definition Id to be assigned.')
 param policyDefinitionId string = '/providers/Microsoft.Authorization/policyDefinitions/a06d0189-92e8-4dba-b0c4-08d7669fce7d'
