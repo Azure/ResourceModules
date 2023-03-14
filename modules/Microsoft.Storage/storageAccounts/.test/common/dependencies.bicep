@@ -64,8 +64,15 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2022-06-01' = {
     name: policyAssignmentName
     scope: resourceGroup()
+    identity: {
+        type: 'UserAssigned'
+        userAssignedIdentities: {
+            '${managedIdentity.id}': {}
+        }
+    }
     properties: {
         policyDefinitionId: policyDefinitionId
+        enforcementMode: 'Default'
     }
 }
 
