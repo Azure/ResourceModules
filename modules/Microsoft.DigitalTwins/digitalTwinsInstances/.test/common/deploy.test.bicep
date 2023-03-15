@@ -64,7 +64,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     eventHubEndpoint: {
       authenticationType: 'IdentityBased'
-      endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}'
+      endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
     }
     enableDefaultTelemetry: enableDefaultTelemetry
