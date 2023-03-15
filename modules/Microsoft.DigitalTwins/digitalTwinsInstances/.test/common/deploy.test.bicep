@@ -34,8 +34,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    eventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}01'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}01'
+    eventHubName: 'dep-${uniqueString(serviceShort)}-evh-01'
+    eventHubNamespaceName: 'dep-${uniqueString(serviceShort)}-evhns-01'
   }
 }
 
@@ -47,8 +47,9 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   params: {
     storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}03'
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}01'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}01'
+    eventHubNamespaceEventHubName: 'dep-${uniqueString(serviceShort)}-evh-01'
+    eventHubNamespaceName: 'dep-${uniqueString(serviceShort)}-evh-01'
+
     location: location
   }
 }
