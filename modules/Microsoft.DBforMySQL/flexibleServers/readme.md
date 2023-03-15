@@ -17,7 +17,6 @@ This module deploys DBforMySQL FlexibleServers.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.DBforMySQL/flexibleServers` | [2021-12-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers) |
-| `Microsoft.DBforMySQL/flexibleServers/configurations` | [2021-12-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers/configurations) |
 | `Microsoft.DBforMySQL/flexibleServers/databases` | [2021-12-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers/databases) |
 | `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2021-12-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2021-12-01-preview/flexibleServers/firewallRules) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -56,7 +55,6 @@ This module deploys DBforMySQL FlexibleServers.
 | `backupRetentionDays` | int | `7` |  | Backup retention days for the server. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
-| `configurations` | _[configurations](configurations/readme.md)_ array | `[]` |  | The configurations to create in the server. |
 | `createMode` | string | `'Default'` | `[Default, GeoRestore, PointInTimeRestore, Replica]` | The mode to create a new MySQL server. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29. |
@@ -318,13 +316,6 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
     tier: 'GeneralPurpose'
     // Non-required parameters
     backupRetentionDays: 10
-    configurations: [
-      {
-        name: 'audit_log_enabled'
-        source: 'user-override'
-        value: 'ON'
-      }
-    ]
     databases: [
       {
         name: 'testdb1'
@@ -396,15 +387,6 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
     // Non-required parameters
     "backupRetentionDays": {
       "value": 10
-    },
-    "configurations": {
-      "value": [
-        {
-          "name": "audit_log_enabled",
-          "source": "user-override",
-          "value": "ON"
-        }
-      ]
     },
     "databases": {
       "value": [
@@ -509,13 +491,6 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    configurations: [
-      {
-        name: 'audit_log_enabled'
-        source: 'user-override'
-        value: 'ON'
-      }
-    ]
     databases: [
       {
         name: 'testdb1'
@@ -625,15 +600,6 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
     },
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "configurations": {
-      "value": [
-        {
-          "name": "audit_log_enabled",
-          "source": "user-override",
-          "value": "ON"
-        }
-      ]
     },
     "databases": {
       "value": [
