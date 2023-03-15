@@ -347,7 +347,7 @@ resource storageAccount_policyExemptions 'Microsoft.Authorization/policyExemptio
     assignmentScopeValidation: contains(policyExemption, 'assignmentScopeValidation') ? policyExemption.assignmentScopeValidation : ''
     displayName: contains(policyExemption, 'displayName') ? policyExemption.description : ''
     description: contains(policyExemption, 'description') ? policyExemption.description : ''
-    metadata: contains(policyExemption, 'metadata') ? policyExemption.metadata : ''
+    metadata: contains(policyExemption, 'metadata') ? policyExemption.metadata : {}
     policyAssignmentId: policyExemption.policyAssignmentId
     policyDefinitionReferenceIds: contains(policyExemption, 'policyDefinitionReferenceIds') ? policyExemption.policyDefinitionReferenceIds : null
     exemptionCategory: contains(policyExemption, 'exemptionCategory') ? policyExemption.exemptionCategory : null
