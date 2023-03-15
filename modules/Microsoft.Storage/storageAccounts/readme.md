@@ -1075,6 +1075,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
+    kind: 'FileStorage'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -1085,8 +1086,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountKind: 'FileStorage'
-    storageAccountSku: 'Premium_LRS'
+    skuName: 'Premium_LRS'
     supportsHttpsTrafficOnly: false
     systemAssignedIdentity: true
     tags: {
@@ -1148,6 +1148,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     },
+    "kind": {
+      "value": "FileStorage"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -1162,10 +1165,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     },
-    "storageAccountKind": {
-      "value": "FileStorage"
-    },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Premium_LRS"
     },
     "supportsHttpsTrafficOnly": {
