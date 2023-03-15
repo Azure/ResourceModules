@@ -46,7 +46,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    dataCollectionRuleDescription: 'Collecting Windows-specific performance counters and Windows Event Logs'
+    description: 'Collecting Windows-specific performance counters and Windows Event Logs'
     dataSources: {
       performanceCounters: [
         {

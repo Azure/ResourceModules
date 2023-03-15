@@ -55,5 +55,9 @@ module testDeployment '../../deploy.bicep' = {
         count: 1
       }
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

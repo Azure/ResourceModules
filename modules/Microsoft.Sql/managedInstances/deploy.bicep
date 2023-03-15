@@ -376,7 +376,6 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
   params: {
     managedInstanceName: managedInstance.name
     serverKeyName: encryptionProtectorObj.serverKeyName
-    name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry

@@ -391,6 +391,10 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     sigImageVersion: '<sigImageVersion>'
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     unManagedImageName: '<<namePrefix>>-umi-vmiitcom-001'
     userAssignedIdentities: [
       '<managedIdentityResourceId>'
@@ -478,6 +482,12 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     },
     "subnetId": {
       "value": "<subnetId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "unManagedImageName": {
       "value": "<<namePrefix>>-umi-vmiitcom-001"

@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. Name of the blob service.')
-param blobServicesName string = 'default'
-
 @description('Required. The name of the storage container to deploy.')
 param name string
 
@@ -46,7 +43,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 
   resource blobServices 'blobServices@2021-09-01' existing = {
-    name: blobServicesName
+    name: 'default'
   }
 }
 
@@ -62,7 +59,6 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   name: immutabilityPolicyName
   params: {
     storageAccountName: storageAccount.name
-    blobServicesName: storageAccount::blobServices.name
     containerName: container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true

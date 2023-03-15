@@ -74,5 +74,9 @@ module testDeployment '../../deploy.bicep' = {
     targetResourceRegion: 'westeurope'
     targetResourceType: 'microsoft.compute/virtualmachines'
     windowSize: 'PT15M'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

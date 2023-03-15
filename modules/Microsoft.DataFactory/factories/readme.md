@@ -463,7 +463,8 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     ]
     systemAssignedIdentity: true
     tags: {
-      application: 'CARML'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -595,7 +596,8 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "application": "CARML"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     },
     "userAssignedIdentities": {

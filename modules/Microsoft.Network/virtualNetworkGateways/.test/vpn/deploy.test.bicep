@@ -62,8 +62,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    virtualNetworkGatewaySku: 'VpnGw2AZ'
-    virtualNetworkGatewayType: 'Vpn'
+    vpnGatewayGeneration: 'Generation2'
+    skuName: 'VpnGw2AZ'
+    gatewayType: 'Vpn'
     vNetResourceId: nestedDependencies.outputs.vnetResourceId
     activeActive: true
     diagnosticLogsRetentionInDays: 7
@@ -87,6 +88,10 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     vpnType: 'RouteBased'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     enablePrivateIpAddress: true
     gatewayDefaultSiteLocalNetworkGatewayId: nestedDependencies.outputs.localNetworkGatewayResourceId
     disableIPSecReplayProtection: true

@@ -60,5 +60,9 @@ module testDeployment '../../deploy.bicep' = {
         subnetId: nestedDependencies.outputs.subnetResourceId_dnsOut
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

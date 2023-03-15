@@ -253,6 +253,10 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
       }
     ]
     sku: 'Standard'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -319,6 +323,12 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     },
     "sku": {
       "value": "Standard"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -733,6 +733,10 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -1010,6 +1014,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
       ]
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -1186,6 +1196,10 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     useResourcePermissions: true
   }
 }
@@ -1391,6 +1405,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "useResourcePermissions": {
       "value": true

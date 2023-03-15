@@ -81,5 +81,9 @@ module testDeployment '../../deploy.bicep' = {
     skuFamily: 'MeteredData'
     skuTier: 'Standard'
     allowClassicOperations: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

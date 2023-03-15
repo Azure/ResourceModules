@@ -302,8 +302,8 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
       }
     ]
     tags: {
-      Company: 'Contoso'
       Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -366,8 +366,8 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
     },
     "tags": {
       "value": {
-        "Company": "Contoso",
-        "Environment": "Non-Prod"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

@@ -55,7 +55,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'GatewaySubnet'
       }
     ]
-    virtualNetworkPeerings: [
+    peerings: [
       {
         allowForwardedTraffic: true
         allowGatewayTransit: false
@@ -68,5 +68,9 @@ module testDeployment '../../deploy.bicep' = {
         useRemoteGateways: false
       }
     ]
+    tags:{
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

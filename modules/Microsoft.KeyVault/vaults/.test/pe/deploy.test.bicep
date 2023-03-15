@@ -57,6 +57,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     tags: {

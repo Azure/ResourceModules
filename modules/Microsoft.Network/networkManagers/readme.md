@@ -743,6 +743,10 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
         ]
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -968,6 +972,12 @@ module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
           ]
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
