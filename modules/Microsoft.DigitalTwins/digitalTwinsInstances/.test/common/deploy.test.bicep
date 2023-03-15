@@ -63,7 +63,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     eventHubEndpoint: {
       authenticationType: 'IdentityBased'
-      endpointUri: nestedDependencies.outputs.eventhubNamespaceName
+      endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}'
       entityPath: nestedDependencies.outputs.eventhubName
     }
     enableDefaultTelemetry: enableDefaultTelemetry
