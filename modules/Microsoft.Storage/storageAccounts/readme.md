@@ -899,7 +899,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     ]
     requireInfrastructureEncryption: true
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
@@ -974,7 +974,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "requireInfrastructureEncryption": {
       "value": true
     },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Standard_LRS"
     },
     "systemAssignedIdentity": {
@@ -1207,7 +1207,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    storageAccountKind: 'Storage'
+    kind: 'Storage'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -1239,7 +1239,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "storageAccountKind": {
+    "kind": {
       "value": "Storage"
     },
     "tags": {
