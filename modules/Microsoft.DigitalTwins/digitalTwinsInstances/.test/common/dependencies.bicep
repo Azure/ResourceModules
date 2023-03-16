@@ -76,6 +76,16 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' =
     parent: eventHubNamespace
 }
 
+resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid(managedIdentity.id, 'evhrbacAssignment')
+    scope: eventHubNamespace
+    properties: {
+        roleDefinitionId: '2b629674-e913-4c01-ae53-ef4638d8f975'
+        principalId: managedIdentity.properties.principalId
+        principalType: 'ServicePrincipal'
+    }
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -88,3 +98,6 @@ output privateDNSResourceId string = privateDNSZone.id
 output eventhubNamespaceName string = eventHubNamespace.name
 
 output eventhubName string = eventHub.name
+
+
+output managedIdentityId string = managedIdentity.id
