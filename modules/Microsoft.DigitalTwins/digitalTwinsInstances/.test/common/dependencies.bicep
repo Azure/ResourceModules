@@ -80,7 +80,7 @@ resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
     name: guid(managedIdentity.id, 'evhrbacAssignment')
     scope: eventHubNamespace
     properties: {
-        roleDefinitionId: '2b629674-e913-4c01-ae53-ef4638d8f975'
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','2b629674-e913-4c01-ae53-ef4638d8f975')
         principalId: managedIdentity.properties.principalId
         principalType: 'ServicePrincipal'
     }
