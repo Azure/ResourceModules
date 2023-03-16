@@ -41,7 +41,7 @@ var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'S
 
 var identity = identityType != 'None' ? {
   type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  userAssignedIdentity: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -56,7 +56,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' existing = {
+resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023-01-31' existing = {
   name: digitalTwinInstanceName
 }
 
