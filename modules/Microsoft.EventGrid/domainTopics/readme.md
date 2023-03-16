@@ -1,7 +1,6 @@
 # EventGrid DomainTopics `[Microsoft.EventGrid/domainTopics]`
 
 This module deploys EventGrid DomainTopics.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
