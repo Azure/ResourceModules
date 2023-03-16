@@ -165,7 +165,8 @@ module digitalTwinsInstance_eventHubEndpoint 'endpoints-eventHub/deploy.bicep' =
     endpointUri: contains(eventHubEndpoint, 'endpointUri') ? eventHubEndpoint.endpointUri : ''
     entityPath: contains(eventHubEndpoint, 'entityPath') ? eventHubEndpoint.entityPath : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    identity: contains(eventHubEndpoint, 'identity') ? eventHubEndpoint.identity : null
+    systemAssignedIdentity: contains(eventHubEndpoint, 'systemAssignedIdentity') ? eventHubEndpoint.systemAssignedIdentity : false
+    userAssignedIdentities: contains(eventHubEndpoint, 'userAssignedIdentities') ? eventHubEndpoint.userAssignedIdentities : {}
   }
 }
 
