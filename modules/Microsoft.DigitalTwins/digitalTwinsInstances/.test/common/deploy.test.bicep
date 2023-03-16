@@ -34,8 +34,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    eventHubName: 'dep-${uniqueString(serviceShort)}-evh-01'
-    eventHubNamespaceName: 'dep-${uniqueString(serviceShort)}-evhns-01'
+    eventHubName: 'dt-${uniqueString(serviceShort)}-evh-01'
+    eventHubNamespaceName: 'dt-${uniqueString(serviceShort)}-evhns-01'
   }
 }
 
@@ -49,7 +49,6 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
     logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
     eventHubNamespaceEventHubName: 'dep-${uniqueString(serviceShort)}-evh-01'
     eventHubNamespaceName: 'dep-${uniqueString(serviceShort)}-evh-01'
-
     location: location
   }
 }
@@ -66,6 +65,9 @@ module testDeployment '../../deploy.bicep' = {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
+      userAssignedIdentities: {
+        '${nestedDependencies.outputs.managedIdentityId}': {}
+      }
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
