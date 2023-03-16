@@ -2,7 +2,7 @@
 param location string = resourceGroup().location
 
 @description('Required. The name of the Event Grid Domain to create.')
-param eventGridDomainname string
+param name string
 
 resource domain 'Microsoft.EventGrid/domains@2022-06-15' = {
   name: eventGridDomainname
