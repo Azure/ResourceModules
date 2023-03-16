@@ -37,7 +37,6 @@ This module deploys EventGrid DomainTopics.
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 
