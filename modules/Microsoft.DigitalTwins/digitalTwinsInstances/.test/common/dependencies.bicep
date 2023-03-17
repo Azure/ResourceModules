@@ -91,7 +91,7 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
 }
 
 resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2022-10-01-preview' = {
-    name: serviceBusName
+    name: serviceBusTopicName
     parent: serviceBus
 }
 
