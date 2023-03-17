@@ -76,11 +76,35 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' =
     parent: eventHubNamespace
 }
 
+resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
+    name: 'servicebus'
+    location: location
+    properties: {
+        zoneRedundant: false
+    }
+}
+
+resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2022-10-01-preview' = {
+    name: 'topic'
+    parent: serviceBus
+}
+
 resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(managedIdentity.id, 'evhrbacAssignment')
     scope: eventHubNamespace
     properties: {
         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','2b629674-e913-4c01-ae53-ef4638d8f975')
+        principalId: managedIdentity.properties.principalId
+        principalType: 'ServicePrincipal'
+    }
+}
+
+
+resource sbhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+    name: guid(managedIdentity.id, 'sbrbacAssignment')
+    scope: serviceBus
+    properties: {
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','69a216fc-b8fb-44d8-bc22-1f3c2cd27a39')
         principalId: managedIdentity.properties.principalId
         principalType: 'ServicePrincipal'
     }
@@ -99,5 +123,8 @@ output eventhubNamespaceName string = eventHubNamespace.name
 
 output eventhubName string = eventHub.name
 
+output serviceBusName string = serviceBus.name
+
+output serviceBusTopicName string = serviceBusTopic.name
 
 output managedIdentityId string = managedIdentity.id
