@@ -13,6 +13,12 @@ param eventHubNamespaceName string
 @description('Required. The name of the Event Hub to create.')
 param eventHubName string
 
+@description('Required. Service Bus name')
+param serviceBusName string
+
+@description('Required. Service Bus topic name.')
+param serviceBusTopicName string
+
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -77,7 +83,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' =
 }
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
-    name: 'servicebus'
+    name: serviceBusName
     location: location
     properties: {
         zoneRedundant: false
@@ -85,7 +91,7 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
 }
 
 resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2022-10-01-preview' = {
-    name: 'topic'
+    name: serviceBusName
     parent: serviceBus
 }
 
@@ -93,18 +99,17 @@ resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
     name: guid(managedIdentity.id, 'evhrbacAssignment')
     scope: eventHubNamespace
     properties: {
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','2b629674-e913-4c01-ae53-ef4638d8f975')
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2b629674-e913-4c01-ae53-ef4638d8f975')
         principalId: managedIdentity.properties.principalId
         principalType: 'ServicePrincipal'
     }
 }
 
-
 resource sbhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(managedIdentity.id, 'sbrbacAssignment')
     scope: serviceBus
     properties: {
-        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions','69a216fc-b8fb-44d8-bc22-1f3c2cd27a39')
+        roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '69a216fc-b8fb-44d8-bc22-1f3c2cd27a39')
         principalId: managedIdentity.properties.principalId
         principalType: 'ServicePrincipal'
     }
