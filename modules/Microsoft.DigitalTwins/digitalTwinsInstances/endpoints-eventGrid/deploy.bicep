@@ -28,6 +28,19 @@ param deadLetterUri string = ''
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID to assign to the resource.')
+param userAssignedIdentity string = ''
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentity) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentity) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentity: !empty(userAssignedIdentity) ? userAssignedIdentity : null
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -40,11 +53,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2022-05-31' existing = {
+resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023-01-31' existing = {
   name: digitalTwinInstanceName
 }
 
-resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-10-31' = {
+resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2023-01-31' = {
   name: name
   parent: digitalTwinsInstance
   properties: {
@@ -55,6 +68,7 @@ resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2022-1
     accessKey2: accessKey2
     deadLetterSecret: deadLetterSecret
     deadLetterUri: deadLetterUri
+    identity: identity
   }
 }
 

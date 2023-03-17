@@ -34,7 +34,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
+@description('Optional. The ID to assign to the resource.')
 param userAssignedIdentity string = ''
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentity) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentity) ? 'UserAssigned' : 'None')
