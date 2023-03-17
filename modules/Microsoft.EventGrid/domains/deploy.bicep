@@ -144,6 +144,7 @@ module domain_topics 'topics/deploy.bicep' = [for (topic, index) in topics: {
     domainName: domain.name
     name: topic
     location: location
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
