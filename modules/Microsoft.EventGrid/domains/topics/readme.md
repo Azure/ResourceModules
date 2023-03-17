@@ -32,10 +32,6 @@ This module deploys EventGrid Domains Topics.
 | `location` | string | `[resourceGroup().location]` | Location for all Resources. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
