@@ -35,13 +35,13 @@ param enableDefaultTelemetry bool = true
 param systemAssignedIdentity bool = false
 
 @description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
+param userAssignedIdentity string = ''
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentity) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentity) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
-  userAssignedIdentity: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  userAssignedIdentity: !empty(userAssignedIdentity) ? userAssignedIdentity : null
 } : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
