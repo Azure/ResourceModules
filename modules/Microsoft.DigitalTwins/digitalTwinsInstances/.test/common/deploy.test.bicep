@@ -17,6 +17,7 @@ param serviceShort string = 'dtdticom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -38,6 +39,8 @@ module nestedDependencies 'dependencies.bicep' = {
     eventHubNamespaceName: 'dt-${uniqueString(serviceShort)}-evhns-01'
     serviceBusName: 'dt-${uniqueString(serviceShort)}-sb-01'
     serviceBusTopicName: 'dt-${uniqueString(serviceShort)}-sbtp-01'
+    eventGridDomainName: 'dt-${uniqueString(serviceShort)}-evg-01'
+    eventGridTopicName: 'dt-${uniqueString(serviceShort)}-evgtp-01'
   }
 }
 
@@ -74,6 +77,13 @@ module testDeployment '../../deploy.bicep' = {
       endpointUri: 'sb://${nestedDependencies.outputs.serviceBusName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.serviceBusTopicName
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
+    }
+    eventGridEndpoint: {
+      authenticationType: 'KeyBased'
+      accessKey1: listkeys(resourceId('Microsoft.EventGrid/domains/topics', 'dt-${uniqueString(serviceShort)}-evgtp-01'), '2022-06-15').key1
+      accessKey2: listkeys(resourceId('Microsoft.EventGrid/domains/topics', 'dt-${uniqueString(serviceShort)}-evgtp-01'), '2022-06-15').key2
+      TopicEndpoint: nestedDependencies.outputs.eventGridTopicName
+      
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'

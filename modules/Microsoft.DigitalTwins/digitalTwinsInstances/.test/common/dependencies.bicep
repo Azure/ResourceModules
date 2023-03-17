@@ -19,6 +19,12 @@ param serviceBusName string
 @description('Required. Service Bus topic name.')
 param serviceBusTopicName string
 
+@description('Required. Event Grid Domain name.')
+param eventGridDomainName string
+
+@description('Required. Event Grid Topic name.')
+param eventGridTopicName string
+
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -90,9 +96,24 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
     }
 }
 
+
 resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2022-10-01-preview' = {
     name: serviceBusTopicName
     parent: serviceBus
+}
+
+
+resource eventGridDomain 'Microsoft.EventGrid/domains@2022-06-15' = {
+    name: eventGridDomainName
+    location: location
+    properties: {
+        disableLocalAuth: false
+    }
+}
+
+resource eventGridTopic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
+    name: eventGridTopicName
+    parent: eventGridDomain
 }
 
 resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
@@ -131,5 +152,11 @@ output eventhubName string = eventHub.name
 output serviceBusName string = serviceBus.name
 
 output serviceBusTopicName string = serviceBusTopic.name
+
+output eventGridDomainName string = eventGridDomain.name
+
+output eventGridTopicName string = eventGridTopic.name
+
+output eventGridTopicId string = eventGridTopic.id
 
 output managedIdentityId string = managedIdentity.id
