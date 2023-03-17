@@ -184,7 +184,6 @@ module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/deploy.bicep'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     systemAssignedIdentity: contains(eventHubEndpoint, 'systemAssignedIdentity') ? eventHubEndpoint.systemAssignedIdentity : false
     userAssignedIdentity: contains(eventHubEndpoint, 'userAssignedIdentity') ? eventHubEndpoint.userAssignedIdentity : {}
-
   }
 }
 
@@ -203,7 +202,6 @@ module digitalTwinsInstance_serviceBusEndpoint 'endpoints-serviceBus/deploy.bice
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     systemAssignedIdentity: contains(eventHubEndpoint, 'systemAssignedIdentity') ? eventHubEndpoint.systemAssignedIdentity : false
     userAssignedIdentity: contains(eventHubEndpoint, 'userAssignedIdentity') ? eventHubEndpoint.userAssignedIdentity : {}
-
   }
 }
 
