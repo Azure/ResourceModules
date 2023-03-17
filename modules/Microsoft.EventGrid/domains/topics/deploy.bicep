@@ -26,7 +26,7 @@ resource domain 'Microsoft.EventGrid/domains@2022-06-15' existing = {
   name: domainName
 }
 
-resource domainTopic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
+resource topic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
   name: name
   parent: domain
 }
