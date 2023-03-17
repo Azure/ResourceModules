@@ -54,6 +54,8 @@ resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2023-0
     TopicEndpoint: topicEndpoint
     accessKey1: accessKey1
     accessKey2: accessKey2
+    deadLetterSecret: deadLetterSecret
+    deadLetterUri: deadLetterUri
   }
 }
 
