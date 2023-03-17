@@ -32,10 +32,10 @@ resource topic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
 }
 
 @description('The name of the event grid topic.')
-output name string = domainTopic.name
+output name string = topic.name
 
 @description('The resource ID of the event grid topic.')
-output resourceId string = domainTopic.id
+output resourceId string = topic.id
 
 @description('The name of the resource group the event grid topic was deployed into.')
 output resourceGroupName string = resourceGroup().name

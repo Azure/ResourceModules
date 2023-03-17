@@ -21,8 +21,13 @@ This module deploys EventGrid Domains Topics.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `domainName` | string | Name of the Event Grid Domain. |
 | `name` | string | The name of the Event Grid Domain Topic. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `domainName` | string | The name of the parent Event Grid Domain. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
