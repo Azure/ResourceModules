@@ -25,9 +25,6 @@ param eventGridDomainName string
 @description('Required. Event Grid Topic name.')
 param eventGridTopicName string
 
-@description('Required. Key Vault name.')
-param keyVaultName string
-
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -117,26 +114,6 @@ resource eventGridTopic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
     parent: eventGridDomain
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
-    name: keyVaultName
-    location: location
-    properties: {
-        sku: {
-            family: 'A'
-            name: 'standard'
-        }
-        enabledForDeployment: true
-        tenantId: subscription().tenantId
-    }
-}
-
-resource keyVaultsecret 'Microsoft.KeyVault/vaults/secrets@2022-11-01' = {
-    name: 'EventGridAccessKey1'
-    parent: keyVault
-    properties: {
-        value: eventGridTopic.listkeys('2022-06-15').key1
-    }
-}
 
 resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(managedIdentity.id, 'evhrbacAssignment')
@@ -181,7 +158,5 @@ output eventGridDomainName string = eventGridDomain.name
 output eventGridTopicName string = eventGridTopic.name
 
 output eventGridTopicId string = eventGridTopic.id
-
-output keyVaultname string = keyVault.name
 
 output managedIdentityId string = managedIdentity.id

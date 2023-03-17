@@ -17,6 +17,7 @@ param serviceShort string = 'dtdticom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var eventGridTopicName = 'dt-${uniqueString(serviceShort)}-evgtp-01'
 // ============ //
 // Dependencies //
 // ============ //
@@ -39,8 +40,7 @@ module nestedDependencies 'dependencies.bicep' = {
     serviceBusName: 'dt-${uniqueString(serviceShort)}-sb-01'
     serviceBusTopicName: 'dt-${uniqueString(serviceShort)}-sbtp-01'
     eventGridDomainName: 'dt-${uniqueString(serviceShort)}-evg-01'
-    eventGridTopicName: 'dt-${uniqueString(serviceShort)}-evgtp-01'
-    keyVaultName: 'dt-${uniqueString(serviceShort)}-kv-01'
+    eventGridTopicName: eventGridTopicName
   }
 }
 
@@ -56,11 +56,6 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
     eventHubNamespaceName: 'dep-${uniqueString(serviceShort)}-evh-01'
     location: location
   }
-}
-
-resource kv 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: nestedDependencies.outputs.keyVaultname
-  scope: resourceGroup
 }
 
 // ============== //
@@ -82,6 +77,11 @@ module testDeployment '../../deploy.bicep' = {
       endpointUri: 'sb://${nestedDependencies.outputs.serviceBusName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.serviceBusTopicName
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
+    }
+    eventGridEndpoint: {
+      accessKey1: listKeys('/subscriptions/${subscription().id}/Microsoft.EventGrid/domains/topics/${eventGridTopicName}', '2022-06-15').keys[1].value
+      topicEndpoint: nestedDependencies.outputs.eventGridTopicName
+      authenticationType: 'KeyBased'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
@@ -118,20 +118,5 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-  }
-}
-
-
-// Event Grid
-
-module eventGridEndpoint '../../endpoints-eventGrid/deploy.bicep' = {
-  scope: resourceGroup
-  name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
-  params: {
-    digitalTwinInstanceName: testDeployment.outputs.hostname
-    accessKey1: kv.getSecret('EventGridAccessKey1')
-    topicEndpoint: nestedDependencies.outputs.eventGridTopicName
-    authenticationType: 'KeyBased'
-    name: 'EventGridEndpoint'
   }
 }
