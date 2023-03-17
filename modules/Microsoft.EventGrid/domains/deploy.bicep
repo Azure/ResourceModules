@@ -79,6 +79,9 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. The topics name which associated with domain.')
+param topics array = []
+
 var enableReferencedModulesTelemetry = false
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
@@ -134,6 +137,15 @@ resource domain 'Microsoft.EventGrid/domains@2022-06-15' = {
     autoDeleteTopicWithLastSubscription: autoDeleteTopicWithLastSubscription
   }
 }
+
+module domain_topics 'topics/deploy.bicep' = [for (topic, index) in topics: {
+  name: '${uniqueString(deployment().name, location)}-topics-${index}'
+  params: {
+    domainName: domain.name
+    name: topic
+    location: location
+  }
+}]
 
 resource domain_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${domain.name}-${lock}-lock'

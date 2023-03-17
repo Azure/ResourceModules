@@ -17,6 +17,7 @@ This module deploys EventGrid Domains.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.EventGrid/domains` | [2022-06-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2022-06-15/domains) |
+| `Microsoft.EventGrid/domains/topics` | [2022-06-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2022-06-15/domains/topics) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
@@ -51,6 +52,7 @@ This module deploys EventGrid Domains.
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and inboundIpRules are not set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `topics` | _[topics](topics/readme.md)_ array | `[]` |  | The topics name which associated with domain. |
 
 
 ### Parameter Usage: `privateEndpoints`
@@ -331,6 +333,9 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    topics: [
+      '<<namePrefix>>-topic-egdcom001'
+    ]
   }
 }
 ```
@@ -414,6 +419,11 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "topics": {
+      "value": [
+        "<<namePrefix>>-topic-egdcom001"
+      ]
     }
   }
 }
