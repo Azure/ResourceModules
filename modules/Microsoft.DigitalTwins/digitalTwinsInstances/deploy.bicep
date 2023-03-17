@@ -182,8 +182,6 @@ module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/deploy.bicep'
     deadLetterSecret: contains(eventGridEndpoint, 'deadLetterSecret') ? eventGridEndpoint.deadLetterSecret : ''
     deadLetterUri: contains(eventGridEndpoint, 'deadLetterUri') ? eventGridEndpoint.deadLetterUri : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    systemAssignedIdentity: contains(eventHubEndpoint, 'systemAssignedIdentity') ? eventHubEndpoint.systemAssignedIdentity : false
-    userAssignedIdentity: contains(eventHubEndpoint, 'userAssignedIdentity') ? eventHubEndpoint.userAssignedIdentity : {}
   }
 }
 

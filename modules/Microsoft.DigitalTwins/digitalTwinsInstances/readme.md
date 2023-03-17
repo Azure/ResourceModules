@@ -290,9 +290,7 @@ userAssignedIdentities: {
 </details>
 <p>
 
-### Parameter Usage: `eventhubEndpoint` Identity Auth
-
-Deployment of Digital Twins Event Hub Endpoint. Identity based authentication.
+### Parameter Usage: `eventhubEndpoint`
 
 <details>
 
@@ -301,14 +299,20 @@ Deployment of Digital Twins Event Hub Endpoint. Identity based authentication.
 ```json
         "eventhubEndpoint": {
             "value": {
-                "EndpointName": "<Endpoint Name>",
-                "EventHubEntityPath": "evh1", // Event Hub Name
-                "EventHubURI": "sb://xyz.servicebus.windows.net" //Event Hub namespace, including sb://
+              "authenticationType": "IdentityBased", // IdentityBased or KeyBased
+              "name": "<Endpoint Name>",
+              "entityPath": "evh1", // Event Hub Name
+              "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
+              "deadLetterUri": "",
+              "deadLetterSecret": "",
+              "connectionStringPrimaryKey": "", //Keybased Auth
+              "connectionStringSecondaryKey": "" //Keybased Auth
             }
         }
 ```
 
 </details>
+<p>
 
 <details>
 
@@ -316,149 +320,103 @@ Deployment of Digital Twins Event Hub Endpoint. Identity based authentication.
 
 ```bicep
   eventhubEndpoint: {
-    EndpointName: '<Endpoint Name>'
-    EventHubEntityPath: 'evh1' // Event Hub Name
-    EventHubURI: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+    authenticationType: 'IdentityBased' // IdentityBased or KeyBased
+    name: '<Endpoint Name>'
+    entityPath: 'evh1' // Event Hub Name
+    endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+    deadLetterUri: ''
+    deadLetterSecret: ''
+    connectionStringPrimaryKey: '' //Keybased Auth
+    connectionStringSecondaryKey: '' //Keybased Auth
   }
+  ```
 
 </details>
 <p>
 
-### Parameter Usage: `eventhubEndpoint` Key Auth
-
-Deployment of Digital Twins Event Hub Endpoint. Key based authentication.
+### Parameter Usage: `eventGridEndpoint`
 
 <details>
 
 <summary>Parameter JSON format</summary>
 
 ```json
-        "eventhubEndpoint": {
+        "eventGridEndpoint": {
             "value": {
-                "EndpointName": "<Endpoint Name>",
-                "EventHubConnectionStringPrimaryKey": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-KEY>=;EntityPath=<Event-Hub Name>",
-                "EventHubConnectionStringSecondaryKey": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-Key>;EntityPath=<Event-Hub Name>"
+              "name": "<Endpoint Name>",
+              "accessKey1": "",
+              "accessKey2": "",
+              "TopicEndpoint": "",
+              "deadLetterUri": "",
+              "deadLetterSecret": ""
             }
         }
 ```
+
 </details>
+<p>
 
 <details>
 
 <summary>Bicep format</summary>
 
 ```bicep
-  eventhubEndpoint: {
-    EndpointName: '<Endpoint Name>'
-    EventHubConnectionStringPrimaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-KEY>=;EntityPath=<Event-Hub Name>'
-    EventHubConnectionStringSecondaryKey: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS-Key-Name>;SharedAccessKey=<SAS-Key>;EntityPath=<Event-Hub Name>'
+  eventGridEndpoint: {
+    name: '<Endpoint Name>'
+    accessKey1: ''
+    accessKey2: ''
+    TopicEndpoint: ''
+    deadLetterSecret: ''
+    deadLetterSecret: ''
   }
+  ```
+
 </details>
 <p>
 
-### Parameter Usage: `eventgridEndpoint`
-
-Deployment of Digital Twins Event Grid Endpoint.
+### Parameter Usage: `serviceBusEndpoint`
 
 <details>
 
 <summary>Parameter JSON format</summary>
 
 ```json
-        "eventgridEndpoint": {
+        "serviceBusEndpoint": {
             "value": {
-                "EndpointName": "<Endpoint Name>",
-                "EventGridTopicEndpoint": "https://xyz.<region>.eventgrid.azure.net/api/events",
-                "EventGridAccessKey1": "<Event Grid Topic Access Key 1>",
-                "EventGridAccessKey2": "<Event Grid Topic Access Key 2>"
+              "authenticationType": "IdentityBased", // IdentityBased or KeyBased
+              "name": "<Endpoint Name>",
+              "entityPath": "sb1", // Event Hub Name
+              "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
+              "deadLetterUri": "",
+              "deadLetterSecret": "",
+              "connectionStringPrimaryKey": "", //Keybased Auth
+              "connectionStringSecondaryKey": "" //Keybased Auth
             }
         }
 ```
+
 </details>
+<p>
 
 <details>
 
 <summary>Bicep format</summary>
 
 ```bicep
-  eventgridEndpoint: {
-    EndpointName: '<Endpoint Name>'
-    EventGridTopicEndpoint: 'https://xyz.<region>.eventgrid.azure.net/api/events'
-    EventGridAccessKey1: '<Event Grid Topic Access Key 1>'
-    EventGridAccessKey2: '<Event Grid Topic Access Key 2>'
+  serviceBusEndpoint: {
+    authenticationType: 'IdentityBased' // IdentityBased or KeyBased
+    name: '<Endpoint Name>'
+    entityPath: 'evh1' // Event Hub Name
+    endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+    deadLetterUri: ''
+    deadLetterSecret: ''
+    connectionStringPrimaryKey: '' //Keybased Auth
+    connectionStringSecondaryKey: '' //Keybased Auth
   }
+  ```
 
 </details>
 <p>
-
-### Parameter Usage: `servicebusEndpoint` Identity Auth
-
-Deployment of Digital Twins Service Bus Endpoint. Identity based authentication.
-
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-        "servicebusEndpoint": {
-            "value": {
-                "EndpointName": "<Endpoint Name>",
-                "ServiceBusEndpointUri": "sb://xyz.servicebus.windows.net", //Service Bus URI, including sb://
-                "ServiceBusEntityPath": "<Service Bus Entity Path>"
-            }
-        }
-```
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-  servicebusEndpoint: {
-    EndpointName: '<Endpoint Name>'
-    ServiceBusEndpointUri: 'sb://xyz.servicebus.windows.net' //Service Bus URI, including sb://
-    ServiceBusEntityPath: '<Service Bus Entity Path>'
-  }
-
-</details>
-<p>
-
-### Parameter Usage: `servicebusEndpoint` Key Auth
-
-Deployment of Digital Twins Service Bus Endpoint. Key based authentication.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-        "servicebusEndpoint": {
-            "value": {
-                "EndpointName": "<Endpoint Name>",
-                "ServiceBusPrimaryConnectionString": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>",
-                "ServiceBusSecondaryConnectionString": "Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>"
-            }
-        }
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-  servicebusEndpoint: {
-    EndpointName: '<Endpoint Name>'
-    ServiceBusPrimaryConnectionString: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>'
-    ServiceBusSecondaryConnectionString: 'Endpoint=sb://xyz.servicebus.windows.net/;SharedAccessKeyName=<SAS Key Name>;SharedAccessKey=<SAS Key>=;EntityPath=<EntityPath>'
-  }
-
-</details>
-<p>
-
 
 ## Outputs
 
@@ -488,6 +446,7 @@ The following module usage examples are retrieved from the content of the files 
 <h3>Example 1: Common</h3>
 
 <details>
+<p>
 
 <summary>via Bicep module</summary>
 
@@ -535,7 +494,6 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
 
 </details>
 <p>
-
 <details>
 
 <summary>via JSON Parameter file</summary>

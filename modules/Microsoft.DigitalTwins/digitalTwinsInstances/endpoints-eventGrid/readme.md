@@ -8,6 +8,7 @@ This module deploys Digital Twin Instance Endpoints.
   - [Navigation](#navigation)
   - [Resource Types](#resource-types)
   - [Parameters](#parameters)
+    - [Parameter Usage: `eventGridEndpoint`](#parameter-usage-eventgridendpoint)
   - [Outputs](#outputs)
   - [Cross-referenced modules](#cross-referenced-modules)
 
@@ -42,9 +43,46 @@ This module deploys Digital Twin Instance Endpoints.
 | `deadLetterUri` | string | `''` | Dead letter storage URL for identity-based authentication. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'EventGridEndpoint'` | The name of the Digital Twin Endpoint. |
-| `systemAssignedIdentity` | string | `false` | Enables system assigned managed identity on the resource. |
-| `userAssignedIdentity` | string | `''` | The ID to assign to the resource. |
 
+### Parameter Usage: `eventGridEndpoint`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "eventGridEndpoint": {
+            "value": {
+              "name": "<Endpoint Name>",
+              "accessKey1": "",
+              "accessKey2": "",
+              "TopicEndpoint": "",
+              "deadLetterUri": "",
+              "deadLetterSecret": ""
+            }
+        }
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+  eventGridEndpoint: {
+    name: '<Endpoint Name>'
+    accessKey1: ''
+    accessKey2: ''
+    TopicEndpoint: ''
+    deadLetterSecret: ''
+    deadLetterSecret: ''
+  }
+  ```
+
+</details>
+<p>
 
 ## Outputs
 

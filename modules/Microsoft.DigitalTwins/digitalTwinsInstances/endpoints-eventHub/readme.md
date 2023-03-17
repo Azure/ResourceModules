@@ -8,6 +8,7 @@ This module deploys Digital Twin Instance Endpoints.
   - [Navigation](#navigation)
   - [Resource Types](#resource-types)
   - [Parameters](#parameters)
+    - [Parameter Usage: `eventhubEndpoint`](#parameter-usage-eventhubendpoint)
   - [Outputs](#outputs)
   - [Cross-referenced modules](#cross-referenced-modules)
 
@@ -40,6 +41,54 @@ This module deploys Digital Twin Instance Endpoints.
 | `name` | string | `'EventHubEndpoint'` | The name of the Digital Twin Endpoint. |
 | `systemAssignedIdentity` | string | `false` | Enables system assigned managed identity on the resource. |
 | `userAssignedIdentity` | string | `''` | The ID to assign to the resource. |
+
+### Parameter Usage: `eventhubEndpoint`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+        "eventhubEndpoint": {
+            "value": {
+              "authenticationType": "IdentityBased", // IdentityBased or KeyBased
+              "name": "<Endpoint Name>",
+              "entityPath": "evh1", // Event Hub Name
+              "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
+              "deadLetterUri": "",
+              "deadLetterSecret": "",
+              "connectionStringPrimaryKey": "", //Keybased Auth
+              "connectionStringSecondaryKey": "" //Keybased Auth
+            }
+        }
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+  eventhubEndpoint: {
+    authenticationType: 'IdentityBased' // IdentityBased or KeyBased
+    name: '<Endpoint Name>'
+    entityPath: 'evh1' // Event Hub Name
+    endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+    deadLetterUri: ''
+    deadLetterSecret: ''
+    connectionStringPrimaryKey: '' //Keybased Auth
+    connectionStringSecondaryKey: '' //Keybased Auth
+  }
+  ```
+
+</details>
+<p>
+
+
+
+
 
 ## Outputs
 
