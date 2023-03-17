@@ -1,7 +1,7 @@
 @description('Required. The name of the Event Grid Domain Topic.')
 param name string
 
-@description('Required. Name of the Event Grid Domain.')
+@description('Conditional. The name of the parent Event Grid Domain. Required if the template is used in a standalone deployment.')
 param domainName string
 
 @description('Optional. Location for all Resources.')
