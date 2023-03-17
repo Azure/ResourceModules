@@ -18,6 +18,10 @@ param serviceShort string = 'dtdticom'
 param enableDefaultTelemetry bool = true
 
 
+var eventGridTopicName = 'dt-${uniqueString(serviceShort)}-evgtp-01'
+
+var eventGridDomainName = 'dt-${uniqueString(serviceShort)}-evg-01'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -39,8 +43,8 @@ module nestedDependencies 'dependencies.bicep' = {
     eventHubNamespaceName: 'dt-${uniqueString(serviceShort)}-evhns-01'
     serviceBusName: 'dt-${uniqueString(serviceShort)}-sb-01'
     serviceBusTopicName: 'dt-${uniqueString(serviceShort)}-sbtp-01'
-    eventGridDomainName: 'dt-${uniqueString(serviceShort)}-evg-01'
-    eventGridTopicName: 'dt-${uniqueString(serviceShort)}-evgtp-01'
+    eventGridDomainName: eventGridDomainName
+    eventGridTopicName: eventGridTopicName
   }
 }
 
@@ -80,10 +84,10 @@ module testDeployment '../../deploy.bicep' = {
     }
     eventGridEndpoint: {
       authenticationType: 'KeyBased'
-      accessKey1: listkeys(resourceId('Microsoft.EventGrid/domains/topics', 'dt-${uniqueString(serviceShort)}-evgtp-01'), '2022-06-15').key1
-      accessKey2: listkeys(resourceId('Microsoft.EventGrid/domains/topics', 'dt-${uniqueString(serviceShort)}-evgtp-01'), '2022-06-15').key2
+      accessKey1: listkeys(eventGridTopicName, '2022-06-15').key1
+      accessKey2: listkeys(eventGridTopicName, '2022-06-15').key2
       TopicEndpoint: nestedDependencies.outputs.eventGridTopicName
-      
+
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
