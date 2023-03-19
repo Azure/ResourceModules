@@ -95,7 +95,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'inboundNatRule2'
       }
     ]
-    loadBalancerSku: 'Standard'
+    skuName: 'Standard'
     loadBalancingRules: [
       {
         backendAddressPoolName: 'servers'
@@ -130,5 +130,9 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

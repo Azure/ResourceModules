@@ -1,4 +1,4 @@
-﻿#requires -version 6.0
+﻿#requires -version 7.3
 
 <#
 .SYNOPSIS

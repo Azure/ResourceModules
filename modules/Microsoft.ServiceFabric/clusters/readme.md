@@ -277,6 +277,10 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
       x509StoreName: 'My'
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -331,6 +335,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

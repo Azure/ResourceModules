@@ -367,6 +367,10 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     ]
     softDeleteRetentionInDays: 1
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -452,6 +456,12 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -531,9 +541,17 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         }
         service: 'configurationStores'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     softDeleteRetentionInDays: 1
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -576,12 +594,22 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
             ]
           },
           "service": "configurationStores",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
     "softDeleteRetentionInDays": {
       "value": 1
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

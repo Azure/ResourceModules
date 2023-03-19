@@ -363,6 +363,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     initialWorkspaceAdminObjectID: '<initialWorkspaceAdminObjectID>'
     privateEndpoints: [
       {
@@ -373,6 +374,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
         }
         service: 'SQL'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -441,6 +446,9 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "initialWorkspaceAdminObjectID": {
       "value": "<initialWorkspaceAdminObjectID>"
     },
@@ -453,7 +461,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
             ]
           },
           "service": "SQL",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -498,6 +510,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUseSystemAssignedIdentity: true
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryption: true
     encryptionActivateWorkspace: true
   }
@@ -539,6 +552,9 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "cMKUseSystemAssignedIdentity": {
       "value": true
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryption": {
       "value": true
     },
@@ -571,7 +587,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryption: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -611,8 +632,17 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     "cMKUserAssignedIdentityResourceId": {
       "value": "<cMKUserAssignedIdentityResourceId>"
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "encryption": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -640,8 +670,13 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     allowedAadTenantIdsForLinking: [
       '<tenantId>'
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedVirtualNetwork: true
     preventDataExfiltration: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -677,11 +712,20 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
         "<tenantId>"
       ]
     },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
     "managedVirtualNetwork": {
       "value": true
     },
     "preventDataExfiltration": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -705,6 +749,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swmin001'
     sqlAdministratorLogin: 'synwsadmin'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -733,6 +779,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }

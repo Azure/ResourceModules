@@ -7,9 +7,6 @@ param login string
 @description('Required. SID (object ID) of the managed instance administrator.')
 param sid string
 
-@description('Optional. The name of the managed instance administrator.')
-param name string = 'ActiveDirectory'
-
 @description('Optional. Tenant ID of the managed instance administrator.')
 param tenantId string = ''
 
@@ -33,7 +30,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
 }
 
 resource administrator 'Microsoft.Sql/managedInstances/administrators@2022-02-01-preview' = {
-  name: name
+  name: 'ActiveDirectory'
   parent: managedInstance
   properties: {
     administratorType: 'ActiveDirectory'

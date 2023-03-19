@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the blob service.')
-param name string = 'default'
-
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
 param deleteRetentionPolicy bool = true
 
@@ -56,8 +53,11 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
+
+// The name of the blob services
+var name = 'default'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -120,7 +120,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2021-09-01
 }
 
 resource blobServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -136,7 +136,6 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
   name: '${deployment().name}-Container-${index}'
   params: {
     storageAccountName: storageAccount.name
-    blobServicesName: blobServices.name
     name: container.name
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []

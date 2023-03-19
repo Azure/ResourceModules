@@ -5,7 +5,7 @@ param principalIds array
 param roleDefinitionIdOrName string
 
 @sys.description('Required. The resource ID of the resource to apply the role assignment to.')
-param resourceId string
+param resourceId string = resourceGroup().id
 
 @sys.description('Optional. The principal type of the assigned principal ID.')
 @allowed([
@@ -66,6 +66,11 @@ var builtInRoleNames = {
   'Azure Center for SAP solutions reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '05352d14-a920-4328-a0de-4cbe7430e26b')
   'Azure Center for SAP solutions service role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'aabbc5dd-1af0-458b-a942-81af88f9c138')
   'Azure Connected Machine Resource Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'cd570a14-e51a-42ad-bac8-bafd67325302')
+  'Azure Extension for SQL Server Deployment': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7392c568-9289-4bde-aaaa-b7131215889d')
+  'Azure Front Door Domain Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0ab34830-df19-4f8c-b84e-aa85b8afa6e8')
+  'Azure Front Door Domain Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0f99d363-226e-4dca-9920-b807cf8e1a5f')
+  'Azure Front Door Secret Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3f2eb865-5811-4578-b90a-6fc6fa0df8e5')
+  'Azure Front Door Secret Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0db238c4-885e-4c4f-a933-aa2cef684fca')
   'Azure Kubernetes Fleet Manager Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '63bb64ad-9799-4770-b5c3-24ed299a07bf')
   'Azure Kubernetes Fleet Manager RBAC Admin': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '434fb43a-c01c-447e-9f67-c3ad923cfaba')
   'Azure Kubernetes Fleet Manager RBAC Cluster Admin': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18ab4d3d-a1bf-4477-8ad9-8359bc988f69')
@@ -78,6 +83,7 @@ var builtInRoleNames = {
   'Azure Kubernetes Service RBAC Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f6c6a51-bcf8-42ba-9220-52d62157d7db')
   'Azure Kubernetes Service RBAC Writer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7ffa36f-339b-4b5c-8bdf-e2c188b2c0eb')
   'Azure Maps Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'dba33070-676a-4fb0-87fa-064dc56ff7fb')
+  'Azure Stack HCI registration role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'bda0d508-adf1-4af0-9c28-88919fc3ae06')
   'Azure Traffic Controller Configuration Manager': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fbc52c3f-28ad-4303-a892-8a056630b8f1')
   'Backup Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5e467623-bb1f-42f4-a55d-6e525e11384b')
   'Backup Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00c29273-979b-4161-815c-10b084fb9324')
@@ -94,11 +100,12 @@ var builtInRoleNames = {
   'Classic Storage Account Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '86e8f5dc-a6e9-4c67-9d15-de283e8eac25')
   'Classic Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd73bb868-a0df-4d4d-bd69-98a00b01fccb')
   'ClearDB MySQL DB Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9106cda0-8a86-4e81-b686-29a22c54effe')
-  'CodeSigning Certificate Profile Signer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2837e146-70d7-4cfd-ad55-7efa6464f958')
+  'Code Signing Certificate Profile Signer': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '2837e146-70d7-4cfd-ad55-7efa6464f958')
   'Cognitive Services Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '25fbc0a9-bd7c-42a3-aa1a-3b75d497ee68')
   'Cognitive Services User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a97b65f3-24c7-4388-baec-2e87135dc908')
   'Collaborative Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'daa9e50b-21df-454c-94a6-a8050adab352')
   'Collaborative Runtime Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7a6f0e70-c033-4fb1-828c-08514e5f4102')
+  'ContainerApp Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ad2dd5fb-cd4b-4fd4-a9b6-4fed3630980b')
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Cosmos DB Account Reader Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8')
   'Cosmos DB Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '230815da-be43-4aae-9cb4-875f7bd000aa')
@@ -166,6 +173,8 @@ var builtInRoleNames = {
   'Load Test Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749a398d-560b-491b-bb21-08924219302e')
   'Load Test Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '45bb0b16-2f0c-4e78-afaa-a07599b003f6')
   'Load Test Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3ae3fb29-0000-4ccd-bf80-542e7b26e081')
+  'LocalNGFirewallAdministrator role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a8835c7d-b5cb-47fa-b6f0-65ea10ce07a2')
+  'LocalRulestacksAdministrator role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'bfc3b73d-c6ff-45eb-9a5f-40298295bf20')
   'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
   'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
   'Logic App Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '87a39d53-fc1b-424a-814c-f7e04687dc9e')

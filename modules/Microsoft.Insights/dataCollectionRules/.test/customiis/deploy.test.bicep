@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     dataCollectionEndpointId: resourceGroupResources.outputs.dataCollectionEndpointResourceId
-    dataCollectionRuleDescription: 'Collecting IIS logs.'
+    description: 'Collecting IIS logs.'
     dataFlows: [
       {
         streams: [

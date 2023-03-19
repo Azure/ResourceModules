@@ -204,6 +204,10 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
         ]
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -273,6 +277,12 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
           ]
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

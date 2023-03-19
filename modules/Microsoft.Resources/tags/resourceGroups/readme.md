@@ -22,7 +22,6 @@ This module deploys Resources Tags on a resource group scope.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `'default'` | The name of the tags resource. |
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
 | `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
 

@@ -158,6 +158,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     virtualNetworkRules: [
@@ -167,5 +171,10 @@ module testDeployment '../../deploy.bicep' = {
         virtualNetworkSubnetId: nestedDependencies.outputs.serviceEndpointSubnetResourceId
       }
     ]
+    restrictOutboundNetworkAccess: 'Disabled'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

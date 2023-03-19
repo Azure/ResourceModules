@@ -61,6 +61,7 @@ This module deploys a SQL server.
 | `minimalTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Minimal TLS version allowed. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and neither firewall rules nor virtual network rules are set. |
+| `restrictOutboundNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not to restrict outbound network access for this server. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | The security alert policies to create in the server. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -501,8 +502,13 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
         service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
+    restrictOutboundNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         principalIds: [
@@ -520,6 +526,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -640,9 +650,16 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": "Disabled"
     },
     "roleAssignments": {
       "value": [
@@ -666,6 +683,12 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -725,8 +748,16 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         }
         service: 'sqlServer'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -766,7 +797,88 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             ]
           },
           "service": "sqlServer",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 4: Secondary</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-sqlsec'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>-sqlsec-sec'
+    // Non-required parameters
+    administratorLogin: 'adminUserName'
+    administratorLoginPassword: '<administratorLoginPassword>'
+    databases: [
+      {
+        createMode: 'Secondary'
+        maxSizeBytes: 2147483648
+        name: '<name>'
+        skuName: 'Basic'
+        skuTier: 'Basic'
+        sourceDatabaseResourceId: '<sourceDatabaseResourceId>'
+      }
+    ]
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>-sqlsec-sec"
+    },
+    // Non-required parameters
+    "administratorLogin": {
+      "value": "adminUserName"
+    },
+    "administratorLoginPassword": {
+      "value": "<administratorLoginPassword>"
+    },
+    "databases": {
+      "value": [
+        {
+          "createMode": "Secondary",
+          "maxSizeBytes": 2147483648,
+          "name": "<name>",
+          "skuName": "Basic",
+          "skuTier": "Basic",
+          "sourceDatabaseResourceId": "<sourceDatabaseResourceId>"
         }
       ]
     }

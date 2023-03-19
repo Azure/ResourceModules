@@ -188,6 +188,10 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     type: 'Basic'
   }
 }
@@ -235,6 +239,12 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "type": {
       "value": "Basic"

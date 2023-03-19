@@ -10,9 +10,6 @@ param resourceGroupName string = 'ms.purview-${serviceShort}-rg'
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
-@description('Tags')
-param tags object = {}
-
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'pvacom'
 
@@ -65,7 +62,10 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     location: location
-    tags: tags
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }

@@ -7,13 +7,13 @@ param location string = resourceGroup().location
 @description('Required. Shared services Virtual Network resource identifier.')
 param vNetId string
 
-@description('Optional. The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet.')
-param azureBastionSubnetPublicIpId string = ''
+@description('Optional. The Public IP resource ID to associate to the azureBastionSubnet. If empty, then the Public IP that is created as part of this module will be applied to the azureBastionSubnet.')
+param bastionSubnetPublicIpResourceId string = ''
 
-@description('Optional. Specifies if a public ip should be created by default if one is not provided.')
+@description('Optional. Specifies if a Public IP should be created by default if one is not provided.')
 param isCreateDefaultPublicIP bool = true
 
-@description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressResourceId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
+@description('Optional. Specifies the properties of the Public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressResourceId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
 param publicIPAddressObject object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -46,7 +46,7 @@ param lock string = ''
   'Standard'
 ])
 @description('Optional. The SKU of this Bastion Host.')
-param skuType string = 'Basic'
+param skuName string = 'Basic'
 
 @description('Optional. Choose to disable or enable Copy Paste.')
 param disableCopyPaste bool = false
@@ -104,15 +104,15 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
   }
 ] : diagnosticsLogsSpecified
 
-var enableTunneling = skuType == 'Standard' ? true : null
+var enableTunneling = skuName == 'Standard' ? true : null
 
-var scaleUnitsVar = skuType == 'Basic' ? 2 : scaleUnits
+var scaleUnitsVar = skuName == 'Basic' ? 2 : scaleUnits
 
 // ----------------------------------------------------------------------------
 // Prep ipConfigurations object AzureBastionSubnet for different uses cases:
-// 1. Use existing public ip
-// 2. Use new public ip created in this module
-// 3. Do not use a public ip if isCreateDefaultPublicIP is false
+// 1. Use existing Public IP
+// 2. Use new Public IP created in this module
+// 3. Do not use a Public IP if isCreateDefaultPublicIP is false
 var subnetVar = {
   subnet: {
     id: '${vNetId}/subnets/AzureBastionSubnet' // The subnet name must be AzureBastionSubnet
@@ -120,11 +120,11 @@ var subnetVar = {
 }
 var existingPip = {
   publicIPAddress: {
-    id: azureBastionSubnetPublicIpId
+    id: bastionSubnetPublicIpResourceId
   }
 }
 var newPip = {
-  publicIPAddress: (empty(azureBastionSubnetPublicIpId) && isCreateDefaultPublicIP) ? {
+  publicIPAddress: (empty(bastionSubnetPublicIpResourceId) && isCreateDefaultPublicIP) ? {
     id: publicIPAddress.outputs.resourceId
   } : null
 }
@@ -132,8 +132,8 @@ var newPip = {
 var ipConfigurations = [
   {
     name: 'IpConfAzureBastionSubnet'
-    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnetVar, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    //Use existing Public IP, new Public IP created in this module, or none if isCreateDefaultPublicIP is false
+    properties: union(subnetVar, !empty(bastionSubnetPublicIpResourceId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
   }
 ]
 
@@ -153,14 +153,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBastionSubnetPublicIpId) && isCreateDefaultPublicIP) {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(bastionSubnetPublicIpResourceId) && isCreateDefaultPublicIP) {
   name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
     diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
-      'DDoSProtectionNotifications'
-      'DDoSMitigationFlowLogs'
-      'DDoSMitigationReports'
+      'allLogs'
     ]
     diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? publicIPAddressObject.diagnosticMetricsToEnable : [
       'AllMetrics'
@@ -184,7 +182,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBast
   }
 }
 
-var bastionpropertiesVar = skuType == 'Standard' ? {
+var bastionpropertiesVar = skuName == 'Standard' ? {
   scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
   enableTunneling: enableTunneling
@@ -202,7 +200,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
   location: location
   tags: tags
   sku: {
-    name: skuType
+    name: skuName
   }
   properties: bastionpropertiesVar
 }
@@ -253,5 +251,5 @@ output resourceId string = azureBastion.id
 @description('The location the resource was deployed into.')
 output location string = azureBastion.location
 
-@description('The public ipconfiguration object for the AzureBastionSubnet.')
+@description('The Public IPconfiguration object for the AzureBastionSubnet.')
 output ipConfAzureBastionSubnet object = azureBastion.properties.ipConfigurations[0]

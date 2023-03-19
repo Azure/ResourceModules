@@ -492,6 +492,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -505,6 +509,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     ]
     sku: 'S0'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -581,7 +589,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
             ]
           },
           "service": "account",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -601,6 +613,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -765,10 +783,18 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     sku: 'S0'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -811,7 +837,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
             ]
           },
           "service": "account",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -820,6 +850,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

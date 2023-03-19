@@ -85,5 +85,9 @@ module testDeployment '../../deploy.bicep' = {
         id: nestedDependencies.outputs.applicationSecurityGroupResourceId
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

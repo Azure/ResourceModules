@@ -287,6 +287,10 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
       }
     ]
     sendRecvTimeoutSeconds: 10
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -427,6 +431,12 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
     },
     "sendRecvTimeoutSeconds": {
       "value": 10
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -31,8 +31,7 @@ This module deploys an Azure API connection.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `alternativeParameterValues` | object | `{object}` |  | Alternative parameter values. |
-| `connectionApi` | object | `{object}` |  | Specific values for some API connections. |
+| `api` | object | `{object}` |  | Specific values for some API connections. |
 | `customParameterValues` | object | `{object}` |  | Customized parameter values for specific connections. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location of the deployment. |
@@ -179,7 +178,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
     displayName: 'azuremonitorlogs'
     name: 'azuremonitor'
     // Non-required parameters
-    connectionApi: {
+    api: {
       id: '<id>'
     }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -193,6 +192,10 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -217,7 +220,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
       "value": "azuremonitor"
     },
     // Non-required parameters
-    "connectionApi": {
+    "api": {
       "value": {
         "id": "<id>"
       }
@@ -238,6 +241,12 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

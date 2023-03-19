@@ -27,9 +27,9 @@ This module deploys a virtual network gateway.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
+| `gatewayType` | string | `[ExpressRoute, Vpn]` | Specifies the gateway type. E.g. VPN, ExpressRoute. |
 | `name` | string |  | Specifies the Virtual Network Gateway name. |
-| `virtualNetworkGatewaySku` | string | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ]` | The SKU of the Gateway. |
-| `virtualNetworkGatewayType` | string | `[ExpressRoute, Vpn]` | Specifies the gateway type. E.g. VPN, ExpressRoute. |
+| `skuName` | string | `[Basic, ErGw1AZ, ErGw2AZ, ErGw3AZ, HighPerformance, Standard, UltraPerformance, VpnGw1, VpnGw1AZ, VpnGw2, VpnGw2AZ, VpnGw3, VpnGw3AZ, VpnGw4, VpnGw4AZ, VpnGw5, VpnGw5AZ]` | The SKU of the Gateway. |
 | `vNetResourceId` | string |  | Virtual Network resource ID. |
 
 **Optional parameters**
@@ -71,6 +71,7 @@ This module deploys a virtual network gateway.
 | `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `vpnClientAadConfiguration` | object | `{object}` |  | Configuration for AAD Authentication for P2S Tunnel Type, Cannot be configured if clientRootCertData is provided. |
 | `vpnClientAddressPoolPrefix` | string | `''` |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
+| `vpnGatewayGeneration` | string | `'None'` | `[Generation1, Generation2, None]` | The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN. |
 | `vpnType` | string | `'RouteBased'` | `[PolicyBased, RouteBased]` | Specifies the VPN type. |
 
 
@@ -277,9 +278,9 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
   params: {
     // Required parameters
+    gatewayType: 'Vpn'
     name: '<<namePrefix>>nvngavpn001'
-    virtualNetworkGatewaySku: 'VpnGw2AZ'
-    virtualNetworkGatewayType: 'Vpn'
+    skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     activeActive: false
@@ -304,6 +305,10 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vpnClientAadConfiguration: {
       aadAudience: '41b23e61-6c1e-4545-b367-cd054e0ed4b4'
       aadIssuer: '<aadIssuer>'
@@ -333,14 +338,14 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "gatewayType": {
+      "value": "Vpn"
+    },
     "name": {
       "value": "<<namePrefix>>nvngavpn001"
     },
-    "virtualNetworkGatewaySku": {
+    "skuName": {
       "value": "VpnGw2AZ"
-    },
-    "virtualNetworkGatewayType": {
-      "value": "Vpn"
     },
     "vNetResourceId": {
       "value": "<vNetResourceId>"
@@ -388,6 +393,12 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         }
       ]
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "vpnClientAadConfiguration": {
       "value": {
         "aadAudience": "41b23e61-6c1e-4545-b367-cd054e0ed4b4",
@@ -422,9 +433,9 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name, location)}-test-nvger'
   params: {
     // Required parameters
+    gatewayType: 'ExpressRoute'
     name: '<<namePrefix>>nvger001'
-    virtualNetworkGatewaySku: 'ErGw1AZ'
-    virtualNetworkGatewayType: 'ExpressRoute'
+    skuName: 'ErGw1AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -470,14 +481,14 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "gatewayType": {
+      "value": "ExpressRoute"
+    },
     "name": {
       "value": "<<namePrefix>>nvger001"
     },
-    "virtualNetworkGatewaySku": {
+    "skuName": {
       "value": "ErGw1AZ"
-    },
-    "virtualNetworkGatewayType": {
-      "value": "ExpressRoute"
     },
     "vNetResourceId": {
       "value": "<vNetResourceId>"
@@ -547,9 +558,9 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name, location)}-test-nvgvpn'
   params: {
     // Required parameters
+    gatewayType: 'Vpn'
     name: '<<namePrefix>>nvgvpn001'
-    virtualNetworkGatewaySku: 'VpnGw2AZ'
-    virtualNetworkGatewayType: 'Vpn'
+    skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
     activeActive: true
@@ -613,6 +624,11 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+    vpnGatewayGeneration: 'Generation2'
     vpnType: 'RouteBased'
   }
 }
@@ -631,14 +647,14 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "gatewayType": {
+      "value": "Vpn"
+    },
     "name": {
       "value": "<<namePrefix>>nvgvpn001"
     },
-    "virtualNetworkGatewaySku": {
+    "skuName": {
       "value": "VpnGw2AZ"
-    },
-    "virtualNetworkGatewayType": {
-      "value": "Vpn"
     },
     "vNetResourceId": {
       "value": "<vNetResourceId>"
@@ -738,6 +754,15 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "vpnGatewayGeneration": {
+      "value": "Generation2"
     },
     "vpnType": {
       "value": "RouteBased"

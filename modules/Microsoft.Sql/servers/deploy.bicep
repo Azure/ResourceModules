@@ -77,6 +77,14 @@ param privateEndpoints array = []
 ])
 param publicNetworkAccess string = ''
 
+@description('Optional. Whether or not to restrict outbound network access for this server.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param restrictOutboundNetworkAccess string = ''
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -121,6 +129,7 @@ resource server 'Microsoft.Sql/servers@2022-05-01-preview' = {
     minimalTlsVersion: minimalTlsVersion
     primaryUserAssignedIdentityId: !empty(primaryUserAssignedIdentityId) ? primaryUserAssignedIdentityId : null
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(firewallRules) && empty(virtualNetworkRules) ? 'Disabled' : null)
+    restrictOutboundNetworkAccess: !empty(restrictOutboundNetworkAccess) ? restrictOutboundNetworkAccess : null
   }
 }
 
@@ -182,6 +191,11 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     enableDefaultTelemetry: enableReferencedModulesTelemetry
     backupShortTermRetentionPolicy: contains(database, 'backupShortTermRetentionPolicy') ? database.backupShortTermRetentionPolicy : {}
     backupLongTermRetentionPolicy: contains(database, 'backupLongTermRetentionPolicy') ? database.backupLongTermRetentionPolicy : {}
+    createMode: contains(database, 'createMode') ? database.createMode : 'Default'
+    sourceDatabaseResourceId: contains(database, 'sourceDatabaseResourceId') ? database.sourceDatabaseResourceId : ''
+    sourceDatabaseDeletionDate: contains(database, 'sourceDatabaseDeletionDate') ? database.sourceDatabaseDeletionDate : ''
+    recoveryServicesRecoveryPointResourceId: contains(database, 'recoveryServicesRecoveryPointResourceId') ? database.recoveryServicesRecoveryPointResourceId : ''
+    restorePointInTime: contains(database, 'restorePointInTime') ? database.restorePointInTime : ''
   }
   dependsOn: [
     server_elasticPools // Enables us to add databases to existing elastic pools
