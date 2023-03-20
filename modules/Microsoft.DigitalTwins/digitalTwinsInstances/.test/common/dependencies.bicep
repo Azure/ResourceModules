@@ -159,6 +159,6 @@ output eventGridEndpoint string = eventGridDomain.properties.endpoint
 
 output eventGridTopicId string = eventGridTopic.id
 
-output eventGridTopicKey01 string = '${listKeys(eventGridDomain.id,  eventGridDomain.apiVersion).key1}'
+//output eventGridTopicKey01 string = '${listKeys(eventGridDomain.id,  eventGridDomain.apiVersion).key1}'
 
 output managedIdentityId string = managedIdentity.id

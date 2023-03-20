@@ -59,6 +59,13 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   }
 }
 
+
+resource existingEventGrid 'Microsoft.EventGrid/domains@2022-06-15' existing = {
+  name: nestedDependencies.outputs.eventGridDomainName
+  scope: resourceGroup
+}
+
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -80,7 +87,7 @@ module testDeployment '../../deploy.bicep' = {
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
     }
     eventGridEndpoint: {
-      accessKey1: nestedDependencies.outputs.eventGridTopicKey01
+      accessKey1: '${listKeys(existingEventGrid.id,  existingEventGrid.apiVersion).key1}'
       topicEndpoint: nestedDependencies.outputs.eventGridEndpoint
       authenticationType: 'KeyBased'
     }
