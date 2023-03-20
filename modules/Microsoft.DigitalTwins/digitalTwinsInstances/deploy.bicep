@@ -176,9 +176,8 @@ module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/deploy.bicep'
     digitalTwinInstanceName: digitalTwinsInstance.name
     name: contains(eventGridEndpoint, 'name') ? eventGridEndpoint.name : 'EventGridEndpoint'
     authenticationType: contains(eventGridEndpoint, 'authenticationType') ? eventGridEndpoint.authenticationType : 'KeyBased'
+    eventGridDomainName: contains(eventGridEndpoint, 'eventGridDomainName') ? eventGridEndpoint.eventGridDomainName : ''
     topicEndpoint: contains(eventGridEndpoint, 'topicEndpoint') ? eventGridEndpoint.topicEndpoint : ''
-    accessKey1: contains(eventGridEndpoint, 'accessKey1') ? eventGridEndpoint.accessKey1 : ''
-    accessKey2: contains(eventGridEndpoint, 'accessKey2') ? eventGridEndpoint.accessKey2 : ''
     deadLetterSecret: contains(eventGridEndpoint, 'deadLetterSecret') ? eventGridEndpoint.deadLetterSecret : ''
     deadLetterUri: contains(eventGridEndpoint, 'deadLetterUri') ? eventGridEndpoint.deadLetterUri : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry

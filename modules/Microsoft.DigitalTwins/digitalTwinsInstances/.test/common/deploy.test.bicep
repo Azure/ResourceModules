@@ -17,8 +17,7 @@ param serviceShort string = 'dtdticom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var eventGridTopicName = 'dt-${uniqueString(serviceShort)}-evgtp-01'
-var eventGridDomainName = 'dt-${uniqueString(serviceShort)}-evg-01'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -40,8 +39,8 @@ module nestedDependencies 'dependencies.bicep' = {
     eventHubNamespaceName: 'dt-${uniqueString(serviceShort)}-evhns-01'
     serviceBusName: 'dt-${uniqueString(serviceShort)}-sb-01'
     serviceBusTopicName: 'dt-${uniqueString(serviceShort)}-sbtp-01'
-    eventGridDomainName: eventGridDomainName
-    eventGridTopicName: eventGridTopicName
+    eventGridDomainName: 'dt-${uniqueString(serviceShort)}-evg-01'
+    eventGridTopicName: 'dt-${uniqueString(serviceShort)}-evgtp-01'
   }
 }
 
@@ -57,12 +56,6 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
     eventHubNamespaceName: 'dep-${uniqueString(serviceShort)}-evh-01'
     location: location
   }
-}
-
-
-resource existingEventGrid 'Microsoft.EventGrid/domains@2022-06-15' existing = {
-  name: nestedDependencies.outputs.eventGridDomainName
-  scope: resourceGroup
 }
 
 
@@ -87,7 +80,7 @@ module testDeployment '../../deploy.bicep' = {
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
     }
     eventGridEndpoint: {
-      accessKey1: nestedDependencies.outputs.eventGridTopicKey01
+      eventGridDomainName: nestedDependencies.outputs.eventGridDomainName
       topicEndpoint: nestedDependencies.outputs.eventGridEndpoint
       authenticationType: 'KeyBased'
     }
