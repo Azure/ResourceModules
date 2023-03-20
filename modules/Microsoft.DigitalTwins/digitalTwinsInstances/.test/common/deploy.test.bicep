@@ -87,7 +87,7 @@ module testDeployment '../../deploy.bicep' = {
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
     }
     eventGridEndpoint: {
-      accessKey1: '${listKeys(existingEventGrid.id,  existingEventGrid.apiVersion).key1}'
+      accessKey1: nestedDependencies.outputs.eventGridTopicKey01
       topicEndpoint: nestedDependencies.outputs.eventGridEndpoint
       authenticationType: 'KeyBased'
     }
