@@ -304,8 +304,19 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
   ]
 }
 
+module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
+  name: '${uniqueString(deployment().name, location)}-Sql-Key-${index}'
+  params: {
+    name: key.name
+    serverName: server.name
+    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
+    uri: contains(key, 'uri') ? key.uri : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module server_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
-  name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
+  name: '${uniqueString(deployment().name, location)}-Sql-EncryProtector'
   params: {
     sqlServerName: server.name
     serverKeyName: encryptionProtectorObj.serverKeyName
@@ -317,17 +328,6 @@ module server_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empt
     server_keys
   ]
 }
-
-module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
-  name: '${uniqueString(deployment().name, location)}-Sql-Key-${index}'
-  params: {
-    name: key.name
-    serverName: server.name
-    serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
-    uri: contains(key, 'uri') ? key.uri : ''
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
 
 @description('The name of the deployed SQL server.')
 output name string = server.name
