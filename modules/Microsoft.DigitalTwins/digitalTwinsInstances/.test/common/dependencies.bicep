@@ -114,7 +114,6 @@ resource eventGridTopic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
     parent: eventGridDomain
 }
 
-
 resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(managedIdentity.id, 'evhrbacAssignment')
     scope: eventHubNamespace
@@ -134,7 +133,6 @@ resource sbhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
         principalType: 'ServicePrincipal'
     }
 }
-
 
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
@@ -159,6 +157,6 @@ output eventGridTopicName string = eventGridTopic.name
 
 output eventGridTopicId string = eventGridTopic.id
 
-output eventGridTopicKey01 string = '${listKeys(eventGridDomain.id, eventGridDomain.apiVersion).keys[1].value}'
+output eventGridTopicKey01 string = '${listKeys(eventGridDomain.id,  eventGridDomain.apiVersion).key1}'
 
 output managedIdentityId string = managedIdentity.id
