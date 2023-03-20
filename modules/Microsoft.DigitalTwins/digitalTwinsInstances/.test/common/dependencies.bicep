@@ -159,6 +159,4 @@ output eventGridTopicName string = eventGridTopic.name
 
 output eventGridTopicId string = eventGridTopic.id
 
-output eventGridTopicAccessKey1 string = eventGridTopic.listkeys().key[1]
-
 output managedIdentityId string = managedIdentity.id
