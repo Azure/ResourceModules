@@ -101,8 +101,5 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    topics: [
-      '<<namePrefix>>-topic-${serviceShort}001'
-    ]
   }
 }
