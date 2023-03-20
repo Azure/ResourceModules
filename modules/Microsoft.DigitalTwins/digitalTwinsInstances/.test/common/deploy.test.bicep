@@ -81,7 +81,7 @@ module testDeployment '../../deploy.bicep' = {
     }
     eventGridEndpoint: {
       accessKey1: nestedDependencies.outputs.eventGridTopicKey01
-      topicEndpoint: nestedDependencies.outputs.eventGridTopicName
+      topicEndpoint: nestedDependencies.outputs.eventGridEndpoint
       authenticationType: 'KeyBased'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
