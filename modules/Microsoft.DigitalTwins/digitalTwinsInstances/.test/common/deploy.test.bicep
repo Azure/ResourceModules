@@ -80,7 +80,7 @@ module testDeployment '../../deploy.bicep' = {
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
     }
         eventGridEndpoint: {
-      accessKey1: listKeys(resourceId('Microsoft.EventGrid/domains/', eventGridDomainName), '2022-06-15').keys[1].value
+      accessKey1: listKeys(resourceId(resourceGroup.name,'Microsoft.EventGrid/domains/', eventGridDomainName), '2022-06-15').keys[1].value
       topicEndpoint: nestedDependencies.outputs.eventGridTopicName
       authenticationType: 'KeyBased'
     }
