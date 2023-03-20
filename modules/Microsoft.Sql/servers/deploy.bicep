@@ -94,6 +94,9 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
+@description('Optional. The encryption protection configuration.')
+param encryptionProtectorObj object = {}
+
 @description('Optional. The vulnerability assessment configuration.')
 param vulnerabilityAssessmentsObj object = {}
 
@@ -298,6 +301,20 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
   }
   dependsOn: [
     server_securityAlertPolicies
+  ]
+}
+
+module server_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
+  name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
+  params: {
+    sqlServerName: server.name
+    serverKeyName: encryptionProtectorObj.serverKeyName
+    serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
+    autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    server_keys
   ]
 }
 
