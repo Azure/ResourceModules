@@ -461,6 +461,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         elasticPoolId: '<elasticPoolId>'
+        encryptionProtectorObj: {
+          serverKeyName: '<serverKeyName>'
+          serverKeyType: 'AzureKeyVault'
+        }
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: '<<namePrefix>>-sqlscomdb-001'
@@ -594,6 +598,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "elasticPoolId": "<elasticPoolId>",
+          "encryptionProtectorObj": {
+            "serverKeyName": "<serverKeyName>",
+            "serverKeyType": "AzureKeyVault"
+          },
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "<<namePrefix>>-sqlscomdb-001",

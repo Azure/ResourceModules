@@ -1,15 +1,13 @@
 # Sql Servers EncryptionProtector `[Microsoft.Sql/servers/encryptionProtector]`
 
-This module deploys Sql Servers EncryptionProtector.
+This module deploys an Sql Servers Encryption Protector.
 
 ## Navigation
 
-- [Sql Servers EncryptionProtector `[Microsoft.Sql/servers/encryptionProtector]`](#sql-servers-encryptionprotector-microsoftsqlserversencryptionprotector)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
