@@ -333,6 +333,9 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    topics: [
+      '<<namePrefix>>-topic-egdcom001'
+    ]
   }
 }
 ```
@@ -416,6 +419,11 @@ module domains './Microsoft.EventGrid/domains/deploy.bicep' = {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "topics": {
+      "value": [
+        "<<namePrefix>>-topic-egdcom001"
+      ]
     }
   }
 }
