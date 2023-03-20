@@ -159,4 +159,6 @@ output eventGridTopicName string = eventGridTopic.name
 
 output eventGridTopicId string = eventGridTopic.id
 
+output eventGridTopicKey01 string = '${listKeys(eventGridDomain.id, eventGridDomain.apiVersion).keys[1].value}'
+
 output managedIdentityId string = managedIdentity.id
