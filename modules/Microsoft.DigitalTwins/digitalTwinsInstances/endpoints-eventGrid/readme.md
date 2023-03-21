@@ -39,6 +39,8 @@ This module deploys Digital Twin Instance Endpoints.
 | `accessKey1` | securestring | `''` | EventGrid secondary accesskey. Will be obfuscated during read. |
 | `accessKey2` | securestring | `''` | EventGrid secondary accesskey. Will be obfuscated during read. |
 | `authenticationType` | string | `'KeyBased'` | Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified. |
+| `topicEndpoint` | string | N/A |Required. EventGrid Topic Endpoint. |
+| `eventGridDomainName` | string | N/A | Required. The resource name of the Event Grid Domain. |
 | `deadLetterSecret` | securestring | `''` | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |
 | `deadLetterUri` | string | `''` | Dead letter storage URL for identity-based authentication. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
