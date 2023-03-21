@@ -47,11 +47,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualMachineScaleSet 'Microsoft.Compute/virtualMachineScaleSets@2021-07-01' existing = {
+resource virtualMachineScaleSet 'Microsoft.Compute/virtualMachineScaleSets@2022-11-01' existing = {
   name: virtualMachineScaleSetName
 }
 
-resource extension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07-01' = {
+resource extension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2022-11-01' = {
   name: name
   parent: virtualMachineScaleSet
   properties: {
