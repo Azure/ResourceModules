@@ -13,9 +13,6 @@ param eventHubNamespaceName string
 @description('Required. The name of the Event Hub to create.')
 param eventHubName string
 
-@description('Optional. Authorization Rule name for key based authentication.')
-param eventHubAuthorizationRuleName string
-
 @description('Required. Service Bus name')
 param serviceBusName string
 
@@ -91,16 +88,6 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' =
     parent: eventHubNamespace
 }
 
-resource eventHubauthorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-10-01-preview' = {
-    name: eventHubAuthorizationRuleName
-    parent: eventHub
-    properties: {
-        rights: [
-            'Listen'
-        ]
-    }
-}
-
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
     name: serviceBusName
     location: location
@@ -157,8 +144,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 output privateDNSResourceId string = privateDNSZone.id
 
 output eventhubNamespaceName string = eventHubNamespace.name
-
-output eventHubAuthorizationRuleName string = eventHubauthorizationRules.name
 
 output eventHubId string = eventHub.id
 

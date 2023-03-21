@@ -14,12 +14,6 @@ param deadLetterSecret string = ''
 @description('Optional. Dead letter storage URL for identity-based authentication.')
 param deadLetterUri string = ''
 
-@description('Optional. Resource Id of Event Hub used for Key Based Auth.')
-param eventHubId string = ''
-
-@description('Optional. The name of the shared access policy name to be used for key-based authentication.')
-param sharedAccessPolicyName string = ''
-
 @description('Optional. PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.')
 @secure()
 param connectionStringPrimaryKey string = ''
@@ -50,9 +44,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentity: !empty(userAssignedIdentity) ? userAssignedIdentity : null
 } : null
 
-var primarykey = authenticationType != 'IdentityBased' ? eventhubAuthorizationRules.listKeys().primaryConnectionString : null
-
-var secondarykey = authenticationType != 'IdentityBased' ? eventhubAuthorizationRules.listKeys().secondaryConnectionString : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -70,18 +61,14 @@ resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023
   name: digitalTwinInstanceName
 }
 
-resource eventhubAuthorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-10-01-preview' existing = {
-  name: '${eventHubId}/authorizationRules/${sharedAccessPolicyName}'
-}
-
 resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2023-01-31' = {
   name: name
   parent: digitalTwinsInstance
   properties: {
     endpointType: 'EventHub'
     authenticationType: authenticationType
-    connectionStringPrimaryKey: primarykey
-    connectionStringSecondaryKey: secondarykey
+    connectionStringPrimaryKey: connectionStringPrimaryKey
+    connectionStringSecondaryKey: connectionStringSecondaryKey
     deadLetterSecret: deadLetterSecret
     deadLetterUri: deadLetterUri
     endpointUri: endpointUri

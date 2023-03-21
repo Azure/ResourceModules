@@ -68,11 +68,9 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     eventHubEndpoint: {
       authenticationType: 'Keybased'
-      // endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
-      sharedAccessPolicyName: nestedDependencies.outputs.eventHubAuthorizationRuleName
+      endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
-      eventHubId: nestedDependencies.outputs.eventHubId
     }
     serviceBusEndpoint: {
       authenticationType: 'IdentityBased'
