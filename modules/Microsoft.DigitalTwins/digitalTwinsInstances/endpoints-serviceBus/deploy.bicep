@@ -4,8 +4,12 @@ param name string = 'ServiceBusEndpoint'
 @description('Conditional. The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment.')
 param digitalTwinInstanceName string
 
+@allowed([
+  'IdentityBased'
+  'KeyBased'
+])
 @description('Optional. Specifies the authentication type being used for connecting to the endpoint. If \'KeyBased\' is selected, a connection string must be specified (at least the primary connection string). If \'IdentityBased\' is selected, the endpointUri and entityPath properties must be specified.')
-param authenticationType string = 'KeyBased'
+param authenticationType string = 'IdentityBased'
 
 @description('Optional. Dead letter storage secret for key-based authentication. Will be obfuscated during read.')
 @secure()

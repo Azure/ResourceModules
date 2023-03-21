@@ -4,17 +4,11 @@ param name string = 'EventGridEndpoint'
 @description('Conditional. The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment.')
 param digitalTwinInstanceName string
 
-@description('Optional. Specifies the authentication type being used for connecting to the endpoint. If \'KeyBased\' is selected, a connection string must be specified (at least the primary connection string). If \'IdentityBased\' is selected, the endpointUri and entityPath properties must be specified.')
-param authenticationType string = 'KeyBased'
-
 @description('Required. EventGrid Topic Endpoint.')
 param topicEndpoint string
 
 @description('Required. Event Grid Resource Id.')
 param eventGridDomainId string
-
-//@description('Required. The resource name of the Event Grid Domain.')
-//param eventGridDomainName string
 
 @description('Optional. Dead letter storage secret for key-based authentication. Will be obfuscated during read.')
 @secure()
@@ -29,11 +23,6 @@ param enableDefaultTelemetry bool = true
 var eventGridAccessKey1 = listkeys(eventGridDomainId, '2022-06-15').key1
 
 var eventGridAccessKey2 = listkeys(eventGridDomainId, '2022-06-15').key2
-
-
-//var eventGridAccessKey1 = eventGridDomain.listKeys().key1
-
-//var eventGridAccessKey2 = eventGridDomain.listKeys().key2
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -51,16 +40,13 @@ resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023
   name: digitalTwinInstanceName
 }
 
-//resource eventGridDomain 'Microsoft.EventGrid/domains@2022-06-15' existing = {
-//  name: eventGridDomainName
-//}
 
 resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2023-01-31' = {
   name: name
   parent: digitalTwinsInstance
   properties: {
     endpointType: 'EventGrid'
-    authenticationType: authenticationType
+    authenticationType: 'KeyBased'
     TopicEndpoint: topicEndpoint
     accessKey1: eventGridAccessKey1
     accessKey2: eventGridAccessKey2

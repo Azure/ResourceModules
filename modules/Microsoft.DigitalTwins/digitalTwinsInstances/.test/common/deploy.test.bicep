@@ -78,10 +78,8 @@ module testDeployment '../../deploy.bicep' = {
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
     }
     eventGridEndpoint: {
-     // eventGridDomainName: nestedDependencies.outputs.eventGridDomainName
       eventGridDomainId: nestedDependencies.outputs.eventGridDomainId
       topicEndpoint: nestedDependencies.outputs.eventGridEndpoint
-      authenticationType: 'KeyBased'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
