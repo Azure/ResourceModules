@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     eventHubEndpoint: {
-      authenticationType: 'Keybased'
+      authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
