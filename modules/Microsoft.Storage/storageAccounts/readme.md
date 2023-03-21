@@ -76,7 +76,6 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableNfsV3` | bool | `False` |  | If true, enables NFS 3.0 support for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `enableSftp` | bool | `False` |  | If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true. |
-| `expirationAction` | string | `'Log'` |  | The SAS expiration action. Can only be Log. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
 | `isLocalUserEnabled` | bool | `False` |  | Enables local users feature, if set to true. |
 | `largeFileSharesState` | string | `'Disabled'` | `[Disabled, Enabled]` | Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares). |
