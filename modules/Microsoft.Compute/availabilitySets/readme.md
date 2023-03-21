@@ -16,7 +16,7 @@ This template deploys an availability set
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/availabilitySets` | [2021-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/availabilitySets) |
+| `Microsoft.Compute/availabilitySets` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/availabilitySets) |
 
 ## Parameters
 
