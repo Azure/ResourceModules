@@ -1,4 +1,4 @@
-@description('Conditional. The name of the sql server.')
+@description('Conditional. The name of the sql server. Required if the template is used in a standalone deployment.')
 param sqlServerName string
 
 @description('Required. The name of the server key.')
