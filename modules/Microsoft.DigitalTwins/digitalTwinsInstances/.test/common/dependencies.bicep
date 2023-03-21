@@ -158,6 +158,8 @@ output privateDNSResourceId string = privateDNSZone.id
 
 output eventhubNamespaceName string = eventHubNamespace.name
 
+output eventHubAuthorizationRuleName string = eventHubauthorizationRules.name
+
 output eventhubName string = eventHub.name
 
 output serviceBusName string = serviceBus.name
@@ -166,8 +168,6 @@ output serviceBusTopicName string = serviceBusTopic.name
 
 output eventGridDomainName string = eventGridDomain.name
 
-output eventHubAuthorizationRuleName string = eventHubAuthorizationRuleName
-
 output eventGridTopicName string = eventGridTopic.name
 
 output eventGridEndpoint string = eventGridDomain.properties.endpoint
@@ -175,7 +175,5 @@ output eventGridEndpoint string = eventGridDomain.properties.endpoint
 output eventGridTopicId string = eventGridTopic.id
 
 output eventGridDomainId string = eventGridDomain.id
-
-//output eventGridTopicKey01 string = '${listKeys(eventGridDomain.id,  eventGridDomain.apiVersion).key1}'
 
 output managedIdentityId string = managedIdentity.id
