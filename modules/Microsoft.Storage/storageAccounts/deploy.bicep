@@ -201,9 +201,6 @@ param cMKKeyVersion string = ''
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-@description('Optional. The SAS expiration action. Can only be Log.')
-param expirationAction string = 'Log'
-
 @description('Optional. The SAS expiration period. DD.HH:MM:SS.')
 param sasExpirationPeriod string = ''
 
@@ -293,7 +290,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     sasPolicy: !empty(sasExpirationPeriod) ? {
-      expirationAction: expirationAction
+      expirationAction: 'Log'
       sasExpirationPeriod: sasExpirationPeriod
     } : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
