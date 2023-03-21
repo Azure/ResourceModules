@@ -323,5 +323,8 @@ output resourceGroupName string = resourceGroup().name
 @description('The workspace connectivity endpoints.')
 output connectivityEndpoints object = workspace.properties.connectivityEndpoints
 
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
+
 @description('The location the resource was deployed into.')
 output location string = workspace.location
