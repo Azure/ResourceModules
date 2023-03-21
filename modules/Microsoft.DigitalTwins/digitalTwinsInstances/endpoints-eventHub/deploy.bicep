@@ -50,9 +50,9 @@ var identity = identityType != 'None' ? {
   userAssignedIdentity: !empty(userAssignedIdentity) ? userAssignedIdentity : null
 } : null
 
-var primarykey = authenticationType != 'IdentityBased' ? listkeys('${eventHubId}/authorizationRules/${sharedAccessPolicyName}', '2022-10-01-preview').primaryConnectionString : null
+var primarykey = authenticationType != 'IdentityBased' ? eventhubAuthorizationRules.listKeys().primaryConnectionString : null
 
-var secondarykey = authenticationType != 'IdentityBased' ? listkeys('${eventHubId}/authorizationRules/${sharedAccessPolicyName}', '2022-10-01-preview').secondaryConnectionString : null
+var secondarykey = authenticationType != 'IdentityBased' ? eventhubAuthorizationRules.listKeys().secondaryConnectionString : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -68,6 +68,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023-01-31' existing = {
   name: digitalTwinInstanceName
+}
+
+resource eventhubAuthorizationRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-10-01-preview' existing = {
+  name: '${eventHubId}/authorizationRules/${sharedAccessPolicyName}'
 }
 
 resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2023-01-31' = {
