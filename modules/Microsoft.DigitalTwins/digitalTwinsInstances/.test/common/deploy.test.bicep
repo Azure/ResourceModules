@@ -17,7 +17,6 @@ param serviceShort string = 'dtdticom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-
 // ============ //
 // Dependencies //
 // ============ //
@@ -33,6 +32,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
+    eventHubAuthorizationRuleName: 'dep-${uniqueString(serviceShort)}-evhr-01'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     eventHubName: 'dt-${uniqueString(serviceShort)}-evh-01'
@@ -58,7 +58,6 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   }
 }
 
-
 // ============== //
 // Test Execution //
 // ============== //
@@ -68,8 +67,10 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     eventHubEndpoint: {
-      authenticationType: 'IdentityBased'
+      authenticationType: 'Keybased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
+      sharedAccessPolicyName: nestedDependencies.outputs.eventHubAuthorizationRuleName
+      eventHubNamespaceName: nestedDependencies.outputs.eventhubNamespaceName
       entityPath: nestedDependencies.outputs.eventhubName
       userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
     }
