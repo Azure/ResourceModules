@@ -32,7 +32,6 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    eventHubAuthorizationRuleName: 'dep-${uniqueString(serviceShort)}-evhr-01'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     eventHubName: 'dt-${uniqueString(serviceShort)}-evh-01'
