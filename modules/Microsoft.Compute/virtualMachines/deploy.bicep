@@ -2,6 +2,9 @@
 @description('Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group\'s name.')
 param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
+@description('Optional. Can be used if the computer name needs to be different from the Aure VM resource name. If not used, the resource name will be used as computer name.')
+param vmCustomComputerName string = ''
+
 @description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
 @allowed([
   'none'
@@ -314,7 +317,9 @@ param winRM object = {}
 ])
 param configurationProfile string = ''
 
-var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
+var vmComputerName = !empty(vmCustomComputerName) ? vmCustomComputerName : name
+
+var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(vmComputerName) : (vmComputerNamesTransformation == 'lowercase' ? toLower(vmComputerName) : vmComputerName)
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
   path: publicKey.path
