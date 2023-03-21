@@ -168,7 +168,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2022-10-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2023-01-01' = {
   name: name
   location: location
   tags: tags
