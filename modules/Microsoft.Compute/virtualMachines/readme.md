@@ -1212,6 +1212,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    vmComputerNamesTransformation: 'uppercase'
+    vmCustomComputerName: '<<namePrefix>>linvm1'
   }
 }
 ```
@@ -1467,6 +1469,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "vmComputerNamesTransformation": {
+      "value": "uppercase"
+    },
+    "vmCustomComputerName": {
+      "value": "<<namePrefix>>linvm1"
     }
   }
 }
@@ -1966,6 +1974,8 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    vmComputerNamesTransformation: 'uppercase'
+    vmCustomComputerName: '<<namePrefix>>winvm1'
   }
 }
 ```
@@ -2236,6 +2246,12 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "vmComputerNamesTransformation": {
+      "value": "uppercase"
+    },
+    "vmCustomComputerName": {
+      "value": "<<namePrefix>>winvm1"
     }
   }
 }

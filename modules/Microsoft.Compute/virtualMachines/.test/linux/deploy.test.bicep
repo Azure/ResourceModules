@@ -70,6 +70,8 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}'
+    vmCustomComputerName: '<<namePrefix>>linvm1'
+    vmComputerNamesTransformation: 'uppercase'
     location: location
     adminUsername: 'localAdministrator'
     imageReference: {
