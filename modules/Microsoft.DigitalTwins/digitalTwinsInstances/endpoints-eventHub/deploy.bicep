@@ -4,9 +4,6 @@ param name string = 'EventHubEndpoint'
 @description('Conditional. The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment.')
 param digitalTwinInstanceName string
 
-@description('Optional. The name of the EventHub namespace. Required for key-based authentication.')
-param eventHubNamespaceName string = ''
-
 @description('Optional. Specifies the authentication type being used for connecting to the endpoint. If \'KeyBased\' is selected, a connection string must be specified (at least the primary connection string). If \'IdentityBased\' is selected, the endpointUri and entityPath properties must be specified.')
 param authenticationType string = 'KeyBased'
 
@@ -16,6 +13,9 @@ param deadLetterSecret string = ''
 
 @description('Optional. Dead letter storage URL for identity-based authentication.')
 param deadLetterUri string = ''
+
+@description('Optional. Resource Id of Event Hub used for Key Based Auth.')
+param eventHubId string = ''
 
 @description('Optional. The name of the shared access policy name to be used for key-based authentication.')
 param sharedAccessPolicyName string = ''
@@ -50,9 +50,9 @@ var identity = identityType != 'None' ? {
   userAssignedIdentity: !empty(userAssignedIdentity) ? userAssignedIdentity : null
 } : null
 
-var primarykey = authenticationType != 'IdentityBased' ? sharedAccessPolicy.listKeys().primaryConnectionString : null
+var primarykey = authenticationType != 'IdentityBased' ? listkeys('${eventHubId}/authorizationRules/${sharedAccessPolicyName}', '2022-10-01-preview').primaryConnectionString : null
 
-var secondarykey = authenticationType != 'IdentityBased' ? sharedAccessPolicy.listKeys().secondaryConnectionString : null
+var secondarykey = authenticationType != 'IdentityBased' ? listkeys('${eventHubId}/authorizationRules/${sharedAccessPolicyName}', '2022-10-01-preview').secondaryConnectionString : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -68,20 +68,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023-01-31' existing = {
   name: digitalTwinInstanceName
-}
-
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' existing = {
-  name: eventHubNamespaceName
-}
-
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' existing = {
-  name: entityPath
-  parent: eventHubNamespace
-}
-
-resource sharedAccessPolicy 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-10-01-preview' existing = {
-  name: sharedAccessPolicyName
-  parent: eventHub
 }
 
 resource endpoint 'Microsoft.DigitalTwins/digitalTwinsInstances/endpoints@2023-01-31' = {

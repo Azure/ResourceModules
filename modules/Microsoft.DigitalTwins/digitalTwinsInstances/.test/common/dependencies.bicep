@@ -160,6 +160,8 @@ output eventhubNamespaceName string = eventHubNamespace.name
 
 output eventHubAuthorizationRuleName string = eventHubauthorizationRules.name
 
+output eventHubId string = eventHub.id
+
 output eventhubName string = eventHub.name
 
 output serviceBusName string = serviceBus.name
