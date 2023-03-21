@@ -48,7 +48,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-07-01' = {
+resource availabilitySet 'Microsoft.Compute/availabilitySets@2022-11-01' = {
   name: name
   location: location
   tags: tags
