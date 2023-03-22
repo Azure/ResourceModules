@@ -61,7 +61,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, PostgreSQLLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -483,6 +483,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     geoRedundantBackup: 'Enabled'
     privateDnsZoneArmResourceId: '<privateDnsZoneArmResourceId>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -568,6 +572,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "privateDnsZoneArmResourceId": {
       "value": "<privateDnsZoneArmResourceId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -642,6 +652,10 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     highAvailability: 'SameZone'
     location: '<location>'
     storageSizeGB: 1024
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -763,6 +777,12 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
     },
     "storageSizeGB": {
       "value": 1024
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

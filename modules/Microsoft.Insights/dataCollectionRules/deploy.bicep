@@ -2,38 +2,38 @@
 //   Parameters   //
 // ============== //
 
-@description('Required. The name of the data collection rule. The name is case insensitive.')
+@sys.description('Required. The name of the data collection rule. The name is case insensitive.')
 param name string
 
-@description('Optional. The resource ID of the data collection endpoint that this rule can be used with.')
+@sys.description('Optional. The resource ID of the data collection endpoint that this rule can be used with.')
 param dataCollectionEndpointId string = ''
 
-@description('Required. The specification of data flows.')
+@sys.description('Required. The specification of data flows.')
 param dataFlows array
 
-@description('Required. Specification of data sources that will be collected.')
+@sys.description('Required. Specification of data sources that will be collected.')
 param dataSources object
 
-@description('Optional. Description of the data collection rule.')
-param dataCollectionRuleDescription string = ''
+@sys.description('Optional. Description of the data collection rule.')
+param description string = ''
 
-@description('Required. Specification of destinations that can be used in data flows.')
+@sys.description('Required. Specification of destinations that can be used in data flows.')
 param destinations object
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The kind of the resource.')
+@sys.description('Optional. The kind of the resource.')
 @allowed([
   'Linux'
   'Windows'
 ])
 param kind string = 'Linux'
 
-@description('Optional. Location for all Resources.')
+@sys.description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specify the type of lock.')
+@sys.description('Optional. Specify the type of lock.')
 @allowed([
   ''
   'CanNotDelete'
@@ -41,13 +41,13 @@ param location string = resourceGroup().location
 ])
 param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Declaration of custom streams used in this rule.')
+@sys.description('Optional. Declaration of custom streams used in this rule.')
 param streamDeclarations object = {}
 
-@description('Optional. Resource tags.')
+@sys.description('Optional. Resource tags.')
 param tags object = {}
 
 // =============== //
@@ -77,7 +77,7 @@ resource dataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
     dataFlows: dataFlows
     dataCollectionEndpointId: !empty(dataCollectionEndpointId) ? dataCollectionEndpointId : null
     streamDeclarations: !empty(streamDeclarations) ? streamDeclarations : null
-    description: !empty(dataCollectionRuleDescription) ? dataCollectionRuleDescription : null
+    description: !empty(description) ? description : null
   }
 }
 
@@ -107,14 +107,14 @@ module dataCollectionRule_roleAssignments '.bicep/nested_roleAssignments.bicep' 
 //   Outputs   //
 // =========== //
 
-@description('The name of the dataCollectionRule.')
+@sys.description('The name of the dataCollectionRule.')
 output name string = dataCollectionRule.name
 
-@description('The resource ID of the dataCollectionRule.')
+@sys.description('The resource ID of the dataCollectionRule.')
 output resourceId string = dataCollectionRule.id
 
-@description('The name of the resource group the dataCollectionRule was created in.')
+@sys.description('The name of the resource group the dataCollectionRule was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The location the resource was deployed into.')
+@sys.description('The location the resource was deployed into.')
 output location string = dataCollectionRule.location

@@ -233,6 +233,10 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         type: 'Static'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -303,6 +307,12 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
           "type": "Static"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

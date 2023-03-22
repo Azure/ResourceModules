@@ -227,6 +227,10 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
       }
     ]
     suppressForMinutes: 'PT5M'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     windowSize: 'PT5M'
   }
 }
@@ -311,6 +315,12 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     },
     "suppressForMinutes": {
       "value": "PT5M"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "windowSize": {
       "value": "PT5M"

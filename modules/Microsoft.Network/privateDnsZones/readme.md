@@ -336,6 +336,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ttl: 3600
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     txt: [
       {
         name: 'TXT_test'
@@ -552,6 +556,12 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           "ttl": 3600
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "txt": {
       "value": [

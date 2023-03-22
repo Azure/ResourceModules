@@ -54,7 +54,7 @@ This module deploys a Synapse Workspace.
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, BuiltinSqlReqsEnded, GatewayApiRequests, IntegrationActivityRuns, IntegrationPipelineRuns, IntegrationTriggerRuns, SynapseRbacOperations]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -374,6 +374,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
         }
         service: 'SQL'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -457,7 +461,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
             ]
           },
           "service": "SQL",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -581,6 +589,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     encryption: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -625,6 +637,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     },
     "encryption": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -655,6 +673,10 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedVirtualNetwork: true
     preventDataExfiltration: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -698,6 +720,12 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
     },
     "preventDataExfiltration": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

@@ -53,7 +53,7 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit, RequestResponse]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
@@ -492,6 +492,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -505,6 +509,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     ]
     sku: 'S0'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -581,7 +589,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
             ]
           },
           "service": "account",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -601,6 +613,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -765,10 +783,18 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     sku: 'S0'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -811,7 +837,11 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
             ]
           },
           "service": "account",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -820,6 +850,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

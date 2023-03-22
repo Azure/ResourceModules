@@ -68,7 +68,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://learn.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, ResourceUsageStats, SQLSecurityAuditEvents]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsZonePartner` | string | `''` |  | The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
@@ -369,6 +369,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
       vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
     }
   }
@@ -521,6 +525,10 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        },
         "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
       }
     }

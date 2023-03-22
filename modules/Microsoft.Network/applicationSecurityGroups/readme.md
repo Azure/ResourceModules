@@ -181,6 +181,10 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -218,6 +222,12 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

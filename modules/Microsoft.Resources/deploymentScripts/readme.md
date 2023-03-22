@@ -174,6 +174,10 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'echo \'echo echo echo\''
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     timeout: 'PT30M'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -220,6 +224,12 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     "scriptContent": {
       "value": "echo \"echo echo echo\""
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "timeout": {
       "value": "PT30M"
     },
@@ -256,6 +266,10 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     timeout: 'PT30M'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -304,6 +318,12 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     "scriptContent": {
       "value": "Write-Host \"The cake is a lie!\""
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "timeout": {
       "value": "PT30M"

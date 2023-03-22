@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.network.azurefirewalls-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'nafhub'
+param serviceShort string = 'nafhubmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -34,7 +34,6 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualWanName: 'dep-<<namePrefix>>-vwan-${serviceShort}'
     virtualHubName: 'dep-<<namePrefix>>-vhub-${serviceShort}'
-    firewallPolicyName: 'dep-<<namePrefix>>-afwp-${serviceShort}'
   }
 }
 
@@ -48,7 +47,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    firewallPolicyId: nestedDependencies.outputs.firewallPolicyResourceId
     virtualHubId: nestedDependencies.outputs.virtualHubResourceId
     hubIPAddresses: {
       publicIPs: {

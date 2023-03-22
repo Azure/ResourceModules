@@ -294,8 +294,8 @@ param diagnosticMetricsToEnable array = [
   <MetricsIfAny>
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -317,7 +317,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 }]
 
 resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -391,6 +391,12 @@ Within a bicep file, use the following conventions:
   - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
   - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
   - `Generated` - The parameter value is generated within the module and should not be specified as input.
+- Parameters mapping to resource properties should align with resource property names as much as possible and should not artifictially include a resource type's name prefix to avoid redundancy.
+  > For example, the input parameter of the Key Vault module which maps to the `name` resource property should be just `name` and not `keyVaultName`. The rationale is that the consumers know that the name is for the Key Vault if they deploy its module.
+- If a property value allows a single value only, there is no need to introduce a parameter for it. Instead it can be hardcoded into the deployment.
+  > For example, the name of a Blob Container Immutability Policy resource can only be `default`. Hence we can implement its name property directly as `name: 'default'`.
+- If a property value allows a single value only, but the value is used in more than one place, a variable should be introduced to be leveraged in the multiple occurrences.
+  > For example, in cases where the resource name can be hardcoded and the resource supports diagnostic settings, also the default value for the diagnostic settings name `"<resourceName>-diagnosticSettings"` is affected. In those cases, we recommend to introduce an additional variable `'var name = '<theHardcodedValue>'`' (e.g., `var name = 'default'`) to be used both in the main resource's name (e.g., `'name: name'`), as well as the diagnostic settings name: `'name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'`'.
 
 ## Variables
 
@@ -591,9 +597,11 @@ Dependency file (`dependencies.bicep`) guidelines:
 
 - The `dependencies.bicep` should optionally be used if any additional dependencies must be deployed into a nested scope (e.g. into a deployed Resource Group).
 - Note that you can reuse many of the assets implemented in other modules. For example, there are many recurring implementations for Managed Identities, Key Vaults, Virtual Network deployments, etc.
+
   - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
     > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
+
   - If you need a Deployment Script to set additional non-template resources up (for example certificates/files, etc.), we recommend to store it as a file in the shared `modules/.shared/.scripts` folder and load it using the template function `loadTextContent()` (for example: `scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')`). This approach makes it easier to test & validate the logic and further allows reusing the same logic accross multiple test cases.
 
 # Telemetry

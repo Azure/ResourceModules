@@ -35,32 +35,32 @@ This module deploys a firewall.
 | :-- | :-- | :-- | :-- |
 | `hubIPAddresses` | object | `{object}` | IP addresses associated with AzureFirewall. Required if `virtualHubId` is supplied. |
 | `virtualHubId` | string | `''` | The virtualHub resource ID to which the firewall belongs. Required if `vNetId` is empty. |
-| `vNetId` | string | `''` | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty. |
+| `vNetId` | string | `''` | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a Public IP is not provided, then the Public IP that is created as part of this module will be applied with the subnet provided in this variable. Required if `virtualHubId` is empty. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
+| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional Public IP configurations on top of the Public IP with subnet IP configuration. |
 | `applicationRuleCollections` | array | `[]` |  | Collection of application rule collections used by Azure Firewall. |
-| `azureFirewallSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet. |
 | `azureSkuTier` | string | `'Standard'` | `[Premium, Standard]` | Tier of an Azure Firewall. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
 | `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
-| `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
+| `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a Public IP should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
-| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |
+| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the Public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |
+| `publicIPResourceID` | string | `''` |  | The Public IP resource ID to associate to the AzureFirewallSubnet. If empty, then the Public IP that is created as part of this module will be applied to the AzureFirewallSubnet. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
@@ -292,7 +292,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | List of Application Rule Collections. |
-| `ipConfAzureFirewallSubnet` | object | The public IP configuration object for the Azure Firewall Subnet. |
+| `ipConfAzureFirewallSubnet` | object | The Public IP configuration object for the Azure Firewall Subnet. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Azure Firewall. |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
@@ -341,6 +341,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
   }
 }
@@ -373,6 +377,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "vNetId": {
       "value": "<vNetId>"
@@ -449,7 +459,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       }
     ]
-    azureFirewallSubnetPublicIpId: '<azureFirewallSubnetPublicIpId>'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -486,6 +495,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       }
     ]
+    publicIPResourceID: '<publicIPResourceID>'
     roleAssignments: [
       {
         principalIds: [
@@ -495,6 +505,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
     zones: [
       '1'
@@ -576,9 +590,6 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       ]
     },
-    "azureFirewallSubnetPublicIpId": {
-      "value": "<azureFirewallSubnetPublicIpId>"
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -631,6 +642,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         }
       ]
     },
+    "publicIPResourceID": {
+      "value": "<publicIPResourceID>"
+    },
     "roleAssignments": {
       "value": [
         {
@@ -641,6 +655,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "vNetId": {
       "value": "<vNetId>"
@@ -697,6 +717,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
       skuName: 'Standard'
       skuTier: 'Regional'
     }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     vNetId: '<vNetId>'
   }
 }
@@ -748,6 +772,12 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "skuTier": "Regional"
       }
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "vNetId": {
       "value": "<vNetId>"
     }
@@ -758,7 +788,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Hub</h3>
+<h3>Example 4: Hubcommon</h3>
 
 <details>
 
@@ -766,13 +796,87 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafhub'
+  name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafhub001'
+    name: '<<namePrefix>>nafhubcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallPolicyId: '<firewallPolicyId>'
+    hubIPAddresses: {
+      publicIPs: {
+        count: 1
+      }
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+    virtualHubId: '<virtualHubId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nafhubcom001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "firewallPolicyId": {
+      "value": "<firewallPolicyId>"
+    },
+    "hubIPAddresses": {
+      "value": {
+        "publicIPs": {
+          "count": 1
+        }
+      }
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 5: Hubmin</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nafhubmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubIPAddresses: {
       publicIPs: {
         count: 1
@@ -797,14 +901,11 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafhub001"
+      "value": "<<namePrefix>>nafhubmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "firewallPolicyId": {
-      "value": "<firewallPolicyId>"
     },
     "hubIPAddresses": {
       "value": {
@@ -823,7 +924,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Min</h3>
+<h3>Example 6: Min</h3>
 
 <details>
 

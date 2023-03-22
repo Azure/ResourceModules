@@ -23,7 +23,7 @@ param enableDefaultTelemetry bool = true
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }
@@ -147,6 +147,10 @@ module testDeployment '../../deploy.bicep' = {
     ]
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

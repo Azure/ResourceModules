@@ -64,6 +64,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     blobServices: {
@@ -81,5 +85,9 @@ module testDeployment '../../deploy.bicep' = {
     cMKKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     cMKKeyName: nestedDependencies.outputs.keyName
     cMKUserAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

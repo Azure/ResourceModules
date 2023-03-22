@@ -9,7 +9,7 @@ param location string = resourceGroup().location
   'Basic'
   'Standard'
 ])
-param loadBalancerSku string = 'Standard'
+param skuName string = 'Standard'
 
 @description('Required. Array of objects containing all frontend IP configurations.')
 @minLength(1)
@@ -149,8 +149,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var enableReferencedModulesTelemetry = false
 
@@ -181,7 +181,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-07-01' = {
   location: location
   tags: tags
   sku: {
-    name: loadBalancerSku
+    name: skuName
   }
   properties: {
     frontendIPConfigurations: frontendIPConfigurationsVar
@@ -236,7 +236,7 @@ resource loadBalancer_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!emp
 }
 
 resource loadBalancer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

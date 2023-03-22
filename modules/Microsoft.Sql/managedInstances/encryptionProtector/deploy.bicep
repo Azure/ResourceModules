@@ -1,6 +1,3 @@
-@description('Required. The name of the encryptionProtector.')
-param name string = 'current'
-
 @description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
@@ -37,7 +34,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' exi
 }
 
 resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector@2022-02-01-preview' = {
-  name: name
+  name: 'current'
   parent: managedInstance
   properties: {
     autoRotationEnabled: autoRotationEnabled

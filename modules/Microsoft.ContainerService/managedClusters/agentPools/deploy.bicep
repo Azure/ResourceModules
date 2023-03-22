@@ -167,11 +167,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-09-01' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-11-01' = {
   name: name
   parent: managedCluster
   properties: {

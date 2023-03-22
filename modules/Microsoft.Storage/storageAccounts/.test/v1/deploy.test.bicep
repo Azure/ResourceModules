@@ -40,5 +40,9 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     storageAccountKind: 'Storage'
     allowBlobPublicAccess: false
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

@@ -17,7 +17,7 @@ param dnsServers array = []
 param ddosProtectionPlanId string = ''
 
 @description('Optional. Virtual Network Peerings configurations.')
-param virtualNetworkPeerings array = []
+param peerings array = []
 
 @description('Optional. Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property.')
 param vnetEncryption bool = false
@@ -85,8 +85,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -213,7 +213,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
 }]
 
 // Local to Remote peering
-module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: {
+module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in peerings: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
   params: {
     localVnetName: virtualNetwork.name
@@ -229,7 +229,7 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
 }]
 
 // Remote to local peering (reverse)
-module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
+module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in peerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
   scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[2], split(peering.remoteVirtualNetworkId, '/')[4])
   params: {
@@ -255,7 +255,7 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!e
 }
 
 resource virtualNetwork_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

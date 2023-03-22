@@ -70,11 +70,19 @@ module testDeployment '../../deploy.bicep' = {
             name: 'ipconfig01'
             pipConfiguration: {
               publicIpNameSuffix: '-pip-01'
+              tags: {
+                Environment: 'Non-Prod'
+                Role: 'DeploymentValidation'
+              }
             }
             subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         ]
         nicSuffix: '-nic-01'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     osDisk: {
@@ -93,6 +101,10 @@ module testDeployment '../../deploy.bicep' = {
         path: '/home/localAdminUser/.ssh/authorized_keys'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
   dependsOn: [
     nestedDependencies // Required to leverage `existing` SSH key reference

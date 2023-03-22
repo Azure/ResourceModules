@@ -144,6 +144,9 @@ param aciConnectorLinuxEnabled bool = false
 @description('Optional. Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled.')
 param azurePolicyEnabled bool = true
 
+@description('Optional. Specifies whether the openServiceMesh add-on is enabled or not.')
+param openServiceMeshEnabled bool = false
+
 @description('Optional. Specifies the azure policy version to use.')
 param azurePolicyVersion string = 'v2'
 
@@ -325,8 +328,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -385,7 +388,7 @@ var lbProfile = {
 
 var enableReferencedModulesTelemetry = false
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -397,7 +400,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
   name: name
   location: location
   tags: tags
@@ -419,34 +422,38 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' 
       }
       ingressApplicationGateway: {
         enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
-        config: {
+        config: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId) ? {
           applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
           effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
-        }
+        } : null
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
-        config: {
+        config: omsAgentEnabled && !empty(monitoringWorkspaceId) ? {
           logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
-        }
+        } : null
       }
       aciConnectorLinux: {
         enabled: aciConnectorLinuxEnabled
       }
       azurepolicy: {
         enabled: azurePolicyEnabled
-        config: {
+        config: azurePolicyEnabled ? {
           version: azurePolicyVersion
-        }
+        } : null
+      }
+      openServiceMesh: {
+        enabled: openServiceMeshEnabled
+        config: openServiceMeshEnabled ? {} : null
       }
       kubeDashboard: {
         enabled: kubeDashboardEnabled
       }
       azureKeyvaultSecretsProvider: {
         enabled: enableKeyvaultSecretsProvider
-        config: {
+        config: enableKeyvaultSecretsProvider ? {
           enableSecretRotation: enableSecretRotation
-        }
+        } : null
       }
     }
     oidcIssuerProfile: enableOidcIssuerProfile ? {
@@ -586,8 +593,8 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!e
   scope: managedCluster
 }
 
-resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -636,5 +643,5 @@ output omsagentIdentityObjectId string = contains(managedCluster.properties, 'ad
 @description('The location the resource was deployed into.')
 output location string = managedCluster.location
 
-@description('The OIDC token issuer Url.')
+@description('The OIDC token issuer URL.')
 output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.properties.oidcIssuerProfile.issuerURL : ''

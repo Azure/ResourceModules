@@ -371,6 +371,10 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     lock: 'CanNotDelete'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -464,6 +468,12 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     "systemAssignedIdentity": {
       "value": true
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -551,6 +561,10 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     ]
     lock: 'CanNotDelete'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -652,6 +666,12 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -850,6 +870,10 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     lock: 'CanNotDelete'
     subnetId: '<subnetId>'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -964,6 +988,12 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

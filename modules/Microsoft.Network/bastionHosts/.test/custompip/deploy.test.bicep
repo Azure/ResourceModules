@@ -58,7 +58,7 @@ module testDeployment '../../deploy.bicep' = {
         'AllMetrics'
       ]
       name: '<<namePrefix>>${serviceShort}001-pip'
-      publicIPAllocationMethod: 'Static'
+      allocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
@@ -71,6 +71,10 @@ module testDeployment '../../deploy.bicep' = {
       ]
       skuName: 'Standard'
       skuTier: 'Regional'
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

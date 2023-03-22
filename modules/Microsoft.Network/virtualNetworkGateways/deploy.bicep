@@ -24,7 +24,15 @@ param domainNameLabel array = []
   'Vpn'
   'ExpressRoute'
 ])
-param virtualNetworkGatewayType string
+param gatewayType string
+
+@description('Optional. The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN.')
+@allowed([
+  'Generation1'
+  'Generation2'
+  'None'
+])
+param vpnGatewayGeneration string = 'None'
 
 @description('Required. The SKU of the Gateway.')
 @allowed([
@@ -32,9 +40,13 @@ param virtualNetworkGatewayType string
   'VpnGw1'
   'VpnGw2'
   'VpnGw3'
+  'VpnGw4'
+  'VpnGw5'
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
   'Standard'
   'HighPerformance'
   'UltraPerformance'
@@ -42,7 +54,7 @@ param virtualNetworkGatewayType string
   'ErGw2AZ'
   'ErGw3AZ'
 ])
-param virtualNetworkGatewaySku string
+param skuName string
 
 @description('Optional. Specifies the VPN type.')
 @allowed([
@@ -165,11 +177,11 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
+@description('Optional. The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param publicIpDiagnosticSettingsName string = ''
 
 // ================//
 // Variables       //
@@ -217,10 +229,10 @@ var zoneRedundantSkus = [
   'ErGw2AZ'
   'ErGw3AZ'
 ]
-var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
-var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
+var gatewayPipSku = contains(zoneRedundantSkus, skuName) ? 'Standard' : 'Basic'
+var gatewayPipAllocationMethod = contains(zoneRedundantSkus, skuName) ? 'Static' : 'Dynamic'
 
-var isActiveActiveValid = virtualNetworkGatewayType != 'ExpressRoute' ? activeActive : false
+var isActiveActiveValid = gatewayType != 'ExpressRoute' ? activeActive : false
 var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
   activeGatewayPipName
@@ -228,9 +240,9 @@ var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
 ]
 
-var vpnTypeVar = virtualNetworkGatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
+var vpnTypeVar = gatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
 
-var isBgpValid = virtualNetworkGatewayType != 'ExpressRoute' ? enableBgp : false
+var isBgpValid = gatewayType != 'ExpressRoute' ? enableBgp : false
 var bgpSettings = {
   asn: asn
 }
@@ -340,7 +352,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
-    diagnosticSettingsName: publicIpDiagnosticSettingsName
+    diagnosticSettingsName: !empty(publicIpDiagnosticSettingsName) ? publicIpDiagnosticSettingsName : '${virtualGatewayPublicIpName}-diagnosticSettings'
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
@@ -353,7 +365,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     publicIPPrefixResourceId: !empty(publicIPPrefixResourceId) ? publicIPPrefixResourceId : ''
     tags: tags
     skuName: gatewayPipSku
-    zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : []
+    zones: contains(zoneRedundantSkus, skuName) ? publicIpZones : []
   }
 }]
 
@@ -371,19 +383,20 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
     disableIPSecReplayProtection: disableIPSecReplayProtection
-    enableDnsForwarding: virtualNetworkGatewayType == 'ExpressRoute' ? enableDnsForwarding : null
+    enableDnsForwarding: gatewayType == 'ExpressRoute' ? enableDnsForwarding : null
     enablePrivateIpAddress: enablePrivateIpAddress
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
-    gatewayType: virtualNetworkGatewayType
+    gatewayType: gatewayType
     gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
       id: gatewayDefaultSiteLocalNetworkGatewayId
     } : null
     sku: {
-      name: virtualNetworkGatewaySku
-      tier: virtualNetworkGatewaySku
+      name: skuName
+      tier: skuName
     }
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
+    vpnGatewayGeneration: gatewayType == 'Vpn' ? vpnGatewayGeneration : 'None'
   }
   dependsOn: [
     publicIPAddress
@@ -414,7 +427,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: virtualNetworkGatewayDiagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

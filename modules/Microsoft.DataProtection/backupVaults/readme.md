@@ -430,6 +430,10 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -534,6 +538,12 @@ module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

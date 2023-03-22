@@ -193,6 +193,10 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -244,6 +248,12 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

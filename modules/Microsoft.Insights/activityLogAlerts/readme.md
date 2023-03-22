@@ -451,6 +451,10 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
     scopes: [
       '<id>'
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -513,6 +517,12 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       "value": [
         "<id>"
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

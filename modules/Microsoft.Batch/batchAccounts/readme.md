@@ -47,7 +47,7 @@
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, ServiceLog]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -303,11 +303,19 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         ]
         service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageAccessIdentity: '<storageAccessIdentity>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -374,7 +382,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
             }
           ],
           "service": "batchAccount",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -386,6 +398,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -421,10 +439,18 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         }
         service: 'batchAccount'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageAccessIdentity: '<storageAccessIdentity>'
     storageAuthenticationMode: 'BatchAccountManagedIdentity'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -473,7 +499,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
             ]
           },
           "service": "batchAccount",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -482,6 +512,12 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
     },
     "storageAuthenticationMode": {
       "value": "BatchAccountManagedIdentity"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
