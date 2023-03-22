@@ -38,7 +38,7 @@ This module deploys Digital Twin Instance Endpoints.
 | :-- | :-- | :-- | :-- |
 | `accessKey1` | securestring | `''` | EventGrid secondary accesskey. Will be obfuscated during read. |
 | `accessKey2` | securestring | `''` | EventGrid secondary accesskey. Will be obfuscated during read. |
-| `eventGridDomainID` | string | N/A | Required. Event Grid Resource ID. |
+| `eventGridDomainId` | string | N/A | Required. Event Grid Resource Id. |
 | `topicEndpoint` | string | N/A |Required. EventGrid Topic Endpoint. |
 | `eventGridDomainName` | string | N/A | Required. The resource name of the Event Grid Domain. |
 | `deadLetterSecret` | securestring | `''` | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |

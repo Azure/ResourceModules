@@ -179,7 +179,7 @@ module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/deploy.bicep'
     deadLetterSecret: contains(eventGridEndpoint, 'deadLetterSecret') ? eventGridEndpoint.deadLetterSecret : ''
     deadLetterUri: contains(eventGridEndpoint, 'deadLetterUri') ? eventGridEndpoint.deadLetterUri : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    eventGridDomainId: contains(eventGridEndpoint, 'eventGridDomainID') ? eventGridEndpoint.eventGridDomainID : ''
+    eventGridDomainId: contains(eventGridEndpoint, 'eventGridDomainId') ? eventGridEndpoint.eventGridDomainId : ''
   }
 }
 
