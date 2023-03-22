@@ -8,7 +8,7 @@ param digitalTwinInstanceName string
 param topicEndpoint string
 
 @description('Required. Event Grid Resource Id.')
-param eventGridDomainId string
+param eventGridDomainID string
 
 @description('Optional. Dead letter storage secret for key-based authentication. Will be obfuscated during read.')
 @secure()
@@ -20,9 +20,9 @@ param deadLetterUri string = ''
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var eventGridAccessKey1 = listkeys(eventGridDomainId, '2022-06-15').key1
+var eventGridAccessKey1 = listkeys(eventGridDomainID, '2022-06-15').key1
 
-var eventGridAccessKey2 = listkeys(eventGridDomainId, '2022-06-15').key2
+var eventGridAccessKey2 = listkeys(eventGridDomainID, '2022-06-15').key2
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
