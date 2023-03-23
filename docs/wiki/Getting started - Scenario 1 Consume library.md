@@ -89,7 +89,15 @@ To publish a module by running the script:
          ```PowerShell
         Publish-ModuleToTemplateSpecsRG -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
-    As the modules to be published are more than one a script that calls the `'Publish-ModuleToTemplateSpecsRG'` function for each of the modules can be created.
+    If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToTemplateSpecsRG'` function for each of the modules:
+
+         ```PowerShell
+         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
+         $modules.FullName | ForEach-Object -Parallel {
+            . '<pathToPublishScript>\Publish-ModuleToTemplateSpecsRG.ps1'
+            Publish-ModuleToTemplateSpecsRG -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -TemplateSpecsRgName '<templateSpecsRgName>' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec' 
+            } -ThrottleLimit 4
+        ```
 
  1. Update your master template in order to use the new version of the published modules.
 
@@ -121,8 +129,15 @@ To publish a module by running the script:
          ```PowerShell
         Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
         ```
-    As the modules to be published are more than one a script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules can be created.
+    If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules:
 
+         ```PowerShell
+         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
+         $modules.FullName | ForEach-Object -Parallel {
+            . '<pathToPublishScript>\Publish-ModuleToPrivateBicepRegistry.ps1'
+            Publish-ModuleToPrivateBicepRegistry -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -BicepRegistryName '<registryName>' -BicepRegistryRgName '<bicepRGName>' 
+        } -ThrottleLimit 4
+        ```
  1. Update your master template in order to use the new version of the published modules.
 
     For the [Private Bicep Registry's example in Solutions](./Solution%20creation#examples) page, supposing you have published version '0.4.740' of modules, you need to replace all the occurences of '0.4.735' with '0.4.740'.
@@ -154,7 +169,16 @@ To publish a module by running the script:
          ```PowerShell
         Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
         ```
-    As the modules to be published are more than one a script that calls the `'Publish-ModuleToUniversalArtifactsFeed'` function for each of the modules can be created.
+    If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToUniversalArtifactsFeed'` function for each of the modules:
+
+         ```PowerShell
+         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
+         $modules.FullName | ForEach-Object -Parallel {
+            . '<pathToPublishScript>\Publish-ModuleToUniversalArtifactsFeed.ps1'
+            Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts' 
+            } -ThrottleLimit 4
+        ```
+
 
  1. Update your master template in order to use the new version of the published modules.
 
