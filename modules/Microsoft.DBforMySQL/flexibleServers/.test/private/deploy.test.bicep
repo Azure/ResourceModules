@@ -90,13 +90,6 @@ module testDeployment '../../deploy.bicep' = {
     storageSizeGB: 64
     storageIOPS: 400
     backupRetentionDays: 10
-    configurations: [
-      {
-        name: 'audit_log_enabled'
-        source: 'user-override'
-        value: 'ON'
-      }
-    ]
     databases: [
       {
 
