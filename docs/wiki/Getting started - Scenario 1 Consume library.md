@@ -70,7 +70,7 @@ If you are not using a local repository, you'll also need to publish the modules
 The preferred method to publish modules to template-specs is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToTemplateSpecsRG.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
 To publish a module by running the script:
- 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
+ 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a PowerShell session on your machine
  1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
  1. Load the script `'Publish-ModuleToTemplateSpecsRG.ps1'` executing:
 
@@ -103,7 +103,7 @@ To publish a module by running the script:
 The preferred method to publish modules to Bicep Registry is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
 To publish a module by running the script:
- 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
+ 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a PowerShell session on your machine
  1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
  1. Load the script `'Publish-ModuleToPrivateBicepRegistry.ps1'` executing:
 
@@ -135,7 +135,7 @@ To publish a module by running the script:
 The preferred method to publish modules to Azure DevOps artifact feed is to leverage CARML ready [CI environment](./The%20CI%20environment), however there maybe specific requirements for which this option is not applicable. As an alternative, the same [Publish-ModuleToUniversalArtifactsFeed.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToUniversalArtifactsFeed.ps1) script leveraged by the publishing step of the CI environment pipeline can be executed locally.
 
 To publish a module by running the script:
- 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a Powershell session on your machine
+ 1. Let's suppose your updated library location is `'D:\ResourcesModules'`, open a PowerShell session on your machine
  1. Navigate to `'D:\ResourcesModules\utilities\pipelines\resourcePublish'` location
  1. Load the script `'Publish-ModuleToUniversalArtifactsFeed.ps1'` executing:
 
