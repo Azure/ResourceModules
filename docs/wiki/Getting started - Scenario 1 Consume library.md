@@ -134,7 +134,8 @@ To publish a module by running the script:
          $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
          $modules.FullName | ForEach-Object -Parallel {
             . '<pathToPublishScript>\Publish-ModuleToPrivateBicepRegistry.ps1'
-            Publish-ModuleToPrivateBicepRegistry -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -BicepRegistryName '<registryName>' -BicepRegistryRgName '<bicepRGName>' } -ThrottleLimit 4
+            Publish-ModuleToPrivateBicepRegistry -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -BicepRegistryName '<registryName>' -BicepRegistryRgName '<bicepRGName>' 
+        } -ThrottleLimit 4
         ```
  1. Update your master template in order to use the new version of the published modules.
 
