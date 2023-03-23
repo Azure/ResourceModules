@@ -95,7 +95,8 @@ To publish a module by running the script:
          $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
          $modules.FullName | ForEach-Object -Parallel {
             . '<pathToPublishScript>\Publish-ModuleToTemplateSpecsRG.ps1'
-            Publish-ModuleToTemplateSpecsRG -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -TemplateSpecsRgName '<templateSpecsRgName>' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec' } -ThrottleLimit 4
+            Publish-ModuleToTemplateSpecsRG -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -TemplateSpecsRgName '<templateSpecsRgName>' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec' 
+            } -ThrottleLimit 4
         ```
 
  1. Update your master template in order to use the new version of the published modules.
@@ -174,7 +175,8 @@ To publish a module by running the script:
          $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
          $modules.FullName | ForEach-Object -Parallel {
             . '<pathToPublishScript>\Publish-ModuleToUniversalArtifactsFeed.ps1'
-            Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts' } -ThrottleLimit 4
+            Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts' 
+            } -ThrottleLimit 4
         ```
 
 
