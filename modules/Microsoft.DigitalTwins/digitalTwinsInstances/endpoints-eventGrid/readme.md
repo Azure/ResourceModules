@@ -53,16 +53,16 @@ This module deploys Digital Twin Instance Endpoints.
 <summary>Parameter JSON format</summary>
 
 ```json
-        "eventGridEndpoint": {
-            "value": {
-              "name": "<Endpoint Name>",
-              "accessKey1": "",
-              "accessKey2": "",
-              "TopicEndpoint": "",
-              "deadLetterUri": "",
-              "deadLetterSecret": ""
-            }
-        }
+"eventGridEndpoint": {
+    "value": {
+        "name": "<Endpoint Name>",
+        "accessKey1": "",
+        "accessKey2": "",
+        "TopicEndpoint": "",
+        "deadLetterUri": "",
+        "deadLetterSecret": ""
+    }
+}
 ```
 
 </details>
@@ -73,14 +73,14 @@ This module deploys Digital Twin Instance Endpoints.
 <summary>Bicep format</summary>
 
 ```bicep
-  eventGridEndpoint: {
-    name: '<Endpoint Name>'
-    accessKey1: ''
-    accessKey2: ''
-    TopicEndpoint: ''
-    deadLetterSecret: ''
-    deadLetterSecret: ''
-  }
+eventGridEndpoint: {
+  name: '<Endpoint Name>'
+  accessKey1: ''
+  accessKey2: ''
+  TopicEndpoint: ''
+  deadLetterSecret: ''
+  deadLetterSecret: ''
+}
   ```
 
 </details>

@@ -4,11 +4,11 @@ This module deploys Azure Digital Twins Instances.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
-- [Deployment examples](#Deployment-examples)
+- [Resource Types](#resource-types)
+- [Parameters](#parameters)
+- [Outputs](#outputs)
+- [Cross-referenced modules](#cross-referenced-modules)
+- [Deployment examples](#deployment-examples)
 
 ## Resource Types
 
@@ -55,7 +55,6 @@ This module deploys Azure Digital Twins Instances.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -297,18 +296,18 @@ userAssignedIdentities: {
 <summary>Parameter JSON format</summary>
 
 ```json
-        "eventhubEndpoint": {
-            "value": {
-              "authenticationType": "IdentityBased", // IdentityBased or KeyBased
-              "name": "<Endpoint Name>",
-              "entityPath": "evh1", // Event Hub Name
-              "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
-              "deadLetterUri": "",
-              "deadLetterSecret": "",
-              "connectionStringPrimaryKey": "", //Keybased Auth
-              "connectionStringSecondaryKey": "" //Keybased Auth
-            }
-        }
+"eventhubEndpoint": {
+    "value": {
+        "authenticationType": "IdentityBased", // IdentityBased or KeyBased
+        "name": "<Endpoint Name>",
+        "entityPath": "evh1", // Event Hub Name
+        "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
+        "deadLetterUri": "",
+        "deadLetterSecret": "",
+        "connectionStringPrimaryKey": "", //Keybased Auth
+        "connectionStringSecondaryKey": "" //Keybased Auth
+    }
+}
 ```
 
 </details>
@@ -319,16 +318,16 @@ userAssignedIdentities: {
 <summary>Bicep format</summary>
 
 ```bicep
-  eventhubEndpoint: {
-    authenticationType: 'IdentityBased' // IdentityBased or KeyBased
-    name: '<Endpoint Name>'
-    entityPath: 'evh1' // Event Hub Name
-    endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
-    deadLetterUri: ''
-    deadLetterSecret: ''
-    connectionStringPrimaryKey: '' //Keybased Auth
-    connectionStringSecondaryKey: '' //Keybased Auth
-  }
+eventhubEndpoint: {
+  authenticationType: 'IdentityBased' // IdentityBased or KeyBased
+  name: '<Endpoint Name>'
+  entityPath: 'evh1' // Event Hub Name
+  endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+  deadLetterUri: ''
+  deadLetterSecret: ''
+  connectionStringPrimaryKey: '' //Keybased Auth
+  connectionStringSecondaryKey: '' //Keybased Auth
+}
   ```
 
 </details>
@@ -341,16 +340,16 @@ userAssignedIdentities: {
 <summary>Parameter JSON format</summary>
 
 ```json
-        "eventGridEndpoint": {
-            "value": {
-              "name": "<Endpoint Name>",
-              "accessKey1": "",
-              "accessKey2": "",
-              "TopicEndpoint": "",
-              "deadLetterUri": "",
-              "deadLetterSecret": ""
-            }
-        }
+"eventGridEndpoint": {
+    "value": {
+        "name": "<Endpoint Name>",
+        "accessKey1": "",
+        "accessKey2": "",
+        "TopicEndpoint": "",
+        "deadLetterUri": "",
+        "deadLetterSecret": ""
+    }
+}
 ```
 
 </details>
@@ -361,14 +360,14 @@ userAssignedIdentities: {
 <summary>Bicep format</summary>
 
 ```bicep
-  eventGridEndpoint: {
-    name: '<Endpoint Name>'
-    accessKey1: ''
-    accessKey2: ''
-    TopicEndpoint: ''
-    deadLetterSecret: ''
-    deadLetterSecret: ''
-  }
+eventGridEndpoint: {
+  name: '<Endpoint Name>'
+  accessKey1: ''
+  accessKey2: ''
+  TopicEndpoint: ''
+  deadLetterSecret: ''
+  deadLetterSecret: ''
+}
   ```
 
 </details>
@@ -381,18 +380,18 @@ userAssignedIdentities: {
 <summary>Parameter JSON format</summary>
 
 ```json
-        "serviceBusEndpoint": {
-            "value": {
-              "authenticationType": "IdentityBased", // IdentityBased or KeyBased
-              "name": "<Endpoint Name>",
-              "entityPath": "sb1", // Event Hub Name
-              "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
-              "deadLetterUri": "",
-              "deadLetterSecret": "",
-              "connectionStringPrimaryKey": "", //Keybased Auth
-              "connectionStringSecondaryKey": "" //Keybased Auth
-            }
-        }
+"serviceBusEndpoint": {
+    "value": {
+        "authenticationType": "IdentityBased", // IdentityBased or KeyBased
+        "name": "<Endpoint Name>",
+        "entityPath": "sb1", // Event Hub Name
+        "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
+        "deadLetterUri": "",
+        "deadLetterSecret": "",
+        "connectionStringPrimaryKey": "", //Keybased Auth
+        "connectionStringSecondaryKey": "" //Keybased Auth
+    }
+}
 ```
 
 </details>
@@ -403,16 +402,16 @@ userAssignedIdentities: {
 <summary>Bicep format</summary>
 
 ```bicep
-  serviceBusEndpoint: {
-    authenticationType: 'IdentityBased' // IdentityBased or KeyBased
-    name: '<Endpoint Name>'
-    entityPath: 'evh1' // Event Hub Name
-    endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
-    deadLetterUri: ''
-    deadLetterSecret: ''
-    connectionStringPrimaryKey: '' //Keybased Auth
-    connectionStringSecondaryKey: '' //Keybased Auth
-  }
+serviceBusEndpoint: {
+  authenticationType: 'IdentityBased' // IdentityBased or KeyBased
+  name: '<Endpoint Name>'
+  entityPath: 'evh1' // Event Hub Name
+  endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+  deadLetterUri: ''
+  deadLetterSecret: ''
+  connectionStringPrimaryKey: '' //Keybased Auth
+  connectionStringSecondaryKey: '' //Keybased Auth
+}
   ```
 
 </details>

@@ -49,18 +49,18 @@ This module deploys Digital Twin Instance Endpoints.
 <summary>Parameter JSON format</summary>
 
 ```json
-        "eventhubEndpoint": {
-            "value": {
-              "authenticationType": "IdentityBased", // IdentityBased or KeyBased
-              "name": "<Endpoint Name>",
-              "entityPath": "evh1", // Event Hub Name
-              "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
-              "deadLetterUri": "",
-              "deadLetterSecret": "",
-              "connectionStringPrimaryKey": "", //Keybased Auth
-              "connectionStringSecondaryKey": "" //Keybased Auth
-            }
-        }
+"eventhubEndpoint": {
+    "value": {
+        "authenticationType": "IdentityBased", // IdentityBased or KeyBased
+        "name": "<Endpoint Name>",
+        "entityPath": "evh1", // Event Hub Name
+        "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
+        "deadLetterUri": "",
+        "deadLetterSecret": "",
+        "connectionStringPrimaryKey": "", //Keybased Auth
+        "connectionStringSecondaryKey": "" //Keybased Auth
+    }
+}
 ```
 
 </details>
@@ -71,16 +71,16 @@ This module deploys Digital Twin Instance Endpoints.
 <summary>Bicep format</summary>
 
 ```bicep
-  eventhubEndpoint: {
-    authenticationType: 'IdentityBased' // IdentityBased or KeyBased
-    name: '<Endpoint Name>'
-    entityPath: 'evh1' // Event Hub Name
-    endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
-    deadLetterUri: ''
-    deadLetterSecret: ''
-    connectionStringPrimaryKey: '' //Keybased Auth
-    connectionStringSecondaryKey: '' //Keybased Auth
-  }
+eventhubEndpoint: {
+  authenticationType: 'IdentityBased' // IdentityBased or KeyBased
+  name: '<Endpoint Name>'
+  entityPath: 'evh1' // Event Hub Name
+  endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
+  deadLetterUri: ''
+  deadLetterSecret: ''
+  connectionStringPrimaryKey: '' //Keybased Auth
+  connectionStringSecondaryKey: '' //Keybased Auth
+}
   ```
 
 </details>
