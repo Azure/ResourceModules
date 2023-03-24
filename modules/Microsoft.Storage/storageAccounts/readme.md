@@ -90,6 +90,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
 | `requireInfrastructureEncryption` | bool | `True` |  | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `sasExpirationPeriod` | string | `''` |  | The SAS expiration period. DD.HH:MM:SS. |
 | `storageAccountKind` | string | `'StorageV2'` | `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]` | Type of Storage Account to create. |
 | `storageAccountSku` | string | `'Standard_GRS'` | `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]` | Storage Account Sku Name. |
 | `supportsHttpsTrafficOnly` | bool | `True` |  | Allows HTTPS traffic only to storage service if sets to true. |
@@ -585,6 +586,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    sasExpirationPeriod: '180.00:00:00'
     storageAccountSku: 'Standard_LRS'
     systemAssignedIdentity: true
     tableServices: {
@@ -819,6 +821,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "sasExpirationPeriod": {
+      "value": "180.00:00:00"
     },
     "storageAccountSku": {
       "value": "Standard_LRS"
