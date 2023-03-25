@@ -53,7 +53,7 @@ param cleanupPreference string = 'Always'
 param containerGroupName string = ''
 
 @description('Optional. The storage account ID.')
-param storageAccountId string = ''
+param storageAccountResourceId string = ''
 
 @description('Optional. Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; \'PT30M\' - 30 minutes; \'P5D\' - 5 days; \'P1Y\' 1 year.')
 param timeout string = 'PT1H'
