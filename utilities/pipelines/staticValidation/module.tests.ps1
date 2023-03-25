@@ -25,7 +25,6 @@ $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/20
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
-$script:crossReferencedModuleList = Get-CrossReferencedModuleList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
@@ -37,6 +36,8 @@ $script:templateNotFoundException = 'No template file found in folder [{0}]' # -
 
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
+
+$script:crossReferencedModuleList = Get-CrossReferencedModuleList
 
 Describe 'File/folder tests' -Tag 'Modules' {
 
