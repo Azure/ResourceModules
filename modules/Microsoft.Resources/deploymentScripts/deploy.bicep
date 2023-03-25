@@ -117,8 +117,8 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     arguments: arguments
     environmentVariables: !empty(environmentVariables) ? environmentVariables : null
     scriptContent: !empty(scriptContent) ? scriptContent : null
-    primaryScriptUri: empty(primaryScriptUri) ? null : primaryScriptUri
-    supportingScriptUris: empty(supportingScriptUris) ? null : supportingScriptUris
+    primaryScriptUri: !empty(primaryScriptUri) ? primaryScriptUri: null
+    supportingScriptUris: !empty(supportingScriptUris) ? supportingScriptUris : null
     cleanupPreference: cleanupPreference
     forceUpdateTag: runOnce ? resourceGroup().name : baseTime
     retentionInterval: retentionInterval
