@@ -175,6 +175,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'echo \'echo echo echo\''
+    storageAccountResourceId: '<storageAccountResourceId>'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -225,6 +226,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     "scriptContent": {
       "value": "echo \"echo echo echo\""
     },
+    "storageAccountResourceId": {
+      "value": "<storageAccountResourceId>"
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -267,6 +271,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''
+    storageAccountResourceId: '<storageAccountResourceId>'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -319,6 +324,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     "scriptContent": {
       "value": "Write-Host \"The cake is a lie!\""
+    },
+    "storageAccountResourceId": {
+      "value": "<storageAccountResourceId>"
     },
     "tags": {
       "value": {
