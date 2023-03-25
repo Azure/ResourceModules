@@ -173,7 +173,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
 
             $localReferences = $templateReferences.localPathReferences
             if (-not $localReferences) {
-                Set-ItResult -Skipped -Because 'the module has local cross module references.'
+                Set-ItResult -Skipped -Because 'the module has no local cross module references.'
                 return
             }
 
@@ -204,26 +204,18 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             # Re-create result set
-            $workflowPaths = @()
-            $nonWorkflowPaths = @()
-            $extractedPaths | ForEach-Object {
-                if ($_ -match '^\.github.*$') {
-                    $workflowPaths += $_
-                } else {
-                    $nonWorkflowPaths += $_
-                }
-            }
+            $workflowPaths = $extractedPaths | Where-Object { $_ -match '^\.github.*$' }
 
-            $missingCrossModuleReferences = @()
+            $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
             foreach ($localReference in $localReferences) {
                 $formattedReference = '{0}.yml' -f $localReference.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
                 $expectedPath = ".github/workflows/$formattedReference"
                 if ($workflowPaths -notcontains $expectedPath) {
-                    $missingCrossModuleReferences += $expectedPath
+                    $missingCrossModuleReferenceTriggers += $expectedPath
                 }
             }
 
-            $missingCrossModuleReferences.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferences -join ','))
+            $missingCrossModuleReferenceTriggers.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferenceTriggers -join ','))
         }
     }
 
@@ -241,7 +233,60 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
         }
 
-        # TODO: Add dependencies trigger test
+        It '[<moduleFolderName>] Module pipeline should have trigger for cross-module references, if any.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [Hashtable] $templateReferences
+            )
+
+            $localReferences = $templateReferences.localPathReferences
+            if (-not $localReferences) {
+                Set-ItResult -Skipped -Because 'the module has no local cross module references.'
+                return
+            }
+
+            $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelineFilePath = Join-Path $pipelinesFolderName $pipelineFileName
+            $pipelineContent = Get-Content -Path $pipelineFilePath
+
+            # Get paths include start index
+            $pipelinePathsIncludeIndex = $pipelineContent | ForEach-Object {
+                if ($_ -match '^\s*paths:\s*$') {
+                    return $pipelineContent.IndexOf($Matches[0]) + 1 # Adding one index to shift to 'include:'
+                }
+            }
+
+            $pipelinePathsIncludeStartIndex = $pipelinePathsIncludeIndex + 1
+
+            # Get paths end index
+            $pipelinePathsIncludeEndIndex = $pipelinePathsIncludeStartIndex
+            while ($pipelineContent[($pipelinePathsIncludeEndIndex + 1)] -match "^\s*- '.+$") {
+                $pipelinePathsIncludeEndIndex++
+            }
+
+            # Extract data
+            $extractedPaths = $pipelineContent[$pipelinePathsIncludeStartIndex .. $pipelinePathsIncludeEndIndex] | ForEach-Object {
+                $null = $_ -match "^\s*- '(.+)'$"
+                $Matches[1]
+            }
+
+            # Re-create result set
+            $modulePipelinePaths = $extractedPaths | Where-Object { $_ -match '^\/\.azuredevops\/modulePipelines.*$' }
+
+            $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
+            foreach ($localReference in $localReferences) {
+                $formattedReference = '{0}.yml' -f $localReference.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+                $expectedPath = "/.azuredevops/modulePipelines/$formattedReference"
+                if ($modulePipelinePaths -notcontains $expectedPath) {
+                    $missingCrossModuleReferenceTriggers += $expectedPath
+                }
+            }
+
+            $missingCrossModuleReferenceTriggers.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferenceTriggers -join ','))
+        }
     }
 
 }
