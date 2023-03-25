@@ -454,7 +454,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       secureList: [
         {
           authorizationEndpoint: '<authorizationEndpoint>'
-          clientId: 'apimclientsecret'
+          clientId: 'apimclientid'
           clientRegistrationEndpoint: 'http://localhost'
           clientSecret: '<clientSecret>'
           grantTypes: [
@@ -614,7 +614,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         "secureList": [
           {
             "authorizationEndpoint": "<authorizationEndpoint>",
-            "clientId": "apimclientsecret",
+            "clientId": "apimclientid",
             "clientRegistrationEndpoint": "http://localhost",
             "clientSecret": "<clientSecret>",
             "grantTypes": [
