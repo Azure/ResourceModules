@@ -86,10 +86,10 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var storageAccountSettings = {
-  storageAccountKey: !empty(storageAccountId) ? listKeys(storageAccountId, '2019-06-01').keys[0].value : null
-  storageAccountName: !empty(storageAccountId) ? last(split(storageAccountId, '/')) : null
-}
+var storageAccountSettings = !empty(storageAccountResourceId) ? {
+  storageAccountKey: listKeys(storageAccountResourceId, '2019-06-01').keys[0].value
+  storageAccountName: last(split(storageAccountResourceId, '/'))
+} : {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
