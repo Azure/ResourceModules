@@ -7,7 +7,6 @@ This section shows you how you can orchestrate a deployment using multiple resou
 ### _Navigation_
 
 - [Upstream workloads](#upstream-workloads)
-- [General solution creation](#general-solution-creation)
 - [Orchestration overview](#orchestration-overview)
   - [Publish-location considerations](#publish-location-considerations)
     - [Outline](#outline)
@@ -36,77 +35,6 @@ There are several open-source repositories that leverage the CARML library today
 | [AKS Baseline Automation](https://github.com/Azure/aks-baseline-automation) | Repository for the AKS Landing Zone Accelerator program's Automation reference implementation |
 | [DevOps Self-Hosted](https://github.com/Azure/DevOps-Self-Hosted) | - Create & maintain images with a pipeline using the Azure Image Builder service <p> - Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Set|
 
-# General solution creation
-
-When creating a solution that leverages CARML modules, there are several aspects to consider. This sub-section intends to provide you with a rough step-by-step guide to get you started.
-
-1. Identify the resources & deployment scope needed for your architecture
-
-    When you want to create your solution you should first gain an understanding of its designated architecture and and a results its inherently required services. For this and the subsequent steps, let's consider the following scenario:
-
-    - You want to deploy a Virtual Machine that is able to connect privately to a storage account
-    - For this architecture you may use the following services
-      - 1 resource group to place your resources in
-      - 1 Network Security Group to allow traffic control for your subnets
-      - 1 Virtual Network with 2 subnets
-      - 1 Storage Account with 1 Private Endpoint that connects into the 1st Virtual Network Subnet
-      - 1 Virtual Machine that is deployed into the 2nd Virtual Network subnet
-
-    Also, you need to consider the scope you want to deploy into. In the above example, we want to deploy a Resource Group, which must be deployed into a Subscription scope. All other resources, in turn can be deployed into the resource group scope of that resource group.
-
-    <p>
-
-1. Identify dependencies between them
-
-    Next, you need to know in which order you need to deploy those resources. For example, as all resources must be placed in a resource group, the resource group must be deployed first. Likewise, before you can deploy a Virtual Machine, you first need to create a Virtual Network. All together this may look like
-
-      ::: mermaid
-      graph LR;
-      rg[Resource Group]
-      vnet[Virtual Network]
-      st[Storage Account]
-      pe[Private Endpoint]
-      vm[Virtual Machine]
-      nsg[Network Security Group]
-
-
-      rg --> vnet
-      rg --> st
-      rg --> vm
-      rg --> nsg
-      vnet --> pe
-      st --> pe
-      nsg --> vnet
-      vnet --> vm
-      :::
-
-1. Consider orchestration options
-
-    With the services & dependencies identified, the next question is, how those dependencies can be implemented. As described in the [Orchestration Overview](#orchestration-overview) sub-section, this is primarily a decision about 'pipeline-orchestration' vs. 'template-orchestration' - and in case of the later, if there are any steps that have to run in the pipeline regardless (for example an upload of files).
-
-    Generally speaking, both approaches are valid, though we would recommend to use template-orchestration as much as possible and only implement logic in the pipelines if absolutely necessary.
-
-    The previously introduced scenario could be implemented either way.
-
-1. Choose publishing
-
-    Building on the previous step, you must also consider where you consume the resources from, i.e. if you use native Bicep, or published modules from either a Bicep registry, Template Specs, or Azure DevOps universal packages. The characteristics of each option is outlined a the corresponding [sub-section](#publish-location-considerations) below.
-
-1. Implement you solution
-
-    Finally, you can start building your solution. As peviously started, the chosen orchestration option & source of your code will haeavily impact the design of your solution. To help you along the way, you can use both the [template-orchestration](#template-orchestration) and [pipeline-orchestration](#pipeline-orchestration) sections to draw inspiration from.
-
-    However, there are also some general guidelines you can leverage in either case:
-    - When using CARML modules, make sure you not only check out each module's readme, but also its test cases (`./test/`) to gain an understanding how the module can be used and how certain parameters work. For example, if you want to deploy Customer-Managed-Keys for a service like an Automation Account using the corresponding CARML module, it's `encr` test case provides you also with insights into the required permissions and dependent resources.
-    - If a feature or module is not part of the library nothing prevents you from adding it - or - implementing native Bicep code to complement your solution.
-    - You can build 'constructs' from CARML modules that deploy a common set of resources and in turn leverage them to build even bigger solutions with minimal code.
-    - Leverage capabilities such as `-WhatIf` deployments to get an understanding of the designated changes before you apply them
-    - Also consider to use `staging` in your pipelines to test your solutions in a safe environment first, before you eventually roll them out to production.
-
-1. Deploy the solution
-
-    Last but not least, you only have to deploy you solution. As started in the [Orchestration Overview](#orchestration-overview) sub-section, be vary of the requirements of each correspoinding deployment approach.
-
 # Orchestration overview
 
 When it comes to deploying multi-module solutions (applications/workloads/environments/landing zone accelerators/etc.), we can differentiate two types of orchestration methods:
@@ -115,36 +43,11 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 
    <img src="./media/SolutionCreation/templateOrchestration.png" alt="Template orchestration" height="250">
 
-    _Advantages_
-    - The deployment of resources in parallel is handled by Azure
-    - Passing information in between resource deployments is handled inside a single deployment
-    - The pipeline remains relatively simple as most complexity is handled by the resource template </p>
-
-    _Limitations_
-    - The compiled (i.e., ARM) resource template file may not exceed 4 mb in size
-    - It is not possible to perform more than 800 deployments using a single resource template
-    - Not all deployments can be done using the resource template, or only using workarounds (for example, the upload of files, the deployment of AAD resources, etc.)
-    - The deploying principal must have permissions of all resource deployments that are part of the resource template
-
-</p>
-
 - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example, pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that run the jobs, while accounting for all dependencies defined.
 
-   <img src="./media/SolutionCreation/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
-
-    _Advantages_
-    - The deployment of an individual resource is very simple
-    - Most CI/CD systems provide you with a visual representation of the deployment flow
-    - If deployments fail, you can re-run them individually
-    - Different deployment jobs can use different principals </p>
-
-    _Limitations_
-    - Each deployment needs its own job, and in turn its own agent. As a consequence, parallel resource deployments require multiple agents.
-    - Passing information from one deployment to another requires passing information from one agent to another
-
-</p>
-
 Both the _template-orchestration_, as well as _pipeline-orchestration_ may run a validation and subsequent deployment in the same _Azure_ subscription. This subscription should be the subscription where you want to host your production solution. However, you can extend the concept and for example, deploy the solution first to an integration and then a production subscription.
+
+   <img src="./media/SolutionCreation/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
 
 ## Publish-location considerations
 
