@@ -30,6 +30,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventgrid.topics.yml'
+      - '.github/workflows/Microsoft.Network/privateEndpoints'
       - 'modules/Microsoft.EventGrid/topics/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

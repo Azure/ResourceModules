@@ -28,6 +28,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.keyvault.vaults.yml'
+      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.KeyVault/vaults/*'
       - '/utilities/pipelines/*'

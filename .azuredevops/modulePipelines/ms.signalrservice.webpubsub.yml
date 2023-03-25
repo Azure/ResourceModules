@@ -28,6 +28,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.signalrservice.webpubsub.yml'
+      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.SignalRService/webPubSub/*'
       - '/utilities/pipelines/*'

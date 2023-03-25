@@ -30,6 +30,8 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerservice.managedclusters.yml'
+      - '.github/workflows/Microsoft.KubernetesConfiguration/extensions'
+      - '.github/workflows/Microsoft.KubernetesConfiguration/fluxConfigurations'
       - 'modules/Microsoft.ContainerService/managedClusters/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

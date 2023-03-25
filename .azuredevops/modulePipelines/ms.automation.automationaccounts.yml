@@ -28,6 +28,9 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'
+      - '/.azuredevops/modulePipelines/Microsoft.OperationalInsights/workspaces/linkedServices'
+      - '/.azuredevops/modulePipelines/Microsoft.OperationsManagement/solutions'
+      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Automation/automationAccounts/*'
       - '/utilities/pipelines/*'
