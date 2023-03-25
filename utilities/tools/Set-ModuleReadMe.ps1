@@ -928,6 +928,8 @@ function Set-DeploymentExamplesSection {
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
         ''
     )
+    # Get module relative path to provide to module references in Deployment Examples
+    $moduleRelative = $moduleRoot.Replace('\', '/').split('modules/')[1]
 
     # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
     $providerNamespace = ($fullModuleIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
@@ -991,7 +993,8 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
+            $rawBicepExample[0] = "module $resourceType './$moduleRelative/deploy.bicep' = {"
+            # $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1475,7 +1478,11 @@ function Set-ModuleReadMe {
     }
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $fullModuleIdentifier = 'Microsoft.{0}' -f $moduleRoot.Replace('\', '/').split('/Microsoft.')[1]
+    $moduleRelative = $moduleRoot.Replace('\', '/').split('modules/')[1]
+    $splitHyphens = $moduleRelative.split('-')
+    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
+    $splitHyphens = $splitHyphens -join ''
+    $fullModuleIdentifier = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
