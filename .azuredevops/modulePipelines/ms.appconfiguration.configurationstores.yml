@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.appconfiguration.configurationstores.yml'
-      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.AppConfiguration/configurationStores/*'
       - '/utilities/pipelines/*'

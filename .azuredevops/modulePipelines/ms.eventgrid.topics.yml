@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.eventgrid.topics.yml'
-      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.EventGrid/topics/*'
       - '/utilities/pipelines/*'

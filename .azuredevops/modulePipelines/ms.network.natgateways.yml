@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.natgateways.yml'
-      - '/.azuredevops/modulePipelines/Microsoft.Network/publicIPAddresses'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Network/natGateways/*'
       - '/utilities/pipelines/*'

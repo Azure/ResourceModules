@@ -30,7 +30,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.batch.batchaccounts.yml'
-      - '.github/workflows/Microsoft.Network/privateEndpoints'
       - 'modules/Microsoft.Batch/batchAccounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

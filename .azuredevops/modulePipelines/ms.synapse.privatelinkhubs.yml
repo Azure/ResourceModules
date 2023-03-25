@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.synapse.privatelinkhubs.yml'
-      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Synapse/privateLinkHubs/*'
       - '/utilities/pipelines/*'

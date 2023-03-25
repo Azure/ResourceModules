@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.machinelearningservices.workspaces.yml'
-      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.MachineLearningServices/workspaces/*'
       - '/utilities/pipelines/*'

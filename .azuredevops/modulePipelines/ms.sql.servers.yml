@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.sql.servers.yml'
-      - '/.azuredevops/modulePipelines/Microsoft.Network/privateEndpoints'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Sql/servers/*'
       - '/utilities/pipelines/*'

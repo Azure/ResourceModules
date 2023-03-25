@@ -30,7 +30,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.apimanagement.service.yml'
-      - '.github/workflows/Microsoft.ApiManagement/authorizationServers'
       - 'modules/Microsoft.ApiManagement/service/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

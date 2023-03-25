@@ -30,7 +30,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.workspaces.yml'
-      - '.github/workflows/Microsoft.Network/privateEndpoints'
       - 'modules/Microsoft.Synapse/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

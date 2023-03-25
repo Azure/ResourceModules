@@ -30,7 +30,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.web.sites.yml'
-      - '.github/workflows/Microsoft.Network/privateEndpoints'
       - 'modules/Microsoft.Web/sites/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
