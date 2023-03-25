@@ -52,6 +52,9 @@ param cleanupPreference string = 'Always'
 @description('Optional. Container group name, if not specified then the name will get auto-generated. Not specifying a \'containerGroupName\' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use \'containerGroupName\' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. \'containerGroupName\' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed.')
 param containerGroupName string = ''
 
+@description('Optional. The resource ID of the storage account to use for this deployment script. If none is provided, the deployment script uses a temporary, managed storage account.')
+param storageAccountResourceId string = ''
+
 @description('Optional. Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; \'PT30M\' - 30 minutes; \'P5D\' - 5 days; \'P1Y\' 1 year.')
 param timeout string = 'PT1H'
 
@@ -83,6 +86,11 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var storageAccountSettings = !empty(storageAccountResourceId) ? {
+  storageAccountKey: listKeys(storageAccountResourceId, '2019-06-01').keys[0].value
+  storageAccountName: last(split(storageAccountResourceId, '/'))
+} : {}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -104,12 +112,13 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   properties: {
     azPowerShellVersion: kind == 'AzurePowerShell' ? azPowerShellVersion : null
     azCliVersion: kind == 'AzureCLI' ? azCliVersion : null
-    containerSettings: empty(containerGroupName) ? null : containerSettings
+    containerSettings: !empty(containerGroupName) ? containerSettings : null
+    storageAccountSettings: !empty(storageAccountResourceId) ? storageAccountSettings : null
     arguments: arguments
-    environmentVariables: empty(environmentVariables) ? null : environmentVariables
-    scriptContent: empty(scriptContent) ? null : scriptContent
-    primaryScriptUri: empty(primaryScriptUri) ? null : primaryScriptUri
-    supportingScriptUris: empty(supportingScriptUris) ? null : supportingScriptUris
+    environmentVariables: !empty(environmentVariables) ? environmentVariables : null
+    scriptContent: !empty(scriptContent) ? scriptContent : null
+    primaryScriptUri: !empty(primaryScriptUri) ? primaryScriptUri: null
+    supportingScriptUris: !empty(supportingScriptUris) ? supportingScriptUris : null
     cleanupPreference: cleanupPreference
     forceUpdateTag: runOnce ? resourceGroup().name : baseTime
     retentionInterval: retentionInterval

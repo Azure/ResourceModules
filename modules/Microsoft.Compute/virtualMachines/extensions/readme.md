@@ -13,7 +13,7 @@ This module deploys a virtual machine extension.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Compute/virtualMachines/extensions` | [2021-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions) |
+| `Microsoft.Compute/virtualMachines/extensions` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/virtualMachines/extensions) |
 
 ## Parameters
 

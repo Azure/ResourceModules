@@ -54,7 +54,7 @@ This module deploys a Synapse Workspace.
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, BuiltinSqlReqsEnded, GatewayApiRequests, IntegrationActivityRuns, IntegrationPipelineRuns, IntegrationTriggerRuns, SynapseRbacOperations]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -318,6 +318,7 @@ userAssignedIdentities: {
 | `name` | string | The name of the deployed Synapse Workspace. |
 | `resourceGroupName` | string | The resource group of the deployed Synapse Workspace. |
 | `resourceID` | string | The resource ID of the deployed Synapse Workspace. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 

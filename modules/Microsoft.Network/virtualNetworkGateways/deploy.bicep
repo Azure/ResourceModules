@@ -177,11 +177,11 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
+@description('Optional. The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param publicIpDiagnosticSettingsName string = ''
 
 // ================//
 // Variables       //
@@ -352,7 +352,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
-    diagnosticSettingsName: publicIpDiagnosticSettingsName
+    diagnosticSettingsName: !empty(publicIpDiagnosticSettingsName) ? publicIpDiagnosticSettingsName : '${virtualGatewayPublicIpName}-diagnosticSettings'
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
@@ -427,7 +427,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: virtualNetworkGatewayDiagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

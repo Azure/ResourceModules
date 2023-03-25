@@ -33,6 +33,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
   }
 }
 
@@ -53,6 +54,7 @@ module testDeployment '../../deploy.bicep' = {
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''
+    storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     timeout: 'PT30M'
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}

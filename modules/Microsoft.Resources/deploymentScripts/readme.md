@@ -44,6 +44,7 @@ This module deploys a deployment script.
 | `retentionInterval` | string | `'P1D'` |  | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | `runOnce` | bool | `False` |  | When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
 | `scriptContent` | string | `''` |  | Script body. Max length: 32000 characters. To run an external script, use primaryScriptURI instead. |
+| `storageAccountResourceId` | string | `''` |  | The resource ID of the storage account to use for this deployment script. If none is provided, the deployment script uses a temporary, managed storage account. |
 | `supportingScriptUris` | array | `[]` |  | List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent). |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeout` | string | `'PT1H'` |  | Maximum allowed script execution time specified in ISO 8601 format. Default value is PT1H - 1 hour; 'PT30M' - 30 minutes; 'P5D' - 5 days; 'P1Y' 1 year. |
@@ -174,6 +175,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'echo \'echo echo echo\''
+    storageAccountResourceId: '<storageAccountResourceId>'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -224,6 +226,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     "scriptContent": {
       "value": "echo \"echo echo echo\""
     },
+    "storageAccountResourceId": {
+      "value": "<storageAccountResourceId>"
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -266,6 +271,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'Write-Host \'The cake is a lie!\''
+    storageAccountResourceId: '<storageAccountResourceId>'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -318,6 +324,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     "scriptContent": {
       "value": "Write-Host \"The cake is a lie!\""
+    },
+    "storageAccountResourceId": {
+      "value": "<storageAccountResourceId>"
     },
     "tags": {
       "value": {

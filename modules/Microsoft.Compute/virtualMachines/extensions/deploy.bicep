@@ -50,11 +50,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' existing = {
+resource virtualMachine 'Microsoft.Compute/virtualMachines@2022-11-01' existing = {
   name: virtualMachineName
 }
 
-resource extension 'Microsoft.Compute/virtualMachines/extensions@2021-07-01' = {
+resource extension 'Microsoft.Compute/virtualMachines/extensions@2022-11-01' = {
   name: name
   parent: virtualMachine
   location: location

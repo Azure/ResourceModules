@@ -63,10 +63,6 @@ module testDeployment '../../deploy.bicep' = {
             'Trace'
           ]
           name: 'pe-<<namePrefix>>-${serviceShort}-001'
-          tags: {
-            Environment: 'Non-Prod'
-            Role: 'DeploymentValidation'
-          }
         }
       ]
       publicNetwork: {

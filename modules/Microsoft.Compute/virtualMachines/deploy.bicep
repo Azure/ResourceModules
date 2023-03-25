@@ -414,7 +414,7 @@ module vm_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, i
   }
 }]
 
-resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
+resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
   name: name
   location: location
   identity: identity

@@ -9,6 +9,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 ## Get started
 
 * For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
+* For guidance on which version of the code to leverage, see [Disclaimer](https://github.com/azure/resourcemodules#Disclaimer)
 * For information on contributing, see [Contribution](<https://github.com/Azure/ResourceModules/wiki/Contribution%20guide>)
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 * For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
@@ -148,7 +149,6 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | Name | Status |
 | - | - |
 | Update API Specs file | [![.Platform: Update API Specs file](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20API%20Specs%20file/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.apiSpecs.yml) |
-| Assign Issue to Project | [![.Platform: Assign Issue to Project](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Assign%20Issue%20to%20Project/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignIssueToProject.yml) |
 | Assign Pull Request to Author | [![.Platform: Assign Pull Request to Author](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Assign%20Pull%20Request%20to%20Author/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.assignPrToAuthor.yml) |
 | Test - ConvertTo-ARMTemplate.ps1 | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Test%20-%20ConvertTo-ARMTemplate.ps1/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) |
 | Clean up deployment history | [![.Platform: Clean up deployment history](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Clean%20up%20deployment%20history/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.deployment.history.cleanup.yml) |
@@ -159,6 +159,12 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | Update ReadMe status Tables | [![.Platform: Update ReadMe status Tables](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20ReadMe%20status%20Tables/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateReadMe.yml) |
 | Update Static Test Documentation | [![.Platform: Update Static Test Documentation](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20Static%20Test%20Documentation/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateStaticTestDocs.yml) |
 | Sync Docs/Wiki | [![.Platform: Sync Docs/Wiki](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Sync%20Docs/Wiki/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.wiki-sync.yml) |
+
+## Disclaimer
+
+Please note that CARML is constantly evolving and introducing new features. The `main` branch of this repository changes frequently and thus, it always contains the latest available version of the code. Some of the updates may introduce breaking changes as well.
+- **Default path**: To avoid disruptions, use distinct versions available through [releases](https://github.com/Azure/ResourceModules/releases).
+- **Early adopter path**: If the risk of breaking changes is understood and accepted, you can use the code in the `main` branch directly. However, the CARML team recommends against automatically pulling code from `main`. It is always recommended to review changes before you pull them into your own repository.
 
 ## Contributing
 
