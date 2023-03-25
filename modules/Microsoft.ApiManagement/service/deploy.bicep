@@ -130,24 +130,35 @@ param newGuidValue string = newGuid()
 
 @description('Optional. APIs.')
 param apis array = []
+
 @description('Optional. API Version Sets.')
 param apiVersionSets array = []
+
 @description('Optional. Authorization servers.')
-param authorizationServers array = []
+@secure()
+param authorizationServers object = {}
+
 @description('Optional. Backends.')
 param backends array = []
+
 @description('Optional. Caches.')
 param caches array = []
+
 @description('Optional. Identity providers.')
 param identityProviders array = []
+
 @description('Optional. Named values.')
 param namedValues array = []
+
 @description('Optional. Policies.')
 param policies array = []
+
 @description('Optional. Portal settings.')
 param portalSettings array = []
+
 @description('Optional. Products.')
 param products array = []
+
 @description('Optional. Subscriptions.')
 param subscriptions array = []
 
@@ -155,6 +166,8 @@ param subscriptions array = []
 param diagnosticSettingsName string = ''
 
 var enableReferencedModulesTelemetry = false
+
+var authorizationServerList = !empty(authorizationServers) ? authorizationServers.secureList : []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -281,7 +294,7 @@ module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
   }
 }]
 
-module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' = [for (authorizationServer, index) in authorizationServers: {
+module authorizationServers_resource1 'authorizationServers/deploy.bicep' = [for (authorizationServer, index) in authorizationServerList: {
   name: '${uniqueString(deployment().name, location)}-Apim-AuthorizationServer-${index}'
   params: {
     apiManagementServiceName: apiManagementService.name
@@ -296,9 +309,8 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
     clientAuthenticationMethod: contains(authorizationServer, 'clientAuthenticationMethod') ? authorizationServer.clientAuthenticationMethod : [
       'Basic'
     ]
-    clientCredentialsKeyVaultId: authorizationServer.clientCredentialsKeyVaultId
-    clientIdSecretName: authorizationServer.clientIdSecretName
-    clientSecretSecretName: authorizationServer.clientSecretSecretName
+    clientId: authorizationServer.clientId
+    clientSecret: authorizationServer.clientSecret
     clientRegistrationEndpoint: contains(authorizationServer, 'clientRegistrationEndpoint') ? authorizationServer.clientRegistrationEndpoint : ''
     defaultScope: contains(authorizationServer, 'defaultScope') ? authorizationServer.defaultScope : ''
     grantTypes: authorizationServer.grantTypes
