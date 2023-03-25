@@ -112,11 +112,11 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   properties: {
     azPowerShellVersion: kind == 'AzurePowerShell' ? azPowerShellVersion : null
     azCliVersion: kind == 'AzureCLI' ? azCliVersion : null
-    containerSettings: empty(containerGroupName) ? null : containerSettings
-    storageAccountSettings: empty(storageAccountId) ? null : storageAccountSettings
+    containerSettings: !empty(containerGroupName) ? containerSettings : null
+    storageAccountSettings: !empty(storageAccountResourceId) ? storageAccountSettings : null
     arguments: arguments
-    environmentVariables: empty(environmentVariables) ? null : environmentVariables
-    scriptContent: empty(scriptContent) ? null : scriptContent
+    environmentVariables: !empty(environmentVariables) ? environmentVariables : null
+    scriptContent: !empty(scriptContent) ? scriptContent : null
     primaryScriptUri: empty(primaryScriptUri) ? null : primaryScriptUri
     supportingScriptUris: empty(supportingScriptUris) ? null : supportingScriptUris
     cleanupPreference: cleanupPreference
