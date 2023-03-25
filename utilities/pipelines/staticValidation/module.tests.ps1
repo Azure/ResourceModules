@@ -59,7 +59,8 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 )
 
                 $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-                $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+                $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
+                # $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
                 $workflowPath = Join-Path $workflowsFolderName $workflowFileName
                 Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
             }
