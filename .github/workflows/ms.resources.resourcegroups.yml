@@ -30,6 +30,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.resourcegroups.yml'
+      - '.github/workflows/ms.authorization.locks.resourcegroup.yml'
       - 'modules/Microsoft.Resources/resourceGroups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

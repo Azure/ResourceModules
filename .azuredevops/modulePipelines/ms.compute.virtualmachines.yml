@@ -28,6 +28,9 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
+      - '/.azuredevops/modulePipelines/ms.recoveryservices.vaults.protectioncontainers.protecteditems.yml'
+      - '/.azuredevops/modulePipelines/ms.network.publicipaddresses.yml'
+      - '/.azuredevops/modulePipelines/ms.network.networkinterfaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Compute/virtualMachines/*'
       - '/utilities/pipelines/*'

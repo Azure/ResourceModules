@@ -28,6 +28,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.signalrservice.signalr.yml'
+      - '/.azuredevops/modulePipelines/ms.network.privateendpoints.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.SignalRService/signalR/*'
       - '/utilities/pipelines/*'

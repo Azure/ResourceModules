@@ -30,6 +30,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.diskencryptionsets.yml'
+      - '.github/workflows/ms.keyvault.vaults.accesspolicies.yml'
       - 'modules/Microsoft.Compute/diskEncryptionSets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

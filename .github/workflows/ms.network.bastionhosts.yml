@@ -30,6 +30,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.bastionhosts.yml'
+      - '.github/workflows/ms.network.publicipaddresses.yml'
       - 'modules/Microsoft.Network/bastionHosts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
