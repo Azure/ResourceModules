@@ -138,10 +138,14 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
 
     $moduleFolderTestCases = [System.Collections.ArrayList] @()
     foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+        $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
         $moduleFolderTestCases += @{
-            moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-            moduleFolderPath = $moduleFolderPath
-            isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            moduleFolderName   = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+            moduleFolderPath   = $moduleFolderPath
+            isTopLevelModule   = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            templateReferences = $crossReferencedModuleList[$resourceTypeIdentifier]
         }
     }
 
@@ -159,7 +163,68 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
         }
 
-        # TODO: Add dependencies trigger test
+        It '[<moduleFolderName>] Module workflow should have trigger for cross-module references, if any.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [Hashtable] $templateReferences
+            )
+
+            $localReferences = $templateReferences.localPathReferences
+            if (-not $localReferences) {
+                Set-ItResult -Skipped -Because 'the module has local cross module references.'
+                return
+            }
+
+            $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowFilePath = Join-Path $workflowsFolderName $workflowFileName
+            $workflowContent = Get-Content -Path $workflowFilePath
+
+            # Get paths start index
+            $workflowPathsIndex = $workflowContent | ForEach-Object {
+                if ($_ -match '^\s*paths:\s*$') {
+                    return $workflowContent.IndexOf($Matches[0])
+                }
+            }
+
+            $workflowPathsStartIndex = $workflowPathsIndex + 1
+
+            # Get paths end index
+            $workflowPathsEndIndex = $workflowPathsStartIndex
+            while ($workflowContent[($workflowPathsEndIndex + 1)] -match "^\s*- '.+$") {
+                $workflowPathsEndIndex++
+            }
+
+            # Extract data
+            $extractedPaths = $workflowContent[$workflowPathsStartIndex .. $workflowPathsEndIndex] | ForEach-Object {
+                $null = $_ -match "^\s*- '(.+)'$"
+                $Matches[1]
+            }
+
+            # Re-create result set
+            $workflowPaths = @()
+            $nonWorkflowPaths = @()
+            $extractedPaths | ForEach-Object {
+                if ($_ -match '^\.github.*$') {
+                    $workflowPaths += $_
+                } else {
+                    $nonWorkflowPaths += $_
+                }
+            }
+
+            $missingCrossModuleReferences = @()
+            foreach ($localReference in $localReferences) {
+                $formattedReference = '{0}.yml' -f $localReference.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+                $expectedPath = ".github/workflows/$formattedReference"
+                if ($workflowPaths -notcontains $expectedPath) {
+                    $missingCrossModuleReferences += $expectedPath
+                }
+            }
+
+            $missingCrossModuleReferences.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferences -join ','))
+        }
     }
 
     if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {

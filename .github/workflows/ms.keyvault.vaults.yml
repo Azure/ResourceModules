@@ -30,7 +30,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.keyvault.vaults.yml'
-      - '.github/workflows/ms.network.privateendpoints.yml'
+      - '.github/workflows/ms.network.privateendpoints.'
       - 'modules/Microsoft.KeyVault/vaults/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
