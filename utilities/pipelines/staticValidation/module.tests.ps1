@@ -25,6 +25,7 @@ $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/20
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
+$script:crossReferencedModuleList = Get-CrossReferencedModuleList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
@@ -40,45 +41,6 @@ Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
-
-        $moduleFolderTestCases = [System.Collections.ArrayList] @()
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $moduleFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                moduleFolderPath = $moduleFolderPath
-                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
-            }
-        }
-
-        if (Test-Path (Join-Path $repoRootPath '.github')) {
-            It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
-
-                param(
-                    [string] $moduleFolderName,
-                    [string] $moduleFolderPath
-                )
-
-                $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-                $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-                $workflowPath = Join-Path $workflowsFolderName $workflowFileName
-                Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
-            }
-        }
-
-        if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
-            It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
-
-                param(
-                    [string] $moduleFolderName,
-                    [string] $moduleFolderPath
-                )
-
-                $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-                $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-                $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
-                Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
-            }
-        }
 
         It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file' -TestCases $moduleFolderTestCases {
 
@@ -170,11 +132,60 @@ Describe 'File/folder tests' -Tag 'Modules' {
         }
     }
 }
+
+Describe 'Pipeline tests' -Tag 'Pipeline' {
+
+    $moduleFolderTestCases = [System.Collections.ArrayList] @()
+    foreach ($moduleFolderPath in $moduleFolderPaths) {
+        $moduleFolderTestCases += @{
+            moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+            moduleFolderPath = $moduleFolderPath
+            isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+        }
+    }
+
+    if (Test-Path (Join-Path $repoRootPath '.github')) {
+        It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath
+            )
+
+            $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowPath = Join-Path $workflowsFolderName $workflowFileName
+            Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
+        }
+
+        # TODO: Add dependencies trigger test
+    }
+
+    if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
+        It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath
+            )
+
+            $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
+            Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
+        }
+
+        # TODO: Add dependencies trigger test
+    }
+
+}
+
 Describe 'Readme tests' -Tag 'Readme' {
 
     Context 'Readme content tests' {
 
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
+
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
@@ -217,7 +228,7 @@ Describe 'Readme tests' -Tag 'Readme' {
                 readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
                 isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
                 resourceTypeIdentifier = $resourceTypeIdentifier
-                templateReferences     = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+                templateReferences     = $crossReferencedModuleList[$resourceTypeIdentifier]
             }
         }
 
@@ -468,7 +479,8 @@ Describe 'Readme tests' -Tag 'Readme' {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent,
-                [string] $resourceTypeIdentifier
+                [string] $resourceTypeIdentifier,
+                [hashtable] $templateReferences
             )
 
             # Get ReadMe data
@@ -494,25 +506,22 @@ Describe 'Readme tests' -Tag 'Readme' {
                 }
             }
 
-            # Template data
-            $expectedDependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
-
             # Test
-            if ($expectedDependencies.localPathReferences) {
-                $differentiatingItems = @() + $expectedDependencies.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
+            if ($templateReferences.localPathReferences) {
+                $differentiatingItems = @() + $templateReferences.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of local template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
 
 
-                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $expectedDependencies.localPathReferences -notcontains $_ }
+                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $templateReferences.localPathReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of excess local template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
             }
 
-            if ($expectedDependencies.remoteReferences) {
-                $differentiatingItems = @() + $expectedDependencies.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
+            if ($templateReferences.remoteReferences) {
+                $differentiatingItems = @() + $templateReferences.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of remote template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
 
 
-                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $expectedDependencies.remoteReferences -notcontains $_ }
+                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $templateReferences.remoteReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of excess remote template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
             }
         }
