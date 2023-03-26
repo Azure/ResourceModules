@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.privatelinkscopes.yml'
-      - '/.azuredevops/modulePipelines/ms.network.privateendpoints.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Insights/privateLinkScopes/*'
       - '/utilities/pipelines/*'

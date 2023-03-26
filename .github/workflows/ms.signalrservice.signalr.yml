@@ -30,7 +30,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.signalrservice.signalr.yml'
-      - '.github/workflows/ms.network.privateendpoints.yml'
       - 'modules/Microsoft.SignalRService/signalR/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

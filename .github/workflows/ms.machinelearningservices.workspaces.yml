@@ -30,7 +30,6 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.machinelearningservices.workspaces.yml'
-      - '.github/workflows/ms.network.privateendpoints.yml'
       - 'modules/Microsoft.MachineLearningServices/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'

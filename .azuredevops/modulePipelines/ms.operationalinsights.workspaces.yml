@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.operationalinsights.workspaces.yml'
-      - '/.azuredevops/modulePipelines/ms.operationsmanagement.solutions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.OperationalInsights/workspaces/*'
       - '/utilities/pipelines/*'

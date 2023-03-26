@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.azurefirewalls.yml'
-      - '/.azuredevops/modulePipelines/ms.network.publicipaddresses.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Network/azureFirewalls/*'
       - '/utilities/pipelines/*'

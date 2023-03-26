@@ -28,7 +28,6 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualnetworkgateways.yml'
-      - '/.azuredevops/modulePipelines/ms.network.publicipaddresses.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/Microsoft.Network/virtualNetworkGateways/*'
       - '/utilities/pipelines/*'
