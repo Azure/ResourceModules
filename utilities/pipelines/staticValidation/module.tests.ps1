@@ -204,13 +204,12 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             # Re-create result set
-            $workflowPaths = $extractedPaths | Where-Object { $_ -match '^\.github.*$' }
+            $workflowModuleTriggerPaths = $extractedPaths | Where-Object { $_ -match '^modules\/.*$' }
 
             $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
             foreach ($localReference in $localReferences) {
-                $formattedReference = '{0}.yml' -f $localReference.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-                $expectedPath = ".github/workflows/$formattedReference"
-                if ($workflowPaths -notcontains $expectedPath) {
+                $expectedPath = "modules/$localReference/**"
+                if ($workflowModuleTriggerPaths -notcontains $expectedPath) {
                     $missingCrossModuleReferenceTriggers += $expectedPath
                 }
             }
@@ -274,13 +273,12 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             # Re-create result set
-            $modulePipelinePaths = $extractedPaths | Where-Object { $_ -match '^\/\.azuredevops\/modulePipelines.*$' }
+            $moduleTriggerPaths = $extractedPaths | Where-Object { $_ -match '^\/modules\/.*$' }
 
             $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
             foreach ($localReference in $localReferences) {
-                $formattedReference = '{0}.yml' -f $localReference.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-                $expectedPath = "/.azuredevops/modulePipelines/$formattedReference"
-                if ($modulePipelinePaths -notcontains $expectedPath) {
+                $expectedPath = "/modules/$localReference/*"
+                if ($moduleTriggerPaths -notcontains $expectedPath) {
                     $missingCrossModuleReferenceTriggers += $expectedPath
                 }
             }
