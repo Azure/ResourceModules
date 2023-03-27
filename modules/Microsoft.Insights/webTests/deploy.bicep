@@ -52,7 +52,7 @@ param enabled bool = true
 @description('Optional. Interval in seconds between test runs for this WebTest. Default value is 300.')
 param frequency int = 300
 
-@description('Optional. Seconds until this WebTest will timeout and fail. Default value is 30.')
+@description('Optional. Seconds until this WebTest will timeout and fail.')
 param timeout int = 30
 
 @description('Optional. Allow for retries should this WebTest fail.')
