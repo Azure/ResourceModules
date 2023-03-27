@@ -19,7 +19,7 @@ param descriptionWebTest string = ''
 @description('Required. Unique ID of this WebTest. This is typically the same value as the Name field.')
 param syntheticMonitorId string
 
-@description('Optional. The kind of WebTest that this web test watches. Choices are ping, multistep and standard.')
+@description('Optional. The kind of WebTest that this web test watches.')
 @allowed([
   'multistep'
   'ping'
