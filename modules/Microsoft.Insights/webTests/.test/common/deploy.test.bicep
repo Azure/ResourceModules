@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.insights.webtests-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'iwtmin'
+param serviceShort string = 'iwtcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -52,9 +52,16 @@ module testDeployment '../../deploy.bicep' = {
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     webTestName: 'wt<<namePrefix>>$${serviceShort}001'
+    syntheticMonitorId: '<<namePrefix>>${serviceShort}001'
+    webTestGeolocation: [
+      {
+        Id: 'emea-nl-ams-azr'
+      }
+    ]
     request: {
       RequestUrl: 'https://learn.microsoft.com/en-us/'
       HttpVerb: 'GET'
     }
+    lock: 'CanNotDelete'
   }
 }

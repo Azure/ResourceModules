@@ -64,6 +64,14 @@ param validationRules object = {}
 @description('Optional. An XML configuration specification for a WebTest.')
 param configuration object = {}
 
+@allowed([
+  ''
+  'CanNotDelete'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = ''
+
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
@@ -99,6 +107,15 @@ resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
     ValidationRules: validationRules
     Configuration: configuration
   }
+}
+
+resource webtest_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${webtest.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: webtest
 }
 
 module webtest_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
