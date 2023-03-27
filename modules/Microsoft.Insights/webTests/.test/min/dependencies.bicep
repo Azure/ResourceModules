@@ -23,4 +23,4 @@ resource appInsight 'Microsoft.Insights/components@2020-02-02' = {
 }
 
 @description('The resource ID of the created Log Analytics Workspace.')
-output appInsightId string = appInsight.id
+output appInsightResourceId string = appInsight.id
