@@ -1,7 +1,6 @@
-# Insights WebTests `[Microsoft.Insights/webTests]`
+# Web Tests `[Microsoft.Insights/webTests]`
 
-This module deploys Insights WebTests.
-// TODO: Replace Resource and fill in description
+This module deploys Web Tests.
 
 ## Navigation
 
