@@ -49,7 +49,7 @@ param webTestGeolocation array = [
 @description('Optional. Is the test actively being monitored.')
 param enabled bool = true
 
-@description('Optional. Interval in seconds between test runs for this WebTest. Default value is 300.')
+@description('Optional. Interval in seconds between test runs for this WebTest.')
 param frequency int = 300
 
 @description('Optional. Seconds until this WebTest will timeout and fail.')
