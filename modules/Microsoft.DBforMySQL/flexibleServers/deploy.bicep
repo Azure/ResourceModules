@@ -166,9 +166,6 @@ param version string = '5.7'
 @description('Optional. The databases to create in the server.')
 param databases array = []
 
-@description('Optional. The configurations to create in the server.')
-param configurations array = []
-
 @description('Optional. The firewall rules to create in the MySQL flexible server.')
 param firewallRules array = []
 
@@ -210,8 +207,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -381,19 +378,8 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
   }
 }]
 
-module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
-  name: '${uniqueString(deployment().name, location)}-MySQL-Configurations-${index}'
-  params: {
-    name: configuration.name
-    flexibleServerName: flexibleServer.name
-    source: contains(configuration, 'source') ? configuration.source : ''
-    value: contains(configuration, 'value') ? configuration.value : ''
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}]
-
 resource flexibleServer_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

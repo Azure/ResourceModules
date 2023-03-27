@@ -13,7 +13,7 @@ param diskEncryptionSetName string
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-09-01' = {
     name: virtualNetworkName
     location: location
     properties: {
@@ -50,7 +50,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
     name: keyVaultName
     location: location
     properties: {
@@ -76,7 +76,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
+resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
     name: diskEncryptionSetName
     location: location
     identity: {

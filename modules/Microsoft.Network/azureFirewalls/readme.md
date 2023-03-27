@@ -49,7 +49,7 @@ This module deploys a firewall.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AzureFirewallApplicationRule, AzureFirewallDnsProxy, AzureFirewallNetworkRule]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
 | `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -788,7 +788,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Hub</h3>
+<h3>Example 4: Hubcommon</h3>
 
 <details>
 
@@ -796,10 +796,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 ```bicep
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nafhub'
+  name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nafhub001'
+    name: '<<namePrefix>>nafhubcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallPolicyId: '<firewallPolicyId>'
@@ -831,7 +831,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nafhub001"
+      "value": "<<namePrefix>>nafhubcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -863,7 +863,68 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 5: Min</h3>
+<h3>Example 5: Hubmin</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nafhubmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hubIPAddresses: {
+      publicIPs: {
+        count: 1
+      }
+    }
+    virtualHubId: '<virtualHubId>'
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nafhubmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "hubIPAddresses": {
+      "value": {
+        "publicIPs": {
+          "count": 1
+        }
+      }
+    },
+    "virtualHubId": {
+      "value": "<virtualHubId>"
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 6: Min</h3>
 
 <details>
 

@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     logAnalyticsWorkspaceResourceId: nestedDependencies.outputs.logAnalyticsWorkspaceResourceId
     location: location
-    skuName: 'Premium'
+    skuName: 'Consumption'
     internal: true
     dockerBridgeCidr: '172.16.0.1/28'
     platformReservedCidr: '172.17.17.0/24'
