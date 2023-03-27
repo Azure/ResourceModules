@@ -16,8 +16,8 @@ param location string = resourceGroup().location
 @description('Optional. User defined description for this WebTest.')
 param descriptionWebTest string = ''
 
-@description('Required. Unique ID of this WebTest. This is typically the same value as the Name field.')
-param syntheticMonitorId string
+@description('Optional. Unique ID of this WebTest.')
+param syntheticMonitorId string = name
 
 @description('Optional. The kind of WebTest that this web test watches.')
 @allowed([
