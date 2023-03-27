@@ -548,7 +548,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+      storageAccountResourceId: '<storageAccountResourceId>'
     }
   }
 }
@@ -713,7 +713,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
+        "storageAccountResourceId": "<storageAccountResourceId>"
       }
     }
   }
