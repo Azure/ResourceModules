@@ -7,7 +7,7 @@ param serverKeyName string
 @description('Optional. Key auto rotation opt-in.')
 param autoRotationEnabled bool = false
 
-@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault".')
+@description('Optional. The encryption protector type.')
 @allowed([
   'AzureKeyVault'
   'ServiceManaged'
