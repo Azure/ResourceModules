@@ -81,9 +81,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
     }
   }
 }
-
-//https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/webtests?pivots=deployment-language-bicep#webtestproperties
-
 resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
   name: name
   location: location
