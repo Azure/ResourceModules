@@ -123,7 +123,7 @@ output name string = webtest.name
 @description('The resource ID of the webtest.')
 output resourceId string = webtest.id
 
-@description('The resource group the application insights component was deployed into.')
+@description('The resource group the resource was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
