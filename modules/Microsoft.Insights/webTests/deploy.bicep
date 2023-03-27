@@ -105,7 +105,7 @@ resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
 }
 
 module webtest_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AppInsights-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-WebTests-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
