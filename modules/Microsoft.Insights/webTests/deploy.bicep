@@ -4,8 +4,8 @@ param name string
 @description('Required. User defined name if this WebTest.')
 param webTestName string
 
-@description('Required. Tags of the resource.')
-param tags object
+@description('Optional. Tags of the resource.')
+param tags object = {}
 
 @description('Required. The collection of request properties.')
 param request object
