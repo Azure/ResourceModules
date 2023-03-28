@@ -1,7 +1,7 @@
 @description('Required. Name of the webtest.')
 param name string
 
-@description('Required. User defined name if this WebTest.')
+@description('Required. User defined name of this WebTest.')
 param webTestName string
 
 @description('Optional. Tags of the resource.')
