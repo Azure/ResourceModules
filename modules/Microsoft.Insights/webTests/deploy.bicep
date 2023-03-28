@@ -89,6 +89,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
     }
   }
 }
+
 resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
   name: name
   location: location
