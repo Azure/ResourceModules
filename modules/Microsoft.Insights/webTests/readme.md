@@ -39,6 +39,7 @@ This module deploys Web Tests.
 | `frequency` | int | `300` |  | Interval in seconds between test runs for this WebTest. |
 | `kind` | string | `'standard'` | `[multistep, ping, standard]` | The kind of WebTest that this web test watches. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
+| `locations` | array | `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]` |  | List of where to physically run the tests from to give global coverage for accessibility of your application. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `retryEnabled` | bool | `True` |  | Allow for retries should this WebTest fail. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -46,7 +47,6 @@ This module deploys Web Tests.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeout` | int | `30` |  | Seconds until this WebTest will timeout and fail. |
 | `validationRules` | object | `{object}` |  | The collection of validation rule properties. |
-| `webTestGeolocation` | array | `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]` |  | List of where to physically run the tests from to give global coverage for accessibility of your application. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -276,7 +276,8 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
-      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -313,7 +314,8 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

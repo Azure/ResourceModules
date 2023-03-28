@@ -1,25 +1,25 @@
-@description('Required. Name of the webtest.')
+@sys.description('Required. Name of the webtest.')
 param name string
 
-@description('Required. User defined name if this WebTest.')
+@sys.description('Required. User defined name if this WebTest.')
 param webTestName string
 
-@description('Optional. Tags of the resource.')
+@sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Required. The collection of request properties.')
+@sys.description('Required. The collection of request properties.')
 param request object
 
-@description('Optional. Location for all Resources.')
+@sys.description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. User defined description for this WebTest.')
+@sys.description('Optional. User defined description for this WebTest.')
 param descriptionWebTest string = ''
 
-@description('Optional. Unique ID of this WebTest.')
+@sys.description('Optional. Unique ID of this WebTest.')
 param syntheticMonitorId string = name
 
-@description('Optional. The kind of WebTest that this web test watches.')
+@sys.description('Optional. The kind of WebTest that this web test watches.')
 @allowed([
   'multistep'
   'ping'
@@ -27,8 +27,8 @@ param syntheticMonitorId string = name
 ])
 param kind string = 'standard'
 
-@description('Optional. List of where to physically run the tests from to give global coverage for accessibility of your application.')
-param webTestGeolocation array = [
+@sys.description('Optional. List of where to physically run the tests from to give global coverage for accessibility of your application.')
+param locations array = [
   {
     Id: 'us-il-ch1-azr'
   }
@@ -46,22 +46,22 @@ param webTestGeolocation array = [
   }
 ]
 
-@description('Optional. Is the test actively being monitored.')
+@sys.description('Optional. Is the test actively being monitored.')
 param enabled bool = true
 
-@description('Optional. Interval in seconds between test runs for this WebTest.')
+@sys.description('Optional. Interval in seconds between test runs for this WebTest.')
 param frequency int = 300
 
-@description('Optional. Seconds until this WebTest will timeout and fail.')
+@sys.description('Optional. Seconds until this WebTest will timeout and fail.')
 param timeout int = 30
 
-@description('Optional. Allow for retries should this WebTest fail.')
+@sys.description('Optional. Allow for retries should this WebTest fail.')
 param retryEnabled bool = true
 
-@description('Optional. The collection of validation rule properties.')
+@sys.description('Optional. The collection of validation rule properties.')
 param validationRules object = {}
 
-@description('Optional. An XML configuration specification for a WebTest.')
+@sys.description('Optional. An XML configuration specification for a WebTest.')
 param configuration object = {}
 
 @allowed([
@@ -69,13 +69,13 @@ param configuration object = {}
   'CanNotDelete'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
+@sys.description('Optional. Specify the type of lock.')
 param lock string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -95,7 +95,7 @@ resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
   tags: tags
   properties: {
     Kind: kind
-    Locations: webTestGeolocation
+    Locations: locations
     Name: webTestName
     Description: descriptionWebTest
     SyntheticMonitorId: syntheticMonitorId
