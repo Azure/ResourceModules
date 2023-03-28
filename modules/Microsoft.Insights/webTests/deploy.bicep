@@ -1,4 +1,4 @@
-@description('Required. Name of the webtest.')
+@description('Required. Name of the WebTest.')
 param name string
 
 @description('Required. User defined name of this WebTest.')
