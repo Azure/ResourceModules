@@ -1,7 +1,7 @@
-@sys.description('Required. Name of the webtest.')
+@description('Required. Name of the webtest.')
 param name string
 
-@sys.description('Required. User defined name if this WebTest.')
+@description('Required. User defined name if this WebTest.')
 param webTestName string
 
 @sys.description('Optional. Tags of the resource.')
@@ -89,6 +89,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
     }
   }
 }
+
 resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
   name: name
   location: location
