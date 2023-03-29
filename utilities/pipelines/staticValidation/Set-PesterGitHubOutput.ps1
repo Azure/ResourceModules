@@ -76,7 +76,9 @@ function Set-PesterGitHubOutput {
                 ''
             )
 
-            ## List of failed tests
+            ######################
+            ##   Failed Tests   ##
+            ######################
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
@@ -90,70 +92,84 @@ function Set-PesterGitHubOutput {
             foreach ($content in $failedTests ) {
                 # Shorten the target name for deployment resoure type
                 if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
+                    # TODO: Make less depending on absolute path (same below)
                     $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
                 }
 
-                # Build hyperlinks to Pester documentation for the tests
-                $TemplatesBaseUrl = 'https://azure.github.io/Pester.Tests.Azure/en/tests'
-                try {
-                    $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.TestName
-                    $null = Invoke-WebRequest -Uri $PesterReferenceUrl
-                    $resourceLink = '[{0}]({1})' -f $content.TestName, $PesterReferenceUrl
-                } catch {
-                    Write-Warning ('Unable to build url for rule [{0}]' -f $content.TestName)
-                    $resourceLink = $content.TestName
-                }
-                $fileContent += ('| {0} | `{1}` | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
+                # TODO: Add formatted failed tests
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '</details>',
                 ''
             )
-        }
 
-        if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
-            # List of passed tests
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '<details>',
-                '<summary>List of Passed Tests</summary>',
-                '',
-                '## Passed Tests',
-                '',
-                '| TestName | TargetName |  Synopsis |',
-                '| :-- | :-- |  :-- |'
-            )
-            foreach ($content in $passedTests ) {
-                # Shorten the target name for deployment resoure type
-                if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
-                    $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
+            ######################
+            ##   Passed Tests   ##
+            ######################
+            if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
+                # List of passed tests
+                $fileContent += [System.Collections.ArrayList]@(
+                    '',
+                    '<details>',
+                    '<summary>List of Passed Tests</summary>',
+                    '',
+                    '## Passed Tests',
+                    '',
+                    '| TestName | TargetName |  Synopsis |',
+                    '| :-- | :-- |  :-- |'
+                )
+                foreach ($content in $passedTests ) {
+
+                    if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
+                        # TODO: Make less depending on absolute path (same below)
+                        $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
+                    }
+
+                    # TODO: Add formatted failed tests
                 }
-
-                # Build hyperlinks to Pester documentation for the tests
-                $TemplatesBaseUrl = 'https://azure.github.io/Pester.Tests.Azure/en/tests'
-                try {
-                    $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.TestName
-                    $null = Invoke-WebRequest -Uri $PesterReferenceUrl
-                    $resourceLink = '[{0}]({1})' -f $content.TestName, $PesterReferenceUrl
-                } catch {
-                    Write-Warning 'Unable to build url for rule [{0}]' -f $content.TestName
-                    $resourceLink = $content.TestName
-                }
-                $fileContent += ('| {0} | `{1}` | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
-
+                $fileContent += [System.Collections.ArrayList]@(
+                    '',
+                    '</details>',
+                    ''
+                )
             }
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '</details>',
-                ''
-            )
-        }
 
-        if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
-            $null = New-Item -Path $OutputFilePath -Force -Value $fileContent
+            #######################
+            ##   Skipped Tests   ##
+            #######################
+            if ($skippedTests.Count -gt 0) {
+                # List of passed tests
+                $fileContent += [System.Collections.ArrayList]@(
+                    '',
+                    '<details>',
+                    '<summary>List of skipped Tests</summary>',
+                    '',
+                    '## Passed Tests',
+                    '',
+                    '| TestName | TargetName |  Synopsis |',
+                    '| :-- | :-- |  :-- |'
+                )
+                foreach ($content in $skippedTests ) {
+
+                    if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
+                        # TODO: Make less depending on absolute path (same below)
+                        $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
+                    }
+
+                    # TODO: Add formatted skipped tests
+                }
+                $fileContent += [System.Collections.ArrayList]@(
+                    '',
+                    '</details>',
+                    ''
+                )
+            }
+
+            if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
+                $null = New-Item -Path $OutputFilePath -Force -Value $fileContent
+            }
+            Write-Verbose "Create results file [$outputFilePath]"
         }
-        Write-Verbose "Create results file [$outputFilePath]"
     }
-}
-Set-PesterGitHubOutput -InputFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\testResults.xml' -Verbose -WhatIf
+    Set-PesterGitHubOutput -InputFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\testResults.xml' -Verbose -WhatIf
