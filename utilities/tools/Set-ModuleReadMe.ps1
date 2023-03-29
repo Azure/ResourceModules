@@ -1482,7 +1482,12 @@ function Set-ModuleReadMe {
     $splitHyphens = $moduleRelative.split('-')
     $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
     $splitHyphens = $splitHyphens -join ''
-    $fullModuleIdentifier = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+    # If willing to support both naming
+    if ($splitHyphens -match '^Microsoft\.(.)*') {
+        $fullModuleIdentifier = '{0}' -f $splitHyphens.Replace('-', '')
+    } else {
+        $fullModuleIdentifier = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+    }
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
