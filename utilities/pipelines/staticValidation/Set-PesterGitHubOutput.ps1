@@ -172,4 +172,5 @@ function Set-PesterGitHubOutput {
             Write-Verbose "Create results file [$outputFilePath]"
         }
     }
-    Set-PesterGitHubOutput -InputFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\testResults.xml' -Verbose -WhatIf
+}
+Set-PesterGitHubOutput -InputFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\testResults.xml' -Verbose -WhatIf
