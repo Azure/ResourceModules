@@ -17,12 +17,12 @@ Optional. Whether to add the detail of passed Pester to the output markdown file
 .EXAMPLE
 Set-PesterGitHubOutput -inputFilePath 'C:/testResults.xml'
 
-Generate a markdown file 'output.md' in the current folder, out of the 'C:/testResults.xml' input, listing all passed and failed rules.
+Generate a markdown file 'output.md' in the current folder, out of the 'C:/testResults.xml' input, listing all passed and failed tests.
 
 .EXAMPLE
 Set-PesterGitHubOutput -inputFilePath 'C:/testResults.xml' -outputFilePath 'C:/Pester-output.md' -SkipPassedTestsReport
 
-Generate a markdown file 'C:/Pester-output.md', out of the 'C:/testResults.xml' input, listing only the failed rules.
+Generate a markdown file 'C:/Pester-output.md', out of the 'C:/testResults.xml' input, listing only the failed tests.
 #>
 function Set-PesterGitHubOutput {
     [CmdletBinding(SupportsShouldProcess)]
@@ -46,7 +46,7 @@ function Set-PesterGitHubOutput {
         return ''
     } else {
 
-        $results = Get-Content -Path $InputFilePath -Raw | Select-Xml -XPath 'testsuites'
+        $results = (Get-Content -Path $InputFilePath -Raw | Select-Xml -XPath 'testsuites').Node.testsuite.testcase
 
         $passedRules += $results | Where-Object { $_.status -EQ 'Passed' }
         $skippedRules += $results | Where-Object { $_.status -EQ 'Skipped' }
@@ -64,25 +64,25 @@ function Set-PesterGitHubOutput {
 
         if ($failedRules.Count -eq 0) {
             # No failure content
-            $fileContent += ('## :rocket: All [{0}] rules passed, YAY! :rocket:' -f $results.Count)
+            $fileContent += ('## :rocket: All [{0}] tests passed, YAY! :rocket:' -f $passedRules.Count)
         } else {
             # Failure content
 
             ## Header table
             $fileContent += [System.Collections.ArrayList]@(
-                '| Total No. of Processed Rules| Passed Rules :white_check_mark: | Failed Rules :x: |',
+                '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: |',
                 '| :-- | :-- | :-- |'
             ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count),
                 ''
             )
 
-            ## List of failed rules
+            ## List of failed tests
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
-                '<summary>List of Failed Rules</summary>',
+                '<summary>List of Failed Tests</summary>',
                 '',
-                '## Failed Rules',
+                '## Failed Tests',
                 '',
                 '| RuleName | TargetName |  Synopsis |',
                 '| :-- | :-- | :-- |'
@@ -93,8 +93,8 @@ function Set-PesterGitHubOutput {
                     $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
                 }
 
-                # Build hyperlinks to Pester documentation for the rules
-                $TemplatesBaseUrl = 'https://azure.github.io/Pester.Rules.Azure/en/rules'
+                # Build hyperlinks to Pester documentation for the tests
+                $TemplatesBaseUrl = 'https://azure.github.io/Pester.Tests.Azure/en/tests'
                 try {
                     $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                     $null = Invoke-WebRequest -Uri $PesterReferenceUrl
@@ -113,13 +113,13 @@ function Set-PesterGitHubOutput {
         }
 
         if (($passedRules.Count -gt 0) -and -not $SkipPassedTestsReport) {
-            # List of passed rules
+            # List of passed tests
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
-                '<summary>List of Passed Rules</summary>',
+                '<summary>List of Passed Tests</summary>',
                 '',
-                '## Passed Rules',
+                '## Passed Tests',
                 '',
                 '| RuleName | TargetName |  Synopsis |',
                 '| :-- | :-- |  :-- |'
@@ -130,8 +130,8 @@ function Set-PesterGitHubOutput {
                     $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
                 }
 
-                # Build hyperlinks to Pester documentation for the rules
-                $TemplatesBaseUrl = 'https://azure.github.io/Pester.Rules.Azure/en/rules'
+                # Build hyperlinks to Pester documentation for the tests
+                $TemplatesBaseUrl = 'https://azure.github.io/Pester.Tests.Azure/en/tests'
                 try {
                     $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
                     $null = Invoke-WebRequest -Uri $PesterReferenceUrl
