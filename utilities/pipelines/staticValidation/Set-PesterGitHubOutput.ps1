@@ -48,9 +48,9 @@ function Set-PesterGitHubOutput {
 
         $results = (Get-Content -Path $InputFilePath -Raw | Select-Xml -XPath 'testsuites').Node.testsuite.testcase
 
-        $passedRules += $results | Where-Object { $_.status -EQ 'Passed' }
-        $skippedRules += $results | Where-Object { $_.status -EQ 'Skipped' }
-        $failedRules += $results | Where-Object { $_.status -EQ 'Failed' }
+        $passedTests += $results | Where-Object { $_.status -EQ 'Passed' }
+        $skippedTests += $results | Where-Object { $_.status -EQ 'Skipped' }
+        $failedTests += $results | Where-Object { $_.status -EQ 'Failed' }
 
         ######################
         # Set output content #
@@ -62,9 +62,9 @@ function Set-PesterGitHubOutput {
             ''
         )
 
-        if ($failedRules.Count -eq 0) {
+        if ($failedTests.Count -eq 0) {
             # No failure content
-            $fileContent += ('## :rocket: All [{0}] tests passed, YAY! :rocket:' -f $passedRules.Count)
+            $fileContent += ('## :rocket: All [{0}] tests passed, YAY! :rocket:' -f $passedTests.Count)
         } else {
             # Failure content
 
@@ -72,7 +72,7 @@ function Set-PesterGitHubOutput {
             $fileContent += [System.Collections.ArrayList]@(
                 '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: |',
                 '| :-- | :-- | :-- |'
-            ('| {0} | {1} | {2} |' -f $results.Count, $passedRules.Count , $failedRules.Count),
+            ('| {0} | {1} | {2} |' -f $results.Count, $passedTests.Count , $failedTests.Count),
                 ''
             )
 
@@ -87,7 +87,7 @@ function Set-PesterGitHubOutput {
                 '| RuleName | TargetName |  Synopsis |',
                 '| :-- | :-- | :-- |'
             )
-            foreach ($content in $failedRules ) {
+            foreach ($content in $failedTests ) {
                 # Shorten the target name for deployment resoure type
                 if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
                     $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
@@ -112,7 +112,7 @@ function Set-PesterGitHubOutput {
             )
         }
 
-        if (($passedRules.Count -gt 0) -and -not $SkipPassedTestsReport) {
+        if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
             # List of passed tests
             $fileContent += [System.Collections.ArrayList]@(
                 '',
@@ -124,7 +124,7 @@ function Set-PesterGitHubOutput {
                 '| RuleName | TargetName |  Synopsis |',
                 '| :-- | :-- |  :-- |'
             )
-            foreach ($content in $passedRules ) {
+            foreach ($content in $passedTests ) {
                 # Shorten the target name for deployment resoure type
                 if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
                     $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
