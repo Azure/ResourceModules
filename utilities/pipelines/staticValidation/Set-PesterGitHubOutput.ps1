@@ -70,9 +70,9 @@ function Set-PesterGitHubOutput {
 
             ## Header table
             $fileContent += [System.Collections.ArrayList]@(
-                '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: |',
-                '| :-- | :-- | :-- |'
-            ('| {0} | {1} | {2} |' -f $results.Count, $passedTests.Count , $failedTests.Count),
+                '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: | Skipped Tests :x: |',
+                '| :-- | :-- | :-- | :-- |'
+            ('| {0} | {1} | {2} |' -f $results.Count, $passedTests.Count , $failedTests.Count, $skippedTests.Count),
                 ''
             )
 
@@ -84,7 +84,7 @@ function Set-PesterGitHubOutput {
                 '',
                 '## Failed Tests',
                 '',
-                '| RuleName | TargetName |  Synopsis |',
+                '| TestName | TargetName |  Synopsis |',
                 '| :-- | :-- | :-- |'
             )
             foreach ($content in $failedTests ) {
@@ -96,12 +96,12 @@ function Set-PesterGitHubOutput {
                 # Build hyperlinks to Pester documentation for the tests
                 $TemplatesBaseUrl = 'https://azure.github.io/Pester.Tests.Azure/en/tests'
                 try {
-                    $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
+                    $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.TestName
                     $null = Invoke-WebRequest -Uri $PesterReferenceUrl
-                    $resourceLink = '[{0}]({1})' -f $content.RuleName, $PesterReferenceUrl
+                    $resourceLink = '[{0}]({1})' -f $content.TestName, $PesterReferenceUrl
                 } catch {
-                    Write-Warning ('Unable to build url for rule [{0}]' -f $content.RuleName)
-                    $resourceLink = $content.RuleName
+                    Write-Warning ('Unable to build url for rule [{0}]' -f $content.TestName)
+                    $resourceLink = $content.TestName
                 }
                 $fileContent += ('| {0} | `{1}` | {2} | ' -f $resourceLink, $content.TargetName, $content.Synopsis)
             }
@@ -121,7 +121,7 @@ function Set-PesterGitHubOutput {
                 '',
                 '## Passed Tests',
                 '',
-                '| RuleName | TargetName |  Synopsis |',
+                '| TestName | TargetName |  Synopsis |',
                 '| :-- | :-- |  :-- |'
             )
             foreach ($content in $passedTests ) {
@@ -133,12 +133,12 @@ function Set-PesterGitHubOutput {
                 # Build hyperlinks to Pester documentation for the tests
                 $TemplatesBaseUrl = 'https://azure.github.io/Pester.Tests.Azure/en/tests'
                 try {
-                    $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.RuleName
+                    $PesterReferenceUrl = '{0}/{1}' -f $TemplatesBaseUrl, $content.TestName
                     $null = Invoke-WebRequest -Uri $PesterReferenceUrl
-                    $resourceLink = '[{0}]({1})' -f $content.RuleName, $PesterReferenceUrl
+                    $resourceLink = '[{0}]({1})' -f $content.TestName, $PesterReferenceUrl
                 } catch {
-                    Write-Warning 'Unable to build url for rule [{0}]' -f $content.RuleName
-                    $resourceLink = $content.RuleName
+                    Write-Warning 'Unable to build url for rule [{0}]' -f $content.TestName
+                    $resourceLink = $content.TestName
                 }
                 $fileContent += ('| {0} | `{1}` | {2} |  ' -f $resourceLink, $content.TargetName, $content.Synopsis)
 
