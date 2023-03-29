@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.KeyVault/vaults/*'
+      - '/modules/Microsoft.Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.keyvault.vaults.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.KeyVault/vaults/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

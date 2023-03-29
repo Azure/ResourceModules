@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Storage/storageAccounts/*'
+      - '/modules/Microsoft.Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.storage.storageaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Storage/storageAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
