@@ -428,7 +428,7 @@ module service_products 'products/deploy.bicep' = [for (product, index) in produ
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
-    apis_resource
+    service_apis
   ]
 }]
 
