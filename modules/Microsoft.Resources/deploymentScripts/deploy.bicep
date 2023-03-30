@@ -92,8 +92,6 @@ var storageAccountSettings = !empty(storageAccountResourceId) ? {
   storageAccountName: last(split(storageAccountResourceId, '/'))
 } : {}
 
-var environmentVariablesList = !empty(environmentVariables) ? environmentVariables.secureList : []
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -118,7 +116,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     containerSettings: !empty(containerGroupName) ? containerSettings : null
     storageAccountSettings: !empty(storageAccountResourceId) ? storageAccountSettings : null
     arguments: arguments
-    environmentVariables: !empty(environmentVariablesList) ? environmentVariablesList : null
+    environmentVariables: !empty(environmentVariables) ? environmentVariables.secureList : []
     scriptContent: !empty(scriptContent) ? scriptContent : null
     primaryScriptUri: !empty(primaryScriptUri) ? primaryScriptUri : null
     supportingScriptUris: !empty(supportingScriptUris) ? supportingScriptUris : null
