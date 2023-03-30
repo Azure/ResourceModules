@@ -46,7 +46,7 @@ function Set-PesterGitHubOutput {
         return ''
     } else {
 
-        $results = (Get-Content -Path $InputFilePath -Raw | Select-Xml -XPath 'testsuites').Node.testsuite.testcase
+        $results = ([xml](Get-Content -Path $InputFilePath)).testsuites.testsuite.testcase
 
         $passedTests += $results | Where-Object { $_.status -EQ 'Passed' }
         $skippedTests += $results | Where-Object { $_.status -EQ 'Skipped' }
@@ -89,14 +89,11 @@ function Set-PesterGitHubOutput {
                 '| TestName | TargetName |  Synopsis |',
                 '| :-- | :-- | :-- |'
             )
-            foreach ($content in $failedTests ) {
-                # Shorten the target name for deployment resoure type
-                if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
-                    # TODO: Make less depending on absolute path (same below)
-                    $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
-                }
+            foreach ($failedTest in $failedTests ) {
 
                 # TODO: Add formatted failed tests
+                $testName = $failedTest.Name
+                $errorMessage = $fAiledTest.failure.message
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
