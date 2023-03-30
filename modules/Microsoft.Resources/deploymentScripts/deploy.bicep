@@ -151,4 +151,4 @@ output name string = deploymentScript.name
 output location string = deploymentScript.location
 
 @description('The output of the deployment script.')
-output outputs object = deploymentScript.properties.outputs
+output outputs object = contains(deploymentScript.properties, 'outputs') ? deploymentScript.properties.outputs : {}
