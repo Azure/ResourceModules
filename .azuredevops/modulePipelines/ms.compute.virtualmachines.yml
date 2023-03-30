@@ -27,9 +27,12 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Compute/virtualMachines/*'
+      - '/modules/Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/*'
+      - '/modules/Microsoft.Network/publicIPAddresses/*'
+      - '/modules/Microsoft.Network/networkInterfaces/*'
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Compute/virtualMachines/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

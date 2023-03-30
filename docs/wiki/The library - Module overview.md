@@ -15,7 +15,7 @@ This section provides an overview of the library's feature set.
 | - | - | - | - | - | - | - | - | - | - |
 | 1 | MS.AAD<p>DomainServices | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 234 |
 | 2 | MS.AnalysisServices<p>servers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 153 |
-| 3 | MS.ApiManagement<p>service | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:11, L2:3] | 428 |
+| 3 | MS.ApiManagement<p>service | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:11, L2:3] | 429 |
 | 4 | MS.App<p>containerApps | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 173 |
 | 5 | MS.App<p>managedEnvironments | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 132 |
 | 6 | MS.AppConfiguration<p>configurationStores | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:1] | 218 |
@@ -137,7 +137,7 @@ This section provides an overview of the library's feature set.
 | 122 | MS.Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 123 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3, L2:2] | 380 |
 | 124 | MS.Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 98 | 97 | 107 | 52 | 23 | 2 | 189 | 22022 |
+| Sum | | 98 | 97 | 107 | 52 | 23 | 2 | 189 | 22023 |
 
 ## Legend
 

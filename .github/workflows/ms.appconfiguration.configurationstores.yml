@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.AppConfiguration/configurationStores/**'
+      - 'modules/Microsoft.Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.appconfiguration.configurationstores.yml'
-      - 'modules/Microsoft.AppConfiguration/configurationStores/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'

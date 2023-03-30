@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Compute/diskEncryptionSets/*'
+      - '/modules/Microsoft.KeyVault/vaults/accessPolicies/*'
       - '/.azuredevops/modulePipelines/ms.compute.diskencryptionsets.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Compute/diskEncryptionSets/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
