@@ -36,7 +36,7 @@ This module deploys a deployment script.
 | `cleanupPreference` | string | `'Always'` | `[Always, OnExpiration, OnSuccess]` | The clean up preference when the script execution gets in a terminal state. Specify the preference on when to delete the deployment script resources. The default value is Always, which means the deployment script resources are deleted despite the terminal state (Succeeded, Failed, canceled). |
 | `containerGroupName` | string | `''` |  | Container group name, if not specified then the name will get auto-generated. Not specifying a 'containerGroupName' indicates the system to generate a unique name which might end up flagging an Azure Policy as non-compliant. Use 'containerGroupName' when you have an Azure Policy that expects a specific naming convention or when you want to fully control the name. 'containerGroupName' property must be between 1 and 63 characters long, must contain only lowercase letters, numbers, and dashes and it cannot start or end with a dash and consecutive dashes are not allowed. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `environmentVariables` | array | `[]` |  | The environment variables to pass over to the script. Must have a 'name' and a 'value' or a 'secretValue' property. |
+| `environmentVariables` | secureObject | `{object}` |  | The environment variables to pass over to the script. The list is passed as an object with a key name "secureList" and the value is the list of environment variables (array). The list must have a 'name' and a 'value' or a 'secretValue' property for each object. |
 | `kind` | string | `'AzurePowerShell'` | `[AzureCLI, AzurePowerShell]` | Type of the script. AzurePowerShell, AzureCLI. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -137,6 +137,7 @@ userAssignedIdentities: {
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployment script. |
+| `outputs` | object | The output of the deployment script. |
 | `resourceGroupName` | string | The resource group the deployment script was deployed into. |
 | `resourceId` | string | The resource ID of the deployment script. |
 
@@ -171,6 +172,18 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    environmentVariables: {
+      secureList: [
+        {
+          name: 'var1'
+          value: 'test'
+        }
+        {
+          name: 'var2'
+          secureValue: '<secureValue>'
+        }
+      ]
+    }
     kind: 'AzureCLI'
     retentionInterval: 'P1D'
     runOnce: false
@@ -213,6 +226,20 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "environmentVariables": {
+      "value": {
+        "secureList": [
+          {
+            "name": "var1",
+            "value": "test"
+          },
+          {
+            "name": "var2",
+            "secureValue": "<secureValue>"
+          }
+        ]
+      }
     },
     "kind": {
       "value": "AzureCLI"

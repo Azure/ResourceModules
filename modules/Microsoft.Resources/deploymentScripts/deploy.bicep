@@ -26,8 +26,9 @@ param scriptContent string = ''
 @description('Optional. Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead.')
 param primaryScriptUri string = ''
 
-@description('Optional. The environment variables to pass over to the script. Must have a \'name\' and a \'value\' or a \'secretValue\' property.')
-param environmentVariables array = []
+@description('Optional. The environment variables to pass over to the script. The list is passed as an object with a key name "secureList" and the value is the list of environment variables (array). The list must have a \'name\' and a \'value\' or a \'secretValue\' property for each object.')
+@secure()
+param environmentVariables object = {}
 
 @description('Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent).')
 param supportingScriptUris array = []
@@ -91,6 +92,8 @@ var storageAccountSettings = !empty(storageAccountResourceId) ? {
   storageAccountName: last(split(storageAccountResourceId, '/'))
 } : {}
 
+var environmentVariablesList = !empty(environmentVariables) ? environmentVariables.secureList : []
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -115,9 +118,9 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     containerSettings: !empty(containerGroupName) ? containerSettings : null
     storageAccountSettings: !empty(storageAccountResourceId) ? storageAccountSettings : null
     arguments: arguments
-    environmentVariables: !empty(environmentVariables) ? environmentVariables : null
+    environmentVariables: !empty(environmentVariablesList) ? environmentVariablesList : null
     scriptContent: !empty(scriptContent) ? scriptContent : null
-    primaryScriptUri: !empty(primaryScriptUri) ? primaryScriptUri: null
+    primaryScriptUri: !empty(primaryScriptUri) ? primaryScriptUri : null
     supportingScriptUris: !empty(supportingScriptUris) ? supportingScriptUris : null
     cleanupPreference: cleanupPreference
     forceUpdateTag: runOnce ? resourceGroup().name : baseTime
@@ -146,3 +149,6 @@ output name string = deploymentScript.name
 
 @description('The location the resource was deployed into.')
 output location string = deploymentScript.location
+
+@description('The output of the deployment script.')
+output outputs object = deploymentScript.properties.outputs

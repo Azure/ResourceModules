@@ -62,5 +62,17 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    environmentVariables: {
+      secureList: [
+        {
+          name: 'var1'
+          value: 'test'
+        }
+        {
+          name: 'var2'
+          secureValue: guid(deployment().name)
+        }
+      ]
+    }
   }
 }
