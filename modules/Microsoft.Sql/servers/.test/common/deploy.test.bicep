@@ -116,6 +116,10 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/<<namePrefix>>-${serviceShort}/elasticPools/<<namePrefix>>-${serviceShort}-ep-001'
+        encryptionProtectorObj: {
+          serverKeyType: 'AzureKeyVault'
+          serverKeyName: '${nestedDependencies.outputs.keyVaultName}_${nestedDependencies.outputs.keyVaultKeyName}_${last(split(nestedDependencies.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+        }
         backupShortTermRetentionPolicy: {
           retentionDays: 14
         }
