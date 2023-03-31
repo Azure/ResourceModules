@@ -120,7 +120,7 @@ function Set-PesterGitHubOutput {
 
                 $intermediateNameElements = $passedTest.Path
                 $intermediateNameElements[-1] = '**{0}**' -f $passedTest.ExpandedName
-                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim
+                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
 
                 $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
                 $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
