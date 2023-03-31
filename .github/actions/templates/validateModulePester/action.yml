@@ -160,6 +160,10 @@ runs:
           outputFilePath        = 'Pester-output.md'
           SkipPassedTestsReport = $false
         }
+
+        Write-Verbose 'Invoke task with' -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json -Depth 1 | Out-String) -Verbose
+
         Set-PesterGitHubOutput @functionInput
 
     - name: 'Output to GitHub job summaries'
