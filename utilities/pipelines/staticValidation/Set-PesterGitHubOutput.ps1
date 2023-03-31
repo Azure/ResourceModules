@@ -28,7 +28,7 @@ function Set-PesterGitHubOutput {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [String] $InputFilePath,
+        [PSCustomObject] $PesterTestResults,
 
         [Parameter(Mandatory = $false)]
         [string] $OutputFilePath = './output.md',
@@ -41,133 +41,131 @@ function Set-PesterGitHubOutput {
     # Import xml output and filter by results #
     ###########################################
 
-    if (-not (Test-Path $inputFilePath)) {
-        Write-Warning ('Input File [{0}] not found' -f $inputFilePath)
-        return ''
+    $passedTests += $PesterTestResults.Passed
+    $failedTests += $PesterTestResults.Failed
+    $skippedTests += $PesterTestResults.Skipped
+
+    ######################
+    # Set output content #
+    ######################
+
+    # Header
+    $fileContent = [System.Collections.ArrayList]@(
+        '# Pester validation summary ',
+        ''
+    )
+
+    if ($failedTests.Count -eq 0) {
+        # No failure content
+        $fileContent += ('## :rocket: All [{0}] tests passed, YAY! :rocket:' -f $passedTests.Count)
     } else {
+        # Failure content
 
-        $results = ([xml](Get-Content -Path $InputFilePath)).testsuites.testsuite.testcase
-
-        $passedTests += $results | Where-Object { $_.status -EQ 'Passed' }
-        $skippedTests += $results | Where-Object { $_.status -EQ 'Skipped' }
-        $failedTests += $results | Where-Object { $_.status -EQ 'Failed' }
-
-        ######################
-        # Set output content #
-        ######################
-
-        # Header
-        $fileContent = [System.Collections.ArrayList]@(
-            '# Pester validation summary ',
+        ## Header table
+        $fileContent += [System.Collections.ArrayList]@(
+            '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: | Skipped Tests :paperclip: |',
+            '| :-- | :-- | :-- | :-- |'
+            ('| {0} | {1} | {2} |' -f $PesterTestResults.TotalCount, $passedTests.count , $failedTests.count, $skippedTests.count),
             ''
         )
 
-        if ($failedTests.Count -eq 0) {
-            # No failure content
-            $fileContent += ('## :rocket: All [{0}] tests passed, YAY! :rocket:' -f $passedTests.Count)
-        } else {
-            # Failure content
+        ######################
+        ##   Failed Tests   ##
+        ######################
+        $fileContent += [System.Collections.ArrayList]@(
+            '',
+            '<details>',
+            '<summary>List of Failed Tests</summary>',
+            '',
+            '## Failed Tests',
+            '',
+            '| TestName | TargetName |  Source |',
+            '| :-- | :-- | :-- |'
+        )
+        foreach ($failedTest in $failedTests ) {
 
-            ## Header table
-            $fileContent += [System.Collections.ArrayList]@(
-                '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: | Skipped Tests :x: |',
-                '| :-- | :-- | :-- | :-- |'
-            ('| {0} | {1} | {2} |' -f $results.Count, $passedTests.Count , $failedTests.Count, $skippedTests.Count),
-                ''
-            )
+            $intermediateNameElements = $failedTest.Path
+            $intermediateNameElements[-1] = $failedTest.ExpandedName
+            $testName = $intermediateNameElements -join '</p>' | Out-String
 
-            ######################
-            ##   Failed Tests   ##
-            ######################
+            $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
+            $errorTestFile = Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf
+            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message
+
+
+            $fileContent += '| {0} | {1} | {2}:{3} |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
+        }
+        $fileContent += [System.Collections.ArrayList]@(
+            '',
+            '</details>',
+            ''
+        )
+
+        ######################
+        ##   Passed Tests   ##
+        ######################
+        if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
+            # List of passed tests
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
-                '<summary>List of Failed Tests</summary>',
+                '<summary>List of Passed Tests</summary>',
                 '',
-                '## Failed Tests',
+                '## Passed Tests',
                 '',
                 '| TestName | TargetName |  Synopsis |',
-                '| :-- | :-- | :-- |'
+                '| :-- | :-- |  :-- |'
             )
-            foreach ($failedTest in $failedTests ) {
+            foreach ($content in $passedTests ) {
+
+                if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
+                    # TODO: Make less depending on absolute path (same below)
+                    $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
+                }
 
                 # TODO: Add formatted failed tests
-                $testName = $failedTest.Name
-                $errorMessage = $fAiledTest.failure.message
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '</details>',
                 ''
             )
-
-            ######################
-            ##   Passed Tests   ##
-            ######################
-            if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
-                # List of passed tests
-                $fileContent += [System.Collections.ArrayList]@(
-                    '',
-                    '<details>',
-                    '<summary>List of Passed Tests</summary>',
-                    '',
-                    '## Passed Tests',
-                    '',
-                    '| TestName | TargetName |  Synopsis |',
-                    '| :-- | :-- |  :-- |'
-                )
-                foreach ($content in $passedTests ) {
-
-                    if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
-                        # TODO: Make less depending on absolute path (same below)
-                        $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
-                    }
-
-                    # TODO: Add formatted failed tests
-                }
-                $fileContent += [System.Collections.ArrayList]@(
-                    '',
-                    '</details>',
-                    ''
-                )
-            }
-
-            #######################
-            ##   Skipped Tests   ##
-            #######################
-            if ($skippedTests.Count -gt 0) {
-                # List of passed tests
-                $fileContent += [System.Collections.ArrayList]@(
-                    '',
-                    '<details>',
-                    '<summary>List of skipped Tests</summary>',
-                    '',
-                    '## Passed Tests',
-                    '',
-                    '| TestName | TargetName |  Synopsis |',
-                    '| :-- | :-- |  :-- |'
-                )
-                foreach ($content in $skippedTests ) {
-
-                    if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
-                        # TODO: Make less depending on absolute path (same below)
-                        $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
-                    }
-
-                    # TODO: Add formatted skipped tests
-                }
-                $fileContent += [System.Collections.ArrayList]@(
-                    '',
-                    '</details>',
-                    ''
-                )
-            }
-
-            if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
-                $null = New-Item -Path $OutputFilePath -Force -Value $fileContent
-            }
-            Write-Verbose "Create results file [$outputFilePath]"
         }
+
+        #######################
+        ##   Skipped Tests   ##
+        #######################
+        if ($skippedTests.Count -gt 0) {
+            # List of passed tests
+            $fileContent += [System.Collections.ArrayList]@(
+                '',
+                '<details>',
+                '<summary>List of skipped Tests</summary>',
+                '',
+                '## Passed Tests',
+                '',
+                '| TestName | TargetName |  Synopsis |',
+                '| :-- | :-- |  :-- |'
+            )
+            foreach ($content in $skippedTests ) {
+
+                if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
+                    # TODO: Make less depending on absolute path (same below)
+                    $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
+                }
+
+                # TODO: Add formatted skipped tests
+            }
+            $fileContent += [System.Collections.ArrayList]@(
+                '',
+                '</details>',
+                ''
+            )
+        }
+
+        if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
+            $null = New-Item -Path $OutputFilePath -Force -Value $fileContent
+        }
+        Write-Verbose "Create results file [$outputFilePath]"
     }
 }
-Set-PesterGitHubOutput -InputFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\testResults.xml' -Verbose -WhatIf

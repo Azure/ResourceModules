@@ -72,6 +72,9 @@ runs:
         # Grouping task logs
         Write-Output '::group::Run Pester tests'
 
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'staticValidation' 'Set-PesterGitHubOutput.ps1')
+
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
 
@@ -132,9 +135,10 @@ runs:
         Write-Verbose 'Invoke test with' -Verbose
         Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
 
-        Invoke-Pester -Configuration @{
+        $testResults = Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
+            PassThru  = $true
           }
           TestResult = @{
             TestSuiteName = 'Module Tests'
@@ -147,8 +151,31 @@ runs:
           }
         }
 
-    - name: 'Publish Test Results'
-      uses: EnricoMi/publish-unit-test-result-action@v2
+        # ----------------------------------------- #
+        # Greate formatted Pester Test Results File #
+        # ----------------------------------------- #
+
+        $functionInput = @{
+          PesterTestResults     = $testResults
+          outputFilePath        = 'Pester-output.md'
+          SkipPassedTestsReport = $false
+        }
+        Set-PesterGitHubOutput @functionInput
+
+    - name: 'Output to GitHub job summaries'
       if: always()
-      with:
-        junit_files: '${{ steps.pester_run_step.outputs.outputPath }}'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output '::group::Output to GitHub job summaries'
+
+        $mdPesterOutputFilePath = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
+
+        if (-not (Test-Path $mdPesterOutputFilePath)) {
+          Write-Warning ('Input file [{0}] not found. Please check if the previous task threw an error and try again.' -f $mdPesterOutputFilePath)
+        } else {
+          Get-Content $mdPesterOutputFilePath >> $env:GITHUB_STEP_SUMMARY
+          Write-Verbose ('Successfully printed out file [{0}] to Job Summaries' -f $mdPesterOutputFilePath) -Verbose
+        }
+
+        Write-Output '::endgroup::'
