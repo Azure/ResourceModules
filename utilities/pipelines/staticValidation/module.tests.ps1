@@ -549,7 +549,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             }
 
             $mdFormattedDiff = ($diffReponse -join '</br>') -replace '\|', '\|'
-            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the `Set-ModuleReadMe` function should be identical and should not have diff </p><pre lang="x-powershell">{0}</pre>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
+            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the `Set-ModuleReadMe` function should be identical and should not have diff </p><pre lang="PowerShell">{0}</pre>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
         }
     }
 }
@@ -838,7 +838,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources` ' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources`' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,

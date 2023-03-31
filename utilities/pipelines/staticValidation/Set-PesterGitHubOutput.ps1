@@ -86,14 +86,14 @@ function Set-PesterGitHubOutput {
 
             $intermediateNameElements = $failedTest.Path
             $intermediateNameElements[-1] = '**{0}**' -f $failedTest.ExpandedName
-            $testName = $intermediateNameElements -join ' / ' | Out-String
+            $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
 
             $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
-            $errorTestFile = Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf
-            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message
+            $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
+            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
 
 
-            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName.Trim(), $errorMessage.Trim(), $errorTestFile.Trim(), $errorTestLine.Trim()
+            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
         }
         $fileContent += [System.Collections.ArrayList]@(
             '',
@@ -120,12 +120,12 @@ function Set-PesterGitHubOutput {
 
                 $intermediateNameElements = $passedTest.Path
                 $intermediateNameElements[-1] = '**{0}**' -f $passedTest.ExpandedName
-                $testName = $intermediateNameElements -join ' / ' | Out-String
+                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim
 
                 $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
-                $testFile = Split-Path $passedTest.ScriptBlock.File -Leaf
+                $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
-                $fileContent += '| {0} | `{1}:{2}` |' -f $testName.Trim(), $testFile.Trim(), $testLine
+                $fileContent += '| {0} | `{1}:{2}` |' -f $testName, $testFile, $testLine
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
@@ -153,14 +153,14 @@ function Set-PesterGitHubOutput {
 
                 $intermediateNameElements = $skippedTest.Path
                 $intermediateNameElements[-1] = '**{0}**' -f $skippedTest.ExpandedName
-                $testName = $intermediateNameElements -join ' / ' | Out-String
+                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
 
-                $reason = 'Test {0}' -f $skippedTest.ErrorRecord.Exception.Message
+                $reason = ('Test {0}' -f $skippedTest.ErrorRecord.Exception.Message -replace '\|', '\|').Trim()
 
                 $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
-                $testFile = Split-Path $passedTest.ScriptBlock.File -Leaf
+                $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
-                $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName.Trim(), $reason, $testFile.Trim(), $testLine
+                $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $reason, $testFile, $testLine
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
