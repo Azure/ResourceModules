@@ -41,9 +41,9 @@ function Set-PesterGitHubOutput {
     # Import xml output and filter by results #
     ###########################################
 
-    $passedTests += $PesterTestResults.Passed
-    $failedTests += $PesterTestResults.Failed
-    $skippedTests += $PesterTestResults.Skipped
+    $passedTests = $PesterTestResults.Passed
+    $failedTests = $PesterTestResults.Failed
+    $skippedTests = $PesterTestResults.Skipped
 
     ######################
     # Set output content #
@@ -65,7 +65,7 @@ function Set-PesterGitHubOutput {
         $fileContent += [System.Collections.ArrayList]@(
             '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: | Skipped Tests :paperclip: |',
             '| :-- | :-- | :-- | :-- |'
-            ('| {0} | {1} | {2} |' -f $PesterTestResults.TotalCount, $passedTests.count , $failedTests.count, $skippedTests.count),
+            ('| {0} | {1} | {2} | {3} |' -f $PesterTestResults.TotalCount, $passedTests.count , $failedTests.count, $skippedTests.count),
             ''
         )
 
@@ -79,13 +79,13 @@ function Set-PesterGitHubOutput {
             '',
             '## Failed Tests',
             '',
-            '| TestName | TargetName |  Source |',
+            '| Name | Error | Source |',
             '| :-- | :-- | :-- |'
         )
         foreach ($failedTest in $failedTests ) {
 
             $intermediateNameElements = $failedTest.Path
-            $intermediateNameElements[-1] = $failedTest.ExpandedName
+            $intermediateNameElements[-1] = '***{0}***' -f $failedTest.ExpandedName
             $testName = $intermediateNameElements -join '</p>' | Out-String
 
             $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
@@ -93,7 +93,7 @@ function Set-PesterGitHubOutput {
             $errorMessage = $failedTest.ErrorRecord.TargetObject.Message
 
 
-            $fileContent += '| {0} | {1} | {2}:{3} |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
+            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName.Trim(), $errorMessage.Trim(), $errorTestFile.Trim(), $errorTestLine.Trim()
         }
         $fileContent += [System.Collections.ArrayList]@(
             '',
@@ -113,17 +113,19 @@ function Set-PesterGitHubOutput {
                 '',
                 '## Passed Tests',
                 '',
-                '| TestName | TargetName |  Synopsis |',
-                '| :-- | :-- |  :-- |'
+                '| Name | Source |',
+                '| :-- | :-- |'
             )
-            foreach ($content in $passedTests ) {
+            foreach ($passedTest in $passedTests ) {
 
-                if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
-                    # TODO: Make less depending on absolute path (same below)
-                    $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
-                }
+                $intermediateNameElements = $passedTest.Path
+                $intermediateNameElements[-1] = '***{0}***' -f $passedTest.ExpandedName
+                $testName = $intermediateNameElements -join '</p>' | Out-String
 
-                # TODO: Add formatted failed tests
+                $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
+                $testFile = Split-Path $passedTest.ScriptBlock.File -Leaf
+
+                $fileContent += '| {0} | `{1}:{2}` |' -f $testName.Trim(), $testFile.Trim(), $testLine
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
@@ -142,19 +144,23 @@ function Set-PesterGitHubOutput {
                 '<details>',
                 '<summary>List of skipped Tests</summary>',
                 '',
-                '## Passed Tests',
+                '## Skipped Tests',
                 '',
-                '| TestName | TargetName |  Synopsis |',
-                '| :-- | :-- |  :-- |'
+                '| Name | Reason | Source |',
+                '| :-- | :-- | :-- |'
             )
-            foreach ($content in $skippedTests ) {
+            foreach ($skippedTest in $skippedTests ) {
 
-                if ($content.TargetType -eq 'Microsoft.Resources/deployments') {
-                    # TODO: Make less depending on absolute path (same below)
-                    $content.TargetName = $content.TargetName.replace('/home/runner/work/ResourceModules/ResourceModules/modules/', '')
-                }
+                $intermediateNameElements = $skippedTest.Path
+                $intermediateNameElements[-1] = '***{0}***' -f $skippedTest.ExpandedName
+                $testName = $intermediateNameElements -join '</p>' | Out-String
 
-                # TODO: Add formatted skipped tests
+                $reason = 'Test {0}' -f $skippedTest.ErrorRecord.Exception.Message
+
+                $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
+                $testFile = Split-Path $passedTest.ScriptBlock.File -Leaf
+
+                $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName.Trim(), $reason, $testFile.Trim(), $testLine
             }
             $fileContent += [System.Collections.ArrayList]@(
                 '',
