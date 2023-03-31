@@ -51,7 +51,7 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 
     _Limitations_
     - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), the compiled (i.e., ARM/JSON) resource template file size may not exceed 4 MB in size. This limitation is more likely to be encountered in a template orchestrated approach.
-    - It is not possible to perform more than 800 deployments using a single resource template
+    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), it is not possible to perform more than 800 deployments using a single resource template. This limitation is more likely to be encountered in a template orchestrated approach. 
     - Not all deployments can be done using the resource template, or only using workarounds (for example, the upload of files, the deployment of AAD resources, etc.)
     - The deploying principal must have permissions of all resource deployments that are part of the resource template
 
