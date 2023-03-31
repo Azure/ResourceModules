@@ -549,7 +549,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             }
 
             $mdFormattedDiff = ($diffReponse -join '</p>') -replace '\|', '\|'
-            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the Set-ModuleReadMe function should be identical and should not have diff </p><code>{0}</code>' -f $mdFormattedDiff)
+            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the <code>Set-ModuleReadMe</code> function should be identical and should not have diff </p><code>{0}</code>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
         }
     }
 }
