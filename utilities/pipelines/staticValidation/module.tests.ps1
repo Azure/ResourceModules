@@ -548,8 +548,8 @@ Describe 'Readme tests' -Tag 'Readme' {
                 git checkout HEAD -- $readMeFilePath
             }
 
-            $mdFormattedDiff = ($diffReponse -join '</p>') -replace '\|', '\|'
-            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the <code>Set-ModuleReadMe</code> function should be identical and should not have diff </p><code>{0}</code>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
+            $mdFormattedDiff = ($diffReponse -join '</br>') -replace '\|', '\|'
+            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the `Set-ModuleReadMe` function should be identical and should not have diff </p><pre lang="x-powershell">{0}</pre>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
         }
     }
 }
