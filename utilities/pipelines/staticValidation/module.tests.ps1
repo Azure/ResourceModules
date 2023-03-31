@@ -839,7 +839,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The template file should contain required elements <code>schema</code>, <code>contentVersion</code>, <code>resources</code>.' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements schema, contentVersion, resources.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -948,7 +948,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of <code>resourceGroup().Location</code> or global for ResourceGroup deployment  scope' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment  scope' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,

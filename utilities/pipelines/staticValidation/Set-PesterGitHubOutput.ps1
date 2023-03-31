@@ -72,40 +72,44 @@ function Set-PesterGitHubOutput {
         ######################
         ##   Failed Tests   ##
         ######################
-        $fileContent += [System.Collections.ArrayList]@(
-            '',
-            '<details>',
-            '<summary>List of failed Tests</summary>',
-            '',
-            '## Failed Tests',
-            '',
-            '| Name | Error | Source |',
-            '| :-- | :-- | :-- |'
-        )
-        foreach ($failedTest in $failedTests ) {
+        if ($failedTests.Count -gt 0) {
+            Write-Verbose 'Adding failed tests'
+            $fileContent += [System.Collections.ArrayList]@(
+                '',
+                '<details>',
+                '<summary>List of failed Tests</summary>',
+                '',
+                '## Failed Tests',
+                '',
+                '| Name | Error | Source |',
+                '| :-- | :-- | :-- |'
+            )
+            foreach ($failedTest in $failedTests ) {
 
-            $intermediateNameElements = $failedTest.Path
-            $intermediateNameElements[-1] = '**{0}**' -f $failedTest.ExpandedName
-            $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
+                $intermediateNameElements = $failedTest.Path
+                $intermediateNameElements[-1] = '**{0}**' -f $failedTest.ExpandedName
+                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
 
-            $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
-            $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
-            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
+                $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
+                $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
+                $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
 
 
-            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
+                $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
+            }
+            $fileContent += [System.Collections.ArrayList]@(
+                '',
+                '</details>',
+                ''
+            )
         }
-        $fileContent += [System.Collections.ArrayList]@(
-            '',
-            '</details>',
-            ''
-        )
 
         ######################
         ##   Passed Tests   ##
         ######################
         if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
-            # List of passed tests
+            Write-Verbose 'Adding passed tests'
+
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
@@ -138,7 +142,8 @@ function Set-PesterGitHubOutput {
         ##   Skipped Tests   ##
         #######################
         if ($skippedTests.Count -gt 0) {
-            # List of passed tests
+            Write-Verbose 'Adding skipped tests'
+
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
