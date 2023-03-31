@@ -75,7 +75,7 @@ function Set-PesterGitHubOutput {
         $fileContent += [System.Collections.ArrayList]@(
             '',
             '<details>',
-            '<summary>List of Failed Tests</summary>',
+            '<summary>List of failed Tests</summary>',
             '',
             '## Failed Tests',
             '',
@@ -85,8 +85,8 @@ function Set-PesterGitHubOutput {
         foreach ($failedTest in $failedTests ) {
 
             $intermediateNameElements = $failedTest.Path
-            $intermediateNameElements[-1] = '***{0}***' -f $failedTest.ExpandedName
-            $testName = $intermediateNameElements -join '</p>' | Out-String
+            $intermediateNameElements[-1] = '**{0}**' -f $failedTest.ExpandedName
+            $testName = $intermediateNameElements -join ' / ' | Out-String
 
             $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
             $errorTestFile = Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf
@@ -109,7 +109,7 @@ function Set-PesterGitHubOutput {
             $fileContent += [System.Collections.ArrayList]@(
                 '',
                 '<details>',
-                '<summary>List of Passed Tests</summary>',
+                '<summary>List of passed Tests</summary>',
                 '',
                 '## Passed Tests',
                 '',
@@ -119,8 +119,8 @@ function Set-PesterGitHubOutput {
             foreach ($passedTest in $passedTests ) {
 
                 $intermediateNameElements = $passedTest.Path
-                $intermediateNameElements[-1] = '***{0}***' -f $passedTest.ExpandedName
-                $testName = $intermediateNameElements -join '</p>' | Out-String
+                $intermediateNameElements[-1] = '**{0}**' -f $passedTest.ExpandedName
+                $testName = $intermediateNameElements -join ' / ' | Out-String
 
                 $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
                 $testFile = Split-Path $passedTest.ScriptBlock.File -Leaf
@@ -152,8 +152,8 @@ function Set-PesterGitHubOutput {
             foreach ($skippedTest in $skippedTests ) {
 
                 $intermediateNameElements = $skippedTest.Path
-                $intermediateNameElements[-1] = '***{0}***' -f $skippedTest.ExpandedName
-                $testName = $intermediateNameElements -join '</p>' | Out-String
+                $intermediateNameElements[-1] = '**{0}**' -f $skippedTest.ExpandedName
+                $testName = $intermediateNameElements -join ' / ' | Out-String
 
                 $reason = 'Test {0}' -f $skippedTest.ErrorRecord.Exception.Message
 
