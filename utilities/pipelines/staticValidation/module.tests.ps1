@@ -547,7 +547,9 @@ Describe 'Readme tests' -Tag 'Readme' {
                 # Reset readme file to original state
                 git checkout HEAD -- $readMeFilePath
             }
-            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+
+            $mdFormattedDiff = ($diffReponse -join '</p>') -replace '\|', '\|'
+            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the Set-ModuleReadMe function should be identical and should not have diff </p><code>{0}</code>' -f $mdFormattedDiff)
         }
     }
 }
