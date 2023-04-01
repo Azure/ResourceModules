@@ -70,6 +70,7 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
     _Limitations_
     - Each deployment needs its own job, and in turn its own agent. As a consequence, parallel resource deployments require multiple agents.
     - Passing information from one deployment to another requires passing information from one agent to another
+    - As each agent job has to start up and check out the code first, it generally runs slower
 
 </p>
 
