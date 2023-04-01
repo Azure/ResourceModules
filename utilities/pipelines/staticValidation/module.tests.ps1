@@ -37,48 +37,11 @@ $script:templateNotFoundException = 'No template file found in folder [{0}]' # -
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
-Describe 'File/folder tests.' -Tag 'Modules' {
+$script:crossReferencedModuleList = Get-CrossReferencedModuleList
+
+Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
-
-        $moduleFolderTestCases = [System.Collections.ArrayList] @()
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $moduleFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                moduleFolderPath = $moduleFolderPath
-                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
-            }
-        }
-
-        if (Test-Path (Join-Path $repoRootPath '.github')) {
-            It '[<moduleFolderName>] Module should have a GitHub workflow.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
-
-                param(
-                    [string] $moduleFolderName,
-                    [string] $moduleFolderPath
-                )
-
-                $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-                $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-                $workflowPath = Join-Path $workflowsFolderName $workflowFileName
-                Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
-            }
-        }
-
-        if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
-            It '[<moduleFolderName>] Module should have an Azure DevOps pipeline.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
-
-                param(
-                    [string] $moduleFolderName,
-                    [string] $moduleFolderPath
-                )
-
-                $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-                $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-                $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
-                Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
-            }
-        }
 
         It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file.' -TestCases $moduleFolderTestCases {
 
@@ -170,11 +133,168 @@ Describe 'File/folder tests.' -Tag 'Modules' {
         }
     }
 }
-Describe 'Readme tests.' -Tag 'Readme' {
+
+Describe 'Pipeline tests' -Tag 'Pipeline' {
+
+    $moduleFolderTestCases = [System.Collections.ArrayList] @()
+    foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+        $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+        $moduleFolderTestCases += @{
+            moduleFolderName   = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+            moduleFolderPath   = $moduleFolderPath
+            isTopLevelModule   = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            templateReferences = $crossReferencedModuleList[$resourceTypeIdentifier]
+        }
+    }
+
+    if (Test-Path (Join-Path $repoRootPath '.github')) {
+        It '[<moduleFolderName>] Module should have a GitHub workflow.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath
+            )
+
+            $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowPath = Join-Path $workflowsFolderName $workflowFileName
+            Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
+        }
+
+        It '[<moduleFolderName>] Module workflow should have trigger for cross-module references, if any.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [Hashtable] $templateReferences
+            )
+
+            $localReferences = $templateReferences.localPathReferences
+            if (-not $localReferences) {
+                Set-ItResult -Skipped -Because 'the module has no local cross module references.'
+                return
+            }
+
+            $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowFilePath = Join-Path $workflowsFolderName $workflowFileName
+            $workflowContent = Get-Content -Path $workflowFilePath
+
+            # Get paths start index
+            $workflowPathsIndex = $workflowContent | ForEach-Object {
+                if ($_ -match '^\s*paths:\s*$') {
+                    return $workflowContent.IndexOf($Matches[0])
+                }
+            }
+
+            $workflowPathsStartIndex = $workflowPathsIndex + 1
+
+            # Get paths end index
+            $workflowPathsEndIndex = $workflowPathsStartIndex
+            while ($workflowContent[($workflowPathsEndIndex + 1)] -match "^\s*- '.+$") {
+                $workflowPathsEndIndex++
+            }
+
+            # Extract data
+            $extractedPaths = $workflowContent[$workflowPathsStartIndex .. $workflowPathsEndIndex] | ForEach-Object {
+                $null = $_ -match "^\s*- '(.+)'$"
+                $Matches[1]
+            }
+
+            # Re-create result set
+            $workflowModuleTriggerPaths = $extractedPaths | Where-Object { $_ -match '^modules\/.*$' }
+
+            $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
+            foreach ($localReference in $localReferences) {
+                $expectedPath = "modules/$localReference/**"
+                if ($workflowModuleTriggerPaths -notcontains $expectedPath) {
+                    $missingCrossModuleReferenceTriggers += $expectedPath
+                }
+            }
+
+            $missingCrossModuleReferenceTriggers.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferenceTriggers -join ','))
+        }
+    }
+
+    if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
+        It '[<moduleFolderName>] Module should have an Azure DevOps pipeline.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath
+            )
+
+            $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
+            Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
+        }
+
+        It '[<moduleFolderName>] Module pipeline should have trigger for cross-module references, if any.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [Hashtable] $templateReferences
+            )
+
+            $localReferences = $templateReferences.localPathReferences
+            if (-not $localReferences) {
+                Set-ItResult -Skipped -Because 'the module has no local cross module references.'
+                return
+            }
+
+            $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelineFilePath = Join-Path $pipelinesFolderName $pipelineFileName
+            $pipelineContent = Get-Content -Path $pipelineFilePath
+
+            # Get paths include start index
+            $pipelinePathsIncludeIndex = $pipelineContent | ForEach-Object {
+                if ($_ -match '^\s*paths:\s*$') {
+                    return $pipelineContent.IndexOf($Matches[0]) + 1 # Adding one index to shift to 'include:'
+                }
+            }
+
+            $pipelinePathsIncludeStartIndex = $pipelinePathsIncludeIndex + 1
+
+            # Get paths end index
+            $pipelinePathsIncludeEndIndex = $pipelinePathsIncludeStartIndex
+            while ($pipelineContent[($pipelinePathsIncludeEndIndex + 1)] -match "^\s*- '.+$") {
+                $pipelinePathsIncludeEndIndex++
+            }
+
+            # Extract data
+            $extractedPaths = $pipelineContent[$pipelinePathsIncludeStartIndex .. $pipelinePathsIncludeEndIndex] | ForEach-Object {
+                $null = $_ -match "^\s*- '(.+)'$"
+                $Matches[1]
+            }
+
+            # Re-create result set
+            $moduleTriggerPaths = $extractedPaths | Where-Object { $_ -match '^\/modules\/.*$' }
+
+            $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
+            foreach ($localReference in $localReferences) {
+                $expectedPath = "/modules/$localReference/*"
+                if ($moduleTriggerPaths -notcontains $expectedPath) {
+                    $missingCrossModuleReferenceTriggers += $expectedPath
+                }
+            }
+
+            $missingCrossModuleReferenceTriggers.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferenceTriggers -join ','))
+        }
+    }
+
+}
+
+Describe 'Readme tests' -Tag 'Readme' {
 
     Context 'Readme content tests' {
 
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
+
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
@@ -217,7 +337,7 @@ Describe 'Readme tests.' -Tag 'Readme' {
                 readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
                 isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
                 resourceTypeIdentifier = $resourceTypeIdentifier
-                templateReferences     = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+                templateReferences     = $crossReferencedModuleList[$resourceTypeIdentifier]
             }
         }
 
@@ -468,7 +588,8 @@ Describe 'Readme tests.' -Tag 'Readme' {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent,
-                [string] $resourceTypeIdentifier
+                [string] $resourceTypeIdentifier,
+                [hashtable] $templateReferences
             )
 
             # Get ReadMe data
@@ -494,25 +615,22 @@ Describe 'Readme tests.' -Tag 'Readme' {
                 }
             }
 
-            # Template data
-            $expectedDependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
-
             # Test
-            if ($expectedDependencies.localPathReferences) {
-                $differentiatingItems = @() + $expectedDependencies.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
+            if ($templateReferences.localPathReferences) {
+                $differentiatingItems = @() + $templateReferences.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of local template dependencies missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
 
 
-                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $expectedDependencies.localPathReferences -notcontains $_ }
+                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $templateReferences.localPathReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of excess local template references defined in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
             }
 
-            if ($expectedDependencies.remoteReferences) {
-                $differentiatingItems = @() + $expectedDependencies.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
+            if ($templateReferences.remoteReferences) {
+                $differentiatingItems = @() + $templateReferences.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of remote template dependencies missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
 
 
-                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $expectedDependencies.remoteReferences -notcontains $_ }
+                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $templateReferences.remoteReferences -notcontains $_ }
                 $differentiatingItems.Count | Should -Be 0 -Because ('list of excess remote template references defined in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
             }
         }
@@ -554,7 +672,7 @@ Describe 'Readme tests.' -Tag 'Readme' {
     }
 }
 
-Describe 'Test file tests.' -Tag 'TestTemplate' {
+Describe 'Test file tests' -Tag 'TestTemplate' {
 
     Context 'General test file' {
 
@@ -686,7 +804,7 @@ Describe 'Test file tests.' -Tag 'TestTemplate' {
     }
 }
 
-Describe 'Deployment template tests.' -Tag 'Template' {
+Describe 'Deployment template tests' -Tag 'Template' {
 
     Context 'General template' {
 
@@ -947,7 +1065,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -970,7 +1088,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Location output should be returned for resources that use it.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1168,7 +1286,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
     }
 }
 
-Describe 'API version tests.' -Tag 'ApiCheck' {
+Describe 'API version tests' -Tag 'ApiCheck' {
 
     $testCases = @()
     $apiSpecsFilePath = Join-Path $repoRootPath 'utilities' 'src' 'apiSpecsList.json'

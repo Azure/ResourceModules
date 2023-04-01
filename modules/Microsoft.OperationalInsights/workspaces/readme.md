@@ -672,7 +672,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '<storageAccountId>'
+        storageAccountResourceId: '<storageAccountResourceId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -950,7 +950,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "<storageAccountId>",
+          "storageAccountResourceId": "<storageAccountResourceId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",
@@ -1186,7 +1186,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '<storageAccountId>'
+        storageAccountResourceId: '<storageAccountResourceId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -1393,7 +1393,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "<storageAccountId>",
+          "storageAccountResourceId": "<storageAccountResourceId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",

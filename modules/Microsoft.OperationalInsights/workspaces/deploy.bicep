@@ -221,7 +221,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
     tables: contains(storageInsightsConfig, 'tables') ? storageInsightsConfig.tables : []
-    storageAccountId: storageInsightsConfig.storageAccountId
+    storageAccountResourceId: storageInsightsConfig.storageAccountResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
