@@ -154,8 +154,9 @@ runs:
         # ----------------------------------------- #
 
         $functionInput = @{
-          PesterTestResults     = $testResults
-          OutputFilePath        = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
+          PesterTestResults = $testResults
+          OutputFilePath    = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
+          GitHubRepository  = $env:GITHUB_REPOSITORY
         }
 
         Write-Verbose 'Invoke Pester formatting function with' -Verbose

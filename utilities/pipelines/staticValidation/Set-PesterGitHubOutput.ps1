@@ -122,7 +122,7 @@ function Set-PesterGitHubOutput {
             $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
             $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
 
-            $testReference = '{2}:{3}' -f $errorTestFile, $errorTestLine
+            $testReference = '{0}:{1}' -f $errorTestFile, $errorTestLine
             if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
                 # Creating URL to test file to enable users to 'click' on it
                 $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$errorTestLine)"
@@ -168,7 +168,7 @@ function Set-PesterGitHubOutput {
             $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
             $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
-            $testReference = '{2}:{3}' -f $testFile, $testLine
+            $testReference = '{0}:{1}' -f $testFile, $testLine
             if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
                 # Creating URL to test file to enable users to 'click' on it
                 $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
@@ -217,7 +217,7 @@ function Set-PesterGitHubOutput {
             $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
             $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
-            $testReference = '{2}:{3}' -f $testFile, $testLine
+            $testReference = '{0}:{1}' -f $testFile, $testLine
             if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
                 # Creating URL to test file to enable users to 'click' on it
                 $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
