@@ -24,6 +24,7 @@ This module deploys a SQL server.
 | `Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases/backupLongTermRetentionPolicies) |
 | `Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/databases/backupShortTermRetentionPolicies) |
 | `Microsoft.Sql/servers/elasticPools` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/elasticPools) |
+| `Microsoft.Sql/servers/encryptionProtector` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/encryptionProtector) |
 | `Microsoft.Sql/servers/firewallRules` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/firewallRules) |
 | `Microsoft.Sql/servers/keys` | [2022-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-05-01-preview/servers/keys) |
 | `Microsoft.Sql/servers/securityAlertPolicies` | [2022-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2022-02-01-preview/servers/securityAlertPolicies) |
@@ -54,6 +55,7 @@ This module deploys a SQL server.
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `elasticPools` | _[elasticPools](elasticPools/readme.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/readme.md)_ object | `{object}` |  | The encryption protection configuration. |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | The keys to configure. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -459,6 +461,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         elasticPoolId: '<elasticPoolId>'
+        encryptionProtectorObj: {
+          serverKeyName: '<serverKeyName>'
+          serverKeyType: 'AzureKeyVault'
+        }
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: '<<namePrefix>>-sqlscomdb-001'
@@ -548,7 +554,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
+      storageAccountResourceId: '<storageAccountResourceId>'
     }
   }
 }
@@ -592,6 +598,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "elasticPoolId": "<elasticPoolId>",
+          "encryptionProtectorObj": {
+            "serverKeyName": "<serverKeyName>",
+            "serverKeyType": "AzureKeyVault"
+          },
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "<<namePrefix>>-sqlscomdb-001",
@@ -713,7 +723,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
+        "storageAccountResourceId": "<storageAccountResourceId>"
       }
     }
   }

@@ -45,10 +45,10 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `accessTier` | string | `'Hot'` | `[Cool, Hot, Premium]` | Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true. |
-| `storageAccountAccessTier` | string | `'Hot'` | `[Cool, Hot, Premium]` | Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type. |
 
 **Optional parameters**
 
@@ -78,6 +78,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `enableSftp` | bool | `False` |  | If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
 | `isLocalUserEnabled` | bool | `False` |  | Enables local users feature, if set to true. |
+| `kind` | string | `'StorageV2'` | `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]` | Type of Storage Account to create. |
 | `largeFileSharesState` | string | `'Disabled'` | `[Disabled, Enabled]` | Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares). |
 | `localUsers` | _[localUsers](localUsers/readme.md)_ array | `[]` |  | Local users to deploy for SFTP authentication. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -91,8 +92,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `requireInfrastructureEncryption` | bool | `True` |  | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sasExpirationPeriod` | string | `''` |  | The SAS expiration period. DD.HH:MM:SS. |
-| `storageAccountKind` | string | `'StorageV2'` | `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]` | Type of Storage Account to create. |
-| `storageAccountSku` | string | `'Standard_GRS'` | `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]` | Storage Account Sku Name. |
+| `skuName` | string | `'Standard_GRS'` | `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]` | Storage Account Sku Name. |
 | `supportsHttpsTrafficOnly` | bool | `True` |  | Allows HTTPS traffic only to storage service if sets to true. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Table service and tables to create. |
@@ -587,7 +587,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     ]
     sasExpirationPeriod: '180.00:00:00'
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     systemAssignedIdentity: true
     tableServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -825,7 +825,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "sasExpirationPeriod": {
       "value": "180.00:00:00"
     },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Standard_LRS"
     },
     "systemAssignedIdentity": {
@@ -904,7 +904,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     ]
     requireInfrastructureEncryption: true
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
@@ -979,7 +979,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "requireInfrastructureEncryption": {
       "value": true
     },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Standard_LRS"
     },
     "systemAssignedIdentity": {
@@ -1080,6 +1080,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
+    kind: 'FileStorage'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -1090,8 +1091,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountKind: 'FileStorage'
-    storageAccountSku: 'Premium_LRS'
+    skuName: 'Premium_LRS'
     supportsHttpsTrafficOnly: false
     systemAssignedIdentity: true
     tags: {
@@ -1153,6 +1153,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     },
+    "kind": {
+      "value": "FileStorage"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -1167,10 +1170,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     },
-    "storageAccountKind": {
-      "value": "FileStorage"
-    },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Premium_LRS"
     },
     "supportsHttpsTrafficOnly": {
@@ -1212,7 +1212,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    storageAccountKind: 'Storage'
+    kind: 'Storage'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -1244,7 +1244,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "storageAccountKind": {
+    "kind": {
       "value": "Storage"
     },
     "tags": {
