@@ -64,7 +64,7 @@ function Set-PesterGitHubOutput {
         [string] $OutputFilePath = './output.md',
 
         [Parameter(Mandatory = $false)]
-        [switch] $SkipPassedTestsReport
+        [string] $GitHubRepository
     )
 
     $passedTests = $PesterTestResults.Passed
@@ -122,8 +122,13 @@ function Set-PesterGitHubOutput {
             $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
             $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
 
+            $testReference = '{2}:{3}' -f $errorTestFile, $errorTestLine
+            if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
+                # Creating URL to test file to enable users to 'click' on it
+                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$errorTestLine)"
+            }
 
-            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
+            $fileContent += '| {0} | {1} | `{2}` |' -f $testName, $errorMessage, $testReference
         }
     } else {
         $fileContent += ('No tests failed.')
@@ -163,7 +168,13 @@ function Set-PesterGitHubOutput {
             $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
             $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
-            $fileContent += '| {0} | `{1}:{2}` |' -f $testName, $testFile, $testLine
+            $testReference = '{2}:{3}' -f $testFile, $testLine
+            if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
+                # Creating URL to test file to enable users to 'click' on it
+                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
+            }
+
+            $fileContent += '| {0} | `{1}` |' -f $testName, $testReference
         }
     } else {
         $fileContent += ('No tests passed.')
@@ -206,7 +217,13 @@ function Set-PesterGitHubOutput {
             $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
             $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
-            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $reason, $testFile, $testLine
+            $testReference = '{2}:{3}' -f $testFile, $testLine
+            if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
+                # Creating URL to test file to enable users to 'click' on it
+                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
+            }
+
+            $fileContent += '| {0} | {1} | `{2}` |' -f $testName, $reason, $testReference
         }
     } else {
         $fileContent += ('No tests were skipped.')
