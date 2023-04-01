@@ -43,18 +43,15 @@ Mandatory. The Pester tests results to parse. Can be fetched by running Pester w
 .PARAMETER OutputFilePath
 Optional. The path to the formatted .md file to be created.
 
-.PARAMETER SipPassedTestsReport
-Optional. Whether to add the detail of passed tests to the output markdown file or to limit the list to the failed & skipped ones.
-
 .EXAMPLE
 Set-PesterGitHubOutput -PesterTestResults @{...}
 
 Generate a markdown file 'output.md' in the current folder, out of the Pester test results input, listing all passed and failed tests.
 
 .EXAMPLE
-Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md' -SkipPassedTestsReport
+Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md'
 
-Generate a markdown file 'C:/Pester-output.md', out of the Pester test results input, listing only the failed & skipped tests.
+Generate a markdown file 'C:/Pester-output.md', out of the Pester test results input.
 #>
 function Set-PesterGitHubOutput {
 
@@ -88,128 +85,137 @@ function Set-PesterGitHubOutput {
         ''
     )
 
-    if ($failedTests.Count -eq 0) {
-        # No failure content
-        $fileContent += ('## :rocket: All [{0}] tests passed, YAY! :rocket:' -f $passedTests.Count)
-    } else {
-        # Failure content
-
-        ## Header table
-        $fileContent += [System.Collections.ArrayList]@(
-            '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: | Skipped Tests :paperclip: |',
-            '| :-- | :-- | :-- | :-- |'
+    ## Header table
+    $fileContent += [System.Collections.ArrayList]@(
+        '| Total No. of Processed Tests| Passed Tests :white_check_mark: | Failed Tests :x: | Skipped Tests :paperclip: |',
+        '| :-- | :-- | :-- | :-- |'
             ('| {0} | {1} | {2} | {3} |' -f $PesterTestResults.TotalCount, $passedTests.count , $failedTests.count, $skippedTests.count),
+        ''
+    )
+
+    ######################
+    ##   Failed Tests   ##
+    ######################
+    Write-Verbose 'Adding failed tests'
+    $fileContent += [System.Collections.ArrayList]@(
+        '',
+        '<details>',
+        '<summary>List of failed Tests</summary>',
+        '',
+        '## Failed Tests',
+        ''
+    )
+    if ($failedTests.Count -gt 0) {
+        Write-Verbose 'Adding failed tests'
+        $fileContent += [System.Collections.ArrayList]@(
+            '| Name | Error | Source |',
+            '| :-- | :-- | :-- |'
+        )
+        foreach ($failedTest in ($failedTests | Sort-Object -Property { $PSItem.ExpandedName })) {
+
+            $intermediateNameElements = $failedTest.Path
+            $intermediateNameElements[-1] = '**{0}**' -f $failedTest.ExpandedName
+            $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
+
+            $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
+            $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
+            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
+
+
+            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
+        }
+        $fileContent += [System.Collections.ArrayList]@(
+            '',
+            '</details>',
             ''
         )
-
-        ######################
-        ##   Failed Tests   ##
-        ######################
-        if ($failedTests.Count -gt 0) {
-            Write-Verbose 'Adding failed tests'
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '<details>',
-                '<summary>List of failed Tests</summary>',
-                '',
-                '## Failed Tests',
-                '',
-                '| Name | Error | Source |',
-                '| :-- | :-- | :-- |'
-            )
-            foreach ($failedTest in ($failedTests | Sort-Object -Property { $PSItem.ExpandedName })) {
-
-                $intermediateNameElements = $failedTest.Path
-                $intermediateNameElements[-1] = '**{0}**' -f $failedTest.ExpandedName
-                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
-
-                $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
-                $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
-                $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
-
-
-                $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
-            }
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '</details>',
-                ''
-            )
-        }
-
-        ######################
-        ##   Passed Tests   ##
-        ######################
-        if (($passedTests.Count -gt 0) -and -not $SkipPassedTestsReport) {
-            Write-Verbose 'Adding passed tests'
-
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '<details>',
-                '<summary>List of passed Tests</summary>',
-                '',
-                '## Passed Tests',
-                '',
-                '| Name | Source |',
-                '| :-- | :-- |'
-            )
-            foreach ($passedTest in ($passedTests | Sort-Object -Property { $PSItem.ExpandedName }) ) {
-
-                $intermediateNameElements = $passedTest.Path
-                $intermediateNameElements[-1] = '**{0}**' -f $passedTest.ExpandedName
-                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
-
-                $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
-                $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
-
-                $fileContent += '| {0} | `{1}:{2}` |' -f $testName, $testFile, $testLine
-            }
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '</details>',
-                ''
-            )
-        }
-
-        #######################
-        ##   Skipped Tests   ##
-        #######################
-        if ($skippedTests.Count -gt 0) {
-            Write-Verbose 'Adding skipped tests'
-
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '<details>',
-                '<summary>List of skipped Tests</summary>',
-                '',
-                '## Skipped Tests',
-                '',
-                '| Name | Reason | Source |',
-                '| :-- | :-- | :-- |'
-            )
-            foreach ($skippedTest in ($skippedTests | Sort-Object -Property { $PSItem.ExpandedName }) ) {
-
-                $intermediateNameElements = $skippedTest.Path
-                $intermediateNameElements[-1] = '**{0}**' -f $skippedTest.ExpandedName
-                $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
-
-                $reason = ('Test {0}' -f $skippedTest.ErrorRecord.Exception.Message -replace '\|', '\|').Trim()
-
-                $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
-                $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
-
-                $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $reason, $testFile, $testLine
-            }
-            $fileContent += [System.Collections.ArrayList]@(
-                '',
-                '</details>',
-                ''
-            )
-        }
-
-        if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
-            $null = New-Item -Path $OutputFilePath -Force -Value ($fileContent | Out-String)
-        }
-        Write-Verbose "Create results file [$outputFilePath]"
+    } else {
+        $fileContent += ('No tests failed.')
     }
+
+    ######################
+    ##   Passed Tests   ##
+    ######################
+    Write-Verbose 'Adding passed tests'
+    $fileContent += [System.Collections.ArrayList]@(
+        '',
+        '<details>',
+        '<summary>List of passed Tests</summary>',
+        '',
+        '## Passed Tests',
+        ''
+    )
+
+    if (($passedTests.Count -gt 0)) {
+
+        $fileContent += [System.Collections.ArrayList]@(
+            '| Name | Source |',
+            '| :-- | :-- |'
+        )
+        foreach ($passedTest in ($passedTests | Sort-Object -Property { $PSItem.ExpandedName }) ) {
+
+            $intermediateNameElements = $passedTest.Path
+            $intermediateNameElements[-1] = '**{0}**' -f $passedTest.ExpandedName
+            $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
+
+            $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
+            $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
+
+            $fileContent += '| {0} | `{1}:{2}` |' -f $testName, $testFile, $testLine
+        }
+        $fileContent += [System.Collections.ArrayList]@(
+            '',
+            '</details>',
+            ''
+        )
+    } else {
+        $fileContent += ('No tests passed.')
+    }
+
+    #######################
+    ##   Skipped Tests   ##
+    #######################
+
+    Write-Verbose 'Adding skipped tests'
+    $fileContent += [System.Collections.ArrayList]@(
+        '',
+        '<details>',
+        '<summary>List of skipped Tests</summary>',
+        '',
+        '## Skipped Tests',
+        ''
+    )
+
+    if ($skippedTests.Count -gt 0) {
+
+        $fileContent += [System.Collections.ArrayList]@(
+            '| Name | Reason | Source |',
+            '| :-- | :-- | :-- |'
+        )
+        foreach ($skippedTest in ($skippedTests | Sort-Object -Property { $PSItem.ExpandedName }) ) {
+
+            $intermediateNameElements = $skippedTest.Path
+            $intermediateNameElements[-1] = '**{0}**' -f $skippedTest.ExpandedName
+            $testName = (($intermediateNameElements -join ' / ' | Out-String) -replace '\|', '\|').Trim()
+
+            $reason = ('Test {0}' -f $skippedTest.ErrorRecord.Exception.Message -replace '\|', '\|').Trim()
+
+            $testLine = $passedTest.ScriptBlock.StartPosition.StartLine
+            $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
+
+            $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $reason, $testFile, $testLine
+        }
+        $fileContent += [System.Collections.ArrayList]@(
+            '',
+            '</details>',
+            ''
+        )
+    } else {
+        $fileContent += ('No tests were skipped.')
+    }
+
+    if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
+        $null = New-Item -Path $OutputFilePath -Force -Value ($fileContent | Out-String)
+    }
+    Write-Verbose "Create results file [$outputFilePath]"
 }

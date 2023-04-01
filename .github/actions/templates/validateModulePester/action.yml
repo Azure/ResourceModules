@@ -156,11 +156,10 @@ runs:
         $functionInput = @{
           PesterTestResults     = $testResults
           OutputFilePath        = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
-          SkipPassedTestsReport = $false
         }
 
         Write-Verbose 'Invoke Pester formatting function with' -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json -Depth 1 | Out-String) -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json -Depth 0 | Out-String) -Verbose
 
         Set-PesterGitHubOutput @functionInput -Verbose
 
