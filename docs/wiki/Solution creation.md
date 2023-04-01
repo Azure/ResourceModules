@@ -773,7 +773,7 @@ When creating a solution that leverages CARML modules, there are several aspects
 
 1. Choose publishing
 
-    Building on the previous step, you must also consider where you consume the resources from, i.e. if you use native Bicep, or published modules from either a Bicep registry, Template Specs, or Azure DevOps universal packages. The characteristics of each option is outlined a the corresponding [sub-section](#publish-location-considerations) below.
+    Building on the previous step, you must also consider where you consume the resources from, i.e. if you use native Bicep, or published modules from either a Bicep registry, Template Specs, or Azure DevOps universal packages. The characteristics of each option is outlined in the corresponding [sub-section](#publish-location-considerations).
 
 1. Implement you solution
 
