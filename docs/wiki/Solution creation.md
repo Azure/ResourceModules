@@ -45,13 +45,13 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
    <img src="./media/SolutionCreation/templateOrchestration.png" alt="Template orchestration" height="250">
 
     _Advantages_
-    - The deployment of resources in parallel is handled by Azure
+    - The deployment of resources in parallel is handled by Azure which means it is generally faster
     - Passing information in between resource deployments is handled inside a single deployment
     - The pipeline remains relatively simple as most complexity is handled by the resource template </p>
 
     _Limitations_
     - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), the compiled (i.e., ARM/JSON) resource template file size may not exceed 4 MB in size. This limitation is more likely to be encountered in a template orchestrated approach.
-    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), it is not possible to perform more than 800 deployments using a single resource template. This limitation is more likely to be encountered in a template orchestrated approach. 
+    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), it is not possible to perform more than 800 deployments using a single resource template. This limitation is more likely to be encountered in a template orchestrated approach.
     - Not all deployments can be done using the resource template, or only using workarounds (for example, the upload of files, the deployment of AAD resources, etc.)
     - The deploying principal must have permissions of all resource deployments that are part of the resource template
 
