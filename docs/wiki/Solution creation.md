@@ -765,7 +765,7 @@ When creating a solution that leverages CARML modules, there are several aspects
 
 1. Consider orchestration options
 
-    With the services & dependencies identified, the next question is, how those dependencies can be implemented. As described in the [Orchestration Overview](#orchestration-overview) sub-section, this is primarily a decision about 'pipeline-orchestration' vs. 'template-orchestration' - and in case of the later, if there are any steps that have to run in the pipeline regardless (for example an upload of files).
+    With the services & dependencies identified, the next question is, how those dependencies can be implemented. As described in the [Orchestration Overview](#orchestration-overview) sub-section, this is primarily a decision about 'pipeline-orchestration' vs. 'template-orchestration' - and in case of the latter, if there are any steps that have to run in the pipeline regardless (for example an upload of files).
 
     Generally speaking, both approaches are valid, though we would recommend to use template-orchestration as much as possible and only implement logic in the pipelines if absolutely necessary.
 
