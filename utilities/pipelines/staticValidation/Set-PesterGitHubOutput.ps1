@@ -105,6 +105,7 @@ function Set-PesterGitHubOutput {
         '## Failed Tests',
         ''
     )
+
     if ($failedTests.Count -gt 0) {
         Write-Verbose 'Adding failed tests'
         $fileContent += [System.Collections.ArrayList]@(
@@ -124,14 +125,15 @@ function Set-PesterGitHubOutput {
 
             $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $errorMessage, $errorTestFile, $errorTestLine
         }
-        $fileContent += [System.Collections.ArrayList]@(
-            '',
-            '</details>',
-            ''
-        )
     } else {
         $fileContent += ('No tests failed.')
     }
+
+    $fileContent += [System.Collections.ArrayList]@(
+        '',
+        '</details>',
+        ''
+    )
 
     ######################
     ##   Passed Tests   ##
@@ -163,14 +165,15 @@ function Set-PesterGitHubOutput {
 
             $fileContent += '| {0} | `{1}:{2}` |' -f $testName, $testFile, $testLine
         }
-        $fileContent += [System.Collections.ArrayList]@(
-            '',
-            '</details>',
-            ''
-        )
     } else {
         $fileContent += ('No tests passed.')
     }
+
+    $fileContent += [System.Collections.ArrayList]@(
+        '',
+        '</details>',
+        ''
+    )
 
     #######################
     ##   Skipped Tests   ##
@@ -205,14 +208,15 @@ function Set-PesterGitHubOutput {
 
             $fileContent += '| {0} | {1} | `{2}:{3}` |' -f $testName, $reason, $testFile, $testLine
         }
-        $fileContent += [System.Collections.ArrayList]@(
-            '',
-            '</details>',
-            ''
-        )
     } else {
         $fileContent += ('No tests were skipped.')
     }
+
+    $fileContent += [System.Collections.ArrayList]@(
+        '',
+        '</details>',
+        ''
+    )
 
     if ($PSCmdlet.ShouldProcess("Test results file in path [$OutputFilePath]", 'Create')) {
         $null = New-Item -Path $OutputFilePath -Force -Value ($fileContent | Out-String)
