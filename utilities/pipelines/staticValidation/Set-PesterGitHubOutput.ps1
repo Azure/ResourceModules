@@ -49,7 +49,7 @@ For example: 'Azure/ResourceModules'
 
 .PARAMETER BranchName
 Optional. The branch the pipeline was triggered from. If provided it will be used to generate a URL to the exact line of the test.
-For example: 'users/alsehr/testBranch'
+For example: 'users/carml/testBranch'
 
 .EXAMPLE
 Set-PesterGitHubOutput -PesterTestResults @{...}
@@ -57,9 +57,9 @@ Set-PesterGitHubOutput -PesterTestResults @{...}
 Generate a markdown file [output.md] in the current folder, out of the Pester test results input, listing all passed and failed tests.
 
 .EXAMPLE
-Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md' -GitHubRepository 'Azure/ResourceModules'
+Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md' -GitHubRepository 'Azure/ResourceModules' -BranchName 'users/carml/testBranch'
 
-Generate a markdown file [C:/Pester-output.md], out of the Pester test results input, including links to the exact test line numbers in the originating GitHub repository [Azure/ResourceModules].
+Generate a markdown file [C:/Pester-output.md], out of the Pester test results input, including links to the exact test line numbers in the originating GitHub repository [Azure/ResourceModules] in branch [users/carml/testBranch].
 #>
 function Set-PesterGitHubOutput {
 
