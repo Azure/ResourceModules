@@ -74,6 +74,10 @@ function Set-PesterGitHubOutput {
     $failedTests = $PesterTestResults.Failed
     $skippedTests = $PesterTestResults.Skipped
 
+    Write-Verbose ('Formatting [{0}] passed tests' -f $passedTests.Count)
+    Write-Verbose ('Formatting [{0}] failed tests' -f $failedTests.Count)
+    Write-Verbose ('Formatting [{0}] skipped tests' -f $skippedTests.Count)
+
     ######################
     # Set output content #
     ######################
