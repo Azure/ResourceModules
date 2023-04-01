@@ -129,20 +129,10 @@ runs:
             }
             PassThru  = $true
           }
-          #  Not required since we use a custom formatter function below
-          # TestResult = @{
-          #   TestSuiteName = 'Module Tests'
-          #   OutputPath    = Join-Path $moduleTestFilePath -Parent 'testResults.xml'
-          #   OutputFormat  = 'JUnitXml'
-          #   Enabled       = $false
-          # }
           Output = @{
             Verbosity = 'Detailed'
           }
         }
-
-        # Only required if pesterConfiguration.TestResult.Enabled is true
-        # Write-Output ('{0}={1}' -f 'outputPath', $pesterConfiguration.TestResult.OutputPath) >> $env:GITHUB_OUTPUT
 
         Write-Verbose 'Invoke test with' -Verbose
         Write-Verbose ($pesterConfiguration | ConvertTo-Json | Out-String) -Verbose
