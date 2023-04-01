@@ -157,6 +157,7 @@ runs:
           PesterTestResults = $testResults
           OutputFilePath    = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
           GitHubRepository  = $env:GITHUB_REPOSITORY
+          BranchName        = $env:GITHUB_REF
         }
 
         Write-Verbose 'Invoke Pester formatting function with' -Verbose

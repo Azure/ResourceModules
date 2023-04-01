@@ -43,15 +43,23 @@ Mandatory. The Pester tests results to parse. Can be fetched by running Pester w
 .PARAMETER OutputFilePath
 Optional. The path to the formatted .md file to be created.
 
+.PARAMETER GitHubRepository
+Optional. The repository containing the test file. If provided it will be used to generate a URL to the exact line of the test.
+For example: 'Azure/ResourceModules'
+
+.PARAMETER BranchName
+Optional. The branch the pipeline was triggered from. If provided it will be used to generate a URL to the exact line of the test.
+For example: 'users/alsehr/testBranch'
+
 .EXAMPLE
 Set-PesterGitHubOutput -PesterTestResults @{...}
 
-Generate a markdown file 'output.md' in the current folder, out of the Pester test results input, listing all passed and failed tests.
+Generate a markdown file [output.md] in the current folder, out of the Pester test results input, listing all passed and failed tests.
 
 .EXAMPLE
-Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md'
+Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md' -GitHubRepository 'Azure/ResourceModules'
 
-Generate a markdown file 'C:/Pester-output.md', out of the Pester test results input.
+Generate a markdown file [C:/Pester-output.md], out of the Pester test results input, including links to the exact test line numbers in the originating GitHub repository [Azure/ResourceModules].
 #>
 function Set-PesterGitHubOutput {
 
@@ -64,7 +72,10 @@ function Set-PesterGitHubOutput {
         [string] $OutputFilePath = './output.md',
 
         [Parameter(Mandatory = $false)]
-        [string] $GitHubRepository
+        [string] $GitHubRepository,
+
+        [Parameter(Mandatory = $false)]
+        [string] $BranchName
     )
 
     $passedTests = $PesterTestResults.Passed
@@ -121,9 +132,9 @@ function Set-PesterGitHubOutput {
             $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
 
             $testReference = '{0}:{1}' -f $errorTestFile, $errorTestLine
-            if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
+            if (-not [String]::IsNullOrEmpty($GitHubRepository) -and -not [String]::IsNullOrEmpty($BranchName)) {
                 # Creating URL to test file to enable users to 'click' on it
-                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$errorTestLine)"
+                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/$BranchName/utilities/pipelines/staticValidation/module.tests.ps1#L$errorTestLine)"
             }
 
             $fileContent += '| {0} | {1} | <code>{2}</code> |' -f $testName, $errorMessage, $testReference
@@ -165,9 +176,9 @@ function Set-PesterGitHubOutput {
             $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
             $testReference = '{0}:{1}' -f $testFile, $testLine
-            if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
+            if (-not [String]::IsNullOrEmpty($GitHubRepository) -and -not [String]::IsNullOrEmpty($BranchName)) {
                 # Creating URL to test file to enable users to 'click' on it
-                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
+                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/$BranchName/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
             }
 
             $fileContent += '| {0} | <code>{1}</code> |' -f $testName, $testReference
@@ -212,9 +223,9 @@ function Set-PesterGitHubOutput {
             $testFile = (Split-Path $passedTest.ScriptBlock.File -Leaf).Trim()
 
             $testReference = '{0}:{1}' -f $testFile, $testLine
-            if (-not [String]::IsNullOrEmpty($GitHubRepository)) {
+            if (-not [String]::IsNullOrEmpty($GitHubRepository) -and -not [String]::IsNullOrEmpty($BranchName)) {
                 # Creating URL to test file to enable users to 'click' on it
-                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
+                $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/$BranchName/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
             }
 
             $fileContent += '| {0} | {1} | <code>{2}</code> |' -f $testName, $reason, $testReference
