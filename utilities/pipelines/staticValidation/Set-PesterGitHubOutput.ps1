@@ -101,8 +101,6 @@ function Set-PesterGitHubOutput {
         '',
         '<details>',
         '<summary>List of failed Tests</summary>',
-        '',
-        '## Failed Tests',
         ''
     )
 
@@ -148,8 +146,6 @@ function Set-PesterGitHubOutput {
         '',
         '<details>',
         '<summary>List of passed Tests</summary>',
-        '',
-        '## Passed Tests',
         ''
     )
 
@@ -195,8 +191,6 @@ function Set-PesterGitHubOutput {
         '',
         '<details>',
         '<summary>List of skipped Tests</summary>',
-        '',
-        '## Skipped Tests',
         ''
     )
 
