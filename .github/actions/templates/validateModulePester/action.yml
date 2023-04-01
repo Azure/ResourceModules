@@ -87,69 +87,67 @@ runs:
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+                  (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }
-        Write-Verbose "Execute tests in path(s):" -Verbose
-        foreach($moduleFolderPath in $moduleFolderPaths) {
+        Write-Verbose 'Execute tests in path(s):' -Verbose
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
         # Construct Token Configuration Input and enforced tokens list
         $GlobalVariablesObject = Get-Content -Path 'settings.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
         $tokenConfiguration = @{
-            Tokens      = @{}
-            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
-            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+          Tokens      = @{}
+          TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+          TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
         }
 
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+          $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
-            $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+          $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
+          $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
+          $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
 
-        # Set and print test output path
         $moduleTestFilePath = '${{ inputs.moduleTestFilePath }}'
-        $outputPathDirectory = Split-Path $moduleTestFilePath -Parent
-        $outputPathFile = 'testResults.xml'
-        $outputPath = Join-Path $outputPathDirectory $outputPathFile
-        Write-Verbose "Pester tests output: $outputPath" -Verbose
-        Write-Output ('{0}={1}' -f 'outputPath', $outputPath) >> $env:GITHUB_OUTPUT
 
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
-        $testContainerData = @{
-          moduleFolderPaths              = $moduleFolderPaths
-          tokenConfiguration             = $tokenConfiguration
-          allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
-        }
-
-        Write-Verbose 'Invoke test with' -Verbose
-        Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
-
-        $testResults = Invoke-Pester -Configuration @{
-          Run        = @{
-            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data $testContainerData
+        $pesterConfiguration = @{
+          Run    = @{
+            Container = New-PesterContainer -Path (Join-Path $repoRootPath $moduleTestFilePath) -Data @{
+              moduleFolderPaths              = $moduleFolderPaths
+              tokenConfiguration             = $tokenConfiguration
+              allowPreviewVersionsInAPITests = [System.Convert]::ToBoolean('${{ env.allowPreviewVersionsInAPITests }}')
+            }
             PassThru  = $true
           }
-          TestResult = @{
-            TestSuiteName = 'Module Tests'
-            OutputPath    = $outputPath
-            OutputFormat  = 'JUnitXml'
-            Enabled       = $true
-          }
-          Output     = @{
+          #  Not required since we use a custom formatter function below
+          # TestResult = @{
+          #   TestSuiteName = 'Module Tests'
+          #   OutputPath    = Join-Path $moduleTestFilePath -Parent 'testResults.xml'
+          #   OutputFormat  = 'JUnitXml'
+          #   Enabled       = $false
+          # }
+          Output = @{
             Verbosity = 'Detailed'
           }
         }
+
+        # Only required if pesterConfiguration.TestResult.Enabled is true
+        # Write-Output ('{0}={1}' -f 'outputPath', $pesterConfiguration.TestResult.OutputPath) >> $env:GITHUB_OUTPUT
+
+        Write-Verbose 'Invoke test with' -Verbose
+        Write-Verbose ($pesterConfiguration | ConvertTo-Json | Out-String) -Verbose
+
+        $testResults = Invoke-Pester -Configuration $pesterConfiguration
 
         # ----------------------------------------- #
         # Greate formatted Pester Test Results File #
@@ -157,7 +155,7 @@ runs:
 
         $functionInput = @{
           PesterTestResults     = $testResults
-          outputFilePath        = 'Pester-output.md'
+          outputFilePath        = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
           SkipPassedTestsReport = $false
         }
 
@@ -166,6 +164,8 @@ runs:
 
         Set-PesterGitHubOutput @functionInput
 
+        Write-Output ('{0}={1}' -f 'formattedPesterResultsPath', $functionInput.outputFilePath) >> $env:GITHUB_OUTPUT
+
     - name: 'Output to GitHub job summaries'
       if: always()
       shell: pwsh
@@ -173,7 +173,7 @@ runs:
         # Grouping task logs
         Write-Output '::group::Output to GitHub job summaries'
 
-        $mdPesterOutputFilePath = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
+        $mdPesterOutputFilePath = '${{ steps.pester_run_step.outputs.formattedPesterResultsPath }}'
 
         if (-not (Test-Path $mdPesterOutputFilePath)) {
           Write-Warning ('Input file [{0}] not found. Please check if the previous task threw an error and try again.' -f $mdPesterOutputFilePath)
