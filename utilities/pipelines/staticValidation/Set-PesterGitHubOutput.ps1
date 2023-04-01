@@ -1,33 +1,66 @@
 ﻿<#
 .SYNOPSIS
-Parse an input xml file containing the output of the Pester checks and generate formatted markdown file out of it.
+Parse an Pester output containing checks & results and generate formatted markdown file out of it.
 
 .DESCRIPTION
-Parse input xml file containing the output of the Pester checks and generate formatted markdown file out of it.
+Parse an Pester output containing checks & results and generate formatted markdown file out of it.
 
-.PARAMETER inputFilePath
-Mandatory. The path to the output file created by Pester in xml format.
+.PARAMETER PesterTestResults
+Mandatory. The Pester tests results to parse. Can be fetched by running Pester with the `-PassThru` parameter. For example:
 
-.PARAMETER outputFilePath
+@{
+    Containers            = '[+] C:/ResourceModules/utilities/pipelines/staticValidation/module.tests.ps1'
+    Result                = 'Passed'
+    FailedCount           = 0
+    FailedBlocksCount     = 0
+    FailedContainersCount = 0
+    PassedCount           = 36
+    SkippedCount          = 1
+    NotRunCount           = 0
+    TotalCount            = 37
+    Duration              = '00:00:41.8816077'
+    Executed              = true
+    ExecutedAt            = '2023-04-01T12:27:19.5807422+02:00'
+    Version               = '5.4.0'
+    PSVersion             = '7.3.3'
+    PSBoundParameters     = 'System.Management.Automation.PSBoundParametersDictionary'
+    Plugins               = null
+    PluginConfiguration   = null
+    PluginData            = null
+    Configuration         = 'PesterConfiguration'
+    DiscoveryDuration     = '00:00:16.1489218'
+    UserDuration          = '00:00:22.4714890'
+    FrameworkDuration     = '00:00:03.2611969'
+    Failed                = ''
+    FailedBlocks          = ''
+    FailedContainers      = ''
+    Passed                = '[+] [Microsoft.KeyVault/vaults/secrets] Module should contain a [deploy.json/deploy.bicep] file. [+] ...'
+    NotRun                = ''
+    Tests                 = '[+] [Microsoft.KeyVault/vaults/secrets] Module should contain a [deploy.json/deploy.bicep] file. [+] ...'
+    CodeCoverage          = null
+}
+
+.PARAMETER OutputFilePath
 Optional. The path to the formatted .md file to be created.
 
-.PARAMETER skipPassedTestsReport
-Optional. Whether to add the detail of passed Pester to the output markdown file or to limit the list to the failed ones.
+.PARAMETER SipPassedTestsReport
+Optional. Whether to add the detail of passed tests to the output markdown file or to limit the list to the failed & skipped ones.
 
 .EXAMPLE
-Set-PesterGitHubOutput -inputFilePath 'C:/testResults.xml'
+Set-PesterGitHubOutput -PesterTestResults @{...}
 
-Generate a markdown file 'output.md' in the current folder, out of the 'C:/testResults.xml' input, listing all passed and failed tests.
+Generate a markdown file 'output.md' in the current folder, out of the Pester test results input, listing all passed and failed tests.
 
 .EXAMPLE
-Set-PesterGitHubOutput -inputFilePath 'C:/testResults.xml' -outputFilePath 'C:/Pester-output.md' -SkipPassedTestsReport
+Set-PesterGitHubOutput -PesterTestResults @{...} -OutputFilePath 'C:/Pester-output.md' -SkipPassedTestsReport
 
-Generate a markdown file 'C:/Pester-output.md', out of the 'C:/testResults.xml' input, listing only the failed tests.
+Generate a markdown file 'C:/Pester-output.md', out of the Pester test results input, listing only the failed & skipped tests.
 #>
 function Set-PesterGitHubOutput {
+
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [PSCustomObject] $PesterTestResults,
 
         [Parameter(Mandatory = $false)]
@@ -36,10 +69,6 @@ function Set-PesterGitHubOutput {
         [Parameter(Mandatory = $false)]
         [switch] $SkipPassedTestsReport
     )
-
-    ###########################################
-    # Import xml output and filter by results #
-    ###########################################
 
     $passedTests = $PesterTestResults.Passed
     $failedTests = $PesterTestResults.Failed
