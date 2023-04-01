@@ -345,7 +345,7 @@ Describe 'Readme tests.' -Tag 'Readme' {
             foreach ($paramCategory in $paramCategories) {
 
                 # Filter to relevant items
-                [array] $categoryParameters = $templateContent.parameters.Values | Where-Object { $_.metadata.description -like "$paramCategory. *" } | Sort-Object -Property 'Name.' -Culture 'en-US'
+                [array] $categoryParameters = $templateContent.parameters.Values | Where-Object { $_.metadata.description -like "$paramCategory. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
                 # Check properties for later reference
                 $shouldHaveDefault = $categoryParameters.defaultValue.count -gt 0
