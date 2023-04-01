@@ -876,7 +876,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             $CamelCasingFlag = @()
             $Parameter = $templateContent.parameters.Keys
             foreach ($Param in $Parameter) {
-                if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-.' -or $Param -match '_') {
+                if ($Param.substring(0, 1) -cnotmatch '[a-z]' -or $Param -match '-' -or $Param -match '_') {
                     $CamelCasingFlag += $false
                 } else {
                     $CamelCasingFlag += $true
@@ -920,7 +920,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             $Outputs = $templateContent.outputs.Keys
 
             foreach ($Output in $Outputs) {
-                if ($Output.substring(0, 1) -cnotmatch '[a-z]' -or $Output -match '-.' -or $Output -match '_') {
+                if ($Output.substring(0, 1) -cnotmatch '[a-z]' -or $Output -match '-' -or $Output -match '_') {
                     $CamelCasingFlag += $false
                 } else {
                     $CamelCasingFlag += $true
@@ -947,7 +947,7 @@ Describe 'Deployment template tests.' -Tag 'Template' {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment  scope' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1252,7 +1252,7 @@ Describe 'API version tests.' -Tag 'ApiCheck' {
                     }
                     break
                 }
-                { $PSItem -like '*privateEndpoints.' -and ($PSItem -notlike '*managedPrivateEndpoints') } {
+                { $PSItem -like '*privateEndpoints' -and ($PSItem -notlike '*managedPrivateEndpoints') } {
                     $testCases += @{
                         moduleName                     = $moduleFolderName
                         resourceType                   = 'privateEndpoints'
