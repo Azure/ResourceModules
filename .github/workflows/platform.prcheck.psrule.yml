@@ -74,10 +74,10 @@ jobs:
 
             Write-Output '::endgroup::'
       - name: Run PSRule analysis
-        uses: microsoft/ps-rule@v2.7.0
+        uses: microsoft/ps-rule@v2.8.0
         continue-on-error: true # Setting this whilst PSRule gets bedded in, in this project
-        # env:
-        #   PSRULE_INPUT_IGNOREUNCHANGEDPATH: true
+        env:
+          PSRULE_INPUT_IGNOREUNCHANGEDPATH: true
         with:
           modules: 'PSRule.Rules.Azure'
           inputPath: '${{ env.modulesPath }}/'
