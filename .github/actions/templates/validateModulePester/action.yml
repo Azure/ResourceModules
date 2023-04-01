@@ -155,12 +155,13 @@ runs:
 
         $functionInput = @{
           PesterTestResults     = $testResults
-          outputFilePath        = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
+          OutputFilePath        = Join-Path $env:GITHUB_WORKSPACE 'Pester-output.md'
           SkipPassedTestsReport = $false
+          Verbose               = $true
         }
 
         Write-Verbose 'Invoke task with' -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json -Depth 1 | Out-String) -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json -Depth 0 | Out-String) -Verbose
 
         Set-PesterGitHubOutput @functionInput
 
