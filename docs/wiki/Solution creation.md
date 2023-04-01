@@ -727,7 +727,7 @@ When creating a solution that leverages CARML modules, there are several aspects
 
 1. Identify the resources & deployment scope needed for your architecture
 
-    When you want to create your solution you should first gain an understanding of its designated architecture and and a results its inherently required services. For this and the subsequent steps, let's consider the following scenario:
+    If you want to create your solution, you should first gain an understanding of the planned architecture and the resulting required services. For this and the subsequent steps, let's consider the following scenario:
 
     - You want to deploy a Virtual Machine that is able to connect privately to a storage account
     - For this architecture you may use the following services
