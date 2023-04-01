@@ -126,7 +126,7 @@ function Set-PesterGitHubOutput {
                 $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$errorTestLine)"
             }
 
-            $fileContent += '| {0} | {1} | `{2}` |' -f $testName, $errorMessage, $testReference
+            $fileContent += '| {0} | {1} | <code>{2}</code> |' -f $testName, $errorMessage, $testReference
         }
     } else {
         $fileContent += ('No tests failed.')
@@ -170,7 +170,7 @@ function Set-PesterGitHubOutput {
                 $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
             }
 
-            $fileContent += '| {0} | `{1}` |' -f $testName, $testReference
+            $fileContent += '| {0} | <code>{1}</code> |' -f $testName, $testReference
         }
     } else {
         $fileContent += ('No tests passed.')
@@ -217,7 +217,7 @@ function Set-PesterGitHubOutput {
                 $testReference = "[$testReference](https://github.com/$GitHubRepository/blob/main/utilities/pipelines/staticValidation/module.tests.ps1#L$testLine)"
             }
 
-            $fileContent += '| {0} | {1} | `{2}` |' -f $testName, $reason, $testReference
+            $fileContent += '| {0} | {1} | <code>{2}</code> |' -f $testName, $reason, $testReference
         }
     } else {
         $fileContent += ('No tests were skipped.')
