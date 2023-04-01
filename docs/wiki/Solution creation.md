@@ -729,7 +729,7 @@ When creating a solution that leverages CARML modules, there are several aspects
 
     - You want to deploy a Virtual Machine that is able to connect privately to a storage account
     - For this architecture you may use the following services
-      - 1 resource group to place your resources in
+      - 1 Resource Group to place your resources in
       - 1 Network Security Group to allow traffic control for your subnets
       - 1 Virtual Network with 2 subnets
       - 1 Storage Account with 1 Private Endpoint that connects into the 1st Virtual Network Subnet
