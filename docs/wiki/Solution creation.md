@@ -65,6 +65,7 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
     - The deployment of an individual resource is very simple
     - Most CI/CD systems provide you with a visual representation of the deployment flow
     - If deployments fail, you can re-run them individually
+    - The split into individual jobs make them easier to troubleshoot
     - Different deployment jobs can use different principals </p>
 
     _Limitations_
