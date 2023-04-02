@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-Parse an Pester output containing checks & results and generate formatted markdown file out of it.
+Parse a Pester output containing checks & results and generate formatted markdown file out of it.
 
 .DESCRIPTION
 Parse an Pester output containing checks & results and generate formatted markdown file out of it.
