@@ -140,7 +140,7 @@ runs:
         $testResults = Invoke-Pester -Configuration $pesterConfiguration
 
         # ----------------------------------------- #
-        # Greate formatted Pester Test Results File #
+        # Create formatted Pester Test Results File #
         # ----------------------------------------- #
 
         $functionInput = @{
