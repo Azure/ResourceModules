@@ -273,9 +273,7 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
       RequestUrl: 'https://learn.microsoft.com/en-us/'
     }
     tags: {
-      Environment: 'Non-Prod'
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
-      Role: 'DeploymentValidation'
     }
     webTestName: 'wt<<namePrefix>>$iwtmin001'
     // Non-required parameters
@@ -308,9 +306,7 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "Environment": "Non-Prod",
-        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
-        "Role": "DeploymentValidation"
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
       }
     },
     "webTestName": {
