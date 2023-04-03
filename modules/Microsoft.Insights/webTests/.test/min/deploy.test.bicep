@@ -48,8 +48,6 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
