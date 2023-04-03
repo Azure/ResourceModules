@@ -853,6 +853,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         sourceDatabaseResourceId: '<sourceDatabaseResourceId>'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -891,6 +895,12 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           "sourceDatabaseResourceId": "<sourceDatabaseResourceId>"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
