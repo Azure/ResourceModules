@@ -144,9 +144,6 @@ jobs:
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
                 $tokenConfiguration.Tokens['managementGroupId'] = '${{ parameters.managementGroupId }}'
             }
-            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
-                $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
-            }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
                 $tokenConfiguration.Tokens['tenantId'] = '$(ARM_TENANT_ID)'
             }

@@ -127,7 +127,6 @@ runs:
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
-            deploymentSpId    = $servicePrincipalObjectId
           }
 
           # Add local (source control) tokens
