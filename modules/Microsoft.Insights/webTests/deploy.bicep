@@ -1,10 +1,10 @@
-@description('Required. Name of the webtest.')
+@sys.description('Required. Name of the webtest.')
 param name string
 
-@description('Required. User defined name if this WebTest.')
+@sys.description('Required. User defined name if this WebTest.')
 param webTestName string
 
-@sys.description('Optional. Tags of the resource.')
+@sys.description('Required. A single hidden-link tag pointing to an existing AI component is required.')
 param tags object = {}
 
 @sys.description('Required. The collection of request properties.')
@@ -98,7 +98,7 @@ resource webtest 'Microsoft.Insights/webtests@2022-06-15' = {
     Kind: kind
     Locations: locations
     Name: webTestName
-    Description: descriptionWebTest
+    Description: description
     SyntheticMonitorId: syntheticMonitorId
     Enabled: enabled
     Frequency: frequency
@@ -132,14 +132,14 @@ module webtest_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
   }
 }]
 
-@description('The name of the webtest.')
+@sys.description('The name of the webtest.')
 output name string = webtest.name
 
-@description('The resource ID of the webtest.')
+@sys.description('The resource ID of the webtest.')
 output resourceId string = webtest.id
 
-@description('The resource group the resource was deployed into.')
+@sys.description('The resource group the resource was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The location the resource was deployed into.')
+@sys.description('The location the resource was deployed into.')
 output location string = webtest.location

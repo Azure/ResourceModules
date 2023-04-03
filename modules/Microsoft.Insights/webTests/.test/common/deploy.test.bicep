@@ -53,7 +53,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     webTestName: 'wt<<namePrefix>>$${serviceShort}001'
     syntheticMonitorId: '<<namePrefix>>${serviceShort}001'
-    webTestGeolocation: [
+    locations: [
       {
         Id: 'emea-nl-ams-azr'
       }

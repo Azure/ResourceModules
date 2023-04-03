@@ -50,7 +50,7 @@ module testDeployment '../../deploy.bicep' = {
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
-      //'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     webTestName: 'wt<<namePrefix>>$${serviceShort}001'
