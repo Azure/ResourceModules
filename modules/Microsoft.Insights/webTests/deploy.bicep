@@ -14,7 +14,7 @@ param request object
 param location string = resourceGroup().location
 
 @sys.description('Optional. User defined description for this WebTest.')
-param descriptionWebTest string = ''
+param description string = ''
 
 @sys.description('Optional. Unique ID of this WebTest.')
 param syntheticMonitorId string = name
