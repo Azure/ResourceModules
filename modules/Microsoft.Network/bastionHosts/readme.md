@@ -122,7 +122,7 @@ The Public IP Address object to create as part of the module. This will be creat
             {
                 "roleDefinitionIdOrName": "Reader",
                 "principalIds": [
-                    "<<deploymentSpId>>"
+                    "<principalId>"
                 ]
             }
         ],
@@ -158,7 +158,7 @@ publicIPAddressObject: {
         {
             roleDefinitionIdOrName: 'Reader'
             principalIds: [
-                '<<deploymentSpId>>'
+                '<principalId>'
             ]
         }
     ]
