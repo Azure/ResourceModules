@@ -79,7 +79,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-@description('Optional. The topics name which associated with domain.')
+@description('Optional. The topic names which are associated with the domain.')
 param topics array = []
 
 var enableReferencedModulesTelemetry = false
