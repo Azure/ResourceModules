@@ -26,6 +26,7 @@ This module deploys Web Tests.
 | :-- | :-- | :-- |
 | `name` | string | Name of the webtest. |
 | `request` | object | The collection of request properties. |
+| `tags` | object | A single hidden-link tag pointing to an existing AI component is required. |
 | `webTestName` | string | User defined name if this WebTest. |
 
 **Optional parameters**
@@ -33,7 +34,7 @@ This module deploys Web Tests.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `configuration` | object | `{object}` |  | An XML configuration specification for a WebTest. |
-| `descriptionWebTest` | string | `''` |  | User defined description for this WebTest. |
+| `description` | string | `''` |  | User defined description for this WebTest. |
 | `enabled` | bool | `True` |  | Is the test actively being monitored. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `frequency` | int | `300` |  | Interval in seconds between test runs for this WebTest. |
@@ -44,7 +45,6 @@ This module deploys Web Tests.
 | `retryEnabled` | bool | `True` |  | Allow for retries should this WebTest fail. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `syntheticMonitorId` | string | `[parameters('name')]` |  | Unique ID of this WebTest. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeout` | int | `30` |  | Seconds until this WebTest will timeout and fail. |
 | `validationRules` | object | `{object}` |  | The collection of validation rule properties. |
 
@@ -188,16 +188,16 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     webTestName: 'wt<<namePrefix>>$iwtcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    locations: [
+      {
+        Id: 'emea-nl-ams-azr'
+      }
+    ]
     lock: 'CanNotDelete'
     syntheticMonitorId: '<<namePrefix>>iwtcom001'
     tags: {
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
     }
-    webTestGeolocation: [
-      {
-        Id: 'emea-nl-ams-azr'
-      }
-    ]
   }
 }
 ```
@@ -231,6 +231,13 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "locations": {
+      "value": [
+        {
+          "Id": "emea-nl-ams-azr"
+        }
+      ]
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -241,13 +248,6 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
       "value": {
         "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
       }
-    },
-    "webTestGeolocation": {
-      "value": [
-        {
-          "Id": "emea-nl-ams-azr"
-        }
-      ]
     }
   }
 }
@@ -277,6 +277,7 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       Environment: 'Non-Prod'
+      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
       Role: 'DeploymentValidation'
     }
   }
@@ -315,6 +316,7 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     "tags": {
       "value": {
         "Environment": "Non-Prod",
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
         "Role": "DeploymentValidation"
       }
     }
