@@ -185,6 +185,9 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
       HttpVerb: 'GET'
       RequestUrl: 'https://learn.microsoft.com/en-us/'
     }
+    tags: {
+      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
+    }
     webTestName: 'wt<<namePrefix>>$iwtcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -195,9 +198,6 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     ]
     lock: 'CanNotDelete'
     syntheticMonitorId: '<<namePrefix>>iwtcom001'
-    tags: {
-      'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
-    }
   }
 }
 ```
@@ -224,6 +224,11 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
         "RequestUrl": "https://learn.microsoft.com/en-us/"
       }
     },
+    "tags": {
+      "value": {
+        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
+      }
+    },
     "webTestName": {
       "value": "wt<<namePrefix>>$iwtcom001"
     },
@@ -243,11 +248,6 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
     },
     "syntheticMonitorId": {
       "value": "<<namePrefix>>iwtcom001"
-    },
-    "tags": {
-      "value": {
-        "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource"
-      }
     }
   }
 }
@@ -272,14 +272,14 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
       HttpVerb: 'GET'
       RequestUrl: 'https://learn.microsoft.com/en-us/'
     }
-    webTestName: 'wt<<namePrefix>>$iwtmin001'
-    // Non-required parameters
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       Environment: 'Non-Prod'
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
       Role: 'DeploymentValidation'
     }
+    webTestName: 'wt<<namePrefix>>$iwtmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
 ```
@@ -306,19 +306,19 @@ module webTests './Microsoft.Insights/webTests/deploy.bicep' = {
         "RequestUrl": "https://learn.microsoft.com/en-us/"
       }
     },
-    "webTestName": {
-      "value": "wt<<namePrefix>>$iwtmin001"
-    },
-    // Non-required parameters
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "hidden-link:${nestedDependencies.outputs.appInsightResourceId}": "Resource",
         "Role": "DeploymentValidation"
       }
+    },
+    "webTestName": {
+      "value": "wt<<namePrefix>>$iwtmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     }
   }
 }
