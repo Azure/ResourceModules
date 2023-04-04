@@ -193,13 +193,6 @@ param hyperV bool = false
 param redundancyMode string = 'None'
 
 @description('Optional. The site publishing credential policy names which are associated with the sites.')
-/*
-@allowed([
-  'scm'
-  'ftp'
-])
-*/
-
 param basicPublishingCredentialsPolicies array = []
 
 // =========== //
@@ -370,7 +363,7 @@ module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicie
   name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred-${index}'
   params: {
     webAppName: app.name
-    name: basicPublishingCredentialsPolicy
+    name: basicPublishingCredentialsPolicy.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
