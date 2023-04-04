@@ -152,7 +152,7 @@ output serviceBusTopicName string = serviceBus::topic.name
 
 output eventGridDomainName string = eventGridDomain.name
 
-output eventGridTopicName string = eventGridTopic.name
+output eventGridTopicName string = eventGrid::topic.name
 
 output eventGridEndpoint string = eventGridDomain.properties.endpoint
 
