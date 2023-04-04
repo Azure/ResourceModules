@@ -85,11 +85,6 @@ eventhubEndpoint: {
 
 </details>
 <p>
-
-
-
-
-
 ## Outputs
 
 | Output Name | Type | Description |
