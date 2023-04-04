@@ -30,7 +30,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' existing = {
   name: webAppName
 }
 
-resource sitePublishingCredPolicies 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+resource basicPublishingCredentialsPolicy 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
   name: name
   location: location
   parent: webApp
