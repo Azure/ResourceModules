@@ -39,7 +39,6 @@ module nestedDependencies 'dependencies.bicep' = {
     serviceBusName: 'dt-${uniqueString(serviceShort)}-sb-01'
     serviceBusTopicName: 'dt-${uniqueString(serviceShort)}-sbtp-01'
     eventGridDomainName: 'dt-${uniqueString(serviceShort)}-evg-01'
-    eventGridTopicName: 'dt-${uniqueString(serviceShort)}-evgtp-01'
   }
 }
 

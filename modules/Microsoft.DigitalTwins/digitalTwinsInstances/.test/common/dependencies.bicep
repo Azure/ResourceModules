@@ -22,8 +22,6 @@ param serviceBusTopicName string
 @description('Required. Event Grid Domain name.')
 param eventGridDomainName string
 
-@description('Required. Event Grid Topic name.')
-param eventGridTopicName string
 
 var addressPrefix = '10.0.0.0/16'
 
@@ -107,7 +105,7 @@ resource eventGridDomain 'Microsoft.EventGrid/domains@2022-06-15' = {
     }
 
     resource topic 'topics@2022-06-15' = {
-        name: eventGridTopicName
+        name: 'topic'
     }
 }
 
