@@ -68,22 +68,22 @@ module testDeployment '../../deploy.bicep' = {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.eventhubNamespaceName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.eventhubName
-      userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
+      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     }
     serviceBusEndpoint: {
       authenticationType: 'IdentityBased'
       endpointUri: 'sb://${nestedDependencies.outputs.serviceBusName}.servicebus.windows.net/'
       entityPath: nestedDependencies.outputs.serviceBusTopicName
-      userAssignedIdentity: nestedDependencies.outputs.managedIdentityId
+      userAssignedIdentity: nestedDependencies.outputs.managedIdentityResourceId
     }
     eventGridEndpoint: {
-      eventGridDomainId: nestedDependencies.outputs.eventGridDomainId
+      eventGridDomainId: nestedDependencies.outputs.eventGridDomainResourceId
       topicEndpoint: nestedDependencies.outputs.eventGridEndpoint
     }
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     userAssignedIdentities: {
-      '${nestedDependencies.outputs.managedIdentityId}': {}
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
@@ -95,18 +95,18 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceId
+            nestedDependencies.outputs.privateDNSResourceResourceId
           ]
         }
         service: 'API'
-        subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceResourceId
       }
     ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
+          nestedDependencies.outputs.managedIdentityPrincipalResourceId
         ]
         principalType: 'ServicePrincipal'
       }
