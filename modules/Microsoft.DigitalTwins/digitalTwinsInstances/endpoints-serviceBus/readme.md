@@ -8,7 +8,6 @@ This module deploys Digital Twin Instance Endpoints.
   - [Navigation](#navigation)
   - [Resource Types](#resource-types)
   - [Parameters](#parameters)
-    - [Parameter Usage: `serviceBusEndpoint`](#parameter-usage-servicebusendpoint)
   - [Outputs](#outputs)
   - [Cross-referenced modules](#cross-referenced-modules)
 
@@ -41,53 +40,6 @@ This module deploys Digital Twin Instance Endpoints.
 | `secondaryConnectionString` | securestring | `''` | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
 | `systemAssignedIdentity` | string | `false` | Enables system assigned managed identity on the resource. |
 | `userAssignedIdentity` | string | `''` | The ID to assign to the resource. |
-
-
-### Parameter Usage: `serviceBusEndpoint`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"serviceBusEndpoint": {
-    "value": {
-        "authenticationType": "IdentityBased", // IdentityBased or KeyBased
-        "name": "<Endpoint Name>",
-        "entityPath": "sb1", // Event Hub Name
-        "endpointUri": "sb://xyz.servicebus.windows.net", //Event Hub namespace, including sb://
-        "deadLetterUri": "",
-        "deadLetterSecret": "",
-        "connectionStringPrimaryKey": "", //Keybased Auth
-        "connectionStringSecondaryKey": "" //Keybased Auth
-    }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-serviceBusEndpoint: {
-  authenticationType: 'IdentityBased' // IdentityBased or KeyBased
-  name: '<Endpoint Name>'
-  entityPath: 'evh1' // Event Hub Name
-  endpointUri: 'sb://xyz.servicebus.windows.net' //Event Hub namespace, including sb://
-  deadLetterUri: ''
-  deadLetterSecret: ''
-  connectionStringPrimaryKey: '' //Keybased Auth
-  connectionStringSecondaryKey: '' //Keybased Auth
-}
-  ```
-
-</details>
-<p>
-
-
 
 ## Outputs
 
