@@ -193,7 +193,11 @@ param hyperV bool = false
 param redundancyMode string = 'None'
 
 @description('Optional. The site publishing credential policy names which are associated with the sites.')
-param basicPublishingCredentialsPolicies array = []
+@allowed([
+  'scm'
+  'ftp'
+])
+param basicPublishingCredentialsPolicyName string
 
 // =========== //
 // Variables   //
@@ -359,13 +363,15 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
   }
 }]
 
-module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicies/deploy.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
-  name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred-${index}'
+//[for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies:
+
+module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred' //-${index}'
   params: {
     webAppName: app.name
-    name: basicPublishingCredentialsPolicy.name
+    name: basicPublishingCredentialsPolicyName
   }
-}]
+}
 
 resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'

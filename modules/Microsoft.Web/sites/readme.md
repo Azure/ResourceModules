@@ -45,7 +45,7 @@ This module deploys a web or function app.
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
-| `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basicPublishingCredentialsPolicies/readme.md)_ array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
+| `basicPublishingCredentialsPolicyName` | string |  | `[ftp, scm]` | The site publishing credential policy names which are associated with the sites. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
@@ -825,14 +825,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wswa'
   params: {
     // Required parameters
+    basicPublishingCredentialsPolicyName: 'ftp'
     kind: 'app'
     name: '<<namePrefix>>wswa001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
-    basicPublishingCredentialsPolicies: [
-      'ftp'
-      'scm'
-    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -940,6 +937,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
+    "basicPublishingCredentialsPolicyName": {
+      "value": "ftp"
+    },
     "kind": {
       "value": "app"
     },
@@ -950,12 +950,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
-    "basicPublishingCredentialsPolicies": {
-      "value": [
-        "ftp",
-        "scm"
-      ]
-    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -1093,7 +1087,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     kind: 'app'
     name: '<<namePrefix>>wswamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
-    // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -1121,7 +1114,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
     },
-    // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
