@@ -154,7 +154,13 @@ module testDeployment '../../deploy.bicep' = {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
     basicPublishingCredentialsPolicies: [
-      'ftp'
+      {
+        name: 'ftp'
+      }
+      {
+        nam: 'scm'
+      }
+
     ]
   }
 }

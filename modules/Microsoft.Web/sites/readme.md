@@ -45,7 +45,7 @@ This module deploys a web or function app.
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
-| `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basicPublishingCredentialsPolicies/readme.md)_ array | `[]` | `[ftp, scm]` | The site publishing credential policy names which are associated with the sites. |
+| `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basicPublishingCredentialsPolicies/readme.md)_ array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
@@ -830,7 +830,12 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
-      'ftp'
+      {
+        name: 'ftp'
+      }
+      {
+        nam: 'scm'
+      }
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -951,7 +956,12 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     // Non-required parameters
     "basicPublishingCredentialsPolicies": {
       "value": [
-        "ftp"
+        {
+          "name": "ftp"
+        },
+        {
+          "nam": "scm"
+        }
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
