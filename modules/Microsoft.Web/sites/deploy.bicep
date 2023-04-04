@@ -363,7 +363,7 @@ module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicie
   name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred-${index}'
   params: {
     webAppName: app.name
-    name: sitePublishingCredPolicyName
+    name: basicPublishingCredentialsPolicy.name
   }
 }]
 
