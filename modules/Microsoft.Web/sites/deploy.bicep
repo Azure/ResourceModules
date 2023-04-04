@@ -192,6 +192,9 @@ param hyperV bool = false
 ])
 param redundancyMode string = 'None'
 
+@description('Optional. The site publishing credential policy names which are associated with the sites.')
+param basicPublishingCredentialsPolicies array = []
+
 // =========== //
 // Variables   //
 // =========== //
@@ -353,6 +356,15 @@ module app_slots 'slots/deploy.bicep' = [for (slot, index) in slots: {
     vnetContentShareEnabled: contains(slot, 'vnetContentShareEnabled') ? slot.vnetContentShareEnabled : false
     vnetImagePullEnabled: contains(slot, 'vnetImagePullEnabled') ? slot.vnetImagePullEnabled : false
     vnetRouteAllEnabled: contains(slot, 'vnetRouteAllEnabled') ? slot.vnetRouteAllEnabled : false
+  }
+}]
+
+module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicies/deploy.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
+  name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred-${index}'
+  params: {
+    webAppName: app.name
+    name: basicPublishingCredentialsPolicy.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
