@@ -834,7 +834,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         name: 'ftp'
       }
       {
-        nam: 'scm'
+        name: 'scm'
       }
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -960,7 +960,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           "name": "ftp"
         },
         {
-          "nam": "scm"
+          "name": "scm"
         }
       ]
     },
