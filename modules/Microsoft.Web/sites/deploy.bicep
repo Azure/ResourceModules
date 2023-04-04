@@ -368,6 +368,7 @@ module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicie
   params: {
     webAppName: app.name
     name: basicPublishingCredentialsPolicy
+  enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
