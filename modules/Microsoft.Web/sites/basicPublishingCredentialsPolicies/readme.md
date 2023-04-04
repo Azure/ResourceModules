@@ -37,17 +37,13 @@ This module deploys Web Sites Basic Publishing Credentials Policies.
 | `location` | string | `[resourceGroup().location]` | Location for all Resources. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the basic publishing credential policy. |
-| `resourceGroupName` | string | The name of the resource group the event grid topic was deployed into. |
+| `resourceGroupName` | string | The name of the resource group the basic publishing credential policy was deployed into. |
 | `resourceId` | string | The resource ID of the basic publishing credential policy. |
 
 ## Cross-referenced modules

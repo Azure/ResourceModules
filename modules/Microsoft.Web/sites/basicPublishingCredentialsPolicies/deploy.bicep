@@ -40,13 +40,13 @@ resource basicPublishingCredentialsPolicy 'Microsoft.Web/sites/basicPublishingCr
 }
 
 @sys.description('The name of the basic publishing credential policy.')
-output name string = sitePublishingCredPolicies.name
+output name string = basicPublishingCredentialsPolicy.name
 
 @sys.description('The resource ID of the basic publishing credential policy.')
-output resourceId string = sitePublishingCredPolicies.id
+output resourceId string = basicPublishingCredentialsPolicy.id
 
 @sys.description('The name of the resource group the basic publishing credential policy was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @sys.description('The location the resource was deployed into.')
-output location string = sitePublishingCredPolicies.location
+output location string = basicPublishingCredentialsPolicy.location

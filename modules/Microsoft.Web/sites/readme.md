@@ -45,6 +45,7 @@ This module deploys a web or function app.
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
+| `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basicPublishingCredentialsPolicies/readme.md)_ array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
@@ -74,7 +75,6 @@ This module deploys a web or function app.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `siteConfig` | object | `{object}` |  | The site config object. |
-| `sitePublishingCredPolicyNames` | array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
 | `slots` | _[slots](slots/readme.md)_ array | `[]` |  | Configuration for deployment slots for an app. |
 | `storageAccountRequired` | bool | `False` |  | Checks if Customer provided storage account is required. |
 | `storageAccountResourceId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
@@ -829,6 +829,10 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     name: '<<namePrefix>>wswa001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
+    basicPublishingCredentialsPolicies: [
+      'ftp'
+      'scm'
+    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -869,10 +873,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
       ]
     }
-    sitePublishingCredPolicyNames: [
-      'ftp'
-      'scm'
-    ]
     slots: [
       {
         diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -950,6 +950,12 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
+    "basicPublishingCredentialsPolicies": {
+      "value": [
+        "ftp",
+        "scm"
+      ]
+    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -1009,12 +1015,6 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           }
         ]
       }
-    },
-    "sitePublishingCredPolicyNames": {
-      "value": [
-        "ftp",
-        "scm"
-      ]
     },
     "slots": {
       "value": [
