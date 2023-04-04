@@ -93,11 +93,10 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
     properties: {
         zoneRedundant: false
     }
-}
 
-resource serviceBusTopic 'Microsoft.ServiceBus/namespaces/topics@2022-10-01-preview' = {
-    name: serviceBusTopicName
-    parent: serviceBus
+    resource topic 'topics@2022-10-01-preview' = {
+        name: serviceBusTopicName
+    }
 }
 
 resource eventGridDomain 'Microsoft.EventGrid/domains@2022-06-15' = {
