@@ -158,7 +158,7 @@ module testDeployment '../../deploy.bicep' = {
         name: 'ftp'
       }
       {
-        nam: 'scm'
+        name: 'scm'
       }
 
     ]
