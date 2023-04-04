@@ -58,7 +58,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name: 'privatelink.vaultcore.azure.net'
+    name: 'privatelink.digitaltwins.azure.net'
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {
