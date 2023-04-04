@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.OperationalInsights/workspaces/**'
+      - 'modules/Microsoft.OperationsManagement/solutions/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
-      - 'modules/Microsoft.OperationalInsights/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'

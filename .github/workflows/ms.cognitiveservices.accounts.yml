@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.CognitiveServices/accounts/**'
+      - 'modules/Microsoft.Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cognitiveservices.accounts.yml'
-      - 'modules/Microsoft.CognitiveServices/accounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'

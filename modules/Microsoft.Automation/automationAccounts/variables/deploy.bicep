@@ -4,7 +4,8 @@ param automationAccountName string
 @sys.description('Required. The name of the variable.')
 param name string
 
-@sys.description('Required. The value of the variable.')
+@secure()
+@sys.description('Required. The value of the variable. For security best practices, this value is always passed as a secure string as it could contain an encrypted value when the "isEncrypted" property is set to true.')
 param value string
 
 @sys.description('Optional. The description of the variable.')
@@ -28,11 +29,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2021-06-22' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
   name: automationAccountName
 }
 
-resource variable 'Microsoft.Automation/automationAccounts/variables@2020-01-13-preview' = {
+resource variable 'Microsoft.Automation/automationAccounts/variables@2022-08-08' = {
   name: name
   parent: automationAccount
   properties: {

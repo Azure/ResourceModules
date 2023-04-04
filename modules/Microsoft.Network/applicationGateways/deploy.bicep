@@ -329,9 +329,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' =
         capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? null : capacity
       }
       sslCertificates: sslCertificates
-      sslPolicy: {
+      sslPolicy: sslPolicyType != 'Predefined' ? {
         cipherSuites: sslPolicyCipherSuites
         minProtocolVersion: sslPolicyMinProtocolVersion
+        policyName: empty(sslPolicyName) ? null : sslPolicyName
+        policyType: sslPolicyType
+      } : {
         policyName: empty(sslPolicyName) ? null : sslPolicyName
         policyType: sslPolicyType
       }
