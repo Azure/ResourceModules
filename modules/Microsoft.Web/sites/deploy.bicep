@@ -193,7 +193,7 @@ param hyperV bool = false
 param redundancyMode string = 'None'
 
 @description('Optional. The site publishing credential policy names which are associated with the sites.')
-param sitePublishingCredPolicyNames array = []
+param basicPublishingCredentialsPolicies array = []
 
 // =========== //
 // Variables   //
