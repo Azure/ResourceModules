@@ -7,8 +7,8 @@ param digitalTwinInstanceName string
 @description('Required. EventGrid Topic Endpoint.')
 param topicEndpoint string
 
-@description('Required. Event Grid Resource Id.')
-param eventGridDomainId string
+@description('Required. The resource ID of the Event Grid to get access keys from.')
+param eventGridDomainResourceId string
 
 @description('Optional. Dead letter storage secret for key-based authentication. Will be obfuscated during read.')
 @secure()
