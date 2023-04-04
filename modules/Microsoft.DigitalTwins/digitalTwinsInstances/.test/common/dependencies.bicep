@@ -142,9 +142,9 @@ output privateDNSResourceId string = privateDNSZone.id
 
 output eventhubNamespaceName string = eventHubNamespace.name
 
-output eventHubId string = eventHub.id
+output eventHubId string = eventHubNamespace::eventHub.id
 
-output eventhubName string = eventHub.name
+output eventhubName string = eventHubNamespace::eventHub.name
 
 output serviceBusName string = serviceBus.name
 
@@ -152,7 +152,7 @@ output serviceBusTopicName string = serviceBus::topic.name
 
 output eventGridEndpoint string = eventGridDomain.properties.endpoint
 
-output eventGridTopicResourceId string = eventGrid::topic.id
+output eventGridTopicResourceId string = eventGridDomain::topic.id
 
 output eventGridDomainId string = eventGridDomain.id
 
