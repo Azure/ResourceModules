@@ -121,7 +121,7 @@ resource eventHubNamespaceRbacAssignment 'Microsoft.Authorization/roleAssignment
     }
 }
 
-resource sbhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource serviceBusRbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(managedIdentity.id, 'sbrbacAssignment')
     scope: serviceBus
     properties: {
