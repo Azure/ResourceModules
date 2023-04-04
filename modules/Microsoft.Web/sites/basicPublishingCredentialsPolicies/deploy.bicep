@@ -45,7 +45,7 @@ output name string = sitePublishingCredPolicies.name
 @sys.description('The resource ID of the basic publishing credential policy.')
 output resourceId string = sitePublishingCredPolicies.id
 
-@sys.description('The name of the resource group the event grid topic was deployed into.')
+@sys.description('The name of the resource group the basic publishing credential policy was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @sys.description('The location the resource was deployed into.')
