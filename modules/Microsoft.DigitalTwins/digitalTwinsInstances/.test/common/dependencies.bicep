@@ -150,10 +150,6 @@ output serviceBusName string = serviceBus.name
 
 output serviceBusTopicName string = serviceBus::topic.name
 
-output eventGridDomainName string = eventGridDomain.name
-
-output eventGridTopicName string = eventGrid::topic.name
-
 output eventGridEndpoint string = eventGridDomain.properties.endpoint
 
 output eventGridTopicId string = eventGridTopic.id
