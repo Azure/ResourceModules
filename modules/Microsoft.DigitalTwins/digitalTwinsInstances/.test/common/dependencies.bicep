@@ -105,11 +105,10 @@ resource eventGridDomain 'Microsoft.EventGrid/domains@2022-06-15' = {
     properties: {
         disableLocalAuth: false
     }
-}
 
-resource eventGridTopic 'Microsoft.EventGrid/domains/topics@2022-06-15' = {
-    name: eventGridTopicName
-    parent: eventGridDomain
+    resource topic 'topics@2022-06-15' = {
+        name: eventGridTopicName
+    }
 }
 
 resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
