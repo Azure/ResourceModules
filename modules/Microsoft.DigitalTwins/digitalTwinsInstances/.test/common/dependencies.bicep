@@ -81,11 +81,10 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' = 
         isAutoInflateEnabled: false
         maximumThroughputUnits: 0
     }
-}
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-10-01-preview' = {
-    name: eventHubName
-    parent: eventHubNamespace
+    resource eventHub 'eventhubs@2022-10-01-preview' = {
+        name: eventHubName
+    }
 }
 
 resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
