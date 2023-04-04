@@ -1,6 +1,6 @@
 # Web Sites BasicPublishingCredentialsPolicies `[Microsoft.Web/sites/basicPublishingCredentialsPolicies]`
 
-This module deploys Web Sites BasicPublishingCredentialsPolicies.
+This module deploys Web Sites Basic Publishing Credentials Policies.
 
 ## Navigation
 
