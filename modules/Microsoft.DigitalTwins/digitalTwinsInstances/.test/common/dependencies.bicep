@@ -111,7 +111,7 @@ resource eventGridDomain 'Microsoft.EventGrid/domains@2022-06-15' = {
     }
 }
 
-resource evhrbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource eventHubNamespaceRbacAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(managedIdentity.id, 'evhrbacAssignment')
     scope: eventHubNamespace
     properties: {
