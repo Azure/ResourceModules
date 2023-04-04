@@ -1,7 +1,6 @@
 # Web Sites BasicPublishingCredentialsPolicies `[Microsoft.Web/sites/basicPublishingCredentialsPolicies]`
 
 This module deploys Web Sites BasicPublishingCredentialsPolicies.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
