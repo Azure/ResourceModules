@@ -24,6 +24,7 @@ This module deploys Digital Twin Instance Endpoints.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `digitalTwinInstanceName` | string | The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment. |
+| `primaryConnectionString` | securestring | `''` | PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Required if the `authenticationType` is "KeyBased". |
 
 **Optional parameters**
 

@@ -24,6 +24,8 @@ This module deploys Digital Twin Instance Endpoints.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `digitalTwinInstanceName` | string | The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment. |
+| `primaryConnectionString` | securestring | `''` | PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Required if the `authenticationType` is "KeyBased". |
+
 
 **Optional parameters**
 
@@ -36,7 +38,6 @@ This module deploys Digital Twin Instance Endpoints.
 | `endpointUri` | string | `''` | The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'. |
 | `entityPath` | string | `''` | The ServiceBus Topic name for identity-based authentication. |
 | `name` | string | `'ServiceBusEndpoint'` | The name of the Digital Twin Endpoint. |
-| `primaryConnectionString` | securestring | `''` | PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
 | `secondaryConnectionString` | securestring | `''` | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
 | `systemAssignedIdentity` | string | `false` | Enables system assigned managed identity on the resource. |
 | `userAssignedIdentity` | string | `''` | The ID to assign to the resource. |

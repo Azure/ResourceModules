@@ -24,7 +24,7 @@ param endpointUri string = ''
 @description('Optional. The ServiceBus Topic name for identity-based authentication.')
 param entityPath string = ''
 
-@description('Optional. PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.')
+@description('Conditional. PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Required if the `authenticationType` is "KeyBased".')
 @secure()
 param primaryConnectionString string = ''
 

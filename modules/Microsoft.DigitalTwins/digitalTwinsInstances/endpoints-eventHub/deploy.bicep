@@ -18,7 +18,7 @@ param deadLetterSecret string = ''
 @description('Optional. Dead letter storage URL for identity-based authentication.')
 param deadLetterUri string = ''
 
-@description('Optional. PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.')
+@description('Conditional. PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Required if the `authenticationType` is "KeyBased".')
 @secure()
 param connectionStringPrimaryKey string = ''
 
