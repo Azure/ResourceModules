@@ -156,7 +156,7 @@ output eventGridTopicName string = eventGrid::topic.name
 
 output eventGridEndpoint string = eventGridDomain.properties.endpoint
 
-output eventGridTopicId string = eventGridTopic.id
+output eventGridTopicResourceId string = eventGrid::topic.id
 
 output eventGridDomainId string = eventGridDomain.id
 
