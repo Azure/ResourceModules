@@ -130,17 +130,17 @@ resource serviceBusRbacAssignment 'Microsoft.Authorization/roleAssignments@2022-
 }
 
 @description('The resource ID of the created Virtual Network Subnet.')
-output subnetResourceResourceId string = virtualNetwork.properties.subnets[0].id
+output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalResourceId string = managedIdentity.properties.principalId
 
 @description('The resource ID of the created Private DNS Zone.')
-output privateDNSResourceResourceId string = privateDNSZone.id
+output privateDNSResourceId string = privateDNSZone.id
 
 output eventhubNamespaceName string = eventHubNamespace.name
 
-output eventHubResourceResourceId string = eventHubNamespace::eventHub.id
+output eventHubResourceId string = eventHubNamespace::eventHub.id
 
 output eventhubName string = eventHubNamespace::eventHub.name
 

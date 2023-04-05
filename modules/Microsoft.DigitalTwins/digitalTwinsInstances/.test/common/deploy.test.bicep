@@ -95,11 +95,11 @@ module testDeployment '../../deploy.bicep' = {
       {
         privateDnsZoneGroup: {
           privateDNSResourceIds: [
-            nestedDependencies.outputs.privateDNSResourceResourceId
+            nestedDependencies.outputs.privateDNSResourceId
           ]
         }
         service: 'API'
-        subnetResourceId: nestedDependencies.outputs.subnetResourceResourceId
+        subnetResourceId: nestedDependencies.outputs.subnetResourceId
       }
     ]
     roleAssignments: [
