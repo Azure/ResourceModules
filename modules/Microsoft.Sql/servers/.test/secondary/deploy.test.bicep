@@ -33,7 +33,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    serverName: '<<namePrefix>>-${serviceShort}-pri'
+    serverName: 'dep-<<namePrefix>>-${serviceShort}-pri'
   }
 }
 
@@ -58,5 +58,9 @@ module testDeployment '../../deploy.bicep' = {
         sourceDatabaseResourceId: nestedDependencies.outputs.databaseResourceId
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
