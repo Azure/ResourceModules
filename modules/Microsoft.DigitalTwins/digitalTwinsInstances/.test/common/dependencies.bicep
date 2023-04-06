@@ -138,20 +138,29 @@ output managedIdentityPrincipalResourceId string = managedIdentity.properties.pr
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSResourceId string = privateDNSZone.id
 
+@description('The name of the Event Hub Namespace.')
 output eventhubNamespaceName string = eventHubNamespace.name
 
+@description('The resource ID of the created Event Hub Namespace.')
 output eventHubResourceId string = eventHubNamespace::eventHub.id
 
+@description('The name of the Event Hub.')
 output eventhubName string = eventHubNamespace::eventHub.name
 
+@description('The name of the Service Bus Namespace.')
 output serviceBusName string = serviceBus.name
 
+@description('The name of the Service Bus Topic.')
 output serviceBusTopicName string = serviceBus::topic.name
 
+@description('The Event Grid endpoint uri.')
 output eventGridEndpoint string = eventGridDomain.properties.endpoint
 
+@description('The resource ID of the created Event Grid Topic.')
 output eventGridTopicResourceId string = eventGridDomain::topic.id
 
+@description('The resource ID of the created Event Grid Domain.')
 output eventGridDomainResourceId string = eventGridDomain.id
 
+@description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
