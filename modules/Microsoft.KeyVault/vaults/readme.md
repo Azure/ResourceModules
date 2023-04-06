@@ -15,6 +15,7 @@ This module deploys a key vault and its child resources.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KeyVault/vaults` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2022-07-01/vaults) |
@@ -57,6 +58,7 @@ This module deploys a key vault and its child resources.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
+| `policyExemptions` | array | `[]` |  | Array of policy exemption objects that contain the \'name\' and \'policyAssignmentId\' to policy exemptions on this resource.<p><p>Exemptions have extra security measures because of the impact of granting an exemption.<p><p>Beyond requiring the Microsoft.Authorization/policyExemptions/write operation on the resource hierarchy or individual resource,<p>the creator of an exemption must have the exempt/Action verb on the target assignment which could be at the Management Group, Subscription, or Resource Group levels.<p><p>The built-in roles Resource Policy Contributor and Security Admin both have the read and write permissions.<p> |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -506,6 +508,16 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
       ]
     }
+    policyExemptions: [
+      {
+        assignmentScopeValidation: 'DoNotValidate'
+        description: 'Test Policy Exemption 1'
+        displayName: '<<namePrefix>>kvvcom001 Policy Exception'
+        exemptionCategory: 'Waiver'
+        name: '<<namePrefix>>kvvcom001-PolicyExemption001'
+        policyAssignmentId: '<policyAssignmentId>'
+      }
+    ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -689,6 +701,18 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           }
         ]
       }
+    },
+    "policyExemptions": {
+      "value": [
+        {
+          "assignmentScopeValidation": "DoNotValidate",
+          "description": "Test Policy Exemption 1",
+          "displayName": "<<namePrefix>>kvvcom001 Policy Exception",
+          "exemptionCategory": "Waiver",
+          "name": "<<namePrefix>>kvvcom001-PolicyExemption001",
+          "policyAssignmentId": "<policyAssignmentId>"
+        }
+      ]
     },
     "privateEndpoints": {
       "value": [
