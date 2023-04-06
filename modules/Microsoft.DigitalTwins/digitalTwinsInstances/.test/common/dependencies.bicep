@@ -16,12 +16,8 @@ param eventHubName string
 @description('Required. Service Bus name')
 param serviceBusName string
 
-@description('Required. Service Bus topic name.')
-param serviceBusTopicName string
-
 @description('Required. Event Grid Domain name.')
 param eventGridDomainName string
-
 
 var addressPrefix = '10.0.0.0/16'
 
@@ -93,7 +89,7 @@ resource serviceBus 'Microsoft.ServiceBus/namespaces@2022-10-01-preview' = {
     }
 
     resource topic 'topics@2022-10-01-preview' = {
-        name: serviceBusTopicName
+        name: 'topic'
     }
 }
 
