@@ -13,7 +13,7 @@ This module deploys an Sql Servers Encryption Protector.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/encryptionProtector` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-11-01/servers/encryptionProtector) |
+| `Microsoft.Sql/servers/encryptionProtector` | [2022-08-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Sql/servers/encryptionProtector) |
 
 ## Parameters
 
@@ -27,7 +27,7 @@ This module deploys an Sql Servers Encryption Protector.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `sqlServerName` | string | The name of the sql server. |
+| `sqlServerName` | string | The name of the sql server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -35,7 +35,7 @@ This module deploys an Sql Servers Encryption Protector.
 | :-- | :-- | :-- | :-- | :-- |
 | `autoRotationEnabled` | bool | `False` |  | Key auto rotation opt-in. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
+| `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type. |
 
 
 ## Outputs

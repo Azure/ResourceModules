@@ -78,12 +78,6 @@ runs:
         # Set repo root path
         $repoRootPath = $env:GITHUB_WORKSPACE
 
-        # # Get Service Principal Object ID
-        # $context = Get-AzContext
-        # $servicePrincipalAppId = $context.Account.Id
-        # $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-        # $servicePrincipalObjectId = $servicePrincipal.Id
-
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -108,9 +102,6 @@ runs:
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
           $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
-        # if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-        #   $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
-        # }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
           $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }

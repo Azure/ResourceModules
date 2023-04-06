@@ -22,6 +22,7 @@ This module deploys a web or function app.
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Web/sites` | [2021-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites) |
+| `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/slots` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots) |
 | `Microsoft.Web/sites/slots/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
@@ -44,6 +45,7 @@ This module deploys a web or function app.
 | `appServiceEnvironmentResourceId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
+| `basicPublishingCredentialsPolicies` | _[basicPublishingCredentialsPolicies](basicPublishingCredentialsPolicies/readme.md)_ array | `[]` |  | The site publishing credential policy names which are associated with the sites. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
@@ -827,6 +829,14 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
     name: '<<namePrefix>>wswa001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
+    basicPublishingCredentialsPolicies: [
+      {
+        name: 'ftp'
+      }
+      {
+        name: 'scm'
+      }
+    ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -944,6 +954,16 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
       "value": "<serverFarmResourceId>"
     },
     // Non-required parameters
+    "basicPublishingCredentialsPolicies": {
+      "value": [
+        {
+          "name": "ftp"
+        },
+        {
+          "name": "scm"
+        }
+      ]
+    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },

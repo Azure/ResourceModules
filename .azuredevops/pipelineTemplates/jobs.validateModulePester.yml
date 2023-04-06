@@ -112,12 +112,6 @@ jobs:
             # Set repo root path
             $repoRootPath = '$(System.DefaultWorkingDirectory)'
 
-            # Get Service Principal Object ID
-            $context = Get-AzContext
-            $servicePrincipalAppId = $context.Account.Id
-            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-            $servicePrincipalObjectId = $servicePrincipal.Id
-
             # Build path
             # Set test input module path
             $moduleFolderPaths = @(Join-Path $repoRootPath '${{ parameters.modulePath }}')
@@ -143,9 +137,6 @@ jobs:
             }
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
                 $tokenConfiguration.Tokens['managementGroupId'] = '${{ parameters.managementGroupId }}'
-            }
-            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
-                $tokenConfiguration.Tokens['deploymentSpId'] = $servicePrincipalObjectId
             }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
                 $tokenConfiguration.Tokens['tenantId'] = '$(ARM_TENANT_ID)'
