@@ -461,7 +461,7 @@ jobs:
           fetch-depth: 0
 
      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
 
