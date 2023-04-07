@@ -82,12 +82,12 @@ runs:
 
     # [Set environment] task(s)
     # ---------------
-    - name: 'Set environment'
+    - name: 'Set environment variables'
       id: set-env-variables
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output '::group::Set environment'
+        Write-Output '::group::Set environment variables'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Add-YamlListToFile.ps1')
