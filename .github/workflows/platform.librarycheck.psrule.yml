@@ -18,7 +18,7 @@ jobs:
       # Analyze module library with PSRule
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set environment variables
+      - name: Set environment
         uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}

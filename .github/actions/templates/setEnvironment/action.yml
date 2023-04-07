@@ -1,5 +1,5 @@
 #########################################################
-## 'Set environment variables' Composite Action                   ##
+## 'Set environment' Composite Action                   ##
 #########################################################
 ##
 ## This composite action contains the logic to read a YAML file containing a list (dictionary) of key-value pairs and convert each key as an environment variable.
@@ -21,8 +21,8 @@
 ##
 ##---------------------------------------------##
 
-name: 'Set Environment Variables'
-description: 'Set Environment Variables'
+name: 'Set environment'
+description: 'Set environment'
 
 inputs:
   variablesPath:
@@ -80,14 +80,14 @@ runs:
 
         Write-Output '::endgroup::'
 
-    # [Set environment variables] task(s)
+    # [Set environment] task(s)
     # ---------------
-    - name: 'Set environment variables'
+    - name: 'Set environment'
       id: set-env-variables
       shell: pwsh
       run: |
         # Grouping task logs
-        Write-Output '::group::Set environment variables'
+        Write-Output '::group::Set environment'
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Add-YamlListToFile.ps1')

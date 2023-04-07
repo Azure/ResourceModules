@@ -422,7 +422,7 @@ The example executes one job that creates a Resource group, an NSG and a VNet.
 
 It does so by performing the following tasks
 1. Checkout 'Azure/ResourceModules' repo at root of the agent
-1. Set environment variables for the agent
+1. Set environment for the agent
 1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
 1. Deploy resource group in target Azure subscription
 1. Deploy network security group
@@ -460,7 +460,7 @@ jobs:
           repository: 'Azure/ResourceModules'
           fetch-depth: 0
 
-     - name: Set environment variables
+     - name: Set environment
         uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
