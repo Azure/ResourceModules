@@ -28,7 +28,7 @@ jobs:
   #########################
   #   Static validation   #
   #########################
-  job_module_static_validation: # Note: Please don't change this job name. It is used by the set Environment step to define which PS modules to install on runners.
+  job_module_static_validation: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'Static validation'
     runs-on: ubuntu-20.04
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
@@ -50,7 +50,7 @@ jobs:
   #########################
   #   PSRule validation   #
   #########################
-  job_psrule_test: # Note: Please don't change this job name. It is used by the set Environment step to define which PS modules to install on runners.
+  job_psrule_test: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'PSRule validation'
     runs-on: ubuntu-20.04
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
@@ -75,7 +75,7 @@ jobs:
   #############################
   #   Deployment validation   #
   #############################
-  job_module_deploy_validation: # Note: Please don't change this job name. It is used by the set Environment step to define which PS modules to install on runners.
+  job_module_deploy_validation: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'Deployment validation'
     runs-on: ubuntu-20.04
     if: |
@@ -111,7 +111,7 @@ jobs:
   ##################
   #   Publishing   #
   ##################
-  job_publish_module: # Note: Please don't change this job name. It is used by the set Environment step to define which PS modules to install on runners.
+  job_publish_module: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'Publishing'
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || fromJson(inputs.workflowInput).prerelease == 'true'
