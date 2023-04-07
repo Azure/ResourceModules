@@ -28,6 +28,10 @@ inputs:
   variablesPath:
     description: 'The path to the YAML file that contains the key value pairs for environment variables'
     required: true
+  removeDeployment:
+    description: 'Set "true" to setup runner with PowerShell modules needed for custom resource removal'
+    default: 'true'
+    required: false
 
 runs:
   using: 'composite'
@@ -47,8 +51,29 @@ runs:
 
         # Define PS modules to install on the runner
         $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' },
             @{ Name = 'powershell-yaml'; Version = '0.4.2'}
         )
+
+        # Additional PS modules need to be installed for the deployment validation removal step in case it is enabled
+        if (('${{ github.job}}' -eq 'job_module_deploy_validation') -and ('${{ inputs.removeDeployment}}' -eq 'true')) {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+          )
+        }
+
+        # Additional PS modules need to be installed for the publish job
+        if ('${{ github.job}}' -eq 'job_publish_module') {
+          $Modules += @(
+            @{ Name = 'Az.ContainerRegistry' }
+          )
+        }
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules

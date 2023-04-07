@@ -98,6 +98,7 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
+          removeDeployment: '${{ fromJson(inputs.workflowInput).removeDeployment }}'
       - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
