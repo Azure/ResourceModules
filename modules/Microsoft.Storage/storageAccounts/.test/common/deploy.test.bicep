@@ -66,9 +66,9 @@ module testDeployment '../../deploy.bicep' = {
     requireInfrastructureEncryption: true
     largeFileSharesState: 'Enabled'
     lock: 'CanNotDelete'
-    enableHierarchicalNamespace: true
-    enableSftp: true
-    enableNfsV3: true
+    enableHierarchicalNamespace: false
+    enableSftp: false
+    enableNfsV3: false
     privateEndpoints: [
       {
         service: 'blob'
@@ -145,6 +145,19 @@ module testDeployment '../../deploy.bicep' = {
           allowProtectedAppendWrites: false
         }
       ]
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyEnabled: true
+      restorePolicyDays: 8
     }
     fileServices: {
       diagnosticLogsRetentionInDays: 7
@@ -208,8 +221,7 @@ module testDeployment '../../deploy.bicep' = {
         }
         {
           name: 'queue2'
-          metadata: {
-          }
+          metadata: {}
         }
       ]
     }
