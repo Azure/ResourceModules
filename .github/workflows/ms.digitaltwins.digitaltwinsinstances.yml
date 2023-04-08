@@ -31,6 +31,7 @@ on:
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
       - 'modules/Microsoft.DigitalTwins/digitalTwinsInstances/**'
+      - 'modules/Microsoft.Network/privateEndpoints/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
