@@ -4,11 +4,11 @@ This module deploys Azure Digital Twins Instances.
 
 ## Navigation
 
-- [Resource Types](#resource-types)
-- [Parameters](#parameters)
-- [Outputs](#outputs)
-- [Cross-referenced modules](#cross-referenced-modules)
-- [Deployment examples](#deployment-examples)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -17,8 +17,8 @@ This module deploys Azure Digital Twins Instances.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DigitalTwins/digitalTwinsInstances` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2022-05-31/digitalTwinsInstances) |
-| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2022-10-31/digitalTwinsInstances/endpoints) |
+| `Microsoft.DigitalTwins/digitalTwinsInstances` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/digitalTwinsInstances) |
+| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/digitalTwinsInstances/endpoints) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
@@ -55,6 +55,7 @@ This module deploys Azure Digital Twins Instances.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -445,7 +446,6 @@ The following module usage examples are retrieved from the content of the files 
 <h3>Example 1: Common</h3>
 
 <details>
-<p>
 
 <summary>via Bicep module</summary>
 
@@ -462,6 +462,16 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventGridEndpoint: {
+      eventGridDomainId: '<eventGridDomainId>'
+      topicEndpoint: '<topicEndpoint>'
+    }
+    eventHubEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      userAssignedIdentity: '<userAssignedIdentity>'
+    }
     lock: 'CanNotDelete'
     privateEndpoints: [
       {
@@ -477,15 +487,24 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
     roleAssignments: [
       {
         principalIds: [
-          '<managedIdentityPrincipalId>'
+          '<managedIdentityPrincipalResourceId>'
         ]
         principalType: 'ServicePrincipal'
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    serviceBusEndpoint: {
+      authenticationType: 'IdentityBased'
+      endpointUri: '<endpointUri>'
+      entityPath: '<entityPath>'
+      userAssignedIdentity: '<userAssignedIdentity>'
+    }
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -493,6 +512,7 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
 
 </details>
 <p>
+
 <details>
 
 <summary>via JSON Parameter file</summary>
@@ -525,6 +545,20 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "eventGridEndpoint": {
+      "value": {
+        "eventGridDomainId": "<eventGridDomainId>",
+        "topicEndpoint": "<topicEndpoint>"
+      }
+    },
+    "eventHubEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "userAssignedIdentity": "<userAssignedIdentity>"
+      }
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -545,17 +579,30 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
       "value": [
         {
           "principalIds": [
-            "<managedIdentityPrincipalId>"
+            "<managedIdentityPrincipalResourceId>"
           ],
           "principalType": "ServicePrincipal",
           "roleDefinitionIdOrName": "Reader"
         }
       ]
     },
+    "serviceBusEndpoint": {
+      "value": {
+        "authenticationType": "IdentityBased",
+        "endpointUri": "<endpointUri>",
+        "entityPath": "<entityPath>",
+        "userAssignedIdentity": "<userAssignedIdentity>"
+      }
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
       }
     }
   }
