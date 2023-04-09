@@ -10,7 +10,7 @@ param changeFeedEnabled bool = true
 
 @minValue(0)
 @maxValue(146000)
-@description('Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days (400 years). A "0" value indicates an infinite retention of the change feed.')
+@description('Optional. Indicates whether change feed event logging is enabled for the Blob service. Indicates the duration of changeFeed retention in days. A "0" value indicates an infinite retention of the change feed.')
 param changeFeedRetentionInDays int = 7
 
 @description('Optional. The blob service properties for container soft delete. Indicates whether DeleteRetentionPolicy is enabled.')
@@ -18,7 +18,7 @@ param containerDeleteRetentionPolicyEnabled bool = true
 
 @minValue(1)
 @maxValue(365)
-@description('Optional. Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
+@description('Optional. Indicates the number of days that the deleted item should be retained.')
 param containerDeleteRetentionPolicyDays int = 7
 
 @description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
@@ -30,23 +30,23 @@ param corsRules array = []
 @description('Optional. Indicates the default version to use for requests to the Blob service if an incoming request\'s version is not specified. Possible values include version 2008-10-27 and all more recent versions.')
 param defaultServiceVersion string = ''
 
-@description('Optional. The blob service properties for blob soft delete. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
+@description('Optional. The blob service properties for blob soft delete.')
 param deleteRetentionPolicyEnabled bool = true
 
 @description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
 param deleteRetentionPolicyDays int = 7
 
-@description('Optional. Use versioning to automatically maintain previous versions of your blobs. Versioning is enabled if set to true.')
+@description('Optional. Use versioning to automatically maintain previous versions of your blobs.')
 param isVersioningEnabled bool = true
 
 @description('Optional. The blob service property to configure last access time based tracking policy. When set to true last access time based tracking is enabled.')
 param lastAccessTimeTrackingPolicyEnable bool = false
 
-@description('Optional. The blob service properties for blob restore policy. Blob restore is enabled if set to true. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled.')
+@description('Optional. The blob service properties for blob restore policy. If point-in-time restore is enabled, then versioning, change feed, and blob soft delete must also be enabled.')
 param restorePolicyEnabled bool = true
 
 @minValue(1)
-@description('Optional. how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy days.')
+@description('Optional. how long this blob can be restored. It should be less than DeleteRetentionPolicy days.')
 param restorePolicyDays int = 6
 
 @description('Optional. Blob containers to create.')
