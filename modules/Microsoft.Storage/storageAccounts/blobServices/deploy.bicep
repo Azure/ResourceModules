@@ -33,7 +33,9 @@ param defaultServiceVersion string = ''
 @description('Optional. The blob service properties for blob soft delete.')
 param deleteRetentionPolicyEnabled bool = true
 
-@description('Optional. Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.')
+@minValue(1)
+@maxValue(365)
+@description('Optional. Indicates the number of days that the deleted blob should be retained.')
 param deleteRetentionPolicyDays int = 7
 
 @description('Optional. Use versioning to automatically maintain previous versions of your blobs.')
