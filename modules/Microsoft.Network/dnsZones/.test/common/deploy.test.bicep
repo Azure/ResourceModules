@@ -6,13 +6,13 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.privatednszones-${serviceShort}-rg'
+param resourceGroupName string = 'ms.network.dnszones-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'npdzcom'
+param serviceShort string = 'ndzcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -32,7 +32,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    trafficManagerProfileName: 'dep-<<namePrefix>>-tmp-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
@@ -94,6 +94,10 @@ module testDeployment '../../deploy.bicep' = {
           }
         ]
         ttl: 3600
+      }
+      {
+        name: 'CNAME_aliasRecordSet'
+        targetResourceId: nestedDependencies.outputs.trafficManagerProfileResourceId
       }
     ]
     lock: 'CanNotDelete'
@@ -160,10 +164,10 @@ module testDeployment '../../deploy.bicep' = {
           }
         ]
         soaRecord: {
-          email: 'azureprivatedns-host.microsoft.com'
+          email: 'azuredns-hostmaster.microsoft.com'
           expireTime: 2419200
-          host: 'azureprivatedns.net'
-          minimumTtl: 10
+          host: 'ns1-04.azure-dns.com.'
+          minimumTtl: 300
           refreshTime: 3600
           retryTime: 300
           serialNumber: '1'
@@ -214,12 +218,6 @@ module testDeployment '../../deploy.bicep' = {
             ]
           }
         ]
-      }
-    ]
-    virtualNetworkLinks: [
-      {
-        registrationEnabled: true
-        virtualNetworkResourceId: nestedDependencies.outputs.virtualNetworkResourceId
       }
     ]
     tags: {

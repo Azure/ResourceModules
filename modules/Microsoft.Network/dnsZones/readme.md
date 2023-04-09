@@ -1,4 +1,4 @@
-# Private DNS Zones `[Microsoft.Network/privateDnsZones]`
+# Private DNS Zones `[Microsoft.Network/dnsZones]`
 
 This template deploys a private DNS zone.
 
@@ -16,16 +16,17 @@ This template deploys a private DNS zone.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateDnsZones` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones) |
-| `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
-| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
-| `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
-| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
-| `Microsoft.Network/privateDnsZones/PTR` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR) |
-| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
-| `Microsoft.Network/privateDnsZones/SRV` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV) |
-| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
-| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks) |
+| `Microsoft.Network/dnsZones` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones) |
+| `Microsoft.Network/dnsZones/A` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/A) |
+| `Microsoft.Network/dnsZones/AAAA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/AAAA) |
+| `Microsoft.Network/dnsZones/CAA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/CAA) |
+| `Microsoft.Network/dnsZones/CNAME` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/CNAME) |
+| `Microsoft.Network/dnsZones/MX` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/MX) |
+| `Microsoft.Network/dnsZones/NS` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/NS) |
+| `Microsoft.Network/dnsZones/PTR` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/PTR) |
+| `Microsoft.Network/dnsZones/SOA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SOA) |
+| `Microsoft.Network/dnsZones/SRV` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SRV) |
+| `Microsoft.Network/dnsZones/TXT` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/TXT) |
 
 ## Parameters
 
@@ -33,7 +34,7 @@ This template deploys a private DNS zone.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Private DNS zone name. |
+| `name` | string | DNS zone name. |
 
 **Optional parameters**
 
@@ -41,18 +42,19 @@ This template deploys a private DNS zone.
 | :-- | :-- | :-- | :-- | :-- |
 | `a` | _[A](A/readme.md)_ array | `[]` |  | Array of A records. |
 | `aaaa` | _[AAAA](AAAA/readme.md)_ array | `[]` |  | Array of AAAA records. |
+| `caa` | _[CAA](CAA/readme.md)_ array | `[]` |  | Array of CAA records. |
 | `cname` | _[CNAME](CNAME/readme.md)_ array | `[]` |  | Array of CNAME records. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `location` | string | `'global'` |  | The location of the PrivateDNSZone. Should be global. |
+| `location` | string | `'global'` |  | The location of the dnsZone. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `mx` | _[MX](MX/readme.md)_ array | `[]` |  | Array of MX records. |
+| `ns` | _[NS](NS/readme.md)_ array | `[]` |  | Array of NS records. |
 | `ptr` | _[PTR](PTR/readme.md)_ array | `[]` |  | Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `soa` | _[SOA](SOA/readme.md)_ array | `[]` |  | Array of SOA records. |
 | `srv` | _[SRV](SRV/readme.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `txt` | _[TXT](TXT/readme.md)_ array | `[]` |  | Array of TXT records. |
-| `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -160,9 +162,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the private DNS zone. |
-| `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
-| `resourceId` | string | The resource ID of the private DNS zone. |
+| `name` | string | The name of the DNS zone. |
+| `resourceGroupName` | string | The resource group the DNS zone was deployed into. |
+| `resourceId` | string | The resource ID of the DNS zone. |
 
 ## Cross-referenced modules
 
@@ -182,11 +184,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-npdzcom'
+module dnsZones './Microsoft.Network/dnsZones/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndzcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npdzcom001.com'
+    name: '<<namePrefix>>ndzcom001.com'
     // Non-required parameters
     a: [
       {
@@ -235,6 +237,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           }
         ]
         ttl: 3600
+      }
+      {
+        name: 'CNAME_aliasRecordSet'
+        targetResourceId: '<targetResourceId>'
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -302,10 +308,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           }
         ]
         soaRecord: {
-          email: 'azureprivatedns-host.microsoft.com'
+          email: 'azuredns-hostmaster.microsoft.com'
           expireTime: 2419200
-          host: 'azureprivatedns.net'
-          minimumTtl: 10
+          host: 'ns1-04.azure-dns.com.'
+          minimumTtl: 300
           refreshTime: 3600
           retryTime: 300
           serialNumber: '1'
@@ -362,12 +368,6 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         ]
       }
     ]
-    virtualNetworkLinks: [
-      {
-        registrationEnabled: true
-        virtualNetworkResourceId: '<virtualNetworkResourceId>'
-      }
-    ]
   }
 }
 ```
@@ -386,7 +386,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npdzcom001.com"
+      "value": "<<namePrefix>>ndzcom001.com"
     },
     // Non-required parameters
     "a": {
@@ -441,6 +441,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             }
           ],
           "ttl": 3600
+        },
+        {
+          "name": "CNAME_aliasRecordSet",
+          "targetResourceId": "<targetResourceId>"
         }
       ]
     },
@@ -520,10 +524,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             }
           ],
           "soaRecord": {
-            "email": "azureprivatedns-host.microsoft.com",
+            "email": "azuredns-hostmaster.microsoft.com",
             "expireTime": 2419200,
-            "host": "azureprivatedns.net",
-            "minimumTtl": 10,
+            "host": "ns1-04.azure-dns.com.",
+            "minimumTtl": 300,
             "refreshTime": 3600,
             "retryTime": 300,
             "serialNumber": "1"
@@ -586,14 +590,6 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           ]
         }
       ]
-    },
-    "virtualNetworkLinks": {
-      "value": [
-        {
-          "registrationEnabled": true,
-          "virtualNetworkResourceId": "<virtualNetworkResourceId>"
-        }
-      ]
     }
   }
 }
@@ -609,11 +605,11 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-npdzmin'
+module dnsZones './Microsoft.Network/dnsZones/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndzmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npdzmin001.com'
+    name: '<<namePrefix>>ndzmin001.com'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -634,7 +630,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npdzmin001.com"
+      "value": "<<namePrefix>>ndzmin001.com"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

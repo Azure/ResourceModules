@@ -13,7 +13,7 @@ param metadata object = {}
 @description('Optional. The TTL (time-to-live) of the records in the record set.')
 param ttl int = 3600
 
-@description('Optional. A reference to an azure resource from where the dns resource value is taken. Also known as an alias record sets and are only supported for record types A, AAAA and CNAME. A resource ID can be an Azure Traffic Manager, Azure CDN, Public IP, Front Door, Static Web App, or a resource ID of a record set of the same type in the DNS zone (i.e. A, AAAA or CNAME). Cannot be used in conjuction with the "aRecords" property.')
+@description('Optional. A reference to an azure resource from where the dns resource value is taken. Also known as an alias record sets and are only supported for record types A, AAAA and CNAME. A resource ID can be an Azure Traffic Manager, Azure CDN, Front Door, Static Web App, or a resource ID of a record set of the same type in the DNS zone (i.e. A, AAAA or CNAME). Cannot be used in conjuction with the "aRecords" property.')
 param targetResourceId string = ''
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')

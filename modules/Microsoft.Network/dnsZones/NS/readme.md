@@ -1,4 +1,4 @@
-# Private DNS Zone MX record `[Microsoft.Network/privateDnsZones/MX]`
+# Private DNS Zone MX record `[Microsoft.Network/dnsZones/NS]`
 
 This module deploys a Private DNS Zone MX record.
 
@@ -14,7 +14,7 @@ This module deploys a Private DNS Zone MX record.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
+| `Microsoft.Network/dnsZones/NS` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/NS) |
 
 ## Parameters
 
@@ -22,13 +22,13 @@ This module deploys a Private DNS Zone MX record.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the MX record. |
+| `name` | string | The name of the NS record. |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
+| `dnsZoneName` | string | The name of the parent DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -36,7 +36,7 @@ This module deploys a Private DNS Zone MX record.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `metadata` | object | `{object}` | The metadata attached to the record set. |
-| `mxRecords` | array | `[]` | The list of MX records in the record set. |
+| `nsRecords` | array | `[]` | The list of NS records in the record set. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
@@ -104,9 +104,9 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed MX record. |
-| `resourceGroupName` | string | The resource group of the deployed MX record. |
-| `resourceId` | string | The resource ID of the deployed MX record. |
+| `name` | string | The name of the deployed NS record. |
+| `resourceGroupName` | string | The resource group of the deployed NS record. |
+| `resourceId` | string | The resource ID of the deployed NS record. |
 
 ## Cross-referenced modules
 

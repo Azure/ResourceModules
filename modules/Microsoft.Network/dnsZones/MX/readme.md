@@ -1,4 +1,4 @@
-# Private DNS Zone MX record `[Microsoft.Network/privateDnsZones/MX]`
+# Private DNS Zone MX record `[Microsoft.Network/dnsZones/MX]`
 
 This module deploys a Private DNS Zone MX record.
 
@@ -14,7 +14,7 @@ This module deploys a Private DNS Zone MX record.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
+| `Microsoft.Network/dnsZones/MX` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/MX) |
 
 ## Parameters
 
@@ -28,7 +28,7 @@ This module deploys a Private DNS Zone MX record.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
+| `dnsZoneName` | string | The name of the parent DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

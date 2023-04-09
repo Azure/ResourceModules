@@ -1,4 +1,4 @@
-# Private DNS Zone TXT record `[Microsoft.Network/privateDnsZones/TXT]`
+# Private DNS Zone TXT record `[Microsoft.Network/dnsZones/TXT]`
 
 This module deploys a Private DNS Zone TXT record.
 
@@ -14,7 +14,7 @@ This module deploys a Private DNS Zone TXT record.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
+| `Microsoft.Network/dnsZones/TXT` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/TXT) |
 
 ## Parameters
 
@@ -28,7 +28,7 @@ This module deploys a Private DNS Zone TXT record.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
+| `dnsZoneName` | string | The name of the parent DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

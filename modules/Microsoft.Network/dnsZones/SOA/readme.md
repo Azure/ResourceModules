@@ -1,4 +1,4 @@
-# Private DNS Zone SOA record `[Microsoft.Network/privateDnsZones/SOA]`
+# Private DNS Zone SOA record `[Microsoft.Network/dnsZones/SOA]`
 
 This module deploys a Private DNS Zone SOA record.
 
@@ -14,7 +14,7 @@ This module deploys a Private DNS Zone SOA record.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
+| `Microsoft.Network/dnsZones/SOA` | [2018-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-05-01/dnsZones/SOA) |
 
 ## Parameters
 
@@ -28,7 +28,7 @@ This module deploys a Private DNS Zone SOA record.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
+| `dnsZoneName` | string | The name of the parent DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
