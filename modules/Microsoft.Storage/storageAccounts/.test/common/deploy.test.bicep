@@ -126,6 +126,8 @@ module testDeployment '../../deploy.bicep' = {
       containers: [
         {
           name: 'avdscripts'
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
           publicAccess: 'None'
           roleAssignments: [
             {
@@ -140,11 +142,19 @@ module testDeployment '../../deploy.bicep' = {
         {
           name: 'archivecontainer'
           publicAccess: 'None'
+          metadata: {
+            testKey: 'testValue'
+          }
           enableWORM: true
           WORMRetention: 666
           allowProtectedAppendWrites: false
         }
       ]
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
     }
     fileServices: {
       diagnosticLogsRetentionInDays: 7
@@ -208,8 +218,7 @@ module testDeployment '../../deploy.bicep' = {
         }
         {
           name: 'queue2'
-          metadata: {
-          }
+          metadata: {}
         }
       ]
     }
