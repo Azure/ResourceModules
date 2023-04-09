@@ -1,6 +1,6 @@
-# Private DNS Zone MX record `[Microsoft.Network/dnsZones/NS]`
+# Public DNS Zone NS record `[Microsoft.Network/dnsZones/NS]`
 
-This module deploys a Private DNS Zone MX record.
+This module deploys a Public DNS Zone NS record.
 
 ## Navigation
 

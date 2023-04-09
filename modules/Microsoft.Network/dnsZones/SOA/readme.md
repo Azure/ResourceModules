@@ -1,6 +1,6 @@
-# Private DNS Zone SOA record `[Microsoft.Network/dnsZones/SOA]`
+# Public DNS Zone SOA record `[Microsoft.Network/dnsZones/SOA]`
 
-This module deploys a Private DNS Zone SOA record.
+This module deploys a Public DNS Zone SOA record.
 
 ## Navigation
 

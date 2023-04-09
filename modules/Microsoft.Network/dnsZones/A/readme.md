@@ -1,6 +1,6 @@
-# Private DNS Zone A record `[Microsoft.Network/dnsZones/A]`
+# Public DNS Zone A record `[Microsoft.Network/dnsZones/A]`
 
-This module deploys a Private DNS Zone A record.
+This module deploys a Public DNS Zone A record.
 
 ## Navigation
 

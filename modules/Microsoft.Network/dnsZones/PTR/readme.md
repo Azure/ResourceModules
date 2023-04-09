@@ -1,6 +1,6 @@
-# Private DNS Zone PTR record `[Microsoft.Network/dnsZones/PTR]`
+# Public DNS Zone PTR record `[Microsoft.Network/dnsZones/PTR]`
 
-This module deploys a Private DNS Zone PTR record.
+This module deploys a Public DNS Zone PTR record.
 
 ## Navigation
 

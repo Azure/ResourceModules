@@ -1,6 +1,6 @@
-# Private DNS Zone AAAA record `[Microsoft.Network/dnsZones/AAAA]`
+# Public DNS Zone AAAA record `[Microsoft.Network/dnsZones/AAAA]`
 
-This module deploys a Private DNS Zone AAAA record.
+This module deploys a Public DNS Zone AAAA record.
 
 ## Navigation
 

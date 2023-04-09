@@ -1,6 +1,6 @@
-# Private DNS Zone SRV record `[Microsoft.Network/dnsZones/SRV]`
+# Public DNS Zone SRV record `[Microsoft.Network/dnsZones/SRV]`
 
-This module deploys a Private DNS Zone TXT record.
+This module deploys a Public DNS Zone TXT record.
 
 ## Navigation
 

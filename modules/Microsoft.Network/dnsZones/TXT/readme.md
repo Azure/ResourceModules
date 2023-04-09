@@ -1,6 +1,6 @@
-# Private DNS Zone TXT record `[Microsoft.Network/dnsZones/TXT]`
+# Public DNS Zone TXT record `[Microsoft.Network/dnsZones/TXT]`
 
-This module deploys a Private DNS Zone TXT record.
+This module deploys a Public DNS Zone TXT record.
 
 ## Navigation
 

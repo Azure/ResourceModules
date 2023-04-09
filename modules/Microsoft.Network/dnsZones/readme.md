@@ -1,6 +1,6 @@
-# Private DNS Zones `[Microsoft.Network/dnsZones]`
+# Public DNS Zones `[Microsoft.Network/dnsZones]`
 
-This template deploys a private DNS zone.
+This template deploys a Public DNS zone.
 
 ## Navigation
 

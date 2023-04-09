@@ -1,6 +1,6 @@
-# Private DNS Zone MX record `[Microsoft.Network/dnsZones/CAA]`
+# Public DNS Zone CAA record `[Microsoft.Network/dnsZones/CAA]`
 
-This module deploys a Private DNS Zone MX record.
+This module deploys a Public DNS Zone CAA record.
 
 ## Navigation
 
