@@ -11,6 +11,9 @@ param immutabilityPeriodSinceCreationInDays int = 365
 @description('Optional. This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API.')
 param allowProtectedAppendWrites bool = true
 
+@description('Optional.This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to both "Append and Bock Blobs" while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The "allowProtectedAppendWrites" and "allowProtectedAppendWritesAll" properties are mutually exclusive.')
+param allowProtectedAppendWritesAll bool = true
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -26,24 +29,25 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
   name: storageAccountName
 
-  resource blobServices 'blobServices@2021-09-01' existing = {
+  resource blobServices 'blobServices@2022-09-01' existing = {
     name: 'default'
 
-    resource container 'containers@2021-09-01' existing = {
+    resource container 'containers@2022-09-01' existing = {
       name: containerName
     }
   }
 }
 
-resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2021-09-01' = {
+resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies@2022-09-01' = {
   name: 'default'
   parent: storageAccount::blobServices::container
   properties: {
     immutabilityPeriodSinceCreationInDays: immutabilityPeriodSinceCreationInDays
     allowProtectedAppendWrites: allowProtectedAppendWrites
+    allowProtectedAppendWritesAll: allowProtectedAppendWritesAll
   }
 }
 

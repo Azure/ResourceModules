@@ -77,6 +77,19 @@ module testDeployment '../../deploy.bicep' = {
           publicAccess: 'None'
         }
       ]
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyEnabled: true
+      restorePolicyDays: 8
     }
     systemAssignedIdentity: false
     userAssignedIdentities: {

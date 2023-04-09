@@ -152,30 +152,30 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     automaticSnapshotPolicyEnabled: automaticSnapshotPolicyEnabled
     changeFeed: {
       enabled: changeFeedEnabled
-      retentionInDays: changeFeedRetentionInDays != 0 ? changeFeedRetentionInDays : null
+      retentionInDays: changeFeedEnabled == true ? (changeFeedRetentionInDays != 0 ? changeFeedRetentionInDays : null) : null
     }
     containerDeleteRetentionPolicy: {
       enabled: containerDeleteRetentionPolicyEnabled
-      days: containerDeleteRetentionPolicyDays
-      allowPermanentDelete: containerDeleteRetentionPolicyAllowPermanentDelete
+      days: containerDeleteRetentionPolicyEnabled == true ? containerDeleteRetentionPolicyDays : null
+      allowPermanentDelete: containerDeleteRetentionPolicyEnabled == true ? containerDeleteRetentionPolicyAllowPermanentDelete : null
     }
     cors: {
       corsRules: corsRules
     }
-    defaultServiceVersion: defaultServiceVersion
+    defaultServiceVersion: !empty(defaultServiceVersion) ? defaultServiceVersion : null
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicyEnabled
-      days: deleteRetentionPolicyDays
+      days: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyDays : null
     }
     isVersioningEnabled: isVersioningEnabled
     lastAccessTimeTrackingPolicy: {
       enable: lastAccessTimeTrackingPolicyEnable
-      name: 'AccessTimeTracking'
-      trackingGranularityInDays: 1
+      name: lastAccessTimeTrackingPolicyEnable == true ? 'AccessTimeTracking' : null
+      trackingGranularityInDays: lastAccessTimeTrackingPolicyEnable == true ? 1 : null
     }
     restorePolicy: {
       enabled: restorePolicyEnabled
-      days: restorePolicyDays
+      days: restorePolicyEnabled == true ? restorePolicyDays : null
     }
   }
 }
@@ -198,6 +198,12 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
   params: {
     storageAccountName: storageAccount.name
     name: container.name
+    defaultEncryptionScope: contains(container, 'defaultEncryptionScope') ? container.defaultEncryptionScope : ''
+    denyEncryptionScopeOverride: contains(container, 'denyEncryptionScopeOverride') ? container.denyEncryptionScopeOverride : false
+    enableNfsV3AllSquash: contains(container, 'enableNfsV3AllSquash') ? container.enableNfsV3AllSquash : false
+    enableNfsV3RootSquash: contains(container, 'enableNfsV3RootSquash') ? container.enableNfsV3RootSquash : false
+    immutableStorageWithVersioningEnabled: contains(container, 'immutableStorageWithVersioningEnabled') ? container.immutableStorageWithVersioningEnabled : false
+    metadata: contains(container, 'metadata') ? container.metadata : {}
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}

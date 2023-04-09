@@ -66,9 +66,9 @@ module testDeployment '../../deploy.bicep' = {
     requireInfrastructureEncryption: true
     largeFileSharesState: 'Enabled'
     lock: 'CanNotDelete'
-    enableHierarchicalNamespace: false
-    enableSftp: false
-    enableNfsV3: false
+    enableHierarchicalNamespace: true
+    enableSftp: true
+    enableNfsV3: true
     privateEndpoints: [
       {
         service: 'blob'
@@ -126,6 +126,8 @@ module testDeployment '../../deploy.bicep' = {
       containers: [
         {
           name: 'avdscripts'
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
           publicAccess: 'None'
           roleAssignments: [
             {
@@ -140,24 +142,19 @@ module testDeployment '../../deploy.bicep' = {
         {
           name: 'archivecontainer'
           publicAccess: 'None'
+          metadata: {
+            testKey: 'testValue'
+          }
           enableWORM: true
           WORMRetention: 666
           allowProtectedAppendWrites: false
         }
       ]
       automaticSnapshotPolicyEnabled: true
-      changeFeedEnabled: true
-      changeFeedRetentionInDays: 10
       containerDeleteRetentionPolicyEnabled: true
       containerDeleteRetentionPolicyDays: 10
-      containerDeleteRetentionPolicyAllowPermanentDelete: true
-      defaultServiceVersion: '2008-10-27'
       deleteRetentionPolicy: true
       deleteRetentionPolicyDays: 9
-      isVersioningEnabled: true
-      lastAccessTimeTrackingPolicyEnable: true
-      restorePolicyEnabled: true
-      restorePolicyDays: 8
     }
     fileServices: {
       diagnosticLogsRetentionInDays: 7

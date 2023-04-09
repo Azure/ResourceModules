@@ -21,9 +21,9 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Storage/storageAccounts` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts) |
-| `Microsoft.Storage/storageAccounts/blobServices` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
+| `Microsoft.Storage/storageAccounts/blobServices` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices/containers) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
 | `Microsoft.Storage/storageAccounts/fileServices` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices) |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices/shares) |
 | `Microsoft.Storage/storageAccounts/localUsers` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-05-01/storageAccounts/localUsers) |
@@ -434,8 +434,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
       containers: [
         {
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
           name: 'avdscripts'
           publicAccess: 'None'
           roleAssignments: [
@@ -451,11 +456,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         {
           allowProtectedAppendWrites: false
           enableWORM: true
+          metadata: {
+            testKey: 'testValue'
+          }
           name: 'archivecontainer'
           publicAccess: 'None'
           WORMRetention: 666
         }
       ]
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
       diagnosticLogsRetentionInDays: 7
@@ -633,8 +643,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "blobServices": {
       "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
         "containers": [
           {
+            "enableNfsV3AllSquash": true,
+            "enableNfsV3RootSquash": true,
             "name": "avdscripts",
             "publicAccess": "None",
             "roleAssignments": [
@@ -650,11 +665,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           {
             "allowProtectedAppendWrites": false,
             "enableWORM": true,
+            "metadata": {
+              "testKey": "testValue"
+            },
             "name": "archivecontainer",
             "publicAccess": "None",
             "WORMRetention": 666
           }
         ],
+        "deleteRetentionPolicy": true,
+        "deleteRetentionPolicyDays": 9,
         "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
         "diagnosticEventHubName": "<diagnosticEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
@@ -877,12 +897,25 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
       containers: [
         {
           name: '<<namePrefix>>container'
           publicAccess: 'None'
         }
       ]
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyDays: 8
+      restorePolicyEnabled: true
     }
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -939,12 +972,25 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "blobServices": {
       "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "changeFeedEnabled": true,
+        "changeFeedRetentionInDays": 10,
+        "containerDeleteRetentionPolicyAllowPermanentDelete": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
         "containers": [
           {
             "name": "<<namePrefix>>container",
             "publicAccess": "None"
           }
-        ]
+        ],
+        "defaultServiceVersion": "2008-10-27",
+        "deleteRetentionPolicy": true,
+        "deleteRetentionPolicyDays": 9,
+        "isVersioningEnabled": true,
+        "lastAccessTimeTrackingPolicyEnable": true,
+        "restorePolicyDays": 8,
+        "restorePolicyEnabled": true
       }
     },
     "cMKKeyName": {

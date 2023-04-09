@@ -14,8 +14,8 @@ This module deploys a blob container
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices/containers) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
 
 ## Parameters
 
@@ -35,9 +35,14 @@ This module deploys a blob container
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `defaultEncryptionScope` | string | `''` |  | Default the container to use specified encryption scope for all writes. |
+| `denyEncryptionScopeOverride` | bool | `False` |  | Block override of encryption scope from the container default. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableNfsV3AllSquash` | bool | `False` |  | Enable NFSv3 all squash on blob container. |
+| `enableNfsV3RootSquash` | bool | `False` |  | Enable NFSv3 root squash on blob container. |
 | `immutabilityPolicyName` | string | `'default'` |  | Name of the immutable policy. |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
+| `immutableStorageWithVersioningEnabled` | bool | `False` |  | This is an immutable property, when set to true it enables object level immutability at the container level. The property is immutable and can only be set to true at the container creation time. Existing containers must undergo a migration process. |
 | `publicAccess` | string | `'None'` | `[Blob, Container, None]` | Specifies whether data in the container may be accessed publicly and the level of access. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
