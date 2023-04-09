@@ -890,10 +890,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-stsencr'
+  name: '${uniqueString(deployment().name, location)}-test-ssaencr'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsencr001'
+    name: '<<namePrefix>>ssaencr001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -964,7 +964,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsencr001"
+      "value": "<<namePrefix>>ssaencr001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
