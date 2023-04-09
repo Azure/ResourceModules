@@ -71,8 +71,8 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   properties: {
     defaultEncryptionScope: !empty(defaultEncryptionScope) ? defaultEncryptionScope : null
     denyEncryptionScopeOverride: denyEncryptionScopeOverride == true ? denyEncryptionScopeOverride : null
-    enableNfsV3AllSquash: enableNfsV3AllSquash
-    enableNfsV3RootSquash: enableNfsV3RootSquash
+    enableNfsV3AllSquash: enableNfsV3AllSquash == true ? enableNfsV3AllSquash : null
+    enableNfsV3RootSquash: enableNfsV3RootSquash == true ? enableNfsV3RootSquash : null
     immutableStorageWithVersioning: immutableStorageWithVersioningEnabled == true ? {
       enabled: immutableStorageWithVersioningEnabled
     } : null
