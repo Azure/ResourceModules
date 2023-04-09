@@ -43,6 +43,7 @@ This module deploys a blob container
 | `immutabilityPolicyName` | string | `'default'` |  | Name of the immutable policy. |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
 | `immutableStorageWithVersioningEnabled` | bool | `False` |  | This is an immutable property, when set to true it enables object level immutability at the container level. The property is immutable and can only be set to true at the container creation time. Existing containers must undergo a migration process. |
+| `metadata` | object | `{object}` |  | A name-value pair to associate with the container as metadata. |
 | `publicAccess` | string | `'None'` | `[Blob, Container, None]` | Specifies whether data in the container may be accessed publicly and the level of access. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 

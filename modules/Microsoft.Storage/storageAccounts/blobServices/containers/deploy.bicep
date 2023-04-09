@@ -26,7 +26,7 @@ param immutabilityPolicyName string = 'default'
 @description('Optional. Configure immutability policy.')
 param immutabilityPolicyProperties object = {}
 
-@description('Optional.A name-value pair to associate with the container as metadata.')
+@description('Optional. A name-value pair to associate with the container as metadata.')
 param metadata object = {}
 
 @allowed([
