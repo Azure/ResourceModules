@@ -32,6 +32,7 @@
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
+| `autoscaleSettingsMaxThroughput` | int | `0` | Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to. If value is set to 0, then the property will be set to null. |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the SQL database resource. |

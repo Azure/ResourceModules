@@ -1448,6 +1448,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         containers: [
           {
+            analyticalStorageTtl: 0
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
             indexingPolicy: {
               automatic: true
             }
@@ -1456,9 +1462,23 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             paths: [
               '/myPartitionKey'
             ]
+            throughput: 600
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
           }
         ]
         name: '<<namePrefix>>-sql-dddasql-001'
+        throughput: 1000
       }
       {
         containers: []
@@ -1544,6 +1564,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [
             {
+              "analyticalStorageTtl": 0,
+              "conflictResolutionPolicy": {
+                "conflictResolutionPath": "/myCustomId",
+                "mode": "LastWriterWins"
+              },
+              "defaultTtl": 1000,
               "indexingPolicy": {
                 "automatic": true
               },
@@ -1551,10 +1577,24 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               "name": "container-001",
               "paths": [
                 "/myPartitionKey"
+              ],
+              "throughput": 600,
+              "uniqueKeyPolicyKeys": [
+                {
+                  "paths": [
+                    "/firstName"
+                  ]
+                },
+                {
+                  "paths": [
+                    "/lastName"
+                  ]
+                }
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-001"
+          "name": "<<namePrefix>>-sql-dddasql-001",
+          "throughput": 1000
         },
         {
           "containers": [],

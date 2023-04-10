@@ -10,6 +10,9 @@ param containers array = []
 @description('Optional. Request units per second.')
 param throughput int = 400
 
+@description('Optional. Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to. If value is set to 0, then the property will be set to null.')
+param autoscaleSettingsMaxThroughput int = 0
+
 @description('Optional. Tags of the SQL database resource.')
 param tags object = {}
 
@@ -44,6 +47,9 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-08
     }
     options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
       throughput: throughput
+      autoscaleSettings: autoscaleSettingsMaxThroughput != 0 ? {
+        maxThroughput: autoscaleSettingsMaxThroughput
+      } : null
     }
   }
 }
@@ -54,8 +60,15 @@ module container 'containers/deploy.bicep' = [for container in containers: {
     databaseAccountName: databaseAccountName
     sqlDatabaseName: name
     name: container.name
-    paths: container.paths
-    kind: container.kind
+    analyticalStorageTtl: contains(container, 'analyticalStorageTtl') ? container.analyticalStorageTtl : 0
+    autoscaleSettingsMaxThroughput: contains(container, 'autoscaleSettingsMaxThroughput') ? container.autoscaleSettingsMaxThroughput : 0
+    conflictResolutionPolicy: contains(container, 'conflictResolutionPolicy') ? container.conflictResolutionPolicy : {}
+    defaultTtl: contains(container, 'defaultTtl') ? container.defaultTtl : -1
+    indexingPolicy: contains(container, 'indexingPolicy') ? container.indexingPolicy : {}
+    kind: contains(container, 'kind') ? container.kind : 'Hash'
+    paths: contains(container, 'paths') ? container.paths : []
+    throughput: contains(container, 'throughput') ? container.throughput : 400
+    uniqueKeyPolicyKeys: contains(container, 'uniqueKeyPolicyKeys') ? container.uniqueKeyPolicyKeys : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

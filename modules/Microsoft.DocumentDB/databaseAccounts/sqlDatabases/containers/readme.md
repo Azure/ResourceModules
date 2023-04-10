@@ -32,12 +32,17 @@
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `analyticalStorageTtl` | int | `0` |  | Indicates how long data should be retained in the analytical store, for a container. Analytical store is enabled when ATTL is set with a value other than 0. If the value is set to -1, the analytical store retains all historical data, irrespective of the retention of the data in the transactional store. |
+| `autoscaleSettingsMaxThroughput` | int | `0` |  | Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to. If value is set to 0, then the property will be set to null. |
+| `conflictResolutionPolicy` | object | `{object}` |  | The conflict resolution policy for the container. Conflicts and conflict resolution policies are applicable if the Azure Cosmos DB account is configured with multiple write regions. |
+| `defaultTtl` | int | `-1` |  | Default time to live (in seconds). With Time to Live or TTL, Azure Cosmos DB provides the ability to delete items automatically from a container after a certain time period. If the value is set to "-1", it is equal to infinity, and items dont expire by default. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `indexingPolicy` | object | `{object}` |  | Indexing policy of the container. |
 | `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning. |
 | `paths` | array | `[]` |  | List of paths using which data within the container can be partitioned. |
 | `tags` | object | `{object}` |  | Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Request Units per second. |
+| `uniqueKeyPolicyKeys` | array | `[]` |  | The unique key policy configuration containing a list of unique keys that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service. |
 
 
 ### Parameter Usage: `tags`
