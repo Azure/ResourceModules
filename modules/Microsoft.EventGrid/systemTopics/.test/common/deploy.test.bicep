@@ -17,6 +17,8 @@ param serviceShort string = 'egstcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var queueName = 'dep-<<namePrefix>>-que-${serviceShort}'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -66,7 +68,6 @@ module testDeployment '../../deploy.bicep' = {
     eventSubscriptions: {
       enableDefaultTelemetry: enableDefaultTelemetry
       name: '<<namePrefix>>${serviceShort}001'
-      eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicResourceId, '/'))
       expirationTimeUtc: '2026-01-01T11:00:21.715Z'
       filter: {
         isSubjectCaseSensitive: false
@@ -76,12 +77,13 @@ module testDeployment '../../deploy.bicep' = {
         maxDeliveryAttempts: 10
         eventTimeToLive: '120'
       }
-      eventDeliverySchema: 'EventGridSchema'
+      eventDeliverySchema: 'CloudEventSchemaV1_0'
       destination: {
-        endpointType: 'ServiceBusTopic'
+        endpointType: 'StorageQueue'
         properties: {
-          resourceId: nestedDependencies.outputs.serviceBusTopicResourceId
-
+          resourceId: nestedDependencies.outputs.storageAccountResourceId
+          queueMessageTimeToLiveInSeconds: 86400 // one day
+          queueName: queueName
         }
       }
     }
