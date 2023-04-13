@@ -331,6 +331,28 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventSubscriptions: {
+      destination: {
+        endpointType: 'StorageQueue'
+        properties: {
+          queueMessageTimeToLiveInSeconds: 86400
+          queueName: '<queueName>'
+          resourceId: '<resourceId>'
+        }
+      }
+      enableDefaultTelemetry: '<enableDefaultTelemetry>'
+      eventDeliverySchema: 'CloudEventSchemaV1_0'
+      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
+      filter: {
+        enableAdvancedFilteringOnArrays: true
+        isSubjectCaseSensitive: false
+      }
+      name: '<<namePrefix>>egtcom001'
+      retryPolicy: {
+        eventTimeToLive: '120'
+        maxDeliveryAttempts: 10
+      }
+    }
     inboundIpRules: [
       {
         action: 'Allow'
@@ -404,6 +426,30 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "eventSubscriptions": {
+      "value": {
+        "destination": {
+          "endpointType": "StorageQueue",
+          "properties": {
+            "queueMessageTimeToLiveInSeconds": 86400,
+            "queueName": "<queueName>",
+            "resourceId": "<resourceId>"
+          }
+        },
+        "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+        "eventDeliverySchema": "CloudEventSchemaV1_0",
+        "expirationTimeUtc": "2026-01-01T11:00:21.715Z",
+        "filter": {
+          "enableAdvancedFilteringOnArrays": true,
+          "isSubjectCaseSensitive": false
+        },
+        "name": "<<namePrefix>>egtcom001",
+        "retryPolicy": {
+          "eventTimeToLive": "120",
+          "maxDeliveryAttempts": 10
+        }
+      }
     },
     "inboundIpRules": {
       "value": [
