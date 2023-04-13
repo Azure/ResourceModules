@@ -24,7 +24,7 @@ This module deploys EventGrid SystemTopics EventSubscriptions.
 | :-- | :-- | :-- |
 | `destination` | object | The destination for the event subscription. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#eventsubscriptiondestination-objects for more information). |
 | `eventGridSystemTopicName` | string | Name of the Event Grid System Topic. |
-| `name` | string | The name of the Event Grid Topic. |
+| `name` | string | The name of the Event Subscription. |
 
 **Optional parameters**
 
