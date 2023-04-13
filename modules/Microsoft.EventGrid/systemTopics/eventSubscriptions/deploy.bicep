@@ -1,4 +1,4 @@
-@description('Required. The name of the Event Grid Topic.')
+@description('Required. The name of the Event Subscription.')
 param name string
 
 @description('Optional. Location for all Resources.')
@@ -7,8 +7,8 @@ param location string = resourceGroup().location
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. Name of the Event Grid Topic.')
-param eventGridTopicName string
+@description('Required. Name of the Event Grid System Topic.')
+param eventGridSystemTopicName string
 
 @description('Optional. Dead Letter Destination. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterdestination-objects for more information).')
 param deadLetterDestination object = {}
@@ -57,13 +57,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventGridTopic 'Microsoft.EventGrid/topics@2022-06-15' existing = {
-  name: eventGridTopicName
+resource eventGridSystemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' existing = {
+  name: eventGridSystemTopicName
 }
 
-resource eventSubscription 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
+resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2022-06-15' = {
   name: name
-  scope: eventGridTopic
+  parent: eventGridSystemTopic
   properties: {
     deadLetterDestination: !empty(deadLetterDestination) ? deadLetterDestination : null
     deadLetterWithResourceIdentity: !empty(deadLetterWithResourceIdentity) ? deadLetterWithResourceIdentity : null
@@ -87,4 +87,4 @@ output resourceId string = eventSubscription.id
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = eventGridTopic.location
+output location string = eventGridSystemTopic.location

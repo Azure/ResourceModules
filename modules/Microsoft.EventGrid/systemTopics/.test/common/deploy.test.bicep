@@ -63,6 +63,28 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     source: nestedDependencies.outputs.storageAccountResourceId
     topicType: 'Microsoft.Storage.StorageAccounts'
+    eventSubscriptions: {
+      enableDefaultTelemetry: enableDefaultTelemetry
+      name: '<<namePrefix>>${serviceShort}001'
+      eventGridTopicName: last(split(nestedDependencies.outputs.eventTopicResourceId, '/'))
+      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
+      filter: {
+        isSubjectCaseSensitive: false
+        enableAdvancedFilteringOnArrays: true
+      }
+      retryPolicy: {
+        maxDeliveryAttempts: 10
+        eventTimeToLive: '120'
+      }
+      eventDeliverySchema: 'EventGridSchema'
+      destination: {
+        endpointType: 'ServiceBusTopic'
+        properties: {
+          resourceId: nestedDependencies.outputs.serviceBusTopicResourceId
+
+        }
+      }
+    }
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId

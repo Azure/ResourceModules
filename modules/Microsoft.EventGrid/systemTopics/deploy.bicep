@@ -1,4 +1,4 @@
-@description('Required. The name of the Event Grid Topic.')
+@description('Required. The name of the Event Grid System Topic.')
 param name string
 
 @description('Optional. Location for all Resources.')
@@ -9,6 +9,9 @@ param source string
 
 @description('Required. TopicType for the system topic.')
 param topicType string
+
+@description('Optional. Event subscriptions to deploy.')
+param eventSubscriptions object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -127,6 +130,26 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   properties: {
     source: source
     topicType: topicType
+  }
+}
+
+// Event subscriptions
+module systemTopics_eventSubscriptions 'eventSubscriptions/deploy.bicep' = if (!empty(eventSubscriptions)) {
+  name: '${uniqueString(deployment().name, location)}-EventGrid-SystemTopics-EventSubscriptions'
+  params: {
+    destination: eventSubscriptions.destination
+    eventGridSystemTopicName: systemTopic.name
+    name: eventSubscriptions.name
+    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscriptions.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscriptions.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscriptions.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscriptions.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscriptions.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscriptions.expirationTimeUtc : ''
+    filter: contains(eventSubscriptions, 'filter') ? eventSubscriptions.filter : {}
+    labels: contains(eventSubscriptions, 'labels') ? eventSubscriptions.labels : []
+    location: contains(eventSubscriptions, 'location') ? eventSubscriptions.location : systemTopic.location
+    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscriptions.retryPolicy : {}
   }
 }
 
