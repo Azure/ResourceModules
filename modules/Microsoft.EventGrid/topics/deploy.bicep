@@ -15,6 +15,9 @@ param publicNetworkAccess string = ''
 @description('Optional. This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.')
 param inboundIpRules array = []
 
+@description('Optional. Event subscriptions to deploy.')
+param eventSubscriptions object = {}
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -46,6 +49,12 @@ param roleAssignments array = []
 @description('Optional. Specify the type of lock.')
 param lock string = ''
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -72,6 +81,13 @@ param diagnosticMetricsToEnable array = [
 
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 var enableReferencedModulesTelemetry = false
 
@@ -117,13 +133,34 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
+resource topic 'Microsoft.EventGrid/topics@2022-06-15' = {
   name: name
   location: location
+  identity: identity
   tags: tags
   properties: {
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(inboundIpRules) ? 'Disabled' : null)
     inboundIpRules: (empty(inboundIpRules) ? null : inboundIpRules)
+  }
+}
+
+// Event subscriptions
+module topics_eventSubscriptions 'eventSubscriptions/deploy.bicep' = if (!empty(eventSubscriptions)) {
+  name: '${uniqueString(deployment().name, location)}-EventGrid-Topics-EventSubscriptions'
+  params: {
+    destination: eventSubscriptions.destination
+    eventGridTopicName: topic.name
+    name: eventSubscriptions.name
+    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscriptions.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscriptions.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscriptions.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscriptions.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscriptions.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscriptions.expirationTimeUtc : ''
+    filter: contains(eventSubscriptions, 'filter') ? eventSubscriptions.filter : {}
+    labels: contains(eventSubscriptions, 'labels') ? eventSubscriptions.labels : []
+    location: contains(eventSubscriptions, 'location') ? eventSubscriptions.location : topic.location
+    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscriptions.retryPolicy : {}
   }
 }
 
