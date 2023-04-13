@@ -83,7 +83,7 @@ module testDeployment '../../deploy.bicep' = {
         endpointType: 'StorageQueue'
         properties: {
           resourceId: nestedDependencies.outputs.storageAccountResourceId
-          queueMessageTimeToLiveInSeconds: 86400 // one day
+          queueMessageTimeToLiveInSeconds: 86400
           queueName: queueName
         }
       }

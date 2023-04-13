@@ -17,6 +17,7 @@ This module deploys an Event Grid System Topic.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.EventGrid/systemTopics` | [2021-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2021-12-01/systemTopics) |
+| `Microsoft.EventGrid/systemTopics/eventSubscriptions` | [2022-06-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2022-06-15/systemTopics/eventSubscriptions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
@@ -25,7 +26,7 @@ This module deploys an Event Grid System Topic.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Event Grid Topic. |
+| `name` | string | The name of the Event Grid System Topic. |
 | `source` | string | Source for the system topic. |
 | `topicType` | string | TopicType for the system topic. |
 
@@ -42,6 +43,7 @@ This module deploys an Event Grid System Topic.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `eventSubscriptions` | _[eventSubscriptions](eventSubscriptions/readme.md)_ object | `{object}` |  | Event subscriptions to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -302,6 +304,28 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventSubscriptions: {
+      destination: {
+        endpointType: 'StorageQueue'
+        properties: {
+          queueMessageTimeToLiveInSeconds: 86400
+          queueName: '<queueName>'
+          resourceId: '<resourceId>'
+        }
+      }
+      enableDefaultTelemetry: '<enableDefaultTelemetry>'
+      eventDeliverySchema: 'CloudEventSchemaV1_0'
+      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
+      filter: {
+        enableAdvancedFilteringOnArrays: true
+        isSubjectCaseSensitive: false
+      }
+      name: '<<namePrefix>>egstcom001'
+      retryPolicy: {
+        eventTimeToLive: '120'
+        maxDeliveryAttempts: 10
+      }
+    }
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -360,6 +384,30 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "eventSubscriptions": {
+      "value": {
+        "destination": {
+          "endpointType": "StorageQueue",
+          "properties": {
+            "queueMessageTimeToLiveInSeconds": 86400,
+            "queueName": "<queueName>",
+            "resourceId": "<resourceId>"
+          }
+        },
+        "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+        "eventDeliverySchema": "CloudEventSchemaV1_0",
+        "expirationTimeUtc": "2026-01-01T11:00:21.715Z",
+        "filter": {
+          "enableAdvancedFilteringOnArrays": true,
+          "isSubjectCaseSensitive": false
+        },
+        "name": "<<namePrefix>>egstcom001",
+        "retryPolicy": {
+          "eventTimeToLive": "120",
+          "maxDeliveryAttempts": 10
+        }
+      }
     },
     "lock": {
       "value": "CanNotDelete"
