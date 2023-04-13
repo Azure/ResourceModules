@@ -17,6 +17,8 @@ param serviceShort string = 'egtcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var queueName = 'dep-<<namePrefix>>-que-${serviceShort}'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -34,6 +36,8 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
+    queueName: queueName
   }
 }
 
@@ -88,6 +92,28 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
+    eventSubscriptions: {
+      enableDefaultTelemetry: enableDefaultTelemetry
+      name: '<<namePrefix>>${serviceShort}001'
+      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
+      filter: {
+        isSubjectCaseSensitive: false
+        enableAdvancedFilteringOnArrays: true
+      }
+      retryPolicy: {
+        maxDeliveryAttempts: 10
+        eventTimeToLive: '120'
+      }
+      eventDeliverySchema: 'CloudEventSchemaV1_0'
+      destination: {
+        endpointType: 'StorageQueue'
+        properties: {
+          resourceId: nestedDependencies.outputs.storageAccountResourceId
+          queueMessageTimeToLiveInSeconds: 86400
+          queueName: queueName
+        }
+      }
+    }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
