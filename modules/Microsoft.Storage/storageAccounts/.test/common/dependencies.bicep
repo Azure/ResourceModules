@@ -8,10 +8,10 @@ param virtualNetworkName string
 param managedIdentityName string
 
 @description('Optional. The name of the policy assignment.')
-param policyAssignmentName string = 'DisableStoragePublicNetworkAccess'
+param policyAssignmentName string = 'StorAcctsAccessfromMSServices'
 
 @description('Optional. The policy definition Id to be assigned.')
-param policyDefinitionId string = '/providers/Microsoft.Authorization/policyDefinitions/a06d0189-92e8-4dba-b0c4-08d7669fce7d'
+param policyDefinitionId string = '/providers/Microsoft.Authorization/policyDefinitions/c9d007d0-c057-4772-b18c-01e546713bcd' //Storage accounts should allow access from trusted Microsoft services
 
 var addressPrefix = '10.0.0.0/16'
 
@@ -74,6 +74,11 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2022-06-01'
     properties: {
         policyDefinitionId: policyDefinitionId
         enforcementMode: 'Default'
+        parameters: {
+            effect: {
+                value: 'Deny'
+            }
+        }
     }
 }
 

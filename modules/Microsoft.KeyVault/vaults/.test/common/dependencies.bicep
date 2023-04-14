@@ -8,10 +8,10 @@ param virtualNetworkName string
 param managedIdentityName string
 
 @description('Optional. The name of the policy assignment.')
-param policyAssignmentName string = 'DisableKeyVaultPublicAccess'
+param policyAssignmentName string = 'KeyVaultsShouldBeBackedbyHSM'
 
 @description('Optional. The policy definition Id to be assigned.')
-param policyDefinitionId string = '/providers/Microsoft.Authorization/policyDefinitions/405c5871-3e91-4644-8a63-58e19d68ff5b'
+param policyDefinitionId string = '/providers/Microsoft.Authorization/policyDefinitions/587c79fe-dd04-4a5e-9d0b-f89598c7261b' // Key vaults should be backed by a hardware security module (HSM).
 
 var addressPrefix = '10.0.0.0/16'
 
@@ -58,6 +58,11 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2022-06-01'
     properties: {
         policyDefinitionId: policyDefinitionId
         enforcementMode: 'Default'
+        parameters: {
+            effect: {
+                value: 'Deny'
+            }
+        }
     }
 }
 
