@@ -73,7 +73,8 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
 
         if (-not (Get-AzContainerRegistry -Name $BicepRegistryName -ResourceGroupName $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths
-        } else {
+        }
+        else {
             # Test all children against ACR
             $missingTemplatePaths = @()
             foreach ($templatePath in $availableModuleTemplatePaths) {
@@ -83,7 +84,17 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
 
                 $null = Get-AzContainerRegistryTag -RepositoryName $moduleRegistryIdentifier -RegistryName $BicepRegistryName -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 
-                if ($result.exception.Response.StatusCode -eq 'NotFound') {
+                # 230412 Arjan Mensch
+                #
+                # Original Code:
+                # if ($result.exception.Response.StatusCode -eq 'NotFound') {
+                #
+                # This needs to change. In PowerShell in Linux $result.Exception does not contain a property 'Response' so this will NEVER evaluate to 'true'.
+                # $result.Exception does contain a 'status' property which contains '404' if the requested repository is not found.
+                #
+                # Bug Report submitted:
+                # https://github.com/Azure/ResourceModules/issues/3105
+                if ($result.Exception.status -eq '404' -or $result.Exception.Response.StatusCode -eq 'NotFound') {
                     $missingTemplatePaths += $templatePath
                 }
             }
