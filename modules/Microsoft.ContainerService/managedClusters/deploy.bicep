@@ -552,7 +552,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
     osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
-    proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
+    proximityPlacementGroupResourceId: contains(agentPool, 'proximityPlacementGroupResourceId') ? agentPool.proximityPlacementGroupResourceId : ''
     scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode : 'Delete'
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
