@@ -83,7 +83,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
 
                 $null = Get-AzContainerRegistryTag -RepositoryName $moduleRegistryIdentifier -RegistryName $BicepRegistryName -ErrorAction 'SilentlyContinue' -ErrorVariable 'result'
 
-                if ($result.exception.Response.StatusCode -eq 'NotFound') {
+                if ($result.exception.Response.StatusCode -eq 'NotFound' -or $result.Exception.status -eq '404') {
                     $missingTemplatePaths += $templatePath
                 }
             }
