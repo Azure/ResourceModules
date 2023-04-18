@@ -1,0 +1,18 @@
+name: General Question/Feedback ❔
+description: Just got a question or some general feedback? Let us know
+title: '[Question/Feedback]: '
+labels: ['question']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for your question/feedback
+
+        > Note: Please search existing issues to avoid creating duplicates.
+  - type: textarea
+    id: bdescription
+    attributes:
+      label: Description
+      description: Let us know your question or feedback here
+    validations:
+      required: true
