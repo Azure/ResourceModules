@@ -8,7 +8,7 @@ param generateSshPubKeyScriptName string
 param managedIdentityName string
 
 @description('Required. Name of the temporary SSH Public Key to create for test.')
-param tempKeyName string
+param sshKeyName string
 
 @description('Optional. Do not provide a value. Used to force the deployment script to rerun on every redeployment.')
 param utcValue string = utcNow()
@@ -41,8 +41,8 @@ resource createPubKeyScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
     properties: {
         azPowerShellVersion: '8.0'
         retentionInterval: 'P1D'
-        arguments: '-resourceGroupName ${resourceGroup().name} -keyName ${tempKeyName}'
-        scriptContent: loadTextContent('../.scripts/New-SshPubKey.ps1')
+        arguments: '-ResourceGroupName ${resourceGroup().name} -SSHKeyName ${sshKeyName}'
+        scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')
         cleanupPreference: 'OnExpiration'
         forceUpdateTag: utcValue
     }
