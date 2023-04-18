@@ -93,6 +93,52 @@ module testDeployment '../../deploy.bicep' = {
       }
       {
         hyperVGeneration: 'V2'
+        isHibernateSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-003'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-hibernate'
+      }
+      {
+        hyperVGeneration: 'V2'
+        isAcceleratedNetworkSupported: 'true'
+        maxRecommendedMemory: 16
+        maxRecommendedvCPUs: 8
+        minRecommendedMemory: 4
+        minRecommendedvCPUs: 2
+        name: '<<namePrefix>>-az-imgd-ws-004'
+        offer: 'WindowsServer'
+        osState: 'Generalized'
+        osType: 'Windows'
+        publisher: 'MicrosoftWindowsServer'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
+        sku: '2022-datacenter-azure-edition-accnet'
+      }
+      {
+        hyperVGeneration: 'V2'
         securityType: 'TrustedLaunch'
         maxRecommendedMemory: 16
         maxRecommendedvCPUs: 4
@@ -137,5 +183,9 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

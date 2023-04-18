@@ -48,7 +48,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     lock: 'CanNotDelete'
-    proximityPlacementGroupId: nestedDependencies.outputs.proximityPlacementGroupResourceId
+    proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -58,5 +58,9 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

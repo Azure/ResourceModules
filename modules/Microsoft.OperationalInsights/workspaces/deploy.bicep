@@ -25,8 +25,14 @@ param linkedStorageAccounts array = []
 @description('Optional. Kusto Query Language searches to save.')
 param savedSearches array = []
 
+@description('Optional. LAW data export instances to be deployed.')
+param dataExports array = []
+
 @description('Optional. LAW data sources to configure.')
 param dataSources array = []
+
+@description('Optional. LAW custom tables to be deployed.')
+param tables array = []
 
 @description('Optional. List of gallerySolutions to be created in the log analytics workspace.')
 param gallerySolutions array = []
@@ -53,6 +59,12 @@ param publicNetworkAccessForIngestion string = 'Enabled'
   'Disabled'
 ])
 param publicNetworkAccessForQuery string = 'Enabled'
+
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Set to \'true\' to use resource or workspace permissions and \'false\' (or leave empty) to require workspace permissions.')
 param useResourcePermissions bool = false
@@ -111,8 +123,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -148,6 +160,13 @@ var logAnalyticsSearchVersion = 1
 
 var enableReferencedModulesTelemetry = false
 
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -160,7 +179,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' = {
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   location: location
   name: name
   tags: tags
@@ -180,10 +199,11 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
     forceCmkForQuery: forceCmkForQuery
   }
+  identity: identity
 }
 
 resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -201,7 +221,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
     tables: contains(storageInsightsConfig, 'tables') ? storageInsightsConfig.tables : []
-    storageAccountId: storageInsightsConfig.storageAccountId
+    storageAccountResourceId: storageInsightsConfig.storageAccountResourceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -246,6 +266,18 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
   ]
 }]
 
+module logAnalyticsWorkspace_dataExports 'dataExports/deploy.bicep' = [for (dataExport, index) in dataExports: {
+  name: '${uniqueString(deployment().name, location)}-LAW-DataExport-${index}'
+  params: {
+    workspaceName: logAnalyticsWorkspace.name
+    name: dataExport.name
+    destination: contains(dataExport, 'destination') ? dataExport.destination : {}
+    enable: contains(dataExport, 'enable') ? dataExport.enable : false
+    tableNames: contains(dataExport, 'tableNames') ? dataExport.tableNames : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
   name: '${uniqueString(deployment().name, location)}-LAW-DataSource-${index}'
   params: {
@@ -263,6 +295,21 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
     syslogName: contains(dataSource, 'syslogName') ? dataSource.syslogName : ''
     syslogSeverities: contains(dataSource, 'syslogSeverities') ? dataSource.syslogSeverities : []
     performanceCounters: contains(dataSource, 'performanceCounters') ? dataSource.performanceCounters : []
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module logAnalyticsWorkspace_tables 'tables/deploy.bicep' = [for (table, index) in tables: {
+  name: '${uniqueString(deployment().name, location)}-LAW-Table-${index}'
+  params: {
+    workspaceName: logAnalyticsWorkspace.name
+    name: table.name
+    plan: contains(table, 'plan') ? table.plan : 'Analytics'
+    schema: contains(table, 'schema') ? table.schema : {}
+    retentionInDays: contains(table, 'retentionInDays') ? table.retentionInDays : -1
+    totalRetentionInDays: contains(table, 'totalRetentionInDays') ? table.totalRetentionInDays : -1
+    restoredLogs: contains(table, 'restoredLogs') ? table.restoredLogs : {}
+    searchResults: contains(table, 'searchResults') ? table.searchResults : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
@@ -315,3 +362,6 @@ output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.custome
 
 @description('The location the resource was deployed into.')
 output location string = logAnalyticsWorkspace.location
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedIdentityPrincipalId string = systemAssignedIdentity && contains(logAnalyticsWorkspace.identity, 'principalId') ? logAnalyticsWorkspace.identity.principalId : ''

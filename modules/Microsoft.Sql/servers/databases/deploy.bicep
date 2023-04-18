@@ -110,8 +110,33 @@ param diagnosticMetricsToEnable array = [
   'WorkloadManagement'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. Specifies the mode of database creation.')
+@allowed([
+  'Default'
+  'Copy'
+  'OnlineSecondary'
+  'PointInTimeRestore'
+  'Recovery'
+  'Restore'
+  'RestoreLongTermRetentionBackup'
+  'Secondary'
+])
+param createMode string = 'Default'
+
+@description('Optional. Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore.')
+param sourceDatabaseResourceId string = ''
+
+@description('Optional. The time that the database was deleted when restoring a deleted database.')
+param sourceDatabaseDeletionDate string = ''
+
+@description('Optional. Resource ID of backup if createMode set to RestoreLongTermRetentionBackup.')
+param recoveryServicesRecoveryPointResourceId string = ''
+
+@description('Optional. Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore.')
+param restorePointInTime string = ''
+
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -157,6 +182,12 @@ param isLedgerOn bool = false
 
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
+
+@description('Optional. The short term backup retention policy to create for the database.')
+param backupShortTermRetentionPolicy object = {}
+
+@description('Optional. The long term backup retention policy to create for the database.')
+param backupLongTermRetentionPolicy object = {}
 
 // The SKU object must be built in a variable
 // The alternative, 'null' as default values, leads to non-terminating deployments
@@ -206,12 +237,17 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
     elasticPoolId: elasticPoolId
+    createMode: createMode
+    sourceDatabaseId: !empty(sourceDatabaseResourceId) ? sourceDatabaseResourceId : null
+    sourceDatabaseDeletionDate: !empty(sourceDatabaseDeletionDate) ? sourceDatabaseDeletionDate : null
+    recoveryServicesRecoveryPointId: !empty(recoveryServicesRecoveryPointResourceId) ? recoveryServicesRecoveryPointResourceId : null
+    restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
   }
   sku: skuVar
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -221,6 +257,28 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
     logs: diagnosticsLogs
   }
   scope: database
+}
+
+module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-${name}-shBakRetPol'
+  params: {
+    serverName: serverName
+    databaseName: database.name
+    diffBackupIntervalInHours: contains(backupShortTermRetentionPolicy, 'diffBackupIntervalInHours') ? backupShortTermRetentionPolicy.diffBackupIntervalInHours : 24
+    retentionDays: contains(backupShortTermRetentionPolicy, 'retentionDays') ? backupShortTermRetentionPolicy.retentionDays : 7
+  }
+}
+
+module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-${name}-lgBakRetPol'
+  params: {
+    serverName: serverName
+    databaseName: database.name
+    weeklyRetention: contains(backupLongTermRetentionPolicy, 'weeklyRetention') ? backupLongTermRetentionPolicy.weeklyRetention : ''
+    monthlyRetention: contains(backupLongTermRetentionPolicy, 'monthlyRetention') ? backupLongTermRetentionPolicy.monthlyRetention : ''
+    yearlyRetention: contains(backupLongTermRetentionPolicy, 'yearlyRetention') ? backupLongTermRetentionPolicy.yearlyRetention : ''
+    weekOfYear: contains(backupLongTermRetentionPolicy, 'weekOfYear') ? backupLongTermRetentionPolicy.weekOfYear : 1
+  }
 }
 
 @description('The name of the deployed database.')

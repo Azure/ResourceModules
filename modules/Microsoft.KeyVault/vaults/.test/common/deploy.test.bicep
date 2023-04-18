@@ -39,7 +39,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -100,7 +100,7 @@ module testDeployment '../../deploy.bicep' = {
     enableRbacAuthorization: false
     keys: [
       {
-        attributesExp: 1702648632
+        attributesExp: 1725109032
         attributesNbf: 10000
         name: 'keyName'
         roleAssignments: [
@@ -112,6 +112,29 @@ module testDeployment '../../deploy.bicep' = {
             principalType: 'ServicePrincipal'
           }
         ]
+        rotationPolicy: {
+          attributes: {
+            expiryTime: 'P2Y'
+          }
+          lifetimeActions: [
+            {
+              trigger: {
+                timeBeforeExpiry: 'P2M'
+              }
+              action: {
+                type: 'Rotate'
+              }
+            }
+            {
+              trigger: {
+                timeBeforeExpiry: 'P30D'
+              }
+              action: {
+                type: 'Notify'
+              }
+            }
+          ]
+        }
       }
     ]
     lock: 'CanNotDelete'
@@ -139,6 +162,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'vault'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [

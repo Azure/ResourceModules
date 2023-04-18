@@ -19,7 +19,7 @@ param location string = resourceGroup().location
 param roleAssignments array = []
 
 @description('Optional. The workspace\'s custom parameters.')
-param workspaceParameters object = {}
+param parameters object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -70,8 +70,8 @@ param diagnosticLogCategoriesToEnable array = [
   'allLogs'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -117,7 +117,7 @@ resource workspace 'Microsoft.Databricks/workspaces@2018-04-01' = {
   }
   properties: {
     managedResourceGroupId: (empty(managedResourceGroupId) ? managedResourceGroupIdVar : managedResourceGroupId)
-    parameters: workspaceParameters
+    parameters: parameters
   }
 }
 
@@ -132,7 +132,7 @@ resource workspace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(
 
 // Note: Diagnostic Settings are only supported by the premium tier
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (pricingTier == 'premium' && ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName)))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

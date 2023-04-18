@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the storage container to deploy.')
-param name string = 'default'
-
 @description('Required. The Storage Account ManagementPolicies Rules.')
 param rules array
 
@@ -29,7 +26,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
 
 // lifecycle policy
 resource managementPolicy 'Microsoft.Storage/storageAccounts/managementPolicies@2021-09-01' = if (!empty(rules)) {
-  name: name
+  name: 'default'
   parent: storageAccount
   properties: {
     policy: {

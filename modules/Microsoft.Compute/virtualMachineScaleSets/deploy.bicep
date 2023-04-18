@@ -347,7 +347,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-03-01' = {
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-11-01' = {
   name: name
   location: location
   tags: tags
@@ -504,7 +504,7 @@ module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extens
 }
 
 resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
-  name: last(split(monitoringWorkspaceId, '/'))
+  name: last(split(monitoringWorkspaceId, '/'))!
   scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 

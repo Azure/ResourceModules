@@ -4,6 +4,14 @@ param name string
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
 
+@allowed([
+  ''
+  'CanNotDelete'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = ''
+
 @description('Required. Resource ID of the KeyVault containing the key or secret.')
 param keyVaultResourceId string
 
@@ -26,10 +34,10 @@ param federatedClientId string = 'None'
 @description('Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.')
 param rotationToLatestKeyVersionEnabled bool = false
 
-@description('Optional. Enables system assigned managed identity on the resource.')
+@description('Conditional. Enables system assigned managed identity on the resource. Required if userAssignedIdentities is empty.')
 param systemAssignedIdentity bool = true
 
-@description('Optional. The ID(s) to assign to the resource.')
+@description('Conditional. The ID(s) to assign to the resource. Required if systemAssignedIdentity is set to "false".')
 param userAssignedIdentities object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
@@ -41,12 +49,12 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : 'UserAssigned'
 
-var identity = identityType != 'None' ? {
+var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
+}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -60,10 +68,26 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = {
-  name: '${last(split(keyVaultResourceId, '/'))}/${keyName}'
+resource keyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = {
+  name: last(split(keyVaultResourceId, '/'))!
   scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+
+  resource key 'keys@2021-10-01' existing = {
+    name: keyName
+  }
 }
+
+// Note: This is only enabled for user-assigned identities as the service's system-assigned identity isn't available during its initial deployment
+module keyVaultPermissions '.bicep/nested_keyVaultPermissions.bicep' = [for (userAssignedIdentityId, index) in items(userAssignedIdentities): {
+  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVPermissions-${index}'
+  params: {
+    keyName: keyName
+    keyVaultResourceId: keyVaultResourceId
+    userAssignedIdentityResourceId: userAssignedIdentityId.key
+    rbacAuthorizationEnabled: keyVault.properties.enableRbacAuthorization
+  }
+  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+}]
 
 resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
   name: name
@@ -75,36 +99,15 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
       sourceVault: {
         id: keyVaultResourceId
       }
-      keyUrl: !empty(keyVersion) ? '${keyVaultKey.properties.keyUri}/${keyVersion}' : keyVaultKey.properties.keyUriWithVersion
+      keyUrl: !empty(keyVersion) ? '${keyVault::key.properties.keyUri}/${keyVersion}' : keyVault::key.properties.keyUriWithVersion
     }
     encryptionType: encryptionType
     federatedClientId: federatedClientId
     rotationToLatestKeyVersionEnabled: rotationToLatestKeyVersionEnabled
   }
-}
-
-module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
-  params: {
-    keyVaultName: last(split(keyVaultResourceId, '/'))
-    accessPolicies: [
-      {
-        tenantId: subscription().tenantId
-        objectId: diskEncryptionSet.identity.principalId
-        permissions: {
-          keys: [
-            'get'
-            'wrapKey'
-            'unwrapKey'
-          ]
-          secrets: []
-          certificates: []
-        }
-      }
-    ]
-  }
-  // This is to support access policies to KV in different subscription and resource group than the disk encryption set.
-  scope: resourceGroup(split(keyVaultResourceId, '/')[2], split(keyVaultResourceId, '/')[4])
+  dependsOn: [
+    keyVaultPermissions
+  ]
 }
 
 module diskEncryptionSet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -120,6 +123,15 @@ module diskEncryptionSet_roleAssignments '.bicep/nested_roleAssignments.bicep' =
   }
 }]
 
+resource diskEncryptionSet_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${diskEncryptionSet.name}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: diskEncryptionSet
+}
+
 @description('The resource ID of the disk encryption set.')
 output resourceId string = diskEncryptionSet.id
 
@@ -130,10 +142,13 @@ output name string = diskEncryptionSet.name
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the disk encryption set.')
-output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
+output principalId string = systemAssignedIdentity == true ? diskEncryptionSet.identity.principalId : ''
+
+@description('The idenities of the disk encryption set.')
+output identities object = diskEncryptionSet.identity
 
 @description('The name of the key vault with the disk encryption key.')
-output keyVaultName string = last(split(keyVaultResourceId, '/'))
+output keyVaultName string = last(split(keyVaultResourceId, '/'))!
 
 @description('The location the resource was deployed into.')
 output location string = diskEncryptionSet.location

@@ -38,7 +38,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -76,10 +76,10 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     tags: {
       Environment: 'Non-Prod'
-      Company: 'Contoso'
+      Role: 'DeploymentValidation'
     }
     hostPoolType: 'Pooled'
     friendlyName: 'My Scaling Plan'
-    scalingplanDescription: 'My Scaling Plan Description'
+    description: 'My Scaling Plan Description'
   }
 }

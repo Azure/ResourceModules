@@ -34,7 +34,6 @@ These are tokens constructed from environment variables, which are defined in th
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
 - `<<tenantId>>`: Will point to the Azure Tenant ID.
-- `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
 
 ## (Optional) Local Custom Tokens
 
@@ -71,7 +70,7 @@ The solution comes with one predefined local token `namePrefix`. This token is l
 
 When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or Key Vaults.
 
-> **Note**: Do not store sensitive information in this location as they will be present in your Git History. Follow best [practices and guidelines](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices#security-recommendations-for-parameters) on how to handle secrets in template deployments.
+> **Note**: Do not store sensitive information in this location as they will be present in your Git History. Follow best [practices and guidelines](https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices#security-recommendations-for-parameters) on how to handle secrets in template deployments.
 
 # How it works
 
@@ -85,7 +84,7 @@ The below diagram illustrates the Token Replacement Functionality via the [valid
 
 <img src="./media/CIEnvironment/tokenReplacement.png" alt="tokenReplacement">
 
-- **1A.** The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), that are injected as environment variables.
+- **1A.** The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://learn.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), that are injected as environment variables.
 - **1B.** The user can also create local custom Tokens in the [settings.yml](https://github.com/Azure/ResourceModules/blob/main/settings.yml). Tokens start with `localTokens_` and then followed by the actual token name (e.g. `tokenA`). This prefix gets removed by the CI leaving the original token name
 - **2.** The module test files can now be tokenized as per required value. And the token format can look like `<<tokenA>>`. Example:
 

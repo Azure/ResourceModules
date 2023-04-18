@@ -73,6 +73,7 @@ var builtInRoleNames = {
   'Cognitive Services User': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a97b65f3-24c7-4388-baec-2e87135dc908')
   'Collaborative Data Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'daa9e50b-21df-454c-94a6-a8050adab352')
   'Collaborative Runtime Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7a6f0e70-c033-4fb1-828c-08514e5f4102')
+  'ContainerApp Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ad2dd5fb-cd4b-4fd4-a9b6-4fed3630980b')
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Cosmos DB Account Reader Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fbdf93bf-df7d-467e-a4d2-9458aa1360c8')
   'Cosmos DB Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '230815da-be43-4aae-9cb4-875f7bd000aa')
@@ -124,6 +125,8 @@ var builtInRoleNames = {
   'Load Test Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749a398d-560b-491b-bb21-08924219302e')
   'Load Test Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '45bb0b16-2f0c-4e78-afaa-a07599b003f6')
   'Load Test Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3ae3fb29-0000-4ccd-bf80-542e7b26e081')
+  'LocalNGFirewallAdministrator role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a8835c7d-b5cb-47fa-b6f0-65ea10ce07a2')
+  'LocalRulestacksAdministrator role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'bfc3b73d-c6ff-45eb-9a5f-40298295bf20')
   'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
   'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
   'Logic App Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '87a39d53-fc1b-424a-814c-f7e04687dc9e')
@@ -177,7 +180,7 @@ var builtInRoleNames = {
 }
 
 resource actionGroup 'microsoft.insights/actionGroups@2019-06-01' existing = {
-  name: last(split(resourceId, '/'))
+  name: last(split(resourceId, '/'))!
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

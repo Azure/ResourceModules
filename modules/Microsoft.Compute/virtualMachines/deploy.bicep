@@ -60,7 +60,7 @@ param certificatesToBeInstalled array = []
   'Low'
   'Spot'
 ])
-param vmPriority string = 'Regular'
+param priority string = 'Regular'
 
 @description('Optional. Specifies the eviction policy for the low priority virtual machine. Will result in \'Deallocate\' eviction policy.')
 param enableEvictionPolicy bool = false
@@ -414,7 +414,7 @@ module vm_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, i
   }
 }]
 
-resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
+resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
   name: name
   location: location
   identity: identity
@@ -497,9 +497,9 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
       id: proximityPlacementGroupResourceId
     } : null
-    priority: vmPriority
+    priority: priority
     evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
-    billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? {
+    billingProfile: !empty(priority) && !empty(maxPriceForLowPriorityVm) ? {
       maxPrice: maxPriceForLowPriorityVm
     } : null
     host: !empty(dedicatedHostId) ? {
@@ -568,7 +568,7 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
 }
 
 resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
-  name: last(split(monitoringWorkspaceId, '/'))
+  name: last(split(monitoringWorkspaceId, '/'))!
   scope: az.resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 

@@ -13,7 +13,7 @@ This module deploys a Static Site Config.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/staticSites/config` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/config) |
+| `Microsoft.Web/staticSites/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/staticSites/config) |
 
 ## Parameters
 

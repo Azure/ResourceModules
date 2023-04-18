@@ -2,10 +2,10 @@
 param logAnalyticsWorkspaceName string
 
 @description('Optional. The name of the storage insights config.')
-param name string = '${last(split(storageAccountId, '/'))}-stinsconfig'
+param name string = '${last(split(storageAccountResourceId, '/'))}-stinsconfig'
 
 @description('Required. The Azure Resource Manager ID of the storage account resource.')
-param storageAccountId string
+param storageAccountResourceId string
 
 @description('Optional. The names of the blob containers that the workspace should read.')
 param containers array = []
@@ -31,11 +31,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = {
-  name: last(split(storageAccountId, '/'))
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
+  name: last(split(storageAccountResourceId, '/'))!
 }
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
   name: logAnalyticsWorkspaceName
 }
 
@@ -47,7 +47,7 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
     containers: containers
     tables: tables
     storageAccount: {
-      id: storageAccountId
+      id: storageAccountResourceId
       key: storageAccount.listKeys().keys[0].value
     }
   }

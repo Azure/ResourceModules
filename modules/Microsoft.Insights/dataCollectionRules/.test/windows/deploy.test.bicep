@@ -46,12 +46,12 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    dataCollectionRuleDescription: 'Collecting Windows-specific performance counters and Windows Event Logs'
+    description: 'Collecting Windows-specific performance counters and Windows Event Logs'
     dataSources: {
       performanceCounters: [
         {
-          name: 'perfCounterDataSource10'
-          samplingFrequencyInSeconds: 10
+          name: 'perfCounterDataSource60'
+          samplingFrequencyInSeconds: 60
           streams: [
             'Microsoft-InsightsMetrics'
           ]
@@ -76,15 +76,6 @@ module testDeployment '../../deploy.bicep' = {
             '\\Memory\\Page Faults/sec'
             '\\Process(_Total)\\Working Set'
             '\\Process(_Total)\\Working Set - Private'
-          ]
-        }
-        {
-          name: 'perfCounterDataSource15'
-          samplingFrequencyInSeconds: 15
-          streams: [
-            'Microsoft-InsightsMetrics'
-          ]
-          counterSpecifiers: [
             '\\LogicalDisk(_Total)\\% Disk Time'
             '\\LogicalDisk(_Total)\\% Disk Read Time'
             '\\LogicalDisk(_Total)\\% Disk Write Time'

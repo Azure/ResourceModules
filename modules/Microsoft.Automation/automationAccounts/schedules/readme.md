@@ -13,7 +13,7 @@ This module deploys an Azure Automation Account Schedule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/schedules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules) |
+| `Microsoft.Automation/automationAccounts/schedules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/schedules) |
 
 ## Parameters
 
@@ -34,11 +34,11 @@ This module deploys an Azure Automation Account Schedule.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `advancedSchedule` | object | `{object}` |  | The properties of the create Advanced Schedule. |
+| `description` | string | `''` |  | The description of the schedule. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expiryTime` | string | `''` |  | The end time of the schedule. |
 | `frequency` | string | `'OneTime'` | `[Day, Hour, Minute, Month, OneTime, Week]` | The frequency of the schedule. |
 | `interval` | int | `0` |  | Anything. |
-| `scheduleDescription` | string | `''` |  | The description of the schedule. |
 | `startTime` | string | `''` |  | The start time of the schedule. |
 | `timeZone` | string | `''` |  | The time zone of the schedule. |
 

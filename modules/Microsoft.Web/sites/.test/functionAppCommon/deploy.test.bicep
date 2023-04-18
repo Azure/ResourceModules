@@ -42,7 +42,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     kind: 'functionapp'
     serverFarmResourceId: nestedDependencies.outputs.serverFarmResourceId
-    appInsightId: nestedDependencies.outputs.applicationInsightsResourceId
+    appInsightResourceId: nestedDependencies.outputs.applicationInsightsResourceId
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
       EASYAUTH_SECRET: 'https://<<namePrefix>>-KeyVault${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
@@ -150,6 +150,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -167,7 +171,7 @@ module testDeployment '../../deploy.bicep' = {
       alwaysOn: true
       use32BitWorkerProcess: false
     }
-    storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+    storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}

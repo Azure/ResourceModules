@@ -102,7 +102,7 @@ module profile_endpoint 'endpoints/deploy.bicep' = if (!empty(endpointProperties
   name: '${uniqueString(deployment().name, location)}-Profile-Endpoint'
   params: {
     name: !empty(endpointName) ? endpointName : '${profile.name}-endpoint'
-    endpointProperties: endpointProperties
+    properties: endpointProperties
     location: location
     profileName: profile.name
     enableDefaultTelemetry: enableReferencedModulesTelemetry

@@ -14,8 +14,8 @@ This module deploys an Action Group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `microsoft.insights/actionGroups` | [2019-06-01](https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters
 
@@ -49,7 +49,7 @@ This module deploys an Action Group.
 
 ### Parameter Usage: receivers
 
-See [Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
+See [Documentation](https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
 
 <details>
 
@@ -222,7 +222,7 @@ tags: {
     - SMSAction
     - AzureAppAction
     - VoiceAction
-- To understand the impact of the `useCommonAlertSchema` field, see [here](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
+- To understand the impact of the `useCommonAlertSchema` field, see [here](https://learn.microsoft.com/en-us/azure/azure-monitor/platform/alerts-common-schema)
 
 ## Outputs
 
@@ -286,6 +286,10 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
         phoneNumber: '2345678901'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -345,6 +349,12 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
           "phoneNumber": "2345678901"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

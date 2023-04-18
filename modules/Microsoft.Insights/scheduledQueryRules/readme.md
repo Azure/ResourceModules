@@ -14,8 +14,8 @@ This module deploys a scheduled query rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/scheduledQueryRules` | [2021-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/scheduledQueryRules` | [2021-02-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules) |
 
 ## Parameters
 
@@ -227,6 +227,10 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
       }
     ]
     suppressForMinutes: 'PT5M'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     windowSize: 'PT5M'
   }
 }
@@ -311,6 +315,12 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
     },
     "suppressForMinutes": {
       "value": "PT5M"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "windowSize": {
       "value": "PT5M"

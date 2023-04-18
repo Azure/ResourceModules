@@ -93,8 +93,8 @@ param diagnosticLogCategoriesToEnable array = [
   'allLogs'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -163,7 +163,7 @@ resource database_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -178,7 +178,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
   name: '${deployment().name}-BackupShortTRetPol'
   params: {
     managedInstanceName: managedInstanceName
-    databaseName: last(split(database.name, '/'))
+    databaseName: last(split(database.name, '/'))!
     name: backupShortTermRetentionPoliciesObj.name
     retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -189,7 +189,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   name: '${deployment().name}-BackupLongTRetPol'
   params: {
     managedInstanceName: managedInstanceName
-    databaseName: last(split(database.name, '/'))
+    databaseName: last(split(database.name, '/'))!
     name: backupLongTermRetentionPoliciesObj.name
     weekOfYear: contains(backupLongTermRetentionPoliciesObj, 'weekOfYear') ? backupLongTermRetentionPoliciesObj.weekOfYear : 5
     weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'

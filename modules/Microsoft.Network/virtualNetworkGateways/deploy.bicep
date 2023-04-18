@@ -24,7 +24,15 @@ param domainNameLabel array = []
   'Vpn'
   'ExpressRoute'
 ])
-param virtualNetworkGatewayType string
+param gatewayType string
+
+@description('Optional. The generation for this VirtualNetworkGateway. Must be None if virtualNetworkGatewayType is not VPN.')
+@allowed([
+  'Generation1'
+  'Generation2'
+  'None'
+])
+param vpnGatewayGeneration string = 'None'
 
 @description('Required. The SKU of the Gateway.')
 @allowed([
@@ -32,9 +40,13 @@ param virtualNetworkGatewayType string
   'VpnGw1'
   'VpnGw2'
   'VpnGw3'
+  'VpnGw4'
+  'VpnGw5'
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
   'Standard'
   'HighPerformance'
   'UltraPerformance'
@@ -42,7 +54,7 @@ param virtualNetworkGatewayType string
   'ErGw2AZ'
   'ErGw3AZ'
 ])
-param virtualNetworkGatewaySku string
+param skuName string
 
 @description('Optional. Specifies the VPN type.')
 @allowed([
@@ -65,6 +77,30 @@ param asn int = 65815
 
 @description('Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network.')
 param vpnClientAddressPoolPrefix string = ''
+
+@description('Optional. Configures this gateway to accept traffic from remote Virtual WAN networks.')
+param allowVirtualWanTraffic bool = false
+
+@description('Optional. Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support connectivity to Azure Virtual WAN.')
+param allowRemoteVnetTraffic bool = false
+
+@description('Optional. disableIPSecReplayProtection flag. Used for VPN Gateways.')
+param disableIPSecReplayProtection bool = false
+
+@description('Optional. Whether DNS forwarding is enabled or not and is only supported for Express Route Gateways. The DNS forwarding feature flag must be enabled on the current subscription.')
+param enableDnsForwarding bool = false
+
+@description('Optional. Whether private IP needs to be enabled on this gateway for connections or not. Used for configuring a Site-to-Site VPN connection over ExpressRoute private peering.')
+param enablePrivateIpAddress bool = false
+
+@description('Optional. The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.')
+param gatewayDefaultSiteLocalNetworkGatewayId string = ''
+
+@description('Optional. NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only.')
+param natRules array = []
+
+@description('Optional. EnableBgpRouteTranslationForNat flag. Can only be used when "natRules" are enabled on the Virtual Network Gateway.')
+param enableBgpRouteTranslationForNat bool = false
 
 @description('Optional. Client root certificate data used to authenticate VPN clients. Cannot be configured if vpnClientAadConfiguration is provided.')
 param clientRootCertData string = ''
@@ -141,11 +177,11 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
+@description('Optional. The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param publicIpDiagnosticSettingsName string = ''
 
 // ================//
 // Variables       //
@@ -193,10 +229,10 @@ var zoneRedundantSkus = [
   'ErGw2AZ'
   'ErGw3AZ'
 ]
-var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
-var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
+var gatewayPipSku = contains(zoneRedundantSkus, skuName) ? 'Standard' : 'Basic'
+var gatewayPipAllocationMethod = contains(zoneRedundantSkus, skuName) ? 'Static' : 'Dynamic'
 
-var isActiveActiveValid = virtualNetworkGatewayType != 'ExpressRoute' ? activeActive : false
+var isActiveActiveValid = gatewayType != 'ExpressRoute' ? activeActive : false
 var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
   activeGatewayPipName
@@ -204,9 +240,9 @@ var virtualGatewayPipNameVar = isActiveActiveValid ? [
   gatewayPipName
 ]
 
-var vpnTypeVar = virtualNetworkGatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
+var vpnTypeVar = gatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
 
-var isBgpValid = virtualNetworkGatewayType != 'ExpressRoute' ? enableBgp : false
+var isBgpValid = gatewayType != 'ExpressRoute' ? enableBgp : false
 var bgpSettings = {
   asn: asn
 }
@@ -283,12 +319,8 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
   aadTenant: vpnClientAadConfiguration.aadTenant
   aadAudience: vpnClientAadConfiguration.aadAudience
   aadIssuer: vpnClientAadConfiguration.aadIssuer
-  vpnAuthenticationTypes: [
-    vpnClientAadConfiguration.vpnAuthenticationTypes
-  ]
-  vpnClientProtocols: [
-    vpnClientAadConfiguration.vpnClientProtocols
-  ]
+  vpnAuthenticationTypes: vpnClientAadConfiguration.vpnAuthenticationTypes
+  vpnClientProtocols: vpnClientAadConfiguration.vpnClientProtocols
 } : null
 
 var enableReferencedModulesTelemetry = false
@@ -316,7 +348,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     name: virtualGatewayPublicIpName
     diagnosticLogCategoriesToEnable: publicIpdiagnosticLogCategoriesToEnable
     diagnosticMetricsToEnable: diagnosticMetricsToEnable
-    diagnosticSettingsName: publicIpDiagnosticSettingsName
+    diagnosticSettingsName: !empty(publicIpDiagnosticSettingsName) ? publicIpDiagnosticSettingsName : '${virtualGatewayPublicIpName}-diagnosticSettings'
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
@@ -329,33 +361,57 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewa
     publicIPPrefixResourceId: !empty(publicIPPrefixResourceId) ? publicIPPrefixResourceId : ''
     tags: tags
     skuName: gatewayPipSku
-    zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : []
+    zones: contains(zoneRedundantSkus, skuName) ? publicIpZones : []
   }
 }]
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-08-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     ipConfigurations: ipConfiguration
     activeActive: isActiveActiveValid
+    allowRemoteVnetTraffic: allowRemoteVnetTraffic
+    allowVirtualWanTraffic: allowVirtualWanTraffic
     enableBgp: isBgpValid
     bgpSettings: isBgpValid ? bgpSettings : null
+    disableIPSecReplayProtection: disableIPSecReplayProtection
+    enableDnsForwarding: gatewayType == 'ExpressRoute' ? enableDnsForwarding : null
+    enablePrivateIpAddress: enablePrivateIpAddress
+    enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
+    gatewayType: gatewayType
+    gatewayDefaultSite: !empty(gatewayDefaultSiteLocalNetworkGatewayId) ? {
+      id: gatewayDefaultSiteLocalNetworkGatewayId
+    } : null
     sku: {
-      name: virtualNetworkGatewaySku
-      tier: virtualNetworkGatewaySku
+      name: skuName
+      tier: skuName
     }
-    gatewayType: virtualNetworkGatewayType
     vpnType: vpnTypeVar
     vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
+    vpnGatewayGeneration: gatewayType == 'Vpn' ? vpnGatewayGeneration : 'None'
   }
   dependsOn: [
     publicIPAddress
   ]
 }
+
+module virtualNetworkGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+  name: '${deployment().name}-NATRule-${index}'
+  params: {
+    name: natRule.name
+    virtualNetworkGatewayName: virtualNetworkGateway.name
+    externalMappings: contains(natRule, 'externalMappings') ? natRule.externalMappings : []
+    internalMappings: contains(natRule, 'internalMappings') ? natRule.internalMappings : []
+    ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
+    mode: contains(natRule, 'mode') ? natRule.mode : ''
+    type: contains(natRule, 'type') ? natRule.type : ''
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'
@@ -367,7 +423,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: virtualNetworkGatewayDiagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

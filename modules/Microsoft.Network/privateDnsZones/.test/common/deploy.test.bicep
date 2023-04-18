@@ -222,5 +222,9 @@ module testDeployment '../../deploy.bicep' = {
         virtualNetworkResourceId: nestedDependencies.outputs.virtualNetworkResourceId
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

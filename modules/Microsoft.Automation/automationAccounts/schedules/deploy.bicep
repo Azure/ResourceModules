@@ -1,10 +1,10 @@
-@description('Required. Name of the Automation Account schedule.')
+@sys.description('Required. Name of the Automation Account schedule.')
 param name string
 
-@description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
+@sys.description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
-@description('Optional. The properties of the create Advanced Schedule.')
+@sys.description('Optional. The properties of the create Advanced Schedule.')
 @metadata({
   monthDays: 'Days of the month that the job should execute on. Must be between 1 and 31.'
   monthlyOccurrences: 'Occurrences of days within a month.'
@@ -12,10 +12,10 @@ param automationAccountName string
 })
 param advancedSchedule object = {}
 
-@description('Optional. The description of the schedule.')
-param scheduleDescription string = ''
+@sys.description('Optional. The description of the schedule.')
+param description string = ''
 
-@description('Optional. The end time of the schedule.')
+@sys.description('Optional. The end time of the schedule.')
 param expiryTime string = ''
 
 @allowed([
@@ -26,22 +26,22 @@ param expiryTime string = ''
   'OneTime'
   'Week'
 ])
-@description('Optional. The frequency of the schedule.')
+@sys.description('Optional. The frequency of the schedule.')
 param frequency string = 'OneTime'
 
-@description('Optional. Anything.')
+@sys.description('Optional. Anything.')
 param interval int = 0
 
-@description('Optional. The start time of the schedule.')
+@sys.description('Optional. The start time of the schedule.')
 param startTime string = ''
 
-@description('Optional. The time zone of the schedule.')
+@sys.description('Optional. The time zone of the schedule.')
 param timeZone string = ''
 
-@description('Generated. Time used as a basis for e.g. the schedule start date.')
+@sys.description('Generated. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
 
-@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+@sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -56,16 +56,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
   name: automationAccountName
 }
 
-resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-preview' = {
+resource schedule 'Microsoft.Automation/automationAccounts/schedules@2022-08-08' = {
   name: name
   parent: automationAccount
   properties: {
     advancedSchedule: !empty(advancedSchedule) ? advancedSchedule : null
-    description: !empty(scheduleDescription) ? scheduleDescription : null
+    description: !empty(description) ? description : null
     expiryTime: !empty(expiryTime) ? expiryTime : null
     frequency: !empty(frequency) ? frequency : 'OneTime'
     interval: (interval != 0) ? interval : null
@@ -74,11 +74,11 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
   }
 }
 
-@description('The name of the deployed schedule.')
+@sys.description('The name of the deployed schedule.')
 output name string = schedule.name
 
-@description('The resource ID of the deployed schedule.')
+@sys.description('The resource ID of the deployed schedule.')
 output resourceId string = schedule.id
 
-@description('The resource group of the deployed schedule.')
+@sys.description('The resource group of the deployed schedule.')
 output resourceGroupName string = resourceGroup().name

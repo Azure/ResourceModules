@@ -26,7 +26,7 @@ param enableDefaultTelemetry bool = true
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }
@@ -38,6 +38,7 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
+    proximityPlacementGroupName: 'dep-<<namePrefix>>-ppg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
   }
@@ -45,7 +46,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -113,6 +114,7 @@ module testDeployment '../../deploy.bicep' = {
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
         vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[1]
+        proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
       }
       {
         availabilityZones: [
@@ -147,6 +149,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
+    openServiceMeshEnabled: true
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -158,5 +161,67 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+    fluxExtension: {
+      configurationSettings: {
+        'helm-controller.enabled': 'true'
+        'source-controller.enabled': 'true'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'true'
+        'image-automation-controller.enabled': 'false'
+        'image-reflector-controller.enabled': 'false'
+      }
+      configurations: [
+        {
+          namespace: 'flux-system'
+          scope: 'cluster'
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/mspnp/aks-baseline'
+          }
+        }
+        {
+          namespace: 'flux-system-helm'
+          scope: 'cluster'
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+          }
+          kustomizations: {
+            infra: {
+              path: './infrastructure'
+              dependsOn: []
+              timeoutInSeconds: 600
+              syncIntervalInSeconds: 600
+              validation: 'none'
+              prune: true
+            }
+            apps: {
+              path: './apps/staging'
+              dependsOn: [
+                'infra'
+              ]
+              timeoutInSeconds: 600
+              syncIntervalInSeconds: 600
+              retryIntervalInSeconds: 120
+              prune: true
+            }
+          }
+        }
+      ]
+    }
   }
 }

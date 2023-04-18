@@ -39,7 +39,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -61,7 +61,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
     largeFileSharesState: 'Enabled'
@@ -77,6 +77,10 @@ module testDeployment '../../deploy.bicep' = {
           privateDNSResourceIds: [
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
+        }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
         }
       }
     ]
@@ -122,6 +126,8 @@ module testDeployment '../../deploy.bicep' = {
       containers: [
         {
           name: 'avdscripts'
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
           publicAccess: 'None'
           roleAssignments: [
             {
@@ -136,11 +142,19 @@ module testDeployment '../../deploy.bicep' = {
         {
           name: 'archivecontainer'
           publicAccess: 'None'
+          metadata: {
+            testKey: 'testValue'
+          }
           enableWORM: true
           WORMRetention: 666
           allowProtectedAppendWrites: false
         }
       ]
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
     }
     fileServices: {
       diagnosticLogsRetentionInDays: 7
@@ -204,11 +218,11 @@ module testDeployment '../../deploy.bicep' = {
         }
         {
           name: 'queue2'
-          metadata: {
-          }
+          metadata: {}
         }
       ]
     }
+    sasExpirationPeriod: '180.00:00:00'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
@@ -227,5 +241,9 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

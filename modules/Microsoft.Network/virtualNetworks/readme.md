@@ -15,12 +15,12 @@ This template deploys a virtual network (vNet).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/virtualNetworks` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks) |
-| `Microsoft.Network/virtualNetworks/subnets` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/subnets) |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/virtualNetworks/virtualNetworkPeerings) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/virtualNetworks` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks/subnets) |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
@@ -41,17 +41,20 @@ This template deploys a virtual network (vNet).
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, VMProtectionAlerts]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsServers` | array | `[]` |  | DNS Servers associated to the Virtual Network. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `flowTimeoutInMinutes` | int | `0` |  | The flow timeout in minutes for the Virtual Network, which is used to enable connection tracking for intra-VM flows. Possible values are between 4 and 30 minutes. Default value 0 will set the property to null. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `peerings` | array | `[]` |  | Virtual Network Peerings configurations. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Virtual Network Peerings configurations. |
+| `vnetEncryption` | bool | `False` |  | Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property. |
+| `vnetEncryptionEnforcement` | string | `'AllowUnencrypted'` | `[AllowUnencrypted, DropUnencrypted]` | If the encrypted VNet allows VM that does not support encryption. Can only be used when vnetEncryption is enabled. |
 
 
 ### Parameter Usage: `subnets`
@@ -387,6 +390,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
       '10.0.1.5'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    flowTimeoutInMinutes: 20
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -444,6 +448,10 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -493,6 +501,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "flowTimeoutInMinutes": {
+      "value": 20
     },
     "lock": {
       "value": "CanNotDelete"
@@ -556,6 +567,12 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
           "privateLinkServiceNetworkPolicies": "Enabled"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -634,13 +651,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     name: '<<namePrefix>>nvnpeer001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    subnets: [
-      {
-        addressPrefix: '10.1.0.0/26'
-        name: 'GatewaySubnet'
-      }
-    ]
-    virtualNetworkPeerings: [
+    peerings: [
       {
         allowForwardedTraffic: true
         allowGatewayTransit: false
@@ -653,6 +664,16 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         useRemoteGateways: false
       }
     ]
+    subnets: [
+      {
+        addressPrefix: '10.1.0.0/26'
+        name: 'GatewaySubnet'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -682,15 +703,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "subnets": {
-      "value": [
-        {
-          "addressPrefix": "10.1.0.0/26",
-          "name": "GatewaySubnet"
-        }
-      ]
-    },
-    "virtualNetworkPeerings": {
+    "peerings": {
       "value": [
         {
           "allowForwardedTraffic": true,
@@ -704,6 +717,20 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
           "useRemoteGateways": false
         }
       ]
+    },
+    "subnets": {
+      "value": [
+        {
+          "addressPrefix": "10.1.0.0/26",
+          "name": "GatewaySubnet"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

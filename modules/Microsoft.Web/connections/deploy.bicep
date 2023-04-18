@@ -1,8 +1,5 @@
-@description('Optional. Alternative parameter values.')
-param alternativeParameterValues object = {}
-
 @description('Optional. Specific values for some API connections.')
-param connectionApi object = {}
+param api object = {}
 
 @description('Required. Connection name for connection. Example: \'azureblob\' when using blobs.  It can change depending on the resource.')
 param name string
@@ -66,8 +63,8 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   properties: {
     displayName: displayName
     customParameterValues: customParameterValues
-    api: connectionApi
-    parameterValues: empty(alternativeParameterValues) ? parameterValues : null
+    api: api
+    parameterValues: !empty(parameterValues) ? parameterValues : null
     nonSecretParameterValues: !empty(nonSecretParameterValues) ? nonSecretParameterValues : null
     testLinks: !empty(testLinks) ? testLinks : null
     statuses: !empty(statuses) ? statuses : null

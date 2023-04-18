@@ -14,9 +14,9 @@ This module deploys an AVD Scaling Plan.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DesktopVirtualization/scalingPlans` | [2022-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-04-01-preview/scalingPlans) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.DesktopVirtualization/scalingPlans` | [2022-09-09](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2022-09-09/scalingPlans) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -30,6 +30,7 @@ This module deploys an AVD Scaling Plan.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `description` | string | `[parameters('name')]` |  | Description of the scaling plan. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Autoscale]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -43,7 +44,6 @@ This module deploys an AVD Scaling Plan.
 | `hostPoolType` | string | `'Pooled'` | `[Pooled]` | The type of hostpool where this scaling plan should be applied. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `scalingplanDescription` | string | `[parameters('name')]` |  | Description of the scaling plan. |
 | `schedules` | array | `[System.Management.Automation.OrderedHashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeZone` | string | `'W. Europe Standard Time'` |  | Timezone to be used for the scaling plan. |
@@ -283,6 +283,7 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
     // Required parameters
     name: '<<namePrefix>>dvspcom001'
     // Non-required parameters
+    description: 'My Scaling Plan Description'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -300,10 +301,9 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    scalingplanDescription: 'My Scaling Plan Description'
     tags: {
-      Company: 'Contoso'
       Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }
@@ -326,6 +326,9 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
       "value": "<<namePrefix>>dvspcom001"
     },
     // Non-required parameters
+    "description": {
+      "value": "My Scaling Plan Description"
+    },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
     },
@@ -361,13 +364,10 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
         }
       ]
     },
-    "scalingplanDescription": {
-      "value": "My Scaling Plan Description"
-    },
     "tags": {
       "value": {
-        "Company": "Contoso",
-        "Environment": "Non-Prod"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     }
   }

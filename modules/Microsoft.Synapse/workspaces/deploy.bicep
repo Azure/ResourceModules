@@ -78,6 +78,9 @@ param sqlAdministratorLogin string
 #disable-next-line secure-secrets-in-params // Not a secret
 param sqlAdministratorLoginPassword string = ''
 
+@description('Optional. Git integration settings.')
+param workspaceRepositoryConfiguration object = {}
+
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
@@ -126,8 +129,8 @@ param diagnosticLogCategoriesToEnable array = [
   'allLogs'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 // Variables
 var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(cMKUserAssignedIdentityResourceId) ? {
@@ -163,12 +166,12 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
 
 var enableReferencedModulesTelemetry = false
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
-resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2021-10-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
+resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId) && !empty(cMKKeyName)) {
   name: '${cMKKeyVault.name}/${cMKKeyName}'
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
@@ -225,6 +228,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     } : null
     sqlAdministratorLogin: sqlAdministratorLogin
     sqlAdministratorLoginPassword: !empty(sqlAdministratorLoginPassword) ? sqlAdministratorLoginPassword : null
+    workspaceRepositoryConfiguration: workspaceRepositoryConfiguration
   }
 }
 
@@ -299,8 +303,8 @@ module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
 }]
 
 // Diagnostics Settings
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -322,6 +326,9 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The workspace connectivity endpoints.')
 output connectivityEndpoints object = workspace.properties.connectivityEndpoints
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = contains(workspace.identity, 'principalId') ? workspace.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
 output location string = workspace.location

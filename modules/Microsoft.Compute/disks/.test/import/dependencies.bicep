@@ -24,7 +24,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
   kind: 'StorageV2'
@@ -34,9 +34,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   properties: {
     allowBlobPublicAccess: false
   }
-  resource blobServices 'blobServices@2021-09-01' = {
+  resource blobServices 'blobServices@2022-09-01' = {
     name: 'default'
-    resource container 'containers@2021-09-01' = {
+    resource container 'containers@2022-09-01' = {
       name: 'vhds'
       properties: {
         publicAccess: 'None'
@@ -73,8 +73,8 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
     source: {
       type: 'PlatformImage'
       publisher: 'MicrosoftWindowsDesktop'
-      offer: 'Windows-10'
-      sku: '19h2-evd'
+      offer: 'Windows-11'
+      sku: 'win11-21h2-avd'
       version: 'latest'
     }
     distribute: [
@@ -108,7 +108,7 @@ resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@202
     azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\"'
-    scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
+    scriptContent: loadTextContent('../../../../.shared/.scripts/Start-ImageTemplate.ps1')
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: baseTime
   }
@@ -132,7 +132,7 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
     azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${storageAccount.name}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
-    scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
+    scriptContent: loadTextContent('../../../../.shared/.scripts/Copy-VhdToStorageAccount.ps1')
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: baseTime
   }

@@ -26,12 +26,12 @@ This section outlines known issues that currently affect the modules.
 
 The Domain Services module pipeline is expected to fail in our development/validation environment for a few reasons:
 
--  The leveraged service principal doesn't have the required permissions to actually deploy the service in the used tenant.
--  The referenced (optional) `pfxCertificate` and password don't actually exist in the specified Key Vault - unless uploaded manually.
+- The leveraged service principal doesn't have the required permissions to actually deploy the service in the used tenant.
+- The referenced (optional) `pfxCertificate` and password don't actually exist in the specified Key Vault - unless uploaded manually.
 
 Therefore, the module was manually tested in a dedicated environment.
 
-For the general prerequisites, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
+For the general prerequisites, please refer to the [official docs](https://learn.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
 ## Microsoft.Management/managementGroups
 
@@ -45,9 +45,15 @@ Further details are also provided in issue [#1342](https://github.com/Azure/Reso
 
 ## Microsoft.RecoveryServices/vaults
 
-The Recovery Services Vaults module does not currently validate the identity property (system or user assigned identity).
+The Recovery Services Vaults module does not currently attach the content of the identity property correctly when both user- and systemassigned identity fields are selected.
 
-The module pipeline fails in the deployment validation step when system and user assigned identity parameters are added as input parameters.
+The pipeline shows a success but the assignment of both identities never happens although both identities (systemassigned is a serviceprincipal, userassigned is a managed identity resource) get created successfully.
+
+Upon cleanup the system-assigned identity will not be removed.
+
+When the deployment is then run again it fails, because Azure tries to attach this rogue service principal as a system-assigned identity.
+
+Since the behavior is inconsistent via Api (depending on spacing and whether capital letters are used), a ticket on the bicep repository has been opened for that. For more details, refer to the issue in the bicep repository ([#9662](https://github.com/Azure/bicep/issues/9662)).
 
 A related issue has been opened in the Bug board [#2391](https://github.com/Azure/ResourceModules/issues/2391).
 

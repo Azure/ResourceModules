@@ -144,6 +144,9 @@ param aciConnectorLinuxEnabled bool = false
 @description('Optional. Specifies whether the azurepolicy add-on is enabled or not. For security reasons, this setting should be enabled.')
 param azurePolicyEnabled bool = true
 
+@description('Optional. Specifies whether the openServiceMesh add-on is enabled or not.')
+param openServiceMeshEnabled bool = false
+
 @description('Optional. Specifies the azure policy version to use.')
 param azurePolicyVersion string = 'v2'
 
@@ -295,6 +298,13 @@ param tags object = {}
 @description('Optional. The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided.')
 param diskEncryptionSetID string = ''
 
+@description('Optional. Configuration settings that are sensitive, as name-value pairs for configuring this extension.')
+@secure()
+param fluxConfigurationProtectedSettings object = {}
+
+@description('Optional. Settings and configurations for the flux extension.')
+param fluxExtension object = {}
+
 @description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
 @allowed([
   'allLogs'
@@ -318,8 +328,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -378,7 +388,7 @@ var lbProfile = {
 
 var enableReferencedModulesTelemetry = false
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -390,7 +400,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
   name: name
   location: location
   tags: tags
@@ -412,34 +422,38 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' 
       }
       ingressApplicationGateway: {
         enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
-        config: {
+        config: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId) ? {
           applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
           effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
-        }
+        } : null
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
-        config: {
+        config: omsAgentEnabled && !empty(monitoringWorkspaceId) ? {
           logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
-        }
+        } : null
       }
       aciConnectorLinux: {
         enabled: aciConnectorLinuxEnabled
       }
       azurepolicy: {
         enabled: azurePolicyEnabled
-        config: {
+        config: azurePolicyEnabled ? {
           version: azurePolicyVersion
-        }
+        } : null
+      }
+      openServiceMesh: {
+        enabled: openServiceMeshEnabled
+        config: openServiceMeshEnabled ? {} : null
       }
       kubeDashboard: {
         enabled: kubeDashboardEnabled
       }
       azureKeyvaultSecretsProvider: {
         enabled: enableKeyvaultSecretsProvider
-        config: {
+        config: enableKeyvaultSecretsProvider ? {
           enableSecretRotation: enableSecretRotation
-        }
+        } : null
       }
     }
     oidcIssuerProfile: enableOidcIssuerProfile ? {
@@ -538,7 +552,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
     osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
-    proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
+    proximityPlacementGroupResourceId: contains(agentPool, 'proximityPlacementGroupResourceId') ? agentPool.proximityPlacementGroupResourceId : ''
     scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode : 'Delete'
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
@@ -553,6 +567,23 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
+module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxExtension)) {
+  name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
+  params: {
+    clusterName: managedCluster.name
+    configurationProtectedSettings: !empty(fluxConfigurationProtectedSettings) ? fluxConfigurationProtectedSettings : {}
+    configurationSettings: contains(fluxExtension, 'configurationSettings') ? fluxExtension.configurationSettings : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    extensionType: 'microsoft.flux'
+    fluxConfigurations: fluxExtension.configurations
+    location: location
+    name: 'flux'
+    releaseNamespace: 'flux-system'
+    releaseTrain: contains(fluxExtension, 'releaseTrain') ? fluxExtension.releaseTrain : 'Stable'
+    version: contains(fluxExtension, 'version') ? fluxExtension.version : ''
+  }
+}
+
 resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
   properties: {
@@ -562,8 +593,8 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!e
   scope: managedCluster
 }
 
-resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -611,3 +642,6 @@ output omsagentIdentityObjectId string = contains(managedCluster.properties, 'ad
 
 @description('The location the resource was deployed into.')
 output location string = managedCluster.location
+
+@description('The OIDC token issuer URL.')
+output oidcIssuerUrl string = enableOidcIssuerProfile ? managedCluster.properties.oidcIssuerProfile.issuerURL : ''

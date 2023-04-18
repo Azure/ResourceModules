@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Resources/resourceGroups/*'
+      - '/modules/Microsoft.Authorization/locks/resourceGroup/*'
       - '/.azuredevops/modulePipelines/ms.resources.resourcegroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Resources/resourceGroups/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

@@ -13,7 +13,7 @@ This template deploys a storage insights configuration for a Log Analytics works
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
+| `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
 
 ## Parameters
 
@@ -21,7 +21,7 @@ This template deploys a storage insights configuration for a Log Analytics works
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountId` | string | The Azure Resource Manager ID of the storage account resource. |
+| `storageAccountResourceId` | string | The Azure Resource Manager ID of the storage account resource. |
 
 **Conditional parameters**
 
@@ -35,7 +35,7 @@ This template deploys a storage insights configuration for a Log Analytics works
 | :-- | :-- | :-- | :-- |
 | `containers` | array | `[]` | The names of the blob containers that the workspace should read. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `name` | string | `[format('{0}-stinsconfig', last(split(parameters('storageAccountId'), '/')))]` | The name of the storage insights config. |
+| `name` | string | `[format('{0}-stinsconfig', last(split(parameters('storageAccountResourceId'), '/')))]` | The name of the storage insights config. |
 | `tables` | array | `[]` | The names of the Azure tables that the workspace should read. |
 | `tags` | object | `{object}` | Tags to configure in the resource. |
 

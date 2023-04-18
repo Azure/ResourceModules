@@ -132,6 +132,7 @@ param sslPolicyCipherSuites array = [
   'TLSv1_0'
   'TLSv1_1'
   'TLSv1_2'
+  'TLSv1_3'
 ])
 param sslPolicyMinProtocolVersion string = 'TLSv1_2'
 
@@ -140,6 +141,8 @@ param sslPolicyMinProtocolVersion string = 'TLSv1_2'
   'AppGwSslPolicy20150501'
   'AppGwSslPolicy20170401'
   'AppGwSslPolicy20170401S'
+  'AppGwSslPolicy20220101'
+  'AppGwSslPolicy20220101S'
   ''
 ])
 param sslPolicyName string = ''
@@ -147,6 +150,7 @@ param sslPolicyName string = ''
 @description('Optional. Type of Ssl Policy.')
 @allowed([
   'Custom'
+  'CustomV2'
   'Predefined'
 ])
 param sslPolicyType string = 'Custom'
@@ -212,8 +216,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -259,6 +263,15 @@ param roleAssignments array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
+@description('Optional. Backend settings of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
+param backendSettingsCollection array = []
+
+@description('Optional. Listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://learn.microsoft.com/en-us/azure/azure-subscription-service-limits#application-gateway-limits).')
+param listeners array = []
+
+@description('Optional. Routing rules of the application gateway resource.')
+param routingRules array = []
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -274,7 +287,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -287,6 +300,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
       } : null
       backendAddressPools: backendAddressPools
       backendHttpSettingsCollection: backendHttpSettingsCollection
+      backendSettingsCollection: backendSettingsCollection
       customErrorConfigurations: customErrorConfigurations
       enableHttp2: enableHttp2
       firewallPolicy: !empty(firewallPolicyId) ? {
@@ -302,10 +316,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
       }
       httpListeners: httpListeners
       loadDistributionPolicies: loadDistributionPolicies
+      listeners: listeners
       privateLinkConfigurations: privateLinkConfigurations
       probes: probes
       redirectConfigurations: redirectConfigurations
       requestRoutingRules: requestRoutingRules
+      routingRules: routingRules
       rewriteRuleSets: rewriteRuleSets
       sku: {
         name: sku
@@ -313,9 +329,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
         capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? null : capacity
       }
       sslCertificates: sslCertificates
-      sslPolicy: {
+      sslPolicy: sslPolicyType != 'Predefined' ? {
         cipherSuites: sslPolicyCipherSuites
         minProtocolVersion: sslPolicyMinProtocolVersion
+        policyName: empty(sslPolicyName) ? null : sslPolicyName
+        policyType: sslPolicyType
+      } : {
         policyName: empty(sslPolicyName) ? null : sslPolicyName
         policyType: sslPolicyType
       }
@@ -326,7 +345,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-08-01' =
     }, (enableFips ? {
       enableFips: enableFips
     } : {}),
-    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration }: {})
+    (!empty(webApplicationFirewallConfiguration) ? { webApplicationFirewallConfiguration: webApplicationFirewallConfiguration } : {})
   )
   zones: zones
 }
@@ -341,7 +360,7 @@ resource applicationGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if
 }
 
 resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(diagnosticWorkspaceId) ? null : diagnosticWorkspaceId

@@ -14,16 +14,18 @@ This template deploys a log analytics workspace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.OperationalInsights/workspaces` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2021-06-01/workspaces) |
-| `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
-| `Microsoft.OperationalInsights/workspaces/linkedStorageAccounts` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedStorageAccounts) |
-| `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
-| `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
-| `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.OperationalInsights/workspaces` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2022-10-01/workspaces) |
+| `Microsoft.OperationalInsights/workspaces/dataExports` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataExports) |
+| `Microsoft.OperationalInsights/workspaces/dataSources` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources) |
+| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
+| `Microsoft.OperationalInsights/workspaces/linkedStorageAccounts` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedStorageAccounts) |
+| `Microsoft.OperationalInsights/workspaces/savedSearches` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches) |
+| `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
+| `Microsoft.OperationalInsights/workspaces/tables` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2022-10-01/workspaces/tables) |
+| `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
 
 ## Parameters
 
@@ -44,6 +46,7 @@ This template deploys a log analytics workspace.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dailyQuotaGb` | int | `-1` |  | The workspace daily quota for ingestion. |
+| `dataExports` | _[dataExports](dataExports/readme.md)_ array | `[]` |  | LAW data export instances to be deployed. |
 | `dataRetention` | int | `365` |  | Number of days data will be retained for. |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -51,7 +54,7 @@ This template deploys a log analytics workspace.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -66,7 +69,10 @@ This template deploys a log analytics workspace.
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
 | `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
+| `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to be deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
 
@@ -439,6 +445,39 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -448,6 +487,7 @@ tags: {
 | `name` | string | The name of the deployed log analytics workspace. |
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
 | `resourceId` | string | The resource ID of the deployed log analytics workspace. |
+| `systemAssignedIdentityPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Cross-referenced modules
 
@@ -464,7 +504,538 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Common</h3>
+<h3>Example 1: Adv</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-oiwadv'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>oiwadv001'
+    // Non-required parameters
+    dailyQuotaGb: 10
+    dataExports: [
+      {
+        destination: {
+          metaData: {
+            eventHubName: '<eventHubName>'
+          }
+          resourceId: '<resourceId>'
+        }
+        enable: true
+        name: 'eventHubExport'
+        tableNames: [
+          'Alert'
+          'InsightsMetrics'
+        ]
+      }
+      {
+        destination: {
+          resourceId: '<resourceId>'
+        }
+        enable: true
+        name: 'storageAccountExport'
+        tableNames: [
+          'Operation'
+        ]
+      }
+    ]
+    dataSources: [
+      {
+        eventLogName: 'Application'
+        eventTypes: [
+          {
+            eventType: 'Error'
+          }
+          {
+            eventType: 'Warning'
+          }
+          {
+            eventType: 'Information'
+          }
+        ]
+        kind: 'WindowsEvent'
+        name: 'applicationEvent'
+      }
+      {
+        counterName: '% Processor Time'
+        instanceName: '*'
+        intervalSeconds: 60
+        kind: 'WindowsPerformanceCounter'
+        name: 'windowsPerfCounter1'
+        objectName: 'Processor'
+      }
+      {
+        kind: 'IISLogs'
+        name: 'sampleIISLog1'
+        state: 'OnPremiseEnabled'
+      }
+      {
+        kind: 'LinuxSyslog'
+        name: 'sampleSyslog1'
+        syslogName: 'kern'
+        syslogSeverities: [
+          {
+            severity: 'emerg'
+          }
+          {
+            severity: 'alert'
+          }
+          {
+            severity: 'crit'
+          }
+          {
+            severity: 'err'
+          }
+          {
+            severity: 'warning'
+          }
+        ]
+      }
+      {
+        kind: 'LinuxSyslogCollection'
+        name: 'sampleSyslogCollection1'
+        state: 'Enabled'
+      }
+      {
+        instanceName: '*'
+        intervalSeconds: 10
+        kind: 'LinuxPerformanceObject'
+        name: 'sampleLinuxPerf1'
+        objectName: 'Logical Disk'
+        syslogSeverities: [
+          {
+            counterName: '% Used Inodes'
+          }
+          {
+            counterName: 'Free Megabytes'
+          }
+          {
+            counterName: '% Used Space'
+          }
+          {
+            counterName: 'Disk Transfers/sec'
+          }
+          {
+            counterName: 'Disk Reads/sec'
+          }
+          {
+            counterName: 'Disk Writes/sec'
+          }
+        ]
+      }
+      {
+        kind: 'LinuxPerformanceCollection'
+        name: 'sampleLinuxPerfCollection1'
+        state: 'Enabled'
+      }
+    ]
+    diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
+    diagnosticEventHubName: '<diagnosticEventHubName>'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
+    diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    gallerySolutions: [
+      {
+        name: 'AzureAutomation'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+      }
+    ]
+    linkedServices: [
+      {
+        name: 'Automation'
+        resourceId: '<resourceId>'
+      }
+    ]
+    linkedStorageAccounts: [
+      {
+        name: 'Query'
+        resourceId: '<resourceId>'
+      }
+    ]
+    lock: 'CanNotDelete'
+    publicNetworkAccessForIngestion: 'Disabled'
+    publicNetworkAccessForQuery: 'Disabled'
+    savedSearches: [
+      {
+        category: 'VDC Saved Searches'
+        displayName: 'VMSS Instance Count2'
+        name: 'VMSSQueries'
+        query: 'Event | where Source == ServiceFabricNodeBootstrapAgent | summarize AggregatedValue = count() by Computer'
+      }
+    ]
+    storageInsightsConfigs: [
+      {
+        storageAccountResourceId: '<storageAccountResourceId>'
+        tables: [
+          'LinuxsyslogVer2v0'
+          'WADETWEventTable'
+          'WADServiceFabric*EventTable'
+          'WADWindowsEventLogsTable'
+        ]
+      }
+    ]
+    tables: [
+      {
+        name: 'CustomTableBasic_CL'
+        retentionInDays: 60
+        schema: {
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+          name: 'CustomTableBasic_CL'
+        }
+        totalRetentionInDays: 90
+      }
+      {
+        name: 'CustomTableAdvanced_CL'
+        schema: {
+          columns: [
+            {
+              name: 'TimeGenerated'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventTime'
+              type: 'DateTime'
+            }
+            {
+              name: 'EventLevel'
+              type: 'String'
+            }
+            {
+              name: 'EventCode'
+              type: 'Int'
+            }
+            {
+              name: 'Message'
+              type: 'String'
+            }
+            {
+              name: 'RawData'
+              type: 'String'
+            }
+          ]
+          name: 'CustomTableAdvanced_CL'
+        }
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
+    useResourcePermissions: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>oiwadv001"
+    },
+    // Non-required parameters
+    "dailyQuotaGb": {
+      "value": 10
+    },
+    "dataExports": {
+      "value": [
+        {
+          "destination": {
+            "metaData": {
+              "eventHubName": "<eventHubName>"
+            },
+            "resourceId": "<resourceId>"
+          },
+          "enable": true,
+          "name": "eventHubExport",
+          "tableNames": [
+            "Alert",
+            "InsightsMetrics"
+          ]
+        },
+        {
+          "destination": {
+            "resourceId": "<resourceId>"
+          },
+          "enable": true,
+          "name": "storageAccountExport",
+          "tableNames": [
+            "Operation"
+          ]
+        }
+      ]
+    },
+    "dataSources": {
+      "value": [
+        {
+          "eventLogName": "Application",
+          "eventTypes": [
+            {
+              "eventType": "Error"
+            },
+            {
+              "eventType": "Warning"
+            },
+            {
+              "eventType": "Information"
+            }
+          ],
+          "kind": "WindowsEvent",
+          "name": "applicationEvent"
+        },
+        {
+          "counterName": "% Processor Time",
+          "instanceName": "*",
+          "intervalSeconds": 60,
+          "kind": "WindowsPerformanceCounter",
+          "name": "windowsPerfCounter1",
+          "objectName": "Processor"
+        },
+        {
+          "kind": "IISLogs",
+          "name": "sampleIISLog1",
+          "state": "OnPremiseEnabled"
+        },
+        {
+          "kind": "LinuxSyslog",
+          "name": "sampleSyslog1",
+          "syslogName": "kern",
+          "syslogSeverities": [
+            {
+              "severity": "emerg"
+            },
+            {
+              "severity": "alert"
+            },
+            {
+              "severity": "crit"
+            },
+            {
+              "severity": "err"
+            },
+            {
+              "severity": "warning"
+            }
+          ]
+        },
+        {
+          "kind": "LinuxSyslogCollection",
+          "name": "sampleSyslogCollection1",
+          "state": "Enabled"
+        },
+        {
+          "instanceName": "*",
+          "intervalSeconds": 10,
+          "kind": "LinuxPerformanceObject",
+          "name": "sampleLinuxPerf1",
+          "objectName": "Logical Disk",
+          "syslogSeverities": [
+            {
+              "counterName": "% Used Inodes"
+            },
+            {
+              "counterName": "Free Megabytes"
+            },
+            {
+              "counterName": "% Used Space"
+            },
+            {
+              "counterName": "Disk Transfers/sec"
+            },
+            {
+              "counterName": "Disk Reads/sec"
+            },
+            {
+              "counterName": "Disk Writes/sec"
+            }
+          ]
+        },
+        {
+          "kind": "LinuxPerformanceCollection",
+          "name": "sampleLinuxPerfCollection1",
+          "state": "Enabled"
+        }
+      ]
+    },
+    "diagnosticEventHubAuthorizationRuleId": {
+      "value": "<diagnosticEventHubAuthorizationRuleId>"
+    },
+    "diagnosticEventHubName": {
+      "value": "<diagnosticEventHubName>"
+    },
+    "diagnosticLogsRetentionInDays": {
+      "value": 7
+    },
+    "diagnosticStorageAccountId": {
+      "value": "<diagnosticStorageAccountId>"
+    },
+    "diagnosticWorkspaceId": {
+      "value": "<diagnosticWorkspaceId>"
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "gallerySolutions": {
+      "value": [
+        {
+          "name": "AzureAutomation",
+          "product": "OMSGallery",
+          "publisher": "Microsoft"
+        }
+      ]
+    },
+    "linkedServices": {
+      "value": [
+        {
+          "name": "Automation",
+          "resourceId": "<resourceId>"
+        }
+      ]
+    },
+    "linkedStorageAccounts": {
+      "value": [
+        {
+          "name": "Query",
+          "resourceId": "<resourceId>"
+        }
+      ]
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "publicNetworkAccessForIngestion": {
+      "value": "Disabled"
+    },
+    "publicNetworkAccessForQuery": {
+      "value": "Disabled"
+    },
+    "savedSearches": {
+      "value": [
+        {
+          "category": "VDC Saved Searches",
+          "displayName": "VMSS Instance Count2",
+          "name": "VMSSQueries",
+          "query": "Event | where Source == ServiceFabricNodeBootstrapAgent | summarize AggregatedValue = count() by Computer"
+        }
+      ]
+    },
+    "storageInsightsConfigs": {
+      "value": [
+        {
+          "storageAccountResourceId": "<storageAccountResourceId>",
+          "tables": [
+            "LinuxsyslogVer2v0",
+            "WADETWEventTable",
+            "WADServiceFabric*EventTable",
+            "WADWindowsEventLogsTable"
+          ]
+        }
+      ]
+    },
+    "tables": {
+      "value": [
+        {
+          "name": "CustomTableBasic_CL",
+          "retentionInDays": 60,
+          "schema": {
+            "columns": [
+              {
+                "name": "TimeGenerated",
+                "type": "DateTime"
+              },
+              {
+                "name": "RawData",
+                "type": "String"
+              }
+            ],
+            "name": "CustomTableBasic_CL"
+          },
+          "totalRetentionInDays": 90
+        },
+        {
+          "name": "CustomTableAdvanced_CL",
+          "schema": {
+            "columns": [
+              {
+                "name": "TimeGenerated",
+                "type": "DateTime"
+              },
+              {
+                "name": "EventTime",
+                "type": "DateTime"
+              },
+              {
+                "name": "EventLevel",
+                "type": "String"
+              },
+              {
+                "name": "EventCode",
+                "type": "Int"
+              },
+              {
+                "name": "Message",
+                "type": "String"
+              },
+              {
+                "name": "RawData",
+                "type": "String"
+              }
+            ],
+            "name": "CustomTableAdvanced_CL"
+          }
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
+    },
+    "useResourcePermissions": {
+      "value": true
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Common</h3>
 
 <details>
 
@@ -596,6 +1167,15 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     lock: 'CanNotDelete'
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     savedSearches: [
       {
         category: 'VDC Saved Searches'
@@ -606,7 +1186,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '<storageAccountId>'
+        storageAccountResourceId: '<storageAccountResourceId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -615,6 +1195,11 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         ]
       }
     ]
+    systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     useResourcePermissions: true
   }
 }
@@ -784,6 +1369,17 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "publicNetworkAccessForQuery": {
       "value": "Disabled"
     },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "savedSearches": {
       "value": [
         {
@@ -797,7 +1393,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "<storageAccountId>",
+          "storageAccountResourceId": "<storageAccountResourceId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",
@@ -806,6 +1402,15 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           ]
         }
       ]
+    },
+    "systemAssignedIdentity": {
+      "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "useResourcePermissions": {
       "value": true
@@ -817,7 +1422,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2: Min</h3>
+<h3>Example 3: Min</h3>
 
 <details>
 

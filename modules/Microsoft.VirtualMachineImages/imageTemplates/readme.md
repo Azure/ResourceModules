@@ -14,9 +14,9 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.VirtualMachineImages/imageTemplates` | [2022-02-14](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2022-02-14/imageTemplates) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.VirtualMachineImages/imageTemplates` | [2022-02-14](https://learn.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2022-02-14/imageTemplates) |
 
 ## Parameters
 
@@ -391,6 +391,10 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     sigImageVersion: '<sigImageVersion>'
     stagingResourceGroup: '<stagingResourceGroup>'
     subnetId: '<subnetId>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     unManagedImageName: '<<namePrefix>>-umi-vmiitcom-001'
     userAssignedIdentities: [
       '<managedIdentityResourceId>'
@@ -478,6 +482,12 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
     },
     "subnetId": {
       "value": "<subnetId>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "unManagedImageName": {
       "value": "<<namePrefix>>-umi-vmiitcom-001"

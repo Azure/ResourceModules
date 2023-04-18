@@ -7,20 +7,49 @@ param vpnSharedKey string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Gateway connection type.')
+@description('Optional. Gateway connection connectionType.')
 @allowed([
   'IPsec'
   'Vnet2Vnet'
   'ExpressRoute'
   'VPNClient'
 ])
-param virtualNetworkGatewayConnectionType string = 'IPsec'
+param connectionType string = 'IPsec'
 
 @description('Optional. Value to specify if BGP is enabled or not.')
 param enableBgp bool = false
 
+@allowed([
+  'Default'
+  'InitiatorOnly'
+  'ResponderOnly'
+])
+@description('Optional. The connection connectionMode for this connection. Available for IPSec connections.')
+param connectionMode string = 'Default'
+
+@allowed([
+  'IKEv1'
+  'IKEv2'
+])
+@description('Optional. Connection connectionProtocol used for this connection. Available for IPSec connections.')
+param connectionProtocol string = 'IKEv2'
+
+@minValue(9)
+@maxValue(3600)
+@description('Optional. The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds.')
+param dpdTimeoutSeconds int = 45
+
 @description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
+
+@description('Optional. Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route.')
+param enablePrivateLinkFastPath bool = false
+
+@description('Optional. Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route.')
+param expressRouteGatewayBypass bool = false
+
+@description('Optional. Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property.')
+param useLocalAzureIpAddress bool = false
 
 @description('Optional. The IPSec Policies to be considered by this connection.')
 param customIPSecPolicy object = {
@@ -42,7 +71,7 @@ param routingWeight int = -1
   'CanNotDelete'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
+@description('Optional. Specify the connectionType of lock.')
 param lock string = ''
 
 @description('Optional. Tags of the resource.')
@@ -54,13 +83,13 @@ param enableDefaultTelemetry bool = true
 @description('Required. The primary Virtual Network Gateway.')
 param virtualNetworkGateway1 object
 
-@description('Optional. The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet].')
+@description('Optional. The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet].')
 param virtualNetworkGateway2 object = {}
 
-@description('Optional. The remote peer. Used for connection type [ExpressRoute].')
+@description('Optional. The remote peer. Used for connection connectionType [ExpressRoute].')
 param peer object = {}
 
-@description('Optional. The local network gateway. Used for connection type [IPsec].')
+@description('Optional. The local network gateway. Used for connection connectionType [IPsec].')
 param localNetworkGateway2 object = {}
 
 var customIPSecPolicyVar = [
@@ -88,21 +117,27 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource connection 'Microsoft.Network/connections@2021-08-01' = {
+resource connection 'Microsoft.Network/connections@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
-    connectionType: virtualNetworkGatewayConnectionType
+    connectionType: connectionType
+    connectionMode: connectionType == 'IPsec' ? connectionMode : null
+    connectionProtocol: connectionType == 'IPsec' ? connectionProtocol : null
+    dpdTimeoutSeconds: connectionType == 'IPsec' ? dpdTimeoutSeconds : null
+    enablePrivateLinkFastPath: connectionType == 'ExpressRoute' ? enablePrivateLinkFastPath : null
+    expressRouteGatewayBypass: connectionType == 'ExpressRoute' ? expressRouteGatewayBypass : null
     virtualNetworkGateway1: virtualNetworkGateway1
-    virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
-    localNetworkGateway2: virtualNetworkGatewayConnectionType == 'IPsec' ? localNetworkGateway2 : null
-    peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
-    sharedKey: virtualNetworkGatewayConnectionType != 'ExpressRoute' ? vpnSharedKey : null
+    virtualNetworkGateway2: connectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
+    localNetworkGateway2: connectionType == 'IPsec' ? localNetworkGateway2 : null
+    peer: connectionType == 'ExpressRoute' ? peer : null
+    sharedKey: connectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicyVar : customIPSecPolicy.ipsecEncryption
     routingWeight: routingWeight != -1 ? routingWeight : null
     enableBgp: enableBgp
+    useLocalAzureIpAddress: connectionType == 'IPsec' ? useLocalAzureIpAddress : null
   }
 }
 

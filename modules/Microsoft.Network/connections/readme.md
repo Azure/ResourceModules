@@ -14,8 +14,8 @@ This template deploys a virtual network gateway connection.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Network/connections` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/connections) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Network/connections` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/connections) |
 
 ## Parameters
 
@@ -30,18 +30,24 @@ This template deploys a virtual network gateway connection.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `connectionMode` | string | `'Default'` | `[Default, InitiatorOnly, ResponderOnly]` | The connection connectionMode for this connection. Available for IPSec connections. |
+| `connectionProtocol` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Connection connectionProtocol used for this connection. Available for IPSec connections. |
+| `connectionType` | string | `'IPsec'` | `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]` | Gateway connection connectionType. |
 | `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |
+| `dpdTimeoutSeconds` | int | `45` |  | The dead peer detection timeout of this connection in seconds. Setting the timeout to shorter periods will cause IKE to rekey more aggressively, causing the connection to appear to be disconnected in some instances. The general recommendation is to set the timeout between 30 to 45 seconds. |
 | `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
+| `enablePrivateLinkFastPath` | bool | `False` |  | Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route. |
+| `expressRouteGatewayBypass` | bool | `False` |  | Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route. |
+| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection connectionType [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute]. |
+| `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the connectionType of lock. |
+| `peer` | object | `{object}` |  | The remote peer. Used for connection connectionType [ExpressRoute]. |
 | `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `useLocalAzureIpAddress` | bool | `False` |  | Use private local Azure IP for the connection. Only available for IPSec Virtual Network Gateways that use the Azure Private IP Property. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
-| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]. |
-| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]` | Gateway connection type. |
+| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection connectionType [Vnet2Vnet]. |
 | `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 
@@ -332,13 +338,17 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
       id: '<id>'
     }
     // Non-required parameters
+    connectionType: 'Vnet2Vnet'
     enableBgp: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     virtualNetworkGateway2: {
       id: '<id>'
     }
-    virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     vpnSharedKey: '<vpnSharedKey>'
   }
 }
@@ -366,6 +376,9 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
       }
     },
     // Non-required parameters
+    "connectionType": {
+      "value": "Vnet2Vnet"
+    },
     "enableBgp": {
       "value": false
     },
@@ -375,13 +388,16 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "virtualNetworkGateway2": {
       "value": {
         "id": "<id>"
       }
-    },
-    "virtualNetworkGatewayConnectionType": {
-      "value": "Vnet2Vnet"
     },
     "vpnSharedKey": {
       "value": "<vpnSharedKey>"

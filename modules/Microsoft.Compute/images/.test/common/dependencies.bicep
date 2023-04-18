@@ -30,7 +30,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
   location: location
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
   location: location
   kind: 'StorageV2'
@@ -40,9 +40,9 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   properties: {
     allowBlobPublicAccess: false
   }
-  resource blobServices 'blobServices@2021-09-01' = {
+  resource blobServices 'blobServices@2022-09-01' = {
     name: 'default'
-    resource container 'containers@2021-09-01' = {
+    resource container 'containers@2022-09-01' = {
       name: 'vhds'
       properties: {
         publicAccess: 'None'
@@ -80,8 +80,8 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2022-02-14
     source: {
       type: 'PlatformImage'
       publisher: 'MicrosoftWindowsDesktop'
-      offer: 'Windows-10'
-      sku: '19h2-evd'
+      offer: 'Windows-11'
+      sku: 'win11-21h2-avd'
       version: 'latest'
     }
     distribute: [
@@ -115,7 +115,7 @@ resource triggerImageDeploymentScript 'Microsoft.Resources/deploymentScripts@202
     azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\"'
-    scriptContent: loadTextContent('../.scripts/Start-ImageTemplate.ps1')
+    scriptContent: loadTextContent('../../../../.shared/.scripts/Start-ImageTemplate.ps1')
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: baseTime
   }
@@ -139,7 +139,7 @@ resource copyVhdDeploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-
     azPowerShellVersion: '8.0'
     retentionInterval: 'P1D'
     arguments: '-ImageTemplateName \\"${imageTemplate.name}\\" -ImageTemplateResourceGroup \\"${resourceGroup().name}\\" -DestinationStorageAccountName \\"${storageAccount.name}\\" -VhdName \\"${imageTemplateNamePrefix}\\" -WaitForComplete'
-    scriptContent: loadTextContent('../.scripts/Copy-VhdToStorageAccount.ps1')
+    scriptContent: loadTextContent('../../../../.shared/.scripts/Copy-VhdToStorageAccount.ps1')
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: baseTime
   }
@@ -172,11 +172,24 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   }
 }
 
-resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
+resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('msi-${keyVault::key.id}-${location}-${managedIdentity.id}-Key-Reader-RoleAssignment')
+  scope: keyVault::key
+  properties: {
+    principalId: managedIdentity.properties.principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424') // Key Vault Crypto User
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
   name: diskEncryptionSetName
   location: location
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
   }
   properties: {
     activeKey: {
@@ -187,16 +200,9 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
     }
     encryptionType: 'EncryptionAtRestWithCustomerKey'
   }
-}
-
-resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${keyVault.id}-${location}-${managedIdentity.id}-KeyVault-Key-Read-RoleAssignment')
-  scope: keyVault
-  properties: {
-    principalId: diskEncryptionSet.identity.principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'e147488a-f6f5-4113-8e2d-b22465e65bf6') // Key Vault Crypto Service Encryption User
-    principalType: 'ServicePrincipal'
-  }
+  dependsOn: [
+    keyPermissions
+  ]
 }
 
 @description('The URI of the created VHD.')

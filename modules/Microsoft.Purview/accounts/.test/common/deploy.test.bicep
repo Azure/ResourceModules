@@ -10,9 +10,6 @@ param resourceGroupName string = 'ms.purview-${serviceShort}-rg'
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
 
-@description('Tags')
-param tags object = {}
-
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'pvacom'
 
@@ -42,7 +39,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -65,7 +62,10 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     name: '<<namePrefix>>${serviceShort}001'
     location: location
-    tags: tags
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
@@ -94,6 +94,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     portalPrivateEndpoints: [
@@ -105,6 +109,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'portal'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageBlobPrivateEndpoints: [
@@ -116,6 +124,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'blob'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageQueuePrivateEndpoints: [
@@ -127,6 +139,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'queue'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     eventHubPrivateEndpoints: [
@@ -138,6 +154,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     enableDefaultTelemetry: enableDefaultTelemetry

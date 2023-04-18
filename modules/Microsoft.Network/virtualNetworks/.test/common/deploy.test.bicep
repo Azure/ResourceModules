@@ -40,7 +40,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -84,6 +84,7 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    flowTimeoutInMinutes: 20
     subnets: [
       {
         addressPrefix: '10.0.255.0/24'
@@ -131,5 +132,9 @@ module testDeployment '../../deploy.bicep' = {
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
     ]
+    tags:{
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

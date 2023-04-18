@@ -14,11 +14,13 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2020-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
+| `Microsoft.ContainerService/managedClusters` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters/agentPools) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
 
 ## Parameters
 
@@ -87,7 +89,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
@@ -102,6 +104,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableRBAC` | bool | `True` |  | Whether to enable Kubernetes Role-Based Access Control. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
+| `fluxConfigurationProtectedSettings` | secureObject | `{object}` |  | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
+| `fluxExtension` | object | `{object}` |  | Settings and configurations for the flux extension. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
@@ -111,6 +115,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Name of the resource group containing agent pool nodes. |
 | `omsAgentEnabled` | bool | `True` |  | Specifies whether the OMS agent is enabled. |
+| `openServiceMeshEnabled` | bool | `False` |  | Specifies whether the openServiceMesh add-on is enabled or not. |
 | `podIdentityProfileAllowNetworkPluginKubenet` | bool | `False` |  | Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing. |
 | `podIdentityProfileEnable` | bool | `False` |  | Whether the pod identity addon is enabled. |
 | `podIdentityProfileUserAssignedIdentities` | array | `[]` |  | The pod identities to use in the cluster. |
@@ -225,7 +230,7 @@ tags: {
 ### Parameter Usage: `primaryAgentPoolProfile`
 
 Provide values for primary agent pool as needed.
-For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object>
+For available properties check <https://learn.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object>
 
 <details>
 
@@ -357,6 +362,7 @@ userAssignedIdentities: {
 | `kubeletidentityObjectId` | string | The Object ID of the AKS identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the managed cluster. |
+| `oidcIssuerUrl` | string | The OIDC token issuer URL. |
 | `omsagentIdentityObjectId` | string | The Object ID of the OMS agent identity. |
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
@@ -364,7 +370,12 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-_None_
+This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
+
+| Reference | Type |
+| :-- | :-- |
+| `Microsoft.KubernetesConfiguration/extensions` | Local reference |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | Local reference |
 
 ## Deployment examples
 
@@ -426,6 +437,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         ]
         osDiskSizeGB: 128
         osType: 'Linux'
+        proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
         scaleSetEvictionPolicy: 'Delete'
         scaleSetPriority: 'Regular'
         storageProfile: 'ManagedDisks'
@@ -467,7 +479,64 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     diskEncryptionSetID: '<diskEncryptionSetID>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    fluxExtension: {
+      configurations: [
+        {
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/mspnp/aks-baseline'
+          }
+          namespace: 'flux-system'
+        }
+        {
+          gitRepository: {
+            repositoryRef: {
+              branch: 'main'
+            }
+            sshKnownHosts: ''
+            syncIntervalInSeconds: 300
+            timeoutInSeconds: 180
+            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
+          }
+          kustomizations: {
+            apps: {
+              dependsOn: [
+                'infra'
+              ]
+              path: './apps/staging'
+              prune: true
+              retryIntervalInSeconds: 120
+              syncIntervalInSeconds: 600
+              timeoutInSeconds: 600
+            }
+            infra: {
+              dependsOn: []
+              path: './infrastructure'
+              prune: true
+              syncIntervalInSeconds: 600
+              timeoutInSeconds: 600
+              validation: 'none'
+            }
+          }
+          namespace: 'flux-system-helm'
+        }
+      ]
+      configurationSettings: {
+        'helm-controller.enabled': 'true'
+        'image-automation-controller.enabled': 'false'
+        'image-reflector-controller.enabled': 'false'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'true'
+        'source-controller.enabled': 'true'
+      }
+    }
     lock: 'CanNotDelete'
+    openServiceMeshEnabled: true
     roleAssignments: [
       {
         principalIds: [
@@ -478,6 +547,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -542,6 +615,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           ],
           "osDiskSizeGB": 128,
           "osType": "Linux",
+          "proximityPlacementGroupResourceId": "<proximityPlacementGroupResourceId>",
           "scaleSetEvictionPolicy": "Delete",
           "scaleSetPriority": "Regular",
           "storageProfile": "ManagedDisks",
@@ -600,8 +674,69 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "fluxExtension": {
+      "value": {
+        "configurations": [
+          {
+            "gitRepository": {
+              "repositoryRef": {
+                "branch": "main"
+              },
+              "sshKnownHosts": "",
+              "syncIntervalInSeconds": 300,
+              "timeoutInSeconds": 180,
+              "url": "https://github.com/mspnp/aks-baseline"
+            },
+            "namespace": "flux-system"
+          },
+          {
+            "gitRepository": {
+              "repositoryRef": {
+                "branch": "main"
+              },
+              "sshKnownHosts": "",
+              "syncIntervalInSeconds": 300,
+              "timeoutInSeconds": 180,
+              "url": "https://github.com/Azure/gitops-flux2-kustomize-helm-mt"
+            },
+            "kustomizations": {
+              "apps": {
+                "dependsOn": [
+                  "infra"
+                ],
+                "path": "./apps/staging",
+                "prune": true,
+                "retryIntervalInSeconds": 120,
+                "syncIntervalInSeconds": 600,
+                "timeoutInSeconds": 600
+              },
+              "infra": {
+                "dependsOn": [],
+                "path": "./infrastructure",
+                "prune": true,
+                "syncIntervalInSeconds": 600,
+                "timeoutInSeconds": 600,
+                "validation": "none"
+              }
+            },
+            "namespace": "flux-system-helm"
+          }
+        ],
+        "configurationSettings": {
+          "helm-controller.enabled": "true",
+          "image-automation-controller.enabled": "false",
+          "image-reflector-controller.enabled": "false",
+          "kustomize-controller.enabled": "true",
+          "notification-controller.enabled": "true",
+          "source-controller.enabled": "true"
+        }
+      }
+    },
     "lock": {
       "value": "CanNotDelete"
+    },
+    "openServiceMeshEnabled": {
+      "value": true
     },
     "roleAssignments": {
       "value": [
@@ -616,6 +751,12 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -723,6 +864,10 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -853,10 +998,83 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         }
       ]
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 3: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-csmmin'
+  params: {
+    // Required parameters
+    name: 'csmmin001'
+    primaryAgentPoolProfile: [
+      {
+        count: 1
+        mode: 'System'
+        name: 'systempool'
+        vmSize: 'Standard_DS2_v2'
+      }
+    ]
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    systemAssignedIdentity: true
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "csmmin001"
+    },
+    "primaryAgentPoolProfile": {
+      "value": [
+        {
+          "count": 1,
+          "mode": "System",
+          "name": "systempool",
+          "vmSize": "Standard_DS2_v2"
+        }
+      ]
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "systemAssignedIdentity": {
+      "value": true
     }
   }
 }

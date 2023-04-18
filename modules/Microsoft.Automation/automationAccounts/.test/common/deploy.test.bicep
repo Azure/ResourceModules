@@ -40,7 +40,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -99,6 +99,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'Webhook'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
       {
         privateDnsZoneGroup: {
@@ -108,6 +112,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'DSCAndHybridWorker'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -123,7 +131,7 @@ module testDeployment '../../deploy.bicep' = {
       {
         description: 'Test runbook'
         name: 'TestRunbook'
-        runbookType: 'PowerShell'
+        type: 'PowerShell'
         uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
         version: '1.0.0.0'
       }
@@ -132,8 +140,8 @@ module testDeployment '../../deploy.bicep' = {
       {
         advancedSchedule: {}
         expiryTime: '9999-12-31T13:00'
-        frequency: 'Minute'
-        interval: 15
+        frequency: 'Hour'
+        interval: 12
         name: 'TestSchedule'
         startTime: ''
         timeZone: 'Europe/Berlin'
@@ -228,5 +236,9 @@ module testDeployment '../../deploy.bicep' = {
         value: '\'TestEncryptedValue\''
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

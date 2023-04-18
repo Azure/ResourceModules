@@ -13,7 +13,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DataFactory/factories/integrationRuntimes` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes) |
+| `Microsoft.DataFactory/factories/integrationRuntimes` | [2018-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes) |
 
 ## Parameters
 
@@ -39,7 +39,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 | `typeProperties` | object | `{object}` | Integration Runtime type properties. Required if type is "Managed". |
 
 
-### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
+### Parameter Usage: [`typeProperties`](https://learn.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
 
 <details>
 

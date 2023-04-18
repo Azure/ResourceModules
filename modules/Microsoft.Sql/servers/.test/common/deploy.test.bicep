@@ -45,7 +45,7 @@ module nestedDependencies 'dependencies.bicep' = {
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -89,7 +89,7 @@ module testDeployment '../../deploy.bicep' = {
         'test1@contoso.com'
         'test2@contoso.com'
       ]
-      vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+      storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
     }
     elasticPools: [
       {
@@ -116,6 +116,16 @@ module testDeployment '../../deploy.bicep' = {
         diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
         diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
         elasticPoolId: '${resourceGroup.id}/providers/Microsoft.Sql/servers/<<namePrefix>>-${serviceShort}/elasticPools/<<namePrefix>>-${serviceShort}-ep-001'
+        encryptionProtectorObj: {
+          serverKeyType: 'AzureKeyVault'
+          serverKeyName: '${nestedDependencies.outputs.keyVaultName}_${nestedDependencies.outputs.keyVaultKeyName}_${last(split(nestedDependencies.outputs.keyVaultEncryptionKeyUrl, '/'))}'
+        }
+        backupShortTermRetentionPolicy: {
+          retentionDays: 14
+        }
+        backupLongTermRetentionPolicy: {
+          monthlyRetention: 'P6M'
+        }
       }
     ]
     firewallRules: [
@@ -152,6 +162,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     virtualNetworkRules: [
@@ -161,5 +175,10 @@ module testDeployment '../../deploy.bicep' = {
         virtualNetworkSubnetId: nestedDependencies.outputs.serviceEndpointSubnetResourceId
       }
     ]
+    restrictOutboundNetworkAccess: 'Disabled'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

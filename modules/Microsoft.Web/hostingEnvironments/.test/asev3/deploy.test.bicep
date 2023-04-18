@@ -35,12 +35,14 @@ module nestedDependencies 'dependencies.bicep' = {
     networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
   }
 }
 
 // Diagnostics
 // ===========
-module diagnosticDependencies '../../../../.shared/dependencyConstructs/diagnostic.dependencies.bicep' = {
+module diagnosticDependencies '../../../../.shared/.templates/diagnostic.dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
@@ -62,18 +64,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    subnetResourceId: nestedDependencies.outputs.subnetResourceId
-    clusterSettings: [
-      {
-        name: 'DisableTls1.0'
-        value: '1'
-      }
-    ]
-    diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
-    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
-    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
-    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    location: resourceGroup.location
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -84,5 +75,34 @@ module testDeployment '../../deploy.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    tags: {
+      resourceType: 'App Service Environment'
+      hostingEnvironmentName: '<<namePrefix>>${serviceShort}001'
+    }
+    subnetResourceId: nestedDependencies.outputs.subnetResourceId
+    internalLoadBalancingMode: 'Web, Publishing'
+    clusterSettings: [
+      {
+        name: 'DisableTls1.0'
+        value: '1'
+      }
+    ]
+    allowNewPrivateEndpointConnections: true
+    ftpEnabled: true
+    inboundIpAddressOverride: '10.0.0.10'
+    remoteDebugEnabled: true
+    upgradePreference: 'Late'
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+    diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    customDnsSuffix: 'internal.contoso.com'
+    customDnsSuffixCertificateUrl: nestedDependencies.outputs.certificateSecretUrl
+    customDnsSuffixKeyVaultReferenceIdentity: nestedDependencies.outputs.managedIdentityResourceId
   }
 }

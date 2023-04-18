@@ -47,8 +47,6 @@ If you're unfamiliar with Infrastructure as Code or wonder how you can use the c
   - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
   - [Validate modules on scale](./Contribution%20guide%20-%20Validate%20module%20on%20scale)
 - [Solution creation](./Solution%20creation)
-- Upgrade guideline
-  - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)
 - [Known issues](./Known%20issues)
 
 ---
@@ -111,10 +109,10 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 [githubdocs]: https://docs.github.com/
 [githubissues]: https://github.com/Azure/Modules/issues
-[azureresourcemanager]: https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview
+[azureresourcemanager]: https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/overview
 [bicep]: https://github.com/Azure/bicep
 
 <!-- Docs -->
 
-[microsoftazuredocs]: https://docs.microsoft.com/en-us/azure/
-[powershelldocs]: https://docs.microsoft.com/en-us/powershell/
+[microsoftazuredocs]: https://learn.microsoft.com/en-us/azure/
+[powershelldocs]: https://learn.microsoft.com/en-us/powershell/

@@ -22,6 +22,17 @@ param dnsServers array = []
 @description('Optional. The network security group (NSG) to attach to the network interface.')
 param networkSecurityGroupResourceId string = ''
 
+@allowed([
+  'Floating'
+  'MaxConnections'
+  'None'
+])
+@description('Optional. Auxiliary mode of Network Interface resource. Not all regions are enabled for Auxiliary Mode Nic.')
+param auxiliaryMode string = 'None'
+
+@description('Optional. Indicates whether to disable tcp state tracking. Subscription must be registered for the Microsoft.Network/AllowDisableTcpStateTracking feature before this property can be set to true.')
+param disableTcpStateTracking bool = false
+
 @description('Required. A list of IPConfigurations of the network interface.')
 param ipConfigurations array
 
@@ -61,8 +72,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -86,16 +97,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-08-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2022-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
-    enableIPForwarding: enableIPForwarding
-    enableAcceleratedNetworking: enableAcceleratedNetworking
+    auxiliaryMode: auxiliaryMode
+    disableTcpStateTracking: disableTcpStateTracking
     dnsSettings: !empty(dnsServers) ? {
       dnsServers: dnsServers
     } : null
+    enableAcceleratedNetworking: enableAcceleratedNetworking
+    enableIPForwarding: enableIPForwarding
     networkSecurityGroup: !empty(networkSecurityGroupResourceId) ? {
       id: networkSecurityGroupResourceId
     } : null
@@ -124,7 +137,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-08-01' = {
 }
 
 resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
