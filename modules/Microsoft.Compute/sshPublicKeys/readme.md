@@ -144,9 +144,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the disk. |
-| `resourceGroupName` | string | The resource group the  disk was deployed into. |
-| `resourceId` | string | The resource ID of the disk. |
+| `name` | string | The name of the Public SSH Key. |
+| `resourceGroupName` | string | The name of the Resource Group the Public SSH Key was created in. |
+| `resourceId` | string | The resource ID of the Public SSH Key. |
 
 ## Cross-referenced modules
 
@@ -167,10 +167,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sshcom'
+  name: '${uniqueString(deployment().name, location)}-test-cspkcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sshkey-sshcom001'
+    name: '<<namePrefix>>-sshkey-cspkcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicKey: '<publicKey>'
@@ -192,7 +192,7 @@ module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sshkey-sshcom001"
+      "value": "<<namePrefix>>-sshkey-cspkcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -216,10 +216,10 @@ module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
 
 ```bicep
 module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sshmin'
+  name: '${uniqueString(deployment().name, location)}-test-cspkmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sshmin001'
+    name: '<<namePrefix>>-cspkmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -240,7 +240,7 @@ module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sshmin001"
+      "value": "<<namePrefix>>-cspkmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
