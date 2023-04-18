@@ -44,6 +44,7 @@ This module deploys a virtual machine extension.
 | `protectedSettings` | secureObject | `{object}` | Any object that contains the extension specific protected settings. |
 | `settings` | object | `{object}` | Any object that contains the extension specific settings. |
 | `supressFailures` | bool | `False` | Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false. |
+| `tags` | object | `{object}`| Optional. Tags of the resource. |
 
 
 ## Outputs
