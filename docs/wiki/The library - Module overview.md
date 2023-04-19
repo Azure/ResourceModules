@@ -38,7 +38,7 @@ This section provides an overview of the library's feature set.
 | 23 | MS.Compute<p>images | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 107 |
 | 24 | MS.Compute<p>proximityPlacementGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 80 |
 | 25 | MS.Compute<p>sshPublicKeys | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 67 |
-| 26 | MS.Compute<p>virtualMachines | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 637 |
+| 26 | MS.Compute<p>virtualMachines | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 646 |
 | 27 | MS.Compute<p>virtualMachineScaleSets | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 562 |
 | 28 | MS.Consumption<p>budgets |  |  |  |  |  |  |  | 89 |
 | 29 | MS.ContainerInstance<p>containerGroups |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 157 |
@@ -141,7 +141,7 @@ This section provides an overview of the library's feature set.
 | 126 | MS.Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 127 | MS.Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:4, L2:2] | 390 |
 | 128 | MS.Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 101 | 100 | 110 | 53 | 24 | 2 | 194 | 22538 |
+| Sum | | 101 | 100 | 110 | 53 | 24 | 2 | 194 | 22547 |
 
 ## Legend
 
