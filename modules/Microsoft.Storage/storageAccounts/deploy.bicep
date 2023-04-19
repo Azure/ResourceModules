@@ -251,7 +251,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
   identity: identity
   tags: tags
-  properties: {
+  properties: union(
+    {
     allowSharedKeyAccess: allowSharedKeyAccess
     defaultToOAuthAuthentication: defaultToOAuthAuthentication
     allowCrossTenantReplication: allowCrossTenantReplication
@@ -308,7 +309,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
     allowBlobPublicAccess: allowBlobPublicAccess
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
     azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
-  }
+  },
+  enableNfsV3 ? {isNfsV3Enabled: enableNfsV3} : {}
+  )
+
 }
 
 resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
