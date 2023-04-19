@@ -531,6 +531,7 @@ module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfi
     autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
     settings: contains(extensionAadJoinConfig, 'settings') ? extensionAadJoinConfig.settings : {}
+    tags: contains(extensionAadJoinConfig, 'tags') ? extensionAadJoinConfig.tags : {}
   }
 }
 
@@ -545,6 +546,7 @@ module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoi
     autoUpgradeMinorVersion: contains(extensionDomainJoinConfig, 'autoUpgradeMinorVersion') ? extensionDomainJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDomainJoinConfig, 'enableAutomaticUpgrade') ? extensionDomainJoinConfig.enableAutomaticUpgrade : false
     settings: extensionDomainJoinConfig.settings
+    tags: contains(extensionDomainJoinConfig, 'tags') ? extensionDomainJoinConfig.tags : {}
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
@@ -563,6 +565,7 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
+    tags: contains(extensionAntiMalwareConfig, 'tags') ? extensionAntiMalwareConfig.tags : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -585,6 +588,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     settings: {
       workspaceId: !empty(monitoringWorkspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
+    tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
@@ -603,6 +607,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    tags: contains(extensionDependencyAgentConfig, 'tags') ? extensionDependencyAgentConfig.tags : {}
   }
 }
 
@@ -617,6 +622,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    tags: contains(extensionNetworkWatcherAgentConfig, 'tags') ? extensionNetworkWatcherAgentConfig.tags : {}
   }
 }
 
@@ -631,6 +637,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
     autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
+    tags: contains(extensionDSCConfig, 'tags') ? extensionDSCConfig.tags : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -649,6 +656,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
+    tags: contains(extensionCustomScriptConfig, 'tags') ? extensionCustomScriptConfig.tags : {}
     protectedSettings: extensionCustomScriptProtectedSetting
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -669,6 +677,7 @@ module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extension
     enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionAzureDiskEncryptionConfig.settings
+    tags: contains(extensionAzureDiskEncryptionConfig, 'tags') ? extensionAzureDiskEncryptionConfig.tags : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
