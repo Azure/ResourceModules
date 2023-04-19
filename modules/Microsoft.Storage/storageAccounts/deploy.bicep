@@ -253,64 +253,63 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   tags: tags
   properties: union(
     {
-    allowSharedKeyAccess: allowSharedKeyAccess
-    defaultToOAuthAuthentication: defaultToOAuthAuthentication
-    allowCrossTenantReplication: allowCrossTenantReplication
-    allowedCopyScope: !empty(allowedCopyScope) ? allowedCopyScope : null
-    customDomain: {
-      name: customDomainName
-      useSubDomainName: customDomainUseSubDomainName
-    }
-    dnsEndpointType: !empty(dnsEndpointType) ? dnsEndpointType : null
-    isLocalUserEnabled: isLocalUserEnabled
-    encryption: {
-      keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
-      services: {
-        blob: supportsBlobService ? {
-          enabled: true
-        } : null
-        file: supportsFileService ? {
-          enabled: true
-        } : null
-        table: {
-          enabled: true
-        }
-        queue: {
-          enabled: true
-        }
+      allowSharedKeyAccess: allowSharedKeyAccess
+      defaultToOAuthAuthentication: defaultToOAuthAuthentication
+      allowCrossTenantReplication: allowCrossTenantReplication
+      allowedCopyScope: !empty(allowedCopyScope) ? allowedCopyScope : null
+      customDomain: {
+        name: customDomainName
+        useSubDomainName: customDomainUseSubDomainName
       }
-      requireInfrastructureEncryption: kind != 'Storage' ? requireInfrastructureEncryption : null
-      keyvaultproperties: !empty(cMKKeyName) ? {
-        keyname: cMKKeyName
-        keyvaulturi: keyVault.properties.vaultUri
-        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      dnsEndpointType: !empty(dnsEndpointType) ? dnsEndpointType : null
+      isLocalUserEnabled: isLocalUserEnabled
+      encryption: {
+        keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
+        services: {
+          blob: supportsBlobService ? {
+            enabled: true
+          } : null
+          file: supportsFileService ? {
+            enabled: true
+          } : null
+          table: {
+            enabled: true
+          }
+          queue: {
+            enabled: true
+          }
+        }
+        requireInfrastructureEncryption: kind != 'Storage' ? requireInfrastructureEncryption : null
+        keyvaultproperties: !empty(cMKKeyName) ? {
+          keyname: cMKKeyName
+          keyvaulturi: keyVault.properties.vaultUri
+          keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+        } : null
+        identity: !empty(cMKKeyName) ? {
+          userAssignedIdentity: cMKUserAssignedIdentityResourceId
+        } : null
+      }
+      accessTier: kind != 'Storage' ? accessTier : null
+      sasPolicy: !empty(sasExpirationPeriod) ? {
+        expirationAction: 'Log'
+        sasExpirationPeriod: sasExpirationPeriod
       } : null
-      identity: !empty(cMKKeyName) ? {
-        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
+      isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
+      isSftpEnabled: enableSftp
+      largeFileSharesState: (skuName == 'Standard_LRS') || (skuName == 'Standard_ZRS') ? largeFileSharesState : null
+      minimumTlsVersion: minimumTlsVersion
+      networkAcls: !empty(networkAcls) ? {
+        bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
+        defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : null
+        virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
+        ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
       } : null
-    }
-    accessTier: kind != 'Storage' ? accessTier : null
-    sasPolicy: !empty(sasExpirationPeriod) ? {
-      expirationAction: 'Log'
-      sasExpirationPeriod: sasExpirationPeriod
-    } : null
-    supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
-    isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
-    isSftpEnabled: enableSftp
-    isNfsV3Enabled: enableNfsV3
-    largeFileSharesState: (skuName == 'Standard_LRS') || (skuName == 'Standard_ZRS') ? largeFileSharesState : null
-    minimumTlsVersion: minimumTlsVersion
-    networkAcls: !empty(networkAcls) ? {
-      bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
-      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : null
-      virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
-      ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
-    } : null
-    allowBlobPublicAccess: allowBlobPublicAccess
-    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
-    azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
-  },
-  enableNfsV3 ? {isNfsV3Enabled: enableNfsV3} : {}
+      allowBlobPublicAccess: allowBlobPublicAccess
+      publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(networkAcls) ? 'Disabled' : null)
+      azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
+    },
+    enableNfsV3 ? { isNfsV3Enabled: enableNfsV3 } : {}
   )
 
 }
