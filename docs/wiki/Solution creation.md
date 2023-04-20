@@ -684,6 +684,7 @@ jobs:
 </details>
 
 <details>
+
 <summary>Main Template</summary>
 
 ```YAML
