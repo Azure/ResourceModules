@@ -1182,10 +1182,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: '<commandToExecute>'
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -1440,11 +1436,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "<commandToExecute>",
-        "tags": {
-          "Environment": "Non-Prod",
-          "Role": "DeploymentValidation"
-        }
+        "commandToExecute": "<commandToExecute>"
       }
     },
     "extensionDependencyAgentConfig": {
@@ -2009,10 +2001,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: '<commandToExecute>'
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
     }
     extensionDependencyAgentConfig: {
       enabled: true
@@ -2286,11 +2274,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionCustomScriptProtectedSetting": {
       "value": {
-        "commandToExecute": "<commandToExecute>",
-        "tags": {
-          "Environment": "Non-Prod",
-          "Role": "DeploymentValidation"
-        }
+        "commandToExecute": "<commandToExecute>"
       }
     },
     "extensionDependencyAgentConfig": {

@@ -180,10 +180,6 @@ module testDeployment '../../deploy.bicep' = {
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'value=$(./${nestedDependencies.outputs.storageAccountCSEFileName}); echo "$value"'
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
     }
     extensionDependencyAgentConfig: {
       enabled: true

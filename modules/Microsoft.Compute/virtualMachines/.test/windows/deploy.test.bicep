@@ -205,10 +205,6 @@ module testDeployment '../../deploy.bicep' = {
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command "& ./${nestedDependencies.outputs.storageAccountCSEFileName}"'
-      tags: {
-        Environment: 'Non-Prod'
-        Role: 'DeploymentValidation'
-      }
     }
     extensionDependencyAgentConfig: {
       enabled: true
