@@ -52,7 +52,7 @@ resource createPubKeyScript 'Microsoft.Resources/deploymentScripts@2020-10-01' =
 }
 
 @description('The public key to be added to the SSH Public Key resource.')
-output publicKey string = createPubKeyScript.properties.outputs.pubKey
+output publicKey string = createPubKeyScript.properties.outputs.publicKey
 
 @description('The resource ID of the managed Identity')
 output managedIdentityId string = managedIdentity.id
