@@ -70,6 +70,9 @@ output resourceId string = userMsi.id
 @description('The principal ID of the user assigned identity.')
 output principalId string = userMsi.properties.principalId
 
+@description('The client ID of the user assigned identity.')
+output clientId string = userMsi.properties.clientId
+
 @description('The resource group the user assigned identity was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
