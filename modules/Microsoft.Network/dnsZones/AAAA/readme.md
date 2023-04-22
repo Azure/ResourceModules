@@ -22,7 +22,7 @@ This module deploys a Public DNS Zone AAAA record.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the A record. |
+| `name` | string | The name of the AAAA record. |
 
 **Conditional parameters**
 

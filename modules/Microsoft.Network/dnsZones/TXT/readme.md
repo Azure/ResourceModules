@@ -41,39 +41,6 @@ This module deploys a Public DNS Zone TXT record.
 | `txtRecords` | array | `[]` | The list of TXT records in the record set. |
 
 
-### Parameter Usage: `txtRecords`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"txtRecords": {
-    "value": [
-      {
-        "value": [ "string" ]
-      }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-txtRecords: [
-    {
-        value: [ 'string' ]
-    }
-]
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
