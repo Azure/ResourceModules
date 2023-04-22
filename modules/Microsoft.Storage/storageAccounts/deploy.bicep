@@ -401,8 +401,19 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     storageAccountName: storageAccount.name
     containers: contains(blobServices, 'containers') ? blobServices.containers : []
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
-    deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
+    changeFeedEnabled: contains(blobServices, 'changeFeedEnabled') ? blobServices.changeFeedEnabled : false
+    changeFeedRetentionInDays: contains(blobServices, 'changeFeedRetentionInDays') ? blobServices.changeFeedRetentionInDays : 7
+    containerDeleteRetentionPolicyEnabled: contains(blobServices, 'containerDeleteRetentionPolicyEnabled') ? blobServices.containerDeleteRetentionPolicyEnabled : false
+    containerDeleteRetentionPolicyDays: contains(blobServices, 'containerDeleteRetentionPolicyDays') ? blobServices.containerDeleteRetentionPolicyDays : 7
+    containerDeleteRetentionPolicyAllowPermanentDelete: contains(blobServices, 'containerDeleteRetentionPolicyAllowPermanentDelete') ? blobServices.containerDeleteRetentionPolicyAllowPermanentDelete : false
+    corsRules: contains(blobServices, 'corsRules') ? blobServices.corsRules : []
+    defaultServiceVersion: contains(blobServices, 'defaultServiceVersion') ? blobServices.defaultServiceVersion : ''
+    deleteRetentionPolicyEnabled: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : false
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
+    isVersioningEnabled: contains(blobServices, 'isVersioningEnabled') ? blobServices.isVersioningEnabled : false
+    lastAccessTimeTrackingPolicyEnable: contains(blobServices, 'lastAccessTimeTrackingPolicyEnable') ? blobServices.lastAccessTimeTrackingPolicyEnable : false
+    restorePolicyEnabled: contains(blobServices, 'restorePolicyEnabled') ? blobServices.restorePolicyEnabled : false
+    restorePolicyDays: contains(blobServices, 'restorePolicyDays') ? blobServices.restorePolicyDays : 6
     diagnosticLogsRetentionInDays: contains(blobServices, 'diagnosticLogsRetentionInDays') ? blobServices.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(blobServices, 'diagnosticEventHubAuthorizationRuleId') ? blobServices.diagnosticEventHubAuthorizationRuleId : ''

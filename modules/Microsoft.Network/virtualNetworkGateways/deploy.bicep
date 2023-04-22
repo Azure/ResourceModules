@@ -319,12 +319,8 @@ var vpnClientConfiguration = !empty(clientRootCertData) ? {
   aadTenant: vpnClientAadConfiguration.aadTenant
   aadAudience: vpnClientAadConfiguration.aadAudience
   aadIssuer: vpnClientAadConfiguration.aadIssuer
-  vpnAuthenticationTypes: [
-    vpnClientAadConfiguration.vpnAuthenticationTypes
-  ]
-  vpnClientProtocols: [
-    vpnClientAadConfiguration.vpnClientProtocols
-  ]
+  vpnAuthenticationTypes: vpnClientAadConfiguration.vpnAuthenticationTypes
+  vpnClientProtocols: vpnClientAadConfiguration.vpnClientProtocols
 } : null
 
 var enableReferencedModulesTelemetry = false

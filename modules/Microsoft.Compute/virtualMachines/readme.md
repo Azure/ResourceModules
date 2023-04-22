@@ -1145,6 +1145,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     encryptionAtHost: false
     extensionAadJoinConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -1158,6 +1162,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptConfig: {
       enabled: true
@@ -1167,21 +1175,41 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           uri: '<uri>'
         }
       ]
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: '<commandToExecute>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionDSCConfig: {
       enabled: false
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionNetworkWatcherAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     location: '<location>'
     lock: 'CanNotDelete'
@@ -1365,7 +1393,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionAadJoinConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionAzureDiskEncryptionConfig": {
@@ -1380,6 +1412,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "KeyVaultURL": "<KeyVaultURL>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
+        },
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
         }
       }
     },
@@ -1391,7 +1427,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "storageAccountId": "<storageAccountId>",
             "uri": "<uri>"
           }
-        ]
+        ],
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionCustomScriptProtectedSetting": {
@@ -1401,22 +1441,38 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionDependencyAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionDSCConfig": {
       "value": {
-        "enabled": false
+        "enabled": false,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionMonitoringAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionNetworkWatcherAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "location": {
@@ -1886,6 +1942,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     encryptionAtHost: false
     extensionAadJoinConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAntiMalwareConfig: {
       enabled: true
@@ -1904,6 +1964,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           time: '120'
         }
       }
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -1915,6 +1979,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         KeyVaultResourceId: '<KeyVaultResourceId>'
         KeyVaultURL: '<KeyVaultURL>'
         ResizeOSDisk: 'false'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
         VolumeType: 'All'
       }
     }
@@ -1926,21 +1994,41 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           uri: '<uri>'
         }
       ]
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: '<commandToExecute>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionDSCConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionNetworkWatcherAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     location: '<location>'
     lock: 'CanNotDelete'
@@ -2119,7 +2207,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionAadJoinConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionAntiMalwareConfig": {
@@ -2139,6 +2231,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "scanType": "Quick",
             "time": "120"
           }
+        },
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
         }
       }
     },
@@ -2153,6 +2249,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "KeyVaultResourceId": "<KeyVaultResourceId>",
           "KeyVaultURL": "<KeyVaultURL>",
           "ResizeOSDisk": "false",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          },
           "VolumeType": "All"
         }
       }
@@ -2165,7 +2265,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "storageAccountId": "<storageAccountId>",
             "uri": "<uri>"
           }
-        ]
+        ],
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionCustomScriptProtectedSetting": {
@@ -2175,22 +2279,38 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionDependencyAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionDSCConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionMonitoringAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionNetworkWatcherAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "location": {
