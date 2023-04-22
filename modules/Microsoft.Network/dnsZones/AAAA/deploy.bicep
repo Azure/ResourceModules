@@ -1,7 +1,7 @@
 @description('Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment.')
 param dnsZoneName string
 
-@description('Required. The name of the A record.')
+@description('Required. The name of the AAAA record.')
 param name string
 
 @description('Optional. The list of AAAA records in the record set. Cannot be used in conjuction with the "targetResource" property.')
