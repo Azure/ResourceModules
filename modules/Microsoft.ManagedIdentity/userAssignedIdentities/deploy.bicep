@@ -67,7 +67,7 @@ output name string = userMsi.name
 @description('The resource ID of the user assigned identity.')
 output resourceId string = userMsi.id
 
-@description('The principal ID of the user assigned identity.')
+@description('The principal ID (object ID) of the user assigned identity.')
 output principalId string = userMsi.properties.principalId
 
 @description('The client ID of the user assigned identity.')
