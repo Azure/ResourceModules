@@ -1,23 +1,11 @@
-@description('Required. The name of the availability set that is being created.')
+@description('Required. The name of the SSH public Key that is being created.')
 param name string
-
-@description('Optional. The number of fault domains to use.')
-param platformFaultDomainCount int = 2
-
-@description('Optional. The number of update domains to use.')
-param platformUpdateDomainCount int = 5
-
-@description('''Optional. SKU of the availability set.
-- Use \'Aligned\' for virtual machines with managed disks.
-- Use \'Classic\' for virtual machines with unmanaged disks.
-''')
-param skuName string = 'Aligned'
-
-@description('Optional. Resource ID of a proximity placement group.')
-param proximityPlacementGroupResourceId string = ''
 
 @description('Optional. Resource location.')
 param location string = resourceGroup().location
+
+@description('Optional. SSH public key used to authenticate to a virtual machine through SSH. If this property is not initially provided when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in ssh-rsa format.')
+param publicKey string = ''
 
 @allowed([
   ''
@@ -48,33 +36,26 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource availabilitySet 'Microsoft.Compute/availabilitySets@2022-11-01' = {
+resource sshPublicKey 'Microsoft.Compute/sshPublicKeys@2022-08-01' = {
   name: name
   location: location
   tags: tags
   properties: {
-    platformFaultDomainCount: platformFaultDomainCount
-    platformUpdateDomainCount: platformUpdateDomainCount
-    proximityPlacementGroup: !empty(proximityPlacementGroupResourceId) ? {
-      id: proximityPlacementGroupResourceId
-    } : null
-  }
-  sku: {
-    name: skuName
+    publicKey: !empty(publicKey) ? publicKey : null
   }
 }
 
-resource availabilitySet_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${availabilitySet.name}-${lock}-lock'
+resource sshPublicKey_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+  name: '${sshPublicKey.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: availabilitySet
+  scope: sshPublicKey
 }
 
-module availabilitySet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-AvSet-Rbac-${index}'
+module sshPublicKey_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-sshPublicKey-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -82,18 +63,18 @@ module availabilitySet_roleAssignments '.bicep/nested_roleAssignments.bicep' = [
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: availabilitySet.id
+    resourceId: sshPublicKey.id
   }
 }]
 
-@description('The name of the availability set.')
-output name string = availabilitySet.name
-
-@description('The resource ID of the availability set.')
-output resourceId string = availabilitySet.id
-
-@description('The resource group the availability set was deployed into.')
+@description('The name of the Resource Group the Public SSH Key was created in.')
 output resourceGroupName string = resourceGroup().name
 
+@description('The resource ID of the Public SSH Key.')
+output resourceId string = sshPublicKey.id
+
+@description('The name of the Public SSH Key.')
+output name string = sshPublicKey.name
+
 @description('The location the resource was deployed into.')
-output location string = availabilitySet.location
+output location string = sshPublicKey.location

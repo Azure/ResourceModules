@@ -720,6 +720,8 @@ jobs:
 ```
 
 </details>
+</details>
+</p>
 
 # General solution creation
 
@@ -745,7 +747,7 @@ When creating a solution that leverages CARML modules, there are several aspects
 
     Next, you need to know in which order you need to deploy those resources. For example, as all resources must be placed in a resource group, the resource group must be deployed first. Likewise, before you can deploy a Virtual Machine, you first need to create a Virtual Network. All together this may look like
 
-      ::: mermaid
+      ```mermaid
       graph LR;
       rg[Resource Group]
       vnet[Virtual Network]
@@ -763,7 +765,7 @@ When creating a solution that leverages CARML modules, there are several aspects
       st --> pe
       nsg --> vnet
       vnet --> vm
-      :::
+      ```
 
 1. Consider orchestration options
 
