@@ -31,19 +31,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module PTR_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name)}-DNSPTR-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
-    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: PTR.id
-  }
-}]
-
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = {
   name: dnsZoneName
 }
@@ -57,6 +44,19 @@ resource PTR 'Microsoft.Network/dnsZones/PTR@2018-05-01' = {
     TTL: ttl
   }
 }
+
+module PTR_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name)}-DNSPTR-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
+    delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
+    resourceId: PTR.id
+  }
+}]
 
 @description('The name of the deployed PTR record.')
 output name string = PTR.name
