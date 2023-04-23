@@ -83,7 +83,7 @@ resource NS 'Microsoft.Network/dnsZones/NS@2018-05-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(NS.name, principalId, roleDefinitionIdOrName)
+  name: guid(NS.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

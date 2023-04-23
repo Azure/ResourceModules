@@ -83,7 +83,7 @@ resource CNAME 'Microsoft.Network/dnsZones/CNAME@2018-05-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(CNAME.name, principalId, roleDefinitionIdOrName)
+  name: guid(CNAME.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

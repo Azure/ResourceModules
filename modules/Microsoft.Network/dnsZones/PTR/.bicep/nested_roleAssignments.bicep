@@ -83,7 +83,7 @@ resource PTR 'Microsoft.Network/dnsZones/PTR@2018-05-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(PTR.name, principalId, roleDefinitionIdOrName)
+  name: guid(PTR.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
