@@ -1,4 +1,4 @@
-name: 'Network - DNS Forwarding Ruleset'
+name: 'Network - DNS Forwarding Rulesets'
 
 on:
   workflow_dispatch:
@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - users/jpeasier/dnsForwardingRulesets
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
