@@ -39,7 +39,6 @@ This module deploys a DocumentDB database account and its child resources.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticFailover` | bool | `True` |  | Enable automatic failover for regions. |
-| `enableFreeTier` | bool | `False` |  | Enable free tier of cosmos db. |
 | `backupIntervalInMinutes` | int | `240` |  | An integer representing the interval in minutes between two backups. Only applies to periodic backup type. |
 | `backupPolicyContinuousTier` | string | `'Continuous30Days'` | `[Continuous30Days, Continuous7Days]` | Configuration values for continuous mode backup. |
 | `backupPolicyType` | string | `'Continuous'` | `[Continuous, Periodic]` | Describes the mode of backups. |
