@@ -25,7 +25,7 @@ on:
         default: false
   push:
     branches:
-      - main
+      - users/jpeaser/dnsForwordingRuleset
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
