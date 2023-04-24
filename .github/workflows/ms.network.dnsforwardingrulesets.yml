@@ -29,7 +29,7 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
-      - '.github/workflows/ms.network.dnsforwardingruleset.yml'
+      - '.github/workflows/ms.network.dnsforwardingrulesets.yml'
       - 'modules/Microsoft.Network/dnsForwardingRulesets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
@@ -37,7 +37,7 @@ on:
 
 env:
   modulePath: 'modules/Microsoft.Network/dnsForwardingRulesets'
-  workflowPath: '.github/workflows/ms.network.dnsforwardingruleset.yml'
+  workflowPath: '.github/workflows/ms.network.dnsforwardingrulesets.yml'
 
 concurrency:
   group: ${{ github.workflow }}
