@@ -18,6 +18,8 @@ This module deploys Network DnsForwardingRulesets.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Network/dnsForwardingRulesets` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsForwardingRulesets) |
+| `Microsoft.Network/dnsForwardingRulesets/forwardingRules` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsForwardingRulesets/forwardingRules) |
+| `Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/dnsForwardingRulesets/virtualNetworkLinks) |
 
 ## Parameters
 
@@ -33,10 +35,12 @@ This module deploys Network DnsForwardingRulesets.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `forwardingRules` | _[forwardingRules](forwardingRules/readme.md)_ array | `[]` |  | Array of forwarding rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `vNetLinks` | array | `[]` |  | Array of virtual network links. |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
@@ -178,10 +182,26 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
     name: '<<namePrefix>>ndfrscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    forwardingRules: [
+      {
+        domainName: 'contoso.'
+        forwardingRuleState: 'enabled'
+        name: 'rule1'
+        targetDnsServers: [
+          {
+            ipAddress: '192.168.0.1'
+            port: '80'
+          }
+        ]
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    vNetLinks: [
+      '<virtualNetworkId>'
+    ]
   }
 }
 ```
@@ -209,11 +229,31 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "forwardingRules": {
+      "value": [
+        {
+          "domainName": "contoso.",
+          "forwardingRuleState": "enabled",
+          "name": "rule1",
+          "targetDnsServers": [
+            {
+              "ipAddress": "192.168.0.1",
+              "port": "80"
+            }
+          ]
+        }
+      ]
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "vNetLinks": {
+      "value": [
+        "<virtualNetworkId>"
+      ]
     }
   }
 }

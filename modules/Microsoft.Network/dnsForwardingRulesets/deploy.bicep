@@ -22,6 +22,12 @@ param tags object = {}
 @description('Required. The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.')
 param dnsResolverOutboundEndpointId string
 
+@description('Optional. Array of forwarding rules.')
+param forwardingRules array = []
+
+@description('Optional. Array of virtual network links.')
+param vNetLinks array = []
+
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -49,6 +55,25 @@ resource dnsForwardingRulesets 'Microsoft.Network/dnsForwardingRulesets@2022-07-
     ]
   }
 }
+
+module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, index) in forwardingRules: {
+  name: '${uniqueString(deployment().name, location)}-forwardingRule-${index}'
+  params: {
+    dnsForwardingRulesetName: dnsForwardingRulesets.name
+    name: forwardingRule.name
+    forwardingRuleState: forwardingRule.state
+    domainName: forwardingRule.domainName
+    targetDnsServers: forwardingRule.dnsServers
+  }
+}]
+
+module virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (vnetId, index) in vNetLinks: {
+  name: '${uniqueString(deployment().name, location)}-virtualNetworkLink-${index}'
+  params: {
+    dnsForwardingRulesetName: dnsForwardingRulesets.name
+    virtualNetworkResourceId: !empty(vNetLinks) ? vnetId : null
+  }
+}]
 
 resource dnsForwardingRulesets_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${dnsForwardingRulesets.name}-${lock}-lock'

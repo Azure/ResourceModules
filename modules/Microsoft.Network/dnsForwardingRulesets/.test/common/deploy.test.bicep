@@ -48,7 +48,23 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    dnsResolverOutboundEndpointId: nestedDependencies.outputs.dnsResolverId
+    dnsResolverOutboundEndpointId: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
+    vNetLinks: [
+      nestedDependencies.outputs.virtualNetworkId
+    ]
+    forwardingRules: [
+      {
+        name: 'rule1'
+        forwardingRuleState: 'enabled'
+        domainName: 'contoso.'
+        targetDnsServers: [
+          {
+            ipAddress: '192.168.0.1'
+            port: '80'
+          }
+        ]
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
