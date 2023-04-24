@@ -61,9 +61,9 @@ module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, ind
   params: {
     dnsForwardingRulesetName: dnsForwardingRulesets.name
     name: forwardingRule.name
-    forwardingRuleState: forwardingRule.state
+    forwardingRuleState: forwardingRule.forwardingRuleState
     domainName: forwardingRule.domainName
-    targetDnsServers: forwardingRule.dnsServers
+    targetDnsServers: forwardingRule.targetDnsServers
   }
 }]
 

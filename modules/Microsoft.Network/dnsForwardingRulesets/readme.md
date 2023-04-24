@@ -179,18 +179,18 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
   params: {
     // Required parameters
     dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
-    name: '<<namePrefix>>ndfrscom001'
+    name: 'jpendfrscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     forwardingRules: [
       {
         domainName: 'contoso.'
-        forwardingRuleState: 'enabled'
+        forwardingRuleState: 'Enabled'
         name: 'rule1'
         targetDnsServers: [
           {
             ipAddress: '192.168.0.1'
-            port: '80'
+            port: '53'
           }
         ]
       }
@@ -223,7 +223,7 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
       "value": "<dnsResolverOutboundEndpointId>"
     },
     "name": {
-      "value": "<<namePrefix>>ndfrscom001"
+      "value": "jpendfrscom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -233,12 +233,12 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
       "value": [
         {
           "domainName": "contoso.",
-          "forwardingRuleState": "enabled",
+          "forwardingRuleState": "Enabled",
           "name": "rule1",
           "targetDnsServers": [
             {
               "ipAddress": "192.168.0.1",
-              "port": "80"
+              "port": "53"
             }
           ]
         }

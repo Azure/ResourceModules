@@ -32,8 +32,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    dnsResolverName: 'dep-<<namePrefix>>-ndr-${serviceShort}'
+    virtualNetworkName: 'dep-jpe-vnet-${serviceShort}'
+    dnsResolverName: 'dep-jpe-ndr-${serviceShort}'
     location: location
   }
 }
@@ -47,7 +47,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: 'jpe${serviceShort}001'
     dnsResolverOutboundEndpointId: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
     vNetLinks: [
       nestedDependencies.outputs.virtualNetworkId
@@ -55,12 +55,12 @@ module testDeployment '../../deploy.bicep' = {
     forwardingRules: [
       {
         name: 'rule1'
-        forwardingRuleState: 'enabled'
+        forwardingRuleState: 'Enabled'
         domainName: 'contoso.'
         targetDnsServers: [
           {
             ipAddress: '192.168.0.1'
-            port: '80'
+            port: '53'
           }
         ]
       }
