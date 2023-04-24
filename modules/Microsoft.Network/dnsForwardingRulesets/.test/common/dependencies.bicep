@@ -81,4 +81,4 @@ output subnetResourceId_dnsIn string = virtualNetwork.properties.subnets[0].id
 output subnetResourceId_dnsOut string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created DNS Resolver.')
-output dnsResolverId string = dnsResolver.id
+output dnsResolverOutboundEndpointsId string = outboundEndpoints.id
