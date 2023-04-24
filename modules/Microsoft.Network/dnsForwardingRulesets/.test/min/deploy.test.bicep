@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.network.dnsForwardingRuleset-${serviceShort
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'ndfrscom'
+param serviceShort string = 'ndfrsmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -49,22 +49,6 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
     dnsResolverOutboundEndpointId: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
-    vNetLinks: [
-      nestedDependencies.outputs.virtualNetworkId
-    ]
-    forwardingRules: [
-      {
-        name: 'rule1'
-        forwardingRuleState: 'Enabled'
-        domainName: 'contoso.'
-        targetDnsServers: [
-          {
-            ipAddress: '192.168.0.1'
-            port: '53'
-          }
-        ]
-      }
-    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
