@@ -1,4 +1,4 @@
-name: 'Network - DNS Forwording Ruleset'
+name: 'Network - DNS Forwarding Ruleset'
 
 on:
   workflow_dispatch:
@@ -29,15 +29,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
-      - '.github/workflows/ms.network.dnsforwordingruleset.yml'
-      - 'modules/Microsoft.Network/dnsForwordingRuleset/**'
+      - '.github/workflows/ms.network.dnsforwardingruleset.yml'
+      - 'modules/Microsoft.Network/dnsForwardingRuleset/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/dnsforwordingruleset'
-  workflowPath: '.github/workflows/ms.network.dnsforwordingruleset.yml'
+  modulePath: 'modules/Microsoft.Network/dnsforwardingruleset'
+  workflowPath: '.github/workflows/ms.network.dnsforwardingruleset.yml'
 
 concurrency:
   group: ${{ github.workflow }}
