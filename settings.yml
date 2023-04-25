@@ -44,7 +44,7 @@ variables:
   # Deployment validation #
   # --------------------- #
 
-  location: 'West Europe' # The default location to test deploy resources to
+  location: 'westeurope' # The default location to test deploy resources to
 
   #############################
   ##   Publishing settings   ##

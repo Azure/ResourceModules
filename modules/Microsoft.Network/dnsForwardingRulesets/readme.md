@@ -179,7 +179,7 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
   params: {
     // Required parameters
     dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
-    name: 'jpendfrscom001'
+    name: '<<namePrefix>>ndfrscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     forwardingRules: [
@@ -223,7 +223,7 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
       "value": "<dnsResolverOutboundEndpointId>"
     },
     "name": {
-      "value": "jpendfrscom001"
+      "value": "<<namePrefix>>ndfrscom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -254,6 +254,65 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
       "value": [
         "<virtualNetworkId>"
       ]
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-ndfrsmin'
+  params: {
+    // Required parameters
+    dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
+    name: '<<namePrefix>>ndfrsmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "dnsResolverOutboundEndpointId": {
+      "value": "<dnsResolverOutboundEndpointId>"
+    },
+    "name": {
+      "value": "<<namePrefix>>ndfrsmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
