@@ -35,7 +35,7 @@ param defaultConsistencyLevel string = 'Session'
 @description('Optional. Enable automatic failover for regions.')
 param automaticFailover bool = true
 
-@description('Optional. Enable free tier')
+@description('Optional. Flag to indicate whether Free Tier is enabled.')
 param enableFreeTier bool = false
 
 @minValue(10)
