@@ -9,8 +9,6 @@ This wiki describes the content of this repository, its modules, pipelines, and 
 
 If you're unfamiliar with Infrastructure as Code or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
 
-> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
-
 ### _Navigation_
 
 - [The context](./The%20context)
