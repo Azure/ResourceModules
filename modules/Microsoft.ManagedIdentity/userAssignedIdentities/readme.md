@@ -136,9 +136,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `clientId` | string | The client ID (application ID) of the user assigned identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the user assigned identity. |
-| `clientId` | string | The client ID (application ID) of the user assigned identity. |
 | `principalId` | string | The principal ID (object ID) of the user assigned identity. |
 | `resourceGroupName` | string | The resource group the user assigned identity was deployed into. |
 | `resourceId` | string | The resource ID of the user assigned identity. |
