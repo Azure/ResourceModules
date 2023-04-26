@@ -47,7 +47,7 @@ Potential reasons
 
 - The Bicep CLI version is outdated.
   - **Solution:** Update the version of Bicep you're using on your machine. This can include:
-    - The Bicep extension for VS Code (update using, for example, the VSCode UI)
-    - The Bicep extension for the Azure CLI (update executing, for example, `az bicep upgrade`)
-    - The Bicep CLI (update executing, for example, `choco bicep upgrade`)
+    - The Bicep extension for VS Code ([ref](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#visual-studio-and-bicep-extension))
+    - The Bicep extension for the Azure CLI ([ref](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#azure-cli))
+    - The Bicep CLI ([ref](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#azure-powershell)
   - **Background:** When using Bicep on your local device, you usually handle 2 different tools: The 'Bicep' extension for the Azure CLI (identified by commands such as `az bicep version`) and the Bicep CLI itself (identified by commands such as `bicep --version`). The later is the one responsible for compiling Bicep templates into ARM templates. The Bicep extension for Visual Studio Code usually automatically updates the Azure CLI extension. However, the same is not true for the Bicep CLI version. This you have to update yourself.
