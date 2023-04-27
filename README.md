@@ -6,6 +6,14 @@ This repository includes a library of mature and curated [Bicep][Bicep] modules 
 
 The CI environment supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
 
+<h1 style="color: steelblue;">Upcoming breaking changes</h1>
+
+In between now and the release of version `0.11.0`, the `main` branch is subject to several upcoming breaking changes that will affect all modules (e.g., the renaming of folders and files).
+
+The rationale is an ongoing effort to prepare our modules for a release in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules), forcing us to align the structural requirements.
+
+For more details, please refer to the issue #3131.
+
 ## Get started
 
 * For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
