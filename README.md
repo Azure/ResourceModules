@@ -23,6 +23,8 @@ For more details, please refer to the issue #3131.
 * For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 * For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
 
+> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
+
 ## Available Resource Modules
 
 | Name | Status |
@@ -121,6 +123,7 @@ For more details, please refer to the issue #3131.
 | [Private DNS Zones](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/privateDnsZones) | [![Network - PrivateDnsZones](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateDnsZones/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privatednszones.yml) |
 | [Private Endpoints](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/privateEndpoints) | [![Network - PrivateEndpoints](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateEndpoints/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privateendpoints.yml) |
 | [Proximity Placement Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Compute/proximityPlacementGroups) | [![Compute - ProximityPlacementGroups](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20ProximityPlacementGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.proximityplacementgroups.yml) |
+| [Public DNS Zones](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/dnsZones) | [![Network - Public DnsZones](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Public%20DnsZones/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.dnszones.yml) |
 | [Public IP Addresses](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/publicIPAddresses) | [![Network - PublicIpAddresses](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PublicIpAddresses/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.publicipaddresses.yml) |
 | [Public IP Prefixes](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/publicIPPrefixes) | [![Network - PublicIpPrefixes](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PublicIpPrefixes/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.publicipprefixes.yml) |
 | [Public SSH Keys](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Compute/sshPublicKeys) | [![Compute - SshPublicKeys](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20SshPublicKeys/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.sshpublickeys.yml) |
