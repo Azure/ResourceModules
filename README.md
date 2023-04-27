@@ -12,8 +12,7 @@ In between now and the release of version `0.11.0`, the `main` branch is subject
 
 The rationale is an ongoing effort to prepare our modules for a release in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules), forcing us to align the structural requirements.
 
-For more details, please refer to the issues:
-- #3
+For more details, please refer to the issue #3131.
 
 ## Get started
 
