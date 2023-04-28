@@ -314,7 +314,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs. </p> Will be automatically created of not yet existing in the target subscription. |
+| `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs. </p> Will be automatically created if not yet existing in the target subscription. |
 | `templateSpecsRGLocation` | `'WestEurope'` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing. |
 | `templateSpecsDescription` | `'This is a module from the [Common Azure Resource Modules Library]'` | A description to add to the published template specs. |
 | `templateSpecsDoPublish` | `'true'` | A central switch to enable/disable publishing to template-specs. |
