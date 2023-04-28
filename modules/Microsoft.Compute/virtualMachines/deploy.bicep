@@ -3,7 +3,7 @@
 param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
 @description('Optional. Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name.')
-param vmCustomComputerName string = ''
+param computerName string = name
 
 @description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
 @allowed([
