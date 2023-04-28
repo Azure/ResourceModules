@@ -71,7 +71,6 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}'
     computerName: '<<namePrefix>>linvm1'
-    computerNameCase: 'uppercase'
     location: location
     adminUsername: 'localAdministrator'
     imageReference: {
