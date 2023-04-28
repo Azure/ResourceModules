@@ -74,7 +74,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
-    vmCustomComputerName: '<<namePrefix>>winvm1'
+    computerName: '<<namePrefix>>winvm1'
     vmComputerNamesTransformation: 'uppercase'
     adminUsername: 'VMAdmin'
     imageReference: {

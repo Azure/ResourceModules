@@ -317,7 +317,7 @@ param winRM object = {}
 ])
 param configurationProfile string = ''
 
-var vmComputerName = !empty(vmCustomComputerName) ? vmCustomComputerName : name
+var vmComputerName = !empty(computerName) ? computerName : name
 
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(vmComputerName) : (vmComputerNamesTransformation == 'lowercase' ? toLower(vmComputerName) : vmComputerName)
 
