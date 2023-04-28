@@ -326,8 +326,8 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. </p> **NOTE:** Must be globally unique. </p> Will be automatically created of not yet existing in the target subscription. |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing. </p> Will be automatically created of not yet existing in the target subscription. |
+| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. </p> **NOTE:** Must be globally unique. </p> Will be automatically created if not yet existing in the target subscription. |
+| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing. </p> Will be automatically created if not yet existing in the target subscription. |
 | `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing. |
 | `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private Bicep registry. |
 
