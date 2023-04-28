@@ -357,7 +357,7 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://learn.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
 
-#### The dependent components are
+<h4><b>The dependent components are</b></h4>
 
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
@@ -368,9 +368,9 @@ This section will explain what is required to publish the modules to [Azure Arti
    > **Note:** There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://learn.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://learn.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
-#### Implementation Guidance
+<h4><b>Implementation Guidance</b></h4>
 
-Each `./azuredevops/modulePipelines` YAML pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1).
+Each `./azuredevops/modulePipelines` YAML pipeline invokes the [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml) template. This YAML template contains a method to `Publish module to artifacts feed` via the[`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1) script, which ultimately publishes the modules.
 
 </details>
 
