@@ -5,13 +5,13 @@ param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 @description('Optional. Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name.')
 param computerName string = name
 
-@description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
+@description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'unchanged\' (Default), \'uppercase\' and \'lowercase\'.')
 @allowed([
-  'none'
+  'unchanged'
   'uppercase'
   'lowercase'
 ])
-param vmComputerNamesTransformation string = 'none'
+param computerNameCase string = 'unchanged'
 
 @description('Required. Specifies the size for the VMs.')
 param vmSize string
@@ -317,9 +317,7 @@ param winRM object = {}
 ])
 param configurationProfile string = ''
 
-var vmComputerName = !empty(computerName) ? computerName : name
-
-var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(vmComputerName) : (vmComputerNamesTransformation == 'lowercase' ? toLower(vmComputerName) : vmComputerName)
+var vmComputerNameTransformed = computerNameCase == 'uppercase' ? toUpper(computerName) : (computerNameCase == 'lowercase' ? toLower(computerName) : computerName)
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
   path: publicKey.path

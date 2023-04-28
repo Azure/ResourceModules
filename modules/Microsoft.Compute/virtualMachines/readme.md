@@ -56,6 +56,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Storage account boot diagnostic base URI. |
 | `certificatesToBeInstalled` | array | `[]` |  | Specifies set of certificates that should be installed onto the virtual machine. |
 | `computerName` | string | `[parameters('name')]` |  | Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name. |
+| `computerNameCase` | string | `'none'` | `[lowercase, none, uppercase]` | Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'. |
 | `customData` | string | `''` |  | Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
 | `dedicatedHostId` | string | `''` |  | Specifies resource ID about the dedicated host that the virtual machine resides in. |
@@ -107,7 +108,6 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `timeZone` | string | `''` |  | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
 | `ultraSSDEnabled` | bool | `False` |  | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vmComputerNamesTransformation` | string | `'none'` | `[lowercase, none, uppercase]` | Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'. |
 | `vTpmEnabled` | bool | `False` |  | Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | `winRM` | object | `{object}` |  | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 
@@ -1116,6 +1116,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     backupVaultName: '<backupVaultName>'
     backupVaultResourceGroup: '<backupVaultResourceGroup>'
     computerName: '<<namePrefix>>linvm1'
+    computerNameCase: 'uppercase'
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -1241,7 +1242,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    vmComputerNamesTransformation: 'uppercase'
   }
 }
 ```
@@ -1347,6 +1347,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "computerName": {
       "value": "<<namePrefix>>linvm1"
+    },
+    "computerNameCase": {
+      "value": "uppercase"
     },
     "dataDisks": {
       "value": [
@@ -1528,9 +1531,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
-    },
-    "vmComputerNamesTransformation": {
-      "value": "uppercase"
     }
   }
 }
@@ -1922,6 +1922,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     backupVaultName: '<backupVaultName>'
     backupVaultResourceGroup: '<backupVaultResourceGroup>'
     computerName: '<<namePrefix>>winvm1'
+    computerNameCase: 'uppercase'
     dataDisks: [
       {
         caching: 'None'
@@ -2063,7 +2064,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    vmComputerNamesTransformation: 'uppercase'
   }
 }
 ```
@@ -2172,6 +2172,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "computerName": {
       "value": "<<namePrefix>>winvm1"
+    },
+    "computerNameCase": {
+      "value": "uppercase"
     },
     "dataDisks": {
       "value": [
@@ -2369,9 +2372,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
-    },
-    "vmComputerNamesTransformation": {
-      "value": "uppercase"
     }
   }
 }

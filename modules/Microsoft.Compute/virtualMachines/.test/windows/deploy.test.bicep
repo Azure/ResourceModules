@@ -75,7 +75,7 @@ module testDeployment '../../deploy.bicep' = {
     location: location
     name: '<<namePrefix>>${serviceShort}'
     computerName: '<<namePrefix>>winvm1'
-    vmComputerNamesTransformation: 'uppercase'
+    computerNameCase: 'uppercase'
     adminUsername: 'VMAdmin'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
