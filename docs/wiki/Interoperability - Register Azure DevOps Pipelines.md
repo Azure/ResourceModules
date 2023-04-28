@@ -30,9 +30,9 @@ You can find the script under [`/utilities/tools/AzureDevOps/Register-AzureDevOp
 Perform the following steps:
 1. (If pipelines are in GitHub) Create a service connection to the target GitHub repository using e.g., oAuth
 1. Create a PAT token for the Azure DevOps environment in which you want to register the pipelines in. Needs at least the permissions:
-  - Agent Pool:           Read
-  - Build:                Read & execute
-  - Service Connections:  Read & query
+   - Agent Pool:           Read
+   - Build:                Read & execute
+   - Service Connections:  Read & query
 1. Run this script with the corresponding input parameters
 1. Create any required element required to run the pipelines. For example:
    - Library group(s) used in the pipeline(s)
