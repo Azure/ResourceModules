@@ -372,7 +372,7 @@ This section will explain what is required to publish the modules to [Azure Arti
 
 <h4><b>Implementation Guidance</b></h4>
 
-Each `./azuredevops/modulePipelines` YAML pipeline invokes the [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml) template. This YAML template contains a method to `Publish module to artifacts feed` via the[`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1) script, which ultimately publishes the modules.
+Each `./azuredevops/modulePipelines` YAML pipeline invokes the [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml) template. This YAML template contains a method to `Publish module to artifacts feed` via the [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactsFeed.ps1) script, which ultimately publishes the modules.
 
 </details>
 
