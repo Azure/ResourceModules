@@ -336,7 +336,7 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `vstsFeedName` | `'carml'` | The name of the Azure DevOps universal packages feed to publish to. |
+| `vstsFeedName` | `'carml'` | The name of the Azure DevOps universal packages feed to publish to. Must be created before running the pipelines. |
 | `vstsFeedProject` | `'$(System.TeamProject)'` | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
 | `vstsFeedToken` | `'$(System.AccessToken)'` | The token used to publish universal packages into the feed above. |
 | `artifactsFeedDoPublish` | `'true'` | A central switch to enable/disable publishing to Universal packages. |
