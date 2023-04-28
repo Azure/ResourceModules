@@ -35,6 +35,9 @@ param defaultConsistencyLevel string = 'Session'
 @description('Optional. Enable automatic failover for regions.')
 param automaticFailover bool = true
 
+@description('Optional. Flag to indicate whether Free Tier is enabled.')
+param enableFreeTier bool = false
+
 @minValue(10)
 @maxValue(2147483647)
 @description('Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000.')
@@ -257,6 +260,7 @@ var databaseAccount_properties = union({
     consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
     locations: databaseAccount_locations
     capabilities: capabilities
+    enableFreeTier: enableFreeTier
     backupPolicy: backupPolicy
   } : {}), (!empty(sqlDatabases) ? {
     // SQLDB properties

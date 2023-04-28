@@ -6,6 +6,14 @@ This repository includes a library of mature and curated [Bicep][Bicep] modules 
 
 The CI environment supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
 
+<h1 style="color: steelblue;">Upcoming breaking changes</h1>
+
+In between now and the release of version `0.11.0`, the `main` branch is subject to several upcoming breaking changes that will affect all modules (e.g., the renaming of folders and files).
+
+The rationale is an ongoing effort to prepare our modules for a release in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules), forcing us to align the structural requirements.
+
+For more details, please refer to the issue #3131.
+
 ## Get started
 
 * For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
@@ -14,6 +22,8 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 * For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 * For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
+
+> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
 
 ## Available Resource Modules
 
@@ -113,9 +123,10 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [Private DNS Zones](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/privateDnsZones) | [![Network - PrivateDnsZones](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateDnsZones/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privatednszones.yml) |
 | [Private Endpoints](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/privateEndpoints) | [![Network - PrivateEndpoints](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateEndpoints/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privateendpoints.yml) |
 | [Proximity Placement Groups](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Compute/proximityPlacementGroups) | [![Compute - ProximityPlacementGroups](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20ProximityPlacementGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.proximityplacementgroups.yml) |
+| [Public DNS Zones](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/dnsZones) | [![Network - Public DnsZones](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Public%20DnsZones/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.dnszones.yml) |
 | [Public IP Addresses](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/publicIPAddresses) | [![Network - PublicIpAddresses](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PublicIpAddresses/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.publicipaddresses.yml) |
 | [Public IP Prefixes](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Network/publicIPPrefixes) | [![Network - PublicIpPrefixes](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PublicIpPrefixes/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.publicipprefixes.yml) |
-| [Public SSH Keys](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Compute/sshPublicKeys) | [![Compute: SshPublicKeys](https://github.com/Azure/ResourceModules/workflows/Compute:%20SshPublicKeys/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.sshpublickeys.yml) |
+| [Public SSH Keys](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Compute/sshPublicKeys) | [![Compute - SshPublicKeys](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20SshPublicKeys/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.sshpublickeys.yml) |
 | [Purview Accounts](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Purview/accounts) | [![Purview - Accounts](https://github.com/Azure/ResourceModules/workflows/Purview%20-%20Accounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.purview.accounts.yml) |
 | [Recovery Services Vaults](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.RecoveryServices/vaults) | [![RecoveryServices - Vaults](https://github.com/Azure/ResourceModules/workflows/RecoveryServices%20-%20Vaults/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.recoveryservices.vaults.yml) |
 | [Registration Definitions](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.ManagedServices/registrationDefinitions) | [![ManagedServices - RegistrationDefinitions](https://github.com/Azure/ResourceModules/workflows/ManagedServices%20-%20RegistrationDefinitions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedservices.registrationdefinitions.yml) |
