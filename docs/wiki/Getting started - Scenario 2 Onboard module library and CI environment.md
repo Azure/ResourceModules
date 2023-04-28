@@ -81,6 +81,8 @@ To update your copy with the latest changes in CARML, you would need to download
 
 As some files may have changed names or were removed in upstream CARML, you may further want to replace your entire folder to get to a 'clean' state. However, this is only recommended if you did not perform changes on any of the same files of upstream CARML. For reference, please refer to the changes shown by git.
 
+For more information, see the Wiki section ['Fetching latest changes'](./Fetching%20latest%20changes).
+
 </details>
 
 <p>
