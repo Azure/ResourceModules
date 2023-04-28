@@ -437,6 +437,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         ]
         osDiskSizeGB: 128
         osType: 'Linux'
+        proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
         scaleSetEvictionPolicy: 'Delete'
         scaleSetPriority: 'Regular'
         storageProfile: 'ManagedDisks'
@@ -614,6 +615,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           ],
           "osDiskSizeGB": 128,
           "osType": "Linux",
+          "proximityPlacementGroupResourceId": "<proximityPlacementGroupResourceId>",
           "scaleSetEvictionPolicy": "Delete",
           "scaleSetPriority": "Regular",
           "storageProfile": "ManagedDisks",

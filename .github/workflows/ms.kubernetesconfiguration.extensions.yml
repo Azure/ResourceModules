@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
+      - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
-      - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'

@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Network/virtualNetworkGateways/*'
+      - '/modules/Microsoft.Network/publicIPAddresses/*'
       - '/.azuredevops/modulePipelines/ms.network.virtualnetworkgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Network/virtualNetworkGateways/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

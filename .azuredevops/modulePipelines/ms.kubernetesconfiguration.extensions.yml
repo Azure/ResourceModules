@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.KubernetesConfiguration/extensions/*'
+      - '/modules/Microsoft.KubernetesConfiguration/fluxConfigurations/*'
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.extensions.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.KubernetesConfiguration/extensions/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

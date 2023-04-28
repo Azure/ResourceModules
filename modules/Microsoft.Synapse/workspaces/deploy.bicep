@@ -78,6 +78,9 @@ param sqlAdministratorLogin string
 #disable-next-line secure-secrets-in-params // Not a secret
 param sqlAdministratorLoginPassword string = ''
 
+@description('Optional. Git integration settings.')
+param workspaceRepositoryConfiguration object = {}
+
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
@@ -225,6 +228,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     } : null
     sqlAdministratorLogin: sqlAdministratorLogin
     sqlAdministratorLoginPassword: !empty(sqlAdministratorLoginPassword) ? sqlAdministratorLoginPassword : null
+    workspaceRepositoryConfiguration: workspaceRepositoryConfiguration
   }
 }
 

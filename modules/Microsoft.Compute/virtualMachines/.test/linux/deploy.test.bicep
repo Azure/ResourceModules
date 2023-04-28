@@ -175,12 +175,20 @@ module testDeployment '../../deploy.bicep' = {
           uri: nestedDependencies.outputs.storageAccountCSEFileUrl
         }
       ]
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'value=$(./${nestedDependencies.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -194,18 +202,38 @@ module testDeployment '../../deploy.bicep' = {
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAadJoinConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionDSCConfig: {
       enabled: false
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionNetworkWatcherAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     lock: 'CanNotDelete'
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId

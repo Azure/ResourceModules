@@ -46,7 +46,7 @@ $TestModuleLocallyInput = @{
         RemoveDeployment  = $false
     }
     AdditionalTokens           = @{
-        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+        tenantId = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
@@ -69,7 +69,7 @@ $TestModuleLocallyInput = @{
         RemoveDeployment  = $false
     }
     AdditionalTokens           = @{
-        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+        tenantId = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
@@ -91,7 +91,7 @@ $TestModuleLocallyInput = @{
         RemoveDeployment  = $false
     }
     AdditionalTokens           = @{
-        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+        tenantId = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
@@ -118,7 +118,7 @@ $TestModuleLocallyInput = @{
         ManagementGroupId = '00000000-0000-0000-0000-000000000000'
     }
     AdditionalTokens           = @{
-        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+        tenantId = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
@@ -195,9 +195,6 @@ function Test-ModuleLocally {
         }
         if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
             $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
-        }
-        if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
-            $enforcedTokenList['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
         }
         if ($AdditionalTokens.ContainsKey('tenantId')) {
             $enforcedTokenList['tenantId'] = $AdditionalTokens['tenantId']

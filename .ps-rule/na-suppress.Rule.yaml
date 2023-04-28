@@ -26,6 +26,7 @@ spec:
       - Microsoft.Authorization/policyExemptions
       - Microsoft.Authorization/policySetDefinitions
       - Microsoft.Authorization/locks
-      - Microsoft.AADDomainServices/oucontainer
-      - Microsoft.ApiManagementservice/eventGridFilters
+      - Microsoft.AAD/DomainServices/oucontainer
+      - Microsoft.ApiManagement/service/eventGridFilters
+      - Microsoft.EventGrid/eventSubscriptions
       - Microsoft.Automation/automationAccounts/softwareUpdateConfigurations
