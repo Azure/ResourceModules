@@ -334,6 +334,8 @@ module databaseAccount_sqlDatabases 'sqlDatabases/deploy.bicep' = [for sqlDataba
     databaseAccountName: databaseAccount.name
     name: sqlDatabase.name
     containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
+    throughput: contains(sqlDatabase, 'throughput') ? sqlDatabase.throughput : 400
+    autoscaleSettingsMaxThroughput: contains(sqlDatabase, 'autoscaleSettingsMaxThroughput') ? sqlDatabase.autoscaleSettingsMaxThroughput : -1
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
