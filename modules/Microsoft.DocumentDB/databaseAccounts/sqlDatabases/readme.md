@@ -36,7 +36,7 @@
 | `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `tags` | object | `{object}` | Tags of the SQL database resource. |
-| `throughput` | int | `400` | Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used |
+| `throughput` | int | `400` | Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used. |
 
 
 ### Parameter Usage: `tags`
