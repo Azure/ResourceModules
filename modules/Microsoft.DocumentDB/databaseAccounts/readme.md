@@ -1485,6 +1485,41 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         containers: []
         name: '<<namePrefix>>-sql-dddasql-002'
       }
+      {
+        autoscaleSettingsMaxThroughput: 1000
+        containers: [
+          {
+            analyticalStorageTtl: 0
+            autoscaleSettingsMaxThroughput: 1000
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
+            indexingPolicy: {
+              automatic: true
+            }
+            kind: 'Hash'
+            name: 'container-003'
+            paths: [
+              '/myPartitionKey'
+            ]
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-sql-dddasql-003'
+      }
     ]
     tags: {
       Environment: 'Non-Prod'
@@ -1600,6 +1635,41 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [],
           "name": "<<namePrefix>>-sql-dddasql-002"
+        },
+        {
+          "autoscaleSettingsMaxThroughput": 1000,
+          "containers": [
+            {
+              "analyticalStorageTtl": 0,
+              "autoscaleSettingsMaxThroughput": 1000,
+              "conflictResolutionPolicy": {
+                "conflictResolutionPath": "/myCustomId",
+                "mode": "LastWriterWins"
+              },
+              "defaultTtl": 1000,
+              "indexingPolicy": {
+                "automatic": true
+              },
+              "kind": "Hash",
+              "name": "container-003",
+              "paths": [
+                "/myPartitionKey"
+              ],
+              "uniqueKeyPolicyKeys": [
+                {
+                  "paths": [
+                    "/firstName"
+                  ]
+                },
+                {
+                  "paths": [
+                    "/lastName"
+                  ]
+                }
+              ]
+            }
+          ],
+          "name": "<<namePrefix>>-sql-dddasql-003"
         }
       ]
     },

@@ -127,6 +127,41 @@ module testDeployment '../../deploy.bicep' = {
         containers: []
         name: '<<namePrefix>>-sql-${serviceShort}-002'
       }
+      {
+        containers: [
+          {
+            kind: 'Hash'
+            name: 'container-003'
+            autoscaleSettingsMaxThroughput: 1000
+            indexingPolicy: {
+              automatic: true
+            }
+            paths: [
+              '/myPartitionKey'
+            ]
+            analyticalStorageTtl: 0
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-sql-${serviceShort}-003'
+        autoscaleSettingsMaxThroughput: 1000
+      }
     ]
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}

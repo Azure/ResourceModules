@@ -7,11 +7,11 @@ param name string
 @description('Optional. Array of containers to deploy in the SQL database.')
 param containers array = []
 
-@description('Optional. Request units per second.')
+@description('Optional. Request units per second. Will be set to null if autoscaleSettingsMaxThroughput is used')
 param throughput int = 400
 
-@description('Optional. Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to. If value is set to 0, then the property will be set to null.')
-param autoscaleSettingsMaxThroughput int = 0
+@description('Optional. Specifies the Autoscale settings and represents maximum throughput, the resource can scale up to.  The autoscale throughput should have valid throughput values between 1000 and 1000000 inclusive in increments of 1000. If value is set to -1, then the property will be set to null and autoscale will be disabled.')
+param autoscaleSettingsMaxThroughput int = -1
 
 @description('Optional. Tags of the SQL database resource.')
 param tags object = {}
@@ -46,8 +46,8 @@ resource sqlDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-08
       id: name
     }
     options: contains(databaseAccount.properties.capabilities, { name: 'EnableServerless' }) ? null : {
-      throughput: throughput
-      autoscaleSettings: autoscaleSettingsMaxThroughput != 0 ? {
+      throughput: autoscaleSettingsMaxThroughput == -1 ? throughput : null
+      autoscaleSettings: autoscaleSettingsMaxThroughput != -1 ? {
         maxThroughput: autoscaleSettingsMaxThroughput
       } : null
     }
@@ -61,7 +61,7 @@ module container 'containers/deploy.bicep' = [for container in containers: {
     sqlDatabaseName: name
     name: container.name
     analyticalStorageTtl: contains(container, 'analyticalStorageTtl') ? container.analyticalStorageTtl : 0
-    autoscaleSettingsMaxThroughput: contains(container, 'autoscaleSettingsMaxThroughput') ? container.autoscaleSettingsMaxThroughput : 0
+    autoscaleSettingsMaxThroughput: contains(container, 'autoscaleSettingsMaxThroughput') ? container.autoscaleSettingsMaxThroughput : -1
     conflictResolutionPolicy: contains(container, 'conflictResolutionPolicy') ? container.conflictResolutionPolicy : {}
     defaultTtl: contains(container, 'defaultTtl') ? container.defaultTtl : -1
     indexingPolicy: contains(container, 'indexingPolicy') ? container.indexingPolicy : {}
