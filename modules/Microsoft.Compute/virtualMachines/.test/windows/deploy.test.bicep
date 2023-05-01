@@ -74,6 +74,7 @@ module testDeployment '../../deploy.bicep' = {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
     name: '<<namePrefix>>${serviceShort}'
+    computerName: '<<namePrefix>>winvm1'
     adminUsername: 'VMAdmin'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'

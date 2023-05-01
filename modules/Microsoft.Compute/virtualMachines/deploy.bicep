@@ -2,13 +2,8 @@
 @description('Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group\'s name.')
 param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
-@description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
-@allowed([
-  'none'
-  'uppercase'
-  'lowercase'
-])
-param vmComputerNamesTransformation string = 'none'
+@description('Optional. Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name.')
+param computerName string = name
 
 @description('Required. Specifies the size for the VMs.')
 param vmSize string
@@ -314,8 +309,6 @@ param winRM object = {}
 ])
 param configurationProfile string = ''
 
-var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
-
 var publicKeysFormatted = [for publicKey in publicKeys: {
   path: publicKey.path
   keyData: publicKey.keyData
@@ -467,7 +460,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
       ultraSSDEnabled: ultraSSDEnabled
     }
     osProfile: {
-      computerName: vmComputerNameTransformed
+      computerName: computerName
       adminUsername: adminUsername
       adminPassword: adminPassword
       customData: !empty(customData) ? base64(customData) : null
