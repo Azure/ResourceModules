@@ -56,6 +56,7 @@ This module deploys a DocumentDB database account and its child resources.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableFreeTier` | bool | `False` |  | Flag to indicate whether Free Tier is enabled. |
 | `gremlinDatabases` | _[gremlinDatabases](gremlinDatabases/readme.md)_ array | `[]` |  | Gremlin Databases configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -1448,6 +1449,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         containers: [
           {
+            analyticalStorageTtl: 0
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
             indexingPolicy: {
               automatic: true
             }
@@ -1456,13 +1463,62 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             paths: [
               '/myPartitionKey'
             ]
+            throughput: 600
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
           }
         ]
         name: '<<namePrefix>>-sql-dddasql-001'
+        throughput: 1000
       }
       {
         containers: []
         name: '<<namePrefix>>-sql-dddasql-002'
+      }
+      {
+        autoscaleSettingsMaxThroughput: 1000
+        containers: [
+          {
+            analyticalStorageTtl: 0
+            autoscaleSettingsMaxThroughput: 1000
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
+            indexingPolicy: {
+              automatic: true
+            }
+            kind: 'Hash'
+            name: 'container-003'
+            paths: [
+              '/myPartitionKey'
+            ]
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-sql-dddasql-003'
       }
     ]
     tags: {
@@ -1544,6 +1600,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [
             {
+              "analyticalStorageTtl": 0,
+              "conflictResolutionPolicy": {
+                "conflictResolutionPath": "/myCustomId",
+                "mode": "LastWriterWins"
+              },
+              "defaultTtl": 1000,
               "indexingPolicy": {
                 "automatic": true
               },
@@ -1551,14 +1613,63 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               "name": "container-001",
               "paths": [
                 "/myPartitionKey"
+              ],
+              "throughput": 600,
+              "uniqueKeyPolicyKeys": [
+                {
+                  "paths": [
+                    "/firstName"
+                  ]
+                },
+                {
+                  "paths": [
+                    "/lastName"
+                  ]
+                }
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-001"
+          "name": "<<namePrefix>>-sql-dddasql-001",
+          "throughput": 1000
         },
         {
           "containers": [],
           "name": "<<namePrefix>>-sql-dddasql-002"
+        },
+        {
+          "autoscaleSettingsMaxThroughput": 1000,
+          "containers": [
+            {
+              "analyticalStorageTtl": 0,
+              "autoscaleSettingsMaxThroughput": 1000,
+              "conflictResolutionPolicy": {
+                "conflictResolutionPath": "/myCustomId",
+                "mode": "LastWriterWins"
+              },
+              "defaultTtl": 1000,
+              "indexingPolicy": {
+                "automatic": true
+              },
+              "kind": "Hash",
+              "name": "container-003",
+              "paths": [
+                "/myPartitionKey"
+              ],
+              "uniqueKeyPolicyKeys": [
+                {
+                  "paths": [
+                    "/firstName"
+                  ]
+                },
+                {
+                  "paths": [
+                    "/lastName"
+                  ]
+                }
+              ]
+            }
+          ],
+          "name": "<<namePrefix>>-sql-dddasql-003"
         }
       ]
     },

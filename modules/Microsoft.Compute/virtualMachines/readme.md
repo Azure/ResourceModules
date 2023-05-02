@@ -55,6 +55,7 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `bootDiagnosticStorageAccountName` | string | `''` |  | Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided. |
 | `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Storage account boot diagnostic base URI. |
 | `certificatesToBeInstalled` | array | `[]` |  | Specifies set of certificates that should be installed onto the virtual machine. |
+| `computerName` | string | `[parameters('name')]` |  | Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name. |
 | `customData` | string | `''` |  | Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
 | `dedicatedHostId` | string | `''` |  | Specifies resource ID about the dedicated host that the virtual machine resides in. |
@@ -106,7 +107,6 @@ This module deploys one Virtual Machine with one or multiple NICs and optionally
 | `timeZone` | string | `''` |  | Specifies the time zone of the virtual machine. e.g. 'Pacific Standard Time'. Possible values can be `TimeZoneInfo.id` value from time zones returned by `TimeZoneInfo.GetSystemTimeZones`. |
 | `ultraSSDEnabled` | bool | `False` |  | The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vmComputerNamesTransformation` | string | `'none'` | `[lowercase, none, uppercase]` | Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are 'none' (Default), 'uppercase' and 'lowercase'. |
 | `vTpmEnabled` | bool | `False` |  | Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | `winRM` | object | `{object}` |  | Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 
@@ -1114,6 +1114,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     backupPolicyName: '<backupPolicyName>'
     backupVaultName: '<backupVaultName>'
     backupVaultResourceGroup: '<backupVaultResourceGroup>'
+    computerName: '<<namePrefix>>linvm1'
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -1145,6 +1146,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     encryptionAtHost: false
     extensionAadJoinConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -1158,6 +1163,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptConfig: {
       enabled: true
@@ -1167,21 +1176,41 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           uri: '<uri>'
         }
       ]
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: '<commandToExecute>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionDSCConfig: {
       enabled: false
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionNetworkWatcherAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     location: '<location>'
     lock: 'CanNotDelete'
@@ -1314,6 +1343,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "backupVaultResourceGroup": {
       "value": "<backupVaultResourceGroup>"
     },
+    "computerName": {
+      "value": "<<namePrefix>>linvm1"
+    },
     "dataDisks": {
       "value": [
         {
@@ -1365,7 +1397,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionAadJoinConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionAzureDiskEncryptionConfig": {
@@ -1380,6 +1416,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "KeyVaultURL": "<KeyVaultURL>",
           "ResizeOSDisk": "false",
           "VolumeType": "All"
+        },
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
         }
       }
     },
@@ -1391,7 +1431,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "storageAccountId": "<storageAccountId>",
             "uri": "<uri>"
           }
-        ]
+        ],
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionCustomScriptProtectedSetting": {
@@ -1401,22 +1445,38 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionDependencyAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionDSCConfig": {
       "value": {
-        "enabled": false
+        "enabled": false,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionMonitoringAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionNetworkWatcherAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "location": {
@@ -1856,6 +1916,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     backupPolicyName: '<backupPolicyName>'
     backupVaultName: '<backupVaultName>'
     backupVaultResourceGroup: '<backupVaultResourceGroup>'
+    computerName: '<<namePrefix>>winvm1'
     dataDisks: [
       {
         caching: 'None'
@@ -1886,6 +1947,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     encryptionAtHost: false
     extensionAadJoinConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAntiMalwareConfig: {
       enabled: true
@@ -1904,6 +1969,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           time: '120'
         }
       }
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -1915,6 +1984,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         KeyVaultResourceId: '<KeyVaultResourceId>'
         KeyVaultURL: '<KeyVaultURL>'
         ResizeOSDisk: 'false'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
         VolumeType: 'All'
       }
     }
@@ -1926,21 +1999,41 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           uri: '<uri>'
         }
       ]
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: '<commandToExecute>'
     }
     extensionDependencyAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionDSCConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionNetworkWatcherAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     location: '<location>'
     lock: 'CanNotDelete'
@@ -2071,6 +2164,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "backupVaultResourceGroup": {
       "value": "<backupVaultResourceGroup>"
     },
+    "computerName": {
+      "value": "<<namePrefix>>winvm1"
+    },
     "dataDisks": {
       "value": [
         {
@@ -2119,7 +2215,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionAadJoinConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionAntiMalwareConfig": {
@@ -2139,6 +2239,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "scanType": "Quick",
             "time": "120"
           }
+        },
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
         }
       }
     },
@@ -2153,6 +2257,10 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
           "KeyVaultResourceId": "<KeyVaultResourceId>",
           "KeyVaultURL": "<KeyVaultURL>",
           "ResizeOSDisk": "false",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          },
           "VolumeType": "All"
         }
       }
@@ -2165,7 +2273,11 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "storageAccountId": "<storageAccountId>",
             "uri": "<uri>"
           }
-        ]
+        ],
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionCustomScriptProtectedSetting": {
@@ -2175,22 +2287,38 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     },
     "extensionDependencyAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionDSCConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionMonitoringAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "extensionNetworkWatcherAgentConfig": {
       "value": {
-        "enabled": true
+        "enabled": true,
+        "tags": {
+          "Environment": "Non-Prod",
+          "Role": "DeploymentValidation"
+        }
       }
     },
     "location": {

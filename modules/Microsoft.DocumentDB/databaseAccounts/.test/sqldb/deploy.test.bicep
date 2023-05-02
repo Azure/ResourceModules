@@ -99,13 +99,68 @@ module testDeployment '../../deploy.bicep' = {
             paths: [
               '/myPartitionKey'
             ]
+            analyticalStorageTtl: 0
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
+            throughput: 600
           }
         ]
         name: '<<namePrefix>>-sql-${serviceShort}-001'
+        throughput: 1000
       }
       {
         containers: []
         name: '<<namePrefix>>-sql-${serviceShort}-002'
+      }
+      {
+        containers: [
+          {
+            kind: 'Hash'
+            name: 'container-003'
+            autoscaleSettingsMaxThroughput: 1000
+            indexingPolicy: {
+              automatic: true
+            }
+            paths: [
+              '/myPartitionKey'
+            ]
+            analyticalStorageTtl: 0
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-sql-${serviceShort}-003'
+        autoscaleSettingsMaxThroughput: 1000
       }
     ]
     userAssignedIdentities: {
