@@ -69,6 +69,16 @@ module testDeployment '../../deploy.bicep' = {
     enableHierarchicalNamespace: true
     enableSftp: true
     enableNfsV3: true
+    policyExemptions: [
+      {
+        name: '<<namePrefix>>${serviceShort}001-PolicyExemption001'
+        displayName: '<<namePrefix>>${serviceShort}001 Policy Exception'
+        description: 'Test Policy Exemption 1'
+        assignmentScopeValidation: 'DoNotValidate'
+        policyAssignmentId: nestedDependencies.outputs.policyAssignmentId
+        exemptionCategory: 'Waiver'
+      }
+    ]
     privateEndpoints: [
       {
         service: 'blob'

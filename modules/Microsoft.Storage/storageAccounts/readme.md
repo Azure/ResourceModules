@@ -16,6 +16,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
+| `Microsoft.Authorization/policyExemptions` | [2022-07-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-07-01-preview/policyExemptions) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
@@ -86,6 +87,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `managementPolicyRules` | array | `[]` |  | The Storage Account ManagementPolicies Rules. |
 | `minimumTlsVersion` | string | `'TLS1_2'` | `[TLS1_0, TLS1_1, TLS1_2]` | Set the minimum TLS version on request to storage. |
 | `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
+| `policyExemptions` | array | `[]` |  | Array of policy exemption objects that contain the \'name\' and \'policyAssignmentId\' to policy exemptions on this resource.<p><p>Exemptions have extra security measures because of the impact of granting an exemption.<p><p>Beyond requiring the Microsoft.Authorization/policyExemptions/write operation on the resource hierarchy or individual resource,<p>the creator of an exemption must have the exempt/Action verb on the target assignment which could be at the Management Group, Subscription, or Resource Group levels.<p><p>The built-in roles Resource Policy Contributor and Security Admin both have the read and write permissions.<p> |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkAcls are not set. |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
@@ -542,6 +544,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
+    policyExemptions: [
+      {
+        assignmentScopeValidation: 'DoNotValidate'
+        description: 'Test Policy Exemption 1'
+        displayName: '<<namePrefix>>ssacom001 Policy Exception'
+        exemptionCategory: 'Waiver'
+        name: '<<namePrefix>>ssacom001-PolicyExemption001'
+        policyAssignmentId: '<policyAssignmentId>'
+      }
+    ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -779,6 +791,18 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           }
         ]
       }
+    },
+    "policyExemptions": {
+      "value": [
+        {
+          "assignmentScopeValidation": "DoNotValidate",
+          "description": "Test Policy Exemption 1",
+          "displayName": "<<namePrefix>>ssacom001 Policy Exception",
+          "exemptionCategory": "Waiver",
+          "name": "<<namePrefix>>ssacom001-PolicyExemption001",
+          "policyAssignmentId": "<policyAssignmentId>"
+        }
+      ]
     },
     "privateEndpoints": {
       "value": [
