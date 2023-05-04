@@ -89,7 +89,10 @@ param virtualNetworkGateway2 object = {}
 @description('Optional. The remote peer. Used for connection connectionType [ExpressRoute].')
 param peer object = {}
 
-@description('Optional. The local network gateway. Used for connection connectionType [IPsec].')
+@description('Optional. The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute].')
+param expressRouteCircuitAuthorizationKey string = ''
+
+@description('Optional. The local network gateway. Used for connection type [IPsec].')
 param localNetworkGateway2 object = {}
 
 var customIPSecPolicyVar = [
@@ -132,6 +135,7 @@ resource connection 'Microsoft.Network/connections@2022-07-01' = {
     virtualNetworkGateway2: connectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
     localNetworkGateway2: connectionType == 'IPsec' ? localNetworkGateway2 : null
     peer: connectionType == 'ExpressRoute' ? peer : null
+    authorizationKey: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? expressRouteCircuitAuthorizationKey : null
     sharedKey: connectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicyVar : customIPSecPolicy.ipsecEncryption
