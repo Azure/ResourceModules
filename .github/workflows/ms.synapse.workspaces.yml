@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.Synapse/workspaces/**'
+      - 'modules/Microsoft.Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.workspaces.yml'
-      - 'modules/Microsoft.Synapse/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'

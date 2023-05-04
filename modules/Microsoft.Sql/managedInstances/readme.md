@@ -369,11 +369,11 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
+      storageAccountResourceId: '<storageAccountResourceId>'
       tags: {
         Environment: 'Non-Prod'
         Role: 'DeploymentValidation'
       }
-      vulnerabilityAssessmentsStorageAccountId: '<vulnerabilityAssessmentsStorageAccountId>'
     }
   }
 }
@@ -525,11 +525,11 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
           "test2@contoso.com"
         ],
         "recurringScansIsEnabled": true,
+        "storageAccountResourceId": "<storageAccountResourceId>",
         "tags": {
           "Environment": "Non-Prod",
           "Role": "DeploymentValidation"
-        },
-        "vulnerabilityAssessmentsStorageAccountId": "<vulnerabilityAssessmentsStorageAccountId>"
+        }
       }
     }
   }

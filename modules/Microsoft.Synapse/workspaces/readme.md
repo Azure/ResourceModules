@@ -74,6 +74,7 @@ This module deploys a Synapse Workspace.
 | `sqlAdministratorLoginPassword` | string | `''` |  | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `workspaceRepositoryConfiguration` | object | `{object}` |  | Git integration settings. |
 
 
 ### Parameter Usage: `privateEndpoints`

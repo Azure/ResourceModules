@@ -94,6 +94,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     portalPrivateEndpoints: [
@@ -105,6 +109,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'portal'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageBlobPrivateEndpoints: [
@@ -116,6 +124,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'blob'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageQueuePrivateEndpoints: [
@@ -127,6 +139,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'queue'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     eventHubPrivateEndpoints: [
@@ -138,6 +154,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     enableDefaultTelemetry: enableDefaultTelemetry

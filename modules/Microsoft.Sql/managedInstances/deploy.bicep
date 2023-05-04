@@ -352,7 +352,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
     recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
-    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
+    storageAccountResourceId: contains(vulnerabilityAssessmentsObj, 'storageAccountResourceId') ? vulnerabilityAssessmentsObj.storageAccountResourceId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [

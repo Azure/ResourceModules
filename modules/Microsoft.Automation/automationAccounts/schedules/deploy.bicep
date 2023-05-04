@@ -56,11 +56,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
   name: automationAccountName
 }
 
-resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-preview' = {
+resource schedule 'Microsoft.Automation/automationAccounts/schedules@2022-08-08' = {
   name: name
   parent: automationAccount
   properties: {

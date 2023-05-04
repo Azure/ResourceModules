@@ -240,6 +240,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
         }
         service: 'account'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -263,6 +267,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     location: '<location>'
@@ -277,6 +285,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
         }
         service: 'portal'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     publicNetworkAccess: 'Disabled'
@@ -298,6 +310,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
         }
         service: 'blob'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     storageQueuePrivateEndpoints: [
@@ -309,6 +325,10 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
         }
         service: 'queue'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     tags: {
@@ -348,7 +368,11 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             ]
           },
           "service": "account",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -389,7 +413,11 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -411,7 +439,11 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             ]
           },
           "service": "portal",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -438,7 +470,11 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             ]
           },
           "service": "blob",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -451,7 +487,11 @@ module accounts './Microsoft.Purview/accounts/deploy.bicep' = {
             ]
           },
           "service": "queue",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },

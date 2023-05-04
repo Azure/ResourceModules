@@ -37,6 +37,8 @@ $script:templateNotFoundException = 'No template file found in folder [{0}]' # -
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
 
+$script:crossReferencedModuleList = Get-CrossReferencedModuleList
+
 Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
@@ -82,7 +84,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
             }
         }
 
-        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file.' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 
@@ -91,7 +93,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [` readme.md `] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` readme.md `] file.' -TestCases $moduleFolderTestCases {
 
             param(
                 [string] $moduleFolderPath
@@ -101,7 +103,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
             $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [` .test `] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+        It '[<moduleFolderName>] Module should contain a [` .test `] folder.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
             param(
                 [string] $moduleFolderPath
@@ -111,7 +113,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
             $pathExisting | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [` version.json `] file' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` version.json `] file.' -TestCases $moduleFolderTestCases {
 
             param (
                 [string] $moduleFolderPath
@@ -134,7 +136,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
             }
         }
 
-        It '[<moduleFolderName>] Folder should contain one or more test files' -TestCases $folderTestCases {
+        It '[<moduleFolderName>] Folder should contain one or more test files.' -TestCases $folderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -158,7 +160,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
             }
         }
 
-        It '[<moduleFolderName>] JSON test files in the `.test` folder should be valid json' -TestCases $testFolderFilesTestCases {
+        It '[<moduleFolderName>] JSON test files in the `.test` folder should be valid json.' -TestCases $testFolderFilesTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -172,11 +174,168 @@ Describe 'File/folder tests' -Tag 'Modules' {
         }
     }
 }
+
+Describe 'Pipeline tests' -Tag 'Pipeline' {
+
+    $moduleFolderTestCases = [System.Collections.ArrayList] @()
+    foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+        $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+        $moduleFolderTestCases += @{
+            moduleFolderName   = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+            moduleFolderPath   = $moduleFolderPath
+            isTopLevelModule   = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            templateReferences = $crossReferencedModuleList[$resourceTypeIdentifier]
+        }
+    }
+
+    if (Test-Path (Join-Path $repoRootPath '.github')) {
+        It '[<moduleFolderName>] Module should have a GitHub workflow.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath
+            )
+
+            $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowPath = Join-Path $workflowsFolderName $workflowFileName
+            Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
+        }
+
+        It '[<moduleFolderName>] Module workflow should have trigger for cross-module references, if any.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [Hashtable] $templateReferences
+            )
+
+            $localReferences = $templateReferences.localPathReferences
+            if (-not $localReferences) {
+                Set-ItResult -Skipped -Because 'the module has no local cross module references.'
+                return
+            }
+
+            $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
+            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowFilePath = Join-Path $workflowsFolderName $workflowFileName
+            $workflowContent = Get-Content -Path $workflowFilePath
+
+            # Get paths start index
+            $workflowPathsIndex = $workflowContent | ForEach-Object {
+                if ($_ -match '^\s*paths:\s*$') {
+                    return $workflowContent.IndexOf($Matches[0])
+                }
+            }
+
+            $workflowPathsStartIndex = $workflowPathsIndex + 1
+
+            # Get paths end index
+            $workflowPathsEndIndex = $workflowPathsStartIndex
+            while ($workflowContent[($workflowPathsEndIndex + 1)] -match "^\s*- '.+$") {
+                $workflowPathsEndIndex++
+            }
+
+            # Extract data
+            $extractedPaths = $workflowContent[$workflowPathsStartIndex .. $workflowPathsEndIndex] | ForEach-Object {
+                $null = $_ -match "^\s*- '(.+)'$"
+                $Matches[1]
+            }
+
+            # Re-create result set
+            $workflowModuleTriggerPaths = $extractedPaths | Where-Object { $_ -match '^modules\/.*$' }
+
+            $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
+            foreach ($localReference in $localReferences) {
+                $expectedPath = "modules/$localReference/**"
+                if ($workflowModuleTriggerPaths -notcontains $expectedPath) {
+                    $missingCrossModuleReferenceTriggers += $expectedPath
+                }
+            }
+
+            $missingCrossModuleReferenceTriggers.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferenceTriggers -join ','))
+        }
+    }
+
+    if (Test-Path (Join-Path $repoRootPath '.azuredevops')) {
+        It '[<moduleFolderName>] Module should have an Azure DevOps pipeline.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath
+            )
+
+            $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
+            Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
+        }
+
+        It '[<moduleFolderName>] Module pipeline should have trigger for cross-module references, if any.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [Hashtable] $templateReferences
+            )
+
+            $localReferences = $templateReferences.localPathReferences
+            if (-not $localReferences) {
+                Set-ItResult -Skipped -Because 'the module has no local cross module references.'
+                return
+            }
+
+            $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
+            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelineFilePath = Join-Path $pipelinesFolderName $pipelineFileName
+            $pipelineContent = Get-Content -Path $pipelineFilePath
+
+            # Get paths include start index
+            $pipelinePathsIncludeIndex = $pipelineContent | ForEach-Object {
+                if ($_ -match '^\s*paths:\s*$') {
+                    return $pipelineContent.IndexOf($Matches[0]) + 1 # Adding one index to shift to 'include:'
+                }
+            }
+
+            $pipelinePathsIncludeStartIndex = $pipelinePathsIncludeIndex + 1
+
+            # Get paths end index
+            $pipelinePathsIncludeEndIndex = $pipelinePathsIncludeStartIndex
+            while ($pipelineContent[($pipelinePathsIncludeEndIndex + 1)] -match "^\s*- '.+$") {
+                $pipelinePathsIncludeEndIndex++
+            }
+
+            # Extract data
+            $extractedPaths = $pipelineContent[$pipelinePathsIncludeStartIndex .. $pipelinePathsIncludeEndIndex] | ForEach-Object {
+                $null = $_ -match "^\s*- '(.+)'$"
+                $Matches[1]
+            }
+
+            # Re-create result set
+            $moduleTriggerPaths = $extractedPaths | Where-Object { $_ -match '^\/modules\/.*$' }
+
+            $missingCrossModuleReferenceTriggers = [System.Collections.ArrayList] @()
+            foreach ($localReference in $localReferences) {
+                $expectedPath = "/modules/$localReference/*"
+                if ($moduleTriggerPaths -notcontains $expectedPath) {
+                    $missingCrossModuleReferenceTriggers += $expectedPath
+                }
+            }
+
+            $missingCrossModuleReferenceTriggers.Count | Should -Be 0 -Because ('the list of missing pipeline triggers [{0}] should be empty' -f ($missingCrossModuleReferenceTriggers -join ','))
+        }
+    }
+
+}
+
 Describe 'Readme tests' -Tag 'Readme' {
 
     Context 'Readme content tests' {
 
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
+
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
@@ -219,11 +378,11 @@ Describe 'Readme tests' -Tag 'Readme' {
                 readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
                 isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
                 resourceTypeIdentifier = $resourceTypeIdentifier
-                templateReferences     = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
+                templateReferences     = $crossReferencedModuleList[$resourceTypeIdentifier]
             }
         }
 
-        It '[<moduleFolderName>] `Readme.md` file should not be empty' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Readme.md` file should not be empty.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -232,7 +391,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -252,12 +411,12 @@ Describe 'Readme tests' -Tag 'Readme' {
             $filteredActuals = $actualHeadersInOrder | Where-Object { $expectedHeadersInOrder -contains $_ }
 
             $missingHeaders = $expectedHeadersInOrder | Where-Object { $actualHeadersInOrder -notcontains $_ }
-            $missingHeaders.Count | Should -Be 0 -Because ('the list of missing headers [{0}] should be empty' -f ($missingHeaders -join ','))
+            $missingHeaders.Count | Should -Be 0 -Because ('the list of missing headers [{0}] should be empty.' -f ($missingHeaders -join ','))
 
             $filteredActuals | Should -Be $expectedHeadersInOrder -Because 'the headers should exist in the expected order'
         }
 
-        It '[<moduleFolderName>] Resources section should contain all resources from the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should contain all resources from the template file.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -282,7 +441,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Resources section should not contain more resources than the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should not contain more resources than the template file.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -307,7 +466,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -370,7 +529,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             }
         }
 
-        It '[<moduleFolderName>] Parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain all parameters from the template file.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -417,10 +576,10 @@ Describe 'Readme tests' -Tag 'Readme' {
 
             # Test
             $differentiatingItems = $parameters | Where-Object { $parametersList -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -434,10 +593,10 @@ Describe 'Readme tests' -Tag 'Readme' {
             # Test
             $expectedOutputsTableOrder = @('Output Name', 'Type')
             $differentiatingItems = $expectedOutputsTableOrder | Where-Object { $outputsTableHeader -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ('list of "Outputs" table columns missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            $differentiatingItems.Count | Should -Be 0 -Because ('list of "Outputs" table columns missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Output section should contain all outputs defined in the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Output section should contain all outputs defined in the template file.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -458,19 +617,20 @@ Describe 'Readme tests' -Tag 'Readme' {
 
             # Test
             $differentiatingItems = $expectedOutputs | Where-Object { $ReadMeOutputsList -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ('list of template outputs missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            $differentiatingItems.Count | Should -Be 0 -Because ('list of template outputs missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
 
             $differentiatingItems = $ReadMeOutputsList | Where-Object { $expectedOutputs -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent,
-                [string] $resourceTypeIdentifier
+                [string] $resourceTypeIdentifier,
+                [hashtable] $templateReferences
             )
 
             # Get ReadMe data
@@ -496,30 +656,27 @@ Describe 'Readme tests' -Tag 'Readme' {
                 }
             }
 
-            # Template data
-            $expectedDependencies = (Get-CrossReferencedModuleList)[$resourceTypeIdentifier]
-
             # Test
-            if ($expectedDependencies.localPathReferences) {
-                $differentiatingItems = @() + $expectedDependencies.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
-                $differentiatingItems.Count | Should -Be 0 -Because ('list of local template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            if ($templateReferences.localPathReferences) {
+                $differentiatingItems = @() + $templateReferences.localPathReferences | Where-Object { $ReadMeDependenciesList.localPathReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of local template dependencies missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
 
 
-                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $expectedDependencies.localPathReferences -notcontains $_ }
-                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess local template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+                $differentiatingItems = @() + $ReadMeDependenciesList.localPathReferences | Where-Object { $templateReferences.localPathReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess local template references defined in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
             }
 
-            if ($expectedDependencies.remoteReferences) {
-                $differentiatingItems = @() + $expectedDependencies.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
-                $differentiatingItems.Count | Should -Be 0 -Because ('list of remote template dependencies missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            if ($templateReferences.remoteReferences) {
+                $differentiatingItems = @() + $templateReferences.remoteReferences | Where-Object { $ReadMeDependenciesList.remoteReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of remote template dependencies missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
 
 
-                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $expectedDependencies.remoteReferences -notcontains $_ }
-                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess remote template references defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+                $differentiatingItems = @() + $ReadMeDependenciesList.remoteReferences | Where-Object { $templateReferences.remoteReferences -notcontains $_ }
+                $differentiatingItems.Count | Should -Be 0 -Because ('list of excess remote template references defined in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
             }
         }
 
-        It '[<moduleFolderName>] `Set-ModuleReadMe` script should not apply any updates' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Set-ModuleReadMe` script should not apply any updates.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -549,7 +706,9 @@ Describe 'Readme tests' -Tag 'Readme' {
                 # Reset readme file to original state
                 git checkout HEAD -- $readMeFilePath
             }
-            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+
+            $mdFormattedDiff = ($diffReponse -join '</br>') -replace '\|', '\|'
+            $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the `Set-ModuleReadMe` function should be identical and should not have diff </br><pre>{0}</pre>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
         }
     }
 }
@@ -595,7 +754,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -606,7 +765,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
 
             param(
                 [object[]] $testFileContent
@@ -617,7 +776,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             $hasExpectedParam | Should -Be $true
         }
 
-        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
             param(
                 [object[]] $testFileContent
@@ -632,7 +791,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
         }
 
-        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`]' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
 
             param(
                 [object[]] $testFileContent
@@ -666,7 +825,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
+        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid.' -TestCases $parameterFileTokenTestCases {
             param (
                 [string] $testFilePath,
                 [string] $parameterFileName,
@@ -680,7 +839,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
 
             $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
             if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
+                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}].' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
             }
         }
     }
@@ -769,7 +928,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] The template file should not be empty' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should not be empty.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -778,7 +937,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $templateContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Template schema version should be the latest' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Template schema version should be the latest.' -TestCases $deploymentFolderTestCases {
             # the actual value changes depending on the scope of the template (RG, subscription, MG, tenant) !!
             # https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-syntax
             param(
@@ -803,7 +962,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $SchemaArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] Template schema should use HTTPS reference' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Template schema should use HTTPS reference.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -813,7 +972,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             ($Schemaverion.Substring(0, 5) -eq 'https') | Should -Be $true
         }
 
-        It '[<moduleFolderName>] All apiVersion properties should be set to a static, hard-coded value' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All apiVersion properties should be set to a static, hard-coded value.' -TestCases $deploymentFolderTestCases {
             #https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/template-best-practices
             param(
                 [string] $moduleFolderName,
@@ -838,7 +997,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $ApiVersionArray | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] The template file should contain required elements: `schema`, `contentVersion`, `resources` ' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The template file should contain required elements [schema], [contentVersion], [resources].' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -849,7 +1008,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $templateContent.Keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with an empty default value' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with an empty default value.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -861,7 +1020,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter).' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -885,7 +1044,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $CamelCasingFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter).' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -910,7 +1069,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $CamelCasingFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter).' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -929,7 +1088,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $CamelCasingFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] CUA ID deployment should be present in the template' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] CUA ID deployment should be present in the template.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -947,7 +1106,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
-        It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of '`resourceGroup().Location`' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -970,7 +1129,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Location output should be returned for resources that use it.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -992,7 +1151,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] Resource Group output should exist for resources that are deployed into a resource group scope' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Resource Group output should exist for resources that are deployed into a resource group scope.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1008,7 +1167,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] Resource name output should exist' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Resource name output should exist.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1028,7 +1187,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             $outputs | Should -Contain 'name'
         }
 
-        It '[<moduleFolderName>] Resource ID output should exist' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Resource ID output should exist.' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -1122,7 +1281,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
         }
 
         # PARAMETER Tests
-        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`deploy.json`)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`deploy.json`).' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1132,11 +1291,11 @@ Describe 'Deployment template tests' -Tag 'Template' {
                 $templateFile_AllParameterNames = $parameterFileTestCase.templateFile_AllParameterNames
 
                 $nonExistentParameters = $testFile_AllParameterNames | Where-Object { $templateFile_AllParameterNames -notcontains $_ }
-                $nonExistentParameters.Count | Should -Be 0 -Because ('no parameter in the parameter file should not exist in the template file. Found excess items: [{0}]' -f ($nonExistentParameters -join ', '))
+                $nonExistentParameters.Count | Should -Be 0 -Because ('no parameter in the parameter file should not exist in the template file. Found excess items: [{0}].' -f ($nonExistentParameters -join ', '))
             }
         }
 
-        It '[<moduleFolderName>] All required parameters in template file (`deploy.json`) should exist in parameters files' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All required parameters in template file (`deploy.json`) should exist in parameters files.' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1146,11 +1305,11 @@ Describe 'Deployment template tests' -Tag 'Template' {
                 $testFile_AllParameterNames = $parameterFileTestCase.testFile_AllParameterNames
 
                 $missingParameters = $templateFile_RequiredParametersNames | Where-Object { $testFile_AllParameterNames -notcontains $_ }
-                $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
+                $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}].' -f ($missingParameters -join ', '))
             }
         }
 
-        It '[<moduleFolderName>] All non-required parameters in template file should not have description that start with "Required."' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All non-required parameters in template file should not have description that start with "Required.".' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases,
                 [hashtable] $templateContent
@@ -1162,7 +1321,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
                 $nonRequiredParameterNames = $templateFile_AllParameterNames | Where-Object { $_ -notin $templateFile_RequiredParametersNames }
 
                 $incorrectParameters = $nonRequiredParameterNames | Where-Object { ($templateContent.parameters[$_].defaultValue) -and ($templateContent.parameters[$_].metadata.description -like 'Required. *') }
-                $incorrectParameters.Count | Should -Be 0 -Because ('all non-required parameters in the template file should not have a description that starts with "Required.". Found incorrect items: [{0}]' -f ($incorrectParameters -join ', '))
+                $incorrectParameters.Count | Should -Be 0 -Because ('all non-required parameters in the template file should not have a description that starts with "Required.". Found incorrect items: [{0}].' -f ($incorrectParameters -join ', '))
             }
         }
     }
@@ -1279,7 +1438,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         }
     }
 
-    It 'In [<moduleName>] used resource type [<ResourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+    It 'In [<moduleName>] used resource type [<ResourceType>] should use one of the recent API version(s). Currently using [<TargetApi>].' -TestCases $TestCases {
 
         param(
             [string] $moduleName,
@@ -1304,7 +1463,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         $resourceTypeApiVersions = $AvailableApiVersions.$ProviderNamespace.$ResourceType
 
         if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
+            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}].' -f $ProviderNamespace, $resourceType)
             continue
         }
 

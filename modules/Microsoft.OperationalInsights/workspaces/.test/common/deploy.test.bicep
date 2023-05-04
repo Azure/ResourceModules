@@ -190,7 +190,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+        storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
