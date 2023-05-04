@@ -192,7 +192,7 @@ module testDeployment '../../deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+        storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -282,6 +282,10 @@ module testDeployment '../../deploy.bicep' = {
     ]
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

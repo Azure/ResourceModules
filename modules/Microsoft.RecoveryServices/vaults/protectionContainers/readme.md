@@ -13,8 +13,8 @@ This module deploys a Protection Container for a Recovery Services Vault
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers) |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-04-01/vaults/backupFabrics/protectionContainers/protectedItems) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2023-01-01/vaults/backupFabrics/protectionContainers) |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | [2023-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2023-01-01/vaults/backupFabrics/protectionContainers/protectedItems) |
 
 ## Parameters
 

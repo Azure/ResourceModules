@@ -115,7 +115,7 @@ module testDeployment '../../deploy.bicep' = {
         }
       }
     ]
-    azureFirewallSubnetPublicIpId: nestedDependencies.outputs.publicIPResourceId
+    publicIPResourceID: nestedDependencies.outputs.publicIPResourceId
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
@@ -165,5 +165,9 @@ module testDeployment '../../deploy.bicep' = {
       '2'
       '3'
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

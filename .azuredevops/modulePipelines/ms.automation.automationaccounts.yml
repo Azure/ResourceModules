@@ -27,9 +27,12 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Automation/automationAccounts/*'
+      - '/modules/Microsoft.OperationalInsights/workspaces/linkedServices/*'
+      - '/modules/Microsoft.OperationsManagement/solutions/*'
+      - '/modules/Microsoft.Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Automation/automationAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

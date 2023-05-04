@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Batch/batchAccounts/*'
+      - '/modules/Microsoft.Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.batch.batchaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Batch/batchAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

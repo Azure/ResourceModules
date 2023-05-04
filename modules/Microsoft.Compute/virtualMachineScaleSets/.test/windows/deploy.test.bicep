@@ -180,5 +180,9 @@ module testDeployment '../../deploy.bicep' = {
     }
     vmNamePrefix: 'vmsswinvm'
     vmPriority: 'Regular'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.ServiceBus/namespaces/*'
+      - '/modules/Microsoft.Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.servicebus.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.ServiceBus/namespaces/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

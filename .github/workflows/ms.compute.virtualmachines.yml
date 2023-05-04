@@ -27,10 +27,13 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.Compute/virtualMachines/**'
+      - 'modules/Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/**'
+      - 'modules/Microsoft.Network/publicIPAddresses/**'
+      - 'modules/Microsoft.Network/networkInterfaces/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.virtualmachines.yml'
-      - 'modules/Microsoft.Compute/virtualMachines/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
@@ -68,7 +71,6 @@ jobs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
       modulePath: '${{ env.modulePath }}'
-
 
   ##############################
   #   Call reusable workflow   #

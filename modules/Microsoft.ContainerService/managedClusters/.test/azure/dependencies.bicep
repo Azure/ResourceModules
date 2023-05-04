@@ -13,7 +13,10 @@ param diskEncryptionSetName string
 @description('Required. The name of the Key Vault to create.')
 param keyVaultName string
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+@description('Required. The name of the Proximity Placement Group to create.')
+param proximityPlacementGroupName string
+
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-09-01' = {
     name: virtualNetworkName
     location: location
     properties: {
@@ -50,7 +53,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
     location: location
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
     name: keyVaultName
     location: location
     properties: {
@@ -76,7 +79,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
 }
 
-resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
+resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2022-07-02' = {
     name: diskEncryptionSetName
     location: location
     identity: {
@@ -103,6 +106,11 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     }
 }
 
+resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2022-03-01' = {
+    name: proximityPlacementGroupName
+    location: location
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceIds array = [
     virtualNetwork.properties.subnets[0].id
@@ -115,3 +123,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Disk Encryption Set.')
 output diskEncryptionSetResourceId string = diskEncryptionSet.id
+
+@description('The resource ID of the created Proximity Placement Group.')
+output proximityPlacementGroupResourceId string = proximityPlacementGroup.id

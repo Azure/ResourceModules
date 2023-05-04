@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.Network/azureFirewalls/*'
+      - '/modules/Microsoft.Network/publicIPAddresses/*'
       - '/.azuredevops/modulePipelines/ms.network.azurefirewalls.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Network/azureFirewalls/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

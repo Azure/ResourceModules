@@ -54,7 +54,7 @@ This template deploys a log analytics workspace.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -672,7 +672,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '<storageAccountId>'
+        storageAccountResourceId: '<storageAccountResourceId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -733,6 +733,10 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -946,7 +950,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "<storageAccountId>",
+          "storageAccountResourceId": "<storageAccountResourceId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",
@@ -1009,6 +1013,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           }
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {
@@ -1176,7 +1186,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     storageInsightsConfigs: [
       {
-        storageAccountId: '<storageAccountId>'
+        storageAccountResourceId: '<storageAccountResourceId>'
         tables: [
           'LinuxsyslogVer2v0'
           'WADETWEventTable'
@@ -1186,6 +1196,10 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     useResourcePermissions: true
   }
 }
@@ -1379,7 +1393,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "storageInsightsConfigs": {
       "value": [
         {
-          "storageAccountId": "<storageAccountId>",
+          "storageAccountResourceId": "<storageAccountResourceId>",
           "tables": [
             "LinuxsyslogVer2v0",
             "WADETWEventTable",
@@ -1391,6 +1405,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "useResourcePermissions": {
       "value": true

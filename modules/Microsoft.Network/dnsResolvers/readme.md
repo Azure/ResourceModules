@@ -271,6 +271,10 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
         subnetId: '<subnetId>'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -313,6 +317,12 @@ module dnsResolvers './Microsoft.Network/dnsResolvers/deploy.bicep' = {
           "subnetId": "<subnetId>"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

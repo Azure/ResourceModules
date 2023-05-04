@@ -18,10 +18,10 @@ param appName string
 param kind string
 
 @description('Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.')
-param storageAccountId string = ''
+param storageAccountResourceId string = ''
 
 @description('Optional. Resource ID of the app insight to leverage for this resource.')
-param appInsightId string = ''
+param appInsightResourceId string = ''
 
 @description('Optional. For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons.')
 param setAzureWebJobsDashboard bool = contains(kind, 'functionapp') ? true : false
@@ -35,42 +35,43 @@ param enableDefaultTelemetry bool = true
 // =========== //
 // Variables   //
 // =========== //
-var azureWebJobsValues = !empty(storageAccountId) ? union({
+var azureWebJobsValues = !empty(storageAccountResourceId) ? union({
     AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
   }, ((setAzureWebJobsDashboard == true) ? {
     AzureWebJobsDashboard: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
   } : {})) : {}
 
-var appInsightsValues = !empty(appInsightId) ? {
+var appInsightsValues = !empty(appInsightResourceId) ? {
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsight.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: appInsight.properties.ConnectionString
 } : {}
 
 var expandedAppSettings = union(appSettingsKeyValuePairs, azureWebJobsValues, appInsightsValues)
 
-// =========== //
+// =================== //
 // Existing resources //
-// =========== //
+// =================== //
 resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   name: appName
+
   resource slot 'slots' existing = {
     name: slotName
   }
 }
 
-resource appInsight 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightId)) {
-  name: last(split(appInsightId, '/'))!
-  scope: resourceGroup(split(appInsightId, '/')[2], split(appInsightId, '/')[4])
+resource appInsight 'microsoft.insights/components@2020-02-02' existing = if (!empty(appInsightResourceId)) {
+  name: last(split(appInsightResourceId, '/'))!
+  scope: resourceGroup(split(appInsightResourceId, '/')[2], split(appInsightResourceId, '/')[4])
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = if (!empty(storageAccountId)) {
-  name: last(split(storageAccountId, '/'))!
-  scope: resourceGroup(split(storageAccountId, '/')[2], split(storageAccountId, '/')[4])
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = if (!empty(storageAccountResourceId)) {
+  name: last(split(storageAccountResourceId, '/'))!
+  scope: resourceGroup(split(storageAccountResourceId, '/')[2], split(storageAccountResourceId, '/')[4])
 }
 
-// ============ //
-// Dependencies //
-// ============ //
+// =========== //
+// Deployments //
+// =========== //
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {

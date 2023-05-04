@@ -181,6 +181,10 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -218,6 +222,12 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

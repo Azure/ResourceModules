@@ -16,13 +16,13 @@ This module deploys an Azure Automation Account.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Automation/automationAccounts` | [2021-06-22](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2021-06-22/automationAccounts) |
-| `Microsoft.Automation/automationAccounts/jobSchedules` | [2020-01-13-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/jobSchedules) |
-| `Microsoft.Automation/automationAccounts/modules` | [2020-01-13-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules) |
-| `Microsoft.Automation/automationAccounts/runbooks` | [2019-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks) |
-| `Microsoft.Automation/automationAccounts/schedules` | [2020-01-13-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules) |
+| `Microsoft.Automation/automationAccounts` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts) |
+| `Microsoft.Automation/automationAccounts/jobSchedules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/jobSchedules) |
+| `Microsoft.Automation/automationAccounts/modules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/modules) |
+| `Microsoft.Automation/automationAccounts/runbooks` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/runbooks) |
+| `Microsoft.Automation/automationAccounts/schedules` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/schedules) |
 | `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | [2019-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations) |
-| `Microsoft.Automation/automationAccounts/variables` | [2020-01-13-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables) |
+| `Microsoft.Automation/automationAccounts/variables` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/variables) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
@@ -55,7 +55,7 @@ This module deploys an Azure Automation Account.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DscNodeStatus, JobLogs, JobStreams]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAuth` | bool | `True` |  | Disable local authentication profile used within the resource. |
@@ -445,6 +445,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         }
         service: 'Webhook'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
       {
         privateDnsZoneGroup: {
@@ -454,6 +458,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         }
         service: 'DSCAndHybridWorker'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -478,8 +486,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         advancedSchedule: {}
         expiryTime: '9999-12-31T13:00'
-        frequency: 'Minute'
-        interval: 15
+        frequency: 'Hour'
+        interval: 12
         name: 'TestSchedule'
         startTime: ''
         timeZone: 'Europe/Berlin'
@@ -543,6 +551,10 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -657,7 +669,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
             ]
           },
           "service": "Webhook",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         },
         {
           "privateDnsZoneGroup": {
@@ -666,7 +682,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
             ]
           },
           "service": "DSCAndHybridWorker",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -697,8 +717,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         {
           "advancedSchedule": {},
           "expiryTime": "9999-12-31T13:00",
-          "frequency": "Minute",
-          "interval": 15,
+          "frequency": "Hour",
+          "interval": 12,
           "name": "TestSchedule",
           "startTime": "",
           "timeZone": "Europe/Berlin"
@@ -766,6 +786,12 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

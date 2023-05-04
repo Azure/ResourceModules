@@ -72,6 +72,12 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     gitConfigureLater: true
+    globalParameters: {
+      testParameter1: {
+        type: 'String'
+        value: 'testValue1'
+      }
+    }
     integrationRuntimes: [
       {
         managedVirtualNetworkName: 'default'
@@ -110,6 +116,9 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'dataFactory'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          application: 'CARML'
+        }
       }
     ]
     roleAssignments: [
@@ -124,6 +133,10 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

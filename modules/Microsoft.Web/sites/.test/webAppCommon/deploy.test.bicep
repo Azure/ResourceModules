@@ -87,6 +87,10 @@ module testDeployment '../../deploy.bicep' = {
                 nestedDependencies.outputs.privateDNSZoneResourceId
               ]
             }
+            tags: {
+              Environment: 'Non-Prod'
+              Role: 'DeploymentValidation'
+            }
           }
         ]
         roleAssignments: [
@@ -121,6 +125,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -145,5 +153,14 @@ module testDeployment '../../deploy.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    basicPublishingCredentialsPolicies: [
+      {
+        name: 'ftp'
+      }
+      {
+        name: 'scm'
+      }
+
+    ]
   }
 }

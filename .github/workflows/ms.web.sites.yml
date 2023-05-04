@@ -27,10 +27,11 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.Web/sites/**'
+      - 'modules/Microsoft.Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.web.sites.yml'
-      - 'modules/Microsoft.Web/sites/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
@@ -68,7 +69,6 @@ jobs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
       modulePath: '${{ env.modulePath }}'
-
 
   ##############################
   #   Call reusable workflow   #

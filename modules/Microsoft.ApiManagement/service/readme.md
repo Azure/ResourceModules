@@ -51,7 +51,7 @@ This module deploys an API management service.
 | `additionalLocations` | array | `[]` |  | Additional datacenter locations of the API Management service. |
 | `apis` | _[apis](apis/readme.md)_ array | `[]` |  | APIs. |
 | `apiVersionSets` | _[apiVersionSets](apiVersionSets/readme.md)_ array | `[]` |  | API Version Sets. |
-| `authorizationServers` | _[authorizationServers](authorizationServers/readme.md)_ array | `[]` |  | Authorization servers. |
+| `authorizationServers` | secureObject | `{object}` |  | Authorization servers. |
 | `backends` | _[backends](backends/readme.md)_ array | `[]` |  | Backends. |
 | `caches` | _[caches](caches/readme.md)_ array | `[]` |  | Caches. |
 | `certificates` | array | `[]` |  | List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
@@ -61,7 +61,7 @@ This module deploys an API management service.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, GatewayLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableGateway` | bool | `False` |  | Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
@@ -271,11 +271,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.ApiManagement/authorizationServers` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -334,6 +330,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -405,6 +405,12 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
           "roleDefinitionIdOrName": "Reader"
         }
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -444,20 +450,21 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         serviceUrl: 'http://echoapi.cloudapp.net/api'
       }
     ]
-    authorizationServers: [
-      {
-        authorizationEndpoint: '<authorizationEndpoint>'
-        clientCredentialsKeyVaultId: '<clientCredentialsKeyVaultId>'
-        clientIdSecretName: '<clientIdSecretName>'
-        clientRegistrationEndpoint: 'http://localhost'
-        clientSecretSecretName: '<clientSecretSecretName>'
-        grantTypes: [
-          'authorizationCode'
-        ]
-        name: 'AuthServer1'
-        tokenEndpoint: '<tokenEndpoint>'
-      }
-    ]
+    authorizationServers: {
+      secureList: [
+        {
+          authorizationEndpoint: '<authorizationEndpoint>'
+          clientId: 'apimclientid'
+          clientRegistrationEndpoint: 'http://localhost'
+          clientSecret: '<clientSecret>'
+          grantTypes: [
+            'authorizationCode'
+          ]
+          name: 'AuthServer1'
+          tokenEndpoint: '<tokenEndpoint>'
+        }
+      ]
+    }
     backends: [
       {
         name: 'backend'
@@ -550,6 +557,10 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -599,20 +610,21 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
       ]
     },
     "authorizationServers": {
-      "value": [
-        {
-          "authorizationEndpoint": "<authorizationEndpoint>",
-          "clientCredentialsKeyVaultId": "<clientCredentialsKeyVaultId>",
-          "clientIdSecretName": "<clientIdSecretName>",
-          "clientRegistrationEndpoint": "http://localhost",
-          "clientSecretSecretName": "<clientSecretSecretName>",
-          "grantTypes": [
-            "authorizationCode"
-          ],
-          "name": "AuthServer1",
-          "tokenEndpoint": "<tokenEndpoint>"
-        }
-      ]
+      "value": {
+        "secureList": [
+          {
+            "authorizationEndpoint": "<authorizationEndpoint>",
+            "clientId": "apimclientid",
+            "clientRegistrationEndpoint": "http://localhost",
+            "clientSecret": "<clientSecret>",
+            "grantTypes": [
+              "authorizationCode"
+            ],
+            "name": "AuthServer1",
+            "tokenEndpoint": "<tokenEndpoint>"
+          }
+        ]
+      }
     },
     "backends": {
       "value": [
@@ -739,6 +751,12 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

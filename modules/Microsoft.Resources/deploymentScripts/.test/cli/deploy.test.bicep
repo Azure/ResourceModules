@@ -33,6 +33,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
   }
 }
 
@@ -52,9 +53,26 @@ module testDeployment '../../deploy.bicep' = {
     retentionInterval: 'P1D'
     runOnce: false
     scriptContent: 'echo \'echo echo echo\''
+    storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     timeout: 'PT30M'
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
+    environmentVariables: {
+      secureList: [
+        {
+          name: 'var1'
+          value: 'test'
+        }
+        {
+          name: 'var2'
+          secureValue: guid(deployment().name)
+        }
+      ]
     }
   }
 }

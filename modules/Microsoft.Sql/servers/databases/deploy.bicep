@@ -110,8 +110,33 @@ param diagnosticMetricsToEnable array = [
   'WorkloadManagement'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. Specifies the mode of database creation.')
+@allowed([
+  'Default'
+  'Copy'
+  'OnlineSecondary'
+  'PointInTimeRestore'
+  'Recovery'
+  'Restore'
+  'RestoreLongTermRetentionBackup'
+  'Secondary'
+])
+param createMode string = 'Default'
+
+@description('Optional. Resource ID of database if createMode set to Copy, Secondary, PointInTimeRestore, Recovery or Restore.')
+param sourceDatabaseResourceId string = ''
+
+@description('Optional. The time that the database was deleted when restoring a deleted database.')
+param sourceDatabaseDeletionDate string = ''
+
+@description('Optional. Resource ID of backup if createMode set to RestoreLongTermRetentionBackup.')
+param recoveryServicesRecoveryPointResourceId string = ''
+
+@description('Optional. Point in time (ISO8601 format) of the source database to restore when createMode set to Restore or PointInTimeRestore.')
+param restorePointInTime string = ''
+
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -212,12 +237,17 @@ resource database 'Microsoft.Sql/servers/databases@2021-11-01' = {
     isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
     elasticPoolId: elasticPoolId
+    createMode: createMode
+    sourceDatabaseId: !empty(sourceDatabaseResourceId) ? sourceDatabaseResourceId : null
+    sourceDatabaseDeletionDate: !empty(sourceDatabaseDeletionDate) ? sourceDatabaseDeletionDate : null
+    recoveryServicesRecoveryPointId: !empty(recoveryServicesRecoveryPointResourceId) ? recoveryServicesRecoveryPointResourceId : null
+    restorePointInTime: !empty(restorePointInTime) ? restorePointInTime : null
   }
   sku: skuVar
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -230,7 +260,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
 }
 
 module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-${name}-shortTermBackupRetention'
+  name: '${uniqueString(deployment().name, location)}-${name}-shBakRetPol'
   params: {
     serverName: serverName
     databaseName: database.name
@@ -240,7 +270,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
 }
 
 module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-${name}-longTermBackupRetention'
+  name: '${uniqueString(deployment().name, location)}-${name}-lgBakRetPol'
   params: {
     serverName: serverName
     databaseName: database.name

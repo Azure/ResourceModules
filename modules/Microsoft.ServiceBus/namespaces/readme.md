@@ -56,7 +56,7 @@ This module deploys a service bus namespace resource.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, OperationalLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | The disaster recovery configuration. |
@@ -439,6 +439,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     queues: [
@@ -484,7 +488,8 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     skuName: 'Premium'
     systemAssignedIdentity: true
     tags: {
-      test: 'true'
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
     topics: [
       {
@@ -614,7 +619,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -670,7 +679,8 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     },
     "tags": {
       "value": {
-        "test": "true"
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
       }
     },
     "topics": {
@@ -785,6 +795,10 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     ]
     skuName: 'Premium'
     systemAssignedIdentity: false
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -881,6 +895,12 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
     "systemAssignedIdentity": {
       "value": false
     },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
+    },
     "userAssignedIdentities": {
       "value": {
         "<managedIdentityResourceId>": {}
@@ -961,9 +981,17 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         }
         service: 'namespace'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     skuName: 'Premium'
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -997,12 +1025,22 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
             ]
           },
           "service": "namespace",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
     "skuName": {
       "value": "Premium"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }

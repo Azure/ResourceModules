@@ -17,6 +17,10 @@ param serviceShort string = 'apismax'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. The secret to leverage for authorization server authentication.')
+@secure()
+param customSecret string = newGuid()
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -33,7 +37,6 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
   }
 }
 
@@ -79,20 +82,21 @@ module testDeployment '../../deploy.bicep' = {
         serviceUrl: 'http://echoapi.cloudapp.net/api'
       }
     ]
-    authorizationServers: [
-      {
-        authorizationEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
-        clientCredentialsKeyVaultId: nestedDependencies.outputs.keyVaultResourceId
-        clientIdSecretName: nestedDependencies.outputs.keyVaultSecretName
-        clientRegistrationEndpoint: 'http://localhost'
-        clientSecretSecretName: nestedDependencies.outputs.keyVaultSecretName
-        grantTypes: [
-          'authorizationCode'
-        ]
-        name: 'AuthServer1'
-        tokenEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token'
-      }
-    ]
+    authorizationServers: {
+      secureList: [
+        {
+          authorizationEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/authorize'
+          clientId: 'apimclientid'
+          clientSecret: customSecret
+          clientRegistrationEndpoint: 'http://localhost'
+          grantTypes: [
+            'authorizationCode'
+          ]
+          name: 'AuthServer1'
+          tokenEndpoint: '${environment().authentication.loginEndpoint}651b43ce-ccb8-4301-b551-b04dd872d401/oauth2/v2.0/token'
+        }
+      ]
+    }
     backends: [
       {
         name: 'backend'
@@ -187,6 +191,10 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

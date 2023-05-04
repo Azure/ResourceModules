@@ -70,6 +70,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}'
+    computerName: '<<namePrefix>>linvm1'
     location: location
     adminUsername: 'localAdministrator'
     imageReference: {
@@ -173,12 +174,20 @@ module testDeployment '../../deploy.bicep' = {
           uri: nestedDependencies.outputs.storageAccountCSEFileUrl
         }
       ]
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'value=$(./${nestedDependencies.outputs.storageAccountCSEFileName}); echo "$value"'
     }
     extensionDependencyAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAzureDiskEncryptionConfig: {
       enabled: true
@@ -192,18 +201,38 @@ module testDeployment '../../deploy.bicep' = {
         ResizeOSDisk: 'false'
         VolumeType: 'All'
       }
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionAadJoinConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionDSCConfig: {
       enabled: false
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionMonitoringAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     extensionNetworkWatcherAgentConfig: {
       enabled: true
+      tags: {
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
     lock: 'CanNotDelete'
     monitoringWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
@@ -225,6 +254,10 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
   dependsOn: [

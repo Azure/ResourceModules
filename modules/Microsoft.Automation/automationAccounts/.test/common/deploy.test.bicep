@@ -99,6 +99,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'Webhook'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
       {
         privateDnsZoneGroup: {
@@ -108,6 +112,10 @@ module testDeployment '../../deploy.bicep' = {
         }
         service: 'DSCAndHybridWorker'
         subnetResourceId: nestedDependencies.outputs.subnetResourceId
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -132,8 +140,8 @@ module testDeployment '../../deploy.bicep' = {
       {
         advancedSchedule: {}
         expiryTime: '9999-12-31T13:00'
-        frequency: 'Minute'
-        interval: 15
+        frequency: 'Hour'
+        interval: 12
         name: 'TestSchedule'
         startTime: ''
         timeZone: 'Europe/Berlin'
@@ -228,5 +236,9 @@ module testDeployment '../../deploy.bicep' = {
         value: '\'TestEncryptedValue\''
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

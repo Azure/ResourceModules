@@ -61,21 +61,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' existing = {
   name: automationAccountName
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' existing = if (!empty(scriptStorageAccountId)) {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(scriptStorageAccountId)) {
   name: last(split(scriptStorageAccountId, '/'))!
   scope: resourceGroup(split(scriptStorageAccountId, '/')[2], split(scriptStorageAccountId, '/')[4])
 }
 
 var publishContentLink = empty(uri) ? null : {
-  uri: !empty(uri) ? (empty(scriptStorageAccountId) ? uri : '${uri}${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}') : null
+  uri: !empty(uri) ? (empty(scriptStorageAccountId) ? uri : '${uri}?${storageAccount.listAccountSas('2021-04-01', accountSasProperties).accountSasToken}') : null
   version: !empty(version) ? version : null
 }
 
-resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' = {
+resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2022-08-08' = {
   name: name
   parent: automationAccount
   location: location

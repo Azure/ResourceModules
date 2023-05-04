@@ -2,9 +2,6 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the queue service.')
-param name string = 'default'
-
 @description('Optional. Queues to create.')
 param queues array = []
 
@@ -47,8 +44,11 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
+
+// The name of the blob services
+var name = 'default'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -105,7 +105,7 @@ resource queueServices 'Microsoft.Storage/storageAccounts/queueServices@2021-09-
 }
 
 resource queueServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -121,7 +121,6 @@ module queueServices_queues 'queues/deploy.bicep' = [for (queue, index) in queue
   name: '${deployment().name}-Queue-${index}'
   params: {
     storageAccountName: storageAccount.name
-    queueServicesName: queueServices.name
     name: queue.name
     metadata: contains(queue, 'metadata') ? queue.metadata : {}
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []

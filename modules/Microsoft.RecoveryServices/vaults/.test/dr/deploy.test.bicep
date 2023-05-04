@@ -93,5 +93,9 @@ module testDeployment '../../deploy.bicep' = {
         recoveryPointHistory: 2880
       }
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }

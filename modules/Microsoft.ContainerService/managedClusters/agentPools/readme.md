@@ -13,7 +13,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters/agentPools) |
 
 ## Parameters
 
@@ -57,7 +57,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | `osSku` | string | `''` | `['', CBLMariner, Ubuntu]` | Specifies an OS SKU. This value must not be specified if OSType is Windows. |
 | `osType` | string | `'Linux'` | `[Linux, Windows]` | The operating system type. The default is Linux. |
 | `podSubnetId` | string | `''` |  | Subnet ID for the pod IPs. If omitted, pod IPs are statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}. |
-| `proximityPlacementGroupId` | string | `''` |  | The ID for the Proximity Placement Group. |
+| `proximityPlacementGroupResourceId` | string | `''` |  | The ID for the Proximity Placement Group. |
 | `scaleDownMode` | string | `'Delete'` | `[Deallocate, Delete]` | Describes how VMs are added to or removed from Agent Pools. See billing states (https://learn.microsoft.com/en-us/azure/virtual-machines/states-billing). |
 | `scaleSetEvictionPolicy` | string | `'Delete'` | `[Deallocate, Delete]` | The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more information about eviction see spot VMs. |
 | `scaleSetPriority` | string | `''` | `['', Regular, Spot]` | The Virtual Machine Scale Set priority. |

@@ -27,10 +27,12 @@ on:
     branches:
       - main
     paths:
+      - 'modules/Microsoft.ContainerService/managedClusters/**'
+      - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
+      - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerservice.managedclusters.yml'
-      - 'modules/Microsoft.ContainerService/managedClusters/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
@@ -68,7 +70,6 @@ jobs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
       modulePath: '${{ env.modulePath }}'
-
 
   ##############################
   #   Call reusable workflow   #

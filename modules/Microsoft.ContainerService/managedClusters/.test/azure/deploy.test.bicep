@@ -26,7 +26,7 @@ param enableDefaultTelemetry bool = true
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }
@@ -38,6 +38,7 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
+    proximityPlacementGroupName: 'dep-<<namePrefix>>-ppg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
   }
@@ -113,6 +114,7 @@ module testDeployment '../../deploy.bicep' = {
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
         vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[1]
+        proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
       }
       {
         availabilityZones: [
@@ -147,6 +149,7 @@ module testDeployment '../../deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
+    openServiceMeshEnabled: true
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -158,6 +161,10 @@ module testDeployment '../../deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     fluxExtension: {
       configurationSettings: {
         'helm-controller.enabled': 'true'

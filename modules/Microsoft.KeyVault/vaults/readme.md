@@ -43,7 +43,7 @@ This module deploys a key vault and its child resources.
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, AuditEvent, AzurePolicyEvaluationDetails]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -453,7 +453,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     enableRbacAuthorization: false
     keys: [
       {
-        attributesExp: 1702648632
+        attributesExp: 1725109032
         attributesNbf: 10000
         name: 'keyName'
         roleAssignments: [
@@ -465,6 +465,29 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             roleDefinitionIdOrName: 'Reader'
           }
         ]
+        rotationPolicy: {
+          attributes: {
+            expiryTime: 'P2Y'
+          }
+          lifetimeActions: [
+            {
+              action: {
+                type: 'Rotate'
+              }
+              trigger: {
+                timeBeforeExpiry: 'P2M'
+              }
+            }
+            {
+              action: {
+                type: 'Notify'
+              }
+              trigger: {
+                timeBeforeExpiry: 'P30D'
+              }
+            }
+          ]
+        }
       }
     ]
     lock: 'CanNotDelete'
@@ -492,6 +515,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -605,7 +632,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "keys": {
       "value": [
         {
-          "attributesExp": 1702648632,
+          "attributesExp": 1725109032,
           "attributesNbf": 10000,
           "name": "keyName",
           "roleAssignments": [
@@ -616,7 +643,30 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
               "principalType": "ServicePrincipal",
               "roleDefinitionIdOrName": "Reader"
             }
-          ]
+          ],
+          "rotationPolicy": {
+            "attributes": {
+              "expiryTime": "P2Y"
+            },
+            "lifetimeActions": [
+              {
+                "action": {
+                  "type": "Rotate"
+                },
+                "trigger": {
+                  "timeBeforeExpiry": "P2M"
+                }
+              },
+              {
+                "action": {
+                  "type": "Notify"
+                },
+                "trigger": {
+                  "timeBeforeExpiry": "P30D"
+                }
+              }
+            ]
+          }
         }
       ]
     },
@@ -649,7 +699,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             ]
           },
           "service": "vault",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },
@@ -775,6 +829,10 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         }
         service: 'vault'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     tags: {
@@ -817,7 +875,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
             ]
           },
           "service": "vault",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "Environment": "Non-Prod",
+            "Role": "DeploymentValidation"
+          }
         }
       ]
     },

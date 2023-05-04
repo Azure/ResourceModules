@@ -1,5 +1,4 @@
 @description('Conditional. The name of the parent managed cluster. Required if the template is used in a standalone deployment.')
-@minLength(1)
 param managedClusterName string
 
 @description('Required. Name of the agent pool.')
@@ -99,7 +98,7 @@ param osType string = 'Linux'
 param podSubnetId string = ''
 
 @description('Optional. The ID for the Proximity Placement Group.')
-param proximityPlacementGroupId string = ''
+param proximityPlacementGroupResourceId string = ''
 
 @description('Optional. Describes how VMs are added to or removed from Agent Pools. See billing states (https://learn.microsoft.com/en-us/azure/virtual-machines/states-billing).')
 @allowed([
@@ -167,11 +166,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-09-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-09-01' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-11-01' = {
   name: name
   parent: managedCluster
   properties: {
@@ -198,7 +197,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-0
     osSKU: !empty(osSku) ? any(osSku) : null
     osType: osType
     podSubnetID: !empty(podSubnetId) ? podSubnetId : null
-    proximityPlacementGroupID: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
+    proximityPlacementGroupID: !empty(proximityPlacementGroupResourceId) ? proximityPlacementGroupResourceId : null
     scaleDownMode: scaleDownMode
     scaleSetEvictionPolicy: scaleSetEvictionPolicy
     scaleSetPriority: !empty(scaleSetPriority) ? any(scaleSetPriority) : null

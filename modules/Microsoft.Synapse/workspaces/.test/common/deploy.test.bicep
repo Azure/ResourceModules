@@ -14,6 +14,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'swcom'
 
+@description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
+param enableDefaultTelemetry bool = true
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -83,6 +86,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     diagnosticLogsRetentionInDays: 7
@@ -98,5 +105,6 @@ module testDeployment '../../deploy.bicep' = {
       'IntegrationActivityRuns'
       'IntegrationTriggerRuns'
     ]
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }

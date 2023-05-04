@@ -116,6 +116,10 @@ module testDeployment '../../deploy.bicep' = {
             nestedDependencies.outputs.privateDNSZoneResourceId
           ]
         }
+        tags: {
+          Environment: 'Non-Prod'
+          Role: 'DeploymentValidation'
+        }
       }
     ]
     roleAssignments: [
@@ -130,6 +134,10 @@ module testDeployment '../../deploy.bicep' = {
     systemAssignedIdentity: false
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
     }
   }
 }

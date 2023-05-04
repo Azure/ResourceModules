@@ -48,7 +48,7 @@
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[ActivityRuns, allLogs, PipelineRuns, SSISIntegrationRuntimeLogs, SSISPackageEventMessageContext, SSISPackageEventMessages, SSISPackageExecutableStatistics, SSISPackageExecutionComponentPhases, SSISPackageExecutionDataStatistics, TriggerRuns]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -59,6 +59,7 @@
 | `gitRepositoryName` | string | `''` |  | The repository name. |
 | `gitRepoType` | string | `'FactoryVSTSConfiguration'` |  | Repository type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
 | `gitRootFolder` | string | `'/'` |  | The root folder path name. Default is '/'. |
+| `globalParameters` | object | `{object}` |  | List of Global Parameters for the factory. |
 | `integrationRuntimes` | _[integrationRuntimes](integrationRuntimes/readme.md)_ array | `[]` |  | An array of objects for the configuration of an Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -403,6 +404,12 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     gitConfigureLater: true
+    globalParameters: {
+      testParameter1: {
+        type: 'String'
+        value: 'testValue1'
+      }
+    }
     integrationRuntimes: [
       {
         managedVirtualNetworkName: 'default'
@@ -440,6 +447,9 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
         }
         service: 'dataFactory'
         subnetResourceId: '<subnetResourceId>'
+        tags: {
+          application: 'CARML'
+        }
       }
     ]
     roleAssignments: [
@@ -452,6 +462,10 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
       }
     ]
     systemAssignedIdentity: true
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
@@ -506,6 +520,14 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     "gitConfigureLater": {
       "value": true
     },
+    "globalParameters": {
+      "value": {
+        "testParameter1": {
+          "type": "String",
+          "value": "testValue1"
+        }
+      }
+    },
     "integrationRuntimes": {
       "value": [
         {
@@ -551,7 +573,10 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
             ]
           },
           "service": "dataFactory",
-          "subnetResourceId": "<subnetResourceId>"
+          "subnetResourceId": "<subnetResourceId>",
+          "tags": {
+            "application": "CARML"
+          }
         }
       ]
     },
@@ -568,6 +593,12 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
     },
     "systemAssignedIdentity": {
       "value": true
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     },
     "userAssignedIdentities": {
       "value": {

@@ -35,6 +35,9 @@ param defaultConsistencyLevel string = 'Session'
 @description('Optional. Enable automatic failover for regions.')
 param automaticFailover bool = true
 
+@description('Optional. Flag to indicate whether Free Tier is enabled.')
+param enableFreeTier bool = false
+
 @minValue(10)
 @maxValue(2147483647)
 @description('Optional. Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000.')
@@ -119,8 +122,8 @@ param diagnosticMetricsToEnable array = [
   'Requests'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
 
 @allowed([
   'EnableCassandra'
@@ -257,6 +260,7 @@ var databaseAccount_properties = union({
     consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
     locations: databaseAccount_locations
     capabilities: capabilities
+    enableFreeTier: enableFreeTier
     backupPolicy: backupPolicy
   } : {}), (!empty(sqlDatabases) ? {
     // SQLDB properties
@@ -299,7 +303,7 @@ resource databaseAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!
 }
 
 resource databaseAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -330,6 +334,8 @@ module databaseAccount_sqlDatabases 'sqlDatabases/deploy.bicep' = [for sqlDataba
     databaseAccountName: databaseAccount.name
     name: sqlDatabase.name
     containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
+    throughput: contains(sqlDatabase, 'throughput') ? sqlDatabase.throughput : 400
+    autoscaleSettingsMaxThroughput: contains(sqlDatabase, 'autoscaleSettingsMaxThroughput') ? sqlDatabase.autoscaleSettingsMaxThroughput : -1
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

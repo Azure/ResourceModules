@@ -36,7 +36,7 @@ This module deploys an Alert based on Activity Log.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` | Location for all resources. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this metric alert is scoped to. |
+| `scopes` | array | `[[subscription().id]]` | The list of resource IDs that this Activity Log Alert is scoped to. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
@@ -451,6 +451,10 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
     scopes: [
       '<id>'
     ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -513,6 +517,12 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
       "value": [
         "<id>"
       ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
