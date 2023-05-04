@@ -13,7 +13,7 @@ This module deploys a virtual machine extension.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Compute/virtualMachines/extensions` | [2021-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions) |
+| `Microsoft.Compute/virtualMachines/extensions` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/virtualMachines/extensions) |
 
 ## Parameters
 
@@ -44,7 +44,49 @@ This module deploys a virtual machine extension.
 | `protectedSettings` | secureObject | `{object}` | Any object that contains the extension specific protected settings. |
 | `settings` | object | `{object}` | Any object that contains the extension specific settings. |
 | `supressFailures` | bool | `False` | Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false. |
+| `tags` | object | `{object}` | Tags of the resource. |
 
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

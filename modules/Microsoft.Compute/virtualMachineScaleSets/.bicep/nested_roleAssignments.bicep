@@ -71,7 +71,7 @@ var builtInRoleNames = {
   'Windows Admin Center Administrator Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')
 }
 
-resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' existing = {
+resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-11-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 

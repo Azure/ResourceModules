@@ -16,8 +16,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-09-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
 | `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
@@ -89,7 +89,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, cluster-autoscaler, guard, kube-apiserver, kube-audit, kube-audit-admin, kube-controller-manager, kube-scheduler]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
@@ -362,7 +362,7 @@ userAssignedIdentities: {
 | `kubeletidentityObjectId` | string | The Object ID of the AKS identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the managed cluster. |
-| `oidcIssuerUrl` | string | The OIDC token issuer Url. |
+| `oidcIssuerUrl` | string | The OIDC token issuer URL. |
 | `omsagentIdentityObjectId` | string | The Object ID of the OMS agent identity. |
 | `resourceGroupName` | string | The resource group the managed cluster was deployed into. |
 | `resourceId` | string | The resource ID of the managed cluster. |
@@ -437,6 +437,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
         ]
         osDiskSizeGB: 128
         osType: 'Linux'
+        proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
         scaleSetEvictionPolicy: 'Delete'
         scaleSetPriority: 'Regular'
         storageProfile: 'ManagedDisks'
@@ -614,6 +615,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
           ],
           "osDiskSizeGB": 128,
           "osType": "Linux",
+          "proximityPlacementGroupResourceId": "<proximityPlacementGroupResourceId>",
           "scaleSetEvictionPolicy": "Delete",
           "scaleSetPriority": "Regular",
           "storageProfile": "ManagedDisks",

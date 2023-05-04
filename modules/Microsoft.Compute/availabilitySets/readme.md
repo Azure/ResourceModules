@@ -16,7 +16,7 @@ This template deploys an availability set
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/availabilitySets` | [2021-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/availabilitySets) |
+| `Microsoft.Compute/availabilitySets` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/availabilitySets) |
 
 ## Parameters
 
@@ -30,14 +30,14 @@ This template deploys an availability set
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `availabilitySetFaultDomain` | int | `2` |  | The number of fault domains to use. |
-| `availabilitySetSku` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks.<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
-| `availabilitySetUpdateDomain` | int | `5` |  | The number of update domains to use. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `proximityPlacementGroupId` | string | `''` |  | Resource ID of a proximity placement group. |
+| `platformFaultDomainCount` | int | `2` |  | The number of fault domains to use. |
+| `platformUpdateDomainCount` | int | `5` |  | The number of update domains to use. |
+| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `skuName` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks.<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
 
 
@@ -176,7 +176,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    proximityPlacementGroupId: '<proximityPlacementGroupId>'
+    proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
         principalIds: [
@@ -217,8 +217,8 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
     "lock": {
       "value": "CanNotDelete"
     },
-    "proximityPlacementGroupId": {
-      "value": "<proximityPlacementGroupId>"
+    "proximityPlacementGroupResourceId": {
+      "value": "<proximityPlacementGroupResourceId>"
     },
     "roleAssignments": {
       "value": [

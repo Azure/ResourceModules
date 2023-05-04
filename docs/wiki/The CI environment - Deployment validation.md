@@ -141,7 +141,6 @@ $TestModuleLocallyInput = @{
         ManagementGroupId = '<ReplaceWith-TargetManagementGroupName>'
     }
     AdditionalTokens              = @{
-        'deploymentSpId' = '<ReplaceWith-SPNObjectId>'
         'tenantId'       = '<ReplaceWith-TargetTenantId>'
     }
 }

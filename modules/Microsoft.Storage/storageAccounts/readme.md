@@ -21,9 +21,9 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Storage/storageAccounts` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts) |
-| `Microsoft.Storage/storageAccounts/blobServices` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers) |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
+| `Microsoft.Storage/storageAccounts/blobServices` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices/containers) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-09-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
 | `Microsoft.Storage/storageAccounts/fileServices` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices) |
 | `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-09-01/storageAccounts/fileServices/shares) |
 | `Microsoft.Storage/storageAccounts/localUsers` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Storage/2022-05-01/storageAccounts/localUsers) |
@@ -45,10 +45,10 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `accessTier` | string | `'Hot'` | `[Cool, Hot, Premium]` | Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
 | `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. Required if enableSftp or enableNfsV3 is set to true. |
-| `storageAccountAccessTier` | string | `'Hot'` | `[Cool, Hot, Premium]` | Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type. |
 
 **Optional parameters**
 
@@ -69,7 +69,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Transaction]` | `[Transaction]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsEndpointType` | string | `''` | `['', AzureDnsZone, Standard]` | Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric DNS Zone identifier. |
@@ -78,6 +78,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `enableSftp` | bool | `False` |  | If true, enables Secure File Transfer Protocol for the storage account. Requires enableHierarchicalNamespace to be true. |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
 | `isLocalUserEnabled` | bool | `False` |  | Enables local users feature, if set to true. |
+| `kind` | string | `'StorageV2'` | `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]` | Type of Storage Account to create. |
 | `largeFileSharesState` | string | `'Disabled'` | `[Disabled, Enabled]` | Allow large file shares if sets to 'Enabled'. It cannot be disabled once it is enabled. Only supported on locally redundant and zone redundant file shares. It cannot be set on FileStorage storage accounts (storage accounts for premium file shares). |
 | `localUsers` | _[localUsers](localUsers/readme.md)_ array | `[]` |  | Local users to deploy for SFTP authentication. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -90,8 +91,8 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
 | `requireInfrastructureEncryption` | bool | `True` |  | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `storageAccountKind` | string | `'StorageV2'` | `[BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2]` | Type of Storage Account to create. |
-| `storageAccountSku` | string | `'Standard_GRS'` | `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]` | Storage Account Sku Name. |
+| `sasExpirationPeriod` | string | `''` |  | The SAS expiration period. DD.HH:MM:SS. |
+| `skuName` | string | `'Standard_GRS'` | `[Premium_LRS, Premium_ZRS, Standard_GRS, Standard_GZRS, Standard_LRS, Standard_RAGRS, Standard_RAGZRS, Standard_ZRS]` | Storage Account Sku Name. |
 | `supportsHttpsTrafficOnly` | bool | `True` |  | Allows HTTPS traffic only to storage service if sets to true. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Table service and tables to create. |
@@ -433,8 +434,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
       containers: [
         {
+          enableNfsV3AllSquash: true
+          enableNfsV3RootSquash: true
           name: 'avdscripts'
           publicAccess: 'None'
           roleAssignments: [
@@ -450,11 +456,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         {
           allowProtectedAppendWrites: false
           enableWORM: true
+          metadata: {
+            testKey: 'testValue'
+          }
           name: 'archivecontainer'
           publicAccess: 'None'
           WORMRetention: 666
         }
       ]
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
       diagnosticEventHubName: '<diagnosticEventHubName>'
       diagnosticLogsRetentionInDays: 7
@@ -585,7 +596,8 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountSku: 'Standard_LRS'
+    sasExpirationPeriod: '180.00:00:00'
+    skuName: 'Standard_LRS'
     systemAssignedIdentity: true
     tableServices: {
       diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -631,8 +643,13 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "blobServices": {
       "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
         "containers": [
           {
+            "enableNfsV3AllSquash": true,
+            "enableNfsV3RootSquash": true,
             "name": "avdscripts",
             "publicAccess": "None",
             "roleAssignments": [
@@ -648,11 +665,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
           {
             "allowProtectedAppendWrites": false,
             "enableWORM": true,
+            "metadata": {
+              "testKey": "testValue"
+            },
             "name": "archivecontainer",
             "publicAccess": "None",
             "WORMRetention": 666
           }
         ],
+        "deleteRetentionPolicy": true,
+        "deleteRetentionPolicyDays": 9,
         "diagnosticEventHubAuthorizationRuleId": "<diagnosticEventHubAuthorizationRuleId>",
         "diagnosticEventHubName": "<diagnosticEventHubName>",
         "diagnosticLogsRetentionInDays": 7,
@@ -820,7 +842,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     },
-    "storageAccountSku": {
+    "sasExpirationPeriod": {
+      "value": "180.00:00:00"
+    },
+    "skuName": {
       "value": "Standard_LRS"
     },
     "systemAssignedIdentity": {
@@ -865,19 +890,32 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 
 ```bicep
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-stsencr'
+  name: '${uniqueString(deployment().name, location)}-test-ssaencr'
   params: {
     // Required parameters
-    name: '<<namePrefix>>stsencr001'
+    name: '<<namePrefix>>ssaencr001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyEnabled: true
       containers: [
         {
           name: '<<namePrefix>>container'
           publicAccess: 'None'
         }
       ]
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyDays: 8
+      restorePolicyEnabled: true
     }
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -899,7 +937,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       }
     ]
     requireInfrastructureEncryption: true
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     systemAssignedIdentity: false
     tags: {
       Environment: 'Non-Prod'
@@ -926,7 +964,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>stsencr001"
+      "value": "<<namePrefix>>ssaencr001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -934,12 +972,25 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     },
     "blobServices": {
       "value": {
+        "automaticSnapshotPolicyEnabled": true,
+        "changeFeedEnabled": true,
+        "changeFeedRetentionInDays": 10,
+        "containerDeleteRetentionPolicyAllowPermanentDelete": true,
+        "containerDeleteRetentionPolicyDays": 10,
+        "containerDeleteRetentionPolicyEnabled": true,
         "containers": [
           {
             "name": "<<namePrefix>>container",
             "publicAccess": "None"
           }
-        ]
+        ],
+        "defaultServiceVersion": "2008-10-27",
+        "deleteRetentionPolicy": true,
+        "deleteRetentionPolicyDays": 9,
+        "isVersioningEnabled": true,
+        "lastAccessTimeTrackingPolicyEnable": true,
+        "restorePolicyDays": 8,
+        "restorePolicyEnabled": true
       }
     },
     "cMKKeyName": {
@@ -974,7 +1025,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "requireInfrastructureEncryption": {
       "value": true
     },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Standard_LRS"
     },
     "systemAssignedIdentity": {
@@ -1075,6 +1126,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
+    kind: 'FileStorage'
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -1085,8 +1137,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         roleDefinitionIdOrName: 'Reader'
       }
     ]
-    storageAccountKind: 'FileStorage'
-    storageAccountSku: 'Premium_LRS'
+    skuName: 'Premium_LRS'
     supportsHttpsTrafficOnly: false
     systemAssignedIdentity: true
     tags: {
@@ -1148,6 +1199,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     },
+    "kind": {
+      "value": "FileStorage"
+    },
     "lock": {
       "value": "CanNotDelete"
     },
@@ -1162,10 +1216,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     },
-    "storageAccountKind": {
-      "value": "FileStorage"
-    },
-    "storageAccountSku": {
+    "skuName": {
       "value": "Premium_LRS"
     },
     "supportsHttpsTrafficOnly": {
@@ -1207,7 +1258,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    storageAccountKind: 'Storage'
+    kind: 'Storage'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -1239,7 +1290,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "storageAccountKind": {
+    "kind": {
       "value": "Storage"
     },
     "tags": {

@@ -199,7 +199,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
     lock: 'CanNotDelete'
     platformReservedCidr: '172.17.17.0/24'
     platformReservedDnsIP: '172.17.17.17'
-    skuName: 'Premium'
+    skuName: 'Consumption'
     tags: {
       Env: 'test'
     }
@@ -252,7 +252,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/deploy.bicep' = 
       "value": "172.17.17.17"
     },
     "skuName": {
-      "value": "Premium"
+      "value": "Consumption"
     },
     "tags": {
       "value": {

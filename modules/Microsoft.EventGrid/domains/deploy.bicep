@@ -76,8 +76,11 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+@description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
+param diagnosticSettingsName string = ''
+
+@description('Optional. The topic names which are associated with the domain.')
+param topics array = []
 
 var enableReferencedModulesTelemetry = false
 
@@ -135,6 +138,16 @@ resource domain 'Microsoft.EventGrid/domains@2022-06-15' = {
   }
 }
 
+module domain_topics 'topics/deploy.bicep' = [for (topic, index) in topics: {
+  name: '${uniqueString(deployment().name, location)}-topics-${index}'
+  params: {
+    domainName: domain.name
+    name: topic
+    location: location
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 resource domain_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${domain.name}-${lock}-lock'
   properties: {
@@ -145,7 +158,7 @@ resource domain_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(loc
 }
 
 resource domain_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
