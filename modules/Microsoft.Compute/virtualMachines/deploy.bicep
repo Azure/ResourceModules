@@ -111,6 +111,9 @@ param availabilityZone int = 0
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array
 
+@description('Optional. If a domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.')
+param domainNameLabel string = ''
+
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -390,6 +393,7 @@ module vm_nic '.bicep/nested_networkInterface.bicep' = [for (nicConfiguration, i
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
+    domainNameLabel: domainNameLabel
     networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
     ipConfigurations: nicConfiguration.ipConfigurations
     lock: lock
@@ -739,3 +743,6 @@ output systemAssignedPrincipalId string = systemAssignedIdentity && contains(vm.
 
 @description('The location the resource was deployed into.')
 output location string = vm.location
+
+@description('The FQDN from Azure DNS for the VM.')
+output fqdn string = !empty(domainNameLabel) ? '${domainNameLabel}.${location}.cloudapp.azure.com' : ''

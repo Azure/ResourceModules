@@ -19,6 +19,7 @@ param diagnosticEventHubName string
 param pipdiagnosticMetricsToEnable array
 param pipdiagnosticLogCategoriesToEnable array
 param nicDiagnosticMetricsToEnable array
+param domainNameLabel string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -44,6 +45,7 @@ module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAd
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticWorkspaceId: diagnosticWorkspaceId
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    domainNameLabel: domainNameLabel
     location: location
     lock: lock
     publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'
