@@ -78,12 +78,12 @@ var builtInRoleNames = {
   'Windows Admin Center Administrator Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')
 }
 
-resource dnsResolver 'Microsoft.Network/ddosProtectionPlans@2021-08-01' existing = {
+resource dnsForwardingRuleset 'Microsoft.Network/dnsForwardingRulesets@2022-07-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
-  name: guid(dnsResolver.id, principalId, roleDefinitionIdOrName)
+  name: guid(dnsForwardingRuleset.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -93,5 +93,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     conditionVersion: !empty(conditionVersion) && !empty(condition) ? conditionVersion : null
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : null
   }
-  scope: dnsResolver
+  scope: dnsForwardingRuleset
 }]

@@ -7,20 +7,24 @@ param dnsResolverName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
+var addressPrefix = '10.0.0.0/16'
+var pdnsinSnetAddressPrefix = '10.10.100.0/25'
+var pdnsoutSnetAddressPrefix = '10.10.100.128/25'
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkName
   location: location
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.10.100.0/24'
+        addressPrefix
       ]
     }
     subnets: [
       {
         name: 'pdnsin'
         properties: {
-          addressPrefix: '10.10.100.0/25'
+          addressPrefix: pdnsinSnetAddressPrefix
           delegations: [
             {
               name: 'dnsdel'
@@ -34,7 +38,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
       {
         name: 'pdnsout'
         properties: {
-          addressPrefix: '10.10.100.128/25'
+          addressPrefix: pdnsoutSnetAddressPrefix
           delegations: [
             {
               name: 'dnsdel'
