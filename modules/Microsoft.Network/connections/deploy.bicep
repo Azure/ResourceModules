@@ -90,23 +90,11 @@ param virtualNetworkGateway2 object = {}
 param peer object = {}
 
 @description('Optional. The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute].')
-param expressRouteCircuitAuthorizationKey string = ''
+@secure()
+param authorizationKey string = ''
 
 @description('Optional. The local network gateway. Used for connection type [IPsec].')
 param localNetworkGateway2 object = {}
-
-var customIPSecPolicyVar = [
-  {
-    saLifeTimeSeconds: customIPSecPolicy.saLifeTimeSeconds
-    saDataSizeKilobytes: customIPSecPolicy.saDataSizeKilobytes
-    ipsecEncryption: customIPSecPolicy.ipsecEncryption
-    ipsecIntegrity: customIPSecPolicy.ipsecIntegrity
-    ikeEncryption: customIPSecPolicy.ikeEncryption
-    ikeIntegrity: customIPSecPolicy.ikeIntegrity
-    dhGroup: customIPSecPolicy.dhGroup
-    pfsGroup: customIPSecPolicy.pfsGroup
-  }
-]
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -135,10 +123,21 @@ resource connection 'Microsoft.Network/connections@2022-07-01' = {
     virtualNetworkGateway2: connectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
     localNetworkGateway2: connectionType == 'IPsec' ? localNetworkGateway2 : null
     peer: connectionType == 'ExpressRoute' ? peer : null
-    authorizationKey: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? expressRouteCircuitAuthorizationKey : null
+    authorizationKey: connectionType == 'ExpressRoute' && !empty(authorizationKey) ? authorizationKey : null
     sharedKey: connectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicyVar : customIPSecPolicy.ipsecEncryption
+    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? [
+      {
+        saLifeTimeSeconds: customIPSecPolicy.saLifeTimeSeconds
+        saDataSizeKilobytes: customIPSecPolicy.saDataSizeKilobytes
+        ipsecEncryption: customIPSecPolicy.ipsecEncryption
+        ipsecIntegrity: customIPSecPolicy.ipsecIntegrity
+        ikeEncryption: customIPSecPolicy.ikeEncryption
+        ikeIntegrity: customIPSecPolicy.ikeIntegrity
+        dhGroup: customIPSecPolicy.dhGroup
+        pfsGroup: customIPSecPolicy.pfsGroup
+      }
+    ] : customIPSecPolicy.ipsecEncryption
     routingWeight: routingWeight != -1 ? routingWeight : null
     enableBgp: enableBgp
     useLocalAzureIpAddress: connectionType == 'IPsec' ? useLocalAzureIpAddress : null
