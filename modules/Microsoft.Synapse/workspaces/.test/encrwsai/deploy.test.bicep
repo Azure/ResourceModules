@@ -50,7 +50,7 @@ module testDeployment '../../deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     name: '<<namePrefix>>${serviceShort}001'
-    defaultDataLakeStorageAccountResourceId: nestedDependencies.outputs.storageAccountId
+    defaultDataLakeStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     defaultDataLakeStorageFilesystem: nestedDependencies.outputs.storageContainerName
     sqlAdministratorLogin: 'synwsadmin'
     encryption: true
