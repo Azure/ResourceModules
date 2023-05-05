@@ -1,5 +1,5 @@
 @description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
-param apiManagementServiceName string = ''
+param apiManagementServiceName string
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
