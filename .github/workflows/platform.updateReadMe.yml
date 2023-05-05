@@ -10,7 +10,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/**/deploy.bicep'
+      - 'modules/**/main.bicep'
       - 'modules/**/deploy.json'
       - 'utilities/tools/platform/**'
 
