@@ -70,12 +70,12 @@ function ConvertTo-ARMTemplate {
     $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
     $modulesFolderPath = Join-Path $rootPath 'modules'
 
-    $allAvailableBicepFilesToConvert = (Get-ChildItem -Path $modulesFolderPath -Include @('main.bicep', 'deploy.test.bicep') -Recurse -Force).FullName
+    $allAvailableBicepFilesToConvert = (Get-ChildItem -Path $modulesFolderPath -Include @('main.bicep', 'main.test.bicep') -Recurse -Force).FullName
 
     if (-not $ConvertChildren) {
         $BicepFilesToConvert = $allAvailableBicepFilesToConvert | Where-Object {
             (($_ -split 'Microsoft\.')[1] -replace '\\', '/' -split '\/').Count -lt 4 -or # Either are a top-level [main.bicep] file
-            ($_ -split 'Microsoft\.')[1] -replace '\\', '/' -like '*/.test/*' # OR are a [deploy.test.bicep] file
+            ($_ -split 'Microsoft\.')[1] -replace '\\', '/' -like '*/.test/*' # OR are a [main.test.bicep] file
         }
     } else {
         $BicepFilesToConvert = $allAvailableBicepFilesToConvert
@@ -83,8 +83,8 @@ function ConvertTo-ARMTemplate {
 
     #region Remove existing main.json files
     if ($RemoveExistingTemplates) {
-        $JsonFilesToRemove = (Get-ChildItem -Path $modulesFolderPath -Include @('main.json', 'deploy.test.json') -Recurse -Force -File).FullName
-        Write-Verbose "Remove existing [main.json / deploy.test.json] files - Remove [$($JsonFilesToRemove.count)] file(s)"
+        $JsonFilesToRemove = (Get-ChildItem -Path $modulesFolderPath -Include @('main.json', 'main.test.json') -Recurse -Force -File).FullName
+        Write-Verbose "Remove existing [main.json / main.test.json] files - Remove [$($JsonFilesToRemove.count)] file(s)"
         foreach ($jsonFileToRemove in $JsonFilesToRemove) {
             if ($PSCmdlet.ShouldProcess(('JSON File in Path [Microsoft.{0}]' -f (($jsonFileToRemove -split 'Microsoft\.')[1] )), 'Remove')) {
                 $null = Remove-Item -Path $jsonFileToRemove -Force

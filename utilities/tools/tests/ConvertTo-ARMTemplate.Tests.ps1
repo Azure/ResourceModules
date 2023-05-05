@@ -17,7 +17,7 @@ BeforeAll {
     $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
     $nestedBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
     $allBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'main.bicep' }).Count
-    $bicepTestFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.test.bicep' }).Count
+    $bicepTestFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'main.test.bicep' }).Count
     $topLevelBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'main.bicep' }).Count
     $allBicepFilesCount = $nestedBicepFilesCount + $allBicepDeployFilesCount + $bicepTestFilesCount
 
@@ -45,8 +45,8 @@ Describe 'Test default behavior' -Tag 'Default' {
         $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
     }
 
-    It 'All [<bicepTestFilesCount>] [deploy.test.bicep] files are converted to [deploy.test.json]' {
-        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.test.json' }).Count
+    It 'All [<bicepTestFilesCount>] [main.test.bicep] files are converted to [main.test.json]' {
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'main.test.json' }).Count
         $deployJsonFilesCount | Should -Be $bicepTestFilesCount
     }
 
@@ -56,7 +56,7 @@ Describe 'Test default behavior' -Tag 'Default' {
     }
 
     It 'All json files have metadata removed' {
-        $releveantJSONFiles = (Get-ChildItem -Recurse $modulesFolderPath).FullName | Where-Object { $_ -match '.+(main.json|deploy.test.json)$' }
+        $releveantJSONFiles = (Get-ChildItem -Recurse $modulesFolderPath).FullName | Where-Object { $_ -match '.+(main.json|main.test.json)$' }
 
         $metadataFound = $false
 
@@ -98,8 +98,8 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         $deployJsonFilesCount | Should -Be $allBicepDeployFilesCount
     }
 
-    It 'All [<bicepTestFilesCount>] [deploy.test.bicep] files are converted to [deploy.test.json]' {
-        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.test.json' }).Count
+    It 'All [<bicepTestFilesCount>] [main.test.bicep] files are converted to [main.test.json]' {
+        $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'main.test.json' }).Count
         $deployJsonFilesCount | Should -Be $bicepTestFilesCount
     }
 
@@ -109,7 +109,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
     }
 
     It 'All json files have metadata removed' {
-        $releveantJSONFiles = (Get-ChildItem -Recurse $modulesFolderPath).FullName | Where-Object { $_ -match '.+(main.json|deploy.test.json)$' }
+        $releveantJSONFiles = (Get-ChildItem -Recurse $modulesFolderPath).FullName | Where-Object { $_ -match '.+(main.json|main.test.json)$' }
 
         $metadataFound = $false
 

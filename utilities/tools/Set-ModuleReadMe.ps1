@@ -636,7 +636,7 @@ Mandatory. The Bicep parameter block to process
 Mandatory. The Path of the file containing the param block
 
 .EXAMPLE
-ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'" -CurrentFilePath 'c:/deploy.test.bicep'
+ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'" -CurrentFilePath 'c:/main.test.bicep'
 
 Convert the Bicep string "name: 'carml'\nlock: 'CanNotDelete'" into a parameter JSON object. Would result into:
 

@@ -57,7 +57,7 @@ Run a Test-Az*Deployment using a specific parameter-template combination with th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\main.bicep'
-    ModuleTestFilePath          = 'C:\Microsoft.Network\routeTables\.test\common\deploy.test.bicep'
+    ModuleTestFilePath          = 'C:\Microsoft.Network\routeTables\.test\common\main.test.bicep'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true

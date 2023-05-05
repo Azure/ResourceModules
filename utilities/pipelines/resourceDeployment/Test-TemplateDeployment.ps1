@@ -102,7 +102,7 @@ function Test-TemplateDeployment {
         }
         if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
             # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
-            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, deploy.test.bicep
+            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, main.test.bicep
             $providerNamespace = $shortPathElem[0] # e.g., AppConfiguration
             $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
 

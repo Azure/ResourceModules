@@ -60,7 +60,7 @@ function Test-NamePrefixAvailability {
         $containerRegistryNames = @()
         $keyVaultNames = @()
 
-        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'deploy.test.bicep').FullName | Where-Object {
+        $parameterFiles = (Get-ChildItem -Path $repoRoot -Recurse -Filter 'main.test.bicep').FullName | Where-Object {
             Test-Path (Join-Path (Split-Path $_ -Parent) 'dependencies.bicep') # Currently we only need to consider files that have ResourceGroup resources
         } | ForEach-Object {
             $_.Replace('\', '/')
