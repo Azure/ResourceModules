@@ -41,9 +41,9 @@ Test-TemplateDeployment -templateFilePath 'C:/KeyVault/main.bicep' -location 'We
 Test the main.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
+Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/main.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
 
-Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
+Test the main.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
 function Test-TemplateDeployment {
 

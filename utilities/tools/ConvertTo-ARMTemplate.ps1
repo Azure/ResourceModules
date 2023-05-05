@@ -5,7 +5,7 @@ This script converts the module library from bicep to json based ARM templates.
 .DESCRIPTION
 The script finds all 'main.bicep' files and tries to convert them to json based ARM templates
 by using the following steps.
-1. Remove existing deploy.json files
+1. Remove existing main.json files
 2. Convert bicep files to json
 3. Remove Bicep metadata from json
 4. Remove bicep files and folders
@@ -81,15 +81,15 @@ function ConvertTo-ARMTemplate {
         $BicepFilesToConvert = $allAvailableBicepFilesToConvert
     }
 
-    #region Remove existing deploy.json files
+    #region Remove existing main.json files
     if ($RemoveExistingTemplates) {
-        $JsonFilesToRemove = (Get-ChildItem -Path $modulesFolderPath -Include @('deploy.json', 'deploy.test.json') -Recurse -Force -File).FullName
-        Write-Verbose "Remove existing [deploy.json / deploy.test.json] files - Remove [$($JsonFilesToRemove.count)] file(s)"
+        $JsonFilesToRemove = (Get-ChildItem -Path $modulesFolderPath -Include @('main.json', 'deploy.test.json') -Recurse -Force -File).FullName
+        Write-Verbose "Remove existing [main.json / deploy.test.json] files - Remove [$($JsonFilesToRemove.count)] file(s)"
         foreach ($jsonFileToRemove in $JsonFilesToRemove) {
             if ($PSCmdlet.ShouldProcess(('JSON File in Path [Microsoft.{0}]' -f (($jsonFileToRemove -split 'Microsoft\.')[1] )), 'Remove')) {
                 $null = Remove-Item -Path $jsonFileToRemove -Force
             }
-            Write-Verbose 'Remove existing deploy.json files - Done'
+            Write-Verbose 'Remove existing main.json files - Done'
         }
     }
     #endregion

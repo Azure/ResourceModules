@@ -3,7 +3,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
-            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'main.bicep') -Force).Count -gt 0
+            (Get-ChildItem $_ -File -Depth 0 -Include @('main.json', 'main.bicep') -Force).Count -gt 0
         }),
 
     [Parameter(Mandatory = $false)]
@@ -31,7 +31,7 @@ $script:convertedTemplates = @{}
 
 # Shared exception messages
 $script:bicepTemplateCompilationFailedException = "Unable to compile the main.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``bicep build {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
-$script:jsonTemplateLoadFailedException = "Unable to load the deploy.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
+$script:jsonTemplateLoadFailedException = "Unable to load the main.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
@@ -43,11 +43,11 @@ Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
 
-        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` main.bicep `] file.' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` main.json ` / ` main.bicep `] file.' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 
-            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')
+            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'main.json')
             $hasBicep = Test-Path (Join-Path -Path $moduleFolderPath 'main.bicep')
                 ($hasARM -or $hasBicep) | Should -Be $true
         }
@@ -307,8 +307,8 @@ Describe 'Readme tests' -Tag 'Readme' {
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
                     }
-                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
@@ -821,8 +821,8 @@ Describe 'Deployment template tests' -Tag 'Template' {
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
                     }
-                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
@@ -1240,7 +1240,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
         }
 
         # PARAMETER Tests
-        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`deploy.json`).' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`main.json`).' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1254,7 +1254,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] All required parameters in template file (`deploy.json`) should exist in parameters files.' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All required parameters in template file (`main.json`) should exist in parameters files.' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1311,8 +1311,8 @@ Describe 'API version tests' -Tag 'ApiCheck' {
                 if (-not $templateContent) {
                     throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
                 }
-            } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+            } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                $templateFilePath = Join-Path $moduleFolderPath 'main.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {

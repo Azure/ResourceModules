@@ -105,7 +105,7 @@ function Find-TemplateFile {
     #Prioritizing the bicep file
     $TemplateFilePath = Join-Path $FolderPath 'main.bicep'
     if (-not (Test-Path $TemplateFilePath)) {
-        $TemplateFilePath = Join-Path $FolderPath 'deploy.json'
+        $TemplateFilePath = Join-Path $FolderPath 'main.json'
     }
 
     if (-not (Test-Path $TemplateFilePath)) {
@@ -213,7 +213,7 @@ function Get-ParentModuleTemplateFile {
     #Prioritizing the bicep file
     $ParentTemplateFilePath = Join-Path $ParentFolderPath 'main.bicep'
     if (-not (Test-Path $TemplateFilePath)) {
-        $ParentTemplateFilePath = Join-Path $ParentFolderPath 'deploy.json'
+        $ParentTemplateFilePath = Join-Path $ParentFolderPath 'main.json'
     }
 
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
