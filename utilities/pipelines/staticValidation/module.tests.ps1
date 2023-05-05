@@ -807,9 +807,9 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
         $roleAssignmentTestCases = @()
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.bicep/nested_roleAssignments.bicep')) {
-                $nestedFilePath = Join-Path $moduleFolderPath '.bicep/nested_roleAssignments.bicep'
-                $nestedFileContent = Get-Content $nestedFilePath
+           $rbacFilePath = Join-Path $moduleFolderPath '.bicep/nested_roleAssignments.bicep'
+            if (Test-Path $rbacFilePath) {
+                $nestedFileContent = Get-Content $rbacFilePath 
 
                 #$resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                 $resourceTypeIdentifier = (Get-Content (Join-Path $moduleFolderPath 'readme.md')).split('`')[1].substring(1).Replace(']', '')
