@@ -15,8 +15,8 @@ param azureADOnlyAuthentication bool = false
 @description('Optional. AAD object ID of initial workspace admin.')
 param initialWorkspaceAdminObjectID string = ''
 
-@description('Required. Name of the default ADLS Gen2 storage account.')
-param defaultDataLakeStorageAccountName string
+@description('Required. Resource ID of the default ADLS Gen2 storage account.')
+param defaultDataLakeStorageAccountResourceId string
 
 @description('Required. The default ADLS Gen2 file system.')
 param defaultDataLakeStorageFilesystem string
@@ -77,6 +77,9 @@ param sqlAdministratorLogin string
 @description('Optional. Password for administrator access to the workspace\'s SQL pools. If you don\'t provide a password, one will be automatically generated. You can change the password later.')
 #disable-next-line secure-secrets-in-params // Not a secret
 param sqlAdministratorLoginPassword string = ''
+
+@description('Optional. Git integration settings.')
+param workspaceRepositoryConfiguration object = {}
 
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
@@ -196,7 +199,8 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectID
     } : null
     defaultDataLakeStorage: {
-      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.${environment().suffixes.storage}'
+      resourceId: defaultDataLakeStorageAccountResourceId
+      accountUrl: 'https://${last(split(defaultDataLakeStorageAccountResourceId, '/'))!}.dfs.${environment().suffixes.storage}'
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
@@ -225,6 +229,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     } : null
     sqlAdministratorLogin: sqlAdministratorLogin
     sqlAdministratorLoginPassword: !empty(sqlAdministratorLoginPassword) ? sqlAdministratorLoginPassword : null
+    workspaceRepositoryConfiguration: workspaceRepositoryConfiguration
   }
 }
 

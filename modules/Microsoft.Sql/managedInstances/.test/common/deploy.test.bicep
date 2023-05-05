@@ -138,11 +138,11 @@ module testDeployment '../../deploy.bicep' = {
         'test2@contoso.com'
       ]
       recurringScansIsEnabled: true
-      vulnerabilityAssessmentsStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
+      storageAccountResourceId: diagnosticDependencies.outputs.storageAccountResourceId
       tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
+        Environment: 'Non-Prod'
+        Role: 'DeploymentValidation'
+      }
     }
   }
 }

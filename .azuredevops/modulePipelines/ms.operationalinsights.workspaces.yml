@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/Microsoft.OperationalInsights/workspaces/*'
+      - '/modules/Microsoft.OperationsManagement/solutions/*'
       - '/.azuredevops/modulePipelines/ms.operationalinsights.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.OperationalInsights/workspaces/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

@@ -22,7 +22,7 @@ param userAssignedIdentities object = {}
   'BlockBlobStorage'
 ])
 @description('Optional. Type of Storage Account to create.')
-param storageAccountKind string = 'StorageV2'
+param kind string = 'StorageV2'
 
 @allowed([
   'Standard_LRS'
@@ -35,7 +35,7 @@ param storageAccountKind string = 'StorageV2'
   'Standard_RAGZRS'
 ])
 @description('Optional. Storage Account Sku Name.')
-param storageAccountSku string = 'Standard_GRS'
+param skuName string = 'Standard_GRS'
 
 @allowed([
   'Premium'
@@ -43,7 +43,7 @@ param storageAccountSku string = 'Standard_GRS'
   'Cool'
 ])
 @description('Conditional. Required if the Storage Account kind is set to BlobStorage. The access tier is used for billing. The "Premium" access tier is the default value for premium block blobs storage account type and it cannot be changed for the premium block blobs storage account type.')
-param storageAccountAccessTier string = 'Hot'
+param accessTier string = 'Hot'
 
 @allowed([
   'Disabled'
@@ -201,6 +201,9 @@ param cMKKeyVersion string = ''
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
+@description('Optional. The SAS expiration period. DD.HH:MM:SS.')
+param sasExpirationPeriod string = ''
+
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
@@ -211,8 +214,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var supportsBlobService = storageAccountKind == 'BlockBlobStorage' || storageAccountKind == 'BlobStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
-var supportsFileService = storageAccountKind == 'FileStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
+var supportsBlobService = kind == 'BlockBlobStorage' || kind == 'BlobStorage' || kind == 'StorageV2' || kind == 'Storage'
+var supportsFileService = kind == 'FileStorage' || kind == 'StorageV2' || kind == 'Storage'
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 var identity = identityType != 'None' ? {
@@ -242,9 +245,9 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: name
   location: location
-  kind: storageAccountKind
+  kind: kind
   sku: {
-    name: storageAccountSku
+    name: skuName
   }
   identity: identity
   tags: tags
@@ -275,7 +278,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
           enabled: true
         }
       }
-      requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
+      requireInfrastructureEncryption: kind != 'Storage' ? requireInfrastructureEncryption : null
       keyvaultproperties: !empty(cMKKeyName) ? {
         keyname: cMKKeyName
         keyvaulturi: keyVault.properties.vaultUri
@@ -285,12 +288,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
       } : null
     }
-    accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
+    accessTier: kind != 'Storage' ? accessTier : null
+    sasPolicy: !empty(sasExpirationPeriod) ? {
+      expirationAction: 'Log'
+      sasExpirationPeriod: sasExpirationPeriod
+    } : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
     isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
     isSftpEnabled: enableSftp
     isNfsV3Enabled: enableNfsV3
-    largeFileSharesState: (storageAccountSku == 'Standard_LRS') || (storageAccountSku == 'Standard_ZRS') ? largeFileSharesState : null
+    largeFileSharesState: (skuName == 'Standard_LRS') || (skuName == 'Standard_ZRS') ? largeFileSharesState : null
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: contains(networkAcls, 'bypass') ? networkAcls.bypass : null
@@ -394,8 +401,19 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     storageAccountName: storageAccount.name
     containers: contains(blobServices, 'containers') ? blobServices.containers : []
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
-    deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
+    changeFeedEnabled: contains(blobServices, 'changeFeedEnabled') ? blobServices.changeFeedEnabled : false
+    changeFeedRetentionInDays: contains(blobServices, 'changeFeedRetentionInDays') ? blobServices.changeFeedRetentionInDays : 7
+    containerDeleteRetentionPolicyEnabled: contains(blobServices, 'containerDeleteRetentionPolicyEnabled') ? blobServices.containerDeleteRetentionPolicyEnabled : false
+    containerDeleteRetentionPolicyDays: contains(blobServices, 'containerDeleteRetentionPolicyDays') ? blobServices.containerDeleteRetentionPolicyDays : 7
+    containerDeleteRetentionPolicyAllowPermanentDelete: contains(blobServices, 'containerDeleteRetentionPolicyAllowPermanentDelete') ? blobServices.containerDeleteRetentionPolicyAllowPermanentDelete : false
+    corsRules: contains(blobServices, 'corsRules') ? blobServices.corsRules : []
+    defaultServiceVersion: contains(blobServices, 'defaultServiceVersion') ? blobServices.defaultServiceVersion : ''
+    deleteRetentionPolicyEnabled: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : false
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
+    isVersioningEnabled: contains(blobServices, 'isVersioningEnabled') ? blobServices.isVersioningEnabled : false
+    lastAccessTimeTrackingPolicyEnable: contains(blobServices, 'lastAccessTimeTrackingPolicyEnable') ? blobServices.lastAccessTimeTrackingPolicyEnable : false
+    restorePolicyEnabled: contains(blobServices, 'restorePolicyEnabled') ? blobServices.restorePolicyEnabled : false
+    restorePolicyDays: contains(blobServices, 'restorePolicyDays') ? blobServices.restorePolicyDays : 6
     diagnosticLogsRetentionInDays: contains(blobServices, 'diagnosticLogsRetentionInDays') ? blobServices.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(blobServices, 'diagnosticEventHubAuthorizationRuleId') ? blobServices.diagnosticEventHubAuthorizationRuleId : ''

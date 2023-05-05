@@ -2,13 +2,8 @@
 @description('Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group\'s name.')
 param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
-@description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
-@allowed([
-  'none'
-  'uppercase'
-  'lowercase'
-])
-param vmComputerNamesTransformation string = 'none'
+@description('Optional. Can be used if the computer name needs to be different from the Azure VM resource name. If not used, the resource name will be used as computer name.')
+param computerName string = name
 
 @description('Required. Specifies the size for the VMs.')
 param vmSize string
@@ -314,8 +309,6 @@ param winRM object = {}
 ])
 param configurationProfile string = ''
 
-var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
-
 var publicKeysFormatted = [for publicKey in publicKeys: {
   path: publicKey.path
   keyData: publicKey.keyData
@@ -467,7 +460,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-11-01' = {
       ultraSSDEnabled: ultraSSDEnabled
     }
     osProfile: {
-      computerName: vmComputerNameTransformed
+      computerName: computerName
       adminUsername: adminUsername
       adminPassword: adminPassword
       customData: !empty(customData) ? base64(customData) : null
@@ -531,6 +524,7 @@ module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfi
     autoUpgradeMinorVersion: contains(extensionAadJoinConfig, 'autoUpgradeMinorVersion') ? extensionAadJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAadJoinConfig, 'enableAutomaticUpgrade') ? extensionAadJoinConfig.enableAutomaticUpgrade : false
     settings: contains(extensionAadJoinConfig, 'settings') ? extensionAadJoinConfig.settings : {}
+    tags: contains(extensionAadJoinConfig, 'tags') ? extensionAadJoinConfig.tags : {}
   }
 }
 
@@ -545,6 +539,7 @@ module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoi
     autoUpgradeMinorVersion: contains(extensionDomainJoinConfig, 'autoUpgradeMinorVersion') ? extensionDomainJoinConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDomainJoinConfig, 'enableAutomaticUpgrade') ? extensionDomainJoinConfig.enableAutomaticUpgrade : false
     settings: extensionDomainJoinConfig.settings
+    tags: contains(extensionDomainJoinConfig, 'tags') ? extensionDomainJoinConfig.tags : {}
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
@@ -563,6 +558,7 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
+    tags: contains(extensionAntiMalwareConfig, 'tags') ? extensionAntiMalwareConfig.tags : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
@@ -585,6 +581,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     settings: {
       workspaceId: !empty(monitoringWorkspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
+    tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
@@ -603,6 +600,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    tags: contains(extensionDependencyAgentConfig, 'tags') ? extensionDependencyAgentConfig.tags : {}
   }
 }
 
@@ -617,6 +615,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    tags: contains(extensionNetworkWatcherAgentConfig, 'tags') ? extensionNetworkWatcherAgentConfig.tags : {}
   }
 }
 
@@ -631,6 +630,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
     autoUpgradeMinorVersion: contains(extensionDSCConfig, 'autoUpgradeMinorVersion') ? extensionDSCConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
+    tags: contains(extensionDSCConfig, 'tags') ? extensionDSCConfig.tags : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -649,6 +649,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
+    tags: contains(extensionCustomScriptConfig, 'tags') ? extensionCustomScriptConfig.tags : {}
     protectedSettings: extensionCustomScriptProtectedSetting
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -669,6 +670,7 @@ module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extension
     enableAutomaticUpgrade: contains(extensionAzureDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionAzureDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionAzureDiskEncryptionConfig, 'forceUpdateTag') ? extensionAzureDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionAzureDiskEncryptionConfig.settings
+    tags: contains(extensionAzureDiskEncryptionConfig, 'tags') ? extensionAzureDiskEncryptionConfig.tags : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [

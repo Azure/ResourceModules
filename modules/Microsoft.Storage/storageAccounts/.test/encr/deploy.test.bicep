@@ -12,7 +12,7 @@ param resourceGroupName string = 'ms.storage.storageaccounts-${serviceShort}-rg'
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'stsencr'
+param serviceShort string = 'ssaencr'
 
 @description('Generated. Used as a basis for unique resource names.')
 param baseTime string = utcNow('u')
@@ -52,7 +52,7 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    storageAccountSku: 'Standard_LRS'
+    skuName: 'Standard_LRS'
     allowBlobPublicAccess: false
     requireInfrastructureEncryption: true
     privateEndpoints: [
@@ -77,6 +77,19 @@ module testDeployment '../../deploy.bicep' = {
           publicAccess: 'None'
         }
       ]
+      automaticSnapshotPolicyEnabled: true
+      changeFeedEnabled: true
+      changeFeedRetentionInDays: 10
+      containerDeleteRetentionPolicyEnabled: true
+      containerDeleteRetentionPolicyDays: 10
+      containerDeleteRetentionPolicyAllowPermanentDelete: true
+      defaultServiceVersion: '2008-10-27'
+      deleteRetentionPolicy: true
+      deleteRetentionPolicyDays: 9
+      isVersioningEnabled: true
+      lastAccessTimeTrackingPolicyEnable: true
+      restorePolicyEnabled: true
+      restorePolicyDays: 8
     }
     systemAssignedIdentity: false
     userAssignedIdentities: {

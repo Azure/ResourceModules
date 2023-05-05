@@ -94,6 +94,9 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
+@description('Optional. The encryption protection configuration.')
+param encryptionProtectorObj object = {}
+
 @description('Optional. The vulnerability assessment configuration.')
 param vulnerabilityAssessmentsObj object = {}
 
@@ -293,7 +296,7 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
     recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
-    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
+    storageAccountResourceId: contains(vulnerabilityAssessmentsObj, 'storageAccountResourceId') ? vulnerabilityAssessmentsObj.storageAccountResourceId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
@@ -311,6 +314,20 @@ module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
+
+module server_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
+  name: '${uniqueString(deployment().name, location)}-Sql-EncryProtector'
+  params: {
+    sqlServerName: server.name
+    serverKeyName: encryptionProtectorObj.serverKeyName
+    serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
+    autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+  dependsOn: [
+    server_keys
+  ]
+}
 
 @description('The name of the deployed SQL server.')
 output name string = server.name

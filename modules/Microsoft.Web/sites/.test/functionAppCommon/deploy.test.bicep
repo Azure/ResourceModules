@@ -66,7 +66,7 @@ module testDeployment '../../deploy.bicep' = {
     name: '<<namePrefix>>${serviceShort}001'
     kind: 'functionapp'
     serverFarmResourceId: nestedDependencies.outputs.serverFarmResourceId
-    appInsightId: nestedDependencies.outputs.applicationInsightsResourceId
+    appInsightResourceId: nestedDependencies.outputs.applicationInsightsResourceId
     appSettingsKeyValuePairs: {
       AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
       EASYAUTH_SECRET: 'https://<<namePrefix>>-KeyVault${environment().suffixes.keyvaultDns}/secrets/Modules-Test-SP-Password'
@@ -171,7 +171,7 @@ module testDeployment '../../deploy.bicep' = {
       alwaysOn: true
       use32BitWorkerProcess: false
     }
-    storageAccountId: nestedDependencies.outputs.storageAccountResourceId
+    storageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}

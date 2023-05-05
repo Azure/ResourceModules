@@ -128,12 +128,6 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFileList.ps1')
 
-            # Get Service Principal Object ID
-            $context = Get-AzContext
-            $servicePrincipalAppId = $context.Account.Id
-            $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-            $servicePrincipalObjectId = $servicePrincipal.Id
-
             # Get target files
             $moduleTestFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(moduleTestFilePath)'
             $targetFileList = @($moduleTestFilePath)
@@ -151,7 +145,6 @@ jobs:
               subscriptionId    = '${{ parameters.subscriptionId }}'
               managementGroupId = '${{ parameters.managementGroupId }}'
               tenantId          = '$(ARM_TENANT_ID)'
-              deploymentSpId    = $servicePrincipalObjectId
             }
 
             # Add local (source control) tokens

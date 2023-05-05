@@ -13,7 +13,7 @@ This module deploys a variable to an Azure Automation Account.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/variables` | [2020-01-13-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables) |
+| `Microsoft.Automation/automationAccounts/variables` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Automation/2022-08-08/automationAccounts/variables) |
 
 ## Parameters
 
@@ -22,7 +22,7 @@ This module deploys a variable to an Azure Automation Account.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the variable. |
-| `value` | string | The value of the variable. |
+| `value` | securestring | The value of the variable. For security best practices, this value is always passed as a secure string as it could contain an encrypted value when the "isEncrypted" property is set to true. |
 
 **Conditional parameters**
 

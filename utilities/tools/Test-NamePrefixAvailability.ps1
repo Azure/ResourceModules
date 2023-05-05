@@ -20,7 +20,6 @@ $inputObject = @{
         SubscriptionId    = '00000000-0000-0000-0000-000000000000'
         ManagementGroupId = '00000000-0000-0000-0000-000000000000'
         RemoveDeployment  = $false
-        deploymentSpId    = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-NamePrefixAvailability @inputObject
