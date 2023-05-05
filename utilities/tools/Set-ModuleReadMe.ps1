@@ -1567,7 +1567,7 @@ function Set-ModuleReadMe {
     }
 
     $testFolderPath = Join-Path $moduleRoot '.test'
-    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'deploy.test.*').count -gt 0 : $false
+    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'main.test.*').count -gt 0 : $false
     if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
         # Handle [Deployment examples] section
         # ===================================

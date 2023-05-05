@@ -158,7 +158,7 @@ function Get-TemplateFileToPublish {
     Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToPublish.count) -Verbose
     $TemplateFilesToPublish | ForEach-Object {
         $RelPath = ($_.FullName).Split('/modules/')[-1]
-        $RelPath = $RelPath.Split('/deploy.')[0]
+        $RelPath = $RelPath.Split('/main.')[0]
         Write-Verbose " - [$RelPath]" -Verbose
     }
 
@@ -452,7 +452,7 @@ function Get-ModulesToPublish {
         Write-Verbose 'Publish the following modules:'-Verbose
         $modulesToPublish | ForEach-Object {
             $RelPath = ($_.TemplateFilePath).Split('/modules/')[-1]
-            $RelPath = $RelPath.Split('/deploy.')[0]
+            $RelPath = $RelPath.Split('/main.')[0]
             Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
         }
     } else {
