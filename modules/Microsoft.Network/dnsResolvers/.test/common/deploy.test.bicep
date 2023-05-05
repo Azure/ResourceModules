@@ -64,5 +64,14 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+          'c99b4f9a-4268-4ab0-bd02-85d160b29a36' // carml-contributor-group
+        ]
+      }
+    ]
   }
 }
