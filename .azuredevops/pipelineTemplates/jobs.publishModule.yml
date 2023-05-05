@@ -184,7 +184,7 @@ jobs:
             ##   Publish   ##
             #################
             foreach ($moduleToPublish in $modulesToPublish) {
-              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
@@ -273,7 +273,7 @@ jobs:
             ##   Publish   ##
             #################
             foreach ($moduleToPublish in $modulesToPublish) {
-              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
@@ -364,7 +364,7 @@ jobs:
             ##   Publish   ##
             #################
             foreach ($moduleToPublish in $modulesToPublish) {
-              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+              $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
               $functionInput = @{
