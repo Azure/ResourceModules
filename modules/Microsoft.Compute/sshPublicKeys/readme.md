@@ -1,7 +1,7 @@
 # Public SSH Keys `[Microsoft.Compute/sshPublicKeys]`
 
 This template deploys a Public SSH Key resource.
-> Note: The resource does not auto-generate the key for you. 
+> Note: The resource does not auto-generate the key for you.
 
 ## Navigation
 
@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
+module sshPublicKeys './Microsoft.Compute/sshPublicKeys/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cspkcom'
   params: {
     // Required parameters
@@ -215,7 +215,7 @@ module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sshPublicKeys './Microsoft.Compute/sshPublicKeys/deploy.bicep' = {
+module sshPublicKeys './Microsoft.Compute/sshPublicKeys/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cspkmin'
   params: {
     // Required parameters

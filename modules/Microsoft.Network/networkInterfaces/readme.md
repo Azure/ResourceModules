@@ -200,7 +200,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+module networkInterfaces './Microsoft.Network/networkInterfaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnicom'
   params: {
     // Required parameters
@@ -349,7 +349,7 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+module networkInterfaces './Microsoft.Network/networkInterfaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnimin'
   params: {
     // Required parameters

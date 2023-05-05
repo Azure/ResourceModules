@@ -944,7 +944,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+module vaults './Microsoft.RecoveryServices/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvcom'
   params: {
     // Required parameters
@@ -1603,7 +1603,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+module vaults './Microsoft.RecoveryServices/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvdr'
   params: {
     // Required parameters
@@ -1772,7 +1772,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
+module vaults './Microsoft.RecoveryServices/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvmin'
   params: {
     // Required parameters

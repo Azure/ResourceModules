@@ -173,7 +173,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module rg 'modules/Microsoft.Resources/resourceGroups/main.bicep' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -182,7 +182,7 @@ module rg 'modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
 }
 
 // Network Security Group
-module nsg 'modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+module nsg 'modules/Microsoft.Network/networkSecurityGroups/main.bicep' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -194,7 +194,7 @@ module nsg 'modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
 }
 
 // Virtual Network
-module vnet 'modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+module vnet 'modules/Microsoft.Network/virtualNetworks/main.bicep' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -475,7 +475,7 @@ jobs:
       - name: 'Deploy resource group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          templateFilePath: './modules/Microsoft.Resources/resourceGroups/main.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -486,7 +486,7 @@ jobs:
       - name: 'Deploy network security group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          templateFilePath: './modules/Microsoft.Network/networkSecurityGroups/main.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -497,7 +497,7 @@ jobs:
       - name: 'Deploy virtual network A'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          templateFilePath: './modules/Microsoft.Network/virtualNetworks/main.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -562,7 +562,7 @@ stages:
         parameters:
           jobName: resourceGroups
           displayName: 'Resource Group'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          modulePath: '/modules/Microsoft.Resources/resourceGroups/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/parameters.json'
           checkoutRepositories:
             - modules
@@ -570,7 +570,7 @@ stages:
         parameters:
           jobName: networkSecurityGroups
           displayName: 'Network Security Groups'
-          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
           checkoutRepositories:
             - modules
@@ -578,7 +578,7 @@ stages:
         parameters:
           jobName: routeTables
           displayName: 'Route Tables'
-          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          modulePath: '/modules/Microsoft.Network/routeTables/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
           checkoutRepositories:
             - modules
@@ -586,7 +586,7 @@ stages:
         parameters:
           jobName: virtualNetworks
           displayName: 'Virtual Networks'
-          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          modulePath: '/modules/Microsoft.Network/virtualNetworks/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
           checkoutRepositories:
             - modules
@@ -670,7 +670,7 @@ jobs:
         . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
         $functionInput = @{
-            templateFilePath     = Join-Path "$(downloadDirectory)/${{ parameters.moduleName }}" 'deploy.bicep'
+            templateFilePath     = Join-Path "$(downloadDirectory)/${{ parameters.moduleName }}" 'main.bicep'
             parameterFilePath    = "$(Build.SourcesDirectory)/$(environmentPath)/Parameters/${{ parameters.parameterFilePath }}"
             location             = '${{ parameters.location }}'
             resourceGroupName    = '${{ parameters.resourceGroupName }}'

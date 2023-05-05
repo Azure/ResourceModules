@@ -636,7 +636,7 @@ Mandatory. The Bicep parameter block to process
 Mandatory. The Path of the file containing the param block
 
 .EXAMPLE
-ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'" -CurrentFilePath 'c:/deploy.test.bicep'
+ConvertTo-FormattedJSONParameterObject -BicepParamBlock "name: 'carml'\nlock: 'CanNotDelete'" -CurrentFilePath 'c:/main.test.bicep'
 
 Convert the Bicep string "name: 'carml'\nlock: 'CanNotDelete'" into a parameter JSON object. Would result into:
 
@@ -972,7 +972,7 @@ function Set-DeploymentExamplesSection {
             # ------------------------- #
 
             # [1/6] Search for the relevant parameter start & end index
-            $bicepTestStartIndex = ($rawContentArray | Select-String ("^module testDeployment '..\/.*deploy.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
+            $bicepTestStartIndex = ($rawContentArray | Select-String ("^module testDeployment '..\/.*main.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
 
             $bicepTestEndIndex = $bicepTestStartIndex
             do {
@@ -991,7 +991,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
+            $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/main.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1387,27 +1387,27 @@ Optional. The sections to update. By default it refreshes all that are supported
 Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template references'
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:\deploy.bicep'
+Set-ModuleReadMe -TemplateFilePath 'C:\main.bicep'
 
-Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\deploy.bicep'
+Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\main.bicep'
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
 
 Generate the Module ReadMe only for specific sections. Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -TemplateFileContent @{...}
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/main.bicep' -TemplateFileContent @{...}
 
 (Re)Generate the readme file for template 'loadBalancer' based on the content provided in the TemplateFileContent parameter
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -ReadMeFilePath 'C:/differentFolder'
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/main.bicep' -ReadMeFilePath 'C:/differentFolder'
 
 Generate the Module ReadMe files into a specific folder path
 
 .EXAMPLE
-$templatePaths = (Get-ChildItem 'C:/Microsoft.Network' -Filter 'deploy.bicep' -Recurse).FullName
+$templatePaths = (Get-ChildItem 'C:/Microsoft.Network' -Filter 'main.bicep' -Recurse).FullName
 $templatePaths | ForEach-Object -Parallel { . '<PathToRepo>/utilities/tools/Set-ModuleReadMe.ps1' ; Set-ModuleReadMe -TemplateFilePath $_ }
 
 Generate the Module ReadMe for any template in a folder path
@@ -1510,7 +1510,7 @@ function Set-ModuleReadMe {
     }
 
     # Update title
-    if ($TemplateFilePath.Replace('\', '/') -like '*/deploy.*') {
+    if ($TemplateFilePath.Replace('\', '/') -like '*/main.*') {
 
         if ($readMeFileContent[0] -notlike "*``[$fullModuleIdentifier]``") {
             # Cut outdated
@@ -1567,7 +1567,7 @@ function Set-ModuleReadMe {
     }
 
     $testFolderPath = Join-Path $moduleRoot '.test'
-    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'deploy.test.*').count -gt 0 : $false
+    $hasTests = (Test-Path $testFolderPath) ? (Get-ChildItem -Path $testFolderPath -Recurse -Include 'main.test.*').count -gt 0 : $false
     if ($SectionsToRefresh -contains 'Deployment examples' -and $hasTests) {
         # Handle [Deployment examples] section
         # ===================================

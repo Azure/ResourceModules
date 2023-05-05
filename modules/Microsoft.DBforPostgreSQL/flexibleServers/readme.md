@@ -381,7 +381,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
+module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsmin'
   params: {
     // Required parameters
@@ -442,7 +442,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
+module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfspvt'
   params: {
     // Required parameters
@@ -593,7 +593,7 @@ module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/deploy.bicep' = {
+module flexibleServers './Microsoft.DBforPostgreSQL/flexibleServers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfpsfsp'
   params: {
     // Required parameters

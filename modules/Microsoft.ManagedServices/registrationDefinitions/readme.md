@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
+module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-msrdcom'
   params: {
     // Required parameters
@@ -273,7 +273,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 <summary>via Bicep module</summary>
 
 ```bicep
-module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
+module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-msrdrg'
   params: {
     // Required parameters

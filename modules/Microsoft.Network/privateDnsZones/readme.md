@@ -182,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
+module privateDnsZones './Microsoft.Network/privateDnsZones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npdzcom'
   params: {
     // Required parameters
@@ -609,7 +609,7 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
+module privateDnsZones './Microsoft.Network/privateDnsZones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npdzmin'
   params: {
     // Required parameters

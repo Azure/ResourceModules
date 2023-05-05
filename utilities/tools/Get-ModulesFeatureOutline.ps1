@@ -56,9 +56,9 @@ function Get-ModulesFeatureOutline {
     )
 
     if ($OnlyTopLevel) {
-        $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'deploy.bicep' -Depth 2).FullName
+        $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'main.bicep' -Depth 2).FullName
     } else {
-        $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'deploy.bicep').FullName
+        $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'main.bicep').FullName
     }
 
     ####################

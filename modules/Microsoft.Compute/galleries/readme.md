@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+module galleries './Microsoft.Compute/galleries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cgcom'
   params: {
     // Required parameters
@@ -506,7 +506,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+module galleries './Microsoft.Compute/galleries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cgmin'
   params: {
     // Required parameters

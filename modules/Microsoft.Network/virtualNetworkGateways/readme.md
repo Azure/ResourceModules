@@ -274,7 +274,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
   params: {
     // Required parameters
@@ -429,7 +429,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvger'
   params: {
     // Required parameters
@@ -554,7 +554,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
+module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgvpn'
   params: {
     // Required parameters
