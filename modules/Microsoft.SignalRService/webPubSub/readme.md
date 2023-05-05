@@ -390,7 +390,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpscom'
   params: {
     // Required parameters
@@ -577,7 +577,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpsmin'
   params: {
     // Required parameters
@@ -622,7 +622,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/deploy.bicep' = {
+module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpspe'
   params: {
     // Required parameters

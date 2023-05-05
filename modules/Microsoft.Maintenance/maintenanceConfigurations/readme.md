@@ -205,7 +205,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/deploy.bicep' = {
+module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mmccom'
   params: {
     // Required parameters
@@ -312,7 +312,7 @@ module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurati
 <summary>via Bicep module</summary>
 
 ```bicep
-module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/deploy.bicep' = {
+module maintenanceConfigurations './Microsoft.Maintenance/maintenanceConfigurations/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mmcmin'
   params: {
     // Required parameters

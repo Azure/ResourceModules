@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsZones './Microsoft.Network/dnsZones/deploy.bicep' = {
+module dnsZones './Microsoft.Network/dnsZones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndzcom'
   params: {
     // Required parameters
@@ -605,7 +605,7 @@ module dnsZones './Microsoft.Network/dnsZones/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsZones './Microsoft.Network/dnsZones/deploy.bicep' = {
+module dnsZones './Microsoft.Network/dnsZones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndzmin'
   params: {
     // Required parameters

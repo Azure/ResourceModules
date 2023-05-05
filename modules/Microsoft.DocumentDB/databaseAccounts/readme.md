@@ -552,7 +552,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddagrm'
   params: {
     // Required parameters
@@ -787,7 +787,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddamng'
   params: {
     // Required parameters
@@ -1286,7 +1286,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddapln'
   params: {
     // Required parameters
@@ -1411,7 +1411,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddasql'
   params: {
     // Required parameters

@@ -103,7 +103,7 @@ subscriptionId: '12345678-b049-471c-95af-123456789012'
 
 ## Module Usage Guidance
 
-In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `deploy.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](deploy.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/deploy.bicep'](./subscription/deploy.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
+In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `main.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](main.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/main.bicep'](./subscription/main.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
 
 The above method is useful when you want to use a single point to interact with the module but rely on parameter combinations to achieve the target scope. But what if you want to incorporate this module in other modules with lower scopes? This would force you to deploy the module in scope `managementGroup` regardless and further require you to provide its ID with it. If you do not set the scope to management group, this would be the error that you can expect to face:
 
@@ -111,7 +111,7 @@ The above method is useful when you want to use a single point to interact with 
 Error BCP134: Scope "subscription" is not valid for this module. Permitted scopes: "managementGroup"
 ```
 
-The solution is to have the option of directly targeting the sub-module that achieves the required scope. For example, if you have your own Bicep file wanting to create resources at the subscription level, and also use some of the modules from the `Microsoft.Authorization` namespace, then you can directly use the sub-module ['/subscription/deploy.bicep'](./subscription/deploy.bicep) as a path within your repository, or reference that same published module from the bicep registry. CARML also published the sub-modules so you would be able to reference it like the following:
+The solution is to have the option of directly targeting the sub-module that achieves the required scope. For example, if you have your own Bicep file wanting to create resources at the subscription level, and also use some of the modules from the `Microsoft.Authorization` namespace, then you can directly use the sub-module ['/subscription/main.bicep'](./subscription/main.bicep) as a path within your repository, or reference that same published module from the bicep registry. CARML also published the sub-modules so you would be able to reference it like the following:
 
 **Bicep Registry Reference**
 ```bicep
@@ -119,7 +119,7 @@ module policysetdefinition 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.
 ```
 **Local Path Reference**
 ```bicep
-module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDefinitions/subscription/deploy.bicep' = {}
+module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDefinitions/subscription/main.bicep' = {}
 ```
 
 ## Outputs
@@ -131,7 +131,7 @@ module policysetdefinition 'yourpath/modules/Microsoft.Authorization.policySetDe
 
 ## Considerations
 
-- Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/deploy.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
+- Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/main.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
 
 ## Cross-referenced modules
 
@@ -151,7 +151,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgcom'
   params: {
     // Required parameters
@@ -294,7 +294,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
@@ -365,7 +365,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubcom'
   params: {
     // Required parameters
@@ -508,7 +508,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 <summary>via Bicep module</summary>
 
 ```bicep
-module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
+module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apsdsubmin'
   params: {
     // Required parameters

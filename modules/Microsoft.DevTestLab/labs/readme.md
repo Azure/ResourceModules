@@ -235,7 +235,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
+module labs './Microsoft.DevTestLab/labs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtllcom'
   params: {
     // Required parameters
@@ -766,7 +766,7 @@ module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module labs './Microsoft.DevTestLab/labs/deploy.bicep' = {
+module labs './Microsoft.DevTestLab/labs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtllmin'
   params: {
     // Required parameters

@@ -37,13 +37,13 @@ function Get-DeployToAzureUrl {
         [string] $Organization
     )
 
-    if (-not (Test-Path -Path "$Path\deploy.json")) {
-        Write-Warning "ARM Template in path [$Path\deploy.json] not found. Unable to generate 'Deploy to Azure' button."
+    if (-not (Test-Path -Path "$Path\main.json")) {
+        Write-Warning "ARM Template in path [$Path\main.json] not found. Unable to generate 'Deploy to Azure' button."
         return ''
     }
 
     $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
-    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/deploy.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
+    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
 
     return ('{0}{1}>)' -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
 }
@@ -94,7 +94,7 @@ Get a string that indicates whether there are ARM/Bicep templates available in t
 .DESCRIPTION
 Get a string that indicates whether there are ARM/Bicep templates available in the given path.
 The string represents markdown table columns.
-Files must follow the naming schema 'deploy.json' & 'deploy.bicep'
+Files must follow the naming schema 'main.json' & 'main.bicep'
 
 .PARAMETER path
 Mandatory. The path to check for templates
@@ -117,7 +117,7 @@ function Get-TypeColumnString {
 
     $outputString = ''
 
-    # if ($moduleFiles.Name -contains 'deploy.json') {
+    # if ($moduleFiles.Name -contains 'main.json') {
     #     # ARM exists
     #     $outputString += ":heavy_check_mark:/"
     # }
@@ -125,7 +125,7 @@ function Get-TypeColumnString {
     #     $outputString += " /"
     # }
 
-    if ($moduleFiles.Name -contains 'deploy.bicep') {
+    if ($moduleFiles.Name -contains 'main.bicep') {
         # bicep exists
         $outputString += ':heavy_check_mark:'
     } else {
