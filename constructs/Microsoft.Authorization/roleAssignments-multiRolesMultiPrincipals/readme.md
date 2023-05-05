@@ -173,7 +173,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments-multiRolesMultiPrincipals './Microsoft.Authorization/roleAssignments-multiRolesMultiPrincipals/deploy.bicep' = {
+module roleAssignments-multiRolesMultiPrincipals './Microsoft.Authorization/roleAssignments-multiRolesMultiPrincipals/main.bicep' = {
   name: '${uniqueString(deployment().name)}-RoleAssignments-multiRolesMultiPrincipals'
   params: {
     resourceGroupName: 'validation-rg'
