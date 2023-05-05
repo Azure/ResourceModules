@@ -61,13 +61,13 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [` readme.md `] file.' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` README.md `] file.' -TestCases $moduleFolderTestCases {
 
             param(
                 [string] $moduleFolderPath
             )
 
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'README.md')
             $pathExisting | Should -Be $true
         }
 
@@ -346,15 +346,15 @@ Describe 'Readme tests' -Tag 'Readme' {
                 moduleFolderPath       = $moduleFolderPath
                 templateContent        = $templateContent
                 templateFilePath       = $templateFilePath
-                readMeFilePath         = Join-Path -Path $moduleFolderPath 'readme.md'
-                readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
+                readMeFilePath         = Join-Path -Path $moduleFolderPath 'README.md'
+                readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'README.md')
                 isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
                 resourceTypeIdentifier = $resourceTypeIdentifier
                 templateReferences     = $crossReferencedModuleList[$resourceTypeIdentifier]
             }
         }
 
-        It '[<moduleFolderName>] `Readme.md` file should not be empty.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `README.md` file should not be empty.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -363,7 +363,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `README.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
