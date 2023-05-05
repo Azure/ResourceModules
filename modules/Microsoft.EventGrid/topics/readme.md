@@ -282,7 +282,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
+module topics './Microsoft.EventGrid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtcom'
   params: {
     // Required parameters
@@ -427,7 +427,7 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
+module topics './Microsoft.EventGrid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtmin'
   params: {
     // Required parameters
@@ -472,7 +472,7 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
+module topics './Microsoft.EventGrid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtpe'
   params: {
     // Required parameters

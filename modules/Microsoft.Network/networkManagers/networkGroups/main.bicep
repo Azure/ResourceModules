@@ -41,7 +41,7 @@ resource networkGroup 'Microsoft.Network/networkManagers/networkGroups@2022-07-0
   }
 }
 
-module networkGroup_staticMembers 'staticMembers/deploy.bicep' = [for (staticMember, index) in staticMembers: {
+module networkGroup_staticMembers 'staticMembers/main.bicep' = [for (staticMember, index) in staticMembers: {
   name: '${uniqueString(deployment().name)}-NetworkGroup-StaticMembers-${index}'
   params: {
     networkManagerName: networkManager.name

@@ -37,7 +37,7 @@ resource replicationFabric 'Microsoft.RecoveryServices/vaults/replicationFabrics
   }
 }
 
-module fabric_replicationContainers 'replicationProtectionContainers/deploy.bicep' = [for (container, index) in replicationContainers: {
+module fabric_replicationContainers 'replicationProtectionContainers/main.bicep' = [for (container, index) in replicationContainers: {
   name: '${deployment().name}-RCont-${index}'
   params: {
     name: container.name

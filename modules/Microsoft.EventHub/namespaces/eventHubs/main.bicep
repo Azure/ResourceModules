@@ -155,7 +155,7 @@ resource eventHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
   scope: eventHub
 }
 
-module eventHub_consumergroups 'consumerGroups/deploy.bicep' = [for (consumerGroup, index) in consumerGroups: {
+module eventHub_consumergroups 'consumerGroups/main.bicep' = [for (consumerGroup, index) in consumerGroups: {
   name: '${deployment().name}-ConsumerGroup-${index}'
   params: {
     namespaceName: namespaceName
@@ -166,7 +166,7 @@ module eventHub_consumergroups 'consumerGroups/deploy.bicep' = [for (consumerGro
   }
 }]
 
-module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+module eventHub_authorizationRules 'authorizationRules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName

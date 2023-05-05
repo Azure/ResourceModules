@@ -524,7 +524,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
   }
 }
 
-module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, index) in agentPools: {
+module managedCluster_agentPools 'agentPools/main.bicep' = [for (agentPool, index) in agentPools: {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-AgentPool-${index}'
   params: {
     managedClusterName: managedCluster.name
@@ -567,7 +567,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = if (!empty(fluxExtension)) {
+module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/main.bicep' = if (!empty(fluxExtension)) {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name

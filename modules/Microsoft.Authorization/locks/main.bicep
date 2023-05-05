@@ -37,7 +37,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
+module lock_sub 'subscription/main.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Lock-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -49,7 +49,7 @@ module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empt
   }
 }
 
-module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !empty(resourceGroupName)) {
+module lock_rg 'resourceGroup/main.bicep' = if (!empty(subscriptionId) && !empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {

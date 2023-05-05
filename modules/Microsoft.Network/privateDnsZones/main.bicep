@@ -68,7 +68,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   tags: tags
 }
 
-module privateDnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
+module privateDnsZone_A 'A/main.bicep' = [for (aRecord, index) in a: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-ARecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -81,7 +81,7 @@ module privateDnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
   }
 }]
 
-module privateDnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaaa: {
+module privateDnsZone_AAAA 'AAAA/main.bicep' = [for (aaaaRecord, index) in aaaa: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-AAAARecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -94,7 +94,7 @@ module privateDnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaa
   }
 }]
 
-module privateDnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in cname: {
+module privateDnsZone_CNAME 'CNAME/main.bicep' = [for (cnameRecord, index) in cname: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-CNAMERecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -107,7 +107,7 @@ module privateDnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in 
   }
 }]
 
-module privateDnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
+module privateDnsZone_MX 'MX/main.bicep' = [for (mxRecord, index) in mx: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-MXRecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -120,7 +120,7 @@ module privateDnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
   }
 }]
 
-module privateDnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
+module privateDnsZone_PTR 'PTR/main.bicep' = [for (ptrRecord, index) in ptr: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-PTRRecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -133,7 +133,7 @@ module privateDnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
   }
 }]
 
-module privateDnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
+module privateDnsZone_SOA 'SOA/main.bicep' = [for (soaRecord, index) in soa: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-SOARecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -146,7 +146,7 @@ module privateDnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
   }
 }]
 
-module privateDnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
+module privateDnsZone_SRV 'SRV/main.bicep' = [for (srvRecord, index) in srv: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-SRVRecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -159,7 +159,7 @@ module privateDnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
   }
 }]
 
-module privateDnsZone_TXT 'TXT/deploy.bicep' = [for (txtRecord, index) in txt: {
+module privateDnsZone_TXT 'TXT/main.bicep' = [for (txtRecord, index) in txt: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-TXTRecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
@@ -172,7 +172,7 @@ module privateDnsZone_TXT 'TXT/deploy.bicep' = [for (txtRecord, index) in txt: {
   }
 }]
 
-module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (virtualNetworkLink, index) in virtualNetworkLinks: {
+module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/main.bicep' = [for (virtualNetworkLink, index) in virtualNetworkLinks: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-VirtualNetworkLink-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name

@@ -42,7 +42,7 @@ resource endpoint 'microsoft.cdn/profiles/endpoints@2021-06-01' = {
   tags: tags
 }
 
-module endpoint_origins 'origins/deploy.bicep' = [for origin in properties.origins: {
+module endpoint_origins 'origins/main.bicep' = [for origin in properties.origins: {
   name: '${name}-origins-${origin.name}'
   params: {
     profileName: profile.name

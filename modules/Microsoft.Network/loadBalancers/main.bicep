@@ -192,7 +192,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2022-07-01' = {
   }
 }
 
-module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
+module loadBalancer_backendAddressPools 'backendAddressPools/main.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
   name: '${uniqueString(deployment().name, location)}-loadBalancer-backendAddressPools-${index}'
   params: {
     loadBalancerName: loadBalancer.name
@@ -204,7 +204,7 @@ module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [fo
   }
 }]
 
-module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inboundNATRule, index) in inboundNatRules: {
+module loadBalancer_inboundNATRules 'inboundNatRules/main.bicep' = [for (inboundNATRule, index) in inboundNatRules: {
   name: '${uniqueString(deployment().name, location)}-LoadBalancer-inboundNatRules-${index}'
   params: {
     loadBalancerName: loadBalancer.name

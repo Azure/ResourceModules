@@ -190,7 +190,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
 // You can safely remove the below child module (virtualNetwork_subnets) in your consumption of the module (virtualNetworks) to reduce the template size and duplication.
 //NOTE End  : ------------------------------------
 
-module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in subnets: {
+module virtualNetwork_subnets 'subnets/main.bicep' = [for (subnet, index) in subnets: {
   name: '${uniqueString(deployment().name, location)}-subnet-${index}'
   params: {
     virtualNetworkName: virtualNetwork.name
@@ -213,7 +213,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
 }]
 
 // Local to Remote peering
-module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in peerings: {
+module virtualNetwork_peering_local 'virtualNetworkPeerings/main.bicep' = [for (peering, index) in peerings: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
   params: {
     localVnetName: virtualNetwork.name
@@ -229,7 +229,7 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
 }]
 
 // Remote to local peering (reverse)
-module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in peerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
+module virtualNetwork_peering_remote 'virtualNetworkPeerings/main.bicep' = [for (peering, index) in peerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
   scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[2], split(peering.remoteVirtualNetworkId, '/')[4])
   params: {

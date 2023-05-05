@@ -246,7 +246,7 @@ module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActiva
 }
 
 // - Workspace encryption - Activate Workspace
-module workspace_key './keys/deploy.bicep' = if (encryptionActivateWorkspace) {
+module workspace_key './keys/main.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-activation'
   params: {
     name: cMKKeyName
@@ -280,7 +280,7 @@ module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignme
 }]
 
 // Endpoints
-module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

@@ -116,7 +116,7 @@ resource topic 'Microsoft.ServiceBus/namespaces/topics@2021-06-01-preview' = {
   }
 }
 
-module topic_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+module topic_authorizationRules 'authorizationRules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName

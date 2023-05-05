@@ -158,7 +158,7 @@ module server_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (role
   }
 }]
 
-module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+module server_databases 'databases/main.bicep' = [for (database, index) in databases: {
   name: '${uniqueString(deployment().name, location)}-Sql-DB-${index}'
   params: {
     name: database.name
@@ -205,7 +205,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   ]
 }]
 
-module server_elasticPools 'elasticPools/deploy.bicep' = [for (elasticPool, index) in elasticPools: {
+module server_elasticPools 'elasticPools/main.bicep' = [for (elasticPool, index) in elasticPools: {
   name: '${uniqueString(deployment().name, location)}-SQLServer-ElasticPool-${index}'
   params: {
     name: elasticPool.name
@@ -227,7 +227,7 @@ module server_elasticPools 'elasticPools/deploy.bicep' = [for (elasticPool, inde
   }
 }]
 
-module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-SQLServer-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -250,7 +250,7 @@ module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
   }
 }]
 
-module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+module server_firewallRules 'firewallRules/main.bicep' = [for (firewallRule, index) in firewallRules: {
   name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
   params: {
     name: firewallRule.name
@@ -261,7 +261,7 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
   }
 }]
 
-module server_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+module server_virtualNetworkRules 'virtualNetworkRules/main.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
   name: '${uniqueString(deployment().name, location)}-Sql-VirtualNetworkRules-${index}'
   params: {
     name: virtualNetworkRule.name
@@ -272,7 +272,7 @@ module server_virtualNetworkRules 'virtualNetworkRules/deploy.bicep' = [for (vir
   }
 }]
 
-module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
+module server_securityAlertPolicies 'securityAlertPolicies/main.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
   name: '${uniqueString(deployment().name, location)}-Sql-SecAlertPolicy-${index}'
   params: {
     name: securityAlertPolicy.name
@@ -288,7 +288,7 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
   }
 }]
 
-module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
+module server_vulnerabilityAssessment 'vulnerabilityAssessments/main.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
   name: '${uniqueString(deployment().name, location)}-Sql-VulnAssessm'
   params: {
     serverName: server.name
@@ -304,7 +304,7 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
   ]
 }
 
-module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
+module server_keys 'keys/main.bicep' = [for (key, index) in keys: {
   name: '${uniqueString(deployment().name, location)}-Sql-Key-${index}'
   params: {
     name: key.name
@@ -315,7 +315,7 @@ module server_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
   }
 }]
 
-module server_encryptionProtector 'encryptionProtector/deploy.bicep' = if (!empty(encryptionProtectorObj)) {
+module server_encryptionProtector 'encryptionProtector/main.bicep' = if (!empty(encryptionProtectorObj)) {
   name: '${uniqueString(deployment().name, location)}-Sql-EncryProtector'
   params: {
     sqlServerName: server.name

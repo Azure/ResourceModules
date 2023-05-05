@@ -343,7 +343,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swcom'
   params: {
     // Required parameters
@@ -500,7 +500,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swensa'
   params: {
     // Required parameters
@@ -577,7 +577,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swenua'
   params: {
     // Required parameters
@@ -660,7 +660,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmanv'
   params: {
     // Required parameters
@@ -743,7 +743,7 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmin'
   params: {
     // Required parameters

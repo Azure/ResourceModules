@@ -249,7 +249,7 @@ resource service 'Microsoft.ApiManagement/service@2021-08-01' = {
   }
 }
 
-module service_apis 'apis/deploy.bicep' = [for (api, index) in apis: {
+module service_apis 'apis/main.bicep' = [for (api, index) in apis: {
   name: '${uniqueString(deployment().name, location)}-Apim-Api-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -284,7 +284,7 @@ module service_apis 'apis/deploy.bicep' = [for (api, index) in apis: {
   ]
 }]
 
-module service_apiVersionSets 'apiVersionSets/deploy.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
+module service_apiVersionSets 'apiVersionSets/main.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
   name: '${uniqueString(deployment().name, location)}-Apim-ApiVersionSet-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -294,7 +294,7 @@ module service_apiVersionSets 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
   }
 }]
 
-module service_authorizationServers 'authorizationServers/deploy.bicep' = [for (authorizationServer, index) in authorizationServerList: {
+module service_authorizationServers 'authorizationServers/main.bicep' = [for (authorizationServer, index) in authorizationServerList: {
   name: '${uniqueString(deployment().name, location)}-Apim-AuthorizationServer-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -324,7 +324,7 @@ module service_authorizationServers 'authorizationServers/deploy.bicep' = [for (
   }
 }]
 
-module service_backends 'backends/deploy.bicep' = [for (backend, index) in backends: {
+module service_backends 'backends/main.bicep' = [for (backend, index) in backends: {
   name: '${uniqueString(deployment().name, location)}-Apim-Backend-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -345,7 +345,7 @@ module service_backends 'backends/deploy.bicep' = [for (backend, index) in backe
   }
 }]
 
-module service_caches 'caches/deploy.bicep' = [for (cache, index) in caches: {
+module service_caches 'caches/main.bicep' = [for (cache, index) in caches: {
   name: '${uniqueString(deployment().name, location)}-Apim-Cache-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -358,7 +358,7 @@ module service_caches 'caches/deploy.bicep' = [for (cache, index) in caches: {
   }
 }]
 
-module service_identityProviders 'identityProviders/deploy.bicep' = [for (identityProvider, index) in identityProviders: {
+module service_identityProviders 'identityProviders/main.bicep' = [for (identityProvider, index) in identityProviders: {
   name: '${uniqueString(deployment().name, location)}-Apim-IdentityProvider-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -378,7 +378,7 @@ module service_identityProviders 'identityProviders/deploy.bicep' = [for (identi
   }
 }]
 
-module service_namedValues 'namedValues/deploy.bicep' = [for (namedValue, index) in namedValues: {
+module service_namedValues 'namedValues/main.bicep' = [for (namedValue, index) in namedValues: {
   name: '${uniqueString(deployment().name, location)}-Apim-NamedValue-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -392,7 +392,7 @@ module service_namedValues 'namedValues/deploy.bicep' = [for (namedValue, index)
   }
 }]
 
-module service_portalSettings 'portalSettings/deploy.bicep' = [for (portalSetting, index) in portalSettings: {
+module service_portalSettings 'portalSettings/main.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -402,7 +402,7 @@ module service_portalSettings 'portalSettings/deploy.bicep' = [for (portalSettin
   }
 }]
 
-module service_policies 'policies/deploy.bicep' = [for (policy, index) in policies: {
+module service_policies 'policies/main.bicep' = [for (policy, index) in policies: {
   name: '${uniqueString(deployment().name, location)}-Apim-Policy-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -412,7 +412,7 @@ module service_policies 'policies/deploy.bicep' = [for (policy, index) in polici
   }
 }]
 
-module service_products 'products/deploy.bicep' = [for (product, index) in products: {
+module service_products 'products/main.bicep' = [for (product, index) in products: {
   name: '${uniqueString(deployment().name, location)}-Apim-Product-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -432,7 +432,7 @@ module service_products 'products/deploy.bicep' = [for (product, index) in produ
   ]
 }]
 
-module service_subscriptions 'subscriptions/deploy.bicep' = [for (subscription, index) in subscriptions: {
+module service_subscriptions 'subscriptions/main.bicep' = [for (subscription, index) in subscriptions: {
   name: '${uniqueString(deployment().name, location)}-Apim-Subscription-${index}'
   params: {
     apiManagementServiceName: service.name

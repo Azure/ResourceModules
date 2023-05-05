@@ -138,7 +138,7 @@ resource domain 'Microsoft.EventGrid/domains@2022-06-15' = {
   }
 }
 
-module domain_topics 'topics/deploy.bicep' = [for (topic, index) in topics: {
+module domain_topics 'topics/main.bicep' = [for (topic, index) in topics: {
   name: '${uniqueString(deployment().name, location)}-topics-${index}'
   params: {
     domainName: domain.name
@@ -170,7 +170,7 @@ resource domain_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-0
   scope: domain
 }
 
-module domain_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module domain_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Domain-PrivateEndpoint-${index}'
   params: {
     groupIds: [

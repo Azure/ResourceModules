@@ -38,7 +38,7 @@ resource replicationContainer 'Microsoft.RecoveryServices/vaults/replicationFabr
   }
 }
 
-module fabric_container_containerMappings 'replicationProtectionContainerMappings/deploy.bicep' = [for (mapping, index) in replicationContainerMappings: {
+module fabric_container_containerMappings 'replicationProtectionContainerMappings/main.bicep' = [for (mapping, index) in replicationContainerMappings: {
   name: '${deployment().name}-Map-${index}'
   params: {
     name: contains(mapping, 'name') ? mapping.name : ''

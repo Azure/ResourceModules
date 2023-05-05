@@ -120,7 +120,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2022-07-0
   }
 }
 
-module networkSecurityGroup_securityRules 'securityRules/deploy.bicep' = [for (securityRule, index) in securityRules: {
+module networkSecurityGroup_securityRules 'securityRules/main.bicep' = [for (securityRule, index) in securityRules: {
   name: '${uniqueString(deployment().name, location)}-securityRule-${index}'
   params: {
     name: securityRule.name

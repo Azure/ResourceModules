@@ -33,7 +33,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module tags_sub 'subscriptions/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
+module tags_sub 'subscriptions/main.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${deployment().name}-Tags-Sub'
   params: {
     onlyUpdate: onlyUpdate
@@ -43,7 +43,7 @@ module tags_sub 'subscriptions/deploy.bicep' = if (!empty(subscriptionId) && emp
   }
 }
 
-module tags_rg 'resourceGroups/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
+module tags_rg 'resourceGroups/main.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${deployment().name}-Tags-RG'
   scope: resourceGroup(resourceGroupName)
   params: {

@@ -72,7 +72,7 @@ resource extension 'Microsoft.KubernetesConfiguration/extensions@2022-03-01' = {
   }
 }
 
-module fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = [for (fluxConfiguration, index) in fluxConfigurations: {
+module fluxConfiguration '../../Microsoft.KubernetesConfiguration/fluxConfigurations/main.bicep' = [for (fluxConfiguration, index) in fluxConfigurations: {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxConfiguration${index}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry

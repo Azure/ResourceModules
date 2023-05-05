@@ -78,7 +78,7 @@ resource backupVault 'Microsoft.DataProtection/backupVaults@2022-05-01' = {
   }
 }
 
-module backupVault_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module backupVault_backupPolicies 'backupPolicies/main.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-BV-BackupPolicy-${index}'
   params: {
     backupVaultName: backupVault.name

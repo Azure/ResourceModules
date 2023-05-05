@@ -175,7 +175,7 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2022-07-01' = {
 // because of concurrent access to the base policy.
 // The next line forces ARM to deploy them one after the other, so no race concition on the base policy will happen.
 @batchSize(1)
-module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
+module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/main.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
   name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleCollectionGroups-${index}'
   params: {
     firewallPolicyName: firewallPolicy.name

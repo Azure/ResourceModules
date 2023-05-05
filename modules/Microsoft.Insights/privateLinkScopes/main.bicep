@@ -49,7 +49,7 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
   properties: {}
 }
 
-module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (scopedResource, index) in scopedResources: {
+module privateLinkScope_scopedResource 'scopedResources/main.bicep' = [for (scopedResource, index) in scopedResources: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-ScopedRes-${index}'
   params: {
     name: scopedResource.name
@@ -68,7 +68,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2020-05-01' = if (
   scope: privateLinkScope
 }
 
-module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'
   params: {
     groupIds: [

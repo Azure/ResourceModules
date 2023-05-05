@@ -168,7 +168,7 @@ resource lab_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock))
   scope: lab
 }
 
-module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork, index) in virtualNetworks: {
+module lab_virtualNetworks 'virtualNetworks/main.bicep' = [for (virtualNetwork, index) in virtualNetworks: {
   name: '${uniqueString(deployment().name, location)}-Lab-VirtualNetwork-${index}'
   params: {
     labName: lab.name
@@ -182,7 +182,7 @@ module lab_virtualNetworks 'virtualNetworks/deploy.bicep' = [for (virtualNetwork
   }
 }]
 
-module lab_policies 'policySets/policies/deploy.bicep' = [for (policy, index) in policies: {
+module lab_policies 'policySets/policies/main.bicep' = [for (policy, index) in policies: {
   name: '${uniqueString(deployment().name, location)}-Lab-PolicySets-Policy-${index}'
   params: {
     labName: lab.name
@@ -198,7 +198,7 @@ module lab_policies 'policySets/policies/deploy.bicep' = [for (policy, index) in
   }
 }]
 
-module lab_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+module lab_schedules 'schedules/main.bicep' = [for (schedule, index) in schedules: {
   name: '${uniqueString(deployment().name, location)}-Lab-Schedules-${index}'
   params: {
     labName: lab.name
@@ -217,7 +217,7 @@ module lab_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedu
   }
 }]
 
-module lab_notificationChannels 'notificationChannels/deploy.bicep' = [for (notificationChannel, index) in notificationChannels: {
+module lab_notificationChannels 'notificationChannels/main.bicep' = [for (notificationChannel, index) in notificationChannels: {
   name: '${uniqueString(deployment().name, location)}-Lab-NotificationChannels-${index}'
   params: {
     labName: lab.name
@@ -232,7 +232,7 @@ module lab_notificationChannels 'notificationChannels/deploy.bicep' = [for (noti
   }
 }]
 
-module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource, index) in artifactSources: {
+module lab_artifactSources 'artifactSources/main.bicep' = [for (artifactSource, index) in artifactSources: {
   name: '${uniqueString(deployment().name, location)}-Lab-ArtifactSources-${index}'
   params: {
     labName: lab.name
@@ -249,7 +249,7 @@ module lab_artifactSources 'artifactSources/deploy.bicep' = [for (artifactSource
   }
 }]
 
-module lab_costs 'costs/deploy.bicep' = if (!empty(costs)) {
+module lab_costs 'costs/main.bicep' = if (!empty(costs)) {
   name: '${uniqueString(deployment().name, location)}-Lab-Costs'
   params: {
     labName: lab.name

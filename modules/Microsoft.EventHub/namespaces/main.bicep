@@ -190,7 +190,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   }
 }
 
-module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
+module eventHubNamespace_authorizationRules 'authorizationRules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-AuthRule-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -200,7 +200,7 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
   }
 }]
 
-module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.bicep' = if (!empty(disasterRecoveryConfig)) {
+module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/main.bicep' = if (!empty(disasterRecoveryConfig)) {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-DisRecConfig'
   params: {
     namespaceName: eventHubNamespace.name
@@ -210,7 +210,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deploy.
   }
 }
 
-module eventHubNamespace_eventHubs 'eventHubs/deploy.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'eventHubs/main.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -244,7 +244,7 @@ module eventHubNamespace_eventHubs 'eventHubs/deploy.bicep' = [for (eventHub, in
   }
 }]
 
-module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
+module eventHubNamespace_networkRuleSet 'networkRuleSets/main.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-NetworkRuleSet'
   params: {
     namespaceName: eventHubNamespace.name
@@ -257,7 +257,7 @@ module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!em
   }
 }
 
-module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

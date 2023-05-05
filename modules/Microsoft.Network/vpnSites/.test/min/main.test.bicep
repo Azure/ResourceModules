@@ -40,7 +40,7 @@ module nestedDependencies 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
+module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
@@ -53,4 +53,3 @@ module testDeployment '../../deploy.bicep' = {
     ipAddress: '1.2.3.4'
   }
 }
-

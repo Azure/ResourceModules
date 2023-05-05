@@ -297,7 +297,7 @@ module flexibleServer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
-module flexibleServer_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+module flexibleServer_databases 'databases/main.bicep' = [for (database, index) in databases: {
   name: '${uniqueString(deployment().name, location)}-PostgreSQL-DB-${index}'
   params: {
     name: database.name
@@ -308,7 +308,7 @@ module flexibleServer_databases 'databases/deploy.bicep' = [for (database, index
   }
 }]
 
-module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+module flexibleServer_firewallRules 'firewallRules/main.bicep' = [for (firewallRule, index) in firewallRules: {
   name: '${uniqueString(deployment().name, location)}-PostgreSQL-FirewallRules-${index}'
   params: {
     name: firewallRule.name
@@ -322,7 +322,7 @@ module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewal
   ]
 }]
 
-module flexibleServer_configurations 'configurations/deploy.bicep' = [for (configuration, index) in configurations: {
+module flexibleServer_configurations 'configurations/main.bicep' = [for (configuration, index) in configurations: {
   name: '${uniqueString(deployment().name, location)}-PostgreSQL-Configurations-${index}'
   params: {
     name: configuration.name

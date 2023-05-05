@@ -209,7 +209,7 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2022-08-08' 
   }
 }
 
-module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
+module automationAccount_modules 'modules/main.bicep' = [for (module, index) in modules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
   params: {
     name: module.name
@@ -222,7 +222,7 @@ module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) i
   }
 }]
 
-module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+module automationAccount_schedules 'schedules/main.bicep' = [for (schedule, index) in schedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
   params: {
     name: schedule.name
@@ -238,7 +238,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
   }
 }]
 
-module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
+module automationAccount_runbooks 'runbooks/main.bicep' = [for (runbook, index) in runbooks: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
   params: {
     name: runbook.name
@@ -253,7 +253,7 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
   }
 }]
 
-module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
+module automationAccount_jobSchedules 'jobSchedules/main.bicep' = [for (jobSchedule, index) in jobSchedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
   params: {
     automationAccountName: automationAccount.name
@@ -269,7 +269,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
   ]
 }]
 
-module automationAccount_variables 'variables/deploy.bicep' = [for (variable, index) in variables: {
+module automationAccount_variables 'variables/main.bicep' = [for (variable, index) in variables: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Variable-${index}'
   params: {
     automationAccountName: automationAccount.name
@@ -281,7 +281,7 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
   }
 }]
 
-module automationAccount_linkedService '../../Microsoft.OperationalInsights/workspaces/linkedServices/deploy.bicep' = if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_linkedService '../../Microsoft.OperationalInsights/workspaces/linkedServices/main.bicep' = if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
@@ -295,7 +295,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
 }
 
-module automationAccount_solutions '../../Microsoft.OperationsManagement/solutions/deploy.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_solutions '../../Microsoft.OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
     name: gallerySolution.name
@@ -313,7 +313,7 @@ module automationAccount_solutions '../../Microsoft.OperationsManagement/solutio
   ]
 }]
 
-module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
+module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurations/main.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
   params: {
     name: softwareUpdateConfiguration.name
@@ -382,7 +382,7 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
   scope: automationAccount
 }
 
-module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-AutomationAccount-PrivateEndpoint-${index}'
   params: {
     groupIds: [

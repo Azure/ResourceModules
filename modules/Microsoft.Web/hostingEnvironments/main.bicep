@@ -212,7 +212,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = 
   }
 }
 
-module appServiceEnvironment_configurations_networking 'configurations-networking/deploy.bicep' = if (kind == 'ASEv3') {
+module appServiceEnvironment_configurations_networking 'configurations-networking/main.bicep' = if (kind == 'ASEv3') {
   name: '${uniqueString(deployment().name, location)}-AppServiceEnv-Configurations-Networking'
   params: {
     hostingEnvironmentName: appServiceEnvironment.name
@@ -224,7 +224,7 @@ module appServiceEnvironment_configurations_networking 'configurations-networkin
   }
 }
 
-module appServiceEnvironment_configurations_customDnsSuffix 'configurations-customdnssuffix/deploy.bicep' = if (kind == 'ASEv3' && !empty(customDnsSuffix)) {
+module appServiceEnvironment_configurations_customDnsSuffix 'configurations-customdnssuffix/main.bicep' = if (kind == 'ASEv3' && !empty(customDnsSuffix)) {
   name: '${uniqueString(deployment().name, location)}-AppServiceEnv-Configurations-CustomDnsSuffix'
   params: {
     hostingEnvironmentName: appServiceEnvironment.name

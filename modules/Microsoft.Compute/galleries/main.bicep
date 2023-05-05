@@ -78,7 +78,7 @@ module gallery_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (rol
 }]
 
 // Applications
-module galleries_applications 'applications/deploy.bicep' = [for (application, index) in applications: {
+module galleries_applications 'applications/main.bicep' = [for (application, index) in applications: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Application-${index}'
   params: {
     name: application.name
@@ -97,7 +97,7 @@ module galleries_applications 'applications/deploy.bicep' = [for (application, i
 }]
 
 // Images
-module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
+module galleries_images 'images/main.bicep' = [for (image, index) in images: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Image-${index}'
   params: {
     name: image.name

@@ -212,7 +212,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   }
 }
 
-module dataFactory_managedVirtualNetwork 'managedVirtualNetworks/deploy.bicep' = if (!empty(managedVirtualNetworkName)) {
+module dataFactory_managedVirtualNetwork 'managedVirtualNetworks/main.bicep' = if (!empty(managedVirtualNetworkName)) {
   name: '${uniqueString(deployment().name, location)}-DataFactory-ManagedVNet'
   params: {
     name: managedVirtualNetworkName
@@ -222,7 +222,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetworks/deploy.bicep' =
   }
 }
 
-module dataFactory_integrationRuntimes 'integrationRuntimes/deploy.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
+module dataFactory_integrationRuntimes 'integrationRuntimes/main.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
   name: '${uniqueString(deployment().name, location)}-DataFactory-IntegrationRuntime-${index}'
   params: {
     dataFactoryName: dataFactory.name
@@ -272,7 +272,7 @@ module dataFactory_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for 
   }
 }]
 
-module dataFactory_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module dataFactory_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-DataFactory-PrivateEndpoint-${index}'
   params: {
     groupIds: [

@@ -50,7 +50,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId)) {
+module policySetDefinition_mg 'managementGroup/main.bicep' = if (empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -66,7 +66,7 @@ module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscri
   }
 }
 
-module policySetDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId)) {
+module policySetDefinition_sub 'subscription/main.bicep' = if (!empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {

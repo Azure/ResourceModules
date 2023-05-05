@@ -56,7 +56,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 // Test Execution //
 // ============== //
 
-module testDeployment '../../deploy.bicep' = {
+module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
@@ -132,7 +132,7 @@ module testDeployment '../../deploy.bicep' = {
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
     ]
-    tags:{
+    tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }

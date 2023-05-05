@@ -70,7 +70,7 @@ resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' = {
   }
 }
 
-module networkManager_networkGroups 'networkGroups/deploy.bicep' = [for (networkGroup, index) in networkGroups: {
+module networkManager_networkGroups 'networkGroups/main.bicep' = [for (networkGroup, index) in networkGroups: {
   name: '${uniqueString(deployment().name, location)}-NetworkManager-NetworkGroups-${index}'
   params: {
     name: networkGroup.name
@@ -81,7 +81,7 @@ module networkManager_networkGroups 'networkGroups/deploy.bicep' = [for (network
   }
 }]
 
-module networkManager_connectivityConfigurations 'connectivityConfigurations/deploy.bicep' = [for (connectivityConfiguration, index) in connectivityConfigurations: {
+module networkManager_connectivityConfigurations 'connectivityConfigurations/main.bicep' = [for (connectivityConfiguration, index) in connectivityConfigurations: {
   name: '${uniqueString(deployment().name, location)}-NetworkManager-ConnectivityConfigurations-${index}'
   params: {
     name: connectivityConfiguration.name
@@ -97,7 +97,7 @@ module networkManager_connectivityConfigurations 'connectivityConfigurations/dep
   dependsOn: networkManager_networkGroups
 }]
 
-module networkManager_scopeConnections 'scopeConnections/deploy.bicep' = [for (scopeConnection, index) in scopeConnections: {
+module networkManager_scopeConnections 'scopeConnections/main.bicep' = [for (scopeConnection, index) in scopeConnections: {
   name: '${uniqueString(deployment().name, location)}-NetworkManager-ScopeConnections-${index}'
   params: {
     name: scopeConnection.name
@@ -109,7 +109,7 @@ module networkManager_scopeConnections 'scopeConnections/deploy.bicep' = [for (s
   }
 }]
 
-module networkManager_securityAdminConfigurations 'securityAdminConfigurations/deploy.bicep' = [for (securityAdminConfiguration, index) in securityAdminConfigurations: {
+module networkManager_securityAdminConfigurations 'securityAdminConfigurations/main.bicep' = [for (securityAdminConfiguration, index) in securityAdminConfigurations: {
   name: '${uniqueString(deployment().name, location)}-NetworkManager-SecurityAdminConfigurations-${index}'
   params: {
     name: securityAdminConfiguration.name

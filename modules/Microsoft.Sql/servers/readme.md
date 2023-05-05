@@ -378,7 +378,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
+module servers './Microsoft.Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsadmin'
   params: {
     // Required parameters
@@ -439,7 +439,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
+module servers './Microsoft.Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
     name: '<<namePrefix>>-sqlscom'
@@ -740,7 +740,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
+module servers './Microsoft.Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlspe'
   params: {
     // Required parameters
@@ -835,7 +835,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/deploy.bicep' = {
+module servers './Microsoft.Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsec'
   params: {
     // Required parameters

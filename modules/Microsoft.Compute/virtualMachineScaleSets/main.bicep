@@ -470,7 +470,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2022-11-01' = {
   plan: !empty(plan) ? plan : null
 }
 
-module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
+module vmss_domainJoinExtension 'extensions/main.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-DomainJoin'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -488,7 +488,7 @@ module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJ
   }
 }
 
-module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensionAntiMalwareConfig.enabled) {
+module vmss_microsoftAntiMalwareExtension 'extensions/main.bicep' = if (extensionAntiMalwareConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-MicrosoftAntiMalware'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -508,7 +508,7 @@ resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@20
   scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
-module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
+module vmss_microsoftMonitoringAgentExtension 'extensions/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-MicrosoftMonitoringAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -528,7 +528,7 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (ex
   }
 }
 
-module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDependencyAgentConfig.enabled) {
+module vmss_dependencyAgentExtension 'extensions/main.bicep' = if (extensionDependencyAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-DependencyAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -542,7 +542,7 @@ module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDe
   }
 }
 
-module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
+module vmss_networkWatcherAgentExtension 'extensions/main.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-NetworkWatcherAgent'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -556,7 +556,7 @@ module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensi
   }
 }
 
-module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
+module vmss_desiredStateConfigurationExtension 'extensions/main.bicep' = if (extensionDSCConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-DesiredStateConfiguration'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -572,7 +572,7 @@ module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (e
   }
 }
 
-module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
+module vmss_customScriptExtension 'extensions/main.bicep' = if (extensionCustomScriptConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-CustomScriptExtension'
   params: {
     virtualMachineScaleSetName: vmss.name
@@ -593,7 +593,7 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
   ]
 }
 
-module vmss_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+module vmss_azureDiskEncryptionExtension 'extensions/main.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VMSS-AzureDiskEncryption'
   params: {
     virtualMachineScaleSetName: vmss.name

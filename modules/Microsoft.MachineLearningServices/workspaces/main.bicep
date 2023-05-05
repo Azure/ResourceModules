@@ -243,7 +243,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2022-10-01' = {
   }
 }
 
-module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
+module workspace_computes 'computes/main.bicep' = [for compute in computes: {
   name: '${workspace.name}-${compute.name}-compute'
   params: {
     machineLearningWorkspaceName: workspace.name
@@ -285,7 +285,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: workspace
 }
 
-module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

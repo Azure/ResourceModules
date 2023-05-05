@@ -73,7 +73,7 @@ resource capacityPool 'Microsoft.NetApp/netAppAccounts/capacityPools@2022-05-01'
 }
 
 @batchSize(1)
-module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in volumes: {
+module capacityPool_volumes 'volumes/main.bicep' = [for (volume, index) in volumes: {
   name: '${deployment().name}-Vol-${index}'
   params: {
     netAppAccountName: netAppAccount.name

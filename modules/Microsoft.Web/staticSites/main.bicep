@@ -132,7 +132,7 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   }
 }
 
-module staticSite_linkedBackend 'linkedBackends/deploy.bicep' = if (!empty(linkedBackend)) {
+module staticSite_linkedBackend 'linkedBackends/main.bicep' = if (!empty(linkedBackend)) {
   name: '${uniqueString(deployment().name, location)}-StaticSite-UserDefinedFunction'
   params: {
     staticSiteName: staticSite.name
@@ -142,7 +142,7 @@ module staticSite_linkedBackend 'linkedBackends/deploy.bicep' = if (!empty(linke
   }
 }
 
-module staticSite_appSettings 'config/deploy.bicep' = if (!empty(appSettings)) {
+module staticSite_appSettings 'config/main.bicep' = if (!empty(appSettings)) {
   name: '${uniqueString(deployment().name, location)}-StaticSite-appSettings'
   params: {
     kind: 'appsettings'
@@ -152,7 +152,7 @@ module staticSite_appSettings 'config/deploy.bicep' = if (!empty(appSettings)) {
   }
 }
 
-module staticSite_functionAppSettings 'config/deploy.bicep' = if (!empty(functionAppSettings)) {
+module staticSite_functionAppSettings 'config/main.bicep' = if (!empty(functionAppSettings)) {
   name: '${uniqueString(deployment().name, location)}-StaticSite-functionAppSettings'
   params: {
     kind: 'functionappsettings'
@@ -162,7 +162,7 @@ module staticSite_functionAppSettings 'config/deploy.bicep' = if (!empty(functio
   }
 }
 
-module staticSite_customDomains 'customDomains/deploy.bicep' = [for (customDomain, index) in customDomains: {
+module staticSite_customDomains 'customDomains/main.bicep' = [for (customDomain, index) in customDomains: {
   name: '${uniqueString(deployment().name, location)}-StaticSite-customDomains-${index}'
   params: {
     name: customDomain
@@ -190,7 +190,7 @@ module staticSite_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (
   }
 }]
 
-module staticSite_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module staticSite_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StaticSite-PrivateEndpoint-${index}'
   params: {
     groupIds: [

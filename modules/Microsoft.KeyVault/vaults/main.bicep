@@ -228,7 +228,7 @@ resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021
   scope: keyVault
 }
 
-module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(accessPolicies)) {
+module keyVault_accessPolicies 'accessPolicies/main.bicep' = if (!empty(accessPolicies)) {
   name: '${uniqueString(deployment().name, location)}-KeyVault-AccessPolicies'
   params: {
     keyVaultName: keyVault.name
@@ -237,7 +237,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   }
 }
 
-module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretList: {
+module keyVault_secrets 'secrets/main.bicep' = [for (secret, index) in secretList: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Secret-${index}'
   params: {
     name: secret.name
@@ -253,7 +253,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretL
   }
 }]
 
-module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
+module keyVault_keys 'keys/main.bicep' = [for (key, index) in keys: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Key-${index}'
   params: {
     name: key.name
@@ -272,7 +272,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
   }
 }]
 
-module keyVault_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module keyVault_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     groupIds: [

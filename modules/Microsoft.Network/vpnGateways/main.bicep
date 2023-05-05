@@ -77,7 +77,7 @@ resource vpnGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty
   scope: vpnGateway
 }
 
-module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+module vpnGateway_natRules 'natRules/main.bicep' = [for (natRule, index) in natRules: {
   name: '${deployment().name}-NATRule-${index}'
   params: {
     name: natRule.name
@@ -91,7 +91,7 @@ module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in na
   }
 }]
 
-module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, index) in connections: {
+module vpnGateway_connections 'connections/main.bicep' = [for (connection, index) in connections: {
   name: '${deployment().name}-Connection-${index}'
   params: {
     name: connection.name

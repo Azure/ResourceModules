@@ -62,7 +62,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module remediation_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId) && empty(resourceGroupName)) {
+module remediation_mg 'managementGroup/main.bicep' = if (empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Remediation-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -79,7 +79,7 @@ module remediation_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId)
   }
 }
 
-module remediation_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
+module remediation_sub 'subscription/main.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Remediation-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -96,7 +96,7 @@ module remediation_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) 
   }
 }
 
-module remediation_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
+module remediation_rg 'resourceGroup/main.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-Remediation-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {

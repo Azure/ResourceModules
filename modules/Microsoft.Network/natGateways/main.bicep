@@ -108,7 +108,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // PUBLIC IP
 // =========
-module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (natGatewayPublicIpAddress) {
+module publicIPAddress '../publicIPAddresses/main.bicep' = if (natGatewayPublicIpAddress) {
   name: '${uniqueString(deployment().name, location)}-NatGateway-PIP'
   params: {
     name: !empty(natGatewayPipName) ? natGatewayPipName : '${name}-pip'

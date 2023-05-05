@@ -71,7 +71,7 @@ module networkWatcher_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
-module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [for (connectionMonitor, index) in connectionMonitors: {
+module networkWatcher_connectionMonitors 'connectionMonitors/main.bicep' = [for (connectionMonitor, index) in connectionMonitors: {
   name: '${uniqueString(deployment().name, location)}-NW-ConnectionMonitor-${index}'
   params: {
     endpoints: contains(connectionMonitor, 'endpoints') ? connectionMonitor.endpoints : []
@@ -84,7 +84,7 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
   }
 }]
 
-module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) in flowLogs: {
+module networkWatcher_flowLogs 'flowLogs/main.bicep' = [for (flowLog, index) in flowLogs: {
   name: '${uniqueString(deployment().name, location)}-NW-FlowLog-${index}'
   params: {
     enabled: contains(flowLog, 'enabled') ? flowLog.enabled : true

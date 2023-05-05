@@ -86,7 +86,7 @@ module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
   }
 }]
 
-module workspace_fhir 'fhirservices/deploy.bicep' = [for (fhir, index) in fhirServices: {
+module workspace_fhir 'fhirservices/main.bicep' = [for (fhir, index) in fhirServices: {
   name: '${uniqueString(deployment().name, location)}-Health-FHIR-${index}'
   params: {
     name: fhir.name
@@ -127,7 +127,7 @@ module workspace_fhir 'fhirservices/deploy.bicep' = [for (fhir, index) in fhirSe
   }
 }]
 
-module workspace_dicom 'dicomservices/deploy.bicep' = [for (dicom, index) in dicomServices: {
+module workspace_dicom 'dicomservices/main.bicep' = [for (dicom, index) in dicomServices: {
   name: '${uniqueString(deployment().name, location)}-Health-DICOM-${index}'
   params: {
     name: dicom.name
@@ -153,7 +153,7 @@ module workspace_dicom 'dicomservices/deploy.bicep' = [for (dicom, index) in dic
   }
 }]
 
-module workspace_iotConnector 'iotconnectors/deploy.bicep' = [for (iotConnector, index) in iotConnectors: {
+module workspace_iotConnector 'iotconnectors/main.bicep' = [for (iotConnector, index) in iotConnectors: {
   name: '${uniqueString(deployment().name, location)}-Health-IOMT-${index}'
   params: {
     name: iotConnector.name

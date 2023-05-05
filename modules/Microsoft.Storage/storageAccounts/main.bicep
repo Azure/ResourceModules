@@ -345,7 +345,7 @@ module storageAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
-module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StorageAccount-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -369,7 +369,7 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
 }]
 
 // Lifecycle Policy
-module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if (!empty(managementPolicyRules)) {
+module storageAccount_managementPolicies 'managementPolicies/main.bicep' = if (!empty(managementPolicyRules)) {
   name: '${uniqueString(deployment().name, location)}-Storage-ManagementPolicies'
   params: {
     storageAccountName: storageAccount.name
@@ -379,7 +379,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
 }
 
 // SFTP user settings
-module storageAccount_localUsers 'localUsers/deploy.bicep' = [for (localUser, index) in localUsers: {
+module storageAccount_localUsers 'localUsers/main.bicep' = [for (localUser, index) in localUsers: {
   name: '${uniqueString(deployment().name, location)}-Storage-LocalUsers-${index}'
   params: {
     storageAccountName: storageAccount.name
@@ -395,7 +395,7 @@ module storageAccount_localUsers 'localUsers/deploy.bicep' = [for (localUser, in
 }]
 
 // Containers
-module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
+module storageAccount_blobServices 'blobServices/main.bicep' = if (!empty(blobServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
@@ -426,7 +426,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
 }
 
 // File Shares
-module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(fileServices)) {
+module storageAccount_fileServices 'fileServices/main.bicep' = if (!empty(fileServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
@@ -448,7 +448,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
 }
 
 // Queue
-module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(queueServices)) {
+module storageAccount_queueServices 'queueServices/main.bicep' = if (!empty(queueServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
     storageAccountName: storageAccount.name
@@ -465,7 +465,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
 }
 
 // Table
-module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(tableServices)) {
+module storageAccount_tableServices 'tableServices/main.bicep' = if (!empty(tableServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   params: {
     storageAccountName: storageAccount.name

@@ -69,7 +69,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/deploy.bicep' = {
+module eventSubscriptions './Microsoft.EventGrid/eventSubscriptions/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egescom'
   params: {
     // Required parameters

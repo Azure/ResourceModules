@@ -298,7 +298,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
   }
 }
 
-module registry_replications 'replications/deploy.bicep' = [for (replication, index) in replications: {
+module registry_replications 'replications/main.bicep' = [for (replication, index) in replications: {
   name: '${uniqueString(deployment().name, location)}-Registry-Replication-${index}'
   params: {
     name: replication.name
@@ -311,7 +311,7 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
   }
 }]
 
-module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webhooks: {
+module registry_webhooks 'webhooks/main.bicep' = [for (webhook, index) in webhooks: {
   name: '${uniqueString(deployment().name, location)}-Registry-Webhook-${index}'
   params: {
     name: webhook.name
@@ -367,7 +367,7 @@ module registry_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (ro
   }
 }]
 
-module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-ContainerRegistry-PrivateEndpoint-${index}'
   params: {
     groupIds: [

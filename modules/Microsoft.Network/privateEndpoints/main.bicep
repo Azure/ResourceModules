@@ -88,7 +88,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2022-07-01' = {
   }
 }
 
-module privateEndpoint_privateDnsZoneGroup 'privateDnsZoneGroups/deploy.bicep' = if (!empty(privateDnsZoneGroup)) {
+module privateEndpoint_privateDnsZoneGroup 'privateDnsZoneGroups/main.bicep' = if (!empty(privateDnsZoneGroup)) {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-PrivateDnsZoneGroup'
   params: {
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds

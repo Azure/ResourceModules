@@ -342,7 +342,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 // Public IPs
 @batchSize(1)
-module publicIPAddress '../publicIPAddresses/deploy.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
+module publicIPAddress '../publicIPAddresses/main.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipNameVar: {
   name: virtualGatewayPublicIpName
   params: {
     name: virtualGatewayPublicIpName
@@ -399,7 +399,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2022-07
   ]
 }
 
-module virtualNetworkGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+module virtualNetworkGateway_natRules 'natRules/main.bicep' = [for (natRule, index) in natRules: {
   name: '${deployment().name}-NATRule-${index}'
   params: {
     name: natRule.name

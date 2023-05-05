@@ -513,7 +513,7 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
   scope: vm
 }
 
-module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfig.enabled) {
+module vm_aadJoinExtension 'extensions/main.bicep' = if (extensionAadJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-AADLogin'
   params: {
     virtualMachineName: vm.name
@@ -528,7 +528,7 @@ module vm_aadJoinExtension 'extensions/deploy.bicep' = if (extensionAadJoinConfi
   }
 }
 
-module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
+module vm_domainJoinExtension 'extensions/main.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'
   params: {
     virtualMachineName: vm.name
@@ -547,7 +547,7 @@ module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoi
   }
 }
 
-module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensionAntiMalwareConfig.enabled) {
+module vm_microsoftAntiMalwareExtension 'extensions/main.bicep' = if (extensionAntiMalwareConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-MicrosoftAntiMalware'
   params: {
     virtualMachineName: vm.name
@@ -568,7 +568,7 @@ resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021
   scope: az.resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
-module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
+module vm_microsoftMonitoringAgentExtension 'extensions/main.bicep' = if (extensionMonitoringAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-MicrosoftMonitoringAgent'
   params: {
     virtualMachineName: vm.name
@@ -589,7 +589,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
   }
 }
 
-module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDependencyAgentConfig.enabled) {
+module vm_dependencyAgentExtension 'extensions/main.bicep' = if (extensionDependencyAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DependencyAgent'
   params: {
     virtualMachineName: vm.name
@@ -604,7 +604,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
   }
 }
 
-module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
+module vm_networkWatcherAgentExtension 'extensions/main.bicep' = if (extensionNetworkWatcherAgentConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-NetworkWatcherAgent'
   params: {
     virtualMachineName: vm.name
@@ -619,7 +619,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
   }
 }
 
-module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (extensionDSCConfig.enabled) {
+module vm_desiredStateConfigurationExtension 'extensions/main.bicep' = if (extensionDSCConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DesiredStateConfiguration'
   params: {
     virtualMachineName: vm.name
@@ -636,7 +636,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
   }
 }
 
-module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomScriptConfig.enabled) {
+module vm_customScriptExtension 'extensions/main.bicep' = if (extensionCustomScriptConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-CustomScriptExtension'
   params: {
     virtualMachineName: vm.name
@@ -658,7 +658,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
   ]
 }
 
-module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
+module vm_azureDiskEncryptionExtension 'extensions/main.bicep' = if (extensionAzureDiskEncryptionConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-AzureDiskEncryption'
   params: {
     virtualMachineName: vm.name
@@ -679,7 +679,7 @@ module vm_azureDiskEncryptionExtension 'extensions/deploy.bicep' = if (extension
   ]
 }
 
-module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/deploy.bicep' = if (!empty(backupVaultName)) {
+module vm_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/main.bicep' = if (!empty(backupVaultName)) {
   name: '${uniqueString(deployment().name, location)}-VM-Backup'
   params: {
     name: 'vm;iaasvmcontainerv2;${resourceGroup().name};${vm.name}'

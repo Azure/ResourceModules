@@ -511,7 +511,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwadv'
   params: {
     // Required parameters
@@ -1042,7 +1042,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwcom'
   params: {
     // Required parameters
@@ -1429,7 +1429,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwmin'
   params: {
     // Required parameters

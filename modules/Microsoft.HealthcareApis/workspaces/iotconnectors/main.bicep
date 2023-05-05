@@ -169,7 +169,7 @@ resource iotConnector_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: iotConnector
 }
 
-module fhir_destination 'fhirdestinations/deploy.bicep' = if (!empty(fhirdestination)) {
+module fhir_destination 'fhirdestinations/main.bicep' = if (!empty(fhirdestination)) {
   name: '${deployment().name}-FhirDestination'
   params: {
     name: '${uniqueString(workspaceName, iotConnector.name)}-map'

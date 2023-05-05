@@ -426,7 +426,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.HealthcareApis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawcom'
   params: {
     // Required parameters
@@ -641,7 +641,7 @@ module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.HealthcareApis/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.HealthcareApis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters

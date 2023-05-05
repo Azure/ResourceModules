@@ -76,7 +76,7 @@ resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
   }
 }
 
-module dnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
+module dnsZone_A 'A/main.bicep' = [for (aRecord, index) in a: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-ARecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -90,7 +90,7 @@ module dnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
   }
 }]
 
-module dnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaaa: {
+module dnsZone_AAAA 'AAAA/main.bicep' = [for (aaaaRecord, index) in aaaa: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-AAAARecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -104,7 +104,7 @@ module dnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaaa: {
   }
 }]
 
-module dnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in cname: {
+module dnsZone_CNAME 'CNAME/main.bicep' = [for (cnameRecord, index) in cname: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-CNAMERecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -118,7 +118,7 @@ module dnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in cname: 
   }
 }]
 
-module dnsZone_CAA 'CAA/deploy.bicep' = [for (caaRecord, index) in caa: {
+module dnsZone_CAA 'CAA/main.bicep' = [for (caaRecord, index) in caa: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-CAARecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -131,7 +131,7 @@ module dnsZone_CAA 'CAA/deploy.bicep' = [for (caaRecord, index) in caa: {
   }
 }]
 
-module dnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
+module dnsZone_MX 'MX/main.bicep' = [for (mxRecord, index) in mx: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-MXRecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -144,7 +144,7 @@ module dnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
   }
 }]
 
-module dnsZone_NS 'NS/deploy.bicep' = [for (nsRecord, index) in ns: {
+module dnsZone_NS 'NS/main.bicep' = [for (nsRecord, index) in ns: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-NSRecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -157,7 +157,7 @@ module dnsZone_NS 'NS/deploy.bicep' = [for (nsRecord, index) in ns: {
   }
 }]
 
-module dnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
+module dnsZone_PTR 'PTR/main.bicep' = [for (ptrRecord, index) in ptr: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-PTRRecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -170,7 +170,7 @@ module dnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
   }
 }]
 
-module dnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
+module dnsZone_SOA 'SOA/main.bicep' = [for (soaRecord, index) in soa: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-SOARecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -183,7 +183,7 @@ module dnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
   }
 }]
 
-module dnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
+module dnsZone_SRV 'SRV/main.bicep' = [for (srvRecord, index) in srv: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-SRVRecord-${index}'
   params: {
     dnsZoneName: dnsZone.name
@@ -196,7 +196,7 @@ module dnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
   }
 }]
 
-module dnsZone_TXT 'TXT/deploy.bicep' = [for (txtRecord, index) in txt: {
+module dnsZone_TXT 'TXT/main.bicep' = [for (txtRecord, index) in txt: {
   name: '${uniqueString(deployment().name, location)}-dnsZone-TXTRecord-${index}'
   params: {
     dnsZoneName: dnsZone.name

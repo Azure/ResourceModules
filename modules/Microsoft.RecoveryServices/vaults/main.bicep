@@ -184,7 +184,7 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2023-01-01' = {
   }
 }
 
-module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
+module rsv_replicationFabrics 'replicationFabrics/main.bicep' = [for (replicationFabric, index) in replicationFabrics: {
   name: '${uniqueString(deployment().name, location)}-RSV-Fabric-${index}'
   params: {
     recoveryVaultName: rsv.name
@@ -198,7 +198,7 @@ module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicat
   ]
 }]
 
-module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replicationPolicy, index) in replicationPolicies: {
+module rsv_replicationPolicies 'replicationPolicies/main.bicep' = [for (replicationPolicy, index) in replicationPolicies: {
   name: '${uniqueString(deployment().name, location)}-RSV-Policy-${index}'
   params: {
     name: replicationPolicy.name
@@ -211,7 +211,7 @@ module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replic
   }
 }]
 
-module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!empty(backupStorageConfig)) {
+module rsv_backupStorageConfiguration 'backupStorageConfig/main.bicep' = if (!empty(backupStorageConfig)) {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupStorageConfig'
   params: {
     recoveryVaultName: rsv.name
@@ -221,7 +221,7 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!
   }
 }
 
-module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (protectionContainer, index) in protectionContainers: {
+module rsv_protectionContainers 'protectionContainers/main.bicep' = [for (protectionContainer, index) in protectionContainers: {
   name: '${uniqueString(deployment().name, location)}-RSV-ProtectionContainers-${index}'
   params: {
     recoveryVaultName: rsv.name
@@ -236,7 +236,7 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
   }
 }]
 
-module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module rsv_backupPolicies 'backupPolicies/main.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupPolicy-${index}'
   params: {
     recoveryVaultName: rsv.name
@@ -246,7 +246,7 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
   }
 }]
 
-module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) {
+module rsv_backupConfig 'backupConfig/main.bicep' = if (!empty(backupConfig)) {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupConfig'
   params: {
     recoveryVaultName: rsv.name
@@ -262,7 +262,7 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
   }
 }
 
-module rsv_replicationAlertSettings 'replicationAlertSettings/deploy.bicep' = if (!empty(replicationAlertSettings)) {
+module rsv_replicationAlertSettings 'replicationAlertSettings/main.bicep' = if (!empty(replicationAlertSettings)) {
   name: '${uniqueString(deployment().name, location)}-RSV-replicationAlertSettings'
   params: {
     name: 'defaultAlertSetting'
@@ -296,7 +296,7 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   scope: rsv
 }
 
-module rsv_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module rsv_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-RSV-PrivateEndpoint-${index}'
   params: {
     groupIds: [

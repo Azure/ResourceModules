@@ -180,7 +180,7 @@ resource purview_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-
   scope: account
 }
 
-module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in accountPrivateEndpoints: {
+module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in accountPrivateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Account-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -203,7 +203,7 @@ module account_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy
   }
 }]
 
-module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in portalPrivateEndpoints: {
+module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in portalPrivateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Portal-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -226,7 +226,7 @@ module portal_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
   }
 }]
 
-module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in storageBlobPrivateEndpoints: {
+module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in storageBlobPrivateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Storage-Blob-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -249,7 +249,7 @@ module blob_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bi
   }
 }]
 
-module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in storageQueuePrivateEndpoints: {
+module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in storageQueuePrivateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Storage-Queue-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -272,7 +272,7 @@ module queue_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
   }
 }]
 
-module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in eventHubPrivateEndpoints: {
+module eventHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in eventHubPrivateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Eventhub-Namespace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

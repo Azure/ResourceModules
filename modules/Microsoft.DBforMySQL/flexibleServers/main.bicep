@@ -356,7 +356,7 @@ module flexibleServer_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
-module flexibleServer_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+module flexibleServer_databases 'databases/main.bicep' = [for (database, index) in databases: {
   name: '${uniqueString(deployment().name, location)}-MySQL-DB-${index}'
   params: {
     name: database.name
@@ -367,7 +367,7 @@ module flexibleServer_databases 'databases/deploy.bicep' = [for (database, index
   }
 }]
 
-module flexibleServer_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+module flexibleServer_firewallRules 'firewallRules/main.bicep' = [for (firewallRule, index) in firewallRules: {
   name: '${uniqueString(deployment().name, location)}-MySQL-FirewallRules-${index}'
   params: {
     name: firewallRule.name

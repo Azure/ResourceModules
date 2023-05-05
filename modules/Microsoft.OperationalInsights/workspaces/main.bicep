@@ -215,7 +215,7 @@ resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: logAnalyticsWorkspace
 }
 
-module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
+module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/main.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
   name: '${uniqueString(deployment().name, location)}-LAW-StorageInsightsConfig-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -226,7 +226,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
   }
 }]
 
-module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for (linkedService, index) in linkedServices: {
+module logAnalyticsWorkspace_linkedServices 'linkedServices/main.bicep' = [for (linkedService, index) in linkedServices: {
   name: '${uniqueString(deployment().name, location)}-LAW-LinkedService-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -237,7 +237,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
   }
 }]
 
-module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/deploy.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
+module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/main.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
   name: '${uniqueString(deployment().name, location)}-LAW-LinkedStorageAccount-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -247,7 +247,7 @@ module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/deploy
   }
 }]
 
-module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (savedSearch, index) in savedSearches: {
+module logAnalyticsWorkspace_savedSearches 'savedSearches/main.bicep' = [for (savedSearch, index) in savedSearches: {
   name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -266,7 +266,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
   ]
 }]
 
-module logAnalyticsWorkspace_dataExports 'dataExports/deploy.bicep' = [for (dataExport, index) in dataExports: {
+module logAnalyticsWorkspace_dataExports 'dataExports/main.bicep' = [for (dataExport, index) in dataExports: {
   name: '${uniqueString(deployment().name, location)}-LAW-DataExport-${index}'
   params: {
     workspaceName: logAnalyticsWorkspace.name
@@ -278,7 +278,7 @@ module logAnalyticsWorkspace_dataExports 'dataExports/deploy.bicep' = [for (data
   }
 }]
 
-module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (dataSource, index) in dataSources: {
+module logAnalyticsWorkspace_dataSources 'dataSources/main.bicep' = [for (dataSource, index) in dataSources: {
   name: '${uniqueString(deployment().name, location)}-LAW-DataSource-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -299,7 +299,7 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
   }
 }]
 
-module logAnalyticsWorkspace_tables 'tables/deploy.bicep' = [for (table, index) in tables: {
+module logAnalyticsWorkspace_tables 'tables/main.bicep' = [for (table, index) in tables: {
   name: '${uniqueString(deployment().name, location)}-LAW-Table-${index}'
   params: {
     workspaceName: logAnalyticsWorkspace.name
@@ -314,7 +314,7 @@ module logAnalyticsWorkspace_tables 'tables/deploy.bicep' = [for (table, index) 
   }
 }]
 
-module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/solutions/deploy.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
+module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
     name: gallerySolution.name

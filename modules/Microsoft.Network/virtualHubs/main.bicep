@@ -133,7 +133,7 @@ resource virtualHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty
   scope: virtualHub
 }
 
-module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in hubRouteTables: {
+module virtualHub_routeTables 'hubRouteTables/main.bicep' = [for (routeTable, index) in hubRouteTables: {
   name: '${uniqueString(deployment().name, location)}-routeTable-${index}'
   params: {
     virtualHubName: virtualHub.name
@@ -144,7 +144,7 @@ module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, 
   }
 }]
 
-module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/deploy.bicep' = [for (virtualNetworkConnection, index) in hubVirtualNetworkConnections: {
+module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/main.bicep' = [for (virtualNetworkConnection, index) in hubVirtualNetworkConnections: {
   name: '${uniqueString(deployment().name, location)}-connection-${index}'
   params: {
     virtualHubName: virtualHub.name

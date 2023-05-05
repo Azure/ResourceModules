@@ -50,7 +50,7 @@ resource securityAdminConfigurations 'Microsoft.Network/networkManagers/security
   }
 }
 
-module securityAdminConfigurations_ruleCollections 'ruleCollections/deploy.bicep' = [for (ruleCollection, index) in ruleCollections: {
+module securityAdminConfigurations_ruleCollections 'ruleCollections/main.bicep' = [for (ruleCollection, index) in ruleCollections: {
   name: '${uniqueString(deployment().name)}-SecurityAdminConfigurations-RuleCollections-${index}'
   params: {
     networkManagerName: networkManager.name
