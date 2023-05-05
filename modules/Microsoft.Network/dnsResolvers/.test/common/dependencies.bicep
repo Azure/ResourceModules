@@ -1,8 +1,16 @@
 @description('Required. The name of the Virtual Network to create.')
 param virtualNetworkName string
 
+@description('Required. The name of the Managed Identity to create.')
+param managedIdentityName string
+
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
+
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: managedIdentityName
+  location: location
+}
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: virtualNetworkName
@@ -54,3 +62,6 @@ output subnetResourceId_dnsIn string = virtualNetwork.properties.subnets[0].id
 
 @description('The resource ID of the created outbound endpoint Virtual Network Subnet.')
 output subnetResourceId_dnsOut string = virtualNetwork.properties.subnets[1].id
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId

@@ -33,6 +33,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     location: location
   }
 }
@@ -64,12 +65,13 @@ module testDeployment '../../deploy.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         description: 'Reader Role Assignment'
         principalIds: [
-          'c99b4f9a-4268-4ab0-bd02-85d160b29a36' // carml-contributor-group
+          nestedDependencies.outputs.managedIdentityPrincipalId
         ]
       }
     ]
