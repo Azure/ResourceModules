@@ -94,7 +94,7 @@ Get a string that indicates whether there are ARM/Bicep templates available in t
 .DESCRIPTION
 Get a string that indicates whether there are ARM/Bicep templates available in the given path.
 The string represents markdown table columns.
-Files must follow the naming schema 'deploy.json' & 'deploy.bicep'
+Files must follow the naming schema 'deploy.json' & 'main.bicep'
 
 .PARAMETER path
 Mandatory. The path to check for templates
@@ -125,7 +125,7 @@ function Get-TypeColumnString {
     #     $outputString += " /"
     # }
 
-    if ($moduleFiles.Name -contains 'deploy.bicep') {
+    if ($moduleFiles.Name -contains 'main.bicep') {
         # bicep exists
         $outputString += ':heavy_check_mark:'
     } else {

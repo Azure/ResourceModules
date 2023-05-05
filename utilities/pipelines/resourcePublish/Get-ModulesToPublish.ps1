@@ -70,10 +70,10 @@ function Get-GitBranchName {
 
 <#
 .SYNOPSIS
-Find the closest deploy.bicep/json file to the current directory/file.
+Find the closest main.bicep/json file to the current directory/file.
 
 .DESCRIPTION
-This function will search the current directory and all parent directories for a deploy.bicep/json file.
+This function will search the current directory and all parent directories for a main.bicep/json file.
 
 .PARAMETER Path
 Mandatory. Path to the folder/file that should be searched
@@ -85,9 +85,9 @@ Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\modules\Microsoft.Storag
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
-la---          05.12.2021    22:45           1230 deploy.bicep
+la---          05.12.2021    22:45           1230 main.bicep
 
-Gets the closest deploy.bicep/json file to the current directory.
+Gets the closest main.bicep/json file to the current directory.
 #>
 function Find-TemplateFile {
     [CmdletBinding()]
@@ -103,7 +103,7 @@ function Find-TemplateFile {
     }
 
     #Prioritizing the bicep file
-    $TemplateFilePath = Join-Path $FolderPath 'deploy.bicep'
+    $TemplateFilePath = Join-Path $FolderPath 'main.bicep'
     if (-not (Test-Path $TemplateFilePath)) {
         $TemplateFilePath = Join-Path $FolderPath 'deploy.json'
     }
@@ -117,10 +117,10 @@ function Find-TemplateFile {
 
 <#
 .SYNOPSIS
-Find the closest deploy.bicep/json file to the changed files in the module folder structure.
+Find the closest main.bicep/json file to the changed files in the module folder structure.
 
 .DESCRIPTION
-Find the closest deploy.bicep/json file to the changed files in the module folder structure.
+Find the closest main.bicep/json file to the changed files in the module folder structure.
 
 .PARAMETER ModuleFolderPath
 Mandatory. Path to the main/parent module folder.
@@ -128,11 +128,11 @@ Mandatory. Path to the main/parent module folder.
 .EXAMPLE
 Get-TemplateFileToPublish -ModuleFolderPath "C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\"
 
-C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep
+C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\main.bicep
 
-Gets the closest deploy.bicep/json file to the changed files in the module folder structure.
+Gets the closest main.bicep/json file to the changed files in the module folder structure.
 Assuming there is a changed file in 'Microsoft.Storage\storageAccounts\tableServices\tables'
-the function would return the deploy.bicep file in the same folder.
+the function would return the main.bicep file in the same folder.
 
 #>
 function Get-TemplateFileToPublish {
@@ -167,33 +167,33 @@ function Get-TemplateFileToPublish {
 
 <#
 .SYNOPSIS
-Gets the parent deploy.bicep/json file(s) to the changed files in the module folder structure.
+Gets the parent main.bicep/json file(s) to the changed files in the module folder structure.
 
 .DESCRIPTION
-Gets the parent deploy.bicep/json file(s) to the changed files in the module folder structure.
+Gets the parent main.bicep/json file(s) to the changed files in the module folder structure.
 
 .PARAMETER TemplateFilePath
-Mandatory. Path to a deploy.bicep/json file.
+Mandatory. Path to a main.bicep/json file.
 
 .PARAMETER Recurse
-Optional. If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
+Optional. If true, the function will recurse up the folder structure to find the closest main.bicep/json file.
 
 .EXAMPLE
-Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep' -Recurse
+Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\main.bicep' -Recurse
 
     Directory: C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
-la---          05.12.2021    22:45           1427 deploy.bicep
+la---          05.12.2021    22:45           1427 main.bicep
 
     Directory: C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
-la---          02.12.2021    13:19          10768 deploy.bicep
+la---          02.12.2021    13:19          10768 main.bicep
 
-Gets the parent deploy.bicep/json file(s) to the changed files in the module folder structure.
+Gets the parent main.bicep/json file(s) to the changed files in the module folder structure.
 
 #>
 function Get-ParentModuleTemplateFile {
@@ -211,7 +211,7 @@ function Get-ParentModuleTemplateFile {
     $ParentFolderPath = Split-Path $ModuleFolderPath -Parent
 
     #Prioritizing the bicep file
-    $ParentTemplateFilePath = Join-Path $ParentFolderPath 'deploy.bicep'
+    $ParentTemplateFilePath = Join-Path $ParentFolderPath 'main.bicep'
     if (-not (Test-Path $TemplateFilePath)) {
         $ParentTemplateFilePath = Join-Path $ParentFolderPath 'deploy.json'
     }
@@ -258,21 +258,21 @@ function Get-GitDistance {
 
 <#
 .SYNOPSIS
-Gets the version from the version file from the corresponding deploy.bicep/json file.
+Gets the version from the version file from the corresponding main.bicep/json file.
 
 .DESCRIPTION
-Gets the version file from the corresponding deploy.bicep/json file.
+Gets the version file from the corresponding main.bicep/json file.
 The file needs to be in the same folder as the template file itself.
 
 .PARAMETER TemplateFilePath
-Mandatory. Path to a deploy.bicep/json file.
+Mandatory. Path to a main.bicep/json file.
 
 .EXAMPLE
-Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\main.bicep'
 
 0.3
 
-Get the version file from the specified deploy.bicep file.
+Get the version file from the specified main.bicep file.
 #>
 function Get-ModuleVersionFromFile {
 
@@ -304,10 +304,10 @@ Major and minor version numbers are gathered from the version.json file.
 Patch version number is calculated based on the git commit count on the branch.
 
 .PARAMETER TemplateFilePath
-Mandatory. Path to a deploy.bicep/json file.
+Mandatory. Path to a main.bicep/json file.
 
 .EXAMPLE
-Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\tableServices\tables\main.bicep'
 
 0.3.630
 
@@ -344,22 +344,22 @@ Generates a hashtable with template file paths to publish with a new version.
 Generates a hashtable with template file paths to publish with a new version.
 
 .PARAMETER TemplateFilePath
-Mandatory. Path to a deploy.bicep/json file.
+Mandatory. Path to a main.bicep/json file.
 
 .PARAMETER PublishLatest
 Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
 .EXAMPLE
-Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep'
+Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\main.bicep'
 
 Name               Value
 ----               -----
-TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\fileServices\shares\deploy.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\fileServices\shares\main.bicep
 Version            0.3.848-prerelease
-TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\fileServices\deploy.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\fileServices\main.bicep
 Version            0.3.848-prerelease
-TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep
+TemplateFilePath   C:\Repos\Azure\ResourceModules\modules\Microsoft.Storage\storageAccounts\main.bicep
 Version            0.3.848-prerelease
 
 Generates a hashtable with template file paths to publish and their new versions.

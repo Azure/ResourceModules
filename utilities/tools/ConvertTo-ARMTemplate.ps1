@@ -3,7 +3,7 @@
 This script converts the module library from bicep to json based ARM templates.
 
 .DESCRIPTION
-The script finds all 'deploy.bicep' files and tries to convert them to json based ARM templates
+The script finds all 'main.bicep' files and tries to convert them to json based ARM templates
 by using the following steps.
 1. Remove existing deploy.json files
 2. Convert bicep files to json
@@ -70,11 +70,11 @@ function ConvertTo-ARMTemplate {
     $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
     $modulesFolderPath = Join-Path $rootPath 'modules'
 
-    $allAvailableBicepFilesToConvert = (Get-ChildItem -Path $modulesFolderPath -Include @('deploy.bicep', 'deploy.test.bicep') -Recurse -Force).FullName
+    $allAvailableBicepFilesToConvert = (Get-ChildItem -Path $modulesFolderPath -Include @('main.bicep', 'deploy.test.bicep') -Recurse -Force).FullName
 
     if (-not $ConvertChildren) {
         $BicepFilesToConvert = $allAvailableBicepFilesToConvert | Where-Object {
-            (($_ -split 'Microsoft\.')[1] -replace '\\', '/' -split '\/').Count -lt 4 -or # Either are a top-level [deploy.bicep] file
+            (($_ -split 'Microsoft\.')[1] -replace '\\', '/' -split '\/').Count -lt 4 -or # Either are a top-level [main.bicep] file
             ($_ -split 'Microsoft\.')[1] -replace '\\', '/' -like '*/.test/*' # OR are a [deploy.test.bicep] file
         }
     } else {

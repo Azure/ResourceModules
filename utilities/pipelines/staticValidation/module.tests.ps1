@@ -43,7 +43,7 @@ Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
 
-        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file.' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` main.bicep `] file.' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 

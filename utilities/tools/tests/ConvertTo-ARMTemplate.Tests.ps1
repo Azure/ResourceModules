@@ -16,9 +16,9 @@ BeforeAll {
     # Collect original files
     $bicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like '*.bicep' }).Count
     $nestedBicepFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -like 'nested_*bicep' }).Count
-    $allBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $allBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'main.bicep' }).Count
     $bicepTestFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.Name -match 'deploy.test.bicep' }).Count
-    $topLevelBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'deploy.bicep' }).Count
+    $topLevelBicepDeployFilesCount = (Get-ChildItem -Recurse $modulesFolderPath -Depth 2 | Where-Object { $_.Name -match 'main.bicep' }).Count
     $allBicepFilesCount = $nestedBicepFilesCount + $allBicepDeployFilesCount + $bicepTestFilesCount
 
     # GitHub Workflows
@@ -40,7 +40,7 @@ Describe 'Test default behavior' -Tag 'Default' {
         ConvertTo-ARMTemplate -Path $rootPath -Verbose -RunSynchronous
     }
 
-    It 'All [<topLevelBicepDeployFilesCount>] top-level [deploy.bicep] files are converted to [deploy.json]' {
+    It 'All [<topLevelBicepDeployFilesCount>] top-level [main.bicep] files are converted to [deploy.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
     }
@@ -93,7 +93,7 @@ Describe 'Test flag to including children' -Tag 'ConvertChildren' {
         ConvertTo-ARMTemplate -Path $rootPath -ConvertChildren -Verbose -RunSynchronous
     }
 
-    It 'All [<allBicepDeployFilesCount>] [deploy.bicep] files are converted to [deploy.json]' {
+    It 'All [<allBicepDeployFilesCount>] [main.bicep] files are converted to [deploy.json]' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $allBicepDeployFilesCount
     }
@@ -146,7 +146,7 @@ Describe 'Test flags that skip logic' -Tag 'Skip' {
         ConvertTo-ARMTemplate -Path $rootPath -SkipBicepCleanUp -SkipMetadataCleanup -SkipPipelineUpdate -Verbose -RunSynchronous
     }
 
-    It 'All [<allBicepDeployFilesCount>] deploy.bicep files are converted to deploy.json' {
+    It 'All [<allBicepDeployFilesCount>] main.bicep files are converted to deploy.json' {
         $deployJsonFilesCount = (Get-ChildItem -Recurse $modulesFolderPath | Where-Object { $_.FullName -match 'deploy.json' }).Count
         $deployJsonFilesCount | Should -Be $topLevelBicepDeployFilesCount
     }
