@@ -139,7 +139,7 @@ jobs:
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
+              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.json'
             }
 
             ################################
@@ -228,7 +228,7 @@ jobs:
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
+              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.json'
             }
 
             ################################
@@ -319,7 +319,7 @@ jobs:
             #Prioritizing the bicep file
             $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
+              $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.json'
             }
 
             ################################
