@@ -137,7 +137,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesMissingFromUniversalArtifactsFeed.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
+            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
@@ -226,7 +226,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpecsRG.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
+            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }
@@ -317,7 +317,7 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.bicep'
+            $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'main.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
               $TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}' 'deploy.json'
             }

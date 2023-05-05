@@ -9,7 +9,7 @@ trigger:
       - main
   paths:
     include:
-      - 'modules/**/deploy.bicep'
+      - 'modules/**/main.bicep'
       - 'modules/**/deploy.json'
       - 'utilities/tools/platform/**'
 
