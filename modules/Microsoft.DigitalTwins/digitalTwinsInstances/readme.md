@@ -450,7 +450,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/deploy.bicep' = {
+module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtdticom'
   params: {
     // Required parameters
@@ -619,7 +619,7 @@ module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/dep
 <summary>via Bicep module</summary>
 
 ```bicep
-module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/deploy.bicep' = {
+module digitalTwinsInstances './Microsoft.DigitalTwins/digitalTwinsInstances/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtdtimin'
   params: {
     // Required parameters

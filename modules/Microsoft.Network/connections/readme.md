@@ -30,6 +30,7 @@ This template deploys a virtual network gateway connection.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `authorizationKey` | securestring | `''` |  | The Authorization Key to connect to an Express Route Circuit. Used for connection type [ExpressRoute]. |
 | `connectionMode` | string | `'Default'` | `[Default, InitiatorOnly, ResponderOnly]` | The connection connectionMode for this connection. Available for IPSec connections. |
 | `connectionProtocol` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Connection connectionProtocol used for this connection. Available for IPSec connections. |
 | `connectionType` | string | `'IPsec'` | `[ExpressRoute, IPsec, Vnet2Vnet, VPNClient]` | Gateway connection connectionType. |
@@ -39,7 +40,7 @@ This template deploys a virtual network gateway connection.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePrivateLinkFastPath` | bool | `False` |  | Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled. Only available when connection connectionType is Express Route. |
 | `expressRouteGatewayBypass` | bool | `False` |  | Bypass ExpressRoute Gateway for data forwarding. Only available when connection connectionType is Express Route. |
-| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection connectionType [IPsec]. |
+| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the connectionType of lock. |
 | `peer` | object | `{object}` |  | The remote peer. Used for connection connectionType [ExpressRoute]. |
@@ -329,7 +330,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module connections './Microsoft.Network/connections/deploy.bicep' = {
+module connections './Microsoft.Network/connections/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ncvtv'
   params: {
     // Required parameters

@@ -47,7 +47,7 @@ Get a list of all resource/module references in a given module path
 .DESCRIPTION
 As an output you will receive a hashtable that (for each provider namespace) lists the
 - Directly deployed resources (e.g. via "resource myDeployment 'Microsoft.(..)/(..)@(..)'")
-- Linked local module templates (e.g. via "module myDeployment '../../deploy.bicep'")
+- Linked local module templates (e.g. via "module myDeployment '../../main.bicep'")
 - Linked remote module tempaltes (e.g. via "module rg 'br/modules:(..):(..)'")
 
 .PARAMETER Path
@@ -128,7 +128,7 @@ function Get-CrossReferencedModuleList {
         $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' } # e.g. '../
         if ($relevantLocalReferences) {
             $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
-                # remove deploy.bicep
+                # remove main.bicep
                 Split-Path $_ -Parent
             } | ForEach-Object {
                 # remove leading path elements

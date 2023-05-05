@@ -401,7 +401,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
+module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aacom'
   params: {
     // Required parameters
@@ -842,7 +842,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
+module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aaencr'
   params: {
     // Required parameters
@@ -907,7 +907,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
+module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aamin'
   params: {
     // Required parameters

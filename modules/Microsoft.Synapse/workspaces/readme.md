@@ -29,7 +29,7 @@ This module deploys a Synapse Workspace.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `defaultDataLakeStorageAccountName` | string | Name of the default ADLS Gen2 storage account. |
+| `defaultDataLakeStorageAccountResourceId` | string | Resource ID of the default ADLS Gen2 storage account. |
 | `defaultDataLakeStorageFilesystem` | string | The default ADLS Gen2 file system. |
 | `name` | string | The name of the Synapse Workspace. |
 | `sqlAdministratorLogin` | string | Login for administrator access to the workspace's SQL pools. |
@@ -343,11 +343,11 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swcom'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swcom001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -410,8 +410,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
@@ -500,11 +500,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swensa'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swensa001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -532,8 +532,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
@@ -577,11 +577,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swenua'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swenua001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -612,8 +612,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
@@ -660,11 +660,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmanv'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swmanv001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -696,8 +696,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"
@@ -743,11 +743,11 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
+module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmin'
   params: {
     // Required parameters
-    defaultDataLakeStorageAccountName: '<defaultDataLakeStorageAccountName>'
+    defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
     name: '<<namePrefix>>swmin001'
     sqlAdministratorLogin: 'synwsadmin'
@@ -770,8 +770,8 @@ module workspaces './Microsoft.Synapse/workspaces/deploy.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "defaultDataLakeStorageAccountName": {
-      "value": "<defaultDataLakeStorageAccountName>"
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "<defaultDataLakeStorageAccountResourceId>"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "<defaultDataLakeStorageFilesystem>"

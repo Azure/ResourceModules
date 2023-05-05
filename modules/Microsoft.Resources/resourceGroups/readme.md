@@ -173,7 +173,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroups './Microsoft.Resources/resourceGroups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rrgcom'
   params: {
     // Required parameters
@@ -252,7 +252,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroups './Microsoft.Resources/resourceGroups/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rrgmin'
   params: {
     // Required parameters
