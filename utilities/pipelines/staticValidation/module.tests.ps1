@@ -658,9 +658,9 @@ Describe 'Readme tests' -Tag 'Readme' {
             )
 
             # TODO Remove beginning
-            Write-Warning ("moduleFolderName: $moduleFolderName") -Verbose
-            Write-Warning ("templateFilePath: $templateFilePath") -Verbose
-            Write-Warning ("readMeFilePath: $readMeFilePath") -Verbose
+            Write-Verbose ("moduleFolderName: $moduleFolderName") -Verbose
+            Write-Verbose ("templateFilePath: $templateFilePath") -Verbose
+            Write-Verbose ("readMeFilePath: $readMeFilePath") -Verbose
             # TODO Remove end
 
             # Get current hash
@@ -674,6 +674,11 @@ Describe 'Readme tests' -Tag 'Readme' {
 
             # Get hash after 'update'
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
+
+            # TODO Remove beginning
+            Write-Verbose ("fileHashBefore: $fileHashBefore") -Verbose
+            Write-Verbose ("fileHashAfter: $fileHashAfter") -Verbose
+            # TODO Remove end
 
             # Compare
             $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
