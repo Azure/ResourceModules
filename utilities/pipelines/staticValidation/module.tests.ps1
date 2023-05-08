@@ -657,13 +657,6 @@ Describe 'Readme tests' -Tag 'Readme' {
                 [string] $readMeFilePath
             )
 
-            # TODO Remove beginning
-            Write-Verbose ("moduleFolderName: $moduleFolderName") -Verbose
-            Write-Verbose ("templateFilePath: $templateFilePath") -Verbose
-            Write-Verbose ("readMeFilePath: $readMeFilePath") -Verbose
-            Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
-            # TODO Remove end
-
             # Get current hash
             $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
@@ -671,16 +664,10 @@ Describe 'Readme tests' -Tag 'Readme' {
             . (Join-Path $repoRootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
 
             # Apply update with already compiled template content
-            Set-ModuleReadMe -TemplateFilePath $templateFilePath
-            # -TemplateFileContent $templateContent
+            Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
 
             # Get hash after 'update'
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
-
-            # TODO Remove beginning
-            Write-Verbose ("fileHashBefore: $fileHashBefore") -Verbose
-            Write-Verbose ("fileHashAfter: $fileHashAfter") -Verbose
-            # TODO Remove end
 
             # Compare
             $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
