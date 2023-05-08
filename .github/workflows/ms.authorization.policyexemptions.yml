@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.authorization.policyexemptions.yml'
-      - 'modules/Microsoft.Authorization/policyExemptions/**'
+      - 'modules/Authorization/policyExemptions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Authorization/policyExemptions'
+  modulePath: 'modules/Authorization/policyExemptions'
   workflowPath: '.github/workflows/ms.authorization.policyexemptions.yml'
 
 concurrency:
