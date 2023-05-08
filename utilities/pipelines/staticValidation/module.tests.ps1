@@ -657,7 +657,11 @@ Describe 'Readme tests' -Tag 'Readme' {
                 [string] $readMeFilePath
             )
 
-
+            # TODO Remove beginning
+            Write-Warning ("moduleFolderName: $moduleFolderName") -Verbose
+            Write-Warning ("templateFilePath: $templateFilePath") -Verbose
+            Write-Warning ("readMeFilePath: $readMeFilePath") -Verbose
+            # TODO Remove end
 
             # Get current hash
             $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
@@ -679,12 +683,6 @@ Describe 'Readme tests' -Tag 'Readme' {
 
                 # Reset readme file to original state
                 git checkout HEAD -- $readMeFilePath
-            } else {
-                # TODO Remove beginning
-                Write-Output "moduleFolderName: $moduleFolderName"
-                Write-Output "templateFilePath: $templateFilePath"
-                Write-Output "readMeFilePath: $readMeFilePath"
-                # TODO Remove end
             }
 
             $mdFormattedDiff = ($diffReponse -join '</br>') -replace '\|', '\|'
