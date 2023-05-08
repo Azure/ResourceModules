@@ -34,7 +34,7 @@ This module deploys an Azure virtual desktop application group.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | List of applications to be created in the Application Group. |
+| `applications` | _[applications](applications/README.md)_ array | `[]` |  | List of applications to be created in the Application Group. |
 | `description` | string | `''` |  | The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
