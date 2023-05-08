@@ -181,11 +181,11 @@ function Set-ParametersSection {
             # Check for local readme references
             if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
+                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
                 }
             } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
+                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
                 }
             } else {
                 $type = $parameter.type
@@ -1383,7 +1383,7 @@ Optional. The template file content to process. If not provided, the template fi
 Using this property is useful if you already compiled the bicep template before invoking this function and want to avoid re-compiling it.
 
 .PARAMETER ReadMeFilePath
-Optional. The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template
+Optional. The path to the readme to update. If not provided assumes a 'README.md' file in the same folder as the template
 
 .PARAMETER SectionsToRefresh
 Optional. The sections to update. By default it refreshes all that are supported.
@@ -1392,7 +1392,7 @@ Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template referen
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:\main.bicep'
 
-Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\main.bicep'
+Update the readme in path 'C:\README.md' based on the bicep template in path 'C:\main.bicep'
 
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
@@ -1431,7 +1431,7 @@ function Set-ModuleReadMe {
         [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'readme.md'),
+        [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'README.md'),
 
         [Parameter(Mandatory = $false)]
         [ValidateSet(

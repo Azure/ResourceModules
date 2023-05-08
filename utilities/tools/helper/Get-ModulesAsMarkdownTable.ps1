@@ -72,12 +72,12 @@ function Get-ResourceModuleName {
         [string] $Path
     )
 
-    if (-not (Test-Path "$Path/readme.md")) {
-        Write-Warning "No [readme.md] found in folder [$Path]"
+    if (-not (Test-Path "$Path/README.md")) {
+        Write-Warning "No [README.md] found in folder [$Path]"
         return ''
     }
 
-    $moduleReadMeContent = Get-Content -Path "$Path/readme.md"
+    $moduleReadMeContent = Get-Content -Path "$Path/README.md"
     $moduleName = $moduleReadMeContent[0].TrimStart('# ').Split('`')[0].Trim()
 
     if (-not [String]::IsNullOrEmpty($moduleName)) {
