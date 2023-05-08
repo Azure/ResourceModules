@@ -657,6 +657,12 @@ Describe 'Readme tests' -Tag 'Readme' {
                 [string] $readMeFilePath
             )
 
+            # TODO Remove beginning
+            Write-Output "moduleFolderName: $moduleFolderName"
+            Write-Output "templateFilePath: $templateFilePath"
+            Write-Output "readMeFilePath: $readMeFilePath"
+            # TODO Remove end
+
             # Get current hash
             $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
