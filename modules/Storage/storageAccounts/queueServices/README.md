@@ -39,7 +39,7 @@ This module can be used to deploy a file share service into a storage account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Queues to create. |
+| `queues` | _[queues](queues/README.md)_ array | `[]` |  | Queues to create. |
 
 
 ## Outputs
