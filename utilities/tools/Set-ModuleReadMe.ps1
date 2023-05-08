@@ -994,7 +994,6 @@ function Set-DeploymentExamplesSection {
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
             $rawBicepExample[0] = "module $resourceType './$moduleRelative/main.bicep' = {"
-            # $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/deploy.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
