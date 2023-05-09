@@ -16,8 +16,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2023-03-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2023-03-02-preview/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2023-03-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2023-03-02-preview/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
 | `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
@@ -95,7 +95,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Whether to disable run command for the cluster or not. |
 | `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided. |
-| `dnsZoneResourceId` | string | `''` |  | Specifies the resource ID of connected DNS zone. Optional if `webApplicationRoutingEnabled` is set to `true`. |
 | `enableAzureDefender` | bool | `False` |  | Whether to enable Azure Defender. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
@@ -126,7 +125,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `usePrivateDNSZone` | bool | `False` |  | If AKS will create a Private DNS Zone in the Node Resource Group. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `webApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the webApplicationRoutingEnabled add-on is enabled or not. |
 
 
 ### Parameter Usage: `roleAssignments`
