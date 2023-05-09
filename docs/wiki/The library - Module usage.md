@@ -35,7 +35,7 @@ $inputObject = @{
   ResourceGroupName     = 'ExampleGroup'
   TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.KeyVault\vault\main.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\KeyVault\vault\main.bicep"
   # Using a remote reference
   # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/KeyVault/vaults/main.bicep'
 }
@@ -59,7 +59,7 @@ $inputObject = @{
   TemplateParameterFile = 'parameters.json'
   Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Resources\resourceGroups\main.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Resources\resourceGroups\main.bicep"
   # Using a remote reference
   # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Resources/resourceGroups/main.bicep'
 }
@@ -84,7 +84,7 @@ $inputObject = @{
   Location              = 'EastUS2'
   TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Authorization\policyAssignments\managementGroup\main.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Authorization\policyAssignments\managementGroup\main.bicep"
   # Using a remote reference
   # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Authorization/policyAssignments/managementGroup/main.bicep'
 }
@@ -108,7 +108,7 @@ $inputObject = @{
   TemplateParameterFile = 'parameters.json'
   Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Subscription\aliases\main.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Subscription\aliases\main.bicep"
   # Using a remote reference
   # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Subscription/aliases/main.bicep'
 }
@@ -135,7 +135,7 @@ $inputObject = @(
   '--resource-group', 'ExampleGroup',
   '--parameters',     '@parameters.json',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\modules\Microsoft.Storage\storageAccounts\main.bicep",
+  '--template-file',  "$home\ResourceModules\modules\Storage\storageAccounts\main.bicep",
   # Using a remote reference
   # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Storage/storageAccounts/main.bicep'
 )
@@ -159,7 +159,7 @@ $inputObject = @(
   '--parameters',     '@parameters.json',
   '--location',       'EastUS2',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\modules\Microsoft.Resources\resourceGroups\main.bicep"
+  '--template-file',  "$home\ResourceModules\modules\Resources\resourceGroups\main.bicep"
   # Using a remote reference
   # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Resources/resourceGroups/main.bicep'
 )
@@ -184,7 +184,7 @@ $inputObject = @(
   '--location',            'EastUS2',
   '--management-group-id', 'myManagementGroup',
   # Using a local reference
-  '--template-file',       "$home\ResourceModules\modules\Microsoft.Authorization\policyAssignments\managementGroup\main.bicep"
+  '--template-file',       "$home\ResourceModules\modules\Authorization\policyAssignments\managementGroup\main.bicep"
   # Using a remote reference
   # '--template-uri',      'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Authorization/policyAssignments/managementGroup/main.bicep'
 )
@@ -208,7 +208,7 @@ $inputObject = @(
   '--parameters',     '@parameters.json',
   '--location',       'EastUS2',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\modules\Microsoft.Subscription\aliases\main.bicep"
+  '--template-file',  "$home\ResourceModules\modules\Subscription\aliases\main.bicep"
   # Using a remote reference
   # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Subscription/aliases/main.bicep'
 )

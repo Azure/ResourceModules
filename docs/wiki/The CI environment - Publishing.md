@@ -40,10 +40,10 @@ The names of published modules differ slighly depending on the location they are
 **Examples**
 
   - Vaults
-    - Before: `modules\Microsoft.RecoveryServices\vaults`
+    - Before: `modules\RecoveryServices\vaults`
     - After: `ms.recoveryservices.vaults`
   - ReplicationProtectionContainerMappings
-    - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
+    - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
     - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
 
 </details>
@@ -61,10 +61,10 @@ The names of published modules differ slighly depending on the location they are
 **Examples**
 
 - Vaults
-   - Before: `modules\Microsoft.RecoveryServices\vaults`
+   - Before: `modules\RecoveryServices\vaults`
    - After: `bicep/modules/microsoft.recoveryservices.vaults`
 - ReplicationProtectionContainerMappings
-   - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
+   - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
    - After: `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
 
 </details>
@@ -81,10 +81,10 @@ The names of published modules differ slighly depending on the location they are
 **Examples**
 
 - Vaults
-  - Before: `modules\Microsoft.RecoveryServices\vaults`
+  - Before: `modules\RecoveryServices\vaults`
   - After: `microsoft.recoveryservices.vaults`
 - ReplicationProtectionContainerMappings
-  - Before: `modules\Microsoft.RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
+  - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
   - After: `microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
 
 </details>
