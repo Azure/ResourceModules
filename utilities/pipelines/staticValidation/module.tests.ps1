@@ -67,7 +67,8 @@ Describe 'File/folder tests' -Tag 'Modules' {
                 [string] $moduleFolderPath
             )
 
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'README.md')
+            $readMeFilePath = Join-Path -Path $moduleFolderPath 'README.md'
+            $pathExisting = Test-Path $readMeFilePath
             $pathExisting | Should -Be $true
         }
 
