@@ -190,7 +190,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
+module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nerccom'
   params: {
     // Required parameters
@@ -313,7 +313,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
 <summary>via Bicep module</summary>
 
 ```bicep
-module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
+module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nercmin'
   params: {
     // Required parameters

@@ -6,6 +6,14 @@ This repository includes a library of mature and curated [Bicep][Bicep] modules 
 
 The CI environment supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
 
+<h1 style="color: steelblue;">Upcoming breaking changes</h1>
+
+In between now and the release of version `0.11.0`, the `main` branch is subject to several upcoming breaking changes that will affect all modules (e.g., the renaming of folders and files).
+
+The rationale is an ongoing effort to prepare our modules for a release in the official [Public Bicep Registry](https://github.com/Azure/bicep-registry-modules), forcing us to align the structural requirements.
+
+For more details, please refer to the issue #3131.
+
 ## Get started
 
 * For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
@@ -14,6 +22,8 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 * For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 * For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
+
+> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
 
 ## Available Resource Modules
 
@@ -159,7 +169,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | Clean up deployment history | [![.Platform: Clean up deployment history](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Clean%20up%20deployment%20history/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.deployment.history.cleanup.yml) |
 | Library PSRule pre-flight validation | [![.Platform: Library PSRule pre-flight validation](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Library%20PSRule%20pre-flight%20validation/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.librarycheck.psrule.yml) |
 | Broken Links Check | [![.Platform: Broken Links Check](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Broken%20Links%20Check/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linkcheck.yml) |
-| Linter | [![.Platform: Linter](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Linter/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml) |
+| Linter (audit) | [![.Platform: Linter (audit)](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Linter%20(audit)/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.linter.yml) |
 | Manage issues for failing pipelines | [![.Platform: Manage issues for failing pipelines](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Manage%20issues%20for%20failing%20pipelines/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.ManageIssueForFailingPipelines.yml) |
 | Update ReadMe status Tables | [![.Platform: Update ReadMe status Tables](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20ReadMe%20status%20Tables/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateReadMe.yml) |
 | Update Static Test Documentation | [![.Platform: Update Static Test Documentation](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Update%20Static%20Test%20Documentation/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.updateStaticTestDocs.yml) |

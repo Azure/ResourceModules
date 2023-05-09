@@ -478,7 +478,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
+module loadBalancers './Microsoft.Network/loadBalancers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbcom'
   params: {
     // Required parameters
@@ -749,7 +749,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
+module loadBalancers './Microsoft.Network/loadBalancers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbint'
   params: {
     // Required parameters
@@ -966,7 +966,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
+module loadBalancers './Microsoft.Network/loadBalancers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlbmin'
   params: {
     // Required parameters

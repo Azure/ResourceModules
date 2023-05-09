@@ -227,7 +227,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
+module DomainServices './Microsoft.AAD/DomainServices/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aaddscom'
   params: {
     // Required parameters

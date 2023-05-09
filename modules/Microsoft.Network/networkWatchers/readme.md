@@ -164,7 +164,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
+module networkWatchers './Microsoft.Network/networkWatchers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnwcom'
   params: {
     connectionMonitors: [
@@ -381,7 +381,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
+module networkWatchers './Microsoft.Network/networkWatchers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnwmin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'

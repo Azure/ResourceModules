@@ -550,7 +550,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkManagers './Microsoft.Network/networkManagers/deploy.bicep' = {
+module networkManagers './Microsoft.Network/networkManagers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnmcom'
   params: {
     // Required parameters

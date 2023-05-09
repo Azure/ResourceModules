@@ -270,7 +270,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+module batchAccounts './Microsoft.Batch/batchAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbacom'
   params: {
     // Required parameters
@@ -419,7 +419,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+module batchAccounts './Microsoft.Batch/batchAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbaencr'
   params: {
     // Required parameters
@@ -538,7 +538,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
+module batchAccounts './Microsoft.Batch/batchAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbamin'
   params: {
     // Required parameters

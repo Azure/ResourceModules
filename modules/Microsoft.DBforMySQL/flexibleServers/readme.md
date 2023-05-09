@@ -244,7 +244,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
+module flexibleServers './Microsoft.DBforMySQL/flexibleServers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsmin'
   params: {
     // Required parameters
@@ -305,7 +305,7 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
+module flexibleServers './Microsoft.DBforMySQL/flexibleServers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfspvt'
   params: {
     // Required parameters
@@ -476,7 +476,7 @@ module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module flexibleServers './Microsoft.DBforMySQL/flexibleServers/deploy.bicep' = {
+module flexibleServers './Microsoft.DBforMySQL/flexibleServers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dfmsfsp'
   params: {
     // Required parameters

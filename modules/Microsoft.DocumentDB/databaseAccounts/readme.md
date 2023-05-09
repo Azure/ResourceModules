@@ -553,7 +553,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddagrm'
   params: {
     // Required parameters
@@ -788,7 +788,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddamng'
   params: {
     // Required parameters
@@ -1287,7 +1287,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddapln'
   params: {
     // Required parameters
@@ -1412,7 +1412,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dddasql'
   params: {
     // Required parameters
@@ -1450,6 +1450,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
       {
         containers: [
           {
+            analyticalStorageTtl: 0
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
             indexingPolicy: {
               automatic: true
             }
@@ -1458,13 +1464,62 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             paths: [
               '/myPartitionKey'
             ]
+            throughput: 600
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
           }
         ]
         name: '<<namePrefix>>-sql-dddasql-001'
+        throughput: 1000
       }
       {
         containers: []
         name: '<<namePrefix>>-sql-dddasql-002'
+      }
+      {
+        autoscaleSettingsMaxThroughput: 1000
+        containers: [
+          {
+            analyticalStorageTtl: 0
+            autoscaleSettingsMaxThroughput: 1000
+            conflictResolutionPolicy: {
+              conflictResolutionPath: '/myCustomId'
+              mode: 'LastWriterWins'
+            }
+            defaultTtl: 1000
+            indexingPolicy: {
+              automatic: true
+            }
+            kind: 'Hash'
+            name: 'container-003'
+            paths: [
+              '/myPartitionKey'
+            ]
+            uniqueKeyPolicyKeys: [
+              {
+                paths: [
+                  '/firstName'
+                ]
+              }
+              {
+                paths: [
+                  '/lastName'
+                ]
+              }
+            ]
+          }
+        ]
+        name: '<<namePrefix>>-sql-dddasql-003'
       }
     ]
     tags: {
@@ -1546,6 +1601,12 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
         {
           "containers": [
             {
+              "analyticalStorageTtl": 0,
+              "conflictResolutionPolicy": {
+                "conflictResolutionPath": "/myCustomId",
+                "mode": "LastWriterWins"
+              },
+              "defaultTtl": 1000,
               "indexingPolicy": {
                 "automatic": true
               },
@@ -1553,14 +1614,63 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
               "name": "container-001",
               "paths": [
                 "/myPartitionKey"
+              ],
+              "throughput": 600,
+              "uniqueKeyPolicyKeys": [
+                {
+                  "paths": [
+                    "/firstName"
+                  ]
+                },
+                {
+                  "paths": [
+                    "/lastName"
+                  ]
+                }
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-001"
+          "name": "<<namePrefix>>-sql-dddasql-001",
+          "throughput": 1000
         },
         {
           "containers": [],
           "name": "<<namePrefix>>-sql-dddasql-002"
+        },
+        {
+          "autoscaleSettingsMaxThroughput": 1000,
+          "containers": [
+            {
+              "analyticalStorageTtl": 0,
+              "autoscaleSettingsMaxThroughput": 1000,
+              "conflictResolutionPolicy": {
+                "conflictResolutionPath": "/myCustomId",
+                "mode": "LastWriterWins"
+              },
+              "defaultTtl": 1000,
+              "indexingPolicy": {
+                "automatic": true
+              },
+              "kind": "Hash",
+              "name": "container-003",
+              "paths": [
+                "/myPartitionKey"
+              ],
+              "uniqueKeyPolicyKeys": [
+                {
+                  "paths": [
+                    "/firstName"
+                  ]
+                },
+                {
+                  "paths": [
+                    "/lastName"
+                  ]
+                }
+              ]
+            }
+          ],
+          "name": "<<namePrefix>>-sql-dddasql-003"
         }
       ]
     },

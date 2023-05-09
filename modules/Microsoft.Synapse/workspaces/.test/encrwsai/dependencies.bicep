@@ -59,8 +59,8 @@ output keyVaultResourceId string = keyVault.id
 @description('The name of the Key Vault Encryption Key.')
 output keyVaultEncryptionKeyName string = keyVault::key.name
 
-@description('The name of the created Storage Account.')
-output storageAccountName string = storageAccount.name
+@description('The resource ID of the created Storage Account.')
+output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the created container.')
 output storageContainerName string = storageAccount::blobService::container.name

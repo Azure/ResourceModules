@@ -33,3 +33,21 @@ Potential reasons
     ```
 
   - **Background:** If configured as a multiline object, GitHub interprets each line as a dedicated secret value. This leads to a situation where characters like `{` & `}` are treated as individual secrets - and values that are passed as JSON strings between pipeline jobs that contain these characters cannot be passed anymore (as per GitHubs default behavior). For example: `{"removeDeployment": true}`. Because this value isn't passed anymore, subsequently the line `removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'` that references it throws the error message you're seeing.
+
+# Outdated Bicep CLI version
+
+> Related error messages:
+>
+> - `Error BCP018: Expected the ":" character at this location.`
+> - `Error BCP022: Expected a property name at this location.`
+> - `Error BCP236: Expected a new line or comma character at this location.`
+> - `...` with the described reason below, there can be any amount of error messages you may encounter
+
+Potential reasons
+
+- The Bicep CLI version is outdated.
+  - **Solution:** Update the version of Bicep you're using on your machine. This can include:
+    - The Bicep extension for VS Code ([ref](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#visual-studio-and-bicep-extension))
+    - The Bicep extension for the Azure CLI ([ref](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#azure-cli))
+    - The Bicep CLI ([ref](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#azure-powershell)
+  - **Background:** When using Bicep on your local device, you usually handle 2 different tools: The 'Bicep' extension for the Azure CLI (identified by commands such as `az bicep version`) and the Bicep CLI itself (identified by commands such as `bicep --version`). The later is the one responsible for compiling Bicep templates into ARM templates. The Bicep extension for Visual Studio Code usually automatically updates the Azure CLI extension. However, the same is not true for the Bicep CLI version. This you have to update yourself.

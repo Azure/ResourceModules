@@ -57,9 +57,9 @@ function Update-RoleAssignmentListInner {
         $filesToProcess = @()
         if ("$ProviderNamespace/$ResourceType" -eq 'Microsoft.Authorization/RoleAssignments') {
             # for the module 'Microsoft.Authorization/RoleAssignments' looking recursiverly for
-            # all 'deploy.bicep' files in the module folder
+            # all 'main.bicep' files in the module folder
             Set-Location $modulesPath
-            $searchFile = Join-Path $modulesPath 'Microsoft.Authorization' 'roleAssignments' '**' 'deploy.bicep'
+            $searchFile = Join-Path $modulesPath 'Microsoft.Authorization' 'roleAssignments' '**' 'main.bicep'
             $rbacPathList = Get-ChildItem -Path $searchFile -Recurse
             foreach ($item in $rbacPathList) {
                 $FullFilePath = $item.FullName

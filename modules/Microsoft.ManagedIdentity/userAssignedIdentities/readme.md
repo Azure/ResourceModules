@@ -136,9 +136,10 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `clientId` | string | The client ID (application ID) of the user assigned identity. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the user assigned identity. |
-| `principalId` | string | The principal ID of the user assigned identity. |
+| `principalId` | string | The principal ID (object ID) of the user assigned identity. |
 | `resourceGroupName` | string | The resource group the user assigned identity was deployed into. |
 | `resourceId` | string | The resource ID of the user assigned identity. |
 
@@ -160,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-miuaicom'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'

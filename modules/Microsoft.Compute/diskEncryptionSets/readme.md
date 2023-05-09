@@ -219,7 +219,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
+module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdesap'
   params: {
     // Required parameters
@@ -314,7 +314,7 @@ module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
+module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdescom'
   params: {
     // Required parameters
