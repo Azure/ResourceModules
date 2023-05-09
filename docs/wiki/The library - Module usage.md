@@ -232,7 +232,7 @@ module testDeployment 'ResourceModules/modules/KeyVaults/vaults/main.bicep' = {
 }
 
 // Using Template-Specs reference (with configuration file)
-module testDeployment 'ts/modules:microsoft.keyvaults.vaults:1.0.0' = {
+module testDeployment 'ts/modules:keyvaults.vaults:1.0.0' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }

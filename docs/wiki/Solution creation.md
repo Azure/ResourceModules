@@ -248,7 +248,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'br/modules:microsoft.resources.resourcegroups:1.0.0' = {
+module rg 'br/modules:resources.resourcegroups:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -257,7 +257,7 @@ module rg 'br/modules:microsoft.resources.resourcegroups:1.0.0' = {
 }
 
 // Network Security Group
-module nsg 'br/modules:microsoft.network.networksecuritygroups:1.0.0' = {
+module nsg 'br/modules:network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -269,7 +269,7 @@ module nsg 'br/modules:microsoft.network.networksecuritygroups:1.0.0' = {
 }
 
 // Virtual Network
-module vnet 'br/modules:microsoft.network.virtualnetworks:1.0.0' = {
+module vnet 'br/modules:network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -338,7 +338,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'ts/modules:microsoft.resources.resourcegroups:1.0.0' = {
+module rg 'ts/modules:resources.resourcegroups:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -347,7 +347,7 @@ module rg 'ts/modules:microsoft.resources.resourcegroups:1.0.0' = {
 }
 
 // Network Security Group
-module nsg 'ts/modules:microsoft.network.networksecuritygroups:1.0.0' = {
+module nsg 'ts/modules:network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -359,7 +359,7 @@ module nsg 'ts/modules:microsoft.network.networksecuritygroups:1.0.0' = {
 }
 
 // Virtual Network
-module vnet 'ts/modules:microsoft.network.virtualnetworks:1.0.0' = {
+module vnet 'ts/modules:network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {

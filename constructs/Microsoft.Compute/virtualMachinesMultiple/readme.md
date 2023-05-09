@@ -293,7 +293,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachinesMultiple 'ts/modules:microsoft.compute.virtualmachinesmultiple:1.0.0 = {
+module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0 = {
   name: '${uniqueString(deployment().name)}-VirtualMachinesMultiple'
   params: {
     // Required parameters
@@ -430,7 +430,7 @@ module virtualMachinesMultiple 'ts/modules:microsoft.compute.virtualmachinesmult
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachinesMultiple 'ts/modules:microsoft.compute.virtualmachinesmultiple:1.0.0 = {
+module virtualMachinesMultiple 'ts/modules:compute.virtualmachinesmultiple:1.0.0 = {
   name: '${uniqueString(deployment().name)}-VirtualMachinesMultiple'
   params: {
     // Required parameters
