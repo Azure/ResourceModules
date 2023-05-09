@@ -236,7 +236,6 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            # $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
             $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
             $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
             Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
