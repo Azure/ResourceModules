@@ -132,6 +132,12 @@ param agentPools array = []
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
 
+@description('Optional. Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.')
+param webApplicationRoutingEnabled bool = false
+
+@description('Optional. Specifies the resource ID of connected DNS zone. Optional if `webApplicationRoutingEnabled` is set to `true`.')
+param dnsZoneResourceId string = ''
+
 @description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
 param ingressApplicationGatewayEnabled bool = false
 
@@ -400,7 +406,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
   name: name
   location: location
   tags: tags
@@ -416,6 +422,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
     agentPoolProfiles: primaryAgentPoolProfile
     linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
+    ingressProfile: {
+      webAppRouting: {
+        enabled: webApplicationRoutingEnabled
+        dnsZoneResourceId: !empty(dnsZoneResourceId) ? any(dnsZoneResourceId) : null
+      }
+    }
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
