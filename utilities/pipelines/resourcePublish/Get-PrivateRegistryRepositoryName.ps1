@@ -11,7 +11,7 @@ Mandatory. The template file path to convert
 .EXAMPLE
 Get-PrivateRegistryRepositoryName -TemplateFilePath 'C:\modules\KeyVault\vaults\main.bicep'
 
-Convert 'C:\modules\KeyVault\vaults\main.bicep' to e.g. 'bicep/modules/microsoft.keyvault.vaults'
+Convert 'C:\modules\KeyVault\vaults\main.bicep' to e.g. 'bicep/modules/keyvault.vaults'
 #>
 function Get-PrivateRegistryRepositoryName {
 

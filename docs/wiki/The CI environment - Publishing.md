@@ -62,10 +62,10 @@ The names of published modules differ slighly depending on the location they are
 
 - Vaults
    - Before: `modules\RecoveryServices\vaults`
-   - After: `bicep/modules/microsoft.recoveryservices.vaults`
+   - After: `bicep/modules/recoveryservices.vaults`
 - ReplicationProtectionContainerMappings
    - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-   - After: `bicep/modules/microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+   - After: `bicep/modules/recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
 
 </details>
 

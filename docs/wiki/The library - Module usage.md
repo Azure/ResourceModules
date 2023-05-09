@@ -239,7 +239,7 @@ module testDeployment 'ts/modules:microsoft.keyvaults.vaults:1.0.0' = {
 }
 
 // Using Bicep reference
-module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/microsoft.keyvaults.vaults:1.0.0' = {
+module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/keyvaults.vaults:1.0.0' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }
