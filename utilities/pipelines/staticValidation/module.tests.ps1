@@ -70,6 +70,9 @@ Describe 'File/folder tests' -Tag 'Modules' {
             $readMeFilePath = Join-Path -Path $moduleFolderPath 'README.md'
             $pathExisting = Test-Path $readMeFilePath
             $pathExisting | Should -Be $true
+
+            $file = Get-Item -Path $readMeFilePath
+            $file.Name | Should -BeExactly 'README.md'
         }
 
         It '[<moduleFolderName>] Module should contain a [` .test `] folder.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
