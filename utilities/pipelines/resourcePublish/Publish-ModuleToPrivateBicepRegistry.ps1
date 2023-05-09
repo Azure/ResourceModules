@@ -82,11 +82,6 @@ function Publish-ModuleToPrivateBicepRegistry {
         # Get a valid Container Registry name
         $moduleRegistryIdentifier = Get-PrivateRegistryRepositoryName -TemplateFilePath $TemplateFilePath
 
-        # TODO remove start
-        Write-Verbose 'moduleRegistryIdentifier: $moduleRegistryIdentifier' -Verbose
-        Write-Verbose 'TemplateFilePath: $TemplateFilePath' -Verbose
-        # TODO remove end
-
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################
