@@ -631,6 +631,20 @@ module managedCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
   }
 }]
 
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+  name: last(split(dnsZoneResourceId, '/'))!
+}
+
+resource dnsZone_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+  name: guid(dnsZoneResourceId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314'), 'DNS Zone Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314') // 'DNS Zone Contributor'
+    principalId: managedCluster.properties.ingressProfile.webAppRouting.identity.objectId
+    principalType: 'ServicePrincipal'
+  }
+  scope: dnsZone
+}
+
 @description('The resource ID of the managed cluster.')
 output resourceId string = managedCluster.id
 
