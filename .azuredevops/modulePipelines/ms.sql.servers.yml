@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Microsoft.Sql/servers/*'
-      - '/modules/Microsoft.Network/privateEndpoints/*'
+      - '/modules/Sql/servers/*'
+      - '/modules/Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.sql.servers.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Sql/servers'
+    value: '/modules/Sql/servers'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
