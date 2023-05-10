@@ -928,8 +928,6 @@ function Set-DeploymentExamplesSection {
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
         ''
     )
-    # Get module relative path to provide to module references in Deployment Examples
-    $moduleRelative = $moduleRoot.Replace('\', '/').split('modules/')[1]
 
     # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
     $providerNamespace = ($fullModuleIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
@@ -993,7 +991,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$moduleRelative/main.bicep' = {"
+            $rawBicepExample[0] = "module $resourceType './$fullModuleIdentifier/main.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1477,24 +1475,27 @@ function Set-ModuleReadMe {
     }
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $moduleRelative = $moduleRoot.Replace('\', '/').split('modules/')[1]
-    $splitHyphens = $moduleRelative.split('-')
+    $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[1]
+    # Write-Verbose ("fullModuleIdentifier: $fullModuleIdentifier") -Verbose
+    $splitHyphens = $fullModuleIdentifier.split('-')
     $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
     $splitHyphens = $splitHyphens -join ''
-    $fullModuleIdentifier = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+    # Write-Verbose ("splitHyphens: $splitHyphens") -Verbose
+    $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+    # Write-Verbose ("fullResourceType: $fullResourceType") -Verbose
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
         # Create new readme file
 
         # Build resource name
-        $serviceIdentifiers = $fullModuleIdentifier.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
+        $serviceIdentifiers = $fullResourceType.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
         $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
         $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_ -creplace '(?<=\w)([A-Z])', '$1' }
         $assumedResourceName = $serviceIdentifiers -join ' '
 
         $initialContent = @(
-            "# $assumedResourceName ``[$fullModuleIdentifier]``",
+            "# $assumedResourceName ``[$fullResourceType]``",
             '',
             "This module deploys $assumedResourceName."
             '// TODO: Replace Resource and fill in description',
@@ -1518,12 +1519,12 @@ function Set-ModuleReadMe {
     # Update title
     if ($TemplateFilePath.Replace('\', '/') -like '*/main.*') {
 
-        if ($readMeFileContent[0] -notlike "*``[$fullModuleIdentifier]``") {
+        if ($readMeFileContent[0] -notlike "*``[$fullResourceType]``") {
             # Cut outdated
             $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
 
             # Add latest
-            $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullModuleIdentifier
+            $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourceType
         }
         # Remove excess whitespace
         $readMeFileContent[0] = $readMeFileContent[0] -replace '\s+', ' '
