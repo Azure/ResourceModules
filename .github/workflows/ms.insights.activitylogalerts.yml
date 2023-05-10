@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.activitylogalerts.yml'
-      - 'modules/Microsoft.Insights/activityLogAlerts/**'
+      - 'modules/Insights/activityLogAlerts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Insights/activityLogAlerts'
+  modulePath: 'modules/Insights/activityLogAlerts'
   workflowPath: '.github/workflows/ms.insights.activitylogalerts.yml'
 
 concurrency:

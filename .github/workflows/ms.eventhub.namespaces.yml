@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.EventHub/namespaces/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/EventHub/namespaces/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventhub.namespaces.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.EventHub/namespaces'
+  modulePath: 'modules/EventHub/namespaces'
   workflowPath: '.github/workflows/ms.eventhub.namespaces.yml'
 
 concurrency:

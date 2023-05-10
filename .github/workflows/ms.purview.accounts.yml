@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Purview/accounts/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Purview/accounts/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.purview.accounts.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Purview/accounts'
+  modulePath: 'modules/Purview/accounts'
   workflowPath: '.github/workflows/ms.purview.accounts.yml'
 
 concurrency:

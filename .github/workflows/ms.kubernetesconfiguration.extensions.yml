@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
-      - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
+      - 'modules/KubernetesConfiguration/extensions/**'
+      - 'modules/KubernetesConfiguration/fluxConfigurations/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.KubernetesConfiguration/extensions'
+  modulePath: 'modules/KubernetesConfiguration/extensions'
   workflowPath: '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
 
 concurrency:

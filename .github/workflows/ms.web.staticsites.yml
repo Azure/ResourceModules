@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Web/staticSites/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Web/staticSites/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.web.staticsites.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Web/staticSites'
+  modulePath: 'modules/Web/staticSites'
   workflowPath: '.github/workflows/ms.web.staticsites.yml'
 
 concurrency:

@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Cache/redis/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Cache/redis/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cache.redis.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Cache/redis'
+  modulePath: 'modules/Cache/redis'
   workflowPath: '.github/workflows/ms.cache.redis.yml'
 
 concurrency:

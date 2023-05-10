@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.proximityplacementgroups.yml'
-      - 'modules/Microsoft.Compute/proximityPlacementGroups/**'
+      - 'modules/Compute/proximityPlacementGroups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/proximityPlacementGroups'
+  modulePath: 'modules/Compute/proximityPlacementGroups'
   workflowPath: '.github/workflows/ms.compute.proximityplacementgroups.yml'
 
 concurrency:

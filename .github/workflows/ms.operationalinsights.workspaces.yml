@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.OperationalInsights/workspaces/**'
-      - 'modules/Microsoft.OperationsManagement/solutions/**'
+      - 'modules/OperationalInsights/workspaces/**'
+      - 'modules/OperationsManagement/solutions/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.OperationalInsights/workspaces'
+  modulePath: 'modules/OperationalInsights/workspaces'
   workflowPath: '.github/workflows/ms.operationalinsights.workspaces.yml'
 
 concurrency:

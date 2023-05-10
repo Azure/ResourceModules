@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Compute/sshPublicKeys/**'
+      - 'modules/Compute/sshPublicKeys/**'
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.sshpublickeys.yml'
       - 'utilities/pipelines/**'
@@ -35,7 +35,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/sshPublicKeys'
+  modulePath: 'modules/Compute/sshPublicKeys'
   workflowPath: '.github/workflows/ms.compute.sshpublickeys.yml'
 
 concurrency:

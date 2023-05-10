@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.AppConfiguration/configurationStores/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/AppConfiguration/configurationStores/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.appconfiguration.configurationstores.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.AppConfiguration/configurationStores'
+  modulePath: 'modules/AppConfiguration/configurationStores'
   workflowPath: '.github/workflows/ms.appconfiguration.configurationstores.yml'
 
 concurrency:

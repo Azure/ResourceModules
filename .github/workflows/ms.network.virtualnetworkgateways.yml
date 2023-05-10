@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Network/virtualNetworkGateways/**'
-      - 'modules/Microsoft.Network/publicIPAddresses/**'
+      - 'modules/Network/virtualNetworkGateways/**'
+      - 'modules/Network/publicIPAddresses/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/virtualNetworkGateways'
+  modulePath: 'modules/Network/virtualNetworkGateways'
   workflowPath: '.github/workflows/ms.network.virtualnetworkgateways.yml'
 
 concurrency:

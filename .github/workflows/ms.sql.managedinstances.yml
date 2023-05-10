@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.sql.managedinstances.yml'
-      - 'modules/Microsoft.Sql/managedInstances/**'
+      - 'modules/Sql/managedInstances/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Sql/managedInstances'
+  modulePath: 'modules/Sql/managedInstances'
   workflowPath: '.github/workflows/ms.sql.managedinstances.yml'
 
 concurrency:

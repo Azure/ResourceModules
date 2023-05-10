@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Compute/diskEncryptionSets/**'
-      - 'modules/Microsoft.KeyVault/vaults/accessPolicies/**'
+      - 'modules/Compute/diskEncryptionSets/**'
+      - 'modules/KeyVault/vaults/accessPolicies/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.diskencryptionsets.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/diskEncryptionSets'
+  modulePath: 'modules/Compute/diskEncryptionSets'
   workflowPath: '.github/workflows/ms.compute.diskencryptionsets.yml'
 
 concurrency:

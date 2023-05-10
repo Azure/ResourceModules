@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.networkwatchers.yml'
-      - 'modules/Microsoft.Network/networkWatchers/**'
+      - 'modules/Network/networkWatchers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/networkWatchers'
+  modulePath: 'modules/Network/networkWatchers'
   workflowPath: '.github/workflows/ms.network.networkwatchers.yml'
 
 concurrency:

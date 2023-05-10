@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.security.azuresecuritycenter.yml'
-      - 'modules/Microsoft.Security/azureSecurityCenter/**'
+      - 'modules/Security/azureSecurityCenter/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Security/azureSecurityCenter'
+  modulePath: 'modules/Security/azureSecurityCenter'
   workflowPath: '.github/workflows/ms.security.azuresecuritycenter.yml'
 
 concurrency:

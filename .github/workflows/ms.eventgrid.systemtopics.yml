@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventgrid.systemtopics.yml'
-      - 'modules/Microsoft.EventGrid/systemTopics/**'
+      - 'modules/EventGrid/systemTopics/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.EventGrid/systemTopics'
+  modulePath: 'modules/EventGrid/systemTopics'
   workflowPath: '.github/workflows/ms.eventgrid.systemtopics.yml'
 
 concurrency:

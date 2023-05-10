@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.actiongroups.yml'
-      - 'modules/Microsoft.Insights/actionGroups/**'
+      - 'modules/Insights/actionGroups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Insights/actionGroups'
+  modulePath: 'modules/Insights/actionGroups'
   workflowPath: '.github/workflows/ms.insights.actiongroups.yml'
 
 concurrency:

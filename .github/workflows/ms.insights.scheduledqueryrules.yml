@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.scheduledqueryrules.yml'
-      - 'modules/Microsoft.Insights/scheduledQueryRules/**'
+      - 'modules/Insights/scheduledQueryRules/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Insights/scheduledQueryRules'
+  modulePath: 'modules/Insights/scheduledQueryRules'
   workflowPath: '.github/workflows/ms.insights.scheduledqueryrules.yml'
 
 concurrency:

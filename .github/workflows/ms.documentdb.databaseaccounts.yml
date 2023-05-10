@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.documentdb.databaseaccounts.yml'
-      - 'modules/Microsoft.DocumentDB/databaseAccounts/**'
+      - 'modules/DocumentDB/databaseAccounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.DocumentDB/databaseAccounts'
+  modulePath: 'modules/DocumentDB/databaseAccounts'
   workflowPath: '.github/workflows/ms.documentdb.databaseaccounts.yml'
 
 concurrency:

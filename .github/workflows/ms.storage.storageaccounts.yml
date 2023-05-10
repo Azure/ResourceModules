@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/Storage/storageAccounts/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.storage.storageaccounts.yml'

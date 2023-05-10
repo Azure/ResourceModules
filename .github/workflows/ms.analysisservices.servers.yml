@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.analysisservices.servers.yml'
-      - 'modules/Microsoft.AnalysisServices/servers/**'
+      - 'modules/AnalysisServices/servers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.AnalysisServices/servers'
+  modulePath: 'modules/AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
 
 concurrency:

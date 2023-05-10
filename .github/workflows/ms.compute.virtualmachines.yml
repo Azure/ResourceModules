@@ -27,10 +27,10 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Compute/virtualMachines/**'
-      - 'modules/Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/**'
-      - 'modules/Microsoft.Network/publicIPAddresses/**'
-      - 'modules/Microsoft.Network/networkInterfaces/**'
+      - 'modules/Compute/virtualMachines/**'
+      - 'modules/RecoveryServices/vaults/protectionContainers/protectedItems/**'
+      - 'modules/Network/publicIPAddresses/**'
+      - 'modules/Network/networkInterfaces/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.virtualmachines.yml'
@@ -39,7 +39,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/virtualMachines'
+  modulePath: 'modules/Compute/virtualMachines'
   workflowPath: '.github/workflows/ms.compute.virtualmachines.yml'
 
 concurrency:

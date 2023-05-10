@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Batch/batchAccounts/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Batch/batchAccounts/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.batch.batchaccounts.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Batch/batchAccounts'
+  modulePath: 'modules/Batch/batchAccounts'
   workflowPath: '.github/workflows/ms.batch.batchaccounts.yml'
 
 concurrency:
