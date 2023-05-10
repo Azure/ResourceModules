@@ -1476,13 +1476,10 @@ function Set-ModuleReadMe {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[1]
-    # Write-Verbose ("fullModuleIdentifier: $fullModuleIdentifier") -Verbose
     $splitHyphens = $fullModuleIdentifier.split('-')
     $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
     $splitHyphens = $splitHyphens -join ''
-    # Write-Verbose ("splitHyphens: $splitHyphens") -Verbose
     $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
-    # Write-Verbose ("fullResourceType: $fullResourceType") -Verbose
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
