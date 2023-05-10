@@ -310,7 +310,7 @@ mongodbDatabases: [
 </details>
 <p>
 
-Please reference the documentation for [mongodbDatabases](./mongodbDatabases/readme.md)
+Please reference the documentation for [mongodbDatabases](./mongodbDatabases/README.md)
 
 ### Parameter Usage: `gremlinDatabases`
 
@@ -377,7 +377,7 @@ gremlinDatabases: [
 </details>
 <p>
 
-Please reference the documentation for [gremlinDatabases](./gremlinDatabases/readme.md)
+Please reference the documentation for [gremlinDatabases](./gremlinDatabases/README.md)
 
 ### Parameter Usage: `roleAssignments`
 

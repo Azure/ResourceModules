@@ -34,7 +34,7 @@ on:
       - 'modules/Network/expressRouteGateway/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Network/expressRouteGateway'

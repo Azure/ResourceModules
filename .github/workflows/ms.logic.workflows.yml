@@ -33,7 +33,7 @@ on:
       - 'modules/Logic/workflows/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Logic/workflows'

@@ -33,7 +33,7 @@ on:
       - 'modules/Maintenance/maintenanceConfigurations/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Maintenance/maintenanceConfigurations'

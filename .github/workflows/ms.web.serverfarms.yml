@@ -33,7 +33,7 @@ on:
       - 'modules/Web/serverfarms/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Web/serverfarms'

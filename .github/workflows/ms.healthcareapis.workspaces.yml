@@ -33,7 +33,7 @@ on:
       - 'modules/HealthcareApis/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/HealthcareApis/workspaces'

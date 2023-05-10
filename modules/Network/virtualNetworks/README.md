@@ -59,7 +59,7 @@ This template deploys a virtual network (vNet).
 
 ### Parameter Usage: `subnets`
 
-Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/readme.md)_ readme.
+Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/README.md)_ readme.
 
 <details>
 
@@ -144,7 +144,7 @@ subnets: [
 
 ### Parameter Usage: `virtualNetworkPeerings`
 
-As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_.
+As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/README.md)_.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |

@@ -34,7 +34,7 @@ on:
       - '.github/workflows/ms.eventgrid.domains.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/EventGrid/domains'

@@ -33,7 +33,7 @@ on:
       - 'modules/Network/privateLinkServices/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Network/privateLinkServices'

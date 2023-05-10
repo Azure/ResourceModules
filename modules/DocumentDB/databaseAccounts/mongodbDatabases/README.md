@@ -83,7 +83,7 @@ tags: {
 
 ### Parameter Usage: `collections`
 
-Please reference the documentation for [collections](./collections/readme.md)
+Please reference the documentation for [collections](./collections/README.md)
 
 ## Outputs
 

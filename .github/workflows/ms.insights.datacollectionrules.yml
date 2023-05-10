@@ -33,7 +33,7 @@ on:
       - 'modules/Insights/dataCollectionRules/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Insights/dataCollectionRules'

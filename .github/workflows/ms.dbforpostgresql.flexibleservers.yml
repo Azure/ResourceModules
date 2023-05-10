@@ -33,7 +33,7 @@ on:
       - 'modules/DBforPostgreSQL/flexibleServers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/DBforPostgreSQL/flexibleServers'

@@ -33,7 +33,7 @@ on:
       - 'modules/Management/managementGroups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Management/managementGroups'

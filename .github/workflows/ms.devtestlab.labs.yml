@@ -34,7 +34,7 @@ on:
       - 'modules/DevTestLab/labs/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/DevTestLab/labs'

@@ -37,7 +37,7 @@ on:
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Automation/automationAccounts'

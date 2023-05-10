@@ -34,7 +34,7 @@ on:
       - '.github/workflows/ms.sql.servers.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Sql/servers'

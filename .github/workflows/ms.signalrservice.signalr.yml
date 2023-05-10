@@ -34,7 +34,7 @@ on:
       - '.github/workflows/ms.signalrservice.signalr.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/SignalRService/signalR'

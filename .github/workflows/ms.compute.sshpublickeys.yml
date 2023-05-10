@@ -32,7 +32,7 @@ on:
       - '.github/workflows/ms.compute.sshpublickeys.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Compute/sshPublicKeys'

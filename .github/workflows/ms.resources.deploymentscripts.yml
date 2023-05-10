@@ -33,7 +33,7 @@ on:
       - 'modules/Resources/deploymentScripts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Resources/deploymentScripts'

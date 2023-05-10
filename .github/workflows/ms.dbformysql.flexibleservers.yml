@@ -33,7 +33,7 @@ on:
       - 'modules/DBforMySQL/flexibleServers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/DBforMySQL/flexibleServers'

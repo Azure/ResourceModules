@@ -33,7 +33,7 @@ on:
       - 'modules/Security/azureSecurityCenter/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Security/azureSecurityCenter'

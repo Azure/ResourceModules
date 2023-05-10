@@ -34,7 +34,7 @@ on:
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/OperationalInsights/workspaces'
