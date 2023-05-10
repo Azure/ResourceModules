@@ -153,7 +153,7 @@ module roledefinition 'br:bicepregistry.azurecr.io/bicep/modules/authorization.r
 ```
 **Local Path Reference**
 ```bicep
-module roledefinition 'yourpath/modules/Microsoft.Authorization.roleDefinitions/subscription/main.bicep' = {}
+module roledefinition 'yourpath/modules/Authorization.roleDefinitions/subscription/main.bicep' = {}
 ```
 
 ## Outputs

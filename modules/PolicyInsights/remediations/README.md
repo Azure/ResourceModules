@@ -152,7 +152,7 @@ module remediation 'br:bicepregistry.azurecr.io/bicep/modules/policyinsights.rem
 ```
 **Local Path Reference**
 ```bicep
-module remediation 'yourpath/modules/Microsoft.Authorization.policyinsights/subscription/main.bicep' = {}
+module remediation 'yourpath/modules/Authorization.policyinsights/subscription/main.bicep' = {}
 
 ## Outputs
 
