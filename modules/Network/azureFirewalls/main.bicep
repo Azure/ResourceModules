@@ -203,7 +203,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a Public IP address if one is not provided and the flag is true
-module publicIPAddress '../../Microsoft.Network/publicIPAddresses/main.bicep' = if (empty(publicIPResourceID) && isCreateDefaultPublicIP && azureSkuName == 'AZFW_VNet') {
+module publicIPAddress '../../Network/publicIPAddresses/main.bicep' = if (empty(publicIPResourceID) && isCreateDefaultPublicIP && azureSkuName == 'AZFW_VNet') {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'

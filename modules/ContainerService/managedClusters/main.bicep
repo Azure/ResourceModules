@@ -567,7 +567,7 @@ module managedCluster_agentPools 'agentPools/main.bicep' = [for (agentPool, inde
   }
 }]
 
-module managedCluster_extension '../../Microsoft.KubernetesConfiguration/extensions/main.bicep' = if (!empty(fluxExtension)) {
+module managedCluster_extension '../../KubernetesConfiguration/extensions/main.bicep' = if (!empty(fluxExtension)) {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-FluxExtension'
   params: {
     clusterName: managedCluster.name

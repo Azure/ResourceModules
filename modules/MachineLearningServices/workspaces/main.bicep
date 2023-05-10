@@ -285,7 +285,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: workspace
 }
 
-module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module workspace_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

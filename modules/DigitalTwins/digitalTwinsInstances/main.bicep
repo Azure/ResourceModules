@@ -201,7 +201,7 @@ module digitalTwinsInstance_serviceBusEndpoint 'endpoints-serviceBus/main.bicep'
   }
 }
 
-module digitalTwinsInstance_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module digitalTwinsInstance_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-digitalTwinsInstance-PrivateEndpoint-${index}'
   params: {
     groupIds: [
