@@ -370,8 +370,7 @@ module virtualMachine '../../../modules/Compute/virtualMachines/main.bicep' = [f
     timeZone: timeZone
     ultraSSDEnabled: ultraSSDEnabled
     userAssignedIdentities: userAssignedIdentities
-    vmComputerNamesTransformation: vmComputerNamesTransformation
-    vmPriority: vmPriority
+    priority: vmPriority
     vTpmEnabled: vTpmEnabled
     winRM: winRM
     availabilityZone: availabilityZone
