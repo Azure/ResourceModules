@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Storage/storageAccounts/**'
+      - 'modules/Storage/storageAccounts/**'
       - 'modules/Microsoft.Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Storage/storageAccounts'
+  modulePath: 'modules/Storage/storageAccounts'
   workflowPath: '.github/workflows/ms.storage.storageaccounts.yml'
 
 concurrency:

@@ -181,11 +181,11 @@ function Set-ParametersSection {
             # Check for local readme references
             if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
+                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
                 }
             } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
-                    $type = '_[{0}]({0}/readme.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
+                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
                 }
             } else {
                 $type = $parameter.type
@@ -928,6 +928,8 @@ function Set-DeploymentExamplesSection {
         '   >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.',
         ''
     )
+    # Get module relative path to provide to module references in Deployment Examples
+    $moduleRelative = $moduleRoot.Replace('\', '/').split('modules/')[1]
 
     # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
     $providerNamespace = ($fullModuleIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
@@ -991,7 +993,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$FullModuleIdentifier/main.bicep' = {"
+            $rawBicepExample[0] = "module $resourceType './$moduleRelative/main.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1380,7 +1382,7 @@ Optional. The template file content to process. If not provided, the template fi
 Using this property is useful if you already compiled the bicep template before invoking this function and want to avoid re-compiling it.
 
 .PARAMETER ReadMeFilePath
-Optional. The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template
+Optional. The path to the readme to update. If not provided assumes a 'README.md' file in the same folder as the template
 
 .PARAMETER SectionsToRefresh
 Optional. The sections to update. By default it refreshes all that are supported.
@@ -1389,7 +1391,7 @@ Currently supports: 'Resource Types', 'Parameters', 'Outputs', 'Template referen
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:\main.bicep'
 
-Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\main.bicep'
+Update the readme in path 'C:\README.md' based on the bicep template in path 'C:\main.bicep'
 
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
@@ -1428,7 +1430,7 @@ function Set-ModuleReadMe {
         [hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'readme.md'),
+        [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'README.md'),
 
         [Parameter(Mandatory = $false)]
         [ValidateSet(
@@ -1475,7 +1477,11 @@ function Set-ModuleReadMe {
     }
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $fullModuleIdentifier = 'Microsoft.{0}' -f $moduleRoot.Replace('\', '/').split('/Microsoft.')[1]
+    $moduleRelative = $moduleRoot.Replace('\', '/').split('modules/')[1]
+    $splitHyphens = $moduleRelative.split('-')
+    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
+    $splitHyphens = $splitHyphens -join ''
+    $fullModuleIdentifier = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
 
     # Check readme
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
