@@ -183,7 +183,7 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module policyexemption 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.policyexemptions.subscription:version' = {}
+module policyexemption 'br:bicepregistry.azurecr.io/bicep/modules/authorization.policyexemptions.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep

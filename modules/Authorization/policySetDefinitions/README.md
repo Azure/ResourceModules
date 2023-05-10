@@ -115,7 +115,7 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module policysetdefinition 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.policysetdefinitions.subscription:version' = {}
+module policysetdefinition 'br:bicepregistry.azurecr.io/bicep/modules/authorization.policysetdefinitions.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep

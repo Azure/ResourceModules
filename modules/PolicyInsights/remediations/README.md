@@ -148,7 +148,7 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module remediation 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.policyinsights.remediations.subscription:version' = {}
+module remediation 'br:bicepregistry.azurecr.io/bicep/modules/policyinsights.remediations.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep
