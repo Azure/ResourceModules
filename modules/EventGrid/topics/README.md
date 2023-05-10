@@ -262,11 +262,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -282,7 +278,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/main.bicep' = {
+module topics './EventGrid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtcom'
   params: {
     // Required parameters
@@ -427,7 +423,7 @@ module topics './Microsoft.EventGrid/topics/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/main.bicep' = {
+module topics './EventGrid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtmin'
   params: {
     // Required parameters
@@ -472,7 +468,7 @@ module topics './Microsoft.EventGrid/topics/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module topics './Microsoft.EventGrid/topics/main.bicep' = {
+module topics './EventGrid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtpe'
   params: {
     // Required parameters

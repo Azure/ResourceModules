@@ -198,7 +198,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module expressRouteGateway './Microsoft.Network/expressRouteGateway/main.bicep' = {
+module expressRouteGateway './Network/expressRouteGateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nergcom'
   params: {
     // Required parameters

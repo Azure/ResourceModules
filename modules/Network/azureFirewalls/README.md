@@ -308,11 +308,7 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -328,7 +324,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
+module azureFirewalls './Network/azureFirewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafaddpip'
   params: {
     // Required parameters
@@ -401,7 +397,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
+module azureFirewalls './Network/azureFirewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcom'
   params: {
     // Required parameters
@@ -686,7 +682,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
+module azureFirewalls './Network/azureFirewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
   params: {
     // Required parameters
@@ -795,7 +791,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
+module azureFirewalls './Network/azureFirewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
   params: {
     // Required parameters
@@ -870,7 +866,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
+module azureFirewalls './Network/azureFirewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
   params: {
     // Required parameters
@@ -931,7 +927,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module azureFirewalls './Microsoft.Network/azureFirewalls/main.bicep' = {
+module azureFirewalls './Network/azureFirewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafmin'
   params: {
     // Required parameters

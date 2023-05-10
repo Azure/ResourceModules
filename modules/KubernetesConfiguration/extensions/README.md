@@ -71,11 +71,7 @@ For Details see [Prerequisites](https://learn.microsoft.com/en-us/azure/azure-ar
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.KubernetesConfiguration/fluxConfigurations` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -91,7 +87,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/main.bicep' = {
+module extensions './KubernetesConfiguration/extensions/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kcecom'
   params: {
     // Required parameters
@@ -202,7 +198,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module extensions './Microsoft.KubernetesConfiguration/extensions/main.bicep' = {
+module extensions './KubernetesConfiguration/extensions/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kcemin'
   params: {
     // Required parameters

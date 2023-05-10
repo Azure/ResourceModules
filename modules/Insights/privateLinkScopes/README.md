@@ -38,7 +38,7 @@ This module deploys an Azure Monitor Private Link Scope.
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `scopedResources` | _[scopedResources](scopedResources/readme.md)_ array | `[]` |  | Configuration details for Azure Monitor Resources. |
+| `scopedResources` | _[scopedResources](scopedResources/README.md)_ array | `[]` |  | Configuration details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -253,11 +253,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -273,7 +269,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkScopes './Microsoft.Insights/privateLinkScopes/main.bicep' = {
+module privateLinkScopes './Insights/privateLinkScopes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplscom'
   params: {
     // Required parameters
@@ -394,7 +390,7 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkScopes './Microsoft.Insights/privateLinkScopes/main.bicep' = {
+module privateLinkScopes './Insights/privateLinkScopes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplsmin'
   params: {
     // Required parameters

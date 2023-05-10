@@ -153,11 +153,7 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Authorization/locks/resourceGroup` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -173,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/main.bicep' = {
+module resourceGroups './Resources/resourceGroups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rrgcom'
   params: {
     // Required parameters
@@ -252,7 +248,7 @@ module resourceGroups './Microsoft.Resources/resourceGroups/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module resourceGroups './Microsoft.Resources/resourceGroups/main.bicep' = {
+module resourceGroups './Resources/resourceGroups/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rrgmin'
   params: {
     // Required parameters

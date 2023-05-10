@@ -1,4 +1,4 @@
-# DigitalTwin Instance Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints-serviceBus]`
+# DigitalTwin Instance Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpointsServiceBus]`
 
 This module deploys Digital Twin Instance Endpoints.
 
@@ -13,7 +13,7 @@ This module deploys Digital Twin Instance Endpoints.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/digitalTwinsInstances/endpoints) |
+| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2023-01-31/digitalTwinsInstances/endpoints) |
 
 ## Parameters
 

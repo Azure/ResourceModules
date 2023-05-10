@@ -86,7 +86,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/main.bicep' = {
+module fluxConfigurations './KubernetesConfiguration/fluxConfigurations/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kcfccom'
   params: {
     // Required parameters
@@ -185,7 +185,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 <summary>via Bicep module</summary>
 
 ```bicep
-module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/main.bicep' = {
+module fluxConfigurations './KubernetesConfiguration/fluxConfigurations/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kcfcmin'
   params: {
     // Required parameters

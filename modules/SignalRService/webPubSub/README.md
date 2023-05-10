@@ -370,11 +370,7 @@ networkAcls: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -390,7 +386,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
+module webPubSub './SignalRService/webPubSub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpscom'
   params: {
     // Required parameters
@@ -577,7 +573,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
+module webPubSub './SignalRService/webPubSub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpsmin'
   params: {
     // Required parameters
@@ -622,7 +618,7 @@ module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webPubSub './Microsoft.SignalRService/webPubSub/main.bicep' = {
+module webPubSub './SignalRService/webPubSub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpspe'
   params: {
     // Required parameters

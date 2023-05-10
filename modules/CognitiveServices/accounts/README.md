@@ -434,11 +434,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -454,7 +450,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
+module accounts './CognitiveServices/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csacom'
   params: {
     // Required parameters
@@ -639,7 +635,7 @@ module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
+module accounts './CognitiveServices/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csaencr'
   params: {
     // Required parameters
@@ -716,7 +712,7 @@ module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
+module accounts './CognitiveServices/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csamin'
   params: {
     // Required parameters
@@ -765,7 +761,7 @@ module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Microsoft.CognitiveServices/accounts/main.bicep' = {
+module accounts './CognitiveServices/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csaspeech'
   params: {
     // Required parameters

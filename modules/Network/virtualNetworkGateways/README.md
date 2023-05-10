@@ -61,7 +61,7 @@ This module deploys a virtual network gateway.
 | `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
+| `natRules` | _[natRules](natRules/README.md)_ array | `[]` |  | NatRules for virtual network gateway. NAT is supported on the the following SKUs: VpnGw2~5, VpnGw2AZ~5AZ and is supported for IPsec/IKE cross-premises connections only. |
 | `publicIpdiagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `publicIpDiagnosticSettingsName` | string | `''` |  | The name of the public IP diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
@@ -254,11 +254,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -274,7 +270,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.bicep' = {
+module virtualNetworkGateways './Network/virtualNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvngavpn'
   params: {
     // Required parameters
@@ -429,7 +425,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.b
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.bicep' = {
+module virtualNetworkGateways './Network/virtualNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvger'
   params: {
     // Required parameters
@@ -554,7 +550,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.b
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/main.bicep' = {
+module virtualNetworkGateways './Network/virtualNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgvpn'
   params: {
     // Required parameters

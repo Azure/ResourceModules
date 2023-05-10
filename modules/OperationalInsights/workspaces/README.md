@@ -39,16 +39,16 @@ This template deploys a log analytics workspace.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/readme.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
+| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/README.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dailyQuotaGb` | int | `-1` |  | The workspace daily quota for ingestion. |
-| `dataExports` | _[dataExports](dataExports/readme.md)_ array | `[]` |  | LAW data export instances to be deployed. |
+| `dataExports` | _[dataExports](dataExports/README.md)_ array | `[]` |  | LAW data export instances to be deployed. |
 | `dataRetention` | int | `365` |  | Number of days data will be retained for. |
-| `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | LAW data sources to configure. |
+| `dataSources` | _[dataSources](dataSources/README.md)_ array | `[]` |  | LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -60,17 +60,17 @@ This template deploys a log analytics workspace.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `forceCmkForQuery` | bool | `True` |  | Indicates whether customer managed storage is mandatory for query management. |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
-| `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
+| `linkedServices` | _[linkedServices](linkedServices/README.md)_ array | `[]` |  | List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics ingestion. |
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
+| `savedSearches` | _[savedSearches](savedSearches/README.md)_ array | `[]` |  | Kusto Query Language searches to save. |
 | `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tables` | _[tables](tables/readme.md)_ array | `[]` |  | LAW custom tables to be deployed. |
+| `tables` | _[tables](tables/README.md)_ array | `[]` |  | LAW custom tables to be deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
@@ -491,11 +491,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.OperationsManagement/solutions` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -511,7 +507,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
+module workspaces './OperationalInsights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwadv'
   params: {
     // Required parameters
@@ -1042,7 +1038,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
+module workspaces './OperationalInsights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwcom'
   params: {
     // Required parameters
@@ -1429,7 +1425,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.OperationalInsights/workspaces/main.bicep' = {
+module workspaces './OperationalInsights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwmin'
   params: {
     // Required parameters

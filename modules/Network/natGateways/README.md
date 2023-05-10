@@ -166,11 +166,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -186,7 +182,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module natGateways './Microsoft.Network/natGateways/main.bicep' = {
+module natGateways './Network/natGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nngcom'
   params: {
     // Required parameters

@@ -171,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module profiles './Microsoft.CDN/profiles/main.bicep' = {
+module profiles './CDN/profiles/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters

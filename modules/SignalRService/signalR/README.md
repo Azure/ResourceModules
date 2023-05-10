@@ -264,11 +264,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -284,7 +280,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './Microsoft.SignalRService/signalR/main.bicep' = {
+module signalR './SignalRService/signalR/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srssrcom'
   params: {
     // Required parameters
@@ -471,7 +467,7 @@ module signalR './Microsoft.SignalRService/signalR/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './Microsoft.SignalRService/signalR/main.bicep' = {
+module signalR './SignalRService/signalR/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srsdrmin'
   params: {
     // Required parameters

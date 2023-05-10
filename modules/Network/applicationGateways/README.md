@@ -244,7 +244,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGateways './Microsoft.Network/applicationGateways/main.bicep' = {
+module applicationGateways './Network/applicationGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nagcom'
   params: {
     // Required parameters

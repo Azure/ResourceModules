@@ -52,7 +52,7 @@ This module deploys EventGrid Domains.
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and inboundIpRules are not set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `topics` | _[topics](topics/readme.md)_ array | `[]` |  | The topic names which are associated with the domain. |
+| `topics` | _[topics](topics/README.md)_ array | `[]` |  | The topic names which are associated with the domain. |
 
 
 ### Parameter Usage: `privateEndpoints`
@@ -266,11 +266,7 @@ tags: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -286,7 +282,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module domains './Microsoft.EventGrid/domains/main.bicep' = {
+module domains './EventGrid/domains/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egdcom'
   params: {
     // Required parameters
@@ -439,7 +435,7 @@ module domains './Microsoft.EventGrid/domains/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module domains './Microsoft.EventGrid/domains/main.bicep' = {
+module domains './EventGrid/domains/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egdmin'
   params: {
     // Required parameters
@@ -484,7 +480,7 @@ module domains './Microsoft.EventGrid/domains/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module domains './Microsoft.EventGrid/domains/main.bicep' = {
+module domains './EventGrid/domains/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egdpe'
   params: {
     // Required parameters

@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedEnvironments './Microsoft.App/managedEnvironments/main.bicep' = {
+module managedEnvironments './App/managedEnvironments/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-amecom'
   params: {
     // Required parameters
@@ -273,7 +273,7 @@ module managedEnvironments './Microsoft.App/managedEnvironments/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedEnvironments './Microsoft.App/managedEnvironments/main.bicep' = {
+module managedEnvironments './App/managedEnvironments/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-amemin'
   params: {
     // Required parameters

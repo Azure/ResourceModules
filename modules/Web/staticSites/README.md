@@ -39,7 +39,7 @@ This module deploys a Static Web App.
 | `appSettings` | object | `{object}` |  | Static site app settings. |
 | `branch` | string | `''` |  | The branch name of the GitHub repository. |
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
-| `customDomains` | _[customDomains](customDomains/readme.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
+| `customDomains` | _[customDomains](customDomains/README.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
 | `functionAppSettings` | object | `{object}` |  | Function app settings. |
@@ -338,11 +338,7 @@ customDomains: [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -358,7 +354,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module staticSites './Microsoft.Web/staticSites/main.bicep' = {
+module staticSites './Web/staticSites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsscom'
   params: {
     // Required parameters
@@ -525,7 +521,7 @@ module staticSites './Microsoft.Web/staticSites/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module staticSites './Microsoft.Web/staticSites/main.bicep' = {
+module staticSites './Web/staticSites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wssmin'
   params: {
     // Required parameters

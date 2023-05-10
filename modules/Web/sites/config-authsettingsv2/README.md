@@ -1,4 +1,4 @@
-# Site Config `[Microsoft.Web/sites/config-authsettingsv2]`
+# Site Config `[Microsoft.Web/sites/configAuthsettingsv2]`
 
 This module deploys the auth settings v2.
 

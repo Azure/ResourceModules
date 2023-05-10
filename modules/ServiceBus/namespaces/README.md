@@ -47,7 +47,7 @@ This module deploys a service bus namespace resource.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
+| `authorizationRules` | _[authorizationRules](authorizationRules/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
@@ -59,20 +59,20 @@ This module deploys a service bus namespace resource.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | The disaster recovery configuration. |
+| `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/README.md)_ object | `{object}` |  | The disaster recovery configuration. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
-| `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/README.md)_ object | `{object}` |  | The migration configuration. |
+| `networkRuleSets` | _[networkRuleSets](networkRuleSets/README.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
+| `queues` | _[queues](queues/README.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
 | `requireInfrastructureEncryption` | bool | `True` |  | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `skuName` | string | `'Basic'` | `[Basic, Premium, Standard]` | Name of this SKU. - Basic, Standard, Premium. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `topics` | _[topics](topics/readme.md)_ array | `[]` |  | The topics to create in the service bus namespace. |
+| `topics` | _[topics](topics/README.md)_ array | `[]` |  | The topics to create in the service bus namespace. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `False` |  | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
 
@@ -358,11 +358,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -378,7 +374,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
+module namespaces './ServiceBus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbncom'
   params: {
     // Required parameters
@@ -735,7 +731,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
+module namespaces './ServiceBus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnencr'
   params: {
     // Required parameters
@@ -920,7 +916,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
+module namespaces './ServiceBus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnmin'
   params: {
     // Required parameters
@@ -965,7 +961,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './Microsoft.ServiceBus/namespaces/main.bicep' = {
+module namespaces './ServiceBus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnpe'
   params: {
     // Required parameters

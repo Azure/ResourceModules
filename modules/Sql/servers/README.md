@@ -52,12 +52,12 @@ This module deploys a SQL server.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
-| `elasticPools` | _[elasticPools](elasticPools/readme.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
+| `databases` | _[databases](databases/README.md)_ array | `[]` |  | The databases to create in the server. |
+| `elasticPools` | _[elasticPools](elasticPools/README.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/readme.md)_ object | `{object}` |  | The encryption protection configuration. |
-| `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
-| `keys` | _[keys](keys/readme.md)_ array | `[]` |  | The keys to configure. |
+| `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/README.md)_ object | `{object}` |  | The encryption protection configuration. |
+| `firewallRules` | _[firewallRules](firewallRules/README.md)_ array | `[]` |  | The firewall rules to create in the server. |
+| `keys` | _[keys](keys/README.md)_ array | `[]` |  | The keys to configure. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minimalTlsVersion` | string | `'1.2'` | `[1.0, 1.1, 1.2]` | Minimal TLS version allowed. |
@@ -65,12 +65,12 @@ This module deploys a SQL server.
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and neither firewall rules nor virtual network rules are set. |
 | `restrictOutboundNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not to restrict outbound network access for this server. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | The security alert policies to create in the server. |
+| `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/README.md)_ array | `[]` |  | The security alert policies to create in the server. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworkRules` | _[virtualNetworkRules](virtualNetworkRules/readme.md)_ array | `[]` |  | The virtual network rules to create in the server. |
-| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
+| `virtualNetworkRules` | _[virtualNetworkRules](virtualNetworkRules/README.md)_ array | `[]` |  | The virtual network rules to create in the server. |
+| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/README.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -358,11 +358,7 @@ privateEndpoints:  [
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -378,7 +374,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/main.bicep' = {
+module servers './Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsadmin'
   params: {
     // Required parameters
@@ -439,7 +435,7 @@ module servers './Microsoft.Sql/servers/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/main.bicep' = {
+module servers './Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
     name: '<<namePrefix>>-sqlscom'
@@ -740,7 +736,7 @@ module servers './Microsoft.Sql/servers/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/main.bicep' = {
+module servers './Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlspe'
   params: {
     // Required parameters
@@ -835,7 +831,7 @@ module servers './Microsoft.Sql/servers/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module servers './Microsoft.Sql/servers/main.bicep' = {
+module servers './Sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsec'
   params: {
     // Required parameters

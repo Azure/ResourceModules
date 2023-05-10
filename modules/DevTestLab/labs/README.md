@@ -39,17 +39,17 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `encryptionDiskEncryptionSetId` | string | `''` | The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey". |
-| `notificationChannels` | _[notificationChannels](notificationChannels/readme.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
+| `notificationChannels` | _[notificationChannels](notificationChannels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `announcement` | object | `{object}` |  | The properties of any lab announcement associated with this lab. |
-| `artifactSources` | _[artifactSources](artifactSources/readme.md)_ array | `[]` |  | Artifact sources to create for the lab. |
+| `artifactSources` | _[artifactSources](artifactSources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
 | `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
 | `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
-| `costs` | _[costs](costs/readme.md)_ object | `{object}` |  | Costs to create for the lab. |
+| `costs` | _[costs](costs/README.md)_ object | `{object}` |  | Costs to create for the lab. |
 | `disableAutoUpgradeCseMinorVersion` | bool | `False` |  | Disable auto upgrade custom script extension minor version. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `encryptionType` | string | `'EncryptionAtRestWithPlatformKey'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey]` | Specify how OS and data disks created as part of the lab are encrypted. |
@@ -65,11 +65,11 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `policies` | array | `[]` |  | Policies to create for the lab. |
 | `premiumDataDisks` | string | `'Disabled'` | `[Disabled, Enabled]` | The setting to enable usage of premium data disks. When its value is "Enabled", creation of standard or premium data disks is allowed. When its value is "Disabled", only creation of standard data disks is allowed. Default is "Disabled". |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | Schedules to create for the lab. |
+| `schedules` | _[schedules](schedules/README.md)_ array | `[]` |  | Schedules to create for the lab. |
 | `support` | object | `{object}` |  | The properties of any lab support message associated with this lab. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworks` | _[virtualNetworks](virtualNetworks/readme.md)_ array | `[]` |  | Virtual networks to create for the lab. |
+| `virtualNetworks` | _[virtualNetworks](virtualNetworks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
 | `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
 
@@ -235,7 +235,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module labs './Microsoft.DevTestLab/labs/main.bicep' = {
+module labs './DevTestLab/labs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtllcom'
   params: {
     // Required parameters
@@ -766,7 +766,7 @@ module labs './Microsoft.DevTestLab/labs/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module labs './Microsoft.DevTestLab/labs/main.bicep' = {
+module labs './DevTestLab/labs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dtllmin'
   params: {
     // Required parameters

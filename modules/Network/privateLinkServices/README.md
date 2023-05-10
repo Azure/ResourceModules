@@ -440,7 +440,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkServices './Microsoft.Network/privateLinkServices/main.bicep' = {
+module privateLinkServices './Network/privateLinkServices/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplscom'
   params: {
     // Required parameters
@@ -593,7 +593,7 @@ module privateLinkServices './Microsoft.Network/privateLinkServices/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkServices './Microsoft.Network/privateLinkServices/main.bicep' = {
+module privateLinkServices './Network/privateLinkServices/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplsmin'
   params: {
     // Required parameters

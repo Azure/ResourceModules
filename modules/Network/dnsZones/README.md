@@ -40,21 +40,21 @@ This template deploys a Public DNS zone.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `a` | _[A](A/readme.md)_ array | `[]` |  | Array of A records. |
-| `aaaa` | _[AAAA](AAAA/readme.md)_ array | `[]` |  | Array of AAAA records. |
-| `caa` | _[CAA](CAA/readme.md)_ array | `[]` |  | Array of CAA records. |
-| `cname` | _[CNAME](CNAME/readme.md)_ array | `[]` |  | Array of CNAME records. |
+| `a` | _[A](A/README.md)_ array | `[]` |  | Array of A records. |
+| `aaaa` | _[AAAA](AAAA/README.md)_ array | `[]` |  | Array of AAAA records. |
+| `caa` | _[CAA](CAA/README.md)_ array | `[]` |  | Array of CAA records. |
+| `cname` | _[CNAME](CNAME/README.md)_ array | `[]` |  | Array of CNAME records. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` |  | The location of the dnsZone. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `mx` | _[MX](MX/readme.md)_ array | `[]` |  | Array of MX records. |
-| `ns` | _[NS](NS/readme.md)_ array | `[]` |  | Array of NS records. |
-| `ptr` | _[PTR](PTR/readme.md)_ array | `[]` |  | Array of PTR records. |
+| `mx` | _[MX](MX/README.md)_ array | `[]` |  | Array of MX records. |
+| `ns` | _[NS](NS/README.md)_ array | `[]` |  | Array of NS records. |
+| `ptr` | _[PTR](PTR/README.md)_ array | `[]` |  | Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `soa` | _[SOA](SOA/readme.md)_ array | `[]` |  | Array of SOA records. |
-| `srv` | _[SRV](SRV/readme.md)_ array | `[]` |  | Array of SRV records. |
+| `soa` | _[SOA](SOA/README.md)_ array | `[]` |  | Array of SOA records. |
+| `srv` | _[SRV](SRV/README.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `txt` | _[TXT](TXT/readme.md)_ array | `[]` |  | Array of TXT records. |
+| `txt` | _[TXT](TXT/README.md)_ array | `[]` |  | Array of TXT records. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -184,7 +184,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsZones './Microsoft.Network/dnsZones/main.bicep' = {
+module dnsZones './Network/dnsZones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndzcom'
   params: {
     // Required parameters
@@ -605,7 +605,7 @@ module dnsZones './Microsoft.Network/dnsZones/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsZones './Microsoft.Network/dnsZones/main.bicep' = {
+module dnsZones './Network/dnsZones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndzmin'
   params: {
     // Required parameters

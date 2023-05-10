@@ -31,7 +31,7 @@ This module deploys DataProtection BackupVaults.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backupPolicies` | _[backupPolicies](backupPolicies/readme.md)_ array | `[]` |  | List of all backup policies. |
+| `backupPolicies` | _[backupPolicies](backupPolicies/README.md)_ array | `[]` |  | List of all backup policies. |
 | `dataStoreType` | string | `'VaultStore'` | `[ArchiveStore, OperationalStore, VaultStore]` | The datastore type to use. ArchiveStore does not support ZoneRedundancy. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -350,7 +350,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/main.bicep' = {
+module backupVaults './DataProtection/backupVaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvcom'
   params: {
     // Required parameters
@@ -559,7 +559,7 @@ module backupVaults './Microsoft.DataProtection/backupVaults/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './Microsoft.DataProtection/backupVaults/main.bicep' = {
+module backupVaults './DataProtection/backupVaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvmin'
   params: {
     // Required parameters
