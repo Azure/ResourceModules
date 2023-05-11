@@ -1026,9 +1026,9 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Microsoft.Network/networkInterfaces` | Local reference |
-| `Microsoft.Network/publicIPAddresses` | Local reference |
-| `Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems` | Local reference |
+| `Network/networkInterfaces` | Local reference |
+| `Network/publicIPAddresses` | Local reference |
+| `RecoveryServices/vaults/protectionContainers/protectedItems` | Local reference |
 
 ## Deployment examples
 
@@ -1044,7 +1044,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlincom'
   params: {
     // Required parameters
@@ -1541,7 +1541,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinatmg'
   params: {
     // Required parameters
@@ -1708,7 +1708,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinmin'
   params: {
     // Required parameters
@@ -1845,7 +1845,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincom'
   params: {
     // Required parameters
@@ -2378,7 +2378,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinatmg'
   params: {
     // Required parameters
@@ -2509,7 +2509,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinmin'
   params: {
     // Required parameters
@@ -2626,7 +2626,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Microsoft.Compute/virtualMachines/main.bicep' = {
+module virtualMachines './Compute/virtualMachines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincmk'
   params: {
     // Required parameters

@@ -227,7 +227,7 @@ module server_elasticPools 'elasticPools/main.bicep' = [for (elasticPool, index)
   }
 }]
 
-module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module server_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-SQLServer-PrivateEndpoint-${index}'
   params: {
     groupIds: [

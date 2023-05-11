@@ -281,7 +281,7 @@ module automationAccount_variables 'variables/main.bicep' = [for (variable, inde
   }
 }]
 
-module automationAccount_linkedService '../../Microsoft.OperationalInsights/workspaces/linkedServices/main.bicep' = if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_linkedService '../../OperationalInsights/workspaces/linkedServices/main.bicep' = if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
@@ -295,7 +295,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
 }
 
-module automationAccount_solutions '../../Microsoft.OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_solutions '../../OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
     name: gallerySolution.name
@@ -382,7 +382,7 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
   scope: automationAccount
 }
 
-module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module automationAccount_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-AutomationAccount-PrivateEndpoint-${index}'
   params: {
     groupIds: [

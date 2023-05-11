@@ -1,4 +1,4 @@
-# Site Config `[Microsoft.Web/sites/slots/config-appsettings]`
+# Site AppSettings Config `[Microsoft.Web/sites/config]`
 
 This module deploys the app settings.
 
@@ -13,7 +13,7 @@ This module deploys the app settings.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/slots/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
 
@@ -21,8 +21,7 @@ This module deploys the app settings.
 
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of slot to deploy. |
-| `slotName` | string |  | Slot name to be configured. |
+| `kind` | string | `[app, functionapp, functionapp,linux, functionapp,workflowapp, functionapp,workflowapp,linux]` | Type of site to deploy. |
 
 **Conditional parameters**
 
@@ -36,7 +35,7 @@ This module deploys the app settings.
 | :-- | :-- | :-- | :-- |
 | `appInsightResourceId` | string | `''` | Resource ID of the app insight to leverage for this resource. |
 | `appSettingsKeyValuePairs` | object | `{object}` | The app settings key-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
 | `storageAccountResourceId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
@@ -91,9 +90,9 @@ appSettingsKeyValuePairs: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the slot config. |
-| `resourceGroupName` | string | The resource group the slot config was deployed into. |
-| `resourceId` | string | The resource ID of the slot config. |
+| `name` | string | The name of the site config. |
+| `resourceGroupName` | string | The resource group the site config was deployed into. |
+| `resourceId` | string | The resource ID of the site config. |
 
 ## Cross-referenced modules
 

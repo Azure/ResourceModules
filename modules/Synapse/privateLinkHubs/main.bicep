@@ -69,7 +69,7 @@ module privateLinkHub_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
 }]
 
 // Private Endpoints
-module privateLinkHub_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module privateLinkHub_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PrivateLinkHub-PrivateEndpoint-${index}'
   params: {
     groupIds: [

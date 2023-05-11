@@ -161,7 +161,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/main.bicep' = {
+module userAssignedIdentities './ManagedIdentity/userAssignedIdentities/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-miuaicom'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'

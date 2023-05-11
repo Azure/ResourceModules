@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Microsoft.Network/virtualNetworkGateways/*'
-      - '/modules/Microsoft.Network/publicIPAddresses/*'
+      - '/modules/Network/virtualNetworkGateways/*'
+      - '/modules/Network/publicIPAddresses/*'
       - '/.azuredevops/modulePipelines/ms.network.virtualnetworkgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Network/virtualNetworkGateways'
+    value: '/modules/Network/virtualNetworkGateways'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

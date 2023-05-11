@@ -1,4 +1,4 @@
-# DigitalTwin Instance Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints-eventHub]`
+# DigitalTwin Instance ServiceBus Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints]`
 
 This module deploys Digital Twin Instance Endpoints.
 
@@ -13,7 +13,7 @@ This module deploys Digital Twin Instance Endpoints.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/digitalTwinsInstances/endpoints) |
+| `Microsoft.DigitalTwins/digitalTwinsInstances/endpoints` | [2023-01-31](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DigitalTwins/2023-01-31/digitalTwinsInstances/endpoints) |
 
 ## Parameters
 
@@ -21,21 +21,21 @@ This module deploys Digital Twin Instance Endpoints.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `connectionStringPrimaryKey` | securestring | `''` | PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Required if the `authenticationType` is "KeyBased". |
 | `digitalTwinInstanceName` | string |  | The name of the parent Digital Twin Instance resource. Required if the template is used in a standalone deployment. |
+| `primaryConnectionString` | securestring | `''` | PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. Required if the `authenticationType` is "KeyBased". |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authenticationType` | string | `'IdentityBased'` | `[IdentityBased, KeyBased]` | Specifies the authentication type being used for connecting to the endpoint. If 'KeyBased' is selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is selected, the endpointUri and entityPath properties must be specified. |
-| `connectionStringSecondaryKey` | securestring | `''` |  | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
 | `deadLetterSecret` | securestring | `''` |  | Dead letter storage secret for key-based authentication. Will be obfuscated during read. |
 | `deadLetterUri` | string | `''` |  | Dead letter storage URL for identity-based authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `endpointUri` | string | `''` |  | The URL of the EventHub namespace for identity-based authentication. It must include the protocol 'sb://'. |
-| `entityPath` | string | `''` |  | The EventHub name in the EventHub namespace for identity-based authentication. |
-| `name` | string | `'EventHubEndpoint'` |  | The name of the Digital Twin Endpoint. |
+| `endpointUri` | string | `''` |  | The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'. |
+| `entityPath` | string | `''` |  | The ServiceBus Topic name for identity-based authentication. |
+| `name` | string | `'ServiceBusEndpoint'` |  | The name of the Digital Twin Endpoint. |
+| `secondaryConnectionString` | securestring | `''` |  | SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `userAssignedIdentity` | string | `''` |  | The ID to assign to the resource. |
 

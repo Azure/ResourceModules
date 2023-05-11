@@ -35,10 +35,10 @@ This module deploys Healthcare Data Services workspace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `dicomServices` | _[dicomservices](dicomservices/readme.md)_ array | `[]` |  | Deploy DICOM services. |
+| `dicomServices` | _[dicomservices](dicomservices/README.md)_ array | `[]` |  | Deploy DICOM services. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `fhirServices` | _[fhirservices](fhirservices/readme.md)_ array | `[]` |  | Deploy FHIR services. |
-| `iotConnectors` | _[iotconnectors](iotconnectors/readme.md)_ array | `[]` |  | Deploy IOT connectors. |
+| `fhirServices` | _[fhirservices](fhirservices/README.md)_ array | `[]` |  | Deploy FHIR services. |
+| `iotConnectors` | _[iotconnectors](iotconnectors/README.md)_ array | `[]` |  | Deploy IOT connectors. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
@@ -426,7 +426,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.HealthcareApis/workspaces/main.bicep' = {
+module workspaces './HealthcareApis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawcom'
   params: {
     // Required parameters
@@ -641,7 +641,7 @@ module workspaces './Microsoft.HealthcareApis/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.HealthcareApis/workspaces/main.bicep' = {
+module workspaces './HealthcareApis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters

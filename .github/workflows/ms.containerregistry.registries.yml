@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.ContainerRegistry/registries/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/ContainerRegistry/registries/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerregistry.registries.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.ContainerRegistry/registries'
+  modulePath: 'modules/ContainerRegistry/registries'
   workflowPath: '.github/workflows/ms.containerregistry.registries.yml'
 
 concurrency:

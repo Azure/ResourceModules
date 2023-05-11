@@ -60,7 +60,7 @@
 | `gitRepoType` | string | `'FactoryVSTSConfiguration'` |  | Repository type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
 | `gitRootFolder` | string | `'/'` |  | The root folder path name. Default is '/'. |
 | `globalParameters` | object | `{object}` |  | List of Global Parameters for the factory. |
-| `integrationRuntimes` | _[integrationRuntimes](integrationRuntimes/readme.md)_ array | `[]` |  | An array of objects for the configuration of an Integration Runtime. |
+| `integrationRuntimes` | _[integrationRuntimes](integrationRuntimes/README.md)_ array | `[]` |  | An array of objects for the configuration of an Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedPrivateEndpoints` | array | `[]` |  | An array of managed private endpoints objects created in the Data Factory managed virtual network. |
@@ -372,7 +372,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+| `Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 
@@ -388,7 +388,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './Microsoft.DataFactory/factories/main.bicep' = {
+module factories './DataFactory/factories/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dffcom'
   params: {
     // Required parameters
@@ -619,7 +619,7 @@ module factories './Microsoft.DataFactory/factories/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module factories './Microsoft.DataFactory/factories/main.bicep' = {
+module factories './DataFactory/factories/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dffmin'
   params: {
     // Required parameters

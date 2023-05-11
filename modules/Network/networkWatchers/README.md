@@ -27,9 +27,9 @@
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
+| `connectionMonitors` | _[connectionMonitors](connectionMonitors/README.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Array that contains the Flow Logs. |
+| `flowLogs` | _[flowLogs](flowLogs/README.md)_ array | `[]` |  | Array that contains the Flow Logs. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` |  | Name of the Network Watcher resource (hidden). |
@@ -164,7 +164,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/main.bicep' = {
+module networkWatchers './Network/networkWatchers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnwcom'
   params: {
     connectionMonitors: [
@@ -381,7 +381,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module networkWatchers './Microsoft.Network/networkWatchers/main.bicep' = {
+module networkWatchers './Network/networkWatchers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnwmin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'

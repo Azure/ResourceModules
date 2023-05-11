@@ -171,7 +171,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep' = {
+module dataCollectionRules './Insights/dataCollectionRules/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusadv'
   params: {
     // Required parameters
@@ -410,7 +410,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep' = {
+module dataCollectionRules './Insights/dataCollectionRules/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusbas'
   params: {
     // Required parameters
@@ -617,7 +617,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep' = {
+module dataCollectionRules './Insights/dataCollectionRules/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcrcusiis'
   params: {
     // Required parameters
@@ -780,7 +780,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep' = {
+module dataCollectionRules './Insights/dataCollectionRules/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcrlin'
   params: {
     // Required parameters
@@ -1167,7 +1167,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep' = {
+module dataCollectionRules './Insights/dataCollectionRules/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcrmin'
   params: {
     // Required parameters
@@ -1298,7 +1298,7 @@ module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module dataCollectionRules './Microsoft.Insights/dataCollectionRules/main.bicep' = {
+module dataCollectionRules './Insights/dataCollectionRules/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-idcrwin'
   params: {
     // Required parameters

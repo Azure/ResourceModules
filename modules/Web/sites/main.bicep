@@ -283,7 +283,7 @@ resource app 'Microsoft.Web/sites@2021-03-01' = {
   }
 }
 
-module app_appsettings 'config-appsettings/main.bicep' = if (!empty(appSettingsKeyValuePairs)) {
+module app_appsettings 'config--appsettings/main.bicep' = if (!empty(appSettingsKeyValuePairs)) {
   name: '${uniqueString(deployment().name, location)}-Site-Config-AppSettings'
   params: {
     appName: app.name
@@ -296,7 +296,7 @@ module app_appsettings 'config-appsettings/main.bicep' = if (!empty(appSettingsK
   }
 }
 
-module app_authsettingsv2 'config-authsettingsv2/main.bicep' = if (!empty(authSettingV2Configuration)) {
+module app_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(authSettingV2Configuration)) {
   name: '${uniqueString(deployment().name, location)}-Site-Config-AuthSettingsV2'
   params: {
     appName: app.name
@@ -403,7 +403,7 @@ module app_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
   }
 }]
 
-module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module app_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoint-${index}'
   params: {
     groupIds: [

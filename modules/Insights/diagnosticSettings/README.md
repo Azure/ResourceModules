@@ -59,7 +59,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diagnosticSettings './Microsoft.Insights/diagnosticSettings/main.bicep' = {
+module diagnosticSettings './Insights/diagnosticSettings/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-idscom'
   params: {
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'

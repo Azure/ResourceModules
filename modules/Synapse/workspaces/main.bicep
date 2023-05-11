@@ -280,7 +280,7 @@ module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignme
 }]
 
 // Endpoints
-module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module workspace_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

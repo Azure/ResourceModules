@@ -183,11 +183,11 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module policyexemption 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.policyexemptions.subscription:version' = {}
+module policyexemption 'br:bicepregistry.azurecr.io/bicep/modules/authorization.policyexemptions.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep
-module policyexemption 'yourpath/modules/Microsoft.Authorization.policyExemptions/subscription/main.bicep' = {}
+module policyexemption 'yourpath/modules/Authorization.policyExemptions/subscription/main.bicep' = {}
 ```
 
 ## Outputs
@@ -220,7 +220,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' = {
+module policyExemptions './Authorization/policyExemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgcom'
   params: {
     // Required parameters
@@ -333,7 +333,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' = {
+module policyExemptions './Authorization/policyExemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgmin'
   params: {
     // Required parameters
@@ -382,7 +382,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' = {
+module policyExemptions './Authorization/policyExemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergcom'
   params: {
     // Required parameters
@@ -495,7 +495,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' = {
+module policyExemptions './Authorization/policyExemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergmin'
   params: {
     // Required parameters
@@ -544,7 +544,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' = {
+module policyExemptions './Authorization/policyExemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubcom'
   params: {
     // Required parameters
@@ -657,7 +657,7 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyExemptions './Microsoft.Authorization/policyExemptions/main.bicep' = {
+module policyExemptions './Authorization/policyExemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubmin'
   params: {
     // Required parameters

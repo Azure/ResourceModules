@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Synapse/privateLinkHubs/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Synapse/privateLinkHubs/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.privatelinkhubs.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Synapse/privateLinkHubs'
+  modulePath: 'modules/Synapse/privateLinkHubs'
   workflowPath: '.github/workflows/ms.synapse.privatelinkhubs.yml'
 
 concurrency:

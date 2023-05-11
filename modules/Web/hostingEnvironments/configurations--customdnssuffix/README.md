@@ -1,6 +1,6 @@
-# Hosting Environment Network Configuration `[Microsoft.Web/hostingEnvironments/configurations-networking]`
+# Hosting Environment Custom DNS Suffix Configuration `[Microsoft.Web/hostingEnvironments/configurations]`
 
-This module deploys a Network Configuration for Hosting Environments.
+This module deploys a Custom DNS Suffix Configuration for Hosting Environments.
 
 ## Navigation
 
@@ -17,6 +17,14 @@ This module deploys a Network Configuration for Hosting Environments.
 
 ## Parameters
 
+**Required parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `certificateUrl` | string | The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix. |
+| `dnsSuffix` | string | Enable the default custom domain suffix to use for all sites deployed on the ASE. |
+| `keyVaultReferenceIdentity` | string | The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available. |
+
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
@@ -27,11 +35,7 @@ This module deploys a Network Configuration for Hosting Environments.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `allowNewPrivateEndpointConnections` | bool | `False` | Property to enable and disable new private endpoint connection creation on ASE. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `ftpEnabled` | bool | `False` | Property to enable and disable FTP on ASEV3. |
-| `inboundIpAddressOverride` | string | `''` | Customer provided Inbound IP Address. Only able to be set on Ase create. |
-| `remoteDebugEnabled` | bool | `False` | Property to enable and disable Remote Debug on ASEv3. |
 
 
 ## Outputs

@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.dbformysql.flexibleservers.yml'
-      - 'modules/Microsoft.DBforMySQL/flexibleServers/**'
+      - 'modules/DBforMySQL/flexibleServers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DBforMySQL/flexibleServers'
+  modulePath: 'modules/DBforMySQL/flexibleServers'
   workflowPath: '.github/workflows/ms.dbformysql.flexibleservers.yml'
 
 concurrency:

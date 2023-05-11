@@ -301,7 +301,7 @@ var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
 
 var enableReferencedModulesTelemetry = false
 
-module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/main.bicep' = [for (vmName, index) in vmNamesToApply: {
+module virtualMachine '../../../modules/Compute/virtualMachines/main.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
   params: {
     name: vmName
@@ -370,8 +370,7 @@ module virtualMachine '../../../modules/Microsoft.Compute/virtualMachines/main.b
     timeZone: timeZone
     ultraSSDEnabled: ultraSSDEnabled
     userAssignedIdentities: userAssignedIdentities
-    vmComputerNamesTransformation: vmComputerNamesTransformation
-    vmPriority: vmPriority
+    priority: vmPriority
     vTpmEnabled: vTpmEnabled
     winRM: winRM
     availabilityZone: availabilityZone

@@ -291,7 +291,7 @@ var builtInRoleNames = {
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
 
-module roleAssignments_mg '../../../../modules/Microsoft.Authorization/roleAssignments/managementGroup/main.bicep' = [for principalId in principalIds: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_mg '../../../../modules/Authorization/roleAssignments/managementGroup/main.bicep' = [for principalId in principalIds: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_mg-${guid(deployment().name, location, principalId)}'
   scope: managementGroup(managementGroupId)
   params: {
@@ -301,7 +301,7 @@ module roleAssignments_mg '../../../../modules/Microsoft.Authorization/roleAssig
   }
 }]
 
-module roleAssignments_sub '../../../../modules/Microsoft.Authorization/roleAssignments/subscription/main.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_sub '../../../../modules/Authorization/roleAssignments/subscription/main.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_sub-${guid(deployment().name, location, principalId)}'
   scope: subscription(subscriptionId)
   params: {
@@ -311,7 +311,7 @@ module roleAssignments_sub '../../../../modules/Microsoft.Authorization/roleAssi
   }
 }]
 
-module roleAssignments_rg '../../../../modules/Microsoft.Authorization/roleAssignments/resourceGroup/main.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignments_rg '../../../../modules/Authorization/roleAssignments/resourceGroup/main.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignments_rg-${guid(deployment().name, location, principalId)}'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {

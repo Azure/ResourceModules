@@ -181,7 +181,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoors './Microsoft.Network/frontDoors/main.bicep' = {
+module frontDoors './Network/frontDoors/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfdcom'
   params: {
     // Required parameters
@@ -452,7 +452,7 @@ module frontDoors './Microsoft.Network/frontDoors/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module frontDoors './Microsoft.Network/frontDoors/main.bicep' = {
+module frontDoors './Network/frontDoors/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfdmin'
   params: {
     // Required parameters

@@ -314,7 +314,7 @@ module logAnalyticsWorkspace_tables 'tables/main.bicep' = [for (table, index) in
   }
 }]
 
-module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
+module logAnalyticsWorkspace_solutions '../../OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
     name: gallerySolution.name

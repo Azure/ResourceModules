@@ -413,7 +413,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module activityLogAlerts './Microsoft.Insights/activityLogAlerts/main.bicep' = {
+module activityLogAlerts './Insights/activityLogAlerts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ialacom'
   params: {
     // Required parameters

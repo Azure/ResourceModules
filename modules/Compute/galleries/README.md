@@ -32,10 +32,10 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Applications to create. |
+| `applications` | _[applications](applications/README.md)_ array | `[]` |  | Applications to create. |
 | `description` | string | `''` |  | Description of the Azure Shared Image Gallery. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
+| `images` | _[images](images/README.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -169,7 +169,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module galleries './Microsoft.Compute/galleries/main.bicep' = {
+module galleries './Compute/galleries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cgcom'
   params: {
     // Required parameters
@@ -506,7 +506,7 @@ module galleries './Microsoft.Compute/galleries/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module galleries './Microsoft.Compute/galleries/main.bicep' = {
+module galleries './Compute/galleries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cgmin'
   params: {
     // Required parameters

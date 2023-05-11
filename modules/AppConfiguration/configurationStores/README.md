@@ -46,7 +46,7 @@ This module deploys an App Configuration Store.
 | `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePurgeProtection` | bool | `False` |  | Property specifying whether protection against purge is enabled for this configuration store. |
-| `keyValues` | _[keyValues](keyValues/readme.md)_ array | `[]` |  | All Key / Values to create. |
+| `keyValues` | _[keyValues](keyValues/README.md)_ array | `[]` |  | All Key / Values to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -308,7 +308,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+| `Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 
@@ -324,7 +324,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/main.bicep' = {
+module configurationStores './AppConfiguration/configurationStores/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-acccom'
   params: {
     // Required parameters
@@ -477,7 +477,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/mai
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/main.bicep' = {
+module configurationStores './AppConfiguration/configurationStores/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-accmin'
   params: {
     // Required parameters
@@ -522,7 +522,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/mai
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './Microsoft.AppConfiguration/configurationStores/main.bicep' = {
+module configurationStores './AppConfiguration/configurationStores/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-accpe'
   params: {
     // Required parameters
