@@ -52,6 +52,9 @@ param managedResourceGroupName string = ''
 @description('Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources.')
 param managedVirtualNetwork bool = false
 
+@description('Optional. An array of objects for the configuration of an Integration Runtime.')
+param integrationRuntimes array = []
+
 @description('Optional. Allowed AAD Tenant IDs For Linking.')
 param allowedAadTenantIdsForLinking array = []
 
@@ -233,6 +236,19 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 }
 
+// Workspace integration runtimes
+module synapse_integrationRuntimes 'integrationRuntimes/main.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
+  name: '${uniqueString(deployment().name, location)}-Synapse-IntegrationRuntime-${index}'
+  params: {
+    workspaceName: workspace.name
+    name: integrationRuntime.name
+    type: integrationRuntime.type
+    managedVirtualNetworkName: workspace.properties.managedVirtualNetwork
+    typeProperties: contains(integrationRuntime, 'typeProperties') ? integrationRuntime.typeProperties : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
 // Workspace encryption with customer managed keys
 // - Assign Synapse Workspace MSI access to encryption key
 module workspace_cmk_rbac './.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
@@ -280,7 +296,7 @@ module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignme
 }]
 
 // Endpoints
-module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module workspace_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Workspace-PrivateEndpoint-${index}'
   params: {
     groupIds: [
