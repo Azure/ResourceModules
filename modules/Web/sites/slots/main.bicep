@@ -296,7 +296,7 @@ resource slot 'Microsoft.Web/sites/slots@2022-03-01' = {
   }
 }
 
-module slot_appsettings 'config-appsettings/main.bicep' = if (!empty(appSettingsKeyValuePairs)) {
+module slot_appsettings 'config--appsettings/main.bicep' = if (!empty(appSettingsKeyValuePairs)) {
   name: '${uniqueString(deployment().name, location)}-Slot-${name}-Config-AppSettings'
   params: {
     slotName: slot.name
@@ -310,7 +310,7 @@ module slot_appsettings 'config-appsettings/main.bicep' = if (!empty(appSettings
   }
 }
 
-module slot_authsettingsv2 'config-authsettingsv2/main.bicep' = if (!empty(authSettingV2Configuration)) {
+module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(authSettingV2Configuration)) {
   name: '${uniqueString(deployment().name, location)}-Slot-${name}-Config-AuthSettingsV2'
   params: {
     slotName: slot.name
