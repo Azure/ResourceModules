@@ -170,7 +170,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module localNetworkGateways './Microsoft.Network/localNetworkGateways/main.bicep' = {
+module localNetworkGateways './Network/localNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlngcom'
   params: {
     // Required parameters
@@ -269,7 +269,7 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/main.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module localNetworkGateways './Microsoft.Network/localNetworkGateways/main.bicep' = {
+module localNetworkGateways './Network/localNetworkGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nlngmin'
   params: {
     // Required parameters

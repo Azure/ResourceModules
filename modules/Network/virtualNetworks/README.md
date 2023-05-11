@@ -51,7 +51,7 @@ This template deploys a virtual network (vNet).
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peerings` | array | `[]` |  | Virtual Network Peerings configurations. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
+| `subnets` | _[subnets](subnets/README.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vnetEncryption` | bool | `False` |  | Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. Requires the EnableVNetEncryption feature to be registered for the subscription and a supported region to use this property. |
 | `vnetEncryptionEnforcement` | string | `'AllowUnencrypted'` | `[AllowUnencrypted, DropUnencrypted]` | If the encrypted VNet allows VM that does not support encryption. Can only be used when vnetEncryption is enabled. |
@@ -59,7 +59,7 @@ This template deploys a virtual network (vNet).
 
 ### Parameter Usage: `subnets`
 
-Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/readme.md)_ readme.
+Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/README.md)_ readme.
 
 <details>
 
@@ -144,7 +144,7 @@ subnets: [
 
 ### Parameter Usage: `virtualNetworkPeerings`
 
-As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_.
+As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/README.md)_.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -371,7 +371,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/main.bicep' = {
+module virtualNetworks './Network/virtualNetworks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvncom'
   params: {
     // Required parameters
@@ -588,7 +588,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/main.bicep' = {
+module virtualNetworks './Network/virtualNetworks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvnmin'
   params: {
     // Required parameters
@@ -641,7 +641,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Microsoft.Network/virtualNetworks/main.bicep' = {
+module virtualNetworks './Network/virtualNetworks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvnpeer'
   params: {
     // Required parameters

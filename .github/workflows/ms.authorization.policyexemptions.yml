@@ -33,7 +33,7 @@ on:
       - 'modules/Authorization/policyExemptions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/Authorization/policyExemptions'

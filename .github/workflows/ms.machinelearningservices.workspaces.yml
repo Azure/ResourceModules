@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.MachineLearningServices/workspaces/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/MachineLearningServices/workspaces/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.machinelearningservices.workspaces.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.MachineLearningServices/workspaces'
+  modulePath: 'modules/MachineLearningServices/workspaces'
   workflowPath: '.github/workflows/ms.machinelearningservices.workspaces.yml'
 
 concurrency:

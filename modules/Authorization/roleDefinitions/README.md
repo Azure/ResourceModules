@@ -149,11 +149,11 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module roledefinition 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.roledefinitions.subscription:version' = {}
+module roledefinition 'br:bicepregistry.azurecr.io/bicep/modules/authorization.roledefinitions.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep
-module roledefinition 'yourpath/modules/Microsoft.Authorization.roleDefinitions/subscription/main.bicep' = {}
+module roledefinition 'yourpath/modules/Authorization.roleDefinitions/subscription/main.bicep' = {}
 ```
 
 ## Outputs
@@ -190,7 +190,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = {
+module roleDefinitions './Authorization/roleDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgcom'
   params: {
     // Required parameters
@@ -269,7 +269,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = {
+module roleDefinitions './Authorization/roleDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgmin'
   params: {
     // Required parameters
@@ -324,7 +324,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = {
+module roleDefinitions './Authorization/roleDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgcom'
   params: {
     // Required parameters
@@ -419,7 +419,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = {
+module roleDefinitions './Authorization/roleDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
     // Required parameters
@@ -474,7 +474,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = {
+module roleDefinitions './Authorization/roleDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubcom'
   params: {
     // Required parameters
@@ -569,7 +569,7 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleDefinitions './Microsoft.Authorization/roleDefinitions/main.bicep' = {
+module roleDefinitions './Authorization/roleDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubmin'
   params: {
     // Required parameters

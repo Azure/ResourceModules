@@ -149,11 +149,11 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module roleassignment 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.roleassignments.subscription:version' = {}
+module roleassignment 'br:bicepregistry.azurecr.io/bicep/modules/authorization.roleassignments.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep
-module roleassignment 'yourpath/modules/Microsoft.Authorization.roleAssignments/subscription/main.bicep' = {}
+module roleassignment 'yourpath/modules/Authorization.roleAssignments/subscription/main.bicep' = {}
 ```
 
 ## Outputs
@@ -186,7 +186,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = {
+module roleAssignments './Authorization/roleAssignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aramgcom'
   params: {
     // Required parameters
@@ -247,7 +247,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = {
+module roleAssignments './Authorization/roleAssignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-aramgmin'
   params: {
     // Required parameters
@@ -300,7 +300,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = {
+module roleAssignments './Authorization/roleAssignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arargcom'
   params: {
     // Required parameters
@@ -365,7 +365,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = {
+module roleAssignments './Authorization/roleAssignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arargmin'
   params: {
     // Required parameters
@@ -426,7 +426,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = {
+module roleAssignments './Authorization/roleAssignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arasubcom'
   params: {
     // Required parameters
@@ -487,7 +487,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = 
 <summary>via Bicep module</summary>
 
 ```bicep
-module roleAssignments './Microsoft.Authorization/roleAssignments/main.bicep' = {
+module roleAssignments './Authorization/roleAssignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-arasubmin'
   params: {
     // Required parameters

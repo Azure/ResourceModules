@@ -61,22 +61,22 @@ This module deploys an Azure Automation Account.
 | `disableLocalAuth` | bool | `True` |  | Disable local authentication profile used within the resource. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
-| `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
+| `jobSchedules` | _[jobSchedules](jobSchedules/README.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `modules` | _[modules](modules/readme.md)_ array | `[]` |  | List of modules to be created in the automation account. |
+| `modules` | _[modules](modules/README.md)_ array | `[]` |  | List of modules to be created in the automation account. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `runbooks` | _[runbooks](runbooks/readme.md)_ array | `[]` |  | List of runbooks to be created in the automation account. |
-| `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | List of schedules to be created in the automation account. |
+| `runbooks` | _[runbooks](runbooks/README.md)_ array | `[]` |  | List of runbooks to be created in the automation account. |
+| `schedules` | _[schedules](schedules/README.md)_ array | `[]` |  | List of schedules to be created in the automation account. |
 | `skuName` | string | `'Basic'` | `[Basic, Free]` | SKU name of the account. |
-| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | List of softwareUpdateConfigurations to be created in the automation account. |
+| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/README.md)_ array | `[]` |  | List of softwareUpdateConfigurations to be created in the automation account. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Automation Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `variables` | _[variables](variables/readme.md)_ array | `[]` |  | List of variables to be created in the automation account. |
+| `variables` | _[variables](variables/README.md)_ array | `[]` |  | List of variables to be created in the automation account. |
 
 
 ### Parameter Usage: `encryption`
@@ -383,9 +383,9 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | Local reference |
-| `Microsoft.OperationsManagement/solutions` | Local reference |
+| `Network/privateEndpoints` | Local reference |
+| `OperationalInsights/workspaces/linkedServices` | Local reference |
+| `OperationsManagement/solutions` | Local reference |
 
 ## Deployment examples
 
@@ -401,7 +401,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep' = {
+module automationAccounts './Automation/automationAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aacom'
   params: {
     // Required parameters
@@ -842,7 +842,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep' = {
+module automationAccounts './Automation/automationAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aaencr'
   params: {
     // Required parameters
@@ -907,7 +907,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep'
 <summary>via Bicep module</summary>
 
 ```bicep
-module automationAccounts './Microsoft.Automation/automationAccounts/main.bicep' = {
+module automationAccounts './Automation/automationAccounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aamin'
   params: {
     // Required parameters

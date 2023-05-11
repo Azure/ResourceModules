@@ -268,7 +268,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+| `Network/privateEndpoints` | Local reference |
 
 ## Deployment examples
 
@@ -284,7 +284,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './Microsoft.SignalRService/signalR/main.bicep' = {
+module signalR './SignalRService/signalR/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srssrcom'
   params: {
     // Required parameters
@@ -471,7 +471,7 @@ module signalR './Microsoft.SignalRService/signalR/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './Microsoft.SignalRService/signalR/main.bicep' = {
+module signalR './SignalRService/signalR/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srsdrmin'
   params: {
     // Required parameters

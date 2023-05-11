@@ -238,7 +238,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Databricks/workspaces/main.bicep' = {
+module workspaces './Databricks/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dwcom'
   params: {
     // Required parameters

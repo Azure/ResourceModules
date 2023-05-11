@@ -47,7 +47,7 @@ resource keyVaultKeyRBAC 'Microsoft.Authorization/roleAssignments@2022-04-01' = 
 // Access Policy //
 // ============= //
 
-module keyVaultAccessPolicies '../../../Microsoft.KeyVault/vaults/accessPolicies/main.bicep' = if (rbacAuthorizationEnabled != true) {
+module keyVaultAccessPolicies '../../../KeyVault/vaults/accessPolicies/main.bicep' = if (rbacAuthorizationEnabled != true) {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {
     keyVaultName: last(split(keyVaultResourceId, '/'))!

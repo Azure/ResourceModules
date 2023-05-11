@@ -112,11 +112,11 @@ The solution is to have the option of directly targeting the sub-module that ach
 
 **Bicep Registry Reference**
 ```bicep
-module policydefinition 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.authorization.policydefinitions.subscription:version' = {}
+module policydefinition 'br:bicepregistry.azurecr.io/bicep/modules/authorization.policydefinitions.subscription:version' = {}
 ```
 **Local Path Reference**
 ```bicep
-module policydefinition 'yourpath/modules/Microsoft.Authorization.policyDefinitions/subscription/main.bicep' = {}
+module policydefinition 'yourpath/modules/Authorization.policyDefinitions/subscription/main.bicep' = {}
 ```
 
 ## Outputs
@@ -145,7 +145,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep' = {
+module policyDefinitions './Authorization/policyDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdmgcom'
   params: {
     // Required parameters
@@ -300,7 +300,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep' = {
+module policyDefinitions './Authorization/policyDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdmgmin'
   params: {
     // Required parameters
@@ -393,7 +393,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep' = {
+module policyDefinitions './Authorization/policyDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdsubcom'
   params: {
     // Required parameters
@@ -548,7 +548,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module policyDefinitions './Microsoft.Authorization/policyDefinitions/main.bicep' = {
+module policyDefinitions './Authorization/policyDefinitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdsubmin'
   params: {
     // Required parameters

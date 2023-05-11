@@ -49,11 +49,11 @@ This module deploys an API management service.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Additional datacenter locations of the API Management service. |
-| `apis` | _[apis](apis/readme.md)_ array | `[]` |  | APIs. |
-| `apiVersionSets` | _[apiVersionSets](apiVersionSets/readme.md)_ array | `[]` |  | API Version Sets. |
+| `apis` | _[apis](apis/README.md)_ array | `[]` |  | APIs. |
+| `apiVersionSets` | _[apiVersionSets](apiVersionSets/README.md)_ array | `[]` |  | API Version Sets. |
 | `authorizationServers` | secureObject | `{object}` |  | Authorization servers. |
-| `backends` | _[backends](backends/readme.md)_ array | `[]` |  | Backends. |
-| `caches` | _[caches](caches/readme.md)_ array | `[]` |  | Caches. |
+| `backends` | _[backends](backends/README.md)_ array | `[]` |  | Backends. |
+| `caches` | _[caches](caches/README.md)_ array | `[]` |  | Caches. |
 | `certificates` | array | `[]` |  | List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
 | `customProperties` | object | `{object}` |  | Custom properties of the API Management service. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -68,22 +68,22 @@ This module deploys an API management service.
 | `enableClientCertificate` | bool | `False` |  | Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hostnameConfigurations` | array | `[]` |  | Custom hostname configuration of the API Management service. |
-| `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Identity providers. |
+| `identityProviders` | _[identityProviders](identityProviders/README.md)_ array | `[]` |  | Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minApiVersion` | string | `''` |  | Limit control plane API calls to API Management service with version equal to or newer than this value. |
-| `namedValues` | _[namedValues](namedValues/readme.md)_ array | `[]` |  | Named values. |
+| `namedValues` | _[namedValues](namedValues/README.md)_ array | `[]` |  | Named values. |
 | `newGuidValue` | string | `[newGuid()]` |  | Necessary to create a new GUID. |
 | `notificationSenderEmail` | string | `'apimgmt-noreply@mail.windowsazure.com'` |  | The notification sender email address for the service. |
-| `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Policies. |
-| `portalSettings` | _[portalSettings](portalSettings/readme.md)_ array | `[]` |  | Portal settings. |
-| `products` | _[products](products/readme.md)_ array | `[]` |  | Products. |
+| `policies` | _[policies](policies/README.md)_ array | `[]` |  | Policies. |
+| `portalSettings` | _[portalSettings](portalSettings/README.md)_ array | `[]` |  | Portal settings. |
+| `products` | _[products](products/README.md)_ array | `[]` |  | Products. |
 | `restore` | bool | `False` |  | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'Developer'` | `[Basic, Consumption, Developer, Premium, Standard]` | The pricing tier of this API Management service. |
 | `skuCount` | int | `1` | `[1, 2]` | The instance size of this API Management service. |
 | `subnetResourceId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
-| `subscriptions` | _[subscriptions](subscriptions/readme.md)_ array | `[]` |  | Subscriptions. |
+| `subscriptions` | _[subscriptions](subscriptions/README.md)_ array | `[]` |  | Subscriptions. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -287,7 +287,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './Microsoft.ApiManagement/service/main.bicep' = {
+module service './ApiManagement/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apiscom'
   params: {
     // Required parameters
@@ -426,7 +426,7 @@ module service './Microsoft.ApiManagement/service/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './Microsoft.ApiManagement/service/main.bicep' = {
+module service './ApiManagement/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismax'
   params: {
     // Required parameters
@@ -777,7 +777,7 @@ module service './Microsoft.ApiManagement/service/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './Microsoft.ApiManagement/service/main.bicep' = {
+module service './ApiManagement/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters

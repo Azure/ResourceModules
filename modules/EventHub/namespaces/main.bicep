@@ -257,7 +257,7 @@ module eventHubNamespace_networkRuleSet 'networkRuleSets/main.bicep' = if (!empt
   }
 }
 
-module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module eventHubNamespace_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
   params: {
     groupIds: [

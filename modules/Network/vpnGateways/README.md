@@ -33,13 +33,13 @@ This module deploys VPN Gateways.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `bgpSettings` | object | `{object}` |  | BGP settings details. |
-| `connections` | _[connections](connections/readme.md)_ array | `[]` |  | The connections to create in the VPN gateway. |
+| `connections` | _[connections](connections/README.md)_ array | `[]` |  | The connections to create in the VPN gateway. |
 | `enableBgpRouteTranslationForNat` | bool | `False` |  | Enable BGP routes translation for NAT on this VPN gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
+| `natRules` | _[natRules](natRules/README.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
@@ -189,7 +189,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateways './Microsoft.Network/vpnGateways/main.bicep' = {
+module vpnGateways './Network/vpnGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgcom'
   params: {
     // Required parameters
@@ -328,7 +328,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vpnGateways './Microsoft.Network/vpnGateways/main.bicep' = {
+module vpnGateways './Network/vpnGateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgmin'
   params: {
     // Required parameters

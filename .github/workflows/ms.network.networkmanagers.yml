@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.networkmanagers.yml'
-      - 'modules/Microsoft.Network/networkManagers/**'
+      - 'modules/Network/networkManagers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/networkManagers'
+  modulePath: 'modules/Network/networkManagers'
   workflowPath: '.github/workflows/ms.network.networkmanagers.yml'
 
 concurrency:

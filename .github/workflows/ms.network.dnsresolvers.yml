@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.dnsresolvers.yml'
-      - 'modules/Microsoft.Network/dnsResolvers/**'
+      - 'modules/Network/dnsResolvers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/dnsResolvers'
+  modulePath: 'modules/Network/dnsResolvers'
   workflowPath: '.github/workflows/ms.network.dnsresolvers.yml'
 
 concurrency:

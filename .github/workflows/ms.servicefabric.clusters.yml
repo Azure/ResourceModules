@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.servicefabric.clusters.yml'
-      - 'modules/Microsoft.ServiceFabric/clusters/**'
+      - 'modules/ServiceFabric/clusters/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.ServiceFabric/clusters'
+  modulePath: 'modules/ServiceFabric/clusters'
   workflowPath: '.github/workflows/ms.servicefabric.clusters.yml'
 
 concurrency:

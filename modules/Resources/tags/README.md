@@ -97,7 +97,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module tags './Microsoft.Resources/tags/main.bicep' = {
+module tags './Resources/tags/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rtmin'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -134,7 +134,7 @@ module tags './Microsoft.Resources/tags/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module tags './Microsoft.Resources/tags/main.bicep' = {
+module tags './Resources/tags/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rtrg'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -189,7 +189,7 @@ module tags './Microsoft.Resources/tags/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module tags './Microsoft.Resources/tags/main.bicep' = {
+module tags './Resources/tags/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rtsub'
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
