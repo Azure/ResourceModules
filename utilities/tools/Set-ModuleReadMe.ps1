@@ -1476,6 +1476,12 @@ function Set-ModuleReadMe {
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[1]
+    # Custom modules are modules having the same resource type but different properties based on the name
+    # E.g., web/sites/config--appsettings vs web/sites/config--authsettingsv2
+    $customModuleSeparator = '--'
+    if ($fullModuleIdentifier.Contains($customModuleSeparator)) {
+        $fullModuleIdentifier = $fullModuleIdentifier.split($customModuleSeparator)[0]
+    }
     $splitHyphens = $fullModuleIdentifier.split('-')
     $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
     $splitHyphens = $splitHyphens -join ''
