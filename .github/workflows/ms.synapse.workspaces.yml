@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Synapse/workspaces/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/Synapse/workspaces/**'
+      - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.workspaces.yml'

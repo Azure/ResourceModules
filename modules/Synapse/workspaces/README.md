@@ -21,6 +21,7 @@ This module deploys a Synapse Workspace.
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Synapse/workspaces` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces) |
+| `Microsoft.Synapse/workspaces/integrationRuntimes` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/integrationRuntimes) |
 | `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
 
 ## Parameters
@@ -61,6 +62,7 @@ This module deploys a Synapse Workspace.
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
+| `integrationRuntimes` | _[integrationRuntimes](integrationRuntimes/README.md)_ array | `[]` |  | An array of objects for the configuration of an Integration Runtime. |
 | `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -323,11 +325,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `Microsoft.Network/privateEndpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -343,7 +341,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
+module workspaces './Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swcom'
   params: {
     // Required parameters
@@ -367,6 +365,13 @@ module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     initialWorkspaceAdminObjectID: '<initialWorkspaceAdminObjectID>'
+    integrationRuntimes: [
+      {
+        name: 'shir01'
+        type: 'SelfHosted'
+      }
+    ]
+    managedVirtualNetwork: true
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -454,6 +459,17 @@ module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
     "initialWorkspaceAdminObjectID": {
       "value": "<initialWorkspaceAdminObjectID>"
     },
+    "integrationRuntimes": {
+      "value": [
+        {
+          "name": "shir01",
+          "type": "SelfHosted"
+        }
+      ]
+    },
+    "managedVirtualNetwork": {
+      "value": true
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -500,7 +516,7 @@ module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
+module workspaces './Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swensa'
   params: {
     // Required parameters
@@ -577,7 +593,7 @@ module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
+module workspaces './Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swenua'
   params: {
     // Required parameters
@@ -660,7 +676,7 @@ module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
+module workspaces './Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmanv'
   params: {
     // Required parameters
@@ -743,7 +759,7 @@ module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './Microsoft.Synapse/workspaces/main.bicep' = {
+module workspaces './Synapse/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-swmin'
   params: {
     // Required parameters
