@@ -1,4 +1,4 @@
-# Site Config `[Microsoft.Web/sites/config]`
+# Site AppSettings Config `[Microsoft.Web/sites/config]`
 
 This module deploys the app settings.
 
