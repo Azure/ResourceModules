@@ -1,4 +1,4 @@
-# Site Config `[Microsoft.Web/sites/slots/config]`
+# Site Slot AppSettings Config `[Microsoft.Web/sites/slots/config]`
 
 This module deploys the app settings.
 
