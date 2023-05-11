@@ -327,10 +327,6 @@ userAssignedIdentities: {
 
 _None_
 
-| Reference | Type |
-| :-- | :-- |
-| `Network/privateEndpoints` | Local reference |
-
 ## Deployment examples
 
 The following module usage examples are retrieved from the content of the files hosted in the module's `.test` folder.
