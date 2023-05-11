@@ -37,7 +37,7 @@ on:
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Synapse/workspaces'
+  modulePath: 'modules/Synapse/workspaces'
   workflowPath: '.github/workflows/ms.synapse.workspaces.yml'
 
 concurrency:
