@@ -1,5 +1,5 @@
 @description('Required. Name of the Application Gateway.')
-@maxLength(24)
+@maxLength(80)
 param name string
 
 @description('Optional. Location for all resources.')
