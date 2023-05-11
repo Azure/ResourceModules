@@ -152,7 +152,7 @@ resource digitalTwinsInstance 'Microsoft.DigitalTwins/digitalTwinsInstances@2023
   }
 }
 
-module digitalTwinsInstance_eventHubEndpoint 'endpoints-eventHub/main.bicep' = if (!empty(eventHubEndpoint)) {
+module digitalTwinsInstance_eventHubEndpoint 'endpoints--eventHub/main.bicep' = if (!empty(eventHubEndpoint)) {
   name: '${uniqueString(deployment().name, location)}-DigitalTwinsInstance-Endpoints-EventHub'
   params: {
     digitalTwinInstanceName: digitalTwinsInstance.name
@@ -170,7 +170,7 @@ module digitalTwinsInstance_eventHubEndpoint 'endpoints-eventHub/main.bicep' = i
   }
 }
 
-module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/main.bicep' = if (!empty(eventGridEndpoint)) {
+module digitalTwinsInstance_eventGridEndpoint 'endpoints--eventGrid/main.bicep' = if (!empty(eventGridEndpoint)) {
   name: '${uniqueString(deployment().name, location)}-DigitalTwinsInstance-Endpoints-EventGrid'
   params: {
     digitalTwinInstanceName: digitalTwinsInstance.name
@@ -183,7 +183,7 @@ module digitalTwinsInstance_eventGridEndpoint 'endpoints-eventGrid/main.bicep' =
   }
 }
 
-module digitalTwinsInstance_serviceBusEndpoint 'endpoints-serviceBus/main.bicep' = if (!empty(serviceBusEndpoint)) {
+module digitalTwinsInstance_serviceBusEndpoint 'endpoints--serviceBus/main.bicep' = if (!empty(serviceBusEndpoint)) {
   name: '${uniqueString(deployment().name, location)}-DigitalTwinsInstance-Endpoints-ServiceBus'
   params: {
     digitalTwinInstanceName: digitalTwinsInstance.name

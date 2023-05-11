@@ -1,4 +1,4 @@
-# DigitalTwin Instance Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpointsEventHub]`
+# DigitalTwin Instance Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints]`
 
 This module deploys Digital Twin Instance Endpoints.
 
