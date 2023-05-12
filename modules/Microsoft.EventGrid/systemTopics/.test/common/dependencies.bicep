@@ -7,9 +7,6 @@ param managedIdentityName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-@description('Required. The name of the Storage Account queue.')
-param queueName string
-
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
     name: managedIdentityName
     location: location
