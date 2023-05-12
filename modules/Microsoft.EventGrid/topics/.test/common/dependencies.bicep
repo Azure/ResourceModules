@@ -58,16 +58,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
         name: 'Standard_LRS'
     }
     kind: 'StorageV2'
-}
 
-resource storageQueueService 'Microsoft.Storage/storageAccounts/queueServices@2022-09-01' = {
-    name: 'default'
-    parent: storageAccount
-}
-
-resource storageQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-09-01' = {
-    name: queueName
-    parent: storageQueueService
+    resource storageQueueService 'queueServices@2022-09-01' = {
+        name: 'default'
+        
+        resource storageQueue 'queues@2022-09-01' = {
+            name: 'customQueue'
+        }
+    }
 }
 
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
