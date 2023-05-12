@@ -77,7 +77,7 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
   }
 }
 
-@description('The name of the event grid topic.')
+@description('The name of the event subscription.')
 output name string = eventSubscription.name
 
 @description('The resource ID of the event grid topic.')
