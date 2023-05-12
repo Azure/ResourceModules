@@ -16,7 +16,7 @@ This module deploys Network Private Link Services.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateLinkServices` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/privateLinkServices) |
+| `Microsoft.Network/privateLinkServices` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/privateLinkServices) |
 
 ## Parameters
 
