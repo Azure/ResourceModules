@@ -17,8 +17,6 @@ param serviceShort string = 'egtcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var queueName = 'dep-<<namePrefix>>-que-${serviceShort}'
-
 // ============ //
 // Dependencies //
 // ============ //
