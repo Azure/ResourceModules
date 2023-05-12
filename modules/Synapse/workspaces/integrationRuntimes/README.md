@@ -1,14 +1,15 @@
 # Synapse Workspaces IntegrationRuntimes `[Microsoft.Synapse/workspaces/integrationRuntimes]`
 
 This module deploys Synapse Workspaces IntegrationRuntimes.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [Synapse Workspaces IntegrationRuntimes `[Microsoft.Synapse/workspaces/integrationRuntimes]`](#synapse-workspaces-integrationruntimes-microsoftsynapseworkspacesintegrationruntimes)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
@@ -38,11 +39,6 @@ This module deploys Synapse Workspaces IntegrationRuntimes.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed" . |
 | `typeProperties` | object | `{object}` | Integration Runtime type properties. Required if type is "Managed". |
-
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
