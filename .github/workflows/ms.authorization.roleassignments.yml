@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.authorization.roleassignments.yml'
-      - 'modules/Microsoft.Authorization/roleAssignments/**'
+      - 'modules/Authorization/roleAssignments/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Authorization/roleAssignments'
+  modulePath: 'modules/Authorization/roleAssignments'
   workflowPath: '.github/workflows/ms.authorization.roleassignments.yml'
 
 concurrency:

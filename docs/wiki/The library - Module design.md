@@ -34,7 +34,7 @@ This section details the design principles followed by the CARML Bicep modules.
 
 ---
 
-Modules are written in a flexible way; therefore, you don't need to modify them from project to project, use case to use case, as they aim to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it - i.e., you don't have to know how the template of the particular module works inside, just take a look at the `readme.md` file of the given module to consume it.
+Modules are written in a flexible way; therefore, you don't need to modify them from project to project, use case to use case, as they aim to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it - i.e., you don't have to know how the template of the particular module works inside, just take a look at the `README.md` file of the given module to consume it.
 
 The modules are multi-purpose; therefore, contain a lot of dynamic expressions (functions, variables, etc.), so there's no need to maintain multiple instances for different use cases.
 
@@ -65,7 +65,7 @@ A **CARML module** consists of
 
 - The Bicep template deployment file (`main.bicep`).
 - One or multiple module test files (`main.test.bicep`) that will be used for testing, located in the `.test` folder and its subfolders.
-- A `readme.md` file which describes the module itself.
+- A `README.md` file which describes the module itself.
 - A `version.json` file which contains information on the module's major and minor version.
 
 A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
@@ -118,7 +118,7 @@ Use the following naming standard for module files and folders:
       ├─ .test
       |  └─ ...
       ├─ main.bicep
-      └─ readme.md
+      └─ README.md
   ```
 
   > **Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
@@ -131,7 +131,7 @@ Use the following naming standard for module files and folders:
   >    ├─ .test
   >    |  └─ ...
   >    ├─ main.bicep
-  >    └─ readme.md
+  >    └─ README.md
   > ```
 
 ## Patterns
@@ -557,7 +557,7 @@ Its primary components are in order:
 Note the following recommendations:
 
 - Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe Markdown file.
-- It is not recommended to describe how to use child resources in the parent readme file (for example, 'How to define a \[container] entry for the \[storage account]'). Instead, it is recommended to reference the child resource's ReadMe (for example, 'container/readme.md').
+- It is not recommended to describe how to use child resources in the parent readme file (for example, 'How to define a \[container] entry for the \[storage account]'). Instead, it is recommended to reference the child resource's ReadMe (for example, 'container/README.md').
 
 # Module test files
 
@@ -591,7 +591,7 @@ Test file (`main.test.bicep`) guidelines:
 - References to dependencies should be implemented using resource references in combination with outputs. In other words: You should not hardcode any references into the module template's deployment. Instead use references such as `nestedDependencies.outputs.managedIdentityPrincipalId`
 - If any diagnostic resources (e.g., a Log Analytics workspace) are required for a test scenario, you can reference the centralized `modules/.shared/.templates/diagnostic.dependencies.bicep` template. It will also provide you with all outputs you'd need.
 
-> :scroll: [Example of test file](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/.test/common/main.test.bicep)
+> :scroll: [Example of test file](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/.test/common/main.test.bicep)
 
 Dependency file (`dependencies.bicep`) guidelines:
 
@@ -600,7 +600,7 @@ Dependency file (`dependencies.bicep`) guidelines:
 
   - A special case to point out is the implementation of Key Vaults that require purge protection (for example, for Customer Managed Keys). As this implies that we cannot fully clean up a test deployment, it is recommended to generate a new name for this resource upon each pipeline run using the output of the `utcNow()` function at the time.
 
-    > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Microsoft.Batch/batchAccounts/.test/encr)
+    > :scroll: [Example of test using purge protected Key Vault dependency](https://github.com/Azure/ResourceModules/tree/main/modules/Batch/batchAccounts/.test/encr)
 
   - If you need a Deployment Script to set additional non-template resources up (for example certificates/files, etc.), we recommend to store it as a file in the shared `modules/.shared/.scripts` folder and load it using the template function `loadTextContent()` (for example: `scriptContent: loadTextContent('../../../../.shared/.scripts/New-SSHKey.ps1')`). This approach makes it easier to test & validate the logic and further allows reusing the same logic accross multiple test cases.
 
