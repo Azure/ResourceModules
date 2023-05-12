@@ -57,6 +57,9 @@ param enableFileCopy bool = true
 @description('Optional. Choose to disable or enable IP Connect.')
 param enableIpConnect bool = false
 
+@description('Optional. Choose to disable or enable Kerberos authentication.')
+param enableKerberos bool = true
+
 @description('Optional. Choose to disable or enable Shareable Link.')
 param enableShareableLink bool = false
 
@@ -189,10 +192,12 @@ var bastionpropertiesVar = skuName == 'Standard' ? {
   disableCopyPaste: disableCopyPaste
   enableFileCopy: enableFileCopy
   enableIpConnect: enableIpConnect
+  enableKerberos: enableKerberos
   enableShareableLink: enableShareableLink
 } : {
   scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
+  enableKerberos: enableKerberos
 }
 
 resource azureBastion 'Microsoft.Network/bastionHosts@2022-11-01' = {
