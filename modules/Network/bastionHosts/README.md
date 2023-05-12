@@ -17,7 +17,7 @@ This module deploys a bastion host.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/bastionHosts` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-01-01/bastionHosts) |
+| `Microsoft.Network/bastionHosts` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/bastionHosts) |
 | `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 
 ## Parameters
@@ -45,6 +45,7 @@ This module deploys a bastion host.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFileCopy` | bool | `True` |  | Choose to disable or enable File Copy. |
 | `enableIpConnect` | bool | `False` |  | Choose to disable or enable IP Connect. |
+| `enableKerberos` | bool | `False` |  | Choose to disable or enable Kerberos authentication. |
 | `enableShareableLink` | bool | `False` |  | Choose to disable or enable Shareable Link. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a Public IP should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
