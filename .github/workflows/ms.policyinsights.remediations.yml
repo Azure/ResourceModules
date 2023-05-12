@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.policyinsights.remediations.yml'
-      - 'modules/Microsoft.PolicyInsights/remediations/**'
+      - 'modules/PolicyInsights/remediations/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.PolicyInsights/remediations'
+  modulePath: 'modules/PolicyInsights/remediations'
   workflowPath: '.github/workflows/ms.policyinsights.remediations.yml'
 
 concurrency:

@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.publicipaddresses.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Network/publicIPAddresses/*'
+      - '/modules/Network/publicIPAddresses/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Network/publicIPAddresses'
+    value: '/modules/Network/publicIPAddresses'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

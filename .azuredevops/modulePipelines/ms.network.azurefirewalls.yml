@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Microsoft.Network/azureFirewalls/*'
-      - '/modules/Microsoft.Network/publicIPAddresses/*'
+      - '/modules/Network/azureFirewalls/*'
+      - '/modules/Network/publicIPAddresses/*'
       - '/.azuredevops/modulePipelines/ms.network.azurefirewalls.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Network/azureFirewalls'
+    value: '/modules/Network/azureFirewalls'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

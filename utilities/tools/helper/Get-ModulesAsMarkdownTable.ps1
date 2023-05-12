@@ -72,12 +72,12 @@ function Get-ResourceModuleName {
         [string] $Path
     )
 
-    if (-not (Test-Path "$Path/readme.md")) {
-        Write-Warning "No [readme.md] found in folder [$Path]"
+    if (-not (Test-Path "$Path/README.md")) {
+        Write-Warning "No [README.md] found in folder [$Path]"
         return ''
     }
 
-    $moduleReadMeContent = Get-Content -Path "$Path/readme.md"
+    $moduleReadMeContent = Get-Content -Path "$Path/README.md"
     $moduleName = $moduleReadMeContent[0].TrimStart('# ').Split('`')[0].Trim()
 
     if (-not [String]::IsNullOrEmpty($moduleName)) {
@@ -206,9 +206,9 @@ Mandatory. The name of the repository the code resides in
 Mandatory. The name of the Organization the code resides in
 
 .EXAMPLE
-> Get-ResolvedSubServiceRow -subPath 'C:\dev\Microsoft.ApiManagement\serviceResources' -concatedBase "Microsoft.ApiManagement\serviceResources" -output @() -provider 'Microsoft.ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
+> Get-ResolvedSubServiceRow -subPath 'C:\dev\ApiManagement\serviceResources' -concatedBase "ApiManagement\serviceResources" -output @() -provider 'ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
 
-Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `Microsoft.ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
+Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
 #>
 function Get-ResolvedSubServiceRow {
 
@@ -281,13 +281,7 @@ function Get-ResolvedSubServiceRow {
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
                     if ($SortByColumn -eq 'Name') {
-                        if ($provider -like 'Microsoft.*') {
-                            # Shorten Microsoft to save some space
-                            $shortProvider = 'MS.{0}' -f ($provider.TrimStart('Microsoft.'))
-                            $row['ProviderNamespace'] += "``$shortProvider``"
-                        } else {
-                            $row['ProviderNamespace'] += "``$provider``"
-                        }
+                        $row['ProviderNamespace'] += "``$provider``"
                     } else {
                         $row['ProviderNamespace'] = ''
                     }
@@ -314,7 +308,7 @@ function Get-ResolvedSubServiceRow {
                     $statusInputObject = @{
                         RepositoryName     = $RepositoryName
                         Organization       = $Organization
-                        PipelineFileName   = ('{0}.{1}.yml' -f $provider.Replace('Microsoft.', 'MS.'), $subName).Replace('\', '/').Replace('/', '.').ToLower()
+                        PipelineFileName   = ('ms.{0}.{1}.yml' -f $provider, $subName).Replace('\', '/').Replace('/', '.').ToLower()
                         PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
                     }
                     $row['Status'] += Get-PipelineStatusUrl @statusInputObject
@@ -338,7 +332,7 @@ Generate a markdown table for all modules in the given path.
 Generate a markdown table for all modules in the given path. Returns an array with one row for each service provider
 Folders should follow the structure:
 
-Microsoft.Sql
+Sql
 ├─ server [module]
 └─ serverResources
     └─ databases [module]
@@ -347,10 +341,10 @@ Where sub-resources are part of a subfolder [<parentResource>Resources]
 
 Results in a table like
 
-    "| Name                           | Provider namespace | Resource Type                                                                   | ARM / Bicep |"
-    "| ------------------------------ | ------------------ | ------------------------------------------------------------------------------- | ----------- |"
-    "| SQL Managed Instances          | `Microsoft.Sql`    | [managedInstances](Microsoft.Sql/managedInstances)                              | :heavy_check_mark: / |
-    "| SQL Managed Instances Database |                    | [managedInstances\databases](Microsoft.Sql\managedInstancesResources\databases) | :heavy_check_mark: / :heavy_check_mark: |
+    "| Name                           | Provider namespace | Resource Type                                                                   |"
+    "| ------------------------------ | ------------------ | ------------------------------------------------------------------------------- |"
+    "| SQL Managed Instances          | `Sql`              | [managedInstances](Sql/managedInstances)                                        |"
+    "| SQL Managed Instances Database |                    | [managedInstances\databases](Sql\managedInstancesResources\databases)           |"
 
 .PARAMETER Path
 Mandatory. The path to resolve
@@ -448,7 +442,7 @@ function Get-ModulesAsMarkdownTable {
     # Content
     # -------
     $output = [System.Collections.ArrayList]@()
-    if ($topLevelFolders = Get-ChildItem -Path $Path -Depth 1 -Filter 'Microsoft.*' -Force) {
+    if ($topLevelFolders = Get-ChildItem -Path $Path -Depth 0 -Directory -Exclude '.*' -Force) {
         $topLevelFolders = $topLevelFolders.FullName | Sort-Object
     }
 
@@ -456,15 +450,15 @@ function Get-ModulesAsMarkdownTable {
     foreach ($topLevelFolder in $topLevelFolders) {
         $provider = Split-Path $topLevelFolder -Leaf
 
-        $containedFolders = Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.test') -Depth 0 -Force
+        $containedFolderPaths = (Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.test') -Depth 0 -Force).FullName
 
-        foreach ($containedFolder in $containedFolders.FullName) {
-            $containedFolderName = (Split-Path $containedFolder -Leaf)
-            $concatedBase = $containedFolder.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
+        foreach ($containedFolderPath in $containedFolderPaths) {
+            $containedFolderName = Split-Path $containedFolderPath -Leaf
+            $concatedBase = $containedFolderPath.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
-            if (Measure-FolderHasNestedModule -path $containedFolder) {
+            if (Measure-FolderHasNestedModule -path $containedFolderPath) {
                 $recursiveSubServiceInputObject = @{
-                    SubPath           = $containedFolder
+                    SubPath           = $containedFolderPath
                     ConcatedBase      = $concatedBase
                     Output            = $output
                     ProviderNamespace = $provider
@@ -483,10 +477,10 @@ function Get-ModulesAsMarkdownTable {
                         'Name' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolderPath), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
-                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f (Get-ResourceModuleName -path $containedFolderPath), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                             }
                         }
@@ -494,20 +488,14 @@ function Get-ModulesAsMarkdownTable {
                             if ($previousProvider -eq $provider -and $SortByColumn -ne 'Name') {
                                 $row['ProviderNamespace'] += ''
                             } else {
-                                if ($provider -like 'Microsoft.*') {
-                                    # Shorten Microsoft to save some space
-                                    $shortProvider = 'MS.{0}' -f ($provider.TrimStart('Microsoft.'))
-                                    $row['ProviderNamespace'] += "``$shortProvider``"
-                                } else {
-                                    $row['ProviderNamespace'] += "``$provider``"
-                                }
+                                $row['ProviderNamespace'] += "``$provider``"
                                 $previousProvider = $provider
                             }
                         }
                         'ResourceType' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolderPath), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
                                     $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
@@ -516,10 +504,10 @@ function Get-ModulesAsMarkdownTable {
 
                         }
                         'TemplateType' {
-                            $row['TemplateType'] += Get-TypeColumnString -path $containedFolder
+                            $row['TemplateType'] += Get-TypeColumnString -path $containedFolderPath
                         }
                         'Deploy' {
-                            $row['Deploy'] += Get-DeployToAzureUrl -path $containedFolder -RepositoryName $RepositoryName -Organization $Organization
+                            $row['Deploy'] += Get-DeployToAzureUrl -path $containedFolderPath -RepositoryName $RepositoryName -Organization $Organization
                         }
                         'Status' {
                             $statusInputObject = @{
@@ -527,7 +515,7 @@ function Get-ModulesAsMarkdownTable {
                                 Organization       = $Organization
                                 Environment        = $Environment
                                 ProjectName        = $ProjectName
-                                PipelineFileName   = ('{0}.{1}.yml' -f $provider.Replace('Microsoft.', 'MS.'), $containedFolderName).Replace('\', '/').Replace('/', '.').ToLower()
+                                PipelineFileName   = ('ms.{0}.{1}.yml' -f $provider, $containedFolderName).Replace('\', '/').Replace('/', '.').ToLower()
                                 PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
                             }
                             $row['Status'] += Get-PipelineStatusUrl @statusInputObject

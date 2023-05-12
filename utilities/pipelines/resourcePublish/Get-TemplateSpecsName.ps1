@@ -9,9 +9,9 @@ Convert the given template file path into a valid Template Specs repository name
 Mandatory. The template file path to convert
 
 .EXAMPLE
-Get-TemplateSpecsName -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\main.bicep'
+Get-TemplateSpecsName -TemplateFilePath 'C:\modules\KeyVault\vaults\main.bicep'
 
-Convert 'C:\modules\Microsoft.KeyVault\vaults\main.bicep' to e.g. 'microsoft.keyvault.vaults'
+Convert 'C:\modules\KeyVault\vaults\main.bicep' to e.g. 'microsoft.keyvault.vaults'
 #>
 function Get-TemplateSpecsName {
 

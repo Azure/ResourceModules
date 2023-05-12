@@ -9,9 +9,9 @@ Convert the given template file path into a valid Container Registry repository 
 Mandatory. The template file path to convert
 
 .EXAMPLE
-Get-PrivateRegistryRepositoryName -TemplateFilePath 'C:\modules\Microsoft.KeyVault\vaults\main.bicep'
+Get-PrivateRegistryRepositoryName -TemplateFilePath 'C:\modules\KeyVault\vaults\main.bicep'
 
-Convert 'C:\modules\Microsoft.KeyVault\vaults\main.bicep' to e.g. 'bicep/modules/microsoft.keyvault.vaults'
+Convert 'C:\modules\KeyVault\vaults\main.bicep' to e.g. 'bicep/modules/keyvault.vaults'
 #>
 function Get-PrivateRegistryRepositoryName {
 

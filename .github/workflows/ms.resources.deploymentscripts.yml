@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.deploymentscripts.yml'
-      - 'modules/Microsoft.Resources/deploymentScripts/**'
+      - 'modules/Resources/deploymentScripts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Resources/deploymentScripts'
+  modulePath: 'modules/Resources/deploymentScripts'
   workflowPath: '.github/workflows/ms.resources.deploymentscripts.yml'
 
 concurrency:
