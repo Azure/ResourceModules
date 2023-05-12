@@ -135,7 +135,7 @@ param httpApplicationRoutingEnabled bool = false
 @description('Optional. Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.')
 param webApplicationRoutingEnabled bool = false
 
-@description('Optional. Specifies the resource ID of connected DNS zone. Optional if `webApplicationRoutingEnabled` is set to `true`.')
+@description('Conditional. Specifies the resource ID of connected DNS zone. Optional if `webApplicationRoutingEnabled` is set to `false`.')
 param dnsZoneResourceId string = ''
 
 @description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')

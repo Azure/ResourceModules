@@ -36,6 +36,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `appGatewayResourceId` | string | `''` | Specifies the resource ID of connected application gateway. Required if `ingressApplicationGatewayEnabled` is set to `true`. |
+| `dnsZoneResourceId` | string | `''` | Specifies the resource ID of connected DNS zone. Optional if `webApplicationRoutingEnabled` is set to `false`. |
 
 **Optional parameters**
 
@@ -95,7 +96,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `disableLocalAccounts` | bool | `False` |  | If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Whether to disable run command for the cluster or not. |
 | `diskEncryptionSetID` | string | `''` |  | The resource ID of the disc encryption set to apply to the cluster. For security reasons, this value should be provided. |
-| `dnsZoneResourceId` | string | `''` |  | Specifies the resource ID of connected DNS zone. Optional if `webApplicationRoutingEnabled` is set to `true`. |
 | `enableAzureDefender` | bool | `False` |  | Whether to enable Azure Defender. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
