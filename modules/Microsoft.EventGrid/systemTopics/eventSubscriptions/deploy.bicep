@@ -80,7 +80,7 @@ resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@
 @description('The name of the event subscription.')
 output name string = eventSubscription.name
 
-@description('The resource ID of the event grid topic.')
+@description('The resource ID of the event subscription.')
 output resourceId string = eventSubscription.id
 
 @description('The name of the resource group the event grid topic was deployed into.')
