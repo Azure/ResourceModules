@@ -36,7 +36,6 @@ module nestedDependencies 'dependencies.bicep' = {
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
-    queueName: queueName
   }
 }
 
