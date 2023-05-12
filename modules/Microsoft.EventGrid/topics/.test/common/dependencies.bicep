@@ -7,9 +7,6 @@ param virtualNetworkName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
-@description('Required. The name of the Storage Account queue.')
-param queueName string
-
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
