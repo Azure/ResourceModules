@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param enableDefaultTelemetry bool = true
 
 @description('Required. Name of the Event Grid System Topic.')
-param eventGridSystemTopicName string
+param systemTopicName string
 
 @description('Optional. Dead Letter Destination. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterdestination-objects for more information).')
 param deadLetterDestination object = {}
