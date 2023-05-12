@@ -78,7 +78,7 @@ var builtInRoleNames = {
   'Windows Admin Center Administrator Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a6333a3e-0164-44c3-b281-7a577aff287f')
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-08-01' existing = {
+resource azureBastion 'Microsoft.Network/bastionHosts@2022-11-01' existing = {
   name: last(split(resourceId, '/'))!
 }
 
