@@ -63,7 +63,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' existing = {
 
 resource eventSubscription 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2022-06-15' = {
   name: name
-  parent: eventGridSystemTopic
+  parent: systemTopic
   properties: {
     deadLetterDestination: !empty(deadLetterDestination) ? deadLetterDestination : null
     deadLetterWithResourceIdentity: !empty(deadLetterWithResourceIdentity) ? deadLetterWithResourceIdentity : null
