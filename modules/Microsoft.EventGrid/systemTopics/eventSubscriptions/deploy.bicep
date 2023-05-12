@@ -57,7 +57,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventGridSystemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' existing = {
+resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' existing = {
   name: eventGridSystemTopicName
 }
 
