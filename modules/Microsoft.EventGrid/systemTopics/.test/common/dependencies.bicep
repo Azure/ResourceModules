@@ -30,6 +30,8 @@ resource storageQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@20
     name: queueName
     parent: storageQueueService
 }
+@description('The name of the created Storage Account Queue.')
+output queueName string = storageAccount::queueService::queue.name
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
