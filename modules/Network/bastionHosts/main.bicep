@@ -58,7 +58,7 @@ param enableFileCopy bool = true
 param enableIpConnect bool = false
 
 @description('Optional. Choose to disable or enable Kerberos authentication.')
-param enableKerberos bool = true
+param enableKerberos bool = false
 
 @description('Optional. Choose to disable or enable Shareable Link.')
 param enableShareableLink bool = false
