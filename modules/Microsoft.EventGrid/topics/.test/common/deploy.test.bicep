@@ -107,7 +107,7 @@ module testDeployment '../../deploy.bicep' = {
         properties: {
           resourceId: nestedDependencies.outputs.storageAccountResourceId
           queueMessageTimeToLiveInSeconds: 86400
-          queueName: queueName
+          queueName: nestedDependencies.outputs.queueName
         }
       }
     }
