@@ -400,7 +400,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-03-01' = {
   name: name
   location: location
   tags: tags

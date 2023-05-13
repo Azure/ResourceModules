@@ -16,7 +16,7 @@ param keyVaultName string
 @description('Required. The name of the Proximity Placement Group to create.')
 param proximityPlacementGroupName string
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-09-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-11-01' = {
     name: virtualNetworkName
     location: location
     properties: {
@@ -48,7 +48,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-09-01' = {
     }
 }
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
     name: managedIdentityName
     location: location
 }
@@ -71,7 +71,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
         accessPolicies: []
     }
 
-    resource key 'keys@2022-07-01' = {
+    resource key 'keys@2023-02-01' = {
         name: 'encryptionKey'
         properties: {
             kty: 'RSA'
@@ -106,7 +106,7 @@ resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     }
 }
 
-resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2022-03-01' = {
+resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2023-03-01' = {
     name: proximityPlacementGroupName
     location: location
 }
