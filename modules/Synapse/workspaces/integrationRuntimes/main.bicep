@@ -11,10 +11,10 @@ param name string
 @description('Required. The type of Integration Runtime.')
 param type string
 
-@description('Optional. The name of the Managed Virtual Network if using type "Managed" .')
+@description('Conditional. The name of the Managed Virtual Network. Required if using type "Managed".')
 param managedVirtualNetworkName string = ''
 
-@description('Optional. Integration Runtime type properties. Required if type is "Managed".')
+@description('Conditional. Integration Runtime type properties. Required if type is "Managed".')
 param typeProperties object = {}
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
