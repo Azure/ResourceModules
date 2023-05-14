@@ -52,7 +52,7 @@ param managedResourceGroupName string = ''
 @description('Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources.')
 param managedVirtualNetwork bool = false
 
-@description('Optional. An array of objects for the configuration of an Integration Runtime.')
+@description('Optional. The Integration Runtimes to create.')
 param integrationRuntimes array = []
 
 @description('Optional. Allowed AAD Tenant IDs For Linking.')
