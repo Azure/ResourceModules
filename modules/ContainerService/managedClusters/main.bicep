@@ -406,7 +406,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-03-01' 
   tags: tags
   identity: identity
   sku: {
-    name: 'Basic'
+    name: 'Base'
     tier: aksClusterSkuTier
   }
   properties: {
