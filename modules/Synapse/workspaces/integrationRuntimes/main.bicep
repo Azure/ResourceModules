@@ -11,9 +11,6 @@ param name string
 @description('Required. The type of Integration Runtime.')
 param type string
 
-@description('Conditional. The name of the Managed Virtual Network. Required if using type "Managed".')
-param managedVirtualNetworkName string = ''
-
 @description('Conditional. Integration Runtime type properties. Required if type is "Managed".')
 param typeProperties object = {}
 
@@ -33,8 +30,8 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 var managedVirtualNetworkVar = {
-  referenceName: type == 'Managed' ? managedVirtualNetworkName : null
-  type: type == 'Managed' ? 'ManagedVirtualNetworkReference' : null
+  referenceName: 'default'
+  type: 'ManagedVirtualNetworkReference'
 }
 
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {

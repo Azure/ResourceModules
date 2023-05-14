@@ -243,7 +243,6 @@ module synapse_integrationRuntimes 'integrationRuntimes/main.bicep' = [for (inte
     workspaceName: workspace.name
     name: integrationRuntime.name
     type: integrationRuntime.type
-    managedVirtualNetworkName: workspace.properties.managedVirtualNetwork
     typeProperties: contains(integrationRuntime, 'typeProperties') ? integrationRuntime.typeProperties : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
