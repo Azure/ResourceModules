@@ -9,7 +9,7 @@ param loadBalancerName string
 
 var addressPrefix = '10.0.0.0/16'
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-11-01' = {
     name: virtualNetworkName
     location: location
     properties: {
@@ -30,7 +30,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     }
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2022-01-01' = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2022-11-01' = {
     name: loadBalancerName
     location: location
     sku: {

@@ -19,7 +19,7 @@ param indexingPolicy object = {}
 @description('Optional. List of paths using which data within the container can be partitioned.')
 param partitionKeyPaths array = []
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -31,15 +31,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
   name: databaseAccountName
 
-  resource gremlinDatabase 'gremlinDatabases@2022-08-15' existing = {
+  resource gremlinDatabase 'gremlinDatabases@2023-04-15' existing = {
     name: gremlinDatabaseName
   }
 }
 
-resource gremlinGraph 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs@2022-08-15' = {
+resource gremlinGraph 'Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs@2023-04-15' = {
   name: name
   tags: tags
   parent: databaseAccount::gremlinDatabase

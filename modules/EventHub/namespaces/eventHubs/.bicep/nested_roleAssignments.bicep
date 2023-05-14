@@ -55,7 +55,7 @@ var builtInRoleNames = {
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' existing = {
-  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}}'
+  name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

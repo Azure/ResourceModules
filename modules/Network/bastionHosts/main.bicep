@@ -57,6 +57,9 @@ param enableFileCopy bool = true
 @description('Optional. Choose to disable or enable IP Connect.')
 param enableIpConnect bool = false
 
+@description('Optional. Choose to disable or enable Kerberos authentication.')
+param enableKerberos bool = false
+
 @description('Optional. Choose to disable or enable Shareable Link.')
 param enableShareableLink bool = false
 
@@ -141,7 +144,7 @@ var enableReferencedModulesTelemetry = false
 
 // ----------------------------------------------------------------------------
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -189,13 +192,15 @@ var bastionpropertiesVar = skuName == 'Standard' ? {
   disableCopyPaste: disableCopyPaste
   enableFileCopy: enableFileCopy
   enableIpConnect: enableIpConnect
+  enableKerberos: enableKerberos
   enableShareableLink: enableShareableLink
 } : {
   scaleUnits: scaleUnitsVar
   ipConfigurations: ipConfigurations
+  enableKerberos: enableKerberos
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2022-01-01' = {
+resource azureBastion 'Microsoft.Network/bastionHosts@2022-11-01' = {
   name: name
   location: location
   tags: tags
