@@ -8,7 +8,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array of access policies object.')
+@description('Optional. All access policies to create.')
 param accessPolicies array = []
 
 @description('Optional. All secrets to create.')

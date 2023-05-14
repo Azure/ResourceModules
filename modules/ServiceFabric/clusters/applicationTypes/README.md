@@ -19,9 +19,9 @@ This module deploys a Service Fabric Cluster Application Type.
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `serviceFabricClusterName` | string | `''` | The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serviceFabricClusterName` | string | The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
