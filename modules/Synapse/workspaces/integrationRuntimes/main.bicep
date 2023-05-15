@@ -29,11 +29,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-var managedVirtualNetworkVar = {
-  referenceName: 'default'
-  type: 'ManagedVirtualNetworkReference'
-}
-
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: workspaceName
 }
@@ -43,7 +38,10 @@ resource integrationRuntime 'Microsoft.Synapse/workspaces/integrationRuntimes@20
   parent: workspace
   properties: type == 'Managed' ? {
     type: type
-    managedVirtualNetwork: managedVirtualNetworkVar
+    managedVirtualNetwork: {
+      referenceName: 'default'
+      type: 'ManagedVirtualNetworkReference'
+    }
     typeProperties: typeProperties
   } : {
     type: type
