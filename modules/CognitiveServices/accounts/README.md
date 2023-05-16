@@ -651,6 +651,7 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicNetworkAccess: 'Enabled'
+    restrictOutboundNetworkAccess: false
     sku: 'S0'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -693,6 +694,9 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
     },
     "publicNetworkAccess": {
       "value": "Enabled"
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": false
     },
     "sku": {
       "value": "S0"

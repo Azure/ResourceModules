@@ -61,5 +61,6 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    restrictOutboundNetworkAccess: false
   }
 }
