@@ -186,10 +186,10 @@ privateEndpoints:  [
     "value": {
         "keySource": "Microsoft.KeyVault",
         "keyVaultProperties": {
-            "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
+            "identityClientId": "12345678-1234-1234-1234-123456789012", // ID must be updated for new identity
             "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
             "keyName": "keyEncryptionKey",
-            "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // ID must be updated for new keys
+            "keyversion": "1234567890abcdef1234567890abcdef" // ID must be updated for new keys
         }
     }
 }
@@ -212,10 +212,10 @@ privateEndpoints:  [
 encryption: {
     keySource: 'Microsoft.KeyVault'
     keyVaultProperties: {
-        identityClientId: 'c907a696-36f4-49fe-b926-39e3aabba814' // ID must be updated for new identity
+        identityClientId: '12345678-1234-1234-1234-123456789012' // ID must be updated for new identity
         keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
         keyName: 'keyEncryptionKey'
-        keyversion: '4570a207ec394a0bbbe4fc9adc663a51' // Version must be updated for new keys
+        keyversion: '1234567890abcdef1234567890abcdef' // Version must be updated for new keys
     }
 }
 // With service-managed key
