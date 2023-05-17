@@ -7,9 +7,6 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Firewall policy resource.')
 param tags object = {}
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
@@ -95,7 +92,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Rule collection groups.')
 param ruleCollectionGroups array = []
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
 
 var identity = identityType != 'None' ? {
   type: identityType
