@@ -91,6 +91,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var enableReferencedModulesTelemetry = false
 
+var defaultShareAccessTier = storageAccount.kind == 'FileStorage' ? 'Premium' : 'TransactionOptimized' // default share accessTier depends on the Storage Account kind: 'Premium' for 'FileStorage' kind, 'TransactionOptimized' otherwise
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -135,6 +137,7 @@ module fileServices_shares 'shares/main.bicep' = [for (share, index) in shares: 
     storageAccountName: storageAccount.name
     fileServicesName: fileServices.name
     name: share.name
+    accessTier: contains(share, 'accessTier') ? share.accessTier : defaultShareAccessTier
     enabledProtocols: contains(share, 'enabledProtocols') ? share.enabledProtocols : 'SMB'
     rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
     shareQuota: contains(share, 'shareQuota') ? share.shareQuota : 5120
