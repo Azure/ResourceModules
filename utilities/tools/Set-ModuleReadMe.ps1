@@ -930,11 +930,8 @@ function Set-DeploymentExamplesSection {
     )
 
     # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
-    $providerNamespace = ($fullModuleIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
     $resourceType = $fullModuleIdentifier.Split('/')[1]
     $resourceTypeUpper = $resourceType.Substring(0, 1).ToUpper() + $resourceType.Substring(1)
-
-    $FullModuleIdentifier = "$providerNamespace/$resourceType"
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
