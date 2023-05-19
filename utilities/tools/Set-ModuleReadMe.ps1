@@ -178,14 +178,19 @@ function Set-ParametersSection {
         # 3. Add individual parameters
         foreach ($parameter in $categoryParameters) {
 
+            # Convert parameter name to kebab-case, as that would be the correspondent child module folder to refer to
+            # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
+            # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
+            if ($parameter.name -like '*Obj'){
+                $parameterKebabCase = ($parameter.name.TrimEnd('Obj') -creplace '(?<!^)([A-Z])', '-$1').ToLower()
+            }else{
+                $parameterKebabCase = ($parameter.name -creplace '(?<!^)([A-Z])', '-$1').ToLower()
+            }
+
             # Check for local readme references
-            if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
-                if ($folderNames -contains $parameter.name) {
-                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
-                }
-            } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
-                if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
-                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
+            if ($folderNames -and $parameterKebabCase -in $folderNames -and $parameter.type -in @('object', 'array')) {
+                if ($folderNames -contains $parameterKebabCase) {
+                    $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name, ($folderNames | Where-Object { $_ -eq $parameterKebabCase }), $parameter.type
                 }
             } else {
                 $type = $parameter.type
