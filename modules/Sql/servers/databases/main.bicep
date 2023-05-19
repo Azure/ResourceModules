@@ -259,7 +259,7 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
   scope: database
 }
 
-module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies/main.bicep' = {
+module database_backupShortTermRetentionPolicy 'backup-short-term-retention-policies/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-${name}-shBakRetPol'
   params: {
     serverName: serverName
@@ -269,7 +269,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
   }
 }
 
-module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/main.bicep' = {
+module database_backupLongTermRetentionPolicy 'backup-long-term-retention-policies/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-${name}-lgBakRetPol'
   params: {
     serverName: serverName

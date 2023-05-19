@@ -333,7 +333,7 @@ module managedInstance_databases 'databases/main.bicep' = [for (database, index)
   }
 }]
 
-module managedInstance_securityAlertPolicy 'securityAlertPolicies/main.bicep' = if (!empty(securityAlertPoliciesObj)) {
+module managedInstance_securityAlertPolicy 'security-alert-policies/main.bicep' = if (!empty(securityAlertPoliciesObj)) {
   name: '${uniqueString(deployment().name, location)}-SqlMi-SecAlertPol'
   params: {
     managedInstanceName: managedInstance.name
@@ -344,7 +344,7 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/main.bicep' = 
   }
 }
 
-module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/main.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
+module managedInstance_vulnerabilityAssessment 'vulnerability-assessments/main.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
   name: '${uniqueString(deployment().name, location)}-SqlMi-VulnAssessm'
   params: {
     managedInstanceName: managedInstance.name
@@ -371,7 +371,7 @@ module managedInstance_keys 'keys/main.bicep' = [for (key, index) in keys: {
   }
 }]
 
-module managedInstance_encryptionProtector 'encryptionProtector/main.bicep' = if (!empty(encryptionProtectorObj)) {
+module managedInstance_encryptionProtector 'encryption-protector/main.bicep' = if (!empty(encryptionProtectorObj)) {
   name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
   params: {
     managedInstanceName: managedInstance.name

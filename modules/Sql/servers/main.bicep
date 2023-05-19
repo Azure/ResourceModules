@@ -205,7 +205,7 @@ module server_databases 'databases/main.bicep' = [for (database, index) in datab
   ]
 }]
 
-module server_elasticPools 'elasticPools/main.bicep' = [for (elasticPool, index) in elasticPools: {
+module server_elasticPools 'elastic-pools/main.bicep' = [for (elasticPool, index) in elasticPools: {
   name: '${uniqueString(deployment().name, location)}-SQLServer-ElasticPool-${index}'
   params: {
     name: elasticPool.name
@@ -250,7 +250,7 @@ module server_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [fo
   }
 }]
 
-module server_firewallRules 'firewallRules/main.bicep' = [for (firewallRule, index) in firewallRules: {
+module server_firewallRules 'firewall-rules/main.bicep' = [for (firewallRule, index) in firewallRules: {
   name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
   params: {
     name: firewallRule.name
@@ -261,7 +261,7 @@ module server_firewallRules 'firewallRules/main.bicep' = [for (firewallRule, ind
   }
 }]
 
-module server_virtualNetworkRules 'virtualNetworkRules/main.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
+module server_virtualNetworkRules 'virtual-network-rules/main.bicep' = [for (virtualNetworkRule, index) in virtualNetworkRules: {
   name: '${uniqueString(deployment().name, location)}-Sql-VirtualNetworkRules-${index}'
   params: {
     name: virtualNetworkRule.name
@@ -272,7 +272,7 @@ module server_virtualNetworkRules 'virtualNetworkRules/main.bicep' = [for (virtu
   }
 }]
 
-module server_securityAlertPolicies 'securityAlertPolicies/main.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
+module server_securityAlertPolicies 'security-alert-policies/main.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
   name: '${uniqueString(deployment().name, location)}-Sql-SecAlertPolicy-${index}'
   params: {
     name: securityAlertPolicy.name
@@ -288,7 +288,7 @@ module server_securityAlertPolicies 'securityAlertPolicies/main.bicep' = [for (s
   }
 }]
 
-module server_vulnerabilityAssessment 'vulnerabilityAssessments/main.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
+module server_vulnerabilityAssessment 'vulnerability-assessments/main.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
   name: '${uniqueString(deployment().name, location)}-Sql-VulnAssessm'
   params: {
     serverName: server.name
@@ -315,7 +315,7 @@ module server_keys 'keys/main.bicep' = [for (key, index) in keys: {
   }
 }]
 
-module server_encryptionProtector 'encryptionProtector/main.bicep' = if (!empty(encryptionProtectorObj)) {
+module server_encryptionProtector 'encryption-protector/main.bicep' = if (!empty(encryptionProtectorObj)) {
   name: '${uniqueString(deployment().name, location)}-Sql-EncryProtector'
   params: {
     sqlServerName: server.name

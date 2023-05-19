@@ -308,7 +308,7 @@ module flexibleServer_databases 'databases/main.bicep' = [for (database, index) 
   }
 }]
 
-module flexibleServer_firewallRules 'firewallRules/main.bicep' = [for (firewallRule, index) in firewallRules: {
+module flexibleServer_firewallRules 'firewall-rules/main.bicep' = [for (firewallRule, index) in firewallRules: {
   name: '${uniqueString(deployment().name, location)}-PostgreSQL-FirewallRules-${index}'
   params: {
     name: firewallRule.name
