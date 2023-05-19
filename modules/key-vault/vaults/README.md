@@ -410,7 +410,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './KeyVault/vaults/main.bicep' = {
+module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
     name: '<<namePrefix>>kvvcom002'
@@ -763,7 +763,7 @@ module vaults './KeyVault/vaults/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './KeyVault/vaults/main.bicep' = {
+module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
     // Required parameters
@@ -812,7 +812,7 @@ module vaults './KeyVault/vaults/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module vaults './KeyVault/vaults/main.bicep' = {
+module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters

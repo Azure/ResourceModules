@@ -228,7 +228,7 @@ resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021
   scope: keyVault
 }
 
-module keyVault_accessPolicies 'accessPolicies/main.bicep' = if (!empty(accessPolicies)) {
+module keyVault_accessPolicies 'access-policies/main.bicep' = if (!empty(accessPolicies)) {
   name: '${uniqueString(deployment().name, location)}-KeyVault-AccessPolicies'
   params: {
     keyVaultName: keyVault.name
