@@ -181,16 +181,20 @@ function Set-ParametersSection {
             # Convert parameter name to kebab-case, as that would be the correspondent child module folder to refer to
             # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
             # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
-            if ($parameter.name -like '*Obj'){
-                $parameterKebabCase = ($parameter.name.TrimEnd('Obj') -creplace '(?<!^)([A-Z])', '-$1').ToLower()
-            }else{
+            # if ($parameter.name -like '*Obj'){
+            #     $parameterKebabCase = ($parameter.name.TrimEnd('Obj') -creplace '(?<!^)([A-Z])', '-$1').ToLower()
+            # }else{
                 $parameterKebabCase = ($parameter.name -creplace '(?<!^)([A-Z])', '-$1').ToLower()
-            }
+            # }
 
             # Check for local readme references
             if ($folderNames -and $parameterKebabCase -in $folderNames -and $parameter.type -in @('object', 'array')) {
                 if ($folderNames -contains $parameterKebabCase) {
                     $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name, ($folderNames | Where-Object { $_ -eq $parameterKebabCase }), $parameter.type
+                }
+            } elseif ($folderNames -and $parameterKebabCase.TrimEnd('-obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
+                if ($folderNames -contains $parameterKebabCase.TrimEnd('-obj')) {
+                    $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name.TrimEnd('Obj'), ($folderNames | Where-Object { $_ -eq $parameterKebabCase.TrimEnd('-obj') }), $parameter.type
                 }
             } else {
                 $type = $parameter.type

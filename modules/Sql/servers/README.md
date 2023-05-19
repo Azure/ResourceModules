@@ -53,10 +53,10 @@ This module deploys a SQL server.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `databases` | _[databases](databases/README.md)_ array | `[]` |  | The databases to create in the server. |
-| `elasticPools` | _[elasticPools](elasticPools/README.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
+| `elasticPools` | _[elasticPools](elastic-pools/README.md)_ array | `[]` |  | The Elastic Pools to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/README.md)_ object | `{object}` |  | The encryption protection configuration. |
-| `firewallRules` | _[firewallRules](firewallRules/README.md)_ array | `[]` |  | The firewall rules to create in the server. |
+| `encryptionProtectorObj` | _[encryptionProtector](encryption-protector/README.md)_ object | `{object}` |  | The encryption protection configuration. |
+| `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the server. |
 | `keys` | _[keys](keys/README.md)_ array | `[]` |  | The keys to configure. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -65,12 +65,12 @@ This module deploys a SQL server.
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and neither firewall rules nor virtual network rules are set. |
 | `restrictOutboundNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not to restrict outbound network access for this server. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/README.md)_ array | `[]` |  | The security alert policies to create in the server. |
+| `securityAlertPolicies` | _[securityAlertPolicies](security-alert-policies/README.md)_ array | `[]` |  | The security alert policies to create in the server. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworkRules` | _[virtualNetworkRules](virtualNetworkRules/README.md)_ array | `[]` |  | The virtual network rules to create in the server. |
-| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/README.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
+| `virtualNetworkRules` | _[virtualNetworkRules](virtual-network-rules/README.md)_ array | `[]` |  | The virtual network rules to create in the server. |
+| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerability-assessments/README.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 
 
 ### Parameter Usage: `roleAssignments`
