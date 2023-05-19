@@ -106,5 +106,17 @@ function Set-CARMLFoldersForPBR {
             Write-Verbose ("   $workflowsfilePath") -Verbose
             (Get-Content $workflowsfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $workflowsfilePath
         }
+
+        # Replace local module references in ado pipelines
+
+        # Get file paths
+        $pipelinesfilePaths=(Get-ChildItem -Path $WorkflowsPath -Recurse | Select-String "modules.*$folderName" -List | Select Path).Path
+
+        # Iterate on all files
+        foreach ($pipelinesfilePath in $pipelinesfilePaths) {
+            # Replace content
+            Write-Verbose ("   $pipelinesfilePath") -Verbose
+            (Get-Content $pipelinesfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $pipelinesfilePath
+        }
     }
 }
