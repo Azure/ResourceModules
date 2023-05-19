@@ -40,7 +40,10 @@ function Set-CARMLFoldersForPBR {
         [string] $ResourceProviderPath = '',
 
         [Parameter(Mandatory = $true)]
-        [string] $WorkflowsPath
+        [string] $WorkflowsPath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $PipelinesPath
     )
 
     $specialConversionHash = @{
@@ -91,8 +94,8 @@ function Set-CARMLFoldersForPBR {
         # Iterate on all files
         foreach ($filePath in $filePaths) {
             # Replace content
-            Write-Verbose ("$filePath") -Verbose
-            (Get-Content $filePath) -replace "($folderName)/(.*main.bicep)", "$newName/`$2" | Set-Content $filePath
+            Write-Verbose ("   $filePath") -Verbose
+            (Get-Content $filePath) -replace "(/|')($folderName)/(.*main.bicep)", "`$1$newName/`$3" | Set-Content $filePath
         }
 
         # Replace local module references in workflows
@@ -103,8 +106,20 @@ function Set-CARMLFoldersForPBR {
         # Iterate on all files
         foreach ($workflowsfilePath in $workflowsfilePaths) {
             # Replace content
-            Write-Verbose ("$workflowsfilePath") -Verbose
+            Write-Verbose ("   $workflowsfilePath") -Verbose
             (Get-Content $workflowsfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $workflowsfilePath
+        }
+
+        # Replace local module references in ado pipelines
+
+        # Get file paths
+        $pipelinesfilePaths=(Get-ChildItem -Path $PipelinesPath -Recurse | Select-String "modules.*$folderName" -List | Select Path).Path
+
+        # Iterate on all files
+        foreach ($pipelinesfilePath in $pipelinesfilePaths) {
+            # Replace content
+            Write-Verbose ("   $pipelinesfilePath") -Verbose
+            (Get-Content $pipelinesfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $pipelinesfilePath
         }
     }
 }
