@@ -91,8 +91,8 @@ function Set-CARMLFoldersForPBR {
         # Iterate on all files
         foreach ($filePath in $filePaths) {
             # Replace content
-            Write-Verbose ("$filePath") -Verbose
-            (Get-Content $filePath) -replace "($folderName)/(.*main.bicep)", "$newName/`$2" | Set-Content $filePath
+            Write-Verbose ("   $filePath") -Verbose
+            (Get-Content $filePath) -replace "/($folderName)/(.*main.bicep)", "/$newName/`$2" | Set-Content $filePath
         }
 
         # Replace local module references in workflows
@@ -103,7 +103,7 @@ function Set-CARMLFoldersForPBR {
         # Iterate on all files
         foreach ($workflowsfilePath in $workflowsfilePaths) {
             # Replace content
-            Write-Verbose ("$workflowsfilePath") -Verbose
+            Write-Verbose ("   $workflowsfilePath") -Verbose
             (Get-Content $workflowsfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $workflowsfilePath
         }
     }
