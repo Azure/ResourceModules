@@ -95,7 +95,7 @@ function Set-CARMLFoldersForPBR {
         foreach ($filePath in $filePaths) {
             # Replace content
             Write-Verbose ("   $filePath") -Verbose
-            (Get-Content $filePath) -replace "(/|')($folderName)/(.*main.bicep)", "`$1$newName/`$3" | Set-Content $filePath
+            (Get-Content $filePath) -creplace "(/|')($folderName)/(.*main.bicep)", "`$1$newName/`$3" | Set-Content $filePath
         }
 
         # Replace local module references in workflows
@@ -107,7 +107,7 @@ function Set-CARMLFoldersForPBR {
         foreach ($workflowsfilePath in $workflowsfilePaths) {
             # Replace content
             Write-Verbose ("   $workflowsfilePath") -Verbose
-            (Get-Content $workflowsfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $workflowsfilePath
+            (Get-Content $workflowsfilePath) -creplace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $workflowsfilePath
         }
 
         # Replace local module references in ado pipelines
@@ -119,7 +119,7 @@ function Set-CARMLFoldersForPBR {
         foreach ($pipelinesfilePath in $pipelinesfilePaths) {
             # Replace content
             Write-Verbose ("   $pipelinesfilePath") -Verbose
-            (Get-Content $pipelinesfilePath) -replace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $pipelinesfilePath
+            (Get-Content $pipelinesfilePath) -creplace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $pipelinesfilePath
         }
     }
 }

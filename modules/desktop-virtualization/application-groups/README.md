@@ -178,7 +178,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGroups './DesktopVirtualization/applicationGroups/main.bicep' = {
+module applicationGroups './desktop-virtualization/application-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvagcom'
   params: {
     // Required parameters
@@ -335,7 +335,7 @@ module applicationGroups './DesktopVirtualization/applicationGroups/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGroups './DesktopVirtualization/applicationGroups/main.bicep' = {
+module applicationGroups './desktop-virtualization/application-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvagmin'
   params: {
     // Required parameters

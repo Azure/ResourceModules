@@ -281,7 +281,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module hostPools './DesktopVirtualization/hostPools/main.bicep' = {
+module hostPools './desktop-virtualization/host-pools/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvhpcom'
   params: {
     // Required parameters
@@ -480,7 +480,7 @@ module hostPools './DesktopVirtualization/hostPools/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module hostPools './DesktopVirtualization/hostPools/main.bicep' = {
+module hostPools './desktop-virtualization/host-pools/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
   params: {
     // Required parameters
