@@ -47,18 +47,23 @@ function Set-CARMLFoldersForPBR {
     )
 
     $specialConversionHash = @{
-        DBforPostgreSQL = "db-for-postgre-sql";
-        SQL = "sql"
+        DBforPostgreSQL = 'db-for-postgre-sql';
+        SQL             = 'sql'
     }
 
+    $relevantFolderPaths = @()
     # Get all module folder names
     if ($ResourceProviderPath -ne '') {
-        $relevantFolderPaths = (Get-ChildItem -Path $ResourceProviderPath -Recurse -Directory).FullName | Where-Object {
+        $relevantFolderPaths += (Get-ChildItem -Path $ResourceProviderPath -Recurse -Directory).FullName | Where-Object {
             $_ -notlike '*.bicep*' -and
             $_ -notlike '*.shared*' -and
             $_ -notlike '*.test*'
         }
+        Write-Verbose ("relevantFolderPaths $relevantFolderPaths") -Verbose
+        Write-Verbose ("ResourceProviderPath $ResourceProviderPath") -Verbose
         $relevantFolderPaths += $ResourceProviderPath
+        Write-Verbose ("relevantFolderPaths $relevantFolderPaths") -Verbose
+
     } else {
         $relevantFolderPaths = (Get-ChildItem -Path $ModulesFolderPath -Recurse -Directory).FullName | Where-Object {
             $_ -notlike '*.bicep*' -and
@@ -77,7 +82,6 @@ function Set-CARMLFoldersForPBR {
         # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
         # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
         $newName = ($folderName -creplace '(?<!^)([A-Z])', '-$1').ToLower()
-        $newName = $newName.substring(0,1).tolower() + $newName.substring(1)
 
         Write-Verbose ("$folderName $newName") -Verbose
 
@@ -91,7 +95,7 @@ function Set-CARMLFoldersForPBR {
         # Replace local module references in files across the whole library
 
         # Get file paths
-        $filePaths=(Get-ChildItem -Path $ModulesFolderPath -Recurse | Select-String "$folderName.*main.bicep" -List | Select Path).Path
+        $filePaths = (Get-ChildItem -Path $ModulesFolderPath -Recurse | Select-String "$folderName.*main.bicep" -List | Select-Object Path).Path
 
         # Iterate on all files
         foreach ($filePath in $filePaths) {
@@ -103,7 +107,7 @@ function Set-CARMLFoldersForPBR {
         # Replace local module references in workflows
 
         # Get file paths
-        $workflowsfilePaths=(Get-ChildItem -Path $WorkflowsPath -Recurse | Select-String "modules.*$folderName" -List | Select Path).Path
+        $workflowsfilePaths = (Get-ChildItem -Path $WorkflowsPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
 
         # Iterate on all files
         foreach ($workflowsfilePath in $workflowsfilePaths) {
@@ -115,7 +119,7 @@ function Set-CARMLFoldersForPBR {
         # Replace local module references in ado pipelines
 
         # Get file paths
-        $pipelinesfilePaths=(Get-ChildItem -Path $PipelinesPath -Recurse | Select-String "modules.*$folderName" -List | Select Path).Path
+        $pipelinesfilePaths = (Get-ChildItem -Path $PipelinesPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
 
         # Iterate on all files
         foreach ($pipelinesfilePath in $pipelinesfilePaths) {
