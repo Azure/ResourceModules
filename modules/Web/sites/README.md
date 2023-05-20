@@ -453,7 +453,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Web/sites/main.bicep' = {
+module sites './web/sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsfacom'
   params: {
     // Required parameters
@@ -760,7 +760,7 @@ module sites './Web/sites/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Web/sites/main.bicep' = {
+module sites './web/sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsfamin'
   params: {
     // Required parameters
@@ -821,7 +821,7 @@ module sites './Web/sites/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Web/sites/main.bicep' = {
+module sites './web/sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wswa'
   params: {
     // Required parameters
@@ -1094,7 +1094,7 @@ module sites './Web/sites/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sites './Web/sites/main.bicep' = {
+module sites './web/sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wswamin'
   params: {
     // Required parameters

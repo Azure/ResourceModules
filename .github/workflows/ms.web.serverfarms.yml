@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.web.serverfarms.yml'
-      - 'modules/Web/serverfarms/**'
+      - 'modules/web/serverfarms/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Web/serverfarms'
+  modulePath: 'modules/web/serverfarms'
   workflowPath: '.github/workflows/ms.web.serverfarms.yml'
 
 concurrency:

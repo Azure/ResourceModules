@@ -359,7 +359,7 @@ module app_slots 'slots/main.bicep' = [for (slot, index) in slots: {
   }
 }]
 
-module app_basicPublishingCredentialsPolicies 'basicPublishingCredentialsPolicies/main.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
+module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-policies/main.bicep' = [for (basicPublishingCredentialsPolicy, index) in basicPublishingCredentialsPolicies: {
   name: '${uniqueString(deployment().name, location)}-Site-Publis-Cred-${index}'
   params: {
     webAppName: app.name
