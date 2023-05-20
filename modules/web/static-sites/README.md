@@ -39,7 +39,7 @@ This module deploys a Static Web App.
 | `appSettings` | object | `{object}` |  | Static site app settings. |
 | `branch` | string | `''` |  | The branch name of the GitHub repository. |
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
-| `customDomains` | _[customDomains](customDomains/README.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
+| `customDomains` | _[customDomains](custom-domains/README.md)_ array | `[]` |  | The custom domains associated with this static site. The deployment will fail as long as the validation records are not present. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
 | `functionAppSettings` | object | `{object}` |  | Function app settings. |
