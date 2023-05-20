@@ -61,7 +61,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module locks './Authorization/locks/main.bicep' = {
+module locks './authorization/locks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-alcom'
   params: {
     // Required parameters

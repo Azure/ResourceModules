@@ -49,7 +49,7 @@ module lock_sub 'subscription/main.bicep' = if (!empty(subscriptionId) && empty(
   }
 }
 
-module lock_rg 'resourceGroup/main.bicep' = if (!empty(subscriptionId) && !empty(resourceGroupName)) {
+module lock_rg 'resource-group/main.bicep' = if (!empty(subscriptionId) && !empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {

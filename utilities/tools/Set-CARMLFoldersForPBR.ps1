@@ -77,6 +77,8 @@ function Set-CARMLFoldersForPBR {
         # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
         # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
         $newName = ($folderName -creplace '(?<!^)([A-Z])', '-$1').ToLower()
+        $newName = $newName.substring(0,1).tolower() + $newName.substring(1)
+
         Write-Verbose ("$folderName $newName") -Verbose
 
         # Replace the name if the new name is not the same as the old

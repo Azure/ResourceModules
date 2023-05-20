@@ -47,7 +47,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   properties: {}
 }
 
-module resourceGroup_lock '../../Authorization/locks/resourceGroup/main.bicep' = if (!empty(lock)) {
+module resourceGroup_lock '../../authorization/locks/resource-group/main.bicep' = if (!empty(lock)) {
   name: '${uniqueString(deployment().name, location)}-${lock}-Lock'
   params: {
     level: any(lock)
