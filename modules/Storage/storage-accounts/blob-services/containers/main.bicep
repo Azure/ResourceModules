@@ -81,7 +81,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   }
 }
 
-module immutabilityPolicy 'immutabilityPolicies/main.bicep' = if (!empty(immutabilityPolicyProperties)) {
+module immutabilityPolicy 'immutability-policies/main.bicep' = if (!empty(immutabilityPolicyProperties)) {
   name: immutabilityPolicyName
   params: {
     storageAccountName: storageAccount.name
