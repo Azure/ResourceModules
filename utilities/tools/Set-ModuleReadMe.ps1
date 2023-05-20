@@ -934,9 +934,13 @@ function Set-DeploymentExamplesSection {
         ''
     )
 
-    # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
-    $resourceType = $fullModuleIdentifier.Split('/')[1]
-    $resourceTypeUpper = $resourceType.Substring(0, 1).ToUpper() + $resourceType.Substring(1)
+    # Get moduleName as $fullModuleIdentifier leaf
+    $moduleName = $fullModuleIdentifier.Split('/')[1]
+    # Convert moduleName from kebab-case to camelCase
+    $First, $Rest = $moduleName -Split '-',2
+    $moduleNameCamelCase = $First.Tolower() + (Get-Culture).TextInfo.ToTitleCase($Rest) -Replace '-'
+    # Convert moduleName from kebab-case to PascalCase
+    $moduleNamePascalCase = (Get-Culture).TextInfo.ToTitleCase($moduleName) -Replace '-'
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
 
@@ -993,7 +997,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$fullModuleIdentifier/main.bicep' = {"
+            $rawBicepExample[0] = "module $moduleNameCamelCase './$fullModuleIdentifier/main.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1247,8 +1251,8 @@ function Set-DeploymentExamplesSection {
                     ''
                     '```bicep',
                     $extendedKeyVaultReferences,
-                    "module $resourceType 'ts/modules:$(($FullModuleIdentifier -replace '\\|\/', '.').ToLower()):1.0.0 = {"
-                    "  name: '`${uniqueString(deployment().name)}-$resourceTypeUpper'"
+                    "module $moduleNameCamelCase 'ts/modules:$(($FullModuleIdentifier -replace '\\|\/', '.').ToLower()):1.0.0 = {"
+                    "  name: '`${uniqueString(deployment().name)}-$moduleNamePascalCase'"
                     '  params: {'
                     $bicepExample.TrimEnd(),
                     '  }'
