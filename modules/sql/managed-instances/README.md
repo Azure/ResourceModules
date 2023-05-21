@@ -73,7 +73,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://learn.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsZonePartner` | string | `''` |  | The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/README.md)_ object | `{object}` |  | The encryption protection configuration. |
+| `encryptionProtectorObj` | _[encryptionProtector](encryption-protector/README.md)_ object | `{object}` |  | The encryption protection configuration. |
 | `hardwareFamily` | string | `'Gen5'` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolResourceId` | string | `''` |  | The resource ID of the instance pool this managed server belongs to. |
 | `keys` | _[keys](keys/README.md)_ array | `[]` |  | The keys to configure. |
@@ -87,7 +87,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://learn.
 | `requestedBackupStorageRedundancy` | string | `'Geo'` | `[Geo, GeoZone, Local, Zone]` | The storage account type used to store backups for this database. |
 | `restorePointInTime` | string | `''` |  | Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `securityAlertPoliciesObj` | _[securityAlertPolicies](securityAlertPolicies/README.md)_ object | `{object}` |  | The security alert policy configuration. |
+| `securityAlertPoliciesObj` | _[securityAlertPolicies](security-alert-policies/README.md)_ object | `{object}` |  | The security alert policy configuration. |
 | `servicePrincipal` | string | `'None'` | `[None, SystemAssigned]` | Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal. |
 | `skuName` | string | `'GP_Gen5'` |  | The name of the SKU, typically, a letter + Number code, e.g. P3. |
 | `skuTier` | string | `'GeneralPurpose'` |  | The tier or edition of the particular SKU, e.g. Basic, Premium. |
@@ -98,7 +98,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://learn.
 | `timezoneId` | string | `'UTC'` |  | ID of the timezone. Allowed values are timezones supported by Windows. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `vCores` | int | `4` |  | The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80. |
-| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/README.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
+| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerability-assessments/README.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 | `zoneRedundant` | bool | `False` |  | Whether or not multi-az is enabled. |
 
 
