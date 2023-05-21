@@ -57,15 +57,15 @@ This module deploys a DocumentDB database account and its child resources.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enableFreeTier` | bool | `False` |  | Flag to indicate whether Free Tier is enabled. |
-| `gremlinDatabases` | _[gremlinDatabases](gremlinDatabases/README.md)_ array | `[]` |  | Gremlin Databases configurations. |
+| `gremlinDatabases` | _[gremlinDatabases](gremlin-databases/README.md)_ array | `[]` |  | Gremlin Databases configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxIntervalInSeconds` | int | `300` |  | Max lag time (minutes). Required for BoundedStaleness. Valid ranges, Single Region: 5 to 84600. Multi Region: 300 to 86400. |
 | `maxStalenessPrefix` | int | `100000` |  | Max stale requests. Required for BoundedStaleness. Valid ranges, Single Region: 10 to 1000000. Multi Region: 100000 to 1000000. |
-| `mongodbDatabases` | _[mongodbDatabases](mongodbDatabases/README.md)_ array | `[]` |  | MongoDB Databases configurations. |
+| `mongodbDatabases` | _[mongodbDatabases](mongodb-databases/README.md)_ array | `[]` |  | MongoDB Databases configurations. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serverVersion` | string | `'4.2'` | `[3.2, 3.6, 4.0, 4.2]` | Specifies the MongoDB server version to use. |
-| `sqlDatabases` | _[sqlDatabases](sqlDatabases/README.md)_ array | `[]` |  | SQL Databases configurations. |
+| `sqlDatabases` | _[sqlDatabases](sql-databases/README.md)_ array | `[]` |  | SQL Databases configurations. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Database Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
