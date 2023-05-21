@@ -28,8 +28,8 @@ trigger:
   paths:
     include:
       - '/modules/container-service/managed-clusters/*'
-      - '/modules/KubernetesConfiguration/extensions/*'
-      - '/modules/KubernetesConfiguration/fluxConfigurations/*'
+      - '/modules/kubernetes-configuration/extensions/*'
+      - '/modules/kubernetes-configuration/flux-configurations/*'
       - '/.azuredevops/modulePipelines/ms.containerservice.managedclusters.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

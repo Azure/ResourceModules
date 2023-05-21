@@ -28,8 +28,8 @@ on:
       - main
     paths:
       - 'modules/container-service/managed-clusters/**'
-      - 'modules/KubernetesConfiguration/extensions/**'
-      - 'modules/KubernetesConfiguration/fluxConfigurations/**'
+      - 'modules/kubernetes-configuration/extensions/**'
+      - 'modules/kubernetes-configuration/flux-configurations/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerservice.managedclusters.yml'
