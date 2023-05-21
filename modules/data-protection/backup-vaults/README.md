@@ -350,7 +350,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './DataProtection/backupVaults/main.bicep' = {
+module backupVaults './data-protection/backup-vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvcom'
   params: {
     // Required parameters
@@ -559,7 +559,7 @@ module backupVaults './DataProtection/backupVaults/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module backupVaults './DataProtection/backupVaults/main.bicep' = {
+module backupVaults './data-protection/backup-vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvmin'
   params: {
     // Required parameters

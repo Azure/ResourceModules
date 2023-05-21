@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.dataprotection.backupvaults.yml'
-      - 'modules/DataProtection/backupVaults/**'
+      - 'modules/data-protection/backup-vaults/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/DataProtection/backupVaults'
+  modulePath: 'modules/data-protection/backup-vaults'
   workflowPath: '.github/workflows/ms.dataprotection.backupvaults.yml'
 
 concurrency:

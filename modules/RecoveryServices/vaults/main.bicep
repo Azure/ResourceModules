@@ -236,7 +236,7 @@ module rsv_protectionContainers 'protectionContainers/main.bicep' = [for (protec
   }
 }]
 
-module rsv_backupPolicies 'backupPolicies/main.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module rsv_backupPolicies 'backup-policies/main.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupPolicy-${index}'
   params: {
     recoveryVaultName: rsv.name
