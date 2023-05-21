@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.powerbidedicated.capacities.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/PowerBIDedicated/capacities/*'
+      - '/modules/power-bi-dedicated/capacities/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/PowerBIDedicated/capacities'
+    value: '/modules/power-bi-dedicated/capacities'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
