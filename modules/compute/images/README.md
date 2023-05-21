@@ -176,7 +176,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module images './Compute/images/main.bicep' = {
+module images './compute/images/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cicom'
   params: {
     // Required parameters

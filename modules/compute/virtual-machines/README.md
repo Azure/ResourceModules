@@ -1044,7 +1044,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlincom'
   params: {
     // Required parameters
@@ -1541,7 +1541,7 @@ module virtualMachines './Compute/virtual-machines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinatmg'
   params: {
     // Required parameters
@@ -1708,7 +1708,7 @@ module virtualMachines './Compute/virtual-machines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmlinmin'
   params: {
     // Required parameters
@@ -1845,7 +1845,7 @@ module virtualMachines './Compute/virtual-machines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincom'
   params: {
     // Required parameters
@@ -2378,7 +2378,7 @@ module virtualMachines './Compute/virtual-machines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinatmg'
   params: {
     // Required parameters
@@ -2509,7 +2509,7 @@ module virtualMachines './Compute/virtual-machines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwinmin'
   params: {
     // Required parameters
@@ -2626,7 +2626,7 @@ module virtualMachines './Compute/virtual-machines/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualMachines './Compute/virtual-machines/main.bicep' = {
+module virtualMachines './compute/virtual-machines/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cvmwincmk'
   params: {
     // Required parameters

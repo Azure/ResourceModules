@@ -203,7 +203,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `KeyVault/vaults/accessPolicies` | Local reference |
+| `key-vault/vaults/access-policies` | Local reference |
 
 ## Deployment examples
 
@@ -219,7 +219,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Compute/disk-encryption-sets/main.bicep' = {
+module diskEncryptionSets './compute/disk-encryption-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdesap'
   params: {
     // Required parameters
@@ -314,7 +314,7 @@ module diskEncryptionSets './Compute/disk-encryption-sets/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Compute/disk-encryption-sets/main.bicep' = {
+module diskEncryptionSets './compute/disk-encryption-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdescom'
   params: {
     // Required parameters
