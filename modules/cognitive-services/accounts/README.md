@@ -454,7 +454,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './CognitiveServices/accounts/main.bicep' = {
+module accounts './cognitive-services/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csacom'
   params: {
     // Required parameters
@@ -639,7 +639,7 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './CognitiveServices/accounts/main.bicep' = {
+module accounts './cognitive-services/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csaencr'
   params: {
     // Required parameters
@@ -720,7 +720,7 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './CognitiveServices/accounts/main.bicep' = {
+module accounts './cognitive-services/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csamin'
   params: {
     // Required parameters
@@ -769,7 +769,7 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './CognitiveServices/accounts/main.bicep' = {
+module accounts './cognitive-services/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csaspeech'
   params: {
     // Required parameters
