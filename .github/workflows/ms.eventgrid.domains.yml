@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/EventGrid/domains/**'
+      - 'modules/event-grid/domains/**'
       - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/EventGrid/domains'
+  modulePath: 'modules/event-grid/domains'
   workflowPath: '.github/workflows/ms.eventgrid.domains.yml'
 
 concurrency:
