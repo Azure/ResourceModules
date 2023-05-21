@@ -295,7 +295,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstances './Sql/managedInstances/main.bicep' = {
+module managedInstances './sql/managed-instances/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmicom'
   params: {
     administratorLogin: 'adminUserName'
@@ -546,7 +546,7 @@ module managedInstances './Sql/managedInstances/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedInstances './Sql/managedInstances/main.bicep' = {
+module managedInstances './sql/managed-instances/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlmimin'
   params: {
     // Required parameters

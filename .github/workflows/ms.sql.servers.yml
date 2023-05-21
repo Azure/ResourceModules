@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Sql/servers/**'
+      - 'modules/sql/servers/**'
       - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Sql/servers'
+  modulePath: 'modules/sql/servers'
   workflowPath: '.github/workflows/ms.sql.servers.yml'
 
 concurrency:
