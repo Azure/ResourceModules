@@ -27,7 +27,7 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/EventHub/namespaces/*'
+      - '/modules/event-hub/namespaces/*'
       - '/modules/Network/privateEndpoints/*'
       - '/.azuredevops/modulePipelines/ms.eventhub.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/EventHub/namespaces'
+    value: '/modules/event-hub/namespaces'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

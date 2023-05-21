@@ -120,7 +120,7 @@ resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' = {
   }
 }
 
-module queue_authorizationRules 'authorizationRules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
+module queue_authorizationRules 'authorization-rules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${deployment().name}-AuthRule-${index}'
   params: {
     namespaceName: namespaceName

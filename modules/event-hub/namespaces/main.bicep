@@ -190,7 +190,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   }
 }
 
-module eventHubNamespace_authorizationRules 'authorizationRules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
+module eventHubNamespace_authorizationRules 'authorization-rules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-AuthRule-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -200,7 +200,7 @@ module eventHubNamespace_authorizationRules 'authorizationRules/main.bicep' = [f
   }
 }]
 
-module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/main.bicep' = if (!empty(disasterRecoveryConfig)) {
+module eventHubNamespace_disasterRecoveryConfig 'disaster-recovery-configs/main.bicep' = if (!empty(disasterRecoveryConfig)) {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-DisRecConfig'
   params: {
     namespaceName: eventHubNamespace.name
@@ -210,7 +210,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/main.bi
   }
 }
 
-module eventHubNamespace_eventHubs 'eventHubs/main.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'event-hubs/main.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -244,7 +244,7 @@ module eventHubNamespace_eventHubs 'eventHubs/main.bicep' = [for (eventHub, inde
   }
 }]
 
-module eventHubNamespace_networkRuleSet 'networkRuleSets/main.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
+module eventHubNamespace_networkRuleSet 'network-rule-sets/main.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-NetworkRuleSet'
   params: {
     namespaceName: eventHubNamespace.name

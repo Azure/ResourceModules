@@ -209,7 +209,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   }
 }
 
-module serviceBusNamespace_authorizationRules 'authorizationRules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
+module serviceBusNamespace_authorizationRules 'authorization-rules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'
   params: {
     namespaceName: serviceBusNamespace.name
@@ -219,7 +219,7 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/main.bicep' = 
   }
 }]
 
-module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/main.bicep' = if (!empty(disasterRecoveryConfigs)) {
+module serviceBusNamespace_disasterRecoveryConfig 'disaster-recovery-configs/main.bicep' = if (!empty(disasterRecoveryConfigs)) {
   name: '${uniqueString(deployment().name, location)}-DisasterRecoveryConfig'
   params: {
     namespaceName: serviceBusNamespace.name
@@ -240,7 +240,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/main
   }
 }
 
-module serviceBusNamespace_networkRuleSet 'networkRuleSets/main.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
+module serviceBusNamespace_networkRuleSet 'network-rule-sets/main.bicep' = if (!empty(networkRuleSets) || !empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-NetworkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name

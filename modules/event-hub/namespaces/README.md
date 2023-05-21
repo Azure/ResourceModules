@@ -331,7 +331,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './EventHub/namespaces/main.bicep' = {
+module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehncom'
   params: {
     // Required parameters
@@ -650,7 +650,7 @@ module namespaces './EventHub/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './EventHub/namespaces/main.bicep' = {
+module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnmin'
   params: {
     // Required parameters
@@ -695,7 +695,7 @@ module namespaces './EventHub/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './EventHub/namespaces/main.bicep' = {
+module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnpe'
   params: {
     // Required parameters
