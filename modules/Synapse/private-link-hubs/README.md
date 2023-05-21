@@ -271,7 +271,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkHubs './Synapse/privateLinkHubs/main.bicep' = {
+module privateLinkHubs './synapse/private-link-hubs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-splhcom'
   params: {
     // Required parameters
@@ -394,7 +394,7 @@ module privateLinkHubs './Synapse/privateLinkHubs/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module privateLinkHubs './Synapse/privateLinkHubs/main.bicep' = {
+module privateLinkHubs './synapse/private-link-hubs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-splhmin'
   params: {
     // Required parameters
