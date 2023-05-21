@@ -27,7 +27,7 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/ContainerService/managedClusters/*'
+      - '/modules/container-service/managed-clusters/*'
       - '/modules/KubernetesConfiguration/extensions/*'
       - '/modules/KubernetesConfiguration/fluxConfigurations/*'
       - '/.azuredevops/modulePipelines/ms.containerservice.managedclusters.yml'
@@ -41,7 +41,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/ContainerService/managedClusters'
+    value: '/modules/container-service/managed-clusters'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

@@ -524,7 +524,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
   }
 }
 
-module managedCluster_agentPools 'agentPools/main.bicep' = [for (agentPool, index) in agentPools: {
+module managedCluster_agentPools 'agent-pools/main.bicep' = [for (agentPool, index) in agentPools: {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-AgentPool-${index}'
   params: {
     managedClusterName: managedCluster.name

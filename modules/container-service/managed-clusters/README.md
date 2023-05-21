@@ -391,7 +391,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './ContainerService/managedClusters/main.bicep' = {
+module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
@@ -772,7 +772,7 @@ module managedClusters './ContainerService/managedClusters/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './ContainerService/managedClusters/main.bicep' = {
+module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
@@ -1023,7 +1023,7 @@ module managedClusters './ContainerService/managedClusters/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module managedClusters './ContainerService/managedClusters/main.bicep' = {
+module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmmin'
   params: {
     // Required parameters
