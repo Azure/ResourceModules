@@ -371,7 +371,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Network/virtualNetworks/main.bicep' = {
+module virtualNetworks './Network/virtual-networks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvncom'
   params: {
     // Required parameters
@@ -588,7 +588,7 @@ module virtualNetworks './Network/virtualNetworks/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Network/virtualNetworks/main.bicep' = {
+module virtualNetworks './Network/virtual-networks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvnmin'
   params: {
     // Required parameters
@@ -641,7 +641,7 @@ module virtualNetworks './Network/virtualNetworks/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module virtualNetworks './Network/virtualNetworks/main.bicep' = {
+module virtualNetworks './Network/virtual-networks/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvnpeer'
   params: {
     // Required parameters

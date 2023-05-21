@@ -65,7 +65,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `firewallRules` | _[firewallRules](firewallRules/README.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
+| `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
 | `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
 | `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
