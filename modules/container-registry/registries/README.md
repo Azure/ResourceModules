@@ -382,7 +382,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './ContainerRegistry/registries/main.bicep' = {
+module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrcom'
   params: {
     // Required parameters
@@ -599,7 +599,7 @@ module registries './ContainerRegistry/registries/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './ContainerRegistry/registries/main.bicep' = {
+module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrencr'
   params: {
     // Required parameters
@@ -682,7 +682,7 @@ module registries './ContainerRegistry/registries/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './ContainerRegistry/registries/main.bicep' = {
+module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrmin'
   params: {
     // Required parameters
@@ -727,7 +727,7 @@ module registries './ContainerRegistry/registries/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module registries './ContainerRegistry/registries/main.bicep' = {
+module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrpe'
   params: {
     // Required parameters
