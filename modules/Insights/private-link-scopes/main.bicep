@@ -49,7 +49,7 @@ resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2019-10-17-previ
   properties: {}
 }
 
-module privateLinkScope_scopedResource 'scopedResources/main.bicep' = [for (scopedResource, index) in scopedResources: {
+module privateLinkScope_scopedResource 'scoped-resources/main.bicep' = [for (scopedResource, index) in scopedResources: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-ScopedRes-${index}'
   params: {
     name: scopedResource.name
