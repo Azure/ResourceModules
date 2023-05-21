@@ -65,7 +65,7 @@ module testDeployment '../../main.bicep' = {
     location: location
     publicNetworkAccess: 'Enabled'
     lock: ''
-    fhirServices: [
+    fhirservices: [
       {
         name: '<<namePrefix>>-az-fhir-x-001'
         kind: 'fhir-R4'
@@ -102,7 +102,7 @@ module testDeployment '../../main.bicep' = {
         ]
       }
     ]
-    dicomServices: [
+    dicomservices: [
       {
         name: '<<namePrefix>>-az-dicom-x-001'
         workspaceName: '<<namePrefix>>${serviceShort}001'

@@ -35,10 +35,10 @@ This module deploys Healthcare Data Services workspace.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `dicomServices` | _[dicomservices](dicomservices/README.md)_ array | `[]` |  | Deploy DICOM services. |
+| `dicomservices` | _[dicomservices](dicomservices/README.md)_ array | `[]` |  | Deploy DICOM services. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `fhirServices` | _[fhirservices](fhirservices/README.md)_ array | `[]` |  | Deploy FHIR services. |
-| `iotConnectors` | _[iotconnectors](iotconnectors/README.md)_ array | `[]` |  | Deploy IOT connectors. |
+| `fhirservices` | _[fhirservices](fhirservices/README.md)_ array | `[]` |  | Deploy FHIR services. |
+| `iotconnectors` | _[iotconnectors](iotconnectors/README.md)_ array | `[]` |  | Deploy IOT connectors. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
@@ -46,7 +46,7 @@ This module deploys Healthcare Data Services workspace.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
-### Parameter Usage: `fhirServices`
+### Parameter Usage: `fhirservices`
 
 Create a FHIR service with the workspace.
 
@@ -145,7 +145,7 @@ fhirServices: [
 </details>
 <p>
 
-### Parameter Usage: `dicomServices`
+### Parameter Usage: `dicomservices`
 
 Create a DICOM service with the workspace.
 
@@ -216,7 +216,7 @@ dicomServices: [
 </details>
 <p>
 
-### Parameter Usage: `iotConnectors`
+### Parameter Usage: `iotconnectors`
 
 Create an IOT Connector (MedTech) service with the workspace.
 
@@ -432,7 +432,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
     // Required parameters
     name: '<<namePrefix>>hawcom001'
     // Non-required parameters
-    dicomServices: [
+    dicomservices: [
       {
         corsAllowCredentials: false
         corsHeaders: [
@@ -462,7 +462,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    fhirServices: [
+    fhirservices: [
       {
         corsAllowCredentials: false
         corsHeaders: [
@@ -533,7 +533,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
       "value": "<<namePrefix>>hawcom001"
     },
     // Non-required parameters
-    "dicomServices": {
+    "dicomservices": {
       "value": [
         {
           "corsAllowCredentials": false,
@@ -567,7 +567,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "fhirServices": {
+    "fhirservices": {
       "value": [
         {
           "corsAllowCredentials": false,

@@ -30,13 +30,13 @@ param tags object = {}
 param enableDefaultTelemetry bool = true
 
 @description('Optional. Deploy DICOM services.')
-param dicomServices array = []
+param dicomservices array = []
 
 @description('Optional. Deploy FHIR services.')
-param fhirServices array = []
+param fhirservices array = []
 
 @description('Optional. Deploy IOT connectors.')
-param iotConnectors array = []
+param iotconnectors array = []
 
 var enableReferencedModulesTelemetry = false
 
@@ -86,7 +86,7 @@ module workspace_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (r
   }
 }]
 
-module workspace_fhir 'fhirservices/main.bicep' = [for (fhir, index) in fhirServices: {
+module workspace_fhirservices 'fhirservices/main.bicep' = [for (fhir, index) in fhirservices: {
   name: '${uniqueString(deployment().name, location)}-Health-FHIR-${index}'
   params: {
     name: fhir.name
@@ -127,7 +127,7 @@ module workspace_fhir 'fhirservices/main.bicep' = [for (fhir, index) in fhirServ
   }
 }]
 
-module workspace_dicom 'dicomservices/main.bicep' = [for (dicom, index) in dicomServices: {
+module workspace_dicomservices 'dicomservices/main.bicep' = [for (dicom, index) in dicomservices: {
   name: '${uniqueString(deployment().name, location)}-Health-DICOM-${index}'
   params: {
     name: dicom.name
@@ -153,7 +153,7 @@ module workspace_dicom 'dicomservices/main.bicep' = [for (dicom, index) in dicom
   }
 }]
 
-module workspace_iotConnector 'iotconnectors/main.bicep' = [for (iotConnector, index) in iotConnectors: {
+module workspace_iotconnector 'iotconnectors/main.bicep' = [for (iotConnector, index) in iotconnectors: {
   name: '${uniqueString(deployment().name, location)}-Health-IOMT-${index}'
   params: {
     name: iotConnector.name
