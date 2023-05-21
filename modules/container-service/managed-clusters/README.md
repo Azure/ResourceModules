@@ -374,8 +374,8 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `KubernetesConfiguration/extensions` | Local reference |
-| `KubernetesConfiguration/fluxConfigurations` | Local reference |
+| `kubernetes-configuration/extensions` | Local reference |
+| `kubernetes-configuration/flux-configurations` | Local reference |
 
 ## Deployment examples
 
