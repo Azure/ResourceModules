@@ -47,8 +47,24 @@ function Set-CARMLFoldersForPBR {
     )
 
     $specialConversionHash = @{
-        DBforPostgreSQL = 'db-for-postgre-sql';
-        SQL             = 'sql'
+        AAAA              = 'aaaa'
+        AAD               = 'aad'
+        CAA               = 'caa'
+        CDN               = 'cdn'
+        CNAME             = 'cname'
+        DBforMySQL        = 'db-for-my-sql'
+        DBforPostgreSQL   = 'db-for-postgre-sql'
+        DocumentDB        = 'document-db'
+        MX                = 'mx'
+        NS                = 'ns'
+        PowerBIDedicated  = 'power-bi-dedicated'
+        PTR               = 'ptr'
+        publicIPAddresses = 'public-ip-addresses'
+        publicIPPrefixes  = 'public-ip-prefixes'
+        SignalRService    = 'signal-r-service'
+        SOA               = 'soa'
+        SRV               = 'srv'
+        TXT               = 'txt'
     }
 
     $relevantFolderPaths = @()
@@ -79,11 +95,14 @@ function Set-CARMLFoldersForPBR {
         # Convert each folder name to its kebab-case
         $folderName = Split-Path $folderPath -Leaf
 
-        # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
-        # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
-        $newName = ($folderName -creplace '(?<!^)([A-Z])', '-$1').ToLower()
-        #$newName = $newName.substring(0, 1).tolower() + $newName.substring(1)
-
+        if ($specialConversionHash.ContainsKey($folderName)) {
+            $newName = $specialConversionHash[$folderName]
+        } else {
+            # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
+            # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
+            $newName = ($folderName -creplace '(?<!^)([A-Z])', '-$1').ToLower()
+            #$newName = $newName.substring(0, 1).tolower() + $newName.substring(1)
+        }
         Write-Verbose ("$folderName $newName") -Verbose
 
         # Replace the name if the new name is not the same as the old
