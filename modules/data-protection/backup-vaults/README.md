@@ -31,7 +31,7 @@ This module deploys DataProtection BackupVaults.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backupPolicies` | _[backupPolicies](backupPolicies/README.md)_ array | `[]` |  | List of all backup policies. |
+| `backupPolicies` | _[backupPolicies](backup-policies/README.md)_ array | `[]` |  | List of all backup policies. |
 | `dataStoreType` | string | `'VaultStore'` | `[ArchiveStore, OperationalStore, VaultStore]` | The datastore type to use. ArchiveStore does not support ZoneRedundancy. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
