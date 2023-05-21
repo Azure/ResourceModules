@@ -253,7 +253,7 @@ module automationAccount_runbooks 'runbooks/main.bicep' = [for (runbook, index) 
   }
 }]
 
-module automationAccount_jobSchedules 'jobSchedules/main.bicep' = [for (jobSchedule, index) in jobSchedules: {
+module automationAccount_jobSchedules 'job-schedules/main.bicep' = [for (jobSchedule, index) in jobSchedules: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
   params: {
     automationAccountName: automationAccount.name
@@ -313,7 +313,7 @@ module automationAccount_solutions '../../OperationsManagement/solutions/main.bi
   ]
 }]
 
-module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurations/main.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
+module automationAccount_softwareUpdateConfigurations 'software-update-configurations/main.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
   params: {
     name: softwareUpdateConfiguration.name

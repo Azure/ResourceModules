@@ -28,7 +28,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Automation/automationAccounts/**'
+      - 'modules/automation/automation-accounts/**'
       - 'modules/OperationalInsights/workspaces/linkedServices/**'
       - 'modules/OperationsManagement/solutions/**'
       - 'modules/Network/privateEndpoints/**'
@@ -40,7 +40,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Automation/automationAccounts'
+  modulePath: 'modules/automation/automation-accounts'
   workflowPath: '.github/workflows/ms.automation.automationaccounts.yml'
 
 concurrency:

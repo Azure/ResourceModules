@@ -27,7 +27,7 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Automation/automationAccounts/*'
+      - '/modules/automation/automation-accounts/*'
       - '/modules/OperationalInsights/workspaces/linkedServices/*'
       - '/modules/OperationsManagement/solutions/*'
       - '/modules/Network/privateEndpoints/*'
@@ -42,7 +42,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Automation/automationAccounts'
+    value: '/modules/automation/automation-accounts'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
