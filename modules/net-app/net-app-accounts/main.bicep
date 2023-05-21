@@ -99,7 +99,7 @@ module netAppAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [fo
   }
 }]
 
-module netAppAccount_capacityPools 'capacityPools/main.bicep' = [for (capacityPool, index) in capacityPools: {
+module netAppAccount_capacityPools 'capacity-pools/main.bicep' = [for (capacityPool, index) in capacityPools: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
   params: {
     netAppAccountName: netAppAccount.name
