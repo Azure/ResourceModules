@@ -1,6 +1,6 @@
-# Availability Sets `[Microsoft.Compute/availabilitySets]`
+# Proximity Placement Groups `[Microsoft.Compute/proximityPlacementGroups]`
 
-This template deploys an availability set
+This template deploys a proximity placement group.
 
 ## Navigation
 
@@ -16,7 +16,7 @@ This template deploys an availability set
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/availabilitySets` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/availabilitySets) |
+| `Microsoft.Compute/proximityPlacementGroups` | [2022-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-08-01/proximityPlacementGroups) |
 
 ## Parameters
 
@@ -24,21 +24,21 @@ This template deploys an availability set
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the availability set that is being created. |
+| `name` | string | The name of the proximity placement group that is being created. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `colocationStatus` | object | `{object}` |  | Describes colocation status of the Proximity Placement Group. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `intent` | object | `{object}` |  | Specifies the user intent of the proximity placement group. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `platformFaultDomainCount` | int | `2` |  | The number of fault domains to use. |
-| `platformUpdateDomainCount` | int | `5` |  | The number of update domains to use. |
-| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks.<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
-| `tags` | object | `{object}` |  | Tags of the availability set resource. |
+| `tags` | object | `{object}` |  | Tags of the proximity placement group resource. |
+| `type` | string | `'Standard'` | `[Standard, Ultra]` | Specifies the type of the proximity placement group. |
+| `zones` | array | `[]` |  | Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the proximity placement group can be created. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -146,9 +146,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the availability set. |
-| `resourceGroupName` | string | The resource group the availability set was deployed into. |
-| `resourceId` | string | The resource ID of the availability set. |
+| `name` | string | The name of the proximity placement group. |
+| `resourceGroupName` | string | The resource group the proximity placement group was deployed into. |
+| `resourceId` | string | The resourceId the proximity placement group. |
 
 ## Cross-referenced modules
 
@@ -168,15 +168,26 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySets './Compute/availabilitySets/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cascom'
+module proximityPlacementGroups './Compute/proximity-placement-groups/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cppgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cascom001'
+    name: '<<namePrefix>>cppgcom001'
     // Non-required parameters
+    colocationStatus: {
+      code: 'ColocationStatus/Aligned'
+      displayStatus: 'Aligned'
+      level: 'Info'
+      message: 'I\'m a default error message'
+    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    intent: {
+      vmSizes: [
+        'Standard_B1ms'
+        'Standard_B4ms'
+      ]
+    }
     lock: 'CanNotDelete'
-    proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
       {
         principalIds: [
@@ -187,9 +198,13 @@ module availabilitySets './Compute/availabilitySets/main.bicep' = {
       }
     ]
     tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
+      TagA: 'Would you kindly...'
+      TagB: 'Tags for sale'
     }
+    type: 'Standard'
+    zones: [
+      '1'
+    ]
   }
 }
 ```
@@ -208,17 +223,30 @@ module availabilitySets './Compute/availabilitySets/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cascom001"
+      "value": "<<namePrefix>>cppgcom001"
     },
     // Non-required parameters
+    "colocationStatus": {
+      "value": {
+        "code": "ColocationStatus/Aligned",
+        "displayStatus": "Aligned",
+        "level": "Info",
+        "message": "I\"m a default error message"
+      }
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "intent": {
+      "value": {
+        "vmSizes": [
+          "Standard_B1ms",
+          "Standard_B4ms"
+        ]
+      }
+    },
     "lock": {
       "value": "CanNotDelete"
-    },
-    "proximityPlacementGroupResourceId": {
-      "value": "<proximityPlacementGroupResourceId>"
     },
     "roleAssignments": {
       "value": [
@@ -233,9 +261,17 @@ module availabilitySets './Compute/availabilitySets/main.bicep' = {
     },
     "tags": {
       "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
+        "TagA": "Would you kindly...",
+        "TagB": "Tags for sale"
       }
+    },
+    "type": {
+      "value": "Standard"
+    },
+    "zones": {
+      "value": [
+        "1"
+      ]
     }
   }
 }
@@ -251,11 +287,11 @@ module availabilitySets './Compute/availabilitySets/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module availabilitySets './Compute/availabilitySets/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-casmin'
+module proximityPlacementGroups './Compute/proximity-placement-groups/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cppgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>casmin001'
+    name: '<<namePrefix>>cppgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -276,7 +312,7 @@ module availabilitySets './Compute/availabilitySets/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>casmin001"
+      "value": "<<namePrefix>>cppgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

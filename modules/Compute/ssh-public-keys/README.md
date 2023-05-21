@@ -1,22 +1,23 @@
-# Proximity Placement Groups `[Microsoft.Compute/proximityPlacementGroups]`
+# Public SSH Keys `[Microsoft.Compute/sshPublicKeys]`
 
-This template deploys a proximity placement group.
+This template deploys a Public SSH Key resource.
+> Note: The resource does not auto-generate the key for you.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/proximityPlacementGroups` | [2022-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-08-01/proximityPlacementGroups) |
+| `Microsoft.Compute/sshPublicKeys` | [2022-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-08-01/sshPublicKeys) |
 
 ## Parameters
 
@@ -24,21 +25,18 @@ This template deploys a proximity placement group.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the proximity placement group that is being created. |
+| `name` | string | The name of the SSH public Key that is being created. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `colocationStatus` | object | `{object}` |  | Describes colocation status of the Proximity Placement Group. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `intent` | object | `{object}` |  | Specifies the user intent of the proximity placement group. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
+| `publicKey` | string | `''` |  | SSH public key used to authenticate to a virtual machine through SSH. If this property is not initially provided when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in ssh-rsa format. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `tags` | object | `{object}` |  | Tags of the proximity placement group resource. |
-| `type` | string | `'Standard'` | `[Standard, Ultra]` | Specifies the type of the proximity placement group. |
-| `zones` | array | `[]` |  | Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated with the proximity placement group can be created. |
+| `tags` | object | `{object}` |  | Tags of the availability set resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -146,9 +144,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the proximity placement group. |
-| `resourceGroupName` | string | The resource group the proximity placement group was deployed into. |
-| `resourceId` | string | The resourceId the proximity placement group. |
+| `name` | string | The name of the Public SSH Key. |
+| `resourceGroupName` | string | The name of the Resource Group the Public SSH Key was created in. |
+| `resourceId` | string | The resource ID of the Public SSH Key. |
 
 ## Cross-referenced modules
 
@@ -168,43 +166,14 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module proximityPlacementGroups './Compute/proximityPlacementGroups/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cppgcom'
+module sshPublicKeys './Compute/ssh-public-keys/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cspkcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cppgcom001'
+    name: '<<namePrefix>>-sshkey-cspkcom001'
     // Non-required parameters
-    colocationStatus: {
-      code: 'ColocationStatus/Aligned'
-      displayStatus: 'Aligned'
-      level: 'Info'
-      message: 'I\'m a default error message'
-    }
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    intent: {
-      vmSizes: [
-        'Standard_B1ms'
-        'Standard_B4ms'
-      ]
-    }
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
-    tags: {
-      TagA: 'Would you kindly...'
-      TagB: 'Tags for sale'
-    }
-    type: 'Standard'
-    zones: [
-      '1'
-    ]
+    publicKey: '<publicKey>'
   }
 }
 ```
@@ -223,55 +192,14 @@ module proximityPlacementGroups './Compute/proximityPlacementGroups/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cppgcom001"
+      "value": "<<namePrefix>>-sshkey-cspkcom001"
     },
     // Non-required parameters
-    "colocationStatus": {
-      "value": {
-        "code": "ColocationStatus/Aligned",
-        "displayStatus": "Aligned",
-        "level": "Info",
-        "message": "I\"m a default error message"
-      }
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "intent": {
-      "value": {
-        "vmSizes": [
-          "Standard_B1ms",
-          "Standard_B4ms"
-        ]
-      }
-    },
-    "lock": {
-      "value": "CanNotDelete"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
-    },
-    "tags": {
-      "value": {
-        "TagA": "Would you kindly...",
-        "TagB": "Tags for sale"
-      }
-    },
-    "type": {
-      "value": "Standard"
-    },
-    "zones": {
-      "value": [
-        "1"
-      ]
+    "publicKey": {
+      "value": "<publicKey>"
     }
   }
 }
@@ -287,11 +215,11 @@ module proximityPlacementGroups './Compute/proximityPlacementGroups/main.bicep' 
 <summary>via Bicep module</summary>
 
 ```bicep
-module proximityPlacementGroups './Compute/proximityPlacementGroups/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cppgmin'
+module sshPublicKeys './Compute/ssh-public-keys/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cspkmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cppgmin001'
+    name: '<<namePrefix>>-cspkmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -312,7 +240,7 @@ module proximityPlacementGroups './Compute/proximityPlacementGroups/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cppgmin001"
+      "value": "<<namePrefix>>-cspkmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

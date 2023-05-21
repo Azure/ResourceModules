@@ -1,23 +1,22 @@
-# Public SSH Keys `[Microsoft.Compute/sshPublicKeys]`
+# Availability Sets `[Microsoft.Compute/availabilitySets]`
 
-This template deploys a Public SSH Key resource.
-> Note: The resource does not auto-generate the key for you.
+This template deploys an availability set
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
+- [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)
 - [Deployment examples](#Deployment-examples)
 
-## Resource Types
+## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Compute/sshPublicKeys` | [2022-08-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-08-01/sshPublicKeys) |
+| `Microsoft.Compute/availabilitySets` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Compute/2022-11-01/availabilitySets) |
 
 ## Parameters
 
@@ -25,7 +24,7 @@ This template deploys a Public SSH Key resource.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the SSH public Key that is being created. |
+| `name` | string | The name of the availability set that is being created. |
 
 **Optional parameters**
 
@@ -34,8 +33,11 @@ This template deploys a Public SSH Key resource.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `publicKey` | string | `''` |  | SSH public key used to authenticate to a virtual machine through SSH. If this property is not initially provided when the resource is created, the publicKey property will be populated when generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to be at least 2048-bit and in ssh-rsa format. |
+| `platformFaultDomainCount` | int | `2` |  | The number of fault domains to use. |
+| `platformUpdateDomainCount` | int | `5` |  | The number of update domains to use. |
+| `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `skuName` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks.<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
 
 
@@ -144,9 +146,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Public SSH Key. |
-| `resourceGroupName` | string | The name of the Resource Group the Public SSH Key was created in. |
-| `resourceId` | string | The resource ID of the Public SSH Key. |
+| `name` | string | The name of the availability set. |
+| `resourceGroupName` | string | The resource group the availability set was deployed into. |
+| `resourceId` | string | The resource ID of the availability set. |
 
 ## Cross-referenced modules
 
@@ -166,14 +168,28 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module sshPublicKeys './Compute/sshPublicKeys/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cspkcom'
+module availabilitySets './Compute/availability-sets/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-sshkey-cspkcom001'
+    name: '<<namePrefix>>cascom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    publicKey: '<publicKey>'
+    lock: 'CanNotDelete'
+    proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
   }
 }
 ```
@@ -192,14 +208,34 @@ module sshPublicKeys './Compute/sshPublicKeys/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-sshkey-cspkcom001"
+      "value": "<<namePrefix>>cascom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "publicKey": {
-      "value": "<publicKey>"
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "proximityPlacementGroupResourceId": {
+      "value": "<proximityPlacementGroupResourceId>"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
+    "tags": {
+      "value": {
+        "Environment": "Non-Prod",
+        "Role": "DeploymentValidation"
+      }
     }
   }
 }
@@ -215,11 +251,11 @@ module sshPublicKeys './Compute/sshPublicKeys/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module sshPublicKeys './Compute/sshPublicKeys/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-cspkmin'
+module availabilitySets './Compute/availability-sets/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>-cspkmin001'
+    name: '<<namePrefix>>casmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -240,7 +276,7 @@ module sshPublicKeys './Compute/sshPublicKeys/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>-cspkmin001"
+      "value": "<<namePrefix>>casmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -219,7 +219,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Compute/diskEncryptionSets/main.bicep' = {
+module diskEncryptionSets './Compute/disk-encryption-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdesap'
   params: {
     // Required parameters
@@ -314,7 +314,7 @@ module diskEncryptionSets './Compute/diskEncryptionSets/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module diskEncryptionSets './Compute/diskEncryptionSets/main.bicep' = {
+module diskEncryptionSets './Compute/disk-encryption-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdescom'
   params: {
     // Required parameters
