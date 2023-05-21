@@ -180,7 +180,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediations './PolicyInsights/remediations/main.bicep' = {
+module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-pirmgcom'
   params: {
     // Required parameters
@@ -261,7 +261,7 @@ module remediations './PolicyInsights/remediations/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediations './PolicyInsights/remediations/main.bicep' = {
+module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirmgmin'
   params: {
     // Required parameters
@@ -310,7 +310,7 @@ module remediations './PolicyInsights/remediations/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediations './PolicyInsights/remediations/main.bicep' = {
+module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirrgcom'
   params: {
     // Required parameters
@@ -391,7 +391,7 @@ module remediations './PolicyInsights/remediations/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediations './PolicyInsights/remediations/main.bicep' = {
+module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirrgmin'
   params: {
     // Required parameters
@@ -440,7 +440,7 @@ module remediations './PolicyInsights/remediations/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediations './PolicyInsights/remediations/main.bicep' = {
+module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirsubcom'
   params: {
     // Required parameters
@@ -521,7 +521,7 @@ module remediations './PolicyInsights/remediations/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module remediations './PolicyInsights/remediations/main.bicep' = {
+module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirsubmin'
   params: {
     // Required parameters
