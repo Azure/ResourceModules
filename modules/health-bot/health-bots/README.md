@@ -165,7 +165,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module healthBots './HealthBot/healthBots/main.bicep' = {
+module healthBots './health-bot/health-bots/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-hbhbcom'
   params: {
     // Required parameters
@@ -244,7 +244,7 @@ module healthBots './HealthBot/healthBots/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module healthBots './HealthBot/healthBots/main.bicep' = {
+module healthBots './health-bot/health-bots/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-hbhbmin'
   params: {
     // Required parameters

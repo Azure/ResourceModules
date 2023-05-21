@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.healthbot.healthbots.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/HealthBot/healthBots/*'
+      - '/modules/health-bot/health-bots/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/HealthBot/healthBots'
+    value: '/modules/health-bot/health-bots'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
