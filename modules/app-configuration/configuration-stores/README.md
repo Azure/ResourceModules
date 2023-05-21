@@ -46,7 +46,7 @@ This module deploys an App Configuration Store.
 | `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `enablePurgeProtection` | bool | `False` |  | Property specifying whether protection against purge is enabled for this configuration store. |
-| `keyValues` | _[keyValues](keyValues/README.md)_ array | `[]` |  | All Key / Values to create. |
+| `keyValues` | _[keyValues](key-values/README.md)_ array | `[]` |  | All Key / Values to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
