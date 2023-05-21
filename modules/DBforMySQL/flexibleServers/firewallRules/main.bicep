@@ -13,7 +13,7 @@ param flexibleServerName string
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -25,11 +25,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview' existing = {
+resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2022-09-30-preview' existing = {
   name: flexibleServerName
 }
 
-resource firewallRule 'Microsoft.DBforMySQL/flexibleServers/firewallRules@2021-12-01-preview' = {
+resource firewallRule 'Microsoft.DBforMySQL/flexibleServers/firewallRules@2022-01-01' = {
   name: name
   parent: flexibleServer
   properties: {

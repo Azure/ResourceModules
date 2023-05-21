@@ -52,6 +52,9 @@ param managedResourceGroupName string = ''
 @description('Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources.')
 param managedVirtualNetwork bool = false
 
+@description('Optional. The Integration Runtimes to create.')
+param integrationRuntimes array = []
+
 @description('Optional. Allowed AAD Tenant IDs For Linking.')
 param allowedAadTenantIdsForLinking array = []
 
@@ -232,6 +235,18 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     workspaceRepositoryConfiguration: workspaceRepositoryConfiguration
   }
 }
+
+// Workspace integration runtimes
+module synapse_integrationRuntimes 'integrationRuntimes/main.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
+  name: '${uniqueString(deployment().name, location)}-Synapse-IntegrationRuntime-${index}'
+  params: {
+    workspaceName: workspace.name
+    name: integrationRuntime.name
+    type: integrationRuntime.type
+    typeProperties: contains(integrationRuntime, 'typeProperties') ? integrationRuntime.typeProperties : {}
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 // Workspace encryption with customer managed keys
 // - Assign Synapse Workspace MSI access to encryption key

@@ -17,7 +17,7 @@ This module deploys different kinds of cognitive services resources
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.CognitiveServices/accounts` | [2022-10-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2022-10-01/accounts) |
+| `Microsoft.CognitiveServices/accounts` | [2022-12-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2022-12-01/accounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
@@ -186,10 +186,10 @@ privateEndpoints:  [
     "value": {
         "keySource": "Microsoft.KeyVault",
         "keyVaultProperties": {
-            "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
+            "identityClientId": "12345678-1234-1234-1234-123456789012", // ID must be updated for new identity
             "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
             "keyName": "keyEncryptionKey",
-            "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // ID must be updated for new keys
+            "keyversion": "1111111111111111111111111111111" // Version must be updated for new keys
         }
     }
 }
@@ -212,10 +212,10 @@ privateEndpoints:  [
 encryption: {
     keySource: 'Microsoft.KeyVault'
     keyVaultProperties: {
-        identityClientId: 'c907a696-36f4-49fe-b926-39e3aabba814' // ID must be updated for new identity
+        identityClientId: '12345678-1234-1234-1234-123456789012' // ID must be updated for new identity
         keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
         keyName: 'keyEncryptionKey'
-        keyversion: '4570a207ec394a0bbbe4fc9adc663a51' // Version must be updated for new keys
+        keyversion: '1111111111111111111111111111111' // Version must be updated for new keys
     }
 }
 // With service-managed key
@@ -651,6 +651,7 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
     cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicNetworkAccess: 'Enabled'
+    restrictOutboundNetworkAccess: false
     sku: 'S0'
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -693,6 +694,9 @@ module accounts './CognitiveServices/accounts/main.bicep' = {
     },
     "publicNetworkAccess": {
       "value": "Enabled"
+    },
+    "restrictOutboundNetworkAccess": {
+      "value": false
     },
     "sku": {
       "value": "S0"

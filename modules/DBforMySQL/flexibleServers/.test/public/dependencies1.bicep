@@ -7,7 +7,7 @@ param managedIdentityName string
 @description('Required. The name of the Deployment Script to create to get the paired region name.')
 param pairedRegionScriptName string
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
     name: managedIdentityName
     location: location
 }

@@ -252,7 +252,7 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
     mode: 'Incremental'
@@ -264,7 +264,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKKeyVaultResourceId)) {
   name: last(split(cMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 
@@ -273,16 +273,16 @@ resource cMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empt
   }
 }
 
-resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
+resource geoBackupCMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(geoBackupCMKKeyVaultResourceId)) {
   name: last(split(geoBackupCMKKeyVaultResourceId, '/'))!
   scope: resourceGroup(split(geoBackupCMKKeyVaultResourceId, '/')[2], split(geoBackupCMKKeyVaultResourceId, '/')[4])
 
-  resource geoBackupCMKKey 'keys@2022-07-01' existing = if (!empty(geoBackupCMKKeyName)) {
+  resource geoBackupCMKKey 'keys@2023-02-01' existing = if (!empty(geoBackupCMKKeyName)) {
     name: geoBackupCMKKeyName
   }
 }
 
-resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2021-12-01-preview' = {
+resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2022-09-30-preview' = {
   name: name
   location: location
   tags: tags

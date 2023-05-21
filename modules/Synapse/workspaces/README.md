@@ -21,6 +21,7 @@ This module deploys a Synapse Workspace.
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Synapse/workspaces` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces) |
+| `Microsoft.Synapse/workspaces/integrationRuntimes` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/integrationRuntimes) |
 | `Microsoft.Synapse/workspaces/keys` | [2021-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys) |
 
 ## Parameters
@@ -61,6 +62,7 @@ This module deploys a Synapse Workspace.
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
+| `integrationRuntimes` | _[integrationRuntimes](integrationRuntimes/README.md)_ array | `[]` |  | The Integration Runtimes to create. |
 | `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -367,6 +369,13 @@ module workspaces './Synapse/workspaces/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     initialWorkspaceAdminObjectID: '<initialWorkspaceAdminObjectID>'
+    integrationRuntimes: [
+      {
+        name: 'shir01'
+        type: 'SelfHosted'
+      }
+    ]
+    managedVirtualNetwork: true
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -453,6 +462,17 @@ module workspaces './Synapse/workspaces/main.bicep' = {
     },
     "initialWorkspaceAdminObjectID": {
       "value": "<initialWorkspaceAdminObjectID>"
+    },
+    "integrationRuntimes": {
+      "value": [
+        {
+          "name": "shir01",
+          "type": "SelfHosted"
+        }
+      ]
+    },
+    "managedVirtualNetwork": {
+      "value": true
     },
     "privateEndpoints": {
       "value": [
