@@ -224,7 +224,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerApps './App/container-apps/main.bicep' = {
+module containerApps './app/container-apps/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mcappcom'
   params: {
     // Required parameters
@@ -371,7 +371,7 @@ module containerApps './App/container-apps/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module containerApps './App/container-apps/main.bicep' = {
+module containerApps './app/container-apps/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mcappmin'
   params: {
     // Required parameters
