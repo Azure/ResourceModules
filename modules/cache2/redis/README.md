@@ -364,7 +364,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './Cache/redis/main.bicep' = {
+module redis './cache/redis/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crcom'
   params: {
     // Required parameters
@@ -509,7 +509,7 @@ module redis './Cache/redis/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module redis './Cache/redis/main.bicep' = {
+module redis './cache/redis/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crmin'
   params: {
     // Required parameters
