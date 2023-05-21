@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.healthcareapis.workspaces.yml'
-      - 'modules/HealthcareApis/workspaces/**'
+      - 'modules/healthcare-apis/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/HealthcareApis/workspaces'
+  modulePath: 'modules/healthcare-apis/workspaces'
   workflowPath: '.github/workflows/ms.healthcareapis.workspaces.yml'
 
 concurrency:
