@@ -215,7 +215,7 @@ resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: logAnalyticsWorkspace
 }
 
-module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/main.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
+module logAnalyticsWorkspace_storageInsightConfigs 'storage-insight-configs/main.bicep' = [for (storageInsightsConfig, index) in storageInsightsConfigs: {
   name: '${uniqueString(deployment().name, location)}-LAW-StorageInsightsConfig-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -226,7 +226,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/main.b
   }
 }]
 
-module logAnalyticsWorkspace_linkedServices 'linkedServices/main.bicep' = [for (linkedService, index) in linkedServices: {
+module logAnalyticsWorkspace_linkedServices 'linked-services/main.bicep' = [for (linkedService, index) in linkedServices: {
   name: '${uniqueString(deployment().name, location)}-LAW-LinkedService-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -237,7 +237,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/main.bicep' = [for (
   }
 }]
 
-module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/main.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
+module logAnalyticsWorkspace_linkedStorageAccounts 'linked-storage-accounts/main.bicep' = [for (linkedStorageAccount, index) in linkedStorageAccounts: {
   name: '${uniqueString(deployment().name, location)}-LAW-LinkedStorageAccount-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -247,7 +247,7 @@ module logAnalyticsWorkspace_linkedStorageAccounts 'linkedStorageAccounts/main.b
   }
 }]
 
-module logAnalyticsWorkspace_savedSearches 'savedSearches/main.bicep' = [for (savedSearch, index) in savedSearches: {
+module logAnalyticsWorkspace_savedSearches 'saved-searches/main.bicep' = [for (savedSearch, index) in savedSearches: {
   name: '${uniqueString(deployment().name, location)}-LAW-SavedSearch-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
@@ -266,7 +266,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/main.bicep' = [for (sa
   ]
 }]
 
-module logAnalyticsWorkspace_dataExports 'dataExports/main.bicep' = [for (dataExport, index) in dataExports: {
+module logAnalyticsWorkspace_dataExports 'data-exports/main.bicep' = [for (dataExport, index) in dataExports: {
   name: '${uniqueString(deployment().name, location)}-LAW-DataExport-${index}'
   params: {
     workspaceName: logAnalyticsWorkspace.name
@@ -278,7 +278,7 @@ module logAnalyticsWorkspace_dataExports 'dataExports/main.bicep' = [for (dataEx
   }
 }]
 
-module logAnalyticsWorkspace_dataSources 'dataSources/main.bicep' = [for (dataSource, index) in dataSources: {
+module logAnalyticsWorkspace_dataSources 'data-sources/main.bicep' = [for (dataSource, index) in dataSources: {
   name: '${uniqueString(deployment().name, location)}-LAW-DataSource-${index}'
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name

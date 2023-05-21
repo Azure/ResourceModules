@@ -281,7 +281,7 @@ module automationAccount_variables 'variables/main.bicep' = [for (variable, inde
   }
 }]
 
-module automationAccount_linkedService '../../OperationalInsights/workspaces/linkedServices/main.bicep' = if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_linkedService '../../operational-insights/workspaces/linked-services/main.bicep' = if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
