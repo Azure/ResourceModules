@@ -61,7 +61,7 @@ This module deploys an Azure Automation Account.
 | `disableLocalAuth` | bool | `True` |  | Disable local authentication profile used within the resource. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
-| `jobSchedules` | _[jobSchedules](jobSchedules/README.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
+| `jobSchedules` | _[jobSchedules](job-schedules/README.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -72,7 +72,7 @@ This module deploys an Azure Automation Account.
 | `runbooks` | _[runbooks](runbooks/README.md)_ array | `[]` |  | List of runbooks to be created in the automation account. |
 | `schedules` | _[schedules](schedules/README.md)_ array | `[]` |  | List of schedules to be created in the automation account. |
 | `skuName` | string | `'Basic'` | `[Basic, Free]` | SKU name of the account. |
-| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/README.md)_ array | `[]` |  | List of softwareUpdateConfigurations to be created in the automation account. |
+| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](software-update-configurations/README.md)_ array | `[]` |  | List of softwareUpdateConfigurations to be created in the automation account. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Automation Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
