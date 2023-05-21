@@ -39,16 +39,16 @@ This template deploys a log analytics workspace.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `linkedStorageAccounts` | _[linkedStorageAccounts](linkedStorageAccounts/README.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
+| `linkedStorageAccounts` | _[linkedStorageAccounts](linked-storage-accounts/README.md)_ array | List of Storage Accounts to be linked. Required if 'forceCmkForQuery' is set to 'true' and 'savedSearches' is not empty. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dailyQuotaGb` | int | `-1` |  | The workspace daily quota for ingestion. |
-| `dataExports` | _[dataExports](dataExports/README.md)_ array | `[]` |  | LAW data export instances to be deployed. |
+| `dataExports` | _[dataExports](data-exports/README.md)_ array | `[]` |  | LAW data export instances to be deployed. |
 | `dataRetention` | int | `365` |  | Number of days data will be retained for. |
-| `dataSources` | _[dataSources](dataSources/README.md)_ array | `[]` |  | LAW data sources to configure. |
+| `dataSources` | _[dataSources](data-sources/README.md)_ array | `[]` |  | LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, Audit]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
@@ -60,13 +60,13 @@ This template deploys a log analytics workspace.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `forceCmkForQuery` | bool | `True` |  | Indicates whether customer managed storage is mandatory for query management. |
 | `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
-| `linkedServices` | _[linkedServices](linkedServices/README.md)_ array | `[]` |  | List of services to be linked. |
+| `linkedServices` | _[linkedServices](linked-services/README.md)_ array | `[]` |  | List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics ingestion. |
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `savedSearches` | _[savedSearches](savedSearches/README.md)_ array | `[]` |  | Kusto Query Language searches to save. |
+| `savedSearches` | _[savedSearches](saved-searches/README.md)_ array | `[]` |  | Kusto Query Language searches to save. |
 | `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
