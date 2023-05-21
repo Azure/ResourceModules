@@ -172,7 +172,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   }
 }
 
-module configurationStore_keyValues 'keyValues/main.bicep' = [for (keyValue, index) in keyValues: {
+module configurationStore_keyValues 'key-values/main.bicep' = [for (keyValue, index) in keyValues: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-KeyValues-${index}'
   params: {
     appConfigurationName: configurationStore.name

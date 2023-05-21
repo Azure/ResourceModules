@@ -324,7 +324,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './AppConfiguration/configurationStores/main.bicep' = {
+module configurationStores './app-configuration/configuration-stores/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-acccom'
   params: {
     // Required parameters
@@ -477,7 +477,7 @@ module configurationStores './AppConfiguration/configurationStores/main.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './AppConfiguration/configurationStores/main.bicep' = {
+module configurationStores './app-configuration/configuration-stores/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-accmin'
   params: {
     // Required parameters
@@ -522,7 +522,7 @@ module configurationStores './AppConfiguration/configurationStores/main.bicep' =
 <summary>via Bicep module</summary>
 
 ```bicep
-module configurationStores './AppConfiguration/configurationStores/main.bicep' = {
+module configurationStores './app-configuration/configuration-stores/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-accpe'
   params: {
     // Required parameters
