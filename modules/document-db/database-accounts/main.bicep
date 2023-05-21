@@ -328,7 +328,7 @@ module databaseAccount_roleAssignments '.bicep/nested_roleAssignments.bicep' = [
   }
 }]
 
-module databaseAccount_sqlDatabases 'sqlDatabases/main.bicep' = [for sqlDatabase in sqlDatabases: {
+module databaseAccount_sqlDatabases 'sql-databases/main.bicep' = [for sqlDatabase in sqlDatabases: {
   name: '${uniqueString(deployment().name, location)}-sqldb-${sqlDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
@@ -340,7 +340,7 @@ module databaseAccount_sqlDatabases 'sqlDatabases/main.bicep' = [for sqlDatabase
   }
 }]
 
-module databaseAccount_mongodbDatabases 'mongodbDatabases/main.bicep' = [for mongodbDatabase in mongodbDatabases: {
+module databaseAccount_mongodbDatabases 'mongodb-databases/main.bicep' = [for mongodbDatabase in mongodbDatabases: {
   name: '${uniqueString(deployment().name, location)}-mongodb-${mongodbDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
@@ -350,7 +350,7 @@ module databaseAccount_mongodbDatabases 'mongodbDatabases/main.bicep' = [for mon
   }
 }]
 
-module databaseAccount_gremlinDatabases 'gremlinDatabases/main.bicep' = [for gremlinDatabase in gremlinDatabases: {
+module databaseAccount_gremlinDatabases 'gremlin-databases/main.bicep' = [for gremlinDatabase in gremlinDatabases: {
   name: '${uniqueString(deployment().name, location)}-gremlin-${gremlinDatabase.name}'
   params: {
     databaseAccountName: databaseAccount.name
