@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.managedidentity.userassignedidentities.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/ManagedIdentity/userAssignedIdentities/*'
+      - '/modules/managed-identity/user-assigned-identities/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/ManagedIdentity/userAssignedIdentities'
+    value: '/modules/managed-identity/user-assigned-identities'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
