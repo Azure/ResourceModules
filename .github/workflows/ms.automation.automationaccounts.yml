@@ -30,7 +30,7 @@ on:
     paths:
       - 'modules/automation/automation-accounts/**'
       - 'modules/operational-insights/workspaces/linked-services/**'
-      - 'modules/OperationsManagement/solutions/**'
+      - 'modules/operations-management/solutions/**'
       - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'

@@ -295,7 +295,7 @@ module automationAccount_linkedService '../../operational-insights/workspaces/li
   scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
 }
 
-module automationAccount_solutions '../../OperationsManagement/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_solutions '../../operations-management/solutions/main.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
     name: gallerySolution.name

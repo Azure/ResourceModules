@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/operational-insights/workspaces/**'
-      - 'modules/OperationsManagement/solutions/**'
+      - 'modules/operations-management/solutions/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
