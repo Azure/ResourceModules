@@ -447,7 +447,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './MachineLearningServices/workspaces/main.bicep' = {
+module workspaces './machine-learning-services/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mlswcom'
   params: {
     // Required parameters
@@ -680,7 +680,7 @@ module workspaces './MachineLearningServices/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './MachineLearningServices/workspaces/main.bicep' = {
+module workspaces './machine-learning-services/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mlswecr'
   params: {
     // Required parameters
@@ -811,7 +811,7 @@ module workspaces './MachineLearningServices/workspaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module workspaces './MachineLearningServices/workspaces/main.bicep' = {
+module workspaces './machine-learning-services/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-mlswmin'
   params: {
     // Required parameters
