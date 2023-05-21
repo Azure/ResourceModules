@@ -287,7 +287,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './ApiManagement/service/main.bicep' = {
+module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apiscom'
   params: {
     // Required parameters
@@ -426,7 +426,7 @@ module service './ApiManagement/service/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './ApiManagement/service/main.bicep' = {
+module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismax'
   params: {
     // Required parameters
@@ -777,7 +777,7 @@ module service './ApiManagement/service/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module service './ApiManagement/service/main.bicep' = {
+module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters

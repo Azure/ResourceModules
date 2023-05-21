@@ -13,7 +13,7 @@
 ##   |==================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                          | Example                                                   |
 ##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
-##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/ApiManagement/service'                           |
+##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/api-management/service'                          |
 ##   | moduleTestFilePath       | true     | ''      | The path to the module Pester tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
 ##   |==================================================================================================================================================|
 ##

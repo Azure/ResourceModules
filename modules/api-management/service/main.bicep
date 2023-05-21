@@ -284,7 +284,7 @@ module service_apis 'apis/main.bicep' = [for (api, index) in apis: {
   ]
 }]
 
-module service_apiVersionSets 'apiVersionSets/main.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
+module service_apiVersionSets 'api-version-sets/main.bicep' = [for (apiVersionSet, index) in apiVersionSets: {
   name: '${uniqueString(deployment().name, location)}-Apim-ApiVersionSet-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -294,7 +294,7 @@ module service_apiVersionSets 'apiVersionSets/main.bicep' = [for (apiVersionSet,
   }
 }]
 
-module service_authorizationServers 'authorizationServers/main.bicep' = [for (authorizationServer, index) in authorizationServerList: {
+module service_authorizationServers 'authorization-servers/main.bicep' = [for (authorizationServer, index) in authorizationServerList: {
   name: '${uniqueString(deployment().name, location)}-Apim-AuthorizationServer-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -358,7 +358,7 @@ module service_caches 'caches/main.bicep' = [for (cache, index) in caches: {
   }
 }]
 
-module service_identityProviders 'identityProviders/main.bicep' = [for (identityProvider, index) in identityProviders: {
+module service_identityProviders 'identity-providers/main.bicep' = [for (identityProvider, index) in identityProviders: {
   name: '${uniqueString(deployment().name, location)}-Apim-IdentityProvider-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -378,7 +378,7 @@ module service_identityProviders 'identityProviders/main.bicep' = [for (identity
   }
 }]
 
-module service_namedValues 'namedValues/main.bicep' = [for (namedValue, index) in namedValues: {
+module service_namedValues 'named-values/main.bicep' = [for (namedValue, index) in namedValues: {
   name: '${uniqueString(deployment().name, location)}-Apim-NamedValue-${index}'
   params: {
     apiManagementServiceName: service.name
@@ -392,7 +392,7 @@ module service_namedValues 'namedValues/main.bicep' = [for (namedValue, index) i
   }
 }]
 
-module service_portalSettings 'portalSettings/main.bicep' = [for (portalSetting, index) in portalSettings: {
+module service_portalSettings 'portal-settings/main.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: service.name
