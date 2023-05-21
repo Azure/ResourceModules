@@ -237,7 +237,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
 }
 
 // Workspace integration runtimes
-module synapse_integrationRuntimes 'integrationRuntimes/main.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
+module synapse_integrationRuntimes 'integration-runtimes/main.bicep' = [for (integrationRuntime, index) in integrationRuntimes: {
   name: '${uniqueString(deployment().name, location)}-Synapse-IntegrationRuntime-${index}'
   params: {
     workspaceName: workspace.name

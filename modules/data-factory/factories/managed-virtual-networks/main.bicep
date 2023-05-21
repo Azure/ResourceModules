@@ -34,7 +34,7 @@ resource managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNe
   properties: {}
 }
 
-module managedVirtualNetwork_managedPrivateEndpoint 'managedPrivateEndpoints/main.bicep' = [for (managedPrivateEndpoint, index) in managedPrivateEndpoints: {
+module managedVirtualNetwork_managedPrivateEndpoint 'managed-private-endpoints/main.bicep' = [for (managedPrivateEndpoint, index) in managedPrivateEndpoints: {
   name: '${deployment().name}-managedPrivateEndpoint-${index}'
   params: {
     dataFactoryName: dataFactoryName

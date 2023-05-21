@@ -27,7 +27,7 @@ on:
     branches:
       - main
     paths:
-      - 'modules/DataFactory/factories/**'
+      - 'modules/data-factory/factories/**'
       - 'modules/Network/privateEndpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/DataFactory/factories'
+  modulePath: 'modules/data-factory/factories'
   workflowPath: '.github/workflows/ms.datafactory.factories.yml'
 
 concurrency:
