@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.images.yml'
-      - 'modules/Compute/images/**'
+      - 'modules/compute/images/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Compute/images'
+  modulePath: 'modules/compute/images'
   workflowPath: '.github/workflows/ms.compute.images.yml'
 
 concurrency:
