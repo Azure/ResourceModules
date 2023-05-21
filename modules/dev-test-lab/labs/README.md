@@ -39,14 +39,14 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `encryptionDiskEncryptionSetId` | string | `''` | The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey". |
-| `notificationChannels` | _[notificationChannels](notificationChannels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
+| `notificationChannels` | _[notificationChannels](notification-channels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `announcement` | object | `{object}` |  | The properties of any lab announcement associated with this lab. |
-| `artifactSources` | _[artifactSources](artifactSources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
+| `artifactSources` | _[artifactSources](artifact-sources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
 | `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
 | `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
 | `costs` | _[costs](costs/README.md)_ object | `{object}` |  | Costs to create for the lab. |
@@ -69,7 +69,7 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `support` | object | `{object}` |  | The properties of any lab support message associated with this lab. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworks` | _[virtualNetworks](virtualNetworks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
+| `virtualNetworks` | _[virtualNetworks](virtual-networks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
 | `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
 
