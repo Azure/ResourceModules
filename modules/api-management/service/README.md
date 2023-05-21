@@ -50,7 +50,7 @@ This module deploys an API management service.
 | :-- | :-- | :-- | :-- | :-- |
 | `additionalLocations` | array | `[]` |  | Additional datacenter locations of the API Management service. |
 | `apis` | _[apis](apis/README.md)_ array | `[]` |  | APIs. |
-| `apiVersionSets` | _[apiVersionSets](apiVersionSets/README.md)_ array | `[]` |  | API Version Sets. |
+| `apiVersionSets` | _[apiVersionSets](api-version-sets/README.md)_ array | `[]` |  | API Version Sets. |
 | `authorizationServers` | secureObject | `{object}` |  | Authorization servers. |
 | `backends` | _[backends](backends/README.md)_ array | `[]` |  | Backends. |
 | `caches` | _[caches](caches/README.md)_ array | `[]` |  | Caches. |
@@ -68,15 +68,15 @@ This module deploys an API management service.
 | `enableClientCertificate` | bool | `False` |  | Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hostnameConfigurations` | array | `[]` |  | Custom hostname configuration of the API Management service. |
-| `identityProviders` | _[identityProviders](identityProviders/README.md)_ array | `[]` |  | Identity providers. |
+| `identityProviders` | _[identityProviders](identity-providers/README.md)_ array | `[]` |  | Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minApiVersion` | string | `''` |  | Limit control plane API calls to API Management service with version equal to or newer than this value. |
-| `namedValues` | _[namedValues](namedValues/README.md)_ array | `[]` |  | Named values. |
+| `namedValues` | _[namedValues](named-values/README.md)_ array | `[]` |  | Named values. |
 | `newGuidValue` | string | `[newGuid()]` |  | Necessary to create a new GUID. |
 | `notificationSenderEmail` | string | `'apimgmt-noreply@mail.windowsazure.com'` |  | The notification sender email address for the service. |
 | `policies` | _[policies](policies/README.md)_ array | `[]` |  | Policies. |
-| `portalSettings` | _[portalSettings](portalSettings/README.md)_ array | `[]` |  | Portal settings. |
+| `portalSettings` | _[portalSettings](portal-settings/README.md)_ array | `[]` |  | Portal settings. |
 | `products` | _[products](products/README.md)_ array | `[]` |  | Products. |
 | `restore` | bool | `False` |  | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
