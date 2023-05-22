@@ -31,7 +31,7 @@ param nicDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettin
 
 var enableReferencedModulesTelemetry = false
 
-module networkInterface_publicIPAddresses '../../../Network/publicIPAddresses/main.bicep' = [for (ipConfiguration, index) in ipConfigurations: if (contains(ipConfiguration, 'pipconfiguration')) {
+module networkInterface_publicIPAddresses '../../../network/public-ip-addresses/main.bicep' = [for (ipConfiguration, index) in ipConfigurations: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${deployment().name}-publicIP-${index}'
   params: {
     name: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
@@ -57,7 +57,7 @@ module networkInterface_publicIPAddresses '../../../Network/publicIPAddresses/ma
   }
 }]
 
-module networkInterface '../../../Network/networkInterfaces/main.bicep' = {
+module networkInterface '../../../network/network-interfaces/main.bicep' = {
   name: '${deployment().name}-NetworkInterface'
   params: {
     name: networkInterfaceName

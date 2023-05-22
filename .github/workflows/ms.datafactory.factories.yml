@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/data-factory/factories/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.datafactory.factories.yml'

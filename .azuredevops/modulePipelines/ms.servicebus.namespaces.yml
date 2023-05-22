@@ -28,7 +28,7 @@ trigger:
   paths:
     include:
       - '/modules/service-bus/namespaces/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.servicebus.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

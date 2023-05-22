@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/batch/batch-accounts/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.batch.batchaccounts.yml'

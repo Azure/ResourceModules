@@ -31,7 +31,7 @@ on:
       - 'modules/automation/automation-accounts/**'
       - 'modules/operational-insights/workspaces/linked-services/**'
       - 'modules/operations-management/solutions/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.automation.automationaccounts.yml'

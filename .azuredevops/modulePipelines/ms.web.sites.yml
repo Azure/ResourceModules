@@ -28,7 +28,7 @@ trigger:
   paths:
     include:
       - '/modules/web/sites/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.web.sites.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

@@ -190,7 +190,7 @@ module staticSite_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (
   }
 }]
 
-module staticSite_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module staticSite_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StaticSite-PrivateEndpoint-${index}'
   params: {
     groupIds: [

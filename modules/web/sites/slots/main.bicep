@@ -354,7 +354,7 @@ module slot_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, i
   }
 }]
 
-module slot_privateEndpoints '../../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module slot_privateEndpoints '../../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Slot-${name}-PrivateEndpoint-${index}'
   params: {
     groupIds: [

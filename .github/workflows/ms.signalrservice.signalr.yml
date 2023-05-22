@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/signal-r-service/signal-r/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.signalrservice.signalr.yml'

@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.dnszones.yml'
-      - 'modules/Network/dnsZones/**'
+      - 'modules/network/dns-zones/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Network/dnsZones'
+  modulePath: 'modules/network/dns-zones'
   workflowPath: '.github/workflows/ms.network.dnszones.yml'
 
 concurrency:

@@ -28,7 +28,7 @@ trigger:
   paths:
     include:
       - '/modules/container-registry/registries/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.containerregistry.registries.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

@@ -28,7 +28,7 @@ on:
       - main
     paths:
       - 'modules/event-hub/namespaces/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventhub.namespaces.yml'

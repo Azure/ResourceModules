@@ -30,7 +30,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.digitaltwins.digitaltwinsinstances.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/modules/digital-twins/digital-twins-instances/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/network/private-endpoints/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'

@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Network/bastionHosts/**'
-      - 'modules/Network/publicIPAddresses/**'
+      - 'modules/network/bastion-hosts/**'
+      - 'modules/network/public-ip-addresses/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.bastionhosts.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Network/bastionHosts'
+  modulePath: 'modules/network/bastion-hosts'
   workflowPath: '.github/workflows/ms.network.bastionhosts.yml'
 
 concurrency:

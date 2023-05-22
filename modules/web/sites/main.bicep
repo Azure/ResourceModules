@@ -403,7 +403,7 @@ module app_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAss
   }
 }]
 
-module app_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module app_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoint-${index}'
   params: {
     groupIds: [

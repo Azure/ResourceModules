@@ -30,7 +30,7 @@ trigger:
       - '/modules/automation/automation-accounts/*'
       - '/modules/operational-insights/workspaces/linked-services/*'
       - '/modules/operations-management/solutions/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'

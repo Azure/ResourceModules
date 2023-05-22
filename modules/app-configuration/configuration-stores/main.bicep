@@ -219,7 +219,7 @@ module configurationStore_roleAssignments '.bicep/nested_roleAssignments.bicep' 
   }
 }]
 
-module configurationStore_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module configurationStore_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-PrivateEndpoint-${index}'
   params: {
     groupIds: [

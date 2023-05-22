@@ -272,7 +272,7 @@ module dataFactory_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for 
   }
 }]
 
-module dataFactory_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module dataFactory_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-DataFactory-PrivateEndpoint-${index}'
   params: {
     groupIds: [

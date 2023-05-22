@@ -249,7 +249,7 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: batchAccount
 }
 
-module batchAccount_privateEndpoints '../../Network/privateEndpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module batchAccount_privateEndpoints '../../network/private-endpoints/main.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-BatchAccount-PrivateEndpoint-${index}'
   params: {
     groupIds: [
