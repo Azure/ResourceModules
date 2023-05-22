@@ -304,7 +304,7 @@ module serviceFabricCluster_roleAssignments '.bicep/nested_roleAssignments.bicep
 }]
 
 // Service Fabric cluster application types
-module serviceFabricCluster_applicationTypes 'applicationTypes/main.bicep' = [for applicationType in applicationTypes: {
+module serviceFabricCluster_applicationTypes 'application-types/main.bicep' = [for applicationType in applicationTypes: {
   name: '${uniqueString(deployment().name, location)}-SFC-${applicationType.name}'
   params: {
     name: applicationType.name

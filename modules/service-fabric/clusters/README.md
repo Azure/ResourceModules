@@ -247,7 +247,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './ServiceFabric/clusters/main.bicep' = {
+module clusters './service-fabric/clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfccer'
   params: {
     // Required parameters
@@ -356,7 +356,7 @@ module clusters './ServiceFabric/clusters/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './ServiceFabric/clusters/main.bicep' = {
+module clusters './service-fabric/clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfccom'
   params: {
     // Required parameters
@@ -763,7 +763,7 @@ module clusters './ServiceFabric/clusters/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module clusters './ServiceFabric/clusters/main.bicep' = {
+module clusters './service-fabric/clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfcmin'
   params: {
     // Required parameters
