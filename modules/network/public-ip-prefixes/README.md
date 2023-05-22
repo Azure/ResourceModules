@@ -166,7 +166,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
+module publicIpPrefixes './network/public-ip-prefixes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npipcom'
   params: {
     // Required parameters
@@ -249,7 +249,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
+module publicIpPrefixes './network/public-ip-prefixes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npipmin'
   params: {
     // Required parameters

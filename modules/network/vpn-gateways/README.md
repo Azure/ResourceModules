@@ -39,7 +39,7 @@ This module deploys VPN Gateways.
 | `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `natRules` | _[natRules](natRules/README.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
+| `natRules` | _[natRules](nat-rules/README.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 

@@ -294,7 +294,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Network/publicIPAddresses` | Local reference |
+| `network/public-ip-addresses` | Local reference |
 
 ## Deployment examples
 

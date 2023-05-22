@@ -27,9 +27,9 @@
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `connectionMonitors` | _[connectionMonitors](connectionMonitors/README.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
+| `connectionMonitors` | _[connectionMonitors](connection-monitors/README.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `flowLogs` | _[flowLogs](flowLogs/README.md)_ array | `[]` |  | Array that contains the Flow Logs. |
+| `flowLogs` | _[flowLogs](flow-logs/README.md)_ array | `[]` |  | Array that contains the Flow Logs. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` |  | Name of the Network Watcher resource (hidden). |

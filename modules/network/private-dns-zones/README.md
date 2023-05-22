@@ -39,20 +39,20 @@ This template deploys a private DNS zone.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `a` | _[A](A/README.md)_ array | `[]` |  | Array of A records. |
-| `aaaa` | _[AAAA](AAAA/README.md)_ array | `[]` |  | Array of AAAA records. |
-| `cname` | _[CNAME](CNAME/README.md)_ array | `[]` |  | Array of CNAME records. |
+| `a` | _[a](A/README.md)_ array | `[]` |  | Array of A records. |
+| `aaaa` | _[aaaa](AAAA/README.md)_ array | `[]` |  | Array of AAAA records. |
+| `cname` | _[cname](CNAME/README.md)_ array | `[]` |  | Array of CNAME records. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `'global'` |  | The location of the PrivateDNSZone. Should be global. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `mx` | _[MX](MX/README.md)_ array | `[]` |  | Array of MX records. |
-| `ptr` | _[PTR](PTR/README.md)_ array | `[]` |  | Array of PTR records. |
+| `mx` | _[mx](MX/README.md)_ array | `[]` |  | Array of MX records. |
+| `ptr` | _[ptr](PTR/README.md)_ array | `[]` |  | Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `soa` | _[SOA](SOA/README.md)_ array | `[]` |  | Array of SOA records. |
-| `srv` | _[SRV](SRV/README.md)_ array | `[]` |  | Array of SRV records. |
+| `soa` | _[soa](SOA/README.md)_ array | `[]` |  | Array of SOA records. |
+| `srv` | _[srv](SRV/README.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `txt` | _[TXT](TXT/README.md)_ array | `[]` |  | Array of TXT records. |
-| `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/README.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
+| `txt` | _[txt](TXT/README.md)_ array | `[]` |  | Array of TXT records. |
+| `virtualNetworkLinks` | _[virtualNetworkLinks](virtual-network-links/README.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
 
 
 ### Parameter Usage: `roleAssignments`

@@ -37,8 +37,8 @@ If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integ
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `expressRouteGatewayId` | string | `''` |  | Resource ID of the Express Route Gateway to link to. |
-| `hubRouteTables` | _[hubRouteTables](hubRouteTables/README.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
-| `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/README.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
+| `hubRouteTables` | _[hubRouteTables](hub-route-tables/README.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
+| `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hub-virtual-network-connections/README.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `p2SVpnGatewayId` | string | `''` |  | Resource ID of the Point-to-Site VPN Gateway to link to. |

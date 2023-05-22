@@ -45,7 +45,7 @@ This module deploys Firewall Policies.
 | `mode` | string | `'Off'` | `[Alert, Deny, Off]` | The configuring of intrusion detection. |
 | `privateRanges` | array | `[]` |  | List of private IP addresses/IP address ranges to not be SNAT. |
 | `retentionDays` | int | `365` |  | Number of days the insights should be enabled on the policy. |
-| `ruleCollectionGroups` | _[ruleCollectionGroups](ruleCollectionGroups/README.md)_ array | `[]` |  | Rule collection groups. |
+| `ruleCollectionGroups` | _[ruleCollectionGroups](rule-collection-groups/README.md)_ array | `[]` |  | Rule collection groups. |
 | `servers` | array | `[]` |  | List of Custom DNS Servers. |
 | `signatureOverrides` | array | `[]` |  | List of specific signatures states. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
