@@ -284,7 +284,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './SignalRService/signalR/main.bicep' = {
+module signalR './signal-r-service/signal-r/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srssrcom'
   params: {
     // Required parameters
@@ -471,7 +471,7 @@ module signalR './SignalRService/signalR/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module signalR './SignalRService/signalR/main.bicep' = {
+module signalR './signal-r-service/signal-r/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srsdrmin'
   params: {
     // Required parameters
