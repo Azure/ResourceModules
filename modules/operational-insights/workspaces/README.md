@@ -78,7 +78,7 @@ This template deploys a log analytics workspace.
 
 ### Parameter Usage: `gallerySolutions`
 
-Ref cross-referenced _[solutions](../../OperationsManagement/solutions/README.md)_
+Ref cross-referenced _[solutions](../../operations-management/solutions/README.md)_
 
 <details>
 
