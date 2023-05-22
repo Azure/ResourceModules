@@ -47,7 +47,7 @@ This module deploys a service bus namespace resource.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `authorizationRules` | _[authorizationRules](authorizationRules/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
+| `authorizationRules` | _[authorizationRules](authorization-rules/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. If not provided, encryption is automatically enabled with a Microsoft-managed key. |
 | `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, the latest key version is used. |
 | `cMKUserAssignedIdentityResourceId` | string | `''` |  | User assigned identity to use when fetching the customer managed key. If not provided, a system-assigned identity can be used - but must be given access to the referenced key vault first. |
@@ -59,12 +59,12 @@ This module deploys a service bus namespace resource.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/README.md)_ object | `{object}` |  | The disaster recovery configuration. |
+| `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disaster-recovery-configs/README.md)_ object | `{object}` |  | The disaster recovery configuration. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/README.md)_ object | `{object}` |  | The migration configuration. |
-| `networkRuleSets` | _[networkRuleSets](networkRuleSets/README.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
+| `migrationConfigurations` | _[migrationConfigurations](migration-configurations/README.md)_ object | `{object}` |  | The migration configuration. |
+| `networkRuleSets` | _[networkRuleSets](network-rule-sets/README.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `queues` | _[queues](queues/README.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
 | `requireInfrastructureEncryption` | bool | `True` |  | Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters. |
