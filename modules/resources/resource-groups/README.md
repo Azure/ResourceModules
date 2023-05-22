@@ -157,7 +157,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Authorization/locks/resourceGroup` | Local reference |
+| `authorization/locks/resource-group` | Local reference |
 
 ## Deployment examples
 
