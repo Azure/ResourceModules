@@ -8,7 +8,7 @@ The template spec is set up if not already existing.
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\modules\KeyVault\vaults\main.bicep'
+Example: 'C:\modules\key-vault\vaults\main.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -27,7 +27,7 @@ Mandatory. The description of the parent template spec.
 Example: 'iacs key vault'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpecsRG -TemplateFilePath 'C:\modules\KeyVault\vaults\main.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
+Publish-ModuleToTemplateSpecsRG -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a template spec in resource group 'artifacts-rg'.
 #>
