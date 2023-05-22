@@ -225,7 +225,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Purview/accounts/main.bicep' = {
+module accounts './purview/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvacom'
   params: {
     // Required parameters
@@ -520,7 +520,7 @@ module accounts './Purview/accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module accounts './Purview/accounts/main.bicep' = {
+module accounts './purview/accounts/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pvamin'
   params: {
     // Required parameters
