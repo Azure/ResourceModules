@@ -230,7 +230,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disaster-recovery-configs/mai
   }
 }
 
-module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/main.bicep' = if (!empty(migrationConfigurations)) {
+module serviceBusNamespace_migrationConfigurations 'migration-configurations/main.bicep' = if (!empty(migrationConfigurations)) {
   name: '${uniqueString(deployment().name, location)}-MigrationConfigurations'
   params: {
     namespaceName: serviceBusNamespace.name

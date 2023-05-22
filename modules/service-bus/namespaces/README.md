@@ -378,7 +378,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './ServiceBus/namespaces/main.bicep' = {
+module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbncom'
   params: {
     // Required parameters
@@ -735,7 +735,7 @@ module namespaces './ServiceBus/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './ServiceBus/namespaces/main.bicep' = {
+module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnencr'
   params: {
     // Required parameters
@@ -920,7 +920,7 @@ module namespaces './ServiceBus/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './ServiceBus/namespaces/main.bicep' = {
+module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnmin'
   params: {
     // Required parameters
@@ -965,7 +965,7 @@ module namespaces './ServiceBus/namespaces/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module namespaces './ServiceBus/namespaces/main.bicep' = {
+module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnpe'
   params: {
     // Required parameters
