@@ -39,6 +39,7 @@ if (-not $certificate) {
         IssuerName        = 'Self'
         ValidityInMonths  = 12
         ReuseKeyOnRenewal = $true
+        KeyUsage          = @('DigitalSignature', 'KeyCertSign', 'CrlSign')
     }
     $certPolicy = New-AzKeyVaultCertificatePolicy @policyInputObject
 
