@@ -39,11 +39,11 @@ function Set-CARMLFoldersForPBR {
         [Parameter(Mandatory = $false)]
         [string] $ResourceProviderPath = '',
 
-        [Parameter(Mandatory = $true)]
-        [string] $WorkflowsPath,
+        [Parameter(Mandatory = $false)]
+        [string] $WorkflowsPath = '',
 
-        [Parameter(Mandatory = $true)]
-        [string] $PipelinesPath,
+        [Parameter(Mandatory = $false)]
+        [string] $PipelinesPath = '',
 
         [Parameter(Mandatory = $false)]
         [string] $UtilitiesPath = ''
@@ -126,27 +126,29 @@ function Set-CARMLFoldersForPBR {
         }
 
         # Replace local module references in workflows
+        if ($WorkflowsPath -ne '') {
+            # Get file paths
+            $workflowsfilePaths = (Get-ChildItem -Path $WorkflowsPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
 
-        # Get file paths
-        $workflowsfilePaths = (Get-ChildItem -Path $WorkflowsPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
-
-        # Iterate on all files
-        foreach ($workflowsfilePath in $workflowsfilePaths) {
-            # Replace content
-            Write-Verbose ("   $workflowsfilePath") -Verbose
+            # Iterate on all files
+            foreach ($workflowsfilePath in $workflowsfilePaths) {
+                # Replace content
+                Write-Verbose ("   $workflowsfilePath") -Verbose
             (Get-Content $workflowsfilePath) -creplace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $workflowsfilePath
+            }
         }
 
         # Replace local module references in ado pipelines
+        if ($PipelinesPath -ne '') {
+            # Get file paths
+            $pipelinesfilePaths = (Get-ChildItem -Path $PipelinesPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
 
-        # Get file paths
-        $pipelinesfilePaths = (Get-ChildItem -Path $PipelinesPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
-
-        # Iterate on all files
-        foreach ($pipelinesfilePath in $pipelinesfilePaths) {
-            # Replace content
-            Write-Verbose ("   $pipelinesfilePath") -Verbose
+            # Iterate on all files
+            foreach ($pipelinesfilePath in $pipelinesfilePaths) {
+                # Replace content
+                Write-Verbose ("   $pipelinesfilePath") -Verbose
             (Get-Content $pipelinesfilePath) -creplace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $pipelinesfilePath
+            }
         }
 
         # Replace local module references in utilities
