@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.tags.yml'
-      - 'modules/Resources/tags/**'
+      - 'modules/resources/tags/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Resources/tags'
+  modulePath: 'modules/resources/tags'
   workflowPath: '.github/workflows/ms.resources.tags.yml'
 
 concurrency:

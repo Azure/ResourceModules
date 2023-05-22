@@ -43,7 +43,7 @@ module tags_sub 'subscriptions/main.bicep' = if (!empty(subscriptionId) && empty
   }
 }
 
-module tags_rg 'resourceGroups/main.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
+module tags_rg 'resource-groups/main.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${deployment().name}-Tags-RG'
   scope: resourceGroup(resourceGroupName)
   params: {
