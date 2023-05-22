@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.logic.workflows.yml'
-      - 'modules/Logic/workflows/**'
+      - 'modules/logic/workflows/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Logic/workflows'
+  modulePath: 'modules/logic/workflows'
   workflowPath: '.github/workflows/ms.logic.workflows.yml'
 
 concurrency:
