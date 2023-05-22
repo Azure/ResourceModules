@@ -495,7 +495,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `OperationsManagement/solutions` | Local reference |
+| `operations-management/solutions` | Local reference |
 
 ## Deployment examples
 

@@ -383,9 +383,9 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Network/privateEndpoints` | Local reference |
+| `network/private-endpoints` | Local reference |
 | `operational-insights/workspaces/linked-services` | Local reference |
-| `OperationsManagement/solutions` | Local reference |
+| `operations-management/solutions` | Local reference |
 
 ## Deployment examples
 

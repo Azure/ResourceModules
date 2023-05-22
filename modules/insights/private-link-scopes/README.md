@@ -257,7 +257,7 @@ This section gives you an overview of all local-referenced module files (i.e., o
 
 | Reference | Type |
 | :-- | :-- |
-| `Network/privateEndpoints` | Local reference |
+| `network/private-endpoints` | Local reference |
 
 ## Deployment examples
 

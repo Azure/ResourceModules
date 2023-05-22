@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Re-format the name of every CARML module to match the requirements of the Public Bicep Registry
 
@@ -43,14 +43,16 @@ function Set-CARMLFoldersForPBR {
         [string] $WorkflowsPath,
 
         [Parameter(Mandatory = $true)]
-        [string] $PipelinesPath
+        [string] $PipelinesPath,
+
+        [Parameter(Mandatory = $false)]
+        [string] $UtilitiesPath = ''
     )
 
     $specialConversionHash = @{
         AAAA              = 'aaaa'
         AAD               = 'aad'
         CAA               = 'caa'
-        CDN               = 'cdn'
         CNAME             = 'cname'
         DBforMySQL        = 'db-for-my-sql'
         DBforPostgreSQL   = 'db-for-postgre-sql'
@@ -61,7 +63,6 @@ function Set-CARMLFoldersForPBR {
         PTR               = 'ptr'
         publicIPAddresses = 'public-ip-addresses'
         publicIPPrefixes  = 'public-ip-prefixes'
-        SignalRService    = 'signal-r-service'
         SOA               = 'soa'
         SRV               = 'srv'
         TXT               = 'txt'
@@ -146,6 +147,19 @@ function Set-CARMLFoldersForPBR {
             # Replace content
             Write-Verbose ("   $pipelinesfilePath") -Verbose
             (Get-Content $pipelinesfilePath) -creplace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $pipelinesfilePath
+        }
+
+        # Replace local module references in utilities
+        if ($UtilitiesPath -ne '') {
+            # Get file paths
+            $utilitiesFilePaths = (Get-ChildItem -Path $UtilitiesPath -Recurse | Select-String "modules.*$folderName" -List | Select-Object Path).Path
+
+            # Iterate on all files
+            foreach ($utilitiesFilePath in $utilitiesFilePaths) {
+                # Replace content
+                Write-Verbose ("   $utilitiesFilePath") -Verbose
+            (Get-Content $utilitiesFilePath) -creplace "(modules.*)/($folderName)", "`$1/$newName" | Set-Content $utilitiesFilePath
+            }
         }
     }
 }
