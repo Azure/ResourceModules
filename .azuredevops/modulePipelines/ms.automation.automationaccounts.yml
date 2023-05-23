@@ -27,10 +27,10 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Automation/automationAccounts/*'
-      - '/modules/OperationalInsights/workspaces/linkedServices/*'
-      - '/modules/OperationsManagement/solutions/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/automation/automation-accounts/*'
+      - '/modules/operational-insights/workspaces/linked-services/*'
+      - '/modules/operations-management/solutions/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -42,7 +42,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Automation/automationAccounts'
+    value: '/modules/automation/automation-accounts'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

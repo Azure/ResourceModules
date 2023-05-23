@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.applicationGatewayWebApplicationFirewallPolicies'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Network/applicationGatewayWebApplicationFirewallPolicies/*'
+      - '/modules/network/application-gateway-web-application-firewall-policies/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Network/applicationGatewayWebApplicationFirewallPolicies'
+    value: '/modules/network/application-gateway-web-application-firewall-policies'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

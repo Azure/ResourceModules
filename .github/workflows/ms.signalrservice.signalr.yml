@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/SignalRService/signalR/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/signal-r-service/signal-r/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.signalrservice.signalr.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/SignalRService/signalR'
+  modulePath: 'modules/signal-r-service/signal-r'
   workflowPath: '.github/workflows/ms.signalrservice.signalr.yml'
 
 concurrency:

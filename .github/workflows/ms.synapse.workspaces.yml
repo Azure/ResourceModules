@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Synapse/workspaces/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/synapse/workspaces/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.workspaces.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Synapse/workspaces'
+  modulePath: 'modules/synapse/workspaces'
   workflowPath: '.github/workflows/ms.synapse.workspaces.yml'
 
 concurrency:

@@ -16,12 +16,12 @@ Optional. The folder to search for files in
 Optional. The pattern of test files to search for. For example '*.json'
 
 .EXAMPLE
-Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\modules\Compute\virtualMachines'
+Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\modules\compute\virtual-machines'
 
 Returns the relative file paths of all test files of the virtual machines module in the default test folder ('.test').
 
 .EXAMPLE
-Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\modules\Compute\virtualMachines' -SearchFolder 'parameters'
+Get-ModuleTestFileList -ModulePath 'C:\ResourceModules\modules\compute\virtual-machines' -SearchFolder 'parameters'
 
 Returns the relative file paths of all test files of the virtual machines module in folder 'parameters'.
 #>

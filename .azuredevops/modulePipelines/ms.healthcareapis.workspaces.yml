@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.healthcareapis.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/HealthcareApis/workspaces/*'
+      - '/modules/healthcare-apis/workspaces/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/HealthcareApis/workspaces'
+    value: '/modules/healthcare-apis/workspaces'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

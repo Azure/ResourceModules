@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.availabilitysets.yml'
-      - 'modules/Compute/availabilitySets/**'
+      - 'modules/compute/availability-sets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Compute/availabilitySets'
+  modulePath: 'modules/compute/availability-sets'
   workflowPath: '.github/workflows/ms.compute.availabilitysets.yml'
 
 concurrency:

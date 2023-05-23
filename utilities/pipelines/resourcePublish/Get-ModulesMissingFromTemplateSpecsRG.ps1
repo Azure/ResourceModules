@@ -16,7 +16,7 @@ Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
 .EXAMPLE
-Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\KeyVault\vaults\main.bicep' -TemplateSpecsRGName 'artifacts-rg'
+Get-ModulesMissingFromTemplateSpecsRG -TemplateFilePath 'C:\ResourceModules\modules\key-vault\vaults\main.bicep' -TemplateSpecsRGName 'artifacts-rg'
 
 Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in the Resource Group 'artifacts-rg'
 
@@ -24,37 +24,37 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\accessPolicies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\accessPolicies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\accessPolicies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\accessPolicies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
 Version                        0.5.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
 Version                        0.5
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
 #>
 function Get-ModulesMissingFromTemplateSpecsRG {
 

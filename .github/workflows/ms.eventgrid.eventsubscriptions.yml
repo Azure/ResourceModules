@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventgrid.eventsubscriptions.yml'
-      - 'modules/EventGrid/eventSubscriptions/**'
+      - 'modules/event-grid/event-subscriptions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/EventGrid/eventSubscriptions'
+  modulePath: 'modules/event-grid/event-subscriptions'
   workflowPath: '.github/workflows/ms.eventgrid.eventsubscriptions.yml'
 
 concurrency:

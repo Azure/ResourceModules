@@ -24,7 +24,7 @@ Example: 'Artifacts'.
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\KeyVault\vaults\main.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
+Get-ModulesMissingFromUniversalArtifactsFeed -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
 Check if either the Key Vault module or any of its children (e.g. 'secret') is missing in artifacts feed 'Artifacts' of Azure DevOps project 'https://dev.azure.com/fabrikam/IaC'
 
@@ -32,13 +32,13 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\accessPolicies\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\access-policies\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\keys\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\keys\main.bicep
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\secrets\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\secrets\main.bicep
 Version                        0.5.0
-TemplateFilePath               C:\ResourceModules\modules\KeyVault\vaults\main.bicep
+TemplateFilePath               C:\ResourceModules\modules\key-vault\vaults\main.bicep
 #>
 function Get-ModulesMissingFromUniversalArtifactsFeed {
 

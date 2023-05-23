@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/KeyVault/vaults/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/key-vault/vaults/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.keyvault.vaults.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/KeyVault/vaults'
+  modulePath: 'modules/key-vault/vaults'
   workflowPath: '.github/workflows/ms.keyvault.vaults.yml'
 
 concurrency:

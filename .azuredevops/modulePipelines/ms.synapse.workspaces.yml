@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Synapse/workspaces/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/synapse/workspaces/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.synapse.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Synapse/workspaces'
+    value: '/modules/synapse/workspaces'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

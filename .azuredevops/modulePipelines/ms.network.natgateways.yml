@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Network/natGateways/*'
-      - '/modules/Network/publicIPAddresses/*'
+      - '/modules/network/nat-gateways/*'
+      - '/modules/network/public-ip-addresses/*'
       - '/.azuredevops/modulePipelines/ms.network.natgateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Network/natGateways'
+    value: '/modules/network/nat-gateways'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

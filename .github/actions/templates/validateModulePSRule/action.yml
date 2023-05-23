@@ -13,7 +13,7 @@
 ##   |=================================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                          | Example                                                                  |
 ##   |--------------------------|----------|---------|--------------------------------------|--------------------------------------------------------------------------|
-##   | templateFilePath         | true     | ''      | The path to the module PSRule tests. | 'modules/ApiManagement/service/.test/common/main.test.bicep'             |
+##   | templateFilePath         | true     | ''      | The path to the module PSRule tests. | 'modules/api-management/service/.test/common/main.test.bicep'            |
 ##   | subscriptionId           | false    | ''      | The subscriptionId to deploy to      | '1a97b80a-4dda-4f50-ab53-349e29344654'                                   |
 ##   | managementGroupId        | false    | ''      | The managementGroupId to deploy to   | '1a97b80a-4dda-4f50-ab53-349e29344654'                                   |
 ##   |=================================================================================================================================================================|

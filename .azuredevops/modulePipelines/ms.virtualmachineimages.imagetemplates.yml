@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.virtualmachineimages.imagetemplates.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/VirtualMachineImages/imageTemplates/*'
+      - '/modules/virtual-machine-images/image-templates/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/VirtualMachineImages/imageTemplates'
+    value: '/modules/virtual-machine-images/image-templates'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

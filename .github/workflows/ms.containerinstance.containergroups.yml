@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerinstance.containergroups.yml'
-      - 'modules/ContainerInstance/containerGroups/**'
+      - 'modules/container-instance/container-groups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/ContainerInstance/containerGroups'
+  modulePath: 'modules/container-instance/container-groups'
   workflowPath: '.github/workflows/ms.containerinstance.containergroups.yml'
 
 concurrency:

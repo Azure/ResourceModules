@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.hostpools.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/DesktopVirtualization/hostPools/*'
+      - '/modules/desktop-virtualization/host-pools/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/DesktopVirtualization/hostPools'
+    value: '/modules/desktop-virtualization/host-pools'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

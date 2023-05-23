@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.app.managedenvironments.yml'
-      - 'modules/App/managedEnvironments/**'
+      - 'modules/app/managed-environments/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/App/managedEnvironments'
+  modulePath: 'modules/app/managed-environments'
   workflowPath: '.github/workflows/ms.app.managedenvironments.yml'
 
 concurrency:

@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.galleries.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Compute/galleries/*'
+      - '/modules/compute/galleries/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Compute/galleries'
+    value: '/modules/compute/galleries'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

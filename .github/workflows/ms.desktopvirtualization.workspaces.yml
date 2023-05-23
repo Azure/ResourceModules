@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.desktopvirtualization.workspaces.yml'
-      - 'modules/DesktopVirtualization/workspaces/**'
+      - 'modules/desktop-virtualization/workspaces/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/DesktopVirtualization/workspaces'
+  modulePath: 'modules/desktop-virtualization/workspaces'
   workflowPath: '.github/workflows/ms.desktopvirtualization.workspaces.yml'
 
 concurrency:
