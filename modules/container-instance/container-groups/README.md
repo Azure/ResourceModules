@@ -1,5 +1,7 @@
 # Container Instances `[Microsoft.ContainerInstance/containerGroups]`
 
+
+
 ## Navigation
 
 - [Resource types](#Resource-types)

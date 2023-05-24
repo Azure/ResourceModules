@@ -1,5 +1,7 @@
 # Azure Databricks `[Microsoft.Databricks/workspaces]`
 
+
+
 ## Navigation
 
 - [Resource types](#Resource-types)

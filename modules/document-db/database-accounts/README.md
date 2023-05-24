@@ -1,4 +1,4 @@
-# DocumentDB Database Accounts `[Microsoft.DocumentDB/databaseAccounts]`
+# DocumentDB Database Accounts `[Microsoft.DocumentDb/databaseAccounts]`
 
 This module deploys a DocumentDB database account and its child resources.
 

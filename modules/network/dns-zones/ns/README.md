@@ -1,4 +1,4 @@
-# Public DNS Zone NS record `[Microsoft.Network/dnsZones/NS]`
+# Public DNS Zone NS record `[Microsoft.Network/dnsZones/ns]`
 
 This module deploys a Public DNS Zone NS record.
 

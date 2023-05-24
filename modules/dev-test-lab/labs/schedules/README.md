@@ -1,8 +1,6 @@
 # DevTestLab Labs Schedules `[Microsoft.DevTestLab/labs/schedules]`
 
-This module deploys DevTestLab Labs Schedules.
-
-Lab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.
+This module deploys DevTestLab Labs Schedules.\nLab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.
 
 ## Navigation
 

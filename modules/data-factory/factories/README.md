@@ -1,5 +1,7 @@
 # Data Factories `[Microsoft.DataFactory/factories]`
 
+
+
 ## Navigation
 
 - [Resource types](#Resource-types)

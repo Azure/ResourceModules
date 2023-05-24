@@ -1,5 +1,7 @@
 # Batch Accounts `[Microsoft.Batch/batchAccounts]`
 
+
+
 ## Navigation
 
 - [Resource types](#Resource-types)

@@ -1,4 +1,4 @@
-# Public DNS Zone CAA record `[Microsoft.Network/dnsZones/CAA]`
+# Public DNS Zone CAA record `[Microsoft.Network/dnsZones/caa]`
 
 This module deploys a Public DNS Zone CAA record.
 

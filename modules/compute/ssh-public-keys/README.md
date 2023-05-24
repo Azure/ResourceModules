@@ -1,7 +1,6 @@
 # Public SSH Keys `[Microsoft.Compute/sshPublicKeys]`
 
-This template deploys a Public SSH Key resource.
-> Note: The resource does not auto-generate the key for you.
+This template deploys a Public SSH Key resource.\n> Note: The resource does not auto-generate the key for you.
 
 ## Navigation
 

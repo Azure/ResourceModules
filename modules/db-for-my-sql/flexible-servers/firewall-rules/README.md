@@ -1,4 +1,4 @@
-# DBforMySQL FlexibleServers FirewallRules `[Microsoft.DBforMySQL/flexibleServers/firewallRules]`
+# DBforMySQL FlexibleServers FirewallRules `[Microsoft.DbForMySql/flexibleServers/firewallRules]`
 
 This module deploys DBforMySQL FlexibleServers FirewallRules.
 

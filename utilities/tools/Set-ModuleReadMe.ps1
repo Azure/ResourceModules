@@ -1395,8 +1395,11 @@ Required. The path to the readme file to initialize.
 .PARAMETER FullModuleIdentifier
 Required. The full identifier of the module. For example: 'sql/managed-instances/administrators'
 
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
 .EXAMPLE
-Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instances/administrators'
+Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instances/administrators' -TemplateFileContent @{ resource = @{}; ... }
 
 Initialize the readme of the 'sql/managed-instances/administrators' module
 #>
@@ -1408,7 +1411,10 @@ function Initialize-ReadMe {
         [string] $ReadMeFilePath,
 
         [Parameter(Mandatory = $true)]
-        [string] $FullModuleIdentifier
+        [string] $FullModuleIdentifier,
+
+        [Parameter(Mandatory = $true)]
+        [hashtable] $TemplateFileContent
     )
 
     $metadataFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'metadata.json'
@@ -1421,10 +1427,19 @@ function Initialize-ReadMe {
     $splitHyphens = $splitHyphens -join ''
     $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
 
+    # Resolve resource type as per used API name to use matching casing
+    $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type
+    $formattedResourceType = $relevantResourceTypeObjects | Where-Object { $_ -eq $fullResourceType }
+
+    if (-not $formattedResourceType) {
+        Write-Warning "Did not find module [$FullModuleIdentifier] formatted as [$fullResourceType] in the module template's resource types."
+        $formattedResourceType = $fullResourceType
+    }
+
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
 
         $initialContent = @(
-            "# $moduleName ``[$fullResourceType]``",
+            "# $moduleName ``[$formattedResourceType]``",
             '',
             $moduleDescription,
             ''
@@ -1437,7 +1452,7 @@ function Initialize-ReadMe {
         $readMeFileContent = $initialContent
     } else {
         $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
-        $readMeFileContent[0] = "# $moduleName ``[$fullResourceType]``"
+        $readMeFileContent[0] = "# $moduleName ``[$formattedResourceType]``"
 
         # We want to inject the description right below the header and before the [Resource Types] section
 
@@ -1587,7 +1602,12 @@ function Set-ModuleReadMe {
     }
 
     # Initialize readme
-    $readMeFileContent = Initialize-ReadMe -ReadMeFilePath $ReadMeFilePath -FullModuleIdentifier $fullModuleIdentifier
+    $inputObject = @{
+        ReadMeFilePath       = $ReadMeFilePath
+        FullModuleIdentifier = $FullModuleIdentifier
+        TemplateFileContent  = $templateFileContent
+    }
+    $readMeFileContent = Initialize-ReadMe @inputObject
 
     # Set content
     if ($SectionsToRefresh -contains 'Resource Types') {

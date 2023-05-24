@@ -2,7 +2,6 @@
 
 This module deploys Front Doors.
 
-
 ## Navigation
 
 - [Resource Types](#Resource-Types)

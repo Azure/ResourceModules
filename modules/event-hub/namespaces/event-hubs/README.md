@@ -1,4 +1,4 @@
-# EventHub `[Microsoft.EventHub/namespaces/eventhubs]`
+# EventHub `[Microsoft.EventHub/namespaces/eventHubs]`
 
 This module deploys an Event Hub.
 

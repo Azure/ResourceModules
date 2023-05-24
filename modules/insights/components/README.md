@@ -1,5 +1,7 @@
 # Application Insights `[Microsoft.Insights/components]`
 
+
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)

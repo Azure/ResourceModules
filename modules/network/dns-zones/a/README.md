@@ -1,4 +1,4 @@
-# Public DNS Zone A record `[Microsoft.Network/dnsZones/A]`
+# Public DNS Zone A record `[Microsoft.Network/dnsZones/a]`
 
 This module deploys a Public DNS Zone A record.
 
