@@ -1,4 +1,4 @@
-# DBforPostgreSQL FlexibleServers `[Microsoft.DbForPostgreSql/flexibleServers]`
+# DBforPostgreSQL FlexibleServers `[Microsoft.DBforPostgreSQL/flexibleServers]`
 
 This module deploys DBforPostgreSQL FlexibleServers.
 

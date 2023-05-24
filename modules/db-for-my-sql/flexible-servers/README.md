@@ -1,4 +1,4 @@
-# DBforMySQL FlexibleServers `[Microsoft.DbForMySql/flexibleServers]`
+# DBforMySQL FlexibleServers `[Microsoft.DBforMySQL/flexibleServers]`
 
 This module deploys DBforMySQL FlexibleServers.
 
