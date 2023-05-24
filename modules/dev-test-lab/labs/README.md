@@ -247,7 +247,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
       markdown: 'DevTest Lab announcement text. <br> New line. It also supports Markdown'
       title: 'DevTest announcement title'
     }
-    artifactSources: [
+    artifactsources: [
       {
         branchRef: 'master'
         displayName: 'Public Artifact Repo'
@@ -291,7 +291,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
     managementIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    notificationChannels: [
+    notificationchannels: [
       {
         description: 'Integration configured for auto-shutdown'
         emailRecipient: 'mail@contosodtlmail.com'
@@ -425,7 +425,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    virtualNetworks: [
+    virtualnetworks: [
       {
         allowedSubnets: [
           {
@@ -489,7 +489,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
         "title": "DevTest announcement title"
       }
     },
-    "artifactSources": {
+    "artifactsources": {
       "value": [
         {
           "branchRef": "master",
@@ -563,7 +563,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
         "<managedIdentityResourceId>": {}
       }
     },
-    "notificationChannels": {
+    "notificationchannels": {
       "value": [
         {
           "description": "Integration configured for auto-shutdown",
@@ -713,7 +713,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
         "<managedIdentityResourceId>": {}
       }
     },
-    "virtualNetworks": {
+    "virtualnetworks": {
       "value": [
         {
           "allowedSubnets": [
