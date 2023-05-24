@@ -1439,9 +1439,9 @@ function Initialize-ReadMe {
         $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
         $readMeFileContent[0] = "# $moduleName ``[$fullResourceType]``"
 
-        # Get [Resource Types] header index to inject description
+        # We want to inject the description right below the header and before the [Resource Types] section
 
-        # Find indexes of description section
+        # Find start- and end-index of description section
         $startIndex = 1 # One ofter the readme header
         $endIndex = $startIndex
 
