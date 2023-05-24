@@ -24,7 +24,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource privateLinkScope 'microsoft.insights/privateLinkScopes@2021-07-01-preview' existing = {
+resource privateLinkScope 'Microsoft.Insights/privateLinkScopes@2021-07-01-preview' existing = {
   name: privateLinkScopeName
 }
 

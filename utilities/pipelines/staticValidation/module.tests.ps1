@@ -1354,7 +1354,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
                     $testCases += @{
                         moduleName                     = $moduleFolderName
                         resourceType                   = 'diagnosticsettings'
-                        ProviderNamespace              = 'Microsoft.insights'
+                        ProviderNamespace              = 'Microsoft.Insights'
                         TargetApi                      = $resource.ApiVersion
                         AvailableApiVersions           = $ApiVersions
                         AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests

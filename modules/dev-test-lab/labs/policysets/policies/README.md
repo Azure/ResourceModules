@@ -1,4 +1,4 @@
-# DevTestLab Labs PolicySets Policies `[Microsoft.DevTestLab/labs/policySets/policies]`
+# DevTestLab Labs PolicySets Policies `[Microsoft.DevTestLab/labs/policysets/policies]`
 
 This module deploys DevTestLab Labs PolicySets Policies.\nDevTest lab policies are used to modify the lab settings like only allowing certain VM Size SKUs, marketplace image types, number of VMs allowed per user and other settings.
 

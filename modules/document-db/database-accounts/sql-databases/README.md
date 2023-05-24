@@ -1,4 +1,4 @@
-# DocumentDB Database Account SQL Databases `[Microsoft.DocumentDb/databaseAccounts/sqlDatabases]`
+# DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
 
 

@@ -1,4 +1,4 @@
-# DevTestLab Labs NotificationChannels `[Microsoft.DevTestLab/labs/notificationChannels]`
+# DevTestLab Labs NotificationChannels `[Microsoft.DevTestLab/labs/notificationchannels]`
 
 This module deploys DevTestLab Labs NotificationChannels.\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.
 

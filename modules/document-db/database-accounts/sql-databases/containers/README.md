@@ -1,4 +1,4 @@
-# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDb/databaseAccounts/sqlDatabases/containers]`
+# DocumentDB Database Account SQL Databases Containers `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
 
 
 

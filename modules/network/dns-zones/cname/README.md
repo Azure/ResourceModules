@@ -1,4 +1,4 @@
-# Public DNS Zone CNAME record `[Microsoft.Network/dnsZones/cname]`
+# Public DNS Zone CNAME record `[Microsoft.Network/dnsZones/CNAME]`
 
 This module deploys a Public DNS Zone CNAME record.
 
