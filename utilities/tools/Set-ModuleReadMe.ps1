@@ -1346,7 +1346,7 @@ function Set-TableOfContent {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
@@ -1379,6 +1379,92 @@ function Set-TableOfContent {
     }
 
     return $updatedFileContent
+}
+
+<#
+.SYNOPSIS
+Initialize the readme file
+
+.DESCRIPTION
+If no readme file exists, the initial content is generated (e.g., the skeleton of the section headers).
+If a readme file does exist, its title and description are updated with whatever is documented in the metadata.json file.
+
+.PARAMETER ReadMeFilePath
+Required. The path to the readme file to initialize.
+
+.PARAMETER FullModuleIdentifier
+Required. The full identifier of the module. For example: 'sql/managed-instances/administrators'
+
+.EXAMPLE
+Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instances/administrators'
+
+Initialize the readme of the 'sql/managed-instances/administrators' module
+#>
+function Initialize-ReadMe {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string] $ReadMeFilePath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $FullModuleIdentifier
+    )
+
+    $metadataFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'metadata.json'
+    $metadataFileContent = ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw)
+
+    $splitHyphens = $FullModuleIdentifier.split('-')
+    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
+    $splitHyphens = $splitHyphens -join ''
+    $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
+
+    if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
+
+        $moduleName = $metadataFileContent.name
+        $moduleDescription = $metadataFileContent.summary
+
+        $initialContent = @(
+            "# $moduleName ``[$fullResourceType]``",
+            '',
+            $moduleDescription,
+            ''
+            '## Resource Types',
+            '',
+            '## Parameters',
+            '',
+            '## Outputs'
+        )
+        $readMeFileContent = $initialContent
+    } else {
+        $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
+        $readMeFileContent[0] = "# $moduleName ``[$fullResourceType]``"
+
+        # Get [Resource Types] header index to inject description
+
+        # Find indexes of description section
+        $startIndex = 1 # One ofter the readme header
+        $endIndex = $startIndex
+
+        while (-not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $readMeFileContent[$endIndex].StartsWith('#')) {
+            $endIndex++
+        }
+
+        # Build result
+        $startContent = @(
+            $readMeFileContent[0],
+            ''
+        )
+        $newContent = @(
+            $moduleDescription,
+            ''
+        )
+        $endContent = $readMeFileContent[$endIndex..($readMeFileContent.Count - 1)]
+
+        $readMeFileContent = (($startContent + $newContent + $endContent) | Out-String).TrimEnd().Replace("`r", '').Split("`n")
+    }
+
+    return $readMeFileContent
 }
 #endregion
 
@@ -1500,57 +1586,11 @@ function Set-ModuleReadMe {
     if ($fullModuleIdentifier.Contains($customModuleSeparator)) {
         $fullModuleIdentifier = $fullModuleIdentifier.split($customModuleSeparator)[0]
     }
-    $splitHyphens = $fullModuleIdentifier.split('-')
-    $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
-    $splitHyphens = $splitHyphens -join ''
-    $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
 
-    # Check readme
-    if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
-        # Create new readme file
+    # Initialize readme
+    $readMeFileContent = Initialize-ReadMe -ReadMeFilePath $ReadMeFilePath -FullModuleIdentifier $fullModuleIdentifier
 
-        # Build resource name
-        $serviceIdentifiers = $fullResourceType.Replace('Microsoft.', '').Replace('/.', '/').Split('/')
-        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
-        $serviceIdentifiers = $serviceIdentifiers | ForEach-Object { $_ -creplace '(?<=\w)([A-Z])', '$1' }
-        $assumedResourceName = $serviceIdentifiers -join ' '
-
-        $initialContent = @(
-            "# $assumedResourceName ``[$fullResourceType]``",
-            '',
-            "This module deploys $assumedResourceName."
-            '// TODO: Replace Resource and fill in description',
-            ''
-            '## Resource Types',
-            '',
-            '## Parameters',
-            '',
-            '### Parameter Usage: `<ParameterPlaceholder>`'
-            ''
-            '// TODO: Fill in Parameter usage'
-            '',
-            '## Outputs'
-        )
-        # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
-        $readMeFileContent = $initialContent
-    } else {
-        $readMeFileContent = Get-Content -Path $ReadMeFilePath -Encoding 'utf8'
-    }
-
-    # Update title
-    if ($TemplateFilePath.Replace('\', '/') -like '*/main.*') {
-
-        if ($readMeFileContent[0] -notlike "*``[$fullResourceType]``") {
-            # Cut outdated
-            $readMeFileContent[0] = $readMeFileContent[0].Split('`[')[0]
-
-            # Add latest
-            $readMeFileContent[0] = '{0} `[{1}]`' -f $readMeFileContent[0], $fullResourceType
-        }
-        # Remove excess whitespace
-        $readMeFileContent[0] = $readMeFileContent[0] -replace '\s+', ' '
-    }
-
+    # Set content
     if ($SectionsToRefresh -contains 'Resource Types') {
         # Handle [Resource Types] section
         # ===============================
