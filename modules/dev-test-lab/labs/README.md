@@ -1,6 +1,8 @@
 # DevTestLab Labs `[Microsoft.DevTestLab/labs]`
 
-This module deploys DevTestLab Labs.\nAzure DevTest Labs is a service for easily creating, using, and managing infrastructure-as-a-service (IaaS) virtual machines (VMs) and platform-as-a-service (PaaS) environments in labs. Labs offer preconfigured bases and artifacts for creating VMs, and Azure Resource Manager (ARM) templates for creating environments like Azure Web Apps or SharePoint farms.
+This module deploys DevTestLab Labs.
+
+Azure DevTest Labs is a service for easily creating, using, and managing infrastructure-as-a-service (IaaS) virtual machines (VMs) and platform-as-a-service (PaaS) environments in labs. Labs offer preconfigured bases and artifacts for creating VMs, and Azure Resource Manager (ARM) templates for creating environments like Azure Web Apps or SharePoint farms.
 
 ## Navigation
 
@@ -37,14 +39,14 @@ This module deploys DevTestLab Labs.\nAzure DevTest Labs is a service for easily
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `encryptionDiskEncryptionSetId` | string | `''` | The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey". |
-| `notificationChannels` | _[notificationChannels](notification-channels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
+| `notificationchannels` | _[notificationchannels](notificationchannels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `announcement` | object | `{object}` |  | The properties of any lab announcement associated with this lab. |
-| `artifactSources` | _[artifactSources](artifact-sources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
+| `artifactsources` | _[artifactsources](artifactsources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
 | `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
 | `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
 | `costs` | _[costs](costs/README.md)_ object | `{object}` |  | Costs to create for the lab. |
@@ -67,7 +69,7 @@ This module deploys DevTestLab Labs.\nAzure DevTest Labs is a service for easily
 | `support` | object | `{object}` |  | The properties of any lab support message associated with this lab. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworks` | _[virtualNetworks](virtual-networks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
+| `virtualnetworks` | _[virtualnetworks](virtualnetworks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
 | `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
 
