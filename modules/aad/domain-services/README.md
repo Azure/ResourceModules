@@ -1,4 +1,4 @@
-# Azure Active Directory Domain Services `[Microsoft.Aad/domainServices]`
+# Azure Active Directory Domain Services `[Microsoft.AAD/domainServices]`
 
 This template deploys Azure Active Directory Domain Services (AADDS).
 

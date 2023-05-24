@@ -1,4 +1,4 @@
-# API Management Service Portal Settings `[Microsoft.ApiManagement/service/portalSettings]`
+# API Management Service Portal Settings `[Microsoft.ApiManagement/service/portalsettings]`
 
 This module deploys API Management Service Portal Setting.
 

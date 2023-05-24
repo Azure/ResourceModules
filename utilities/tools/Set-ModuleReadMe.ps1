@@ -1428,7 +1428,7 @@ function Initialize-ReadMe {
     $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
 
     # Resolve resource type as per used API name to use matching casing
-    $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type
+    $relevantResourceTypeObjects = (Get-NestedResourceList $TemplateFileContent).type | Select-Object -Unique
     $formattedResourceType = $relevantResourceTypeObjects | Where-Object { $_ -eq $fullResourceType }
 
     if (-not $formattedResourceType) {
