@@ -1413,6 +1413,8 @@ function Initialize-ReadMe {
 
     $metadataFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'metadata.json'
     $metadataFileContent = ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw)
+    $moduleName = $metadataFileContent.name
+    $moduleDescription = $metadataFileContent.summary
 
     $splitHyphens = $FullModuleIdentifier.split('-')
     $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
@@ -1420,9 +1422,6 @@ function Initialize-ReadMe {
     $fullResourceType = 'Microsoft.{0}' -f $splitHyphens.Replace('-', '')
 
     if (-not (Test-Path $ReadMeFilePath) -or ([String]::IsNullOrEmpty((Get-Content $ReadMeFilePath -Raw)))) {
-
-        $moduleName = $metadataFileContent.name
-        $moduleDescription = $metadataFileContent.summary
 
         $initialContent = @(
             "# $moduleName ``[$fullResourceType]``",
