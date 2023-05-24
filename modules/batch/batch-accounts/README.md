@@ -1,6 +1,6 @@
 # Batch Accounts `[Microsoft.Batch/batchAccounts]`
 
-
+This module deploys a Batch Account.
 
 ## Navigation
 
