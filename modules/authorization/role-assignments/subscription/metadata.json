@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Role Assignment on Subscription level",
+  "summary": "With this module you can perform role assignments on a subscription level",
+  "owner": "Azure/module-maintainers"
+}

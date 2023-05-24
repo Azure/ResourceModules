@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "API Management Services",
+  "summary": "This module deploys an API management service.",
+  "owner": "Azure/module-maintainers"
+}

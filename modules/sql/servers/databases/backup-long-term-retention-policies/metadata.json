@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "SQL Server Database Long Term Backup Retention Policy",
+  "summary": "This module deploys a long term retention policy for a Azure SQL Database.",
+  "owner": "Azure/module-maintainers"
+}

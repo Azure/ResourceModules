@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Operationalinsights Workspaces Saved Searches",
+  "summary": "This template deploys a saved search for a Log Analytics workspace.",
+  "owner": "Azure/module-maintainers"
+}

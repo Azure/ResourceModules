@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "DataFactory Factories ManagedVirtualNetwork ManagedPrivateEndpoints",
+  "summary": "This module deploys a Managed Private Endpoint in a Managed Virtual Network for an Azure Data Factory",
+  "owner": "Azure/module-maintainers"
+}

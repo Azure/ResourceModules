@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "RecoveryServices Vaults ReplicationAlertSettings",
+  "summary": "This module deploys RecoveryServices Vaults ReplicationAlertSettings.",
+  "owner": "Azure/module-maintainers"
+}

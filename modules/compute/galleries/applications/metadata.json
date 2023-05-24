@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Application",
+  "summary": "This module deploys an Application in a Azure Compute Gallery.",
+  "owner": "Azure/module-maintainers"
+}

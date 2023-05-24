@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "PolicyInsights Remediations ResourceGroup",
+  "summary": "This module deploys PolicyInsights Remediations ResourceGroup.",
+  "owner": "Azure/module-maintainers"
+}

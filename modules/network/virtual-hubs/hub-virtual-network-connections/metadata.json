@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Virtual Hub Virtual Network Connections",
+  "summary": "This module deploys virtual hub virtual network connections.",
+  "owner": "Azure/module-maintainers"
+}

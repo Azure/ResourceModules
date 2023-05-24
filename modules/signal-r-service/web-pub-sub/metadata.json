@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Web PubSub Services",
+  "summary": "This module deploys a Web PubSub Service resource.",
+  "owner": "Azure/module-maintainers"
+}

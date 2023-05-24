@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Automation Account Variables",
+  "summary": "This module deploys a variable to an Azure Automation Account.",
+  "owner": "Azure/module-maintainers"
+}

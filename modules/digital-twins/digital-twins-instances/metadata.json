@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "DigitalTwin Instances",
+  "summary": "This module deploys Azure Digital Twins Instances.",
+  "owner": "Azure/module-maintainers"
+}

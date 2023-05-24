@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "App Service Plans",
+  "summary": "This module deploys an app service plan.",
+  "owner": "Azure/module-maintainers"
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Kubernetes Configuration Extensions",
+  "summary": "This module deploys Kubernetes Configuration Extensions.",
+  "owner": "Azure/module-maintainers"
+}

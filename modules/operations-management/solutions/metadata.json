@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "OperationsManagement Solutions",
+  "summary": "This module deploys OperationsManagement Solutions.",
+  "owner": "Azure/module-maintainers"
+}

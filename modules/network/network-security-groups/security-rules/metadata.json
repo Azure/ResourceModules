@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Network Security Groups Security Rules",
+  "summary": "This module deploys Network Security Group Security Rules.",
+  "owner": "Azure/module-maintainers"
+}

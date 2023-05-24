@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Web Sites BasicPublishingCredentialsPolicies",
+  "summary": "This module deploys Web Sites Basic Publishing Credentials Policies.",
+  "owner": "Azure/module-maintainers"
+}

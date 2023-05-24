@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "EventHub Namespace Disaster Recovery Config",
+  "summary": "This module deploys an EventHub Namespace Disaster Recovery Config",
+  "owner": "Azure/module-maintainers"
+}

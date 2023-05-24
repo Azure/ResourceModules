@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Front Doors",
+  "summary": "This module deploys Front Doors.",
+  "owner": "Azure/module-maintainers"
+}

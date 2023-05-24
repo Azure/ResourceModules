@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Static Site Custom Domain",
+  "summary": "This module deploys a Custom Domain into a Static Site.",
+  "owner": "Azure/module-maintainers"
+}

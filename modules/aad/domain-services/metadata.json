@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Azure Active Directory Domain Services",
+  "summary": "This template deploys Azure Active Directory Domain Services (AADDS).",
+  "owner": "Azure/module-maintainers"
+}

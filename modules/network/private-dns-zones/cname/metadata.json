@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Private DNS Zone CNAME record",
+  "summary": "This module deploys a Private DNS Zone CNAME record.",
+  "owner": "Azure/module-maintainers"
+}
