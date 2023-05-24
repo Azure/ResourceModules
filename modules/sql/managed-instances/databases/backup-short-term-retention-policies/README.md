@@ -2,7 +2,6 @@
 
 This module deploys a backup short-term retention policies for SQL Managed Instance databases
 
-
 ## Navigation
 
 - [Resource Types](#Resource-Types)
