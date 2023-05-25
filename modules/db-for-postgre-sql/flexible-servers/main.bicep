@@ -161,6 +161,11 @@ param diagnosticEventHubName string = ''
 @allowed([
   'allLogs'
   'PostgreSQLLogs'
+  'PostgreSQLFlexSessions'
+  'PostgreSQLFlexQueryStoreRuntime'
+  'PostgreSQLFlexQueryStoreWaitStats'
+  'PostgreSQLFlexTableStats'
+  'PostgreSQLFlexDatabaseXacts'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'
