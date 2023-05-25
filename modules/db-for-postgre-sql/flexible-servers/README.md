@@ -58,7 +58,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `delegatedSubnetResourceId` | string | `''` |  | Delegated subnet arm resource ID. Used when the desired connectivity mode is "Private Access" - virtual network integration. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, PostgreSQLLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, PostgreSQLFlexDatabaseXacts, PostgreSQLFlexQueryStoreRuntime, PostgreSQLFlexQueryStoreWaitStats, PostgreSQLFlexSessions, PostgreSQLFlexTableStats, PostgreSQLLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -603,7 +603,7 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
-    availabilityZone: '2'
+    availabilityZone: '1'
     backupRetentionDays: 20
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -694,7 +694,7 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     },
     // Non-required parameters
     "availabilityZone": {
-      "value": "2"
+      "value": "1"
     },
     "backupRetentionDays": {
       "value": 20

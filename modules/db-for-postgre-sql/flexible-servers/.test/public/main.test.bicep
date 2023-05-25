@@ -73,7 +73,7 @@ module testDeployment '../../main.bicep' = {
     administratorLoginPassword: password
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
-    availabilityZone: '2'
+    availabilityZone: '1'
     backupRetentionDays: 20
     configurations: [
       {
