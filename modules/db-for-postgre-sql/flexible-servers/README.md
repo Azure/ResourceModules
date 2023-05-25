@@ -603,7 +603,7 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     skuName: 'Standard_D2s_v3'
     tier: 'GeneralPurpose'
     // Non-required parameters
-    availabilityZone: '2'
+    availabilityZone: '1'
     backupRetentionDays: 20
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -694,7 +694,7 @@ module flexibleServers './db-for-postgre-sql/flexible-servers/main.bicep' = {
     },
     // Non-required parameters
     "availabilityZone": {
-      "value": "2"
+      "value": "1"
     },
     "backupRetentionDays": {
       "value": 20
