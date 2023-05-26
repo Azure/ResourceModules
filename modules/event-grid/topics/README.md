@@ -43,7 +43,7 @@ This module deploys an event grid topic.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventSubscriptions` | object | `{object}` |  | Event subscriptions to deploy. |
+| `eventSubscriptions` | array | `[]` |  | Event subscriptions to deploy. |
 | `inboundIpRules` | array | `[]` |  | This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -296,28 +296,30 @@ module topics './event-grid/topics/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    eventSubscriptions: {
-      destination: {
-        endpointType: 'StorageQueue'
-        properties: {
-          queueMessageTimeToLiveInSeconds: 86400
-          queueName: '<queueName>'
-          resourceId: '<resourceId>'
+    eventSubscriptions: [
+      {
+        destination: {
+          endpointType: 'StorageQueue'
+          properties: {
+            queueMessageTimeToLiveInSeconds: 86400
+            queueName: '<queueName>'
+            resourceId: '<resourceId>'
+          }
+        }
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        eventDeliverySchema: 'CloudEventSchemaV1_0'
+        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+        filter: {
+          enableAdvancedFilteringOnArrays: true
+          isSubjectCaseSensitive: false
+        }
+        name: '<<namePrefix>>egtcom001'
+        retryPolicy: {
+          eventTimeToLive: '120'
+          maxDeliveryAttempts: 10
         }
       }
-      enableDefaultTelemetry: '<enableDefaultTelemetry>'
-      eventDeliverySchema: 'CloudEventSchemaV1_0'
-      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
-      filter: {
-        enableAdvancedFilteringOnArrays: true
-        isSubjectCaseSensitive: false
-      }
-      name: '<<namePrefix>>egtcom001'
-      retryPolicy: {
-        eventTimeToLive: '120'
-        maxDeliveryAttempts: 10
-      }
-    }
+    ]
     inboundIpRules: [
       {
         action: 'Allow'
@@ -393,28 +395,30 @@ module topics './event-grid/topics/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "eventSubscriptions": {
-      "value": {
-        "destination": {
-          "endpointType": "StorageQueue",
-          "properties": {
-            "queueMessageTimeToLiveInSeconds": 86400,
-            "queueName": "<queueName>",
-            "resourceId": "<resourceId>"
+      "value": [
+        {
+          "destination": {
+            "endpointType": "StorageQueue",
+            "properties": {
+              "queueMessageTimeToLiveInSeconds": 86400,
+              "queueName": "<queueName>",
+              "resourceId": "<resourceId>"
+            }
+          },
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "eventDeliverySchema": "CloudEventSchemaV1_0",
+          "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+          "filter": {
+            "enableAdvancedFilteringOnArrays": true,
+            "isSubjectCaseSensitive": false
+          },
+          "name": "<<namePrefix>>egtcom001",
+          "retryPolicy": {
+            "eventTimeToLive": "120",
+            "maxDeliveryAttempts": 10
           }
-        },
-        "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-        "eventDeliverySchema": "CloudEventSchemaV1_0",
-        "expirationTimeUtc": "2026-01-01T11:00:21.715Z",
-        "filter": {
-          "enableAdvancedFilteringOnArrays": true,
-          "isSubjectCaseSensitive": false
-        },
-        "name": "<<namePrefix>>egtcom001",
-        "retryPolicy": {
-          "eventTimeToLive": "120",
-          "maxDeliveryAttempts": 10
         }
-      }
+      ]
     },
     "inboundIpRules": {
       "value": [

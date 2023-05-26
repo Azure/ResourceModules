@@ -11,7 +11,7 @@ param source string
 param topicType string
 
 @description('Optional. Event subscriptions to deploy.')
-param eventSubscriptions object = {}
+param eventSubscriptions array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -134,24 +134,24 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
 }
 
 // Event subscriptions
-module systemTopics_eventSubscriptions 'eventSubscriptions/main.bicep' = if (!empty(eventSubscriptions)) {
-  name: '${uniqueString(deployment().name, location)}-EventGrid-SystemTopics-EventSubscriptions'
+module systemTopics_eventSubscriptions 'eventSubscriptions/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
+  name: '${uniqueString(deployment().name, location)}-EventGrid-SystemTopics-EventSubscriptions-${index}'
   params: {
-    destination: eventSubscriptions.destination
+    destination: eventSubscription.destination
     systemTopicName: systemTopic.name
-    name: eventSubscriptions.name
-    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscriptions.deadLetterDestination : {}
-    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscriptions.deadLetterWithResourceIdentity : {}
-    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscriptions.deliveryWithResourceIdentity : {}
-    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscriptions.enableDefaultTelemetry : true
-    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscriptions.eventDeliverySchema : 'EventGridSchema'
-    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscriptions.expirationTimeUtc : ''
-    filter: contains(eventSubscriptions, 'filter') ? eventSubscriptions.filter : {}
-    labels: contains(eventSubscriptions, 'labels') ? eventSubscriptions.labels : []
-    location: contains(eventSubscriptions, 'location') ? eventSubscriptions.location : systemTopic.location
-    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscriptions.retryPolicy : {}
+    name: eventSubscription.name
+    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscription.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscription.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscription.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscription.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscription.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscription.expirationTimeUtc : ''
+    filter: contains(eventSubscriptions, 'filter') ? eventSubscription.filter : {}
+    labels: contains(eventSubscriptions, 'labels') ? eventSubscription.labels : []
+    location: contains(eventSubscriptions, 'location') ? eventSubscription.location : systemTopic.location
+    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscription.retryPolicy : {}
   }
-}
+}]
 
 resource systemTopic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${systemTopic.name}-${lock}-lock'

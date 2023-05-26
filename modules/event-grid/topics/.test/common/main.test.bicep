@@ -68,28 +68,28 @@ module testDeployment '../../main.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    eventSubscriptions: {
-      enableDefaultTelemetry: enableDefaultTelemetry
-      name: '<<namePrefix>>${serviceShort}001'
-      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
-      filter: {
-        isSubjectCaseSensitive: false
-        enableAdvancedFilteringOnArrays: true
-      }
-      retryPolicy: {
-        maxDeliveryAttempts: 10
-        eventTimeToLive: '120'
-      }
-      eventDeliverySchema: 'CloudEventSchemaV1_0'
-      destination: {
-        endpointType: 'StorageQueue'
-        properties: {
-          resourceId: nestedDependencies.outputs.storageAccountResourceId
-          queueMessageTimeToLiveInSeconds: 86400
-          queueName: nestedDependencies.outputs.queueName
+    eventSubscriptions: [ {
+        enableDefaultTelemetry: enableDefaultTelemetry
+        name: '<<namePrefix>>${serviceShort}001'
+        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+        filter: {
+          isSubjectCaseSensitive: false
+          enableAdvancedFilteringOnArrays: true
         }
-      }
-    }
+        retryPolicy: {
+          maxDeliveryAttempts: 10
+          eventTimeToLive: '120'
+        }
+        eventDeliverySchema: 'CloudEventSchemaV1_0'
+        destination: {
+          endpointType: 'StorageQueue'
+          properties: {
+            resourceId: nestedDependencies.outputs.storageAccountResourceId
+            queueMessageTimeToLiveInSeconds: 86400
+            queueName: nestedDependencies.outputs.queueName
+          }
+        }
+      } ]
     inboundIpRules: [
       {
         action: 'Allow'

@@ -44,7 +44,7 @@ This module deploys EventGrid SystemTopics.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventSubscriptions` | object | `{object}` |  | Event subscriptions to deploy. |
+| `eventSubscriptions` | array | `[]` |  | Event subscriptions to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -232,28 +232,30 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    eventSubscriptions: {
-      destination: {
-        endpointType: 'StorageQueue'
-        properties: {
-          queueMessageTimeToLiveInSeconds: 86400
-          queueName: '<queueName>'
-          resourceId: '<resourceId>'
+    eventSubscriptions: [
+      {
+        destination: {
+          endpointType: 'StorageQueue'
+          properties: {
+            queueMessageTimeToLiveInSeconds: 86400
+            queueName: '<queueName>'
+            resourceId: '<resourceId>'
+          }
+        }
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        eventDeliverySchema: 'CloudEventSchemaV1_0'
+        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+        filter: {
+          enableAdvancedFilteringOnArrays: true
+          isSubjectCaseSensitive: false
+        }
+        name: '<<namePrefix>>egstcom001'
+        retryPolicy: {
+          eventTimeToLive: '120'
+          maxDeliveryAttempts: 10
         }
       }
-      enableDefaultTelemetry: '<enableDefaultTelemetry>'
-      eventDeliverySchema: 'CloudEventSchemaV1_0'
-      expirationTimeUtc: '2026-01-01T11:00:21.715Z'
-      filter: {
-        enableAdvancedFilteringOnArrays: true
-        isSubjectCaseSensitive: false
-      }
-      name: '<<namePrefix>>egstcom001'
-      retryPolicy: {
-        eventTimeToLive: '120'
-        maxDeliveryAttempts: 10
-      }
-    }
+    ]
     lock: 'CanNotDelete'
     roleAssignments: [
       {
@@ -314,28 +316,30 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "eventSubscriptions": {
-      "value": {
-        "destination": {
-          "endpointType": "StorageQueue",
-          "properties": {
-            "queueMessageTimeToLiveInSeconds": 86400,
-            "queueName": "<queueName>",
-            "resourceId": "<resourceId>"
+      "value": [
+        {
+          "destination": {
+            "endpointType": "StorageQueue",
+            "properties": {
+              "queueMessageTimeToLiveInSeconds": 86400,
+              "queueName": "<queueName>",
+              "resourceId": "<resourceId>"
+            }
+          },
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "eventDeliverySchema": "CloudEventSchemaV1_0",
+          "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+          "filter": {
+            "enableAdvancedFilteringOnArrays": true,
+            "isSubjectCaseSensitive": false
+          },
+          "name": "<<namePrefix>>egstcom001",
+          "retryPolicy": {
+            "eventTimeToLive": "120",
+            "maxDeliveryAttempts": 10
           }
-        },
-        "enableDefaultTelemetry": "<enableDefaultTelemetry>",
-        "eventDeliverySchema": "CloudEventSchemaV1_0",
-        "expirationTimeUtc": "2026-01-01T11:00:21.715Z",
-        "filter": {
-          "enableAdvancedFilteringOnArrays": true,
-          "isSubjectCaseSensitive": false
-        },
-        "name": "<<namePrefix>>egstcom001",
-        "retryPolicy": {
-          "eventTimeToLive": "120",
-          "maxDeliveryAttempts": 10
         }
-      }
+      ]
     },
     "lock": {
       "value": "CanNotDelete"
