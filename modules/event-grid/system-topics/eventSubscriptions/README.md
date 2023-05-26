@@ -4,12 +4,10 @@ This module deploys event subscriptions for system topics.
 
 ## Navigation
 
-- [EventGrid SystemTopics EventSubscriptions `[Microsoft.EventGrid/systemTopics/eventSubscriptions]`](#eventgrid-systemtopics-eventsubscriptions-microsofteventgridsystemtopicseventsubscriptions)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource Types
 
@@ -41,6 +39,7 @@ This module deploys event subscriptions for system topics.
 | `labels` | array | `[]` |  | The list of user defined labels. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `retryPolicy` | object | `{object}` |  | The retry policy for events. This can be used to configure the TTL and maximum number of delivery attempts and time to live for events. |
+
 
 ## Outputs
 
