@@ -10,6 +10,9 @@ param managedIdentityName string
 @description('Required. The name of the Storage Account to create.')
 param storageAccountName string
 
+@description('Required. The name of the Storage Queue to create.')
+param storageQueueName string
+
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -65,7 +68,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
         name: 'default'
 
         resource queue 'queues@2022-09-01' = {
-            name: 'customQueue'
+            name: storageQueueName
         }
     }
 }
