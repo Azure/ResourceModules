@@ -159,7 +159,7 @@ function Invoke-ResourceRemoval {
             $tagsToRemove = @('Test', 'TestToo')
             $tagsToKeep = @{}
 
-            #Loop over each key and add it to the new tags if it is not in the list of tags to remove
+            # Loop over each key and add it to the new tags if it is not in the list of tags to remove
             $currentTags.TagsProperty.Keys | ForEach-Object {
                 $key = $_
                 if ($tagsToRemove -notcontains $key) {
