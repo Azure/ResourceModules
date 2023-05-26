@@ -1,7 +1,6 @@
 # EventGrid SystemTopics `[Microsoft.EventGrid/systemTopics]`
 
-This module deploys EventGrid SystemTopics.
-// TODO: Replace Resource and fill in description
+This module deploys an event grid system topics.
 
 ## Navigation
 
