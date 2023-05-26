@@ -1,14 +1,15 @@
 # EventGrid Topics EventSubscriptions `[Microsoft.EventGrid/topics/eventSubscriptions]`
 
-This module deploys EventGrid Topics EventSubscriptions.
-// TODO: Replace Resource and fill in description
+This module deploys event subscriptions for topics.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [EventGrid Topics EventSubscriptions `[Microsoft.EventGrid/topics/eventSubscriptions]`](#eventgrid-topics-eventsubscriptions-microsofteventgridtopicseventsubscriptions)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
@@ -40,11 +41,6 @@ This module deploys EventGrid Topics EventSubscriptions.
 | `labels` | array | `[]` |  | The list of user defined labels. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `retryPolicy` | object | `{object}` |  | The retry policy for events. This can be used to configure the TTL and maximum number of delivery attempts and time to live for events. |
-
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 
