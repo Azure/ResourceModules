@@ -53,9 +53,78 @@ This module deploys EventGrid SystemTopics.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `eventSubscriptions`
 
-// TODO: Fill in Parameter usage
+You can specify multiple event subscriptions using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"eventSubscriptions": {
+    "value": [
+      {
+        "destination": {
+          "endpointType": "StorageQueue",
+          "properties": {
+            "queueMessageTimeToLiveInSeconds": 86400,
+            "queueName": "<queueName>",
+            "resourceId": "<resourceId>"
+          }
+        },
+        "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+        "eventDeliverySchema": "CloudEventSchemaV1_0",
+        "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+        "filter": {
+          "enableAdvancedFilteringOnArrays": true,
+          "isSubjectCaseSensitive": false
+        },
+        "name": "<<namePrefix>>egstcom001",
+        "retryPolicy": {
+          "eventTimeToLive": "120",
+          "maxDeliveryAttempts": 10
+        }
+      }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+eventSubscriptions: [
+    {
+      destination: {
+        endpointType: 'StorageQueue'
+        properties: {
+          queueMessageTimeToLiveInSeconds: 86400
+          queueName: '<queueName>'
+          resourceId: '<resourceId>'
+        }
+      }
+      enableDefaultTelemetry: '<enableDefaultTelemetry>'
+      eventDeliverySchema: 'CloudEventSchemaV1_0'
+      expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+      filter: {
+        enableAdvancedFilteringOnArrays: true
+        isSubjectCaseSensitive: false
+      }
+      name: '<<namePrefix>>egstcom001'
+      retryPolicy: {
+        eventTimeToLive: '120'
+        maxDeliveryAttempts: 10
+      }
+    }
+  ]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
