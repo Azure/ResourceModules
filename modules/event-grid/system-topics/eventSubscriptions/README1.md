@@ -1,6 +1,7 @@
-# Event Grid System Topic Event Subscriptions `[Microsoft.EventGrid/systemTopics/eventSubscriptions]`
+# EventGrid SystemTopics EventSubscriptions `[Microsoft.EventGrid/systemTopics/eventSubscriptions]`
 
-This module deploys an Event Grid SystemTopic Event Subscription.
+This module deploys EventGrid SystemTopics EventSubscriptions.
+// TODO: Replace Resource and fill in description
 
 ## Navigation
 
