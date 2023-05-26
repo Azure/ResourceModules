@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
-      - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
+      - 'modules/kubernetes-configuration/extensions/**'
+      - 'modules/kubernetes-configuration/flux-configurations/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.KubernetesConfiguration/extensions'
+  modulePath: 'modules/kubernetes-configuration/extensions'
   workflowPath: '.github/workflows/ms.kubernetesconfiguration.extensions.yml'
 
 concurrency:

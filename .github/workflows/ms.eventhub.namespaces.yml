@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.EventHub/namespaces/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/event-hub/namespaces/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventhub.namespaces.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.EventHub/namespaces'
+  modulePath: 'modules/event-hub/namespaces'
   workflowPath: '.github/workflows/ms.eventhub.namespaces.yml'
 
 concurrency:

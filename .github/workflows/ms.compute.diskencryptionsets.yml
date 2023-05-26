@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Compute/diskEncryptionSets/**'
-      - 'modules/Microsoft.KeyVault/vaults/accessPolicies/**'
+      - 'modules/compute/disk-encryption-sets/**'
+      - 'modules/key-vault/vaults/access-policies/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.diskencryptionsets.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/diskEncryptionSets'
+  modulePath: 'modules/compute/disk-encryption-sets'
   workflowPath: '.github/workflows/ms.compute.diskencryptionsets.yml'
 
 concurrency:

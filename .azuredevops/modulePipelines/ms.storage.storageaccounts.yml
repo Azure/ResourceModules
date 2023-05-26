@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Microsoft.Storage/storageAccounts/*'
-      - '/modules/Microsoft.Network/privateEndpoints/*'
+      - '/modules/storage/storage-accounts/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.storage.storageaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Storage/storageAccounts'
+    value: '/modules/storage/storage-accounts'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

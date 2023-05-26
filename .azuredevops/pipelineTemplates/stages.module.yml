@@ -21,7 +21,7 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          templateFilePath: '$(modulePath)/deploy.bicep'
+          templateFilePath: '$(modulePath)/main.bicep'
           removeDeployment: '${{ parameters.removeDeployment }}'
           defaultJobTimeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
 

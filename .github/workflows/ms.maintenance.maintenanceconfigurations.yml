@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.maintenance.maintenanceconfigurations.yml'
-      - 'modules/Microsoft.Maintenance/maintenanceConfigurations/**'
+      - 'modules/maintenance/maintenance-configurations/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Maintenance/maintenanceConfigurations'
+  modulePath: 'modules/maintenance/maintenance-configurations'
   workflowPath: '.github/workflows/ms.maintenance.maintenanceconfigurations.yml'
 
 concurrency:

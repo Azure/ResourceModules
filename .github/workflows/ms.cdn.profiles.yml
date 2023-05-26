@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cdn.profiles.yml'
-      - 'modules/Microsoft.CDN/profiles/**'
+      - 'modules/cdn/profiles/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.CDN/profiles'
+  modulePath: 'modules/cdn/profiles'
   workflowPath: '.github/workflows/ms.cdn.profiles.yml'
 
 concurrency:

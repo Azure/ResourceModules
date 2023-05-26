@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.publicipaddresses.yml'
-      - 'modules/Microsoft.Network/publicIPAddresses/**'
+      - 'modules/network/public-ip-addresses/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/publicIPAddresses'
+  modulePath: 'modules/network/public-ip-addresses'
   workflowPath: '.github/workflows/ms.network.publicipaddresses.yml'
 
 concurrency:

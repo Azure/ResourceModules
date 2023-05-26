@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.vpnsites.yml'
-      - 'modules/Microsoft.Network/vpnSites/**'
+      - 'modules/network/vpn-sites/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/vpnSites'
+  modulePath: 'modules/network/vpn-sites'
   workflowPath: '.github/workflows/ms.network.vpnsites.yml'
 
 concurrency:

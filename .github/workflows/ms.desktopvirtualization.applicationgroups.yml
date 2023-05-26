@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.desktopvirtualization.applicationgroups.yml'
-      - 'modules/Microsoft.DesktopVirtualization/applicationgroups/**'
+      - 'modules/desktop-virtualization/application-groups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DesktopVirtualization/applicationgroups'
+  modulePath: 'modules/desktop-virtualization/application-groups'
   workflowPath: '.github/workflows/ms.desktopvirtualization.applicationgroups.yml'
 
 concurrency:

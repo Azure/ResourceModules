@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.disks.yml'
-      - 'modules/Microsoft.Compute/disks/**'
+      - 'modules/compute/disks/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/disks'
+  modulePath: 'modules/compute/disks'
   workflowPath: '.github/workflows/ms.compute.disks.yml'
 
 concurrency:

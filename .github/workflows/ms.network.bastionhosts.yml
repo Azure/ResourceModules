@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Network/bastionHosts/**'
-      - 'modules/Microsoft.Network/publicIPAddresses/**'
+      - 'modules/network/bastion-hosts/**'
+      - 'modules/network/public-ip-addresses/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.bastionhosts.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/bastionHosts'
+  modulePath: 'modules/network/bastion-hosts'
   workflowPath: '.github/workflows/ms.network.bastionhosts.yml'
 
 concurrency:

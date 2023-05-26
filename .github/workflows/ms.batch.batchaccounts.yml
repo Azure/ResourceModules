@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Batch/batchAccounts/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/batch/batch-accounts/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.batch.batchaccounts.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Batch/batchAccounts'
+  modulePath: 'modules/batch/batch-accounts'
   workflowPath: '.github/workflows/ms.batch.batchaccounts.yml'
 
 concurrency:

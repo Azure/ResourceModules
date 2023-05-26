@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Network/azureFirewalls/**'
-      - 'modules/Microsoft.Network/publicIPAddresses/**'
+      - 'modules/network/azure-firewalls/**'
+      - 'modules/network/public-ip-addresses/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.azurefirewalls.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/azureFirewalls'
+  modulePath: 'modules/network/azure-firewalls'
   workflowPath: '.github/workflows/ms.network.azurefirewalls.yml'
 
 concurrency:

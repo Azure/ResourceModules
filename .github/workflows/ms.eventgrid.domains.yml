@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.EventGrid/domains/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/event-grid/domains/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.eventgrid.domains.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.EventGrid/domains'
+  modulePath: 'modules/event-grid/domains'
   workflowPath: '.github/workflows/ms.eventgrid.domains.yml'
 
 concurrency:

@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.ServiceBus/namespaces/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/service-bus/namespaces/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.servicebus.namespaces.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.ServiceBus/namespaces'
+  modulePath: 'modules/service-bus/namespaces'
   workflowPath: '.github/workflows/ms.servicebus.namespaces.yml'
 
 concurrency:

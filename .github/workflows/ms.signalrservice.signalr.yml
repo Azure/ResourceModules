@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.SignalRService/signalR/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/signal-r-service/signal-r/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.signalrservice.signalr.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.SignalRService/signalR'
+  modulePath: 'modules/signal-r-service/signal-r'
   workflowPath: '.github/workflows/ms.signalrservice.signalr.yml'
 
 concurrency:

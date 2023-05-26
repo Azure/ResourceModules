@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.metricalerts.yml'
-      - 'modules/Microsoft.Insights/metricAlerts/**'
+      - 'modules/insights/metric-alerts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Insights/metricAlerts'
+  modulePath: 'modules/insights/metric-alerts'
   workflowPath: '.github/workflows/ms.insights.metricalerts.yml'
 
 concurrency:

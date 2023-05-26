@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.loadbalancers.yml'
-      - 'modules/Microsoft.Network/loadBalancers/**'
+      - 'modules/network/load-balancers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/loadBalancers'
+  modulePath: 'modules/network/load-balancers'
   workflowPath: '.github/workflows/ms.network.loadbalancers.yml'
 
 concurrency:

@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Resources/resourceGroups/**'
-      - 'modules/Microsoft.Authorization/locks/resourceGroup/**'
+      - 'modules/resources/resource-groups/**'
+      - 'modules/authorization/locks/resource-group/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.resourcegroups.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Resources/resourceGroups'
+  modulePath: 'modules/resources/resource-groups'
   workflowPath: '.github/workflows/ms.resources.resourcegroups.yml'
 
 concurrency:

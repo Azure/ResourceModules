@@ -15,7 +15,7 @@
 ##   |===========================================================================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
 ##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/Microsoft.ApiManagement/service/deploy.bicep' |
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/api-management/service/main.bicep'            |
 ##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
 ##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
 ##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |
@@ -131,7 +131,7 @@ runs:
           ##   Publish   ##
           #################
           foreach ($moduleToPublish in $modulesToPublish) {
-            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
             $functionInput = @{
@@ -206,7 +206,7 @@ runs:
           ##   Publish   ##
           #################
           foreach ($moduleToPublish in $modulesToPublish) {
-            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/deploy.')[0]
+            $RelPath = (($moduleToPublish.TemplateFilePath).Split('/modules/')[-1]).Split('/main.')[0]
             Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $moduleToPublish.Version)"
 
             $functionInput = @{

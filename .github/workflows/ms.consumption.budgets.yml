@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.consumption.budgets.yml'
-      - 'modules/Microsoft.Consumption/budgets/**'
+      - 'modules/consumption/budgets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Consumption/budgets'
+  modulePath: 'modules/consumption/budgets'
   workflowPath: '.github/workflows/ms.consumption.budgets.yml'
 
 concurrency:

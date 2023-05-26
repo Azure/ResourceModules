@@ -20,7 +20,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 - **File/folder tests**
   - **General module folder tests**
-    1. Module should contain a [` deploy.json ` / ` deploy.bicep `] file.
+    1. Module should contain a [` main.json ` / ` main.bicep `] file.
     1. Module should contain a [` readme.md `] file.
     1. Module should contain a [` .test `] folder.
     1. Module should contain a [` version.json `] file.
@@ -70,8 +70,8 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Resource Group output should exist for resources that are deployed into a resource group scope.
     1. Resource name output should exist.
     1. Resource ID output should exist.
-    1. All parameters in parameters files exist in template file (`deploy.json`).
-    1. All required parameters in template file (`deploy.json`) should exist in parameters files.
+    1. All parameters in parameters files exist in template file (`main.json`).
+    1. All required parameters in template file (`main.json`) should exist in parameters files.
     1. All non-required parameters in template file should not have description that start with "Required.".
 - **API version tests**
     1. In used resource type should use one of the recent API version(s). Currently using .
@@ -115,7 +115,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    templateFilePath              = "$pathToRepository\modules\Authorization\roleDefinitions\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false

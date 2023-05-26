@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Web/staticSites/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/web/static-sites/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.web.staticsites.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Web/staticSites'
+  modulePath: 'modules/web/static-sites'
   workflowPath: '.github/workflows/ms.web.staticsites.yml'
 
 concurrency:

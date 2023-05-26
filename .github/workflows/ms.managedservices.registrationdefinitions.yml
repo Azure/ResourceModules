@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.managedservices.registrationdefinitions.yml'
-      - 'modules/Microsoft.ManagedServices/registrationDefinitions/**'
+      - 'modules/managed-services/registration-definitions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.ManagedServices/registrationDefinitions'
+  modulePath: 'modules/managed-services/registration-definitions'
   workflowPath: '.github/workflows/ms.managedservices.registrationdefinitions.yml'
 
 concurrency:

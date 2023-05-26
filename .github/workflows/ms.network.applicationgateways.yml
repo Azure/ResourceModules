@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.applicationgateways.yml'
-      - 'modules/Microsoft.Network/applicationGateways/**'
+      - 'modules/network/application-gateways/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/applicationGateways'
+  modulePath: 'modules/network/application-gateways'
   workflowPath: '.github/workflows/ms.network.applicationgateways.yml'
 
 concurrency:

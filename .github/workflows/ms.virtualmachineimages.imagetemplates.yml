@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.virtualmachineimages.imagetemplates.yml'
-      - 'modules/Microsoft.VirtualMachineImages/imageTemplates/**'
+      - 'modules/virtual-machine-images/image-templates/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.VirtualMachineImages/imageTemplates'
+  modulePath: 'modules/virtual-machine-images/image-templates'
   workflowPath: '.github/workflows/ms.virtualmachineimages.imagetemplates.yml'
 
 concurrency:

@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.DataFactory/factories/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/data-factory/factories/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.datafactory.factories.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DataFactory/factories'
+  modulePath: 'modules/data-factory/factories'
   workflowPath: '.github/workflows/ms.datafactory.factories.yml'
 
 concurrency:

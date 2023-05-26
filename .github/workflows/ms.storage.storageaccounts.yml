@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Storage/storageAccounts/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/storage/storage-accounts/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.storage.storageaccounts.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Storage/storageAccounts'
+  modulePath: 'modules/storage/storage-accounts'
   workflowPath: '.github/workflows/ms.storage.storageaccounts.yml'
 
 concurrency:

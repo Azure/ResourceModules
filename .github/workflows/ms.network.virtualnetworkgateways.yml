@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Network/virtualNetworkGateways/**'
-      - 'modules/Microsoft.Network/publicIPAddresses/**'
+      - 'modules/network/virtual-network-gateways/**'
+      - 'modules/network/public-ip-addresses/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.virtualnetworkgateways.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/virtualNetworkGateways'
+  modulePath: 'modules/network/virtual-network-gateways'
   workflowPath: '.github/workflows/ms.network.virtualnetworkgateways.yml'
 
 concurrency:

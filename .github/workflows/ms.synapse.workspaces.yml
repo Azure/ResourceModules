@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Synapse/workspaces/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/synapse/workspaces/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.synapse.workspaces.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Synapse/workspaces'
+  modulePath: 'modules/synapse/workspaces'
   workflowPath: '.github/workflows/ms.synapse.workspaces.yml'
 
 concurrency:

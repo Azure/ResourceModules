@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.desktopvirtualization.hostpools.yml'
-      - 'modules/Microsoft.DesktopVirtualization/hostpools/**'
+      - 'modules/desktop-virtualization/host-pools/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DesktopVirtualization/hostpools'
+  modulePath: 'modules/desktop-virtualization/host-pools'
   workflowPath: '.github/workflows/ms.desktopvirtualization.hostpools.yml'
 
 concurrency:

@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.ddosprotectionplans.yml'
-      - 'modules/Microsoft.Network/ddosProtectionPlans/**'
+      - 'modules/network/ddos-protection-plans/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/ddosProtectionPlans'
+  modulePath: 'modules/network/ddos-protection-plans'
   workflowPath: '.github/workflows/ms.network.ddosprotectionplans.yml'
 
 concurrency:
