@@ -19,7 +19,18 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
         name: 'Standard_LRS'
     }
     kind: 'StorageV2'
+
+    resource queueService 'queueServices@2022-09-01' = {
+        name: 'default'
+
+        resource queue 'queues@2022-09-01' = {
+            name: 'customQueue'
+        }
+    }
 }
+
+@description('The name of the created Storage Account Queue.')
+output queueName string = storageAccount::queueService::queue.name
 
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId

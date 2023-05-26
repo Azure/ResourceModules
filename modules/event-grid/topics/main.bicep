@@ -15,6 +15,9 @@ param publicNetworkAccess string = ''
 @description('Optional. This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.')
 param inboundIpRules array = []
 
+@description('Optional. Event subscriptions to deploy.')
+param eventSubscriptions object = {}
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -124,6 +127,26 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   properties: {
     publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) && empty(inboundIpRules) ? 'Disabled' : null)
     inboundIpRules: (empty(inboundIpRules) ? null : inboundIpRules)
+  }
+}
+
+// Event subscriptions
+module topics_eventSubscriptions 'eventSubscriptions/main.bicep' = if (!empty(eventSubscriptions)) {
+  name: '${uniqueString(deployment().name, location)}-EventGrid-Topics-EventSubscriptions'
+  params: {
+    destination: eventSubscriptions.destination
+    topicName: topic.name
+    name: eventSubscriptions.name
+    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscriptions.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscriptions.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscriptions.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscriptions.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscriptions.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscriptions.expirationTimeUtc : ''
+    filter: contains(eventSubscriptions, 'filter') ? eventSubscriptions.filter : {}
+    labels: contains(eventSubscriptions, 'labels') ? eventSubscriptions.labels : []
+    location: contains(eventSubscriptions, 'location') ? eventSubscriptions.location : topic.location
+    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscriptions.retryPolicy : {}
   }
 }
 

@@ -1,4 +1,4 @@
-@description('Required. The name of the Event Grid Topic.')
+@description('Required. The name of the Event Subscription.')
 param name string
 
 @description('Optional. Location for all Resources.')
@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 param enableDefaultTelemetry bool = true
 
 @description('Required. Name of the Event Grid Topic.')
-param eventGridTopicName string
+param topicName string
 
 @description('Optional. Dead Letter Destination. (See https://learn.microsoft.com/en-us/azure/templates/microsoft.eventgrid/eventsubscriptions?pivots=deployment-language-bicep#deadletterdestination-objects for more information).')
 param deadLetterDestination object = {}
@@ -57,13 +57,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventGridTopic 'Microsoft.EventGrid/topics@2022-06-15' existing = {
-  name: eventGridTopicName
+resource topic 'Microsoft.EventGrid/topics@2022-06-15' existing = {
+  name: topicName
 }
 
-resource eventSubscription 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
+resource eventSubscription 'Microsoft.EventGrid/topics/eventSubscriptions@2022-06-15' = {
   name: name
-  scope: eventGridTopic
+  parent: topic
   properties: {
     deadLetterDestination: !empty(deadLetterDestination) ? deadLetterDestination : null
     deadLetterWithResourceIdentity: !empty(deadLetterWithResourceIdentity) ? deadLetterWithResourceIdentity : null
@@ -77,14 +77,14 @@ resource eventSubscription 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' =
   }
 }
 
-@description('The name of the event grid topic.')
+@description('The name of the event subscription.')
 output name string = eventSubscription.name
 
-@description('The resource ID of the event grid topic.')
+@description('The resource ID of the event subscription.')
 output resourceId string = eventSubscription.id
 
-@description('The name of the resource group the event grid topic was deployed into.')
+@description('The name of the resource group the event subscription was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')
-output location string = eventGridTopic.location
+output location string = topic.location
