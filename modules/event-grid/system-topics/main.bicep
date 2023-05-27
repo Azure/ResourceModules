@@ -10,6 +10,9 @@ param source string
 @description('Required. TopicType for the system topic.')
 param topicType string
 
+@description('Optional. Event subscriptions to deploy.')
+param eventSubscriptions array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -129,6 +132,26 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
     topicType: topicType
   }
 }
+
+// Event subscriptions
+module systemTopics_eventSubscriptions 'eventSubscriptions/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
+  name: '${uniqueString(deployment().name, location)}-EventGrid-SystemTopics-EventSubscriptions-${index}'
+  params: {
+    destination: eventSubscription.destination
+    systemTopicName: systemTopic.name
+    name: eventSubscription.name
+    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscription.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscription.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscription.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscription.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscription.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscription.expirationTimeUtc : ''
+    filter: contains(eventSubscriptions, 'filter') ? eventSubscription.filter : {}
+    labels: contains(eventSubscriptions, 'labels') ? eventSubscription.labels : []
+    location: contains(eventSubscriptions, 'location') ? eventSubscription.location : systemTopic.location
+    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscription.retryPolicy : {}
+  }
+}]
 
 resource systemTopic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${systemTopic.name}-${lock}-lock'
