@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - ADMIN
 module admin 'admin/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-admin-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module admin 'admin/main.test.bicep' = {
 module common 'common/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-common-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module common 'common/main.test.bicep' = {
 module pe 'pe/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-pe-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,6 +34,6 @@ module pe 'pe/main.test.bicep' = {
 module secondary 'secondary/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-secondary-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

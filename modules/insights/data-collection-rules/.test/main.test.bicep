@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - CUSTOMADV
 module customadv 'customadv/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-customadv-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module customadv 'customadv/main.test.bicep' = {
 module custombasic 'custombasic/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-custombasic-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module custombasic 'custombasic/main.test.bicep' = {
 module customiis 'customiis/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-customiis-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,7 +34,7 @@ module customiis 'customiis/main.test.bicep' = {
 module linux 'linux/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-linux-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -40,7 +42,7 @@ module linux 'linux/main.test.bicep' = {
 module min 'min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -48,6 +50,6 @@ module min 'min/main.test.bicep' = {
 module windows 'windows/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-windows-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

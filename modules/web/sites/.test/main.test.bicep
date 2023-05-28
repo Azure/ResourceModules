@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - FUNCTIONAPPCOMMON
 module functionAppCommon 'functionAppCommon/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-functionAppCommon-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module functionAppCommon 'functionAppCommon/main.test.bicep' = {
 module functionAppMin 'functionAppMin/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-functionAppMin-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module functionAppMin 'functionAppMin/main.test.bicep' = {
 module webAppCommon 'webAppCommon/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-webAppCommon-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,6 +34,6 @@ module webAppCommon 'webAppCommon/main.test.bicep' = {
 module webAppMin 'webAppMin/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-webAppMin-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

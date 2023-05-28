@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - GREMLINDB
 module gremlindb 'gremlindb/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-gremlindb-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module gremlindb 'gremlindb/main.test.bicep' = {
 module mongodb 'mongodb/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-mongodb-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module mongodb 'mongodb/main.test.bicep' = {
 module plain 'plain/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-plain-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,6 +34,6 @@ module plain 'plain/main.test.bicep' = {
 module sqldb 'sqldb/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-sqldb-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

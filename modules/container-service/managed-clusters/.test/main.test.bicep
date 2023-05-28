@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - AZURE
 module azure 'azure/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-azure-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module azure 'azure/main.test.bicep' = {
 module kubenet 'kubenet/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-kubenet-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,6 +26,6 @@ module kubenet 'kubenet/main.test.bicep' = {
 module min 'min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

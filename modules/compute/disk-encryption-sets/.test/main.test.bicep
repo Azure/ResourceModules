@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - ACCESSPOLICIES
 module accessPolicies 'accessPolicies/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-accessPolicies-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,6 +18,6 @@ module accessPolicies 'accessPolicies/main.test.bicep' = {
 module common 'common/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-common-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

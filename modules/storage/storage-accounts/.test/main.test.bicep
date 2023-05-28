@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - COMMON
 module common 'common/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-common-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module common 'common/main.test.bicep' = {
 module encr 'encr/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-encr-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module encr 'encr/main.test.bicep' = {
 module min 'min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,7 +34,7 @@ module min 'min/main.test.bicep' = {
 module nfs 'nfs/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-nfs-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -40,6 +42,6 @@ module nfs 'nfs/main.test.bicep' = {
 module v1 'v1/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-v1-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

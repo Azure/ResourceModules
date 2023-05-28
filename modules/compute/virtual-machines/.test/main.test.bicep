@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - LINUX
 module linux 'linux/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-linux-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module linux 'linux/main.test.bicep' = {
 module linux_atmg 'linux.atmg/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-linux.atmg-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module linux_atmg 'linux.atmg/main.test.bicep' = {
 module linux_min 'linux.min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-linux.min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,7 +34,7 @@ module linux_min 'linux.min/main.test.bicep' = {
 module windows 'windows/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-windows-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -40,7 +42,7 @@ module windows 'windows/main.test.bicep' = {
 module windows_atmg 'windows.atmg/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-windows.atmg-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -48,7 +50,7 @@ module windows_atmg 'windows.atmg/main.test.bicep' = {
 module windows_min 'windows.min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-windows.min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -56,6 +58,6 @@ module windows_min 'windows.min/main.test.bicep' = {
 module windows_ssecmk 'windows.ssecmk/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-windows.ssecmk-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

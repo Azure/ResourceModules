@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - MIN
 module min 'min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module min 'min/main.test.bicep' = {
 module rg 'rg/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-rg-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,6 +26,6 @@ module rg 'rg/main.test.bicep' = {
 module sub 'sub/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-sub-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }

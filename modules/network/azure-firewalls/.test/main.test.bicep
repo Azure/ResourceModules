@@ -4,11 +4,13 @@ targetScope = 'subscription'
 // Test Cases //
 // ========== //
 
+var namePrefix = 'crml'
+
 // TEST 1 - ADDPIP
 module addpip 'addpip/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-addpip-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -16,7 +18,7 @@ module addpip 'addpip/main.test.bicep' = {
 module common 'common/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-common-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -24,7 +26,7 @@ module common 'common/main.test.bicep' = {
 module custompip 'custompip/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-custompip-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -32,7 +34,7 @@ module custompip 'custompip/main.test.bicep' = {
 module hubcommon 'hubcommon/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-hubcommon-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -40,7 +42,7 @@ module hubcommon 'hubcommon/main.test.bicep' = {
 module hubmin 'hubmin/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-hubmin-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
 
@@ -48,6 +50,6 @@ module hubmin 'hubmin/main.test.bicep' = {
 module min 'min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-min-test'
   params: {
-    namePrefix: 'crml'
+    namePrefix: namePrefix
   }
 }
