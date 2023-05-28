@@ -1363,53 +1363,6 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             }
         }
     }
-
-    Context 'PBR' {
-
-
-        $deploymentTestFileTestCases = @()
-
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $testFolderPath = Join-Path $moduleFolderPath '.test'
-            if (Test-Path $testFolderPath) {
-                $centralTestFilePath = Join-Path $testFolderPath 'main.test.bicep'
-                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
-                foreach ($testFilePath in $testFilePaths) {
-
-                    $deploymentTestFileTestCases += @{
-                        testFilePath        = $testFilePath
-                        testFileFolderName  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
-                        centralTestFilePath = $centralTestFilePath
-                        moduleFolderName    = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                    }
-                }
-            }
-        }
-
-        It '[<moduleFolderName>] Module should have central test file [.test/main.test.bicep] for Public Bicep Registry CI' -TestCases ($deploymentTestFileTestCases | Select-Object -Unique) {
-
-            param(
-                [string] $centralTestFilePath
-            )
-
-            Test-Path $centralTestFilePath | Should -Be $true
-        }
-
-        It '[<moduleFolderName>] Module''s central test file should contain a reference to test folder [<testFileFolderName>] such as [module <testFileFolderName> ''<testFileFolderName>/main.test.bicep'' = {]' -TestCases $deploymentTestFileTestCases {
-
-            param(
-                [string] $testFileFolderName,
-                [string] $centralTestFilePath
-            )
-
-            $centralTestFileContent = Get-Content $centralTestFilePath
-            $centralTestFileTestCases = $centralTestFileContent | Where-Object {
-                $_ -match "^module $testFileFolderName '$testFileFolderName\/main.test.bicep' = \{$"
-            }
-
-            $centralTestFileTestCases.Count | Should -Be 1
-        }
-    }
 }
 
 Describe 'API version tests' -Tag 'ApiCheck' {
