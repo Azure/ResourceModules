@@ -17,6 +17,9 @@ param serviceShort string = 'cvmlinmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -33,10 +36,10 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     location: location
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    sshDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    sshKeyName: 'dep-<<namePrefix>>-ssh-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    sshDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
+    sshKeyName: 'dep-${namePrefix}-ssh-${serviceShort}'
   }
 }
 
@@ -55,7 +58,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
-    name: '<<namePrefix>>${serviceShort}'
+    name: '${namePrefix}${serviceShort}'
     adminUsername: 'localAdminUser'
     imageReference: {
       publisher: 'Canonical'

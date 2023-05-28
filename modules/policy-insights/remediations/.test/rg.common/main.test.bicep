@@ -17,6 +17,9 @@ param serviceShort string = 'pirrgcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -29,7 +32,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-polDef-AuditKvlt-${serviceShort}'
+  name: 'dep-${namePrefix}-polDef-AuditKvlt-${serviceShort}'
   properties: {
     policyRule: {
       if: {
@@ -57,7 +60,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 }
 
 resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-polSet-${serviceShort}'
+  name: 'dep-${namePrefix}-polSet-${serviceShort}'
   properties: {
     policyDefinitions: [
       {
@@ -74,7 +77,7 @@ resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
 }
 
 resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-psa-${serviceShort}'
+  name: 'dep-${namePrefix}-psa-${serviceShort}'
   location: location
   properties: {
     displayName: 'Test case assignment'
@@ -91,7 +94,7 @@ module testDeployment '../../resource-group/main.bicep' = {
   scope: resourceGroup
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     location: location
     policyAssignmentId: policySetAssignment.id
     policyDefinitionReferenceId: policySet.properties.policyDefinitions[0].policyDefinitionReferenceId

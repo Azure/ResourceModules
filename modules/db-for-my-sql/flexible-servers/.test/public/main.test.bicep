@@ -24,6 +24,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -41,8 +44,8 @@ module nestedDependencies1 'dependencies1.bicep' = {
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     location: location
-    managedIdentityName: 'dep-<<namePrefix>>-msi-ds-${serviceShort}'
-    pairedRegionScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-ds-${serviceShort}'
+    pairedRegionScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
   }
 }
 
@@ -51,10 +54,10 @@ module nestedDependencies2 'dependencies2.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies2'
   params: {
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    geoBackupKeyVaultName: 'dep-<<namePrefix>>-kvp-${serviceShort}-${substring(uniqueString(baseTime), 0, 2)}'
-    geoBackupManagedIdentityName: 'dep-<<namePrefix>>-msip-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    geoBackupKeyVaultName: 'dep-${namePrefix}-kvp-${serviceShort}-${substring(uniqueString(baseTime), 0, 2)}'
+    geoBackupManagedIdentityName: 'dep-${namePrefix}-msip-${serviceShort}'
     geoBackupLocation: nestedDependencies1.outputs.pairedRegionName
   }
 }
@@ -65,10 +68,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -82,7 +85,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     location: resourceGroup.location
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -96,7 +99,7 @@ module testDeployment '../../main.bicep' = {
     ]
     tags: {
       resourceType: 'MySQL Flexible Server'
-      serverName: '<<namePrefix>>${serviceShort}001'
+      serverName: '${namePrefix}${serviceShort}001'
     }
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password

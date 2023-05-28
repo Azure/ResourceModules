@@ -10,6 +10,9 @@ param serviceShort string = 'ardsubcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -18,7 +21,7 @@ module testDeployment '../../subscription/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    roleName: '<<namePrefix>>-testRole-${serviceShort}'
+    roleName: '${namePrefix}-testRole-${serviceShort}'
     actions: [
       'Microsoft.Compute/galleries/*'
       'Microsoft.Network/virtualNetworks/read'

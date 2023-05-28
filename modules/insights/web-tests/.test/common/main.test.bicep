@@ -17,6 +17,9 @@ param serviceShort string = 'iwtcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,8 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    appInsightName: 'dep-<<namePrefix>>-appi-${serviceShort}'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
+    appInsightName: 'dep-${namePrefix}-appi-${serviceShort}'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
     location: location
   }
 }
@@ -46,13 +49,13 @@ module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     tags: {
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
     }
     enableDefaultTelemetry: enableDefaultTelemetry
-    webTestName: 'wt<<namePrefix>>$${serviceShort}001'
-    syntheticMonitorId: '<<namePrefix>>${serviceShort}001'
+    webTestName: 'wt${namePrefix}$${serviceShort}001'
+    syntheticMonitorId: '${namePrefix}${serviceShort}001'
     locations: [
       {
         Id: 'emea-nl-ams-azr'

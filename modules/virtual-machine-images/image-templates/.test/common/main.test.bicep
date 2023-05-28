@@ -23,6 +23,9 @@ param stagingResourceGroupName string = 'ms.virtualmachineimages.imagetemplates-
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -38,16 +41,16 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    sigImageDefinitionName: 'dep-<<namePrefix>>-imgd-${serviceShort}'
-    galleryName: 'dep<<namePrefix>>sig${serviceShort}'
-    virtualNetworkName: 'dep<<namePrefix>>-vnet-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    sigImageDefinitionName: 'dep-${namePrefix}-imgd-${serviceShort}'
+    galleryName: 'dep${namePrefix}sig${serviceShort}'
+    virtualNetworkName: 'dep${namePrefix}-vnet-${serviceShort}'
   }
 }
 
 // required for the Azure Image Builder service to assign the list of User Assigned Identities to the Build VM.
 resource msi_managedIdentityOperatorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().id, 'ManagedIdentityContributor', '<<namePrefix>>')
+  name: guid(subscription().id, 'ManagedIdentityContributor', '${namePrefix}')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f1a07417-d97a-45cb-824c-7a7467783830') // Managed Identity Operator
     principalId: nestedDependencies.outputs.managedIdentityPrincipalId
@@ -64,7 +67,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     customizationSteps: [
       {
         restartTimeout: '10m'
@@ -81,7 +84,7 @@ module testDeployment '../../main.bicep' = {
     buildTimeoutInMinutes: 60
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-mi-${serviceShort}-001'
+    managedImageName: '${namePrefix}-mi-${serviceShort}-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
@@ -96,7 +99,7 @@ module testDeployment '../../main.bicep' = {
     sigImageVersion: sigImageVersion
     subnetId: nestedDependencies.outputs.subnetId
     stagingResourceGroup: '${subscription().id}/resourcegroups/${stagingResourceGroupName}'
-    unManagedImageName: '<<namePrefix>>-umi-${serviceShort}-001'
+    unManagedImageName: '${namePrefix}-umi-${serviceShort}-001'
     userAssignedIdentities: [
       nestedDependencies.outputs.managedIdentityResourceId
     ]

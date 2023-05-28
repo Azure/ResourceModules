@@ -13,6 +13,9 @@ param serviceShort string = 'apemgcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -21,7 +24,7 @@ param enableDefaultTelemetry bool = true
 // =================
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-polDef-AuditKvlt-${serviceShort}'
+  name: 'dep-${namePrefix}-polDef-AuditKvlt-${serviceShort}'
   properties: {
     policyRule: {
       if: {
@@ -49,7 +52,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 }
 
 resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-polSet-${serviceShort}'
+  name: 'dep-${namePrefix}-polSet-${serviceShort}'
   properties: {
     policyDefinitions: [
       {
@@ -66,7 +69,7 @@ resource policySet 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
 }
 
 resource policySetAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-psa-${serviceShort}'
+  name: 'dep-${namePrefix}-psa-${serviceShort}'
   location: location
   properties: {
     displayName: 'Test case assignment'
@@ -82,7 +85,7 @@ module testDeployment '../../management-group/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     policyAssignmentId: policySetAssignment.id
     displayName: '[Display Name] policy exempt (management group scope)'
     exemptionCategory: 'Waiver'

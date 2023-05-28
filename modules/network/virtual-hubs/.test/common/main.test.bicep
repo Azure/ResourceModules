@@ -17,6 +17,9 @@ param serviceShort string = 'nvhcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,8 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    virtualWANName: 'dep-${namePrefix}-vw-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
 
@@ -46,7 +49,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-${serviceShort}'
+    name: '${namePrefix}-${serviceShort}'
     lock: 'CanNotDelete'
     addressPrefix: '10.1.0.0/16'
     virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
@@ -61,12 +64,12 @@ module testDeployment '../../main.bicep' = {
         remoteVirtualNetworkId: nestedDependencies.outputs.virtualNetworkResourceId
         routingConfiguration: {
           associatedRouteTable: {
-            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}/hubRouteTables/routeTable1'
+            id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/${namePrefix}-${serviceShort}/hubRouteTables/routeTable1'
           }
           propagatedRouteTables: {
             ids: [
               {
-                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-${serviceShort}/hubRouteTables/routeTable1'
+                id: '${resourceGroup.id}/providers/Microsoft.Network/virtualHubs/${namePrefix}-${serviceShort}/hubRouteTables/routeTable1'
               }
             ]
             labels: [

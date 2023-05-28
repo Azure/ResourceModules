@@ -17,6 +17,9 @@ param serviceShort string = 'pirrgmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -29,7 +32,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 }
 
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: 'dep-<<namePrefix>>-psa-${serviceShort}'
+  name: 'dep-${namePrefix}-psa-${serviceShort}'
   location: location
   properties: {
     displayName: 'Test case assignment'
@@ -46,7 +49,7 @@ module testDeployment '../../resource-group/main.bicep' = {
   scope: resourceGroup
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     policyAssignmentId: policyAssignment.id
   }
 }

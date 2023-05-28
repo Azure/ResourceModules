@@ -17,6 +17,9 @@ param serviceShort string = 'nnwcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,11 +35,11 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    firstNetworkSecurityGroupName: 'dep-<<namePrefix>>-nsg-1-${serviceShort}'
-    secondNetworkSecurityGroupName: 'dep-<<namePrefix>>-nsg-2-${serviceShort}'
-    virtualMachineName: 'dep-<<namePrefix>>-vm-${serviceShort}'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    firstNetworkSecurityGroupName: 'dep-${namePrefix}-nsg-1-${serviceShort}'
+    secondNetworkSecurityGroupName: 'dep-${namePrefix}-nsg-2-${serviceShort}'
+    virtualMachineName: 'dep-${namePrefix}-vm-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     location: location
   }
 }
@@ -47,10 +50,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -69,10 +72,10 @@ module testDeployment '../../main.bicep' = {
     location: testLocation
     connectionMonitors: [
       {
-        name: '<<namePrefix>>-${serviceShort}-cm-001'
+        name: '${namePrefix}-${serviceShort}-cm-001'
         endpoints: [
           {
-            name: '<<namePrefix>>-subnet-001(${resourceGroup.name})'
+            name: '${namePrefix}-subnet-001(${resourceGroup.name})'
             resourceId: nestedDependencies.outputs.virtualMachineResourceId
             type: 'AzureVM'
           }
@@ -110,7 +113,7 @@ module testDeployment '../../main.bicep' = {
             disable: false
             name: 'test-http-Bing'
             sources: [
-              '<<namePrefix>>-subnet-001(${resourceGroup.name})'
+              '${namePrefix}-subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Bing Test'
@@ -128,7 +131,7 @@ module testDeployment '../../main.bicep' = {
       }
       {
         formatVersion: 1
-        name: '<<namePrefix>>-${serviceShort}-fl-001'
+        name: '${namePrefix}-${serviceShort}-fl-001'
         retentionInDays: 8
         storageId: diagnosticDependencies.outputs.storageAccountResourceId
         targetResourceId: nestedDependencies.outputs.secondNetworkSecurityGroupResourceId

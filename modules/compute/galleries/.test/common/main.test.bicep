@@ -17,6 +17,9 @@ param serviceShort string = 'cgcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,7 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 
@@ -45,14 +48,14 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
     applications: [
       {
-        name: '<<namePrefix>>-${serviceShort}-appd-001'
+        name: '${namePrefix}-${serviceShort}-appd-001'
       }
       {
-        name: '<<namePrefix>>-${serviceShort}-appd-002'
+        name: '${namePrefix}-${serviceShort}-appd-002'
         supportedOSType: 'Windows'
         roleAssignments: [
           {
@@ -67,7 +70,7 @@ module testDeployment '../../main.bicep' = {
     ]
     images: [
       {
-        name: '<<namePrefix>>-az-imgd-ws-001'
+        name: '${namePrefix}-az-imgd-ws-001'
       }
       {
         hyperVGeneration: 'V1'
@@ -75,7 +78,7 @@ module testDeployment '../../main.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-ws-002'
+        name: '${namePrefix}-az-imgd-ws-002'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -98,7 +101,7 @@ module testDeployment '../../main.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-ws-003'
+        name: '${namePrefix}-az-imgd-ws-003'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -121,7 +124,7 @@ module testDeployment '../../main.bicep' = {
         maxRecommendedvCPUs: 8
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-ws-004'
+        name: '${namePrefix}-az-imgd-ws-004'
         offer: 'WindowsServer'
         osState: 'Generalized'
         osType: 'Windows'
@@ -144,7 +147,7 @@ module testDeployment '../../main.bicep' = {
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 2
-        name: '<<namePrefix>>-az-imgd-wdtl-002'
+        name: '${namePrefix}-az-imgd-wdtl-002'
         offer: 'WindowsDesktop'
         osState: 'Generalized'
         osType: 'Windows'
@@ -166,7 +169,7 @@ module testDeployment '../../main.bicep' = {
         maxRecommendedvCPUs: 4
         minRecommendedMemory: 4
         minRecommendedvCPUs: 1
-        name: '<<namePrefix>>-az-imgd-us-001'
+        name: '${namePrefix}-az-imgd-us-001'
         offer: '0001-com-ubuntu-server-focal'
         osState: 'Generalized'
         osType: 'Linux'

@@ -21,6 +21,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -37,15 +40,15 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     location: location
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    loadBalancerName: 'dep-<<namePrefix>>-lb-${serviceShort}'
-    recoveryServicesVaultName: 'dep-<<namePrefix>>-rsv-${serviceShort}'
-    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}01'
-    storageUploadDeploymentScriptName: 'dep-<<namePrefix>>-sads-${serviceShort}'
-    proximityPlacementGroupName: 'dep-<<namePrefix>>-ppg-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    applicationSecurityGroupName: 'dep-${namePrefix}-asg-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}'
+    loadBalancerName: 'dep-${namePrefix}-lb-${serviceShort}'
+    recoveryServicesVaultName: 'dep-${namePrefix}-rsv-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}sa${serviceShort}01'
+    storageUploadDeploymentScriptName: 'dep-${namePrefix}-sads-${serviceShort}'
+    proximityPlacementGroupName: 'dep-${namePrefix}-ppg-${serviceShort}'
   }
 }
 
@@ -55,10 +58,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -73,8 +76,8 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
-    name: '<<namePrefix>>${serviceShort}'
-    computerName: '<<namePrefix>>winvm1'
+    name: '${namePrefix}${serviceShort}'
+    computerName: '${namePrefix}winvm1'
     adminUsername: 'VMAdmin'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
