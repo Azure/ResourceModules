@@ -1,6 +1,6 @@
 # Event Grid Topics `[Microsoft.EventGrid/topics]`
 
-This module deploys an event grid topic.
+This module deploys an Event Grid Topic.
 
 ## Navigation
 
@@ -17,6 +17,7 @@ This module deploys an event grid topic.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.EventGrid/topics` | [2020-06-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2020-06-01/topics) |
+| `Microsoft.EventGrid/topics/eventSubscriptions` | [2022-06-15](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2022-06-15/topics/eventSubscriptions) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
@@ -42,6 +43,7 @@ This module deploys an event grid topic.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `eventSubscriptions` | array | `[]` |  | Event subscriptions to deploy. |
 | `inboundIpRules` | array | `[]` |  | This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -50,6 +52,79 @@ This module deploys an event grid topic.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
+
+### Parameter Usage: `eventSubscriptions`
+
+You can specify multiple event subscriptions using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"eventSubscriptions": {
+    "value": [
+      {
+        "destination": {
+          "endpointType": "StorageQueue",
+          "properties": {
+            "queueMessageTimeToLiveInSeconds": 86400,
+            "queueName": "<queueName>",
+            "resourceId": "<resourceId>"
+          }
+        },
+        "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+        "eventDeliverySchema": "CloudEventSchemaV1_0",
+        "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+        "filter": {
+          "enableAdvancedFilteringOnArrays": true,
+          "isSubjectCaseSensitive": false
+        },
+        "name": "<<namePrefix>>egstcom001",
+        "retryPolicy": {
+          "eventTimeToLive": "120",
+          "maxDeliveryAttempts": 10
+        }
+      }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+eventSubscriptions: [
+    {
+      destination: {
+        endpointType: 'StorageQueue'
+        properties: {
+          queueMessageTimeToLiveInSeconds: 86400
+          queueName: '<queueName>'
+          resourceId: '<resourceId>'
+        }
+      }
+      enableDefaultTelemetry: '<enableDefaultTelemetry>'
+      eventDeliverySchema: 'CloudEventSchemaV1_0'
+      expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+      filter: {
+        enableAdvancedFilteringOnArrays: true
+        isSubjectCaseSensitive: false
+      }
+      name: '<<namePrefix>>egstcom001'
+      retryPolicy: {
+        eventTimeToLive: '120'
+        maxDeliveryAttempts: 10
+      }
+    }
+  ]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -294,6 +369,30 @@ module topics './event-grid/topics/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    eventSubscriptions: [
+      {
+        destination: {
+          endpointType: 'StorageQueue'
+          properties: {
+            queueMessageTimeToLiveInSeconds: 86400
+            queueName: '<queueName>'
+            resourceId: '<resourceId>'
+          }
+        }
+        enableDefaultTelemetry: '<enableDefaultTelemetry>'
+        eventDeliverySchema: 'CloudEventSchemaV1_0'
+        expirationTimeUtc: '2099-01-01T11:00:21.715Z'
+        filter: {
+          enableAdvancedFilteringOnArrays: true
+          isSubjectCaseSensitive: false
+        }
+        name: '<<namePrefix>>egtcom001'
+        retryPolicy: {
+          eventTimeToLive: '120'
+          maxDeliveryAttempts: 10
+        }
+      }
+    ]
     inboundIpRules: [
       {
         action: 'Allow'
@@ -367,6 +466,32 @@ module topics './event-grid/topics/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "eventSubscriptions": {
+      "value": [
+        {
+          "destination": {
+            "endpointType": "StorageQueue",
+            "properties": {
+              "queueMessageTimeToLiveInSeconds": 86400,
+              "queueName": "<queueName>",
+              "resourceId": "<resourceId>"
+            }
+          },
+          "enableDefaultTelemetry": "<enableDefaultTelemetry>",
+          "eventDeliverySchema": "CloudEventSchemaV1_0",
+          "expirationTimeUtc": "2099-01-01T11:00:21.715Z",
+          "filter": {
+            "enableAdvancedFilteringOnArrays": true,
+            "isSubjectCaseSensitive": false
+          },
+          "name": "<<namePrefix>>egtcom001",
+          "retryPolicy": {
+            "eventTimeToLive": "120",
+            "maxDeliveryAttempts": 10
+          }
+        }
+      ]
     },
     "inboundIpRules": {
       "value": [

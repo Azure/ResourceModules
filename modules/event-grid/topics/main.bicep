@@ -15,6 +15,9 @@ param publicNetworkAccess string = ''
 @description('Optional. This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.')
 param inboundIpRules array = []
 
+@description('Optional. Event subscriptions to deploy.')
+param eventSubscriptions array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -126,6 +129,26 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
     inboundIpRules: (empty(inboundIpRules) ? null : inboundIpRules)
   }
 }
+
+// Event subscriptions
+module topics_eventSubscriptions 'eventSubscriptions/main.bicep' = [for (eventSubscription, index) in eventSubscriptions: {
+  name: '${uniqueString(deployment().name, location)}-EventGrid-Topics-EventSubscriptions-${index}'
+  params: {
+    destination: eventSubscription.destination
+    topicName: topic.name
+    name: eventSubscription.name
+    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscription.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscription.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscription.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscription.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscription.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscription.expirationTimeUtc : ''
+    filter: contains(eventSubscriptions, 'filter') ? eventSubscription.filter : {}
+    labels: contains(eventSubscriptions, 'labels') ? eventSubscription.labels : []
+    location: contains(eventSubscriptions, 'location') ? eventSubscription.location : topic.location
+    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscription.retryPolicy : {}
+  }
+}]
 
 resource topic_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${topic.name}-${lock}-lock'

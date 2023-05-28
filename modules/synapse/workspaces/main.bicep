@@ -127,6 +127,8 @@ param diagnosticEventHubName string = ''
   'IntegrationPipelineRuns'
   'IntegrationActivityRuns'
   'IntegrationTriggerRuns'
+  'SQLSecurityAuditEvents'
+  'SynapseLinkEvent'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'

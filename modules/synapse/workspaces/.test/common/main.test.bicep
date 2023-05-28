@@ -111,6 +111,8 @@ module testDeployment '../../main.bicep' = {
       'IntegrationPipelineRuns'
       'IntegrationActivityRuns'
       'IntegrationTriggerRuns'
+      'SQLSecurityAuditEvents'
+      'SynapseLinkEvent'
     ]
     enableDefaultTelemetry: enableDefaultTelemetry
   }
