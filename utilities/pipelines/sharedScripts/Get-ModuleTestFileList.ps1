@@ -41,7 +41,9 @@ function Get-ModuleTestFileList {
 
     $deploymentTests = @()
     if (Test-Path (Join-Path $ModulePath $SearchFolder)) {
-        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Recurse -Include $TestFilePattern -File).FullName
+        $deploymentTests += (Get-ChildItem -Path (Join-Path $ModulePath $SearchFolder) -Recurse -Include $TestFilePattern -File).FullName | Where-Object {
+            $_ -ne (Join-Path (Join-Path $ModulePath $SearchFolder) 'main.test.bicep') # Excluding PBR test file
+        }
     }
 
     if (-not $deploymentTests) {
