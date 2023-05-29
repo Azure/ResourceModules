@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Resources/resourceGroups/*'
-      - '/modules/Authorization/locks/resourceGroup/*'
+      - '/modules/resources/resource-groups/*'
+      - '/modules/authorization/locks/resource-group/*'
       - '/.azuredevops/modulePipelines/ms.resources.resourcegroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Resources/resourceGroups'
+    value: '/modules/resources/resource-groups'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

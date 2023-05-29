@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.fluxconfigurations.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/KubernetesConfiguration/fluxConfigurations/*'
+      - '/modules/kubernetes-configuration/flux-configurations/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/KubernetesConfiguration/fluxConfigurations'
+    value: '/modules/kubernetes-configuration/flux-configurations'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

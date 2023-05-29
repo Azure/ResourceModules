@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.authorization.roledefinitions.yml'
-      - 'modules/Authorization/roleDefinitions/**'
+      - 'modules/authorization/role-definitions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Authorization/roleDefinitions'
+  modulePath: 'modules/authorization/role-definitions'
   workflowPath: '.github/workflows/ms.authorization.roledefinitions.yml'
 
 concurrency:

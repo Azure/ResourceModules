@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.datacollectionrules.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Insights/dataCollectionRules/*'
+      - '/modules/insights/data-collection-rules/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Insights/dataCollectionRules'
+    value: '/modules/insights/data-collection-rules'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

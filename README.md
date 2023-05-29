@@ -16,10 +16,10 @@ For more details, please refer to the issue #3131.
 
 ## Get started
 
-* For introduction guidance visit the [Wiki](https://github.com/azure/ResourceModules/wiki)
+* For introduction guidance visit the [Wiki](https://github.com/Azure/ResourceModules/wiki)
 * For guidance on which version of the code to leverage, see [Disclaimer](https://github.com/azure/resourcemodules#Disclaimer)
 * For information on contributing, see [Contribution](<https://github.com/Azure/ResourceModules/wiki/Contribution%20guide>)
-* File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
+* File an issue via [GitHub Issues](https://github.com/Azure/ResourceModules/issues/new/choose)
 * For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 * For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
 

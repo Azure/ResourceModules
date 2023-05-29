@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.networksecuritygroups.yml'
-      - 'modules/Network/networkSecurityGroups/**'
+      - 'modules/network/network-security-groups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Network/networkSecurityGroups'
+  modulePath: 'modules/network/network-security-groups'
   workflowPath: '.github/workflows/ms.network.networksecuritygroups.yml'
 
 concurrency:

@@ -178,14 +178,19 @@ function Set-ParametersSection {
         # 3. Add individual parameters
         foreach ($parameter in $categoryParameters) {
 
+            # Convert parameter name to kebab-case, as that would be the correspondent child module folder to refer to
+            # (?<!^): This is a negative lookbehind assertion that ensures the match is not at the beginning of the string. This is used to exclude the first character from being replaced.
+            # ([A-Z]): This captures any uppercase letter from A to Z using parentheses.
+            $parameterKebabCase = ($parameter.name -creplace '(?<!^)([A-Z])', '-$1').ToLower()
+
             # Check for local readme references
-            if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
-                if ($folderNames -contains $parameter.name) {
-                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name }), $parameter.type
+            if ($folderNames -and $parameterKebabCase -in $folderNames -and $parameter.type -in @('object', 'array')) {
+                if ($folderNames -contains $parameterKebabCase) {
+                    $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name, ($folderNames | Where-Object { $_ -eq $parameterKebabCase }), $parameter.type
                 }
-            } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
-                if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
-                    $type = '_[{0}]({0}/README.md)_ {1}' -f ($folderNames | Where-Object { $_ -eq $parameter.name.TrimEnd('Obj') }), $parameter.type
+            } elseif ($folderNames -and $parameterKebabCase.TrimEnd('-obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
+                if ($folderNames -contains $parameterKebabCase.TrimEnd('-obj')) {
+                    $type = '_[{0}]({1}/README.md)_ {2}' -f $parameter.name.TrimEnd('Obj'), ($folderNames | Where-Object { $_ -eq $parameterKebabCase.TrimEnd('-obj') }), $parameter.type
                 }
             } else {
                 $type = $parameter.type
@@ -929,15 +934,28 @@ function Set-DeploymentExamplesSection {
         ''
     )
 
-    # Get resource type and make first letter upper case. Requires manual handling as ToTitleCase lowercases everything but the first letter
-    $providerNamespace = ($fullModuleIdentifier.Split('/')[0] -split '\.' | ForEach-Object { $_.Substring(0, 1).ToUpper() + $_.Substring(1) }) -join '.'
-    $resourceType = $fullModuleIdentifier.Split('/')[1]
-    $resourceTypeUpper = $resourceType.Substring(0, 1).ToUpper() + $resourceType.Substring(1)
-
-    $FullModuleIdentifier = "$providerNamespace/$resourceType"
+    #####################
+    ##   Init values   ##
+    #####################
+    $specialConversionHash = @{
+        'public-ip-addresses' = 'publicIPAddresses'
+        'public-ip-prefixes'  = 'publicIPPrefixes'
+    }
+    # Get moduleName as $fullModuleIdentifier leaf
+    $moduleName = $fullModuleIdentifier.Split('/')[1]
+    if ($specialConversionHash.ContainsKey($moduleName)) {
+        # Convert moduleName using specialConversionHash
+        $moduleNameCamelCase = $specialConversionHash[$moduleName]
+        $moduleNamePascalCase = $moduleNameCamelCase.Replace($moduleNameCamelCase[0], $moduleNameCamelCase[0].ToString().ToUpper())
+    } else {
+        # Convert moduleName from kebab-case to camelCase
+        $First, $Rest = $moduleName -Split '-', 2
+        $moduleNameCamelCase = $First.Tolower() + (Get-Culture).TextInfo.ToTitleCase($Rest) -Replace '-'
+        # Convert moduleName from kebab-case to PascalCase
+        $moduleNamePascalCase = (Get-Culture).TextInfo.ToTitleCase($moduleName) -Replace '-'
+    }
 
     $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleRoot | ForEach-Object { Join-Path $moduleRoot $_ }
-
     $RequiredParametersList = $TemplateFileContent.parameters.Keys | Where-Object { $TemplateFileContent.parameters[$_].Keys -notcontains 'defaultValue' } | Sort-Object
 
     ############################
@@ -991,7 +1009,7 @@ function Set-DeploymentExamplesSection {
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
-            $rawBicepExample[0] = "module $resourceType './$fullModuleIdentifier/main.bicep' = {"
+            $rawBicepExample[0] = "module $moduleNameCamelCase './$fullModuleIdentifier/main.bicep' = {"
             $rawBicepExample = $rawBicepExample | Where-Object { $_ -notmatch 'scope: *' } | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # [4/6] Extract param block
@@ -1245,8 +1263,8 @@ function Set-DeploymentExamplesSection {
                     ''
                     '```bicep',
                     $extendedKeyVaultReferences,
-                    "module $resourceType 'ts/modules:$(($FullModuleIdentifier -replace '\\|\/', '.').ToLower()):1.0.0 = {"
-                    "  name: '`${uniqueString(deployment().name)}-$resourceTypeUpper'"
+                    "module $moduleNameCamelCase 'ts/modules:$(($FullModuleIdentifier -replace '\\|\/', '.').ToLower()):1.0.0 = {"
+                    "  name: '`${uniqueString(deployment().name)}-$moduleNamePascalCase'"
                     '  params: {'
                     $bicepExample.TrimEnd(),
                     '  }'

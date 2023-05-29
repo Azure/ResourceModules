@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.netapp.netappaccounts.yml'
-      - 'modules/NetApp/netAppAccounts/**'
+      - 'modules/net-app/net-app-accounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/NetApp/netAppAccounts'
+  modulePath: 'modules/net-app/net-app-accounts'
   workflowPath: '.github/workflows/ms.netapp.netappaccounts.yml'
 
 concurrency:
