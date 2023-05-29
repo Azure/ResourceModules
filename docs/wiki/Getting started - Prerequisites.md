@@ -6,8 +6,6 @@ This section provides an overview of the prerequisites that you will need if wor
 
 - [Prerequisites](#prerequisites)
 - [Helper scripts](#helper-scripts)
-  - [Check versions script](#check-versions-script)
-  - [Install prerequisites script (Windows and newer)](#install-prerequisites-script-windows-and-newer)
 
 ---
 
@@ -43,7 +41,8 @@ These are
 
 This sub-section provides you with several helper scripts that can help you set your environment up.
 
-## Check versions script
+<details>
+<summary>Check versions script</summary>
 
 ```PowerShell
 az --version
@@ -62,7 +61,10 @@ Get-Module -ListAvailable | Where-Object {
 }
 ```
 
-## Install prerequisites script (Windows and newer)
+</details>
+
+<details>
+<summary>Install prerequisites script (Windows 10+)</summary>
 
 ```PowerShell
 # WinGet software
@@ -86,3 +88,5 @@ Install-Module -Name 'Az.Resources' -Scope 'CurrentUser' -Force
 Install-Module -Name 'Pester' -Scope 'CurrentUser' -Force
 Install-Module -Name 'powershell-yaml' -Scope 'CurrentUser' -Force
 ```
+
+</details>
