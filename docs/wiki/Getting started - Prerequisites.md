@@ -6,6 +6,8 @@ This section provides an overview of the prerequisites that you will need if wor
 
 - [Prerequisites](#prerequisites)
 - [Helper scripts](#helper-scripts)
+  - [Check versions script](#check-versions-script)
+  - [Install prerequisites script (Windows and newer)](#install-prerequisites-script-windows-and-newer)
 
 ---
 
@@ -39,7 +41,9 @@ These are
 
 # Helper scripts
 
-## Check version script
+This sub-section provides you with several helper scripts that can help you set your environment up.
+
+## Check versions script
 
 ```PowerShell
 az --version
