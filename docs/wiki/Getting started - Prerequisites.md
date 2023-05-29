@@ -1,4 +1,4 @@
-This section provides an overview of the prerequisites that you will need if working with CARML on your local machine
+This section provides an overview of the prerequisites that you will need if working with CARML on your local machine and, for example, run the [utilities/tools/Test-ModuleLocally.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Test-ModuleLocally.ps1) script.
 
 ---
 
@@ -20,6 +20,7 @@ These are
   - [Visual Studio Code](https://code.visualstudio.com/Download)
     - \+ Extension: [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install)
   - [Bicep CLI](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#manual-with-powershell)
+    > **Note:** Must be kept updated manually (i.e., is not updated via the Az-CLI Bicep extension)
   - [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
     - \+ Extension: [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/install#azure-cli)
   - [Git](https://git-scm.com/downloads)
