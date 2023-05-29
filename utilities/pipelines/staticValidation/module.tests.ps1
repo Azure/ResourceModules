@@ -816,7 +816,7 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
         }
     }
 
-    Context 'PBR' {
+    Context 'Public Bicep Registry' {
 
 
         $deploymentTestFileTestCases = @()
@@ -853,6 +853,8 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
                 [string] $testFileFolderName,
                 [string] $centralTestFilePath
             )
+
+            # TODO: Unless there all both scopes management group & subscription. Then use subscription. (Mgmt tests should be in status 'skipped')
 
             $centralTestFileContent = Get-Content $centralTestFilePath
             $centralTestFileTestCases = $centralTestFileContent | Where-Object {
