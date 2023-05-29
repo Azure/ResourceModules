@@ -365,6 +365,12 @@ Mandatory. The name of the repository the code resides in
 .PARAMETER Organization
 Mandatory. The name of the Organization the code resides in
 
+.PARAMETER Environment
+Mandatory. The DevOps environment to generate the status badges for
+
+.PARAMETER ProjectName
+Optional. The project the repository is hosted in. Required if the 'environment' is 'ADO'
+
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
 

@@ -23,7 +23,7 @@ For more details, please refer to the issue #3131.
 * For reference documentation, visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
 * For an outline of the module features, visit [Module overview](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview)
 
-> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](./The%20CI%20environment%20-%20Troubleshooting).
+> **Note:** To ensure the modules and environment work as expected, please ensure you are using the latest version of the used tools such as PowerShell and Bicep. Especially in case of the later, note, that you need to manually update the Bicep CLI. For further information, see our [troubleshooting guide](https://github.com/Azure/ResourceModules/wiki/The%20CI%20environment%20-%20Troubleshooting).
 
 ## Available Resource Modules
 
