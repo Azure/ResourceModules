@@ -45,7 +45,6 @@ jobs:
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
-            SortByColumn   = 'Name'
             Environment    = 'GitHub'
           }
 
