@@ -35,20 +35,27 @@ These are
     - \+ Module: `Az.Accounts`
     - \+ Module: `Az.Resources`
     - \+ Module: `Pester` with minimum version `5.3.1`
+    - \+ Module: `powershell-yaml` with minimum version `0.4.2`
 
 # Helper scripts
 
 ## Check version script
 
 ```PowerShell
-    az --version
-    bicep --version
-    git --version
-    code --version
-    pwsh --version
-    Get-Module -Name 'Az.Accounts' -ListAvailable
-    Get-Module -Name 'Az.Resources' -ListAvailable
-    Get-Module -Name 'Pester' -ListAvailable
+az --version
+bicep --version
+git --version
+code --version
+pwsh --version
+
+Get-Module -ListAvailable | Where-Object {
+  $_.Name -in @(
+    'Az.Accounts',
+    'Az.Resources',
+    'Pester',
+    'powershell-yaml'
+  )
+}
 ```
 
 ## Install prerequisites script (Windows and newer)
@@ -73,4 +80,5 @@ code --install-extension 'ms-vscode.azurecli'
 Install-Module -Name 'Az.Accounts' -Scope 'CurrentUser' -Force
 Install-Module -Name 'Az.Resources' -Scope 'CurrentUser' -Force
 Install-Module -Name 'Pester' -Scope 'CurrentUser' -Force
+Install-Module -Name 'powershell-yaml' -Scope 'CurrentUser' -Force
 ```
