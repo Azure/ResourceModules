@@ -308,7 +308,7 @@ function Get-ResolvedSubServiceRow {
                     $statusInputObject = @{
                         RepositoryName     = $RepositoryName
                         Organization       = $Organization
-                        PipelineFileName   = ((('ms.{0}.{1}.yml' -f $provider, $subName) -replace '-', '') -replace '\\', '/') -replace '/', '.'
+                        PipelineFileName   = (((('ms.{0}.{1}.yml' -f $provider, $subName) -replace '-', '') -replace '\\', '/') -replace '/', '.').ToLower()
                         PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
                     }
                     $row['Status'] += Get-PipelineStatusUrl @statusInputObject
@@ -527,7 +527,7 @@ function Get-ModulesAsMarkdownTable {
                                 Organization       = $Organization
                                 Environment        = $Environment
                                 ProjectName        = $ProjectName
-                                PipelineFileName   = ((('ms.{0}.{1}.yml' -f $provider, $containedFolderName) -replace '-', '') -replace '\\', '/') -replace '/', '.'
+                                PipelineFileName   = (((('ms.{0}.{1}.yml' -f $provider, $containedFolderName) -replace '-', '') -replace '\\', '/') -replace '/', '.').ToLower()
                                 PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
                             }
                             $row['Status'] += Get-PipelineStatusUrl @statusInputObject
