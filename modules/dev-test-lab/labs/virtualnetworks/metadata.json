@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "DevTestLab Labs VirtualNetworks",
+    "summary": "This module deploys DevTestLab Labs VirtualNetworks.\n\nLab virtual machines must be deployed into a virtual network. This resource type allows configuring the virtual network and subnet settings used for the lab virtual machines.",
+    "owner": "Azure/module-maintainers"
+}

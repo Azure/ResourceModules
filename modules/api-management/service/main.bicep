@@ -392,7 +392,7 @@ module service_namedValues 'named-values/main.bicep' = [for (namedValue, index) 
   }
 }]
 
-module service_portalSettings 'portal-settings/main.bicep' = [for (portalSetting, index) in portalSettings: {
+module service_portalSettings 'portalsettings/main.bicep' = [for (portalSetting, index) in portalSettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: service.name

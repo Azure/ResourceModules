@@ -64,7 +64,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource profile 'microsoft.Cdn/profiles@2021-06-01' = {
+resource profile 'Microsoft.Cdn/profiles@2021-06-01' = {
   name: name
   location: location
   sku: {

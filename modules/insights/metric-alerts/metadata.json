@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Metric Alerts",
+  "summary": "This module deploys an alert based on metrics.",
+  "owner": "Azure/module-maintainers"
+}

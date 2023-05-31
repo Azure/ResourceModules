@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Virtual Machine Extensions",
+  "summary": "This module deploys a virtual machine extension.",
+  "owner": "Azure/module-maintainers"
+}

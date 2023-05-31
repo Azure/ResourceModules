@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Network Private Endpoint Private DNS Zone Group",
+  "summary": "This module deploys a private endpoint private DNS zone group",
+  "owner": "Azure/module-maintainers"
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Event Hub Namespaces",
+  "summary": "This module deploys an event hub namespace.",
+  "owner": "Azure/module-maintainers"
+}

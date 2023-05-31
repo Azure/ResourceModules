@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Static Site Linked Backend",
+  "summary": "This module deploys a Custom Function App into a Static Site using the linkedBackends property.",
+  "owner": "Azure/module-maintainers"
+}

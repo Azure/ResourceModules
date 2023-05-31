@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Azure Security Center",
+  "summary": "This template enables Azure security center - Standard tier by default, could be overridden.",
+  "owner": "Azure/module-maintainers"
+}
