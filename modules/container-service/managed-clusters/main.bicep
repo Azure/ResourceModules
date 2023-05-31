@@ -147,6 +147,19 @@ param azurePolicyEnabled bool = true
 @description('Optional. Specifies whether the openServiceMesh add-on is enabled or not.')
 param openServiceMeshEnabled bool = false
 
+@description('Optional. Specifies whether to enable the Istio Service Mesh add-on is enabled or not.')
+param istioServiceMeshEnabled bool = false
+
+@description('Optional. Specifies whether the Istio Ingress Gateway is enabled or not.')
+param istioIngressGatewayEnabled bool = false
+
+@description('Optional. Specifies the type of the Istio Ingress Gateway to use.')
+@allowed([
+  'Internal'
+  'External'
+])
+param istioIngressGatewayType string = 'External'
+
 @description('Optional. Specifies the azure policy version to use.')
 param azurePolicyVersion string = 'v2'
 
@@ -400,7 +413,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-03-02-preview' = {
   name: name
   location: location
   tags: tags
@@ -515,6 +528,19 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
       userAssignedIdentities: podIdentityProfileUserAssignedIdentities
       userAssignedIdentityExceptions: podIdentityProfileUserAssignedIdentityExceptions
     }
+    serviceMeshProfile: istioServiceMeshEnabled ? {
+      istio: {
+        components: {
+          ingressGateways: istioIngressGatewayEnabled ? [
+            {
+              enabled: true
+              mode: istioIngressGatewayType
+            }
+          ] : null
+        }
+      }
+      mode: 'Istio'
+    } : null
     securityProfile: enableAzureDefender ? {
       azureDefender: {
         enabled: enableAzureDefender

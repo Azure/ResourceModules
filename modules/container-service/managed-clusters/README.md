@@ -16,8 +16,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters) |
-| `Microsoft.ContainerService/managedClusters/agentPools` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-11-01/managedClusters/agentPools) |
+| `Microsoft.ContainerService/managedClusters` | [2023-03-02-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2023-03-02-preview/managedClusters) |
+| `Microsoft.ContainerService/managedClusters/agentPools` | [2023-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2023-03-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
 | `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
@@ -108,6 +108,9 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `fluxExtension` | object | `{object}` |  | Settings and configurations for the flux extension. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
+| `istioIngressGatewayEnabled` | bool | `False` |  | Specifies whether the Istio Ingress Gateway is enabled or not. |
+| `istioIngressGatewayType` | string | `'External'` | `[External, Internal]` | Specifies the type of the Istio Ingress Gateway to use. |
+| `istioServiceMeshEnabled` | bool | `False` |  | Specifies whether to enable the Istio Service Mesh add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
