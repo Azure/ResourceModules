@@ -6,23 +6,7 @@ targetScope = 'subscription'
 
 var namePrefix = 'crml'
 
-// TEST 1 - MG.COMMON
-module mg_common 'mg.common/main.test.bicep' = {
-  name: '${uniqueString(deployment().name)}-mg.common-test'
-  params: {
-    namePrefix: namePrefix
-  }
-}
-
-// TEST 2 - MG.MIN
-module mg_min 'mg.min/main.test.bicep' = {
-  name: '${uniqueString(deployment().name)}-mg.min-test'
-  params: {
-    namePrefix: namePrefix
-  }
-}
-
-// TEST 3 - RG.COMMON
+// TEST 1 - RG.COMMON
 module rg_common 'rg.common/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-rg.common-test'
   params: {
@@ -30,7 +14,7 @@ module rg_common 'rg.common/main.test.bicep' = {
   }
 }
 
-// TEST 4 - RG.MIN
+// TEST 2 - RG.MIN
 module rg_min 'rg.min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-rg.min-test'
   params: {
@@ -38,7 +22,7 @@ module rg_min 'rg.min/main.test.bicep' = {
   }
 }
 
-// TEST 5 - SUB.COMMON
+// TEST 3 - SUB.COMMON
 module sub_common 'sub.common/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-sub.common-test'
   params: {
@@ -46,7 +30,7 @@ module sub_common 'sub.common/main.test.bicep' = {
   }
 }
 
-// TEST 6 - SUB.MIN
+// TEST 4 - SUB.MIN
 module sub_min 'sub.min/main.test.bicep' = {
   name: '${uniqueString(deployment().name)}-sub.min-test'
   params: {
