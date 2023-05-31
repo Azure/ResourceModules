@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Activity Logs",
+  "summary": "This module deploys a subscription wide export of the activity log.",
+  "owner": "Azure/module-maintainers"
+}

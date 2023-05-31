@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "RecoveryServices Vaults ReplicationPolicies",
+    "summary": "This module deploys a Replication Policy for Disaster Recovery scenario.\n\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+    "owner": "Azure/module-maintainers"
+}

@@ -210,7 +210,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disaster-recovery-configs/main.
   }
 }
 
-module eventHubNamespace_eventHubs 'event-hubs/main.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventHubs 'eventhubs/main.bicep' = [for (eventHub, index) in eventHubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name

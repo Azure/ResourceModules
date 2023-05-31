@@ -98,7 +98,7 @@ module testDeployment '../../main.bicep' = {
     isolateLabResources: 'Enabled'
     encryptionType: 'EncryptionAtRestWithCustomerKey'
     encryptionDiskEncryptionSetId: nestedDependencies.outputs.diskEncryptionSetResourceId
-    virtualNetworks: [
+    virtualnetworks: [
       {
         name: nestedDependencies.outputs.virtualNetworkName
         externalProviderResourceId: nestedDependencies.outputs.virtualNetworkResourceId
@@ -222,7 +222,7 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    notificationChannels: [
+    notificationchannels: [
       {
         name: 'autoShutdown'
         description: 'Integration configured for auto-shutdown'
@@ -245,7 +245,7 @@ module testDeployment '../../main.bicep' = {
         webHookUrl: 'https://webhook.contosotest.com'
       }
     ]
-    artifactSources: [
+    artifactsources: [
       {
         name: 'Public Repo'
         displayName: 'Public Artifact Repo'

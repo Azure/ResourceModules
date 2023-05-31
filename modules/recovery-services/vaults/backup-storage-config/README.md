@@ -1,6 +1,7 @@
 # RecoveryServicesVaultsBackupStorageConfig `[Microsoft.RecoveryServices/vaults/backupstorageconfig]`
 
 This module deploys the Backup Storage Configuration for the Recovery Service Vault
+
 ## Navigation
 
 - [Resource types](#Resource-types)

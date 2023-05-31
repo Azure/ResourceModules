@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Azure Compute Galleries",
+  "summary": "This module deploys an Azure compute gallery (formerly known as shared image gallery).",
+  "owner": "Azure/module-maintainers"
+}

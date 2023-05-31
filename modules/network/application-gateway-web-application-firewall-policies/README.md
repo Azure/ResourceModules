@@ -1,4 +1,4 @@
-# Application Gateway WebApp Firewall Policies `[Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies]`
+# Application Gateway WebApp Firewall Policies `[Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies]`
 
 This module deploys a WAF policy.
 
