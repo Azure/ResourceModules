@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "WCF Relay Authorization Rules",
+  "summary": "This module deploys authorization rules for a wcf relay.",
+  "owner": "Azure/module-maintainers"
+}
