@@ -1,13 +1,15 @@
-# Web Sites BasicPublishingCredentialsPolicies `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`
+# Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`
 
-This module deploys Web Sites Basic Publishing Credentials Policies.
+This module deploys Web Sites Hybrid Connecton Relays.
 
 ## Navigation
 
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`](#webfunction-apps-hybrid-connection-relay-microsoftwebsitesslotshybridconnectionnamespacesrelays)
+  - [Navigation](#navigation)
+  - [Resource Types](#resource-types)
+  - [Parameters](#parameters)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
