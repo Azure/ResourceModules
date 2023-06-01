@@ -195,6 +195,9 @@ param redundancyMode string = 'None'
 @description('Optional. The site publishing credential policy names which are associated with the sites.')
 param basicPublishingCredentialsPolicies array = []
 
+@description('Optional. Names of hybrid connection relays to connect app with.')
+param hybridConnectionRelays array = []
+
 // =========== //
 // Variables   //
 // =========== //
@@ -356,6 +359,7 @@ module app_slots 'slots/main.bicep' = [for (slot, index) in slots: {
     vnetContentShareEnabled: contains(slot, 'vnetContentShareEnabled') ? slot.vnetContentShareEnabled : false
     vnetImagePullEnabled: contains(slot, 'vnetImagePullEnabled') ? slot.vnetImagePullEnabled : false
     vnetRouteAllEnabled: contains(slot, 'vnetRouteAllEnabled') ? slot.vnetRouteAllEnabled : false
+    hybridConnectionRelays: contains(slot, 'hybridConnectionRelays') ? slot.hybridConnectionRelays : []
   }
 }]
 
@@ -364,6 +368,16 @@ module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-poli
   params: {
     webAppName: app.name
     name: basicPublishingCredentialsPolicy.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module app_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
+  name: '${uniqueString(deployment().name, location)}-HybridConnectionRelay-${index}'
+  params: {
+    resourceId: hybridConnectionRelay.resourceId
+    webAppName: app.name
+    sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
