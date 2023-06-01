@@ -436,11 +436,7 @@ userAssignedIdentities: {
 
 ## Cross-referenced modules
 
-This section gives you an overview of all local-referenced module files (i.e., other CARML modules that are referenced in this module) and all remote-referenced files (i.e., Bicep modules that are referenced from a Bicep Registry or Template Specs).
-
-| Reference | Type |
-| :-- | :-- |
-| `network/private-endpoints` | Local reference |
+_None_
 
 ## Deployment examples
 
@@ -539,6 +535,12 @@ module sites './web/sites/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hybridConnectionRelays: [
+      {
+        resourceId: '<resourceId>'
+        sendKeyName: 'defaultSender'
+      }
+    ]
     keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -694,6 +696,14 @@ module sites './web/sites/main.bicep' = {
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "hybridConnectionRelays": {
+      "value": [
+        {
+          "resourceId": "<resourceId>",
+          "sendKeyName": "defaultSender"
+        }
+      ]
     },
     "keyVaultAccessIdentityResourceId": {
       "value": "<keyVaultAccessIdentityResourceId>"
