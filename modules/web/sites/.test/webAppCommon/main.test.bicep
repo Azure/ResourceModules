@@ -35,6 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
+    namespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
+    hybridConnectionName: 'dep-<<namePrefix>>-hc-${serviceShort}'
   }
 }
 
@@ -55,7 +57,6 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 // ============== //
 // Test Execution //
 // ============== //
-
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
@@ -111,6 +112,12 @@ module testDeployment '../../main.bicep' = {
             }
           ]
         }
+        hybridConnectionRelays: [
+          {
+            resourceId: nestedDependencies.outputs.hybridConnectionResourceId
+            sendKeyName: 'defaultSender'
+          }
+        ]
       }
       {
         name: 'slot2'
@@ -161,6 +168,12 @@ module testDeployment '../../main.bicep' = {
         name: 'scm'
       }
 
+    ]
+    hybridConnectionRelays: [
+      {
+        resourceId: nestedDependencies.outputs.hybridConnectionResourceId
+        sendKeyName: 'defaultSender'
+      }
     ]
   }
 }
