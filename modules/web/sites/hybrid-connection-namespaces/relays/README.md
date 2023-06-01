@@ -1,15 +1,13 @@
-# Web/Function Apps Hybrid Connection Relay  `[Microsoft.Web/sites/hybridConnectionNamespaces/relays]`
+# Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites/hybridConnectionNamespaces/relays]`
 
-This module deploys Web Sites Hybrid Connecton Relays.
+This module configures a web or function app with a hybrid connection relay.
 
 ## Navigation
 
-- [Web/Function Apps Hybrid Connection Relay  `[Microsoft.Web/sites/hybridConnectionNamespaces/relays]`](#webfunction-apps-hybrid-connection-relay--microsoftwebsiteshybridconnectionnamespacesrelays)
-  - [Navigation](#navigation)
-  - [Resource Types](#resource-types)
-  - [Parameters](#parameters)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource Types](#resource-types)
+- [Parameters](#parameters)
+- [Outputs](#outputs)
+- [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource Types
 
