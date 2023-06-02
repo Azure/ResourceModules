@@ -55,7 +55,7 @@ This module deploys a relay namespace resource.
 | `networkRuleSets` | _[networkRuleSets](network-rule-sets/README.md)_ object | `{object}` |  | Configure networking options for Relay. This object contains IPs/Subnets to allow or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'Standard'` | `[Standard]` | Name of this SKU. - Standard |
+| `skuName` | string | `'Standard'` | `[Standard]` | Name of this SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `wcfRelays` | _[wcfRelays](wcf-relays/README.md)_ array | `[]` |  | The wcf relays to create in the relay namespace. |
 

@@ -5,7 +5,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Name of this SKU. - Standard')
+@description('Optional. Name of this SKU.')
 @allowed([
   'Standard'
 ])
