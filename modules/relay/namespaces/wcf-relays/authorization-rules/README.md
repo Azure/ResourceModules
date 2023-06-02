@@ -1,6 +1,6 @@
-# Relay Namespace Queue Authorization Rules `[Microsoft.Relay/namespaces/wcfRelays/authorizationRules]`
+# WCF Relay Authorization Rules `[Microsoft.Relay/namespaces/wcfRelays/authorizationRules]`
 
-This module deploys an authorization rule for a relay namespace queue.
+This module deploys authorization rules for a wcf relay.
 
 ## Navigation
 

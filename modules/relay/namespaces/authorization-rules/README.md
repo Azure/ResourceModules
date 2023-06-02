@@ -1,6 +1,6 @@
 # Relay Namespace Authorization Rules `[Microsoft.Relay/namespaces/authorizationRules]`
 
-This module deploys authorization rules for a relay namespace
+This module deploys authorization rules for a relay namespace.
 
 ## Navigation
 
