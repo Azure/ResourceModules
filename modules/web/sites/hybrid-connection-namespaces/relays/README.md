@@ -4,7 +4,7 @@ This module configures a web or function app with a hybrid connection relay.
 
 ## Navigation
 
-- [Resource Types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Cross-referenced modules](#Cross-referenced-modules)

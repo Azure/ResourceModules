@@ -22,12 +22,12 @@ This module deploys Web Sites Hybrid Connecton Relays.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `resourceId` | string | The resource id of the resource. |
+| `slotName` | string | Slot name to be configured. |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `slotName` | string | The name of the parent web site slot. Required if the template is used in a standalone deployment |
 | `webAppName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**

@@ -8,7 +8,7 @@ param namespaceName string
 @maxLength(50)
 param name string
 
-@description('Optional. User-defined string data for the Relay Hybrid Connection.')
+@description('Required. User-defined string data for the Relay Hybrid Connection.')
 param userMetadata string
 
 @description('Optional. A value indicating if this hybrid connection requires duplicate detection.')
