@@ -1,6 +1,6 @@
 # Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`
 
-This module deploys Web Sites Hybrid Connecton Relays.
+This module configures a web or function app with a hybrid connection relay.
 
 ## Navigation
 
