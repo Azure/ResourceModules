@@ -1,11 +1,11 @@
 @description('Required. The resource id of the resource.')
 param resourceId string
 
+@description('Required. Slot name to be configured.')
+param slotName string
+
 @description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
 param webAppName string
-
-@description('Conditional. The name of the parent web site slot. Required if the template is used in a standalone deployment')
-param slotName string
 
 @description('Optional. Name of the authorization rule send key to use.')
 param sendKeyName string = 'defaultSender'
