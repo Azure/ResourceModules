@@ -22,6 +22,7 @@ This module deploys a web or function app.
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Web/sites/slots` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots) |
 | `Microsoft.Web/sites/slots/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots/hybridConnectionNamespaces/relays) |
 
 ## Parameters
 
@@ -66,6 +67,7 @@ This module deploys a web or function app.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hostNameSslStates` | array | `[]` |  | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
 | `httpsOnly` | bool | `True` |  | Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests. |
+| `hybridConnectionRelays` | array | `[]` |  | Names of hybrid connection relays to connect app with. |
 | `hyperV` | bool | `False` |  | Hyper-V sandbox. |
 | `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |

@@ -37,6 +37,8 @@ module nestedDependencies 'dependencies.bicep' = {
     serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
     applicationInsightsName: 'dep-<<namePrefix>>-appi-${serviceShort}'
+    namespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
+    hybridConnectionName: 'dep-<<namePrefix>>-hc-${serviceShort}'
   }
 }
 
@@ -176,5 +178,11 @@ module testDeployment '../../main.bicep' = {
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
+    hybridConnectionRelays: [
+      {
+        resourceId: nestedDependencies.outputs.hybridConnectionResourceId
+        sendKeyName: 'defaultSender'
+      }
+    ]
   }
 }
