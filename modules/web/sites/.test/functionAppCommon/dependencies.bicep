@@ -16,6 +16,12 @@ param storageAccountName string
 @description('Required. The name of the Application Insights instance to create.')
 param applicationInsightsName string
 
+@description('Required. The name of the Relay Namespace to create.')
+param namespaceName string
+
+@description('Required. The name of the Hybrid Connection to create.')
+param hybridConnectionName string
+
 var addressPrefix = '10.0.0.0/16'
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -89,6 +95,34 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
     properties: {}
 }
 
+resource namespace 'Microsoft.Relay/namespaces@2021-11-01' = {
+    name: namespaceName
+    location: location
+    sku: {
+        name: 'Standard'
+    }
+    properties: {}
+}
+
+resource hybridConnection 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' = {
+    name: hybridConnectionName
+    parent: namespace
+    properties: {
+        requiresClientAuthorization: true
+        userMetadata: '[{"key":"endpoint","value":"db-server.constoso.com:1433"}]'
+    }
+}
+
+resource authorizationRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' = {
+    name: 'defaultSender'
+    parent: hybridConnection
+    properties: {
+        rights: [
+            'Send'
+        ]
+    }
+}
+
 @description('The resource ID of the created Virtual Network Subnet.')
 output subnetResourceId string = virtualNetwork.properties.subnets[0].id
 
@@ -109,3 +143,6 @@ output applicationInsightsResourceId string = applicationInsights.id
 
 @description('The resource ID of the created Private DNS Zone.')
 output privateDNSZoneResourceId string = privateDNSZone.id
+
+@description('The resource ID of the created Hybrid Connection.')
+output hybridConnectionResourceId string = hybridConnection.id
