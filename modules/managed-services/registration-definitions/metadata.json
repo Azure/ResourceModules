@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
     "name": "Registration Definitions",
-    "summary": "This module deploys `registrationDefinitions` and `registrationAssignments` (often referred to as 'Lighthouse' or 'resource delegation')\non subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is\nassigned a role is in a remote/managing Azure Active Directory tenant. The templates are run towards the tenant where\nthe Azure resources you want to delegate access to are, providing 'authorizations' (aka. access delegation) to principals in a\nremote/managing tenant.",
+    "summary": "This module deploys a `Registration Definition` and a `Registration Assignment` (often referred to as 'Lighthouse' or 'resource delegation')\non subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is\nassigned a role is in a remote/managing Azure Active Directory tenant. The templates are run towards the tenant where\nthe Azure resources you want to delegate access to are, providing 'authorizations' (aka. access delegation) to principals in a\nremote/managing tenant.",
     "owner": "Azure/module-maintainers"
 }
