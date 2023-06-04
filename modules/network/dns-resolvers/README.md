@@ -1,6 +1,6 @@
-# Network DnsResolvers `[Microsoft.Network/dnsResolvers]`
+# DNS Resolvers `[Microsoft.Network/dnsResolvers]`
 
-This module deploys Network DnsResolvers.
+This module deploys a DNS Resolver.
 
 ## Navigation
 

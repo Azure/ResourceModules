@@ -1,6 +1,6 @@
-# SignalRService SignalR `[Microsoft.SignalRService/signalR]`
+# SignalR Service SignalR `[Microsoft.SignalRService/signalR]`
 
-This module deploys SignalRService SignalR.
+This module deploys a SignalR Service SignalR.
 
 ## Navigation
 

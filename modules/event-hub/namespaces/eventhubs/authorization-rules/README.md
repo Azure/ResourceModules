@@ -1,6 +1,6 @@
-# EventHub Namespace EventHubs Authorization Rule `[Microsoft.EventHub/namespaces/eventhubs/authorizationRules]`
+# EventHub Namespace EventHub Authorization Rules `[Microsoft.EventHub/namespaces/eventhubs/authorizationRules]`
 
-This module deploys an EventHub Namespace EventHubs Authorization Rule
+This module deploys an EventHub Namespace EventHub Authorization Rule.
 
 ## Navigation
 

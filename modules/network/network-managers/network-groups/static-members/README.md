@@ -1,6 +1,6 @@
-# Network NetworkManagers NetworkGroups StaticMembers `[Microsoft.Network/networkManagers/networkGroups/staticMembers]`
+# AVNM Network Group Static Members `[Microsoft.Network/networkManagers/networkGroups/staticMembers]`
 
-This module deploys Network NetworkManagers NetworkGroups StaticMembers.
+This module deploys an Azure Virtual Network Manager (AVNM) Network Group Static Member.
 Static membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.
 
 ## Navigation

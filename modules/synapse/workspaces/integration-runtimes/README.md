@@ -1,6 +1,6 @@
-# Synapse Workspaces IntegrationRuntimes `[Microsoft.Synapse/workspaces/integrationRuntimes]`
+# Synapse Workspace Integration Runtimes `[Microsoft.Synapse/workspaces/integrationRuntimes]`
 
-This module deploys Synapse Workspaces IntegrationRuntimes.
+This module deploys a Synapse Workspace Integration Runtime.
 
 ## Navigation
 

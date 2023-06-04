@@ -1,6 +1,6 @@
 # Network Application Gateways `[Microsoft.Network/applicationGateways]`
 
-This module deploys Network ApplicationGateways.
+This module deploys a Network Application Gateway.
 
 ## Navigation
 

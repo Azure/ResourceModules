@@ -1,6 +1,6 @@
-# Network NetworkManagers SecurityAdminConfigurations `[Microsoft.Network/networkManagers/securityAdminConfigurations]`
+# AVNM Security Admin Configurations `[Microsoft.Network/networkManagers/securityAdminConfigurations]`
 
-This module deploys Network NetworkManagers SecurityAdminConfigurations.
+This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration.
 A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.
 
 ## Navigation

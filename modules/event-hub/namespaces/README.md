@@ -1,6 +1,6 @@
 # Event Hub Namespaces `[Microsoft.EventHub/namespaces]`
 
-This module deploys an event hub namespace.
+This module deploys an Event Hub Namespace.
 
 ## Navigation
 
@@ -50,7 +50,7 @@ This module deploys an event hub namespace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfig` | object | `{object}` |  | The disaster recovery config for this namespace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventHubs` | _[eventHubs](event-hubs/README.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
+| `eventHubs` | array | `[]` |  | The event hubs to deploy into this namespace. |
 | `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |

@@ -1,6 +1,6 @@
-# PolicyInsights Remediations ResourceGroup `[Microsoft.PolicyInsights/remediations/resourceGroup]`
+# Policy Insights Remediations (Resource Group scope) `[Microsoft.PolicyInsights/remediations/resourceGroup]`
 
-This module deploys PolicyInsights Remediations ResourceGroup.
+This module deploys a Policy Insights Remediation on a Resource Group scope.
 
 ## Navigation
 

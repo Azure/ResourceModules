@@ -1,6 +1,6 @@
-# DICOM Services `[Microsoft.HealthcareApis/workspaces/dicomservices]`
+# Health Care API Workspace DICOM Services `[Microsoft.HealthcareApis/workspaces/dicomservices]`
 
-This module deploys a DICOM service.
+This module deploys a Health Care API Workspace DICOM Service.
 
 ## Navigation
 

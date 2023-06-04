@@ -1,6 +1,6 @@
-# ServiceBus Namespaces NetworkRuleSets `[Microsoft.ServiceBus/namespaces/networkRuleSets]`
+# ServiceBus Namespace Network Rule Sets `[Microsoft.ServiceBus/namespaces/networkRuleSets]`
 
-This module deploys ServiceBus Namespaces NetworkRuleSets.
+This module deploys a ServiceBus Namespace Network Rule Set.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# Site Slot AuthSettingsV2 Config `[Microsoft.Web/sites/slots/config]`
+# Site Slot Auth Settings V2 Config `[Microsoft.Web/sites/slots/config]`
 
-This module deploys the auth settings v2.
+This module deploys a Site Auth Settings V2 Configuration.
 
 ## Navigation
 

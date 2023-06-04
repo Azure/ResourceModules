@@ -1,6 +1,6 @@
 # Web/Function Apps `[Microsoft.Web/sites]`
 
-This module deploys a web or function app.
+This module deploys a Web or Function App.
 
 ## Navigation
 

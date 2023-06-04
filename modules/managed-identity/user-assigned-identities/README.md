@@ -1,6 +1,6 @@
 # User Assigned Identities `[Microsoft.ManagedIdentity/userAssignedIdentities]`
 
-This module deploys a user assigned identity.
+This module deploys a User Assigned Identity.
 
 ## Navigation
 

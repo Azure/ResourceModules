@@ -1,6 +1,6 @@
-# Network NetworkManagers ScopeConnections `[Microsoft.Network/networkManagers/scopeConnections]`
+# AVNM Scope Connections `[Microsoft.Network/networkManagers/scopeConnections]`
 
-This module deploys Network NetworkManagers ScopeConnections.
+This module deploys an Azure Virtual Network Manager (AVNM) ScopeConnection.
 Create a cross-tenant connection to manage a resource from another tenant.
 
 ## Navigation

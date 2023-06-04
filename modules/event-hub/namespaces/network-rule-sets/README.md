@@ -1,6 +1,6 @@
-# EventHub Namespaces NetworkRuleSets `[Microsoft.EventHub/namespaces/networkRuleSets]`
+# EventHub Namespace Network Rule Sets `[Microsoft.EventHub/namespaces/networkRuleSets]`
 
-This module deploys EventHub Namespaces NetworkRuleSets.
+This module deploys an EventHub Namespace Network Rule Set.
 
 ## Navigation
 

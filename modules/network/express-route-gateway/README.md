@@ -1,6 +1,6 @@
 # Express Route Gateways `[Microsoft.Network/expressRouteGateway]`
 
-This module deploys Expess Route Gateways.
+This module deploys an Expess Route Gateway.
 
 ## Navigation
 
