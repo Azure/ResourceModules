@@ -23,7 +23,7 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
-  "files.insertFinalNewline": true,
+  "files.insertFinalNewline": false,
   "files.trimTrailingWhitespace": true,
   "markdown.extension.orderedList.marker": "one",
   "markdown.extension.tableFormatter.enabled": false,
