@@ -17,6 +17,9 @@ param serviceShort string = 'nnmcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,10 +35,10 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    virtualNetworkHubName: 'dep-<<namePrefix>>-vnetHub-${serviceShort}'
-    virtualNetworkSpoke1Name: 'dep-<<namePrefix>>-vnetSpoke1-${serviceShort}'
-    virtualNetworkSpoke2Name: 'dep-<<namePrefix>>-vnetSpoke2-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    virtualNetworkHubName: 'dep-${namePrefix}-vnetHub-${serviceShort}'
+    virtualNetworkSpoke1Name: 'dep-${namePrefix}-vnetSpoke1-${serviceShort}'
+    virtualNetworkSpoke2Name: 'dep-${namePrefix}-vnetSpoke2-${serviceShort}'
     location: location
   }
 }
@@ -44,7 +47,7 @@ module nestedDependencies 'dependencies.bicep' = {
 // Test Execution //
 // ============== //
 
-var networkManagerName = '<<namePrefix>>${serviceShort}001'
+var networkManagerName = '${namePrefix}${serviceShort}001'
 var networkManagerExpecetedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/networkManagers/${networkManagerName}'
 
 module testDeployment '../../main.bicep' = {

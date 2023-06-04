@@ -17,6 +17,9 @@ param serviceShort string = 'cdnpcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,8 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>cdnstore${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}cdnstore${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 
@@ -45,7 +48,7 @@ module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    name: 'dep-<<namePrefix>>-test-${serviceShort}'
+    name: 'dep-${namePrefix}-test-${serviceShort}'
     location: location
     lock: 'CanNotDelete'
     originResponseTimeoutSeconds: 60
@@ -69,7 +72,7 @@ module testDeployment '../../main.bicep' = {
       queryStringCachingBehavior: 'IgnoreQueryString'
       origins: [
         {
-          name: 'dep-<<namePrefix>>-cdn-endpoint01'
+          name: 'dep-${namePrefix}-cdn-endpoint01'
           properties: {
             hostName: '${nestedDependencies.outputs.storageAccountName}.blob.${environment().suffixes.storage}'
             httpPort: 80

@@ -20,6 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -35,12 +38,12 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
-    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    diskEncryptionSetName: 'dep-${namePrefix}-des-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}sa${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
 
@@ -53,7 +56,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     location: resourceGroup.location
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -67,7 +70,7 @@ module testDeployment '../../main.bicep' = {
     ]
     tags: {
       resourceType: 'DevTest Lab'
-      labName: '<<namePrefix>>${serviceShort}001'
+      labName: '${namePrefix}${serviceShort}001'
     }
     announcement: {
       enabled: 'Enabled'

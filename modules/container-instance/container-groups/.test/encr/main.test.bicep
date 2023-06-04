@@ -20,6 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -35,9 +38,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
   }
 }
 
@@ -50,11 +53,11 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
     containers: [
       {
-        name: '<<namePrefix>>-az-aci-x-001'
+        name: '${namePrefix}-az-aci-x-001'
         properties: {
           command: []
           environmentVariables: []
@@ -78,7 +81,7 @@ module testDeployment '../../main.bicep' = {
         }
       }
       {
-        name: '<<namePrefix>>-az-aci-x-002'
+        name: '${namePrefix}-az-aci-x-002'
         properties: {
           command: []
           environmentVariables: []
