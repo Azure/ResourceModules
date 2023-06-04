@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Hosting Environment Network Configuration",
-  "summary": "This module deploys a Network Configuration for Hosting Environments.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Hosting Environment Network Configuration",
+    "summary": "This module deploys a Hosting Environment Network Configuration.",
+    "owner": "Azure/module-maintainers"
 }

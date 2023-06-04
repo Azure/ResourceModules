@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "App Service Environments",
-    "summary": "This module deploys an App Service Environment.",
+    "name": "App Service Environments (ASE)",
+    "summary": "This module deploys an App Service Environment (ASE).",
     "owner": "Azure/module-maintainers"
 }

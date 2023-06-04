@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "File Share",
-  "summary": "This module deploys a storage account file share.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Storage Account File Shares",
+    "summary": "This module deploys a Storage Account File Share.",
+    "owner": "Azure/module-maintainers"
 }

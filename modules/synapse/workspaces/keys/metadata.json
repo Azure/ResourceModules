@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Synapse Workspaces Keys",
-  "summary": "This module deploys a Synapse Workspaces Key.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Synapse Workspaces Keys",
+    "summary": "This module deploys a Synapse Workspaces Key.",
+    "owner": "Azure/module-maintainers"
 }

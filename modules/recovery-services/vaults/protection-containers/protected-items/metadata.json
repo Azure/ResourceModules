@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Recovery Service Vault Protection Container Protected Item",
-  "summary": "This module deploys a Protection Container Protected Item for a Recovery Services Vault",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Recovery Service Vaults Protection Container Protected Item",
+    "summary": "This module deploys a Recovery Services Vault Protection Container Protected Item.",
+    "owner": "Azure/module-maintainers"
 }
