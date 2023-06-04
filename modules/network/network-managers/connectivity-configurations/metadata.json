@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Network NetworkManagers ConnectivityConfigurations",
+    "summary": "This module deploys Network NetworkManagers ConnectivityConfigurations.\nConnectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.",
+    "owner": "Azure/module-maintainers"
+}

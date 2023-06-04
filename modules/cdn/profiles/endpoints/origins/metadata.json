@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "CDN Profiles Endpoint Origins",
+  "summary": "This module deploys CDN Profiles Endpoint Origins.",
+  "owner": "Azure/module-maintainers"
+}

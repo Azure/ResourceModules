@@ -1,5 +1,7 @@
 # Azure Databricks `[Microsoft.Databricks/workspaces]`
 
+This module deploys an Azure Databricks workspace.
+
 ## Navigation
 
 - [Resource types](#Resource-types)
