@@ -1,8 +1,6 @@
-# DevTestLab Labs `[Microsoft.DevTestLab/labs]`
+# DevTest Labs `[Microsoft.DevTestLab/labs]`
 
-This module deploys DevTestLab Labs.
-
-Azure DevTest Labs is a service for easily creating, using, and managing infrastructure-as-a-service (IaaS) virtual machines (VMs) and platform-as-a-service (PaaS) environments in labs. Labs offer preconfigured bases and artifacts for creating VMs, and Azure Resource Manager (ARM) templates for creating environments like Azure Web Apps or SharePoint farms.
+This module deploys a DevTest Lab.
 
 ## Navigation
 
