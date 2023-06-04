@@ -21,6 +21,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -36,12 +39,12 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    primaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-1'
-    primaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-1'
-    primaryVirtualNetworkGatewayName: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-1'
-    secondaryPublicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}-2'
-    secondaryVirtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}-2'
-    secondaryVirtualNetworkGatewayName: 'dep-<<namePrefix>>-vpn-gw-${serviceShort}-2'
+    primaryPublicIPName: 'dep-${namePrefix}-pip-${serviceShort}-1'
+    primaryVirtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}-1'
+    primaryVirtualNetworkGatewayName: 'dep-${namePrefix}-vpn-gw-${serviceShort}-1'
+    secondaryPublicIPName: 'dep-${namePrefix}-pip-${serviceShort}-2'
+    secondaryVirtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}-2'
+    secondaryVirtualNetworkGatewayName: 'dep-${namePrefix}-vpn-gw-${serviceShort}-2'
   }
 }
 
@@ -54,7 +57,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     virtualNetworkGateway1: {
       id: nestedDependencies.outputs.primaryVNETGatewayResourceID
     }

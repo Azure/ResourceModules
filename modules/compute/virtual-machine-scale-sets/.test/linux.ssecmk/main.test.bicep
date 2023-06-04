@@ -20,6 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -36,13 +39,13 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     location: location
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep<<namePrefix>>kv${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    diskEncryptionSetName: 'dep-<<namePrefix>>-des-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    sshDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    sshKeyName: 'dep-<<namePrefix>>-ssh-${serviceShort}'
+    keyVaultName: 'dep${namePrefix}kv${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    diskEncryptionSetName: 'dep-${namePrefix}-des-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    sshDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
+    sshKeyName: 'dep-${namePrefix}-ssh-${serviceShort}'
   }
 }
 
@@ -55,7 +58,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     adminUsername: 'scaleSetAdmin'
     imageReference: {
       publisher: 'Canonical'

@@ -17,6 +17,9 @@ param serviceShort string = 'npecom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,10 +35,10 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    applicationSecurityGroupName: 'dep-<<namePrefix>>-asg-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    applicationSecurityGroupName: 'dep-${namePrefix}-asg-${serviceShort}'
   }
 }
 
@@ -48,7 +51,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     groupIds: [
       'vault'
     ]
@@ -79,7 +82,7 @@ module testDeployment '../../main.bicep' = {
         }
       }
     ]
-    customNetworkInterfaceName: '<<namePrefix>>${serviceShort}001nic'
+    customNetworkInterfaceName: '${namePrefix}${serviceShort}001nic'
     applicationSecurityGroups: [
       {
         id: nestedDependencies.outputs.applicationSecurityGroupResourceId

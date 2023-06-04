@@ -17,6 +17,9 @@ param serviceShort string = 'aramgmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -27,7 +30,7 @@ module nestedDependencies 'interim.dependencies.bicep' = {
   scope: subscription('<<subscriptionId>>')
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     resourceGroupName: resourceGroupName
     location: location
   }

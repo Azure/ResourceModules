@@ -17,6 +17,9 @@ param serviceShort string = 'sfccer'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -37,8 +40,8 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
-    managementEndpoint: 'https://<<namePrefix>>${serviceShort}001.westeurope.cloudapp.azure.com:19080'
+    name: '${namePrefix}${serviceShort}001'
+    managementEndpoint: 'https://${namePrefix}${serviceShort}001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'None'
     certificate: {
       thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
