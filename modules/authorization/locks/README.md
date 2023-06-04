@@ -1,6 +1,6 @@
 # Authorization Locks `[Microsoft.Authorization/locks]`
 
-This module deploys Authorization Locks.
+This module deploys an Authorization Lock.
 
 ## Navigation
 

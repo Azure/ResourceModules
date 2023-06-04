@@ -1,6 +1,6 @@
-# DigitalTwin Instances `[Microsoft.DigitalTwins/digitalTwinsInstances]`
+# Digital Twin Instances `[Microsoft.DigitalTwins/digitalTwinsInstances]`
 
-This module deploys Azure Digital Twins Instances.
+This module deploys an Azure Digital Twins Instance.
 
 ## Navigation
 

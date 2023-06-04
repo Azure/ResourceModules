@@ -1,4 +1,4 @@
-# Application `[Microsoft.Compute/galleries/applications]`
+# Compute Galleries Applications `[Microsoft.Compute/galleries/applications]`
 
 This module deploys an Application in a Azure Compute Gallery.
 

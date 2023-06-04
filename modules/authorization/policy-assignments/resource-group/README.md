@@ -1,6 +1,6 @@
-# Policy Assignment on Resource Group level `[Microsoft.Authorization/policyAssignments/resourceGroup]`
+# Policy Assignments (Resource Group scope) `[Microsoft.Authorization/policyAssignments/resourceGroup]`
 
-With this module you can perform policy assignments on a resource group level
+This module deploys a Policy Assignment at a Resource Group scope.
 
 ## Navigation
 

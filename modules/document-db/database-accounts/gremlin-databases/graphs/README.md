@@ -1,6 +1,6 @@
-# DocumentDB DatabaseAccounts GremlinDatabases Graphs `[Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs]`
+# DocumentDB Database Accounts Gremlin Databases Graphs `[Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs]`
 
-This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.
+This module deploys a DocumentDB Database Accounts Gremlin Database Graph.
 
 ## Navigation
 

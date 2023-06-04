@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DevTestLab Labs NotificationChannels",
-    "summary": "This module deploys DevTestLab Labs NotificationChannels.\n\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.",
+    "name": "DevTest Lab Notification Channels",
+    "summary": "This module deploys a DevTest Lab Notification Channel.\n\nNotification channels are used by the schedule resource type in order to send notifications or events to email addresses and/or webhooks.",
     "owner": "Azure/module-maintainers"
 }
