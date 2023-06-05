@@ -176,7 +176,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module webTests './insights/web-tests/main.bicep' = {
+module webtests './insights/webtests/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iwtcom'
   params: {
     // Required parameters
@@ -263,7 +263,7 @@ module webTests './insights/web-tests/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module webTests './insights/web-tests/main.bicep' = {
+module webtests './insights/webtests/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iwtmin'
   params: {
     // Required parameters
