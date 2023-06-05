@@ -4,10 +4,13 @@ This module deploys an EventHub Namespace Event Hub.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Cross-referenced modules](#Cross-referenced-modules)
+- [EventHub Namespace EventHubs `[Microsoft.EventHub/namespaces/eventhubs]`](#eventhub-namespace-eventhubs-microsofteventhubnamespaceseventhubs)
+  - [Navigation](#navigation)
+  - [Resource types](#resource-types)
+  - [Parameters](#parameters)
+    - [Parameter Usage: `roleAssignments`](#parameter-usage-roleassignments)
+  - [Outputs](#outputs)
+  - [Cross-referenced modules](#cross-referenced-modules)
 
 ## Resource types
 
@@ -47,7 +50,7 @@ This module deploys an EventHub Namespace Event Hub.
 | `captureDescriptionIntervalInSeconds` | int | `300` |  | The time window allows you to set the frequency with which the capture to Azure Blobs will happen. |
 | `captureDescriptionSizeLimitInBytes` | int | `314572800` |  | The size window defines the amount of data built up in your Event Hub before an capture operation. |
 | `captureDescriptionSkipEmptyArchives` | bool | `False` |  | A value that indicates whether to Skip Empty Archives. |
-| `consumerGroups` | array | `[System.Management.Automation.OrderedHashtable]` |  | The consumer groups to create in this event hub instance. |
+| `consumergroups` | _[consumergroups](consumergroups/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | The consumer groups to create in this event hub instance. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `messageRetentionInDays` | int | `1` |  | Number of days to retain the events for this Event Hub, value should be 1 to 7 days. |

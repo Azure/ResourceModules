@@ -88,7 +88,7 @@ module testDeployment '../../main.bicep' = {
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    eventHubs: [
+    eventhubs: [
       {
         name: '${namePrefix}-az-evh-x-001'
       }
@@ -120,7 +120,7 @@ module testDeployment '../../main.bicep' = {
         captureDescriptionIntervalInSeconds: 300
         captureDescriptionSizeLimitInBytes: 314572800
         captureDescriptionSkipEmptyArchives: true
-        consumerGroups: [
+        consumergroups: [
           {
             name: 'custom'
             userMetadata: 'customMetadata'
