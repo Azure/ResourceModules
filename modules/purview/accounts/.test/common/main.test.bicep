@@ -1,9 +1,4 @@
 targetScope = 'subscription'
-}
-
-@description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
-targetScope = 'subscription'
 
 // ========== //
 // Parameters //
@@ -21,6 +16,8 @@ param serviceShort string = 'pvacom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = false
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
 // =========== //
 // Deployments //
 // =========== //
