@@ -102,6 +102,10 @@ jobs:
             $functionInput = @{
               MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
               ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+              Organization     = '$(System.CollectionUri)'.Split('/')[3]
+              RepositoryName   = '$(Build.Repository.Name)'
+              Environment      = 'ADO'
+              ProjectName      = '$(System.TeamProject)'
             }
 
             Write-Verbose "Invoke task with" -Verbose
