@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
     "name": "Network Watchers",
-    "summary": "- This template deploys a network watcher.\n- Network Watcher is a default resource which will get created automatically in every region where a virtual network is present with in the network watcher resource group.",
+    "summary": "This module deploys a Network Watcher.",
     "owner": "Azure/module-maintainers"
 }
