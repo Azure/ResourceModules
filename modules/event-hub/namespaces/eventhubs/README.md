@@ -4,13 +4,10 @@ This module deploys an EventHub Namespace Event Hub.
 
 ## Navigation
 
-- [EventHub Namespace EventHubs `[Microsoft.EventHub/namespaces/eventhubs]`](#eventhub-namespace-eventhubs-microsofteventhubnamespaceseventhubs)
-  - [Navigation](#navigation)
-  - [Resource types](#resource-types)
-  - [Parameters](#parameters)
-    - [Parameter Usage: `roleAssignments`](#parameter-usage-roleassignments)
-  - [Outputs](#outputs)
-  - [Cross-referenced modules](#cross-referenced-modules)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
 
 ## Resource types
 
