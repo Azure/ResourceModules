@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/recovery-services/vaults/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.recoveryservices.vaults.yml'
-      - 'modules/Microsoft.RecoveryServices/vaults/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.RecoveryServices/vaults'
+  modulePath: 'modules/recovery-services/vaults'
   workflowPath: '.github/workflows/ms.recoveryservices.vaults.yml'
 
 concurrency:

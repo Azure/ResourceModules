@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/signal-r-service/signal-r/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.signalrservice.signalr.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.SignalRService/signalR/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.SignalRService/signalR'
+    value: '/modules/signal-r-service/signal-r'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

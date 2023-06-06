@@ -18,8 +18,8 @@ jobs:
       # Analyze module library with PSRule
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
       - name: 'Replace tokens in template file'

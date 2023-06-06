@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/signal-r-service/web-pub-sub/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.signalrservice.webpubsub.yml'
-      - 'modules/Microsoft.SignalRService/webPubSub/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.SignalRService/webPubSub'
+  modulePath: 'modules/signal-r-service/web-pub-sub'
   workflowPath: '.github/workflows/ms.signalrservice.webpubsub.yml'
 
 concurrency:

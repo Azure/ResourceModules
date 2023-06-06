@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/sql/servers/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.sql.servers.yml'
-      - 'modules/Microsoft.Sql/servers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Sql/servers'
+  modulePath: 'modules/sql/servers'
   workflowPath: '.github/workflows/ms.sql.servers.yml'
 
 concurrency:

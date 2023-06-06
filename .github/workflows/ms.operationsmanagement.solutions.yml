@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.operationsmanagement.solutions.yml'
-      - 'modules/Microsoft.OperationsManagement/solutions/**'
+      - 'modules/operations-management/solutions/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.OperationsManagement/solutions'
+  modulePath: 'modules/operations-management/solutions'
   workflowPath: '.github/workflows/ms.operationsmanagement.solutions.yml'
 
 concurrency:

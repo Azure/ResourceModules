@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/web/sites/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.web.sites.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Web/sites/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Web/sites'
+    value: '/modules/web/sites'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

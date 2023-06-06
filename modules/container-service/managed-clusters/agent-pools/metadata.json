@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Managed Cluster AgentPool",
+  "summary": "This module deploys an Agent Pool for a Container Service Managed Cluster",
+  "owner": "Azure/module-maintainers"
+}

@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/cache/redis/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.cache.redis.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Cache/Redis/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Cache/redis'
+    value: '/modules/cache/redis'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

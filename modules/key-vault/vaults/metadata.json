@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Key Vaults",
+  "summary": "This module deploys a key vault and its child resources.",
+  "owner": "Azure/module-maintainers"
+}

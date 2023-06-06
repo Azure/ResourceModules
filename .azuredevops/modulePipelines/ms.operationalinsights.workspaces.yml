@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/operational-insights/workspaces/*'
+      - '/modules/operations-management/solutions/*'
       - '/.azuredevops/modulePipelines/ms.operationalinsights.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.OperationalInsights/workspaces/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.OperationalInsights/workspaces'
+    value: '/modules/operational-insights/workspaces'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

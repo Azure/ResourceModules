@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/batch/batch-accounts/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.batch.batchaccounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Batch/batchAccounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Batch/batchAccounts'
+    value: '/modules/batch/batch-accounts'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

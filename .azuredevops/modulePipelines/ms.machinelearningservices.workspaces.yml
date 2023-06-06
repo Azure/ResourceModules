@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/machine-learning-services/workspaces/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.machinelearningservices.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.MachineLearningServices/workspaces/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.MachineLearningServices/workspaces'
+    value: '/modules/machine-learning-services/workspaces'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

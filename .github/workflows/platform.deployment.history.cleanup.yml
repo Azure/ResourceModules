@@ -59,22 +59,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: 'Setup agent'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-          # Define PS modules to install on the runner
-          $Modules = @(
-              @{ Name = 'Az.Accounts' }
-          )
-
-          # Set agent up
-          Set-EnvironmentOnAgent -PSModules $Modules
-
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
 
@@ -113,22 +100,9 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: 'Setup agent'
-        shell: pwsh
-        run: |
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-          # Define PS modules to install on the runner
-          $Modules = @(
-              @{ Name = 'Az.Accounts' }
-          )
-
-          # Set agent up
-          Set-EnvironmentOnAgent -PSModules $Modules
-
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
 

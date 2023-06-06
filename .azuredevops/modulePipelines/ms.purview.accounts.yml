@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/purview/accounts/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.purview.accounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Purview/accounts/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Purview/accounts'
+    value: '/modules/purview/accounts'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

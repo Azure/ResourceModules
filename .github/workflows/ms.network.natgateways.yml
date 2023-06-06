@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/network/nat-gateways/**'
+      - 'modules/network/public-ip-addresses/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.natgateways.yml'
-      - 'modules/Microsoft.Network/natGateways/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/natGateways'
+  modulePath: 'modules/network/nat-gateways'
   workflowPath: '.github/workflows/ms.network.natgateways.yml'
 
 concurrency:

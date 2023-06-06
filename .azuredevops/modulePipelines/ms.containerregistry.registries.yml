@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/container-registry/registries/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.containerregistry.registries.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.ContainerRegistry/registries/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.ContainerRegistry/registries'
+    value: '/modules/container-registry/registries'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

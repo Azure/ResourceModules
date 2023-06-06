@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.dbforpostgresql.flexibleservers.yml'
-      - 'modules/Microsoft.DBforPostgreSQL/flexibleServers/**'
+      - 'modules/db-for-postgre-sql/flexible-servers/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DBforPostgreSQL/flexibleServers'
+  modulePath: 'modules/db-for-postgre-sql/flexible-servers'
   workflowPath: '.github/workflows/ms.dbforpostgresql.flexibleservers.yml'
 
 concurrency:

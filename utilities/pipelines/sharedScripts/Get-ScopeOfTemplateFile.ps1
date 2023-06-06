@@ -14,9 +14,9 @@ Will return either
 Mandatory. The path of the template file
 
 .EXAMPLE
-Get-ScopeOfTemplateFile -TemplateFilePath 'C:/deploy.json'
+Get-ScopeOfTemplateFile -TemplateFilePath 'C:/main.json'
 
-Get the scope of the given deploy.json template.
+Get the scope of the given main.json template.
 #>
 function Get-ScopeOfTemplateFile {
 

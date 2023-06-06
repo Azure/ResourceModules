@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "DevTestLab Labs Schedules",
+    "summary": "This module deploys DevTestLab Labs Schedules.\n\nLab schedules are used to modify the settings for auto-shutdown, auto-start for lab virtual machines.",
+    "owner": "Azure/module-maintainers"
+}

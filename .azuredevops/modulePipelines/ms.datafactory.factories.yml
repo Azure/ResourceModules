@@ -27,9 +27,10 @@ trigger:
       - main
   paths:
     include:
+      - '/modules/data-factory/factories/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.datafactory.factories.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.DataFactory/factories/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.DataFactory/factories'
+    value: '/modules/data-factory/factories'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

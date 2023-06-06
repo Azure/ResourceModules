@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/app-configuration/configuration-stores/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.appconfiguration.configurationstores.yml'
-      - 'modules/Microsoft.AppConfiguration/configurationStores/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.AppConfiguration/configurationStores'
+  modulePath: 'modules/app-configuration/configuration-stores'
   workflowPath: '.github/workflows/ms.appconfiguration.configurationstores.yml'
 
 concurrency:

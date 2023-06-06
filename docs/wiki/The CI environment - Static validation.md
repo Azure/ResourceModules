@@ -20,57 +20,61 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 - **File/folder tests**
   - **General module folder tests**
-    1. Module should have a GitHub workflow
-    1. Module should have an Azure DevOps pipeline
-    1. Module should contain a [` deploy.json ` / ` deploy.bicep `] file
-    1. Module should contain a [` readme.md `] file
-    1. Module should contain a [` .test `] folder
-    1. Module should contain a [` version.json `] file
+    1. Module should contain a [` main.json ` / ` main.bicep `] file.
+    1. Module should contain a [` readme.md `] file.
+    1. Module should contain a [` .test `] folder.
+    1. Module should contain a [` version.json `] file.
   - **.test folder**
-    1. Folder should contain one or more test files
-    1. JSON test files in the `.test` folder should be valid json
+    1. Folder should contain one or more test files.
+    1. JSON test files in the `.test` folder should be valid json.
+- **Pipeline tests**
+    1. Module should have a GitHub workflow.
+    1. Module workflow should have trigger for cross-module references, if any.
+    1. Module should have an Azure DevOps pipeline.
+    1. Module pipeline should have trigger for cross-module references, if any.
 - **Readme tests**
   - **Readme content tests**
-    1. `Readme.md` file should not be empty
-    1. `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples
-    1. Resources section should contain all resources from the template file
-    1. Resources section should not contain more resources than the template file
-    1. Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated
+    1. `Readme.md` file should not be empty.
+    1. `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.
+    1. Resources section should contain all resources from the template file.
+    1. Resources section should not contain more resources than the template file.
+    1. Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.
     1. Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.
-    1. Parameters section should contain all parameters from the template file
-    1. Outputs section should contain a table with these column names in order: Output Name, Type
-    1. Output section should contain all outputs defined in the template file
-    1. Dependencies section should contain all cross-references defined in the template file
-    1. `Set-ModuleReadMe` script should not apply any updates
+    1. Parameters section should contain all parameters from the template file.
+    1. Outputs section should contain a table with these column names in order: Output Name, Type.
+    1. Output section should contain all outputs defined in the template file.
+    1. Dependencies section should contain all cross-references defined in the template file.
+    1. `Set-ModuleReadMe` script should not apply any updates.
 - **Test file tests**
   - **General test file**
-    1. Bicep test deployment name should contain [`-test-`]
-    1. Bicep test deployment should have parameter [`serviceShort`]
-    1. JSON test deployment name should contain [`-test-`]
-    1. JSON test deployment should have parameter [`serviceShort`]
+    1. Bicep test deployment name should contain [`-test-`].
+    1. Bicep test deployment should have parameter [`serviceShort`].
+    1. JSON test deployment name should contain [`-test-`].
+    1. JSON test deployment should have parameter [`serviceShort`].
   - **Token usage**
-    1. [Tokens] Test file should not contain the plain value for token guid
+    1. [Tokens] Test file should not contain the plain value for token guid.
 - **Deployment template tests**
   - **General template**
-    1. The template file should not be empty
-    1. Template schema version should be the latest
-    1. Template schema should use HTTPS reference
-    1. All apiVersion properties should be set to a static, hard-coded value
-    1. The template file should contain required elements: `schema`, `contentVersion`, `resources`
-    1. If delete lock is implemented, the template should have a lock parameter with an empty default value
-    1. Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)
-    1. Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)
-    1. Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)
-    1. CUA ID deployment should be present in the template
-    1. Location output should be returned for resources that use it
-    1. Resource Group output should exist for resources that are deployed into a resource group scope
-    1. Resource name output should exist
-    1. Resource ID output should exist
-    1. All parameters in parameters files exist in template file (`deploy.json`)
-    1. All required parameters in template file (`deploy.json`) should exist in parameters files
-    1. All non-required parameters in template file should not have description that start with "Required."
+    1. The template file should not be empty.
+    1. Template schema version should be the latest.
+    1. Template schema should use HTTPS reference.
+    1. All apiVersion properties should be set to a static, hard-coded value.
+    1. The template file should contain required elements [schema], [contentVersion], [resources].
+    1. If delete lock is implemented, the template should have a lock parameter with an empty default value.
+    1. Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter).
+    1. Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter).
+    1. Output names should be camel-cased (no dashes or underscores and must start with lower-case letter).
+    1. CUA ID deployment should be present in the template.
+    1. The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope.
+    1. Location output should be returned for resources that use it.
+    1. Resource Group output should exist for resources that are deployed into a resource group scope.
+    1. Resource name output should exist.
+    1. Resource ID output should exist.
+    1. All parameters in parameters files exist in template file (`main.json`).
+    1. All required parameters in template file (`main.json`) should exist in parameters files.
+    1. All non-required parameters in template file should not have description that start with "Required.".
 - **API version tests**
-    1. In used resource type should use one of the recent API version(s). Currently using
+    1. In used resource type should use one of the recent API version(s). Currently using .
 
 ## Output example
 
@@ -111,7 +115,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    templateFilePath              = "$pathToRepository\modules\Authorization\roleDefinitions\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false

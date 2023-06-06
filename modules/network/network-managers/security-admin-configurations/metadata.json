@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Network NetworkManagers SecurityAdminConfigurations",
+    "summary": "This module deploys Network NetworkManagers SecurityAdminConfigurations.\nA security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.",
+    "owner": "Azure/module-maintainers"
+}

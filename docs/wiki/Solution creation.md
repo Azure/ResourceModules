@@ -22,6 +22,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
   - [Azure DevOps Samples](#azure-devops-samples)
     - [Using Multi-repository](#using-azure-devops-multi-repository-approach)
     - [Using Azure Artifacts](#using-azure-devops-artifacts)
+- [General solution creation](#general-solution-creation)
 
 ---
 
@@ -43,11 +44,38 @@ When it comes to deploying multi-module solutions (applications/workloads/enviro
 
    <img src="./media/SolutionCreation/templateOrchestration.png" alt="Template orchestration" height="250">
 
+    _Advantages_
+    - The deployment of resources in parallel is handled by Azure which means it is generally faster
+    - Passing information in between resource deployments is handled inside a single deployment
+    - The pipeline remains relatively simple as most complexity is handled by the resource template </p>
+
+    _Limitations_
+    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), the compiled (i.e., ARM/JSON) resource template file size may not exceed 4 MB in size. This limitation is more likely to be encountered in a template orchestrated approach.
+    - As per Azure [template limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#template-limits), it is not possible to perform more than 800 deployments using a single resource template. This limitation is more likely to be encountered in a template orchestrated approach.
+    - Not all deployments can be done using the resource template, or only using workarounds (for example, the upload of files, the deployment of AAD resources, etc.)
+    - The deploying principal must have permissions of all resource deployments that are part of the resource template
+
+</p>
+
 - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example, pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that run the jobs, while accounting for all dependencies defined.
 
-Both the _template-orchestration_, as well as _pipeline-orchestration_ may run a validation and subsequent deployment in the same _Azure_ subscription. This subscription should be the subscription where you want to host your production solution. However, you can extend the concept and for example, deploy the solution first to an integration and then a production subscription.
-
    <img src="./media/SolutionCreation/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
+
+    _Advantages_
+    - The deployment of an individual resource is very simple
+    - Most CI/CD systems provide you with a visual representation of the deployment flow
+    - If deployments fail, you can re-run them individually
+    - The split into individual jobs make them easier to troubleshoot
+    - Different deployment jobs can use different principals </p>
+
+    _Limitations_
+    - Each deployment needs its own job, and in turn its own agent. As a consequence, parallel resource deployments require multiple agents.
+    - Passing information from one deployment to another requires passing information from one agent to another
+    - As each agent job has to start up and check out the code first, it generally runs slower
+
+</p>
+
+Both the _template-orchestration_, as well as _pipeline-orchestration_ may run a validation and subsequent deployment in the same _Azure_ subscription. This subscription should be the subscription where you want to host your production solution. However, you can extend the concept and for example, deploy the solution first to an integration and then a production subscription.
 
 ## Publish-location considerations
 
@@ -112,8 +140,8 @@ Once you start building a solution using this library, you may wonder how best t
 
 - Use the [VS-Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) for Bicep to enable DSL-native features such as auto-complete. Metadata implemented in the modules are automatically loaded through the extension.
 - Use the readme
-  - If you don't know how to use an object/array parameter, you can check if the module's ReadMe file specifies any 'Parameter Usage' block for the given parameter ([example](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/readme.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)).
-  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file, as they provide you with rich & tested examples of how a given module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/modules/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust it to your needs.
+  - If you don't know how to use an object/array parameter, you can check if the module's ReadMe file specifies any 'Parameter Usage' block for the given parameter ([example](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/README.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/README.md#deployment-examples)).
+  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file, as they provide you with rich & tested examples of how a given module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/modules/AnalysisServices/servers/README.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust it to your needs.
 - Note the outputs that are returned by each module.
   - If an output you need isn't available, you have 2 choices:
     1. Add the missing output to the module
@@ -145,7 +173,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module rg 'modules/Resources/resourceGroups/main.bicep' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -154,7 +182,7 @@ module rg 'modules/Microsoft.Resources/resourceGroups/deploy.bicep' = {
 }
 
 // Network Security Group
-module nsg 'modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
+module nsg 'modules/Network/networkSecurityGroups/main.bicep' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -166,7 +194,7 @@ module nsg 'modules/Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
 }
 
 // Virtual Network
-module vnet 'modules/Microsoft.Network/virtualNetworks/deploy.bicep' = {
+module vnet 'modules/Network/virtualNetworks/main.bicep' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -220,7 +248,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'br/modules:microsoft.resources.resourcegroups:1.0.0' = {
+module rg 'br/modules:resources.resourcegroups:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -229,7 +257,7 @@ module rg 'br/modules:microsoft.resources.resourcegroups:1.0.0' = {
 }
 
 // Network Security Group
-module nsg 'br/modules:microsoft.network.networksecuritygroups:1.0.0' = {
+module nsg 'br/modules:network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -241,7 +269,7 @@ module nsg 'br/modules:microsoft.network.networksecuritygroups:1.0.0' = {
 }
 
 // Virtual Network
-module vnet 'br/modules:microsoft.network.virtualnetworks:1.0.0' = {
+module vnet 'br/modules:network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -310,7 +338,7 @@ param location string = deployment().location
 // =========== //
 
 // Resource Group
-module rg 'ts/modules:microsoft.resources.resourcegroups:1.0.0' = {
+module rg 'ts/modules:resources.resourcegroups:1.0.0' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -319,7 +347,7 @@ module rg 'ts/modules:microsoft.resources.resourcegroups:1.0.0' = {
 }
 
 // Network Security Group
-module nsg 'ts/modules:microsoft.network.networksecuritygroups:1.0.0' = {
+module nsg 'ts/modules:network.networksecuritygroups:1.0.0' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -331,7 +359,7 @@ module nsg 'ts/modules:microsoft.network.networksecuritygroups:1.0.0' = {
 }
 
 // Virtual Network
-module vnet 'ts/modules:microsoft.network.virtualnetworks:1.0.0' = {
+module vnet 'ts/modules:network.virtualnetworks:1.0.0' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -394,7 +422,7 @@ The example executes one job that creates a Resource group, an NSG and a VNet.
 
 It does so by performing the following tasks
 1. Checkout 'Azure/ResourceModules' repo at root of the agent
-1. Set environment variables for the agent
+1. Set environment for the agent
 1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
 1. Deploy resource group in target Azure subscription
 1. Deploy network security group
@@ -432,8 +460,8 @@ jobs:
           repository: 'Azure/ResourceModules'
           fetch-depth: 0
 
-     - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+     - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
 
@@ -447,7 +475,7 @@ jobs:
       - name: 'Deploy resource group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          templateFilePath: './modules/Resources/resourceGroups/main.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -458,7 +486,7 @@ jobs:
       - name: 'Deploy network security group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          templateFilePath: './modules/Network/networkSecurityGroups/main.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -469,7 +497,7 @@ jobs:
       - name: 'Deploy virtual network A'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: './modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          templateFilePath: './modules/Network/virtualNetworks/main.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
@@ -534,7 +562,7 @@ stages:
         parameters:
           jobName: resourceGroups
           displayName: 'Resource Group'
-          modulePath: '/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+          modulePath: '/modules/Resources/resourceGroups/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/parameters.json'
           checkoutRepositories:
             - modules
@@ -542,7 +570,7 @@ stages:
         parameters:
           jobName: networkSecurityGroups
           displayName: 'Network Security Groups'
-          modulePath: '/modules/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          modulePath: '/modules/Network/networkSecurityGroups/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/networkSecurityGroups/parameters.json'
           checkoutRepositories:
             - modules
@@ -550,7 +578,7 @@ stages:
         parameters:
           jobName: routeTables
           displayName: 'Route Tables'
-          modulePath: '/modules/Microsoft.Network/routeTables/deploy.bicep'
+          modulePath: '/modules/Network/routeTables/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/routeTables/parameters.json'
           checkoutRepositories:
             - modules
@@ -558,7 +586,7 @@ stages:
         parameters:
           jobName: virtualNetworks
           displayName: 'Virtual Networks'
-          modulePath: '/modules/Microsoft.Network/virtualNetworks/deploy.bicep'
+          modulePath: '/modules/Network/virtualNetworks/main.bicep'
           moduleTestFilePath: '$(resourceGroupName)/virtualNetworks/parameters.json'
           checkoutRepositories:
             - modules
@@ -642,7 +670,7 @@ jobs:
         . (Join-Path '$(ENVSOURCEDIRECTORY)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
         $functionInput = @{
-            templateFilePath     = Join-Path "$(downloadDirectory)/${{ parameters.moduleName }}" 'deploy.bicep'
+            templateFilePath     = Join-Path "$(downloadDirectory)/${{ parameters.moduleName }}" 'main.bicep'
             parameterFilePath    = "$(Build.SourcesDirectory)/$(environmentPath)/Parameters/${{ parameters.parameterFilePath }}"
             location             = '${{ parameters.location }}'
             resourceGroupName    = '${{ parameters.resourceGroupName }}'
@@ -692,3 +720,76 @@ jobs:
 ```
 
 </details>
+</details>
+</p>
+
+# General solution creation
+
+When creating a solution that leverages CARML modules, there are several aspects to consider. This sub-section intends to provide you with a rough step-by-step guide to get you started.
+
+1. Identify the resources & deployment scope needed for your architecture
+
+    If you want to create your solution, you should first gain an understanding of the planned architecture and the resulting required services. For this and the subsequent steps, let's consider the following scenario:
+
+    - You want to deploy a Virtual Machine that is able to connect privately to a storage account
+    - For this architecture you may use the following services
+      - 1 Resource Group to place your resources in
+      - 1 Network Security Group to allow traffic control for your subnets
+      - 1 Virtual Network with 2 subnets
+      - 1 Storage Account with 1 Private Endpoint that connects into the 1st Virtual Network Subnet
+      - 1 Virtual Machine that is deployed into the 2nd Virtual Network subnet
+
+    Also, you need to consider the scope you want to deploy into. In the above example, we want to deploy a Resource Group, which must be deployed into a Subscription scope. All other resources, in turn can be deployed into the resource group scope of that resource group.
+
+    <p>
+
+1. Identify dependencies between them
+
+    Next, you need to know in which order you need to deploy those resources. For example, as all resources must be placed in a resource group, the resource group must be deployed first. Likewise, before you can deploy a Virtual Machine, you first need to create a Virtual Network. All together this may look like
+
+      ```mermaid
+      graph LR;
+      rg[Resource Group]
+      vnet[Virtual Network]
+      st[Storage Account]
+      pe[Private Endpoint]
+      vm[Virtual Machine]
+      nsg[Network Security Group]
+
+
+      rg --> vnet
+      rg --> st
+      rg --> vm
+      rg --> nsg
+      vnet --> pe
+      st --> pe
+      nsg --> vnet
+      vnet --> vm
+      ```
+
+1. Consider orchestration options
+
+    With the services & dependencies identified, the next question is, how those dependencies can be implemented. As described in the [Orchestration Overview](#orchestration-overview) sub-section, this is primarily a decision about 'pipeline-orchestration' vs. 'template-orchestration' - and in case of the latter, if there are any steps that have to run in the pipeline regardless (for example an upload of files).
+
+    Generally speaking, both approaches are valid, though we would recommend to use template-orchestration as much as possible and only implement logic in the pipelines if absolutely necessary.
+
+    The previously introduced scenario could be implemented either way.
+
+1. Choose publishing
+
+    Building on the previous step, you must also consider where you consume the resources from, i.e. if you use native Bicep, or published modules from either a Bicep registry, Template Specs, or Azure DevOps universal packages. The characteristics of each option is outlined in the corresponding [sub-section](#publish-location-considerations).
+
+1. Implement you solution
+
+    Finally, you can start building your solution. As peviously started, the chosen orchestration option & source of your code will haeavily impact the design of your solution. To help you along the way, you can use both the [template-orchestration](#template-orchestration) and [pipeline-orchestration](#pipeline-orchestration) sections to draw inspiration from.
+
+    However, there are also some general guidelines you can leverage in either case:
+    - When using CARML modules, make sure you not only check out each module's readme, but also its test cases (`./test/`) to gain an understanding how the module can be used and how certain parameters work. For example, if you want to deploy Customer-Managed-Keys for a service like an Automation Account using the corresponding CARML module, it's `encr` test case provides you also with insights into the required permissions and dependent resources.
+    - If a feature or module is not part of the library nothing prevents you from adding it - or - implementing native Bicep code to complement your solution.
+    - You can build 'constructs' from CARML modules that deploy a common set of resources and in turn leverage them to build even bigger solutions with minimal code.
+    - Leverage capabilities such as `-WhatIf` deployments to get an understanding of the designated changes before you apply them
+    - Also consider to use `staging` in your pipelines to test your solutions in a safe environment first, before you eventually roll them out to production.
+
+1. Deploy the solution
+
+    Last but not least, you only have to deploy you solution. As started in the [Orchestration Overview](#orchestration-overview) sub-section, be vary of the requirements of each correspoinding deployment approach.

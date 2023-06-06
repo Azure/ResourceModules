@@ -129,7 +129,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = '<Path to a module deploy.bicep>'
+    templateFilePath              = '<Path to a module main.bicep>'
     parameterFilePath            = '<Optional path to a module parameter.json>'
     PesterTest                    = $false
     DeploymentTest                = $true
@@ -141,7 +141,6 @@ $TestModuleLocallyInput = @{
         ManagementGroupId = '<ReplaceWith-TargetManagementGroupName>'
     }
     AdditionalTokens              = @{
-        'deploymentSpId' = '<ReplaceWith-SPNObjectId>'
         'tenantId'       = '<ReplaceWith-TargetTenantId>'
     }
 }

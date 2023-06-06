@@ -28,7 +28,7 @@ jobs:
   #########################
   #   Static validation   #
   #########################
-  job_module_static_validation:
+  job_module_static_validation: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'Static validation'
     runs-on: ubuntu-20.04
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
@@ -37,8 +37,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
       - name: 'Run tests'
@@ -50,7 +50,7 @@ jobs:
   #########################
   #   PSRule validation   #
   #########################
-  job_psrule_test:
+  job_psrule_test: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'PSRule validation'
     runs-on: ubuntu-20.04
     if: (fromJson(inputs.workflowInput)).staticValidation == 'true'
@@ -61,8 +61,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
       - name: Set PSRule validation
@@ -75,7 +75,7 @@ jobs:
   #############################
   #   Deployment validation   #
   #############################
-  job_module_deploy_validation:
+  job_module_deploy_validation: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'Deployment validation'
     runs-on: ubuntu-20.04
     if: |
@@ -94,10 +94,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
+          removeDeployment: '${{ fromJson(inputs.workflowInput).removeDeployment }}'
       - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -110,7 +111,7 @@ jobs:
   ##################
   #   Publishing   #
   ##################
-  job_publish_module:
+  job_publish_module: # Note: Please don't change this job name. It is used by the setEnvironment action to define which PS modules to install on runners.
     name: 'Publishing'
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || fromJson(inputs.workflowInput).prerelease == 'true'
@@ -121,14 +122,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
+      - name: Set environment
+        uses: ./.github/actions/templates/setEnvironment
         with:
           variablesPath: ${{ env.variablesPath }}
       - name: 'Publishing'
         uses: ./.github/actions/templates/publishModule
         with:
-          templateFilePath: '${{ inputs.modulePath }}/deploy.bicep'
+          templateFilePath: '${{ inputs.modulePath }}/main.bicep'
           templateSpecsRGName: '${{ env.templateSpecsRGName }}'
           templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
           templateSpecsDescription: '${{ env.templateSpecsDescription }}'

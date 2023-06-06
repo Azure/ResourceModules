@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "ServiceBus Namespace Migration Configuration",
+  "summary": "This module deploys a migration configuration for a service bus namespace",
+  "owner": "Azure/module-maintainers"
+}

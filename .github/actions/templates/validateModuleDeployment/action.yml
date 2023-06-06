@@ -2,7 +2,7 @@
 ## 'Deploy module' Composite Action                    ##
 #########################################################
 ##
-## This composite action contains the logic to both test and execute a deployment of a given template and parameter file.
+## This composite action contains the logic to both test and execute the deployment of a given template and parameter file.
 ## By default, tested deployments are also removed. Optionally, the removal step can be skipped.
 ##
 #########################################################
@@ -14,7 +14,7 @@
 ##   |=====================================================================================================================================================================================|
 ##   | Parameter                 | Required | Default | Description                                           | Example                                                                    |
 ##   |---------------------------|----------|---------|-------------------------------------------------------|----------------------------------------------------------------------------|
-##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/Microsoft.ApiManagement/service/deploy.bicep'                     |
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'modules/api-management/service/main.bicep'                                |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                               |
 ##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
 ##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
@@ -51,41 +51,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    # [Setup] task(s)
-    # ---------------
-    - name: 'Setup agent'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output '::group::Setup agent'
-
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-        # Define PS modules to install on the runner
-        $Modules = @(
-            @{ Name = 'Az.Accounts' },
-            @{ Name = 'Az.Resources' }
-        )
-
-        # Additional PS modules need to be installed for the removal step in case it is enabled
-        if ('${{ inputs.removeDeployment}}' -eq 'true') {
-          $Modules += @(
-            @{ Name = 'Az.CognitiveServices' },
-            @{ Name = 'Az.Compute' },
-            @{ Name = 'Az.KeyVault' },
-            @{ Name = 'Az.Monitor' },
-            @{ Name = 'Az.OperationalInsights' },
-            @{ Name = 'Az.RecoveryServices' }
-            @{ Name = 'powershell-yaml'; Version = '0.4.2'}
-          )
-        }
-
-        # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
-
-        Write-Output '::endgroup::'
-
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -108,12 +73,6 @@ runs:
           # Get target files
           $targetFileList = @('${{ inputs.templateFilePath }}')
 
-          # Get Service Principal Object ID
-          $context = Get-AzContext
-          $servicePrincipalAppId = $context.Account.Id
-          $servicePrincipal = Get-AzADServicePrincipal -ApplicationId $servicePrincipalAppId
-          $servicePrincipalObjectId = $servicePrincipal.Id
-
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             FilePathList = $targetFileList
@@ -127,7 +86,6 @@ runs:
             subscriptionId    = '${{ inputs.subscriptionId }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
-            deploymentSpId    = $servicePrincipalObjectId
           }
 
           # Add local (source control) tokens

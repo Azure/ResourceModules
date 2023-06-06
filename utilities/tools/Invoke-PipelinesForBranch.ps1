@@ -64,7 +64,7 @@ function Invoke-GitHubWorkflow {
             ref    = $TargetBranch
             inputs = @{
                 prerelease       = 'false'
-                removeDeployment = $removeDeploymentFlag
+                removeDeployment = "$removeDeploymentFlag".ToLower()
             }
         } | ConvertTo-Json
     }

@@ -27,16 +27,17 @@ on:
     branches:
       - main
     paths:
+      - 'modules/cognitive-services/accounts/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cognitiveservices.accounts.yml'
-      - 'modules/Microsoft.CognitiveServices/accounts/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.CognitiveServices/accounts'
+  modulePath: 'modules/cognitive-services/accounts'
   workflowPath: '.github/workflows/ms.cognitiveservices.accounts.yml'
 
 concurrency:

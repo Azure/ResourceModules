@@ -34,7 +34,6 @@ These are tokens constructed from environment variables, which are defined in th
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
 - `<<tenantId>>`: Will point to the Azure Tenant ID.
-- `<<deploymentSpId>>`: Will point to the Service Principal ID used for deployments.
 
 ## (Optional) Local Custom Tokens
 
