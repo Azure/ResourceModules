@@ -1,6 +1,6 @@
-# Operationalinsights Workspaces Datasources `[Microsoft.OperationalInsights/workspaces/dataSources]`
+# Log Analytics Workspace Datasources `[Microsoft.OperationalInsights/workspaces/dataSources]`
 
-This template deploys a data source for a Log Analytics workspace.
+This module deploys a Log Analytics Workspace Data Source.
 
 ## Navigation
 

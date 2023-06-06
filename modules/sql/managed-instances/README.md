@@ -1,6 +1,6 @@
 # SQL Managed Instances `[Microsoft.Sql/managedInstances]`
 
-This template deploys a SQL managed instance.
+This module deploys an SQL Managed Instance.
 
 ## Navigation
 

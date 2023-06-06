@@ -1,6 +1,6 @@
 # Azure NetApp Files Capacity Pool Volumes `[Microsoft.NetApp/netAppAccounts/capacityPools/volumes]`
 
-This template deploys volumes in a capacity pool of an Azure NetApp files.
+This module deploys an Azure NetApp File Capacity Pool Volume.
 
 ## Navigation
 

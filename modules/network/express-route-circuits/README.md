@@ -1,6 +1,6 @@
 # ExpressRoute Circuits `[Microsoft.Network/expressRouteCircuits]`
 
-This template deploys an express route circuit.
+This module deploys an Express Route Circuit.
 
 ## Navigation
 
