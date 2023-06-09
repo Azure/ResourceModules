@@ -27,18 +27,18 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.ContainerService/managedClusters/**'
-      - 'modules/Microsoft.KubernetesConfiguration/extensions/**'
-      - 'modules/Microsoft.KubernetesConfiguration/fluxConfigurations/**'
+      - 'modules/container-service/managed-clusters/**'
+      - 'modules/kubernetes-configuration/extensions/**'
+      - 'modules/kubernetes-configuration/flux-configurations/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerservice.managedclusters.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.ContainerService/managedClusters'
+  modulePath: 'modules/container-service/managed-clusters'
   workflowPath: '.github/workflows/ms.containerservice.managedclusters.yml'
 
 concurrency:

@@ -13,7 +13,7 @@
 ##   |==================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                          | Example                                                   |
 ##   |--------------------------|----------|---------|--------------------------------------|-----------------------------------------------------------|
-##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/Microsoft.ApiManagement/service'                 |
+##   | modulePath               | true     | ''      | The path to the module's folder      | 'modules/api-management/service'                          |
 ##   | moduleTestFilePath       | true     | ''      | The path to the module Pester tests. | 'utilities/pipelines/staticValidation/module.tests.ps1'   |
 ##   |==================================================================================================================================================|
 ##
@@ -53,7 +53,7 @@ runs:
         # Set test input module path
         $moduleFolderPaths = @(Join-Path $repoRootPath "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-                  (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+                  (Get-ChildItem $_ -File -Depth 0 -Include @('main.json', 'main.bicep') -Force).Count -gt 0
         }
         Write-Verbose 'Execute tests in path(s):' -Verbose
         foreach ($moduleFolderPath in $moduleFolderPaths) {

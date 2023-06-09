@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.KeyVault/vaults/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/key-vault/vaults/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.keyvault.vaults.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.KeyVault/vaults'
+  modulePath: 'modules/key-vault/vaults'
   workflowPath: '.github/workflows/ms.keyvault.vaults.yml'
 
 concurrency:

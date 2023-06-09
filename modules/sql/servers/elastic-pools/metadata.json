@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "SQL Server Elastic Pool",
+  "summary": "This module deploys an Azure SQL Server Elastic Pool.",
+  "owner": "Azure/module-maintainers"
+}

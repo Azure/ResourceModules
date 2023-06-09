@@ -35,9 +35,9 @@ $inputObject = @{
   ResourceGroupName     = 'ExampleGroup'
   TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.KeyVault\vault\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\KeyVault\vault\main.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.KeyVault/vaults/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/KeyVault/vaults/main.bicep'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
@@ -59,9 +59,9 @@ $inputObject = @{
   TemplateParameterFile = 'parameters.json'
   Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Resources\resourceGroups\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Resources\resourceGroups\main.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Resources/resourceGroups/main.bicep'
 }
 New-AzDeployment @inputObject
 ```
@@ -84,9 +84,9 @@ $inputObject = @{
   Location              = 'EastUS2'
   TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Authorization\policyAssignments\managementGroup\main.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Authorization/policyAssignments/managementGroup/main.bicep'
 }
 New-AzManagementGroupDeployment @inputObject
 ```
@@ -108,9 +108,9 @@ $inputObject = @{
   TemplateParameterFile = 'parameters.json'
   Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile          = "$home\ResourceModules\modules\Microsoft.Subscription\aliases\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\modules\Subscription\aliases\main.bicep"
   # Using a remote reference
-  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Subscription/aliases/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Subscription/aliases/main.bicep'
 }
 New-AzTenantDeployment @inputObject
 ```
@@ -135,9 +135,9 @@ $inputObject = @(
   '--resource-group', 'ExampleGroup',
   '--parameters',     '@parameters.json',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\modules\Microsoft.Storage\storageAccounts\deploy.bicep",
+  '--template-file',  "$home\ResourceModules\modules\Storage\storageAccounts\main.bicep",
   # Using a remote reference
-  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Storage/storageAccounts/deploy.bicep'
+  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Storage/storageAccounts/main.bicep'
 )
 az deployment group create @inputObject
 ```
@@ -159,9 +159,9 @@ $inputObject = @(
   '--parameters',     '@parameters.json',
   '--location',       'EastUS2',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\modules\Microsoft.Resources\resourceGroups\deploy.bicep"
+  '--template-file',  "$home\ResourceModules\modules\Resources\resourceGroups\main.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Resources/resourceGroups/deploy.bicep'
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Resources/resourceGroups/main.bicep'
 )
 az deployment sub create @inputObject
 ```
@@ -184,9 +184,9 @@ $inputObject = @(
   '--location',            'EastUS2',
   '--management-group-id', 'myManagementGroup',
   # Using a local reference
-  '--template-file',       "$home\ResourceModules\modules\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  '--template-file',       "$home\ResourceModules\modules\Authorization\policyAssignments\managementGroup\main.bicep"
   # Using a remote reference
-  # '--template-uri',      'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
+  # '--template-uri',      'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Authorization/policyAssignments/managementGroup/main.bicep'
 )
 az deployment mg create @inputObject
 ```
@@ -208,9 +208,9 @@ $inputObject = @(
   '--parameters',     '@parameters.json',
   '--location',       'EastUS2',
   # Using a local reference
-  '--template-file',  "$home\ResourceModules\modules\Microsoft.Subscription\aliases\deploy.bicep"
+  '--template-file',  "$home\ResourceModules\modules\Subscription\aliases\main.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Microsoft.Subscription/aliases/deploy.bicep'
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/modules/Subscription/aliases/main.bicep'
 )
 az deployment tenant create @inputObject
 ```
@@ -225,21 +225,21 @@ You can also reference modules in another template using the below syntax. To de
 
 ```bicep
 // Using local reference
-module testDeployment 'ResourceModules/modules/Microsoft.KeyVaults/vaults/deploy.bicep' = {
+module testDeployment 'ResourceModules/modules/KeyVaults/vaults/main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }
 }
 
 // Using Template-Specs reference (with configuration file)
-module testDeployment 'ts/modules:microsoft.keyvaults.vaults:1.0.0' = {
+module testDeployment 'ts/modules:keyvaults.vaults:1.0.0' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }
 }
 
 // Using Bicep reference
-module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/microsoft.keyvaults.vaults:1.0.0' = {
+module testDeployment 'br:<registry-name>.azurecr.io/bicep/modules/keyvaults.vaults:1.0.0' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-example'
   params: { ... }

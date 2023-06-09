@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Insights/privateLinkScopes/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/insights/private-link-scopes/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.privatelinkscopes.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Insights/privateLinkScopes'
+  modulePath: 'modules/insights/private-link-scopes'
   workflowPath: '.github/workflows/ms.insights.privatelinkscopes.yml'
 
 concurrency:

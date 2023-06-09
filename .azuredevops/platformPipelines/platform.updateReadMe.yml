@@ -9,8 +9,8 @@ trigger:
       - main
   paths:
     include:
-      - 'modules/**/deploy.bicep'
-      - 'modules/**/deploy.json'
+      - 'modules/**/main.bicep'
+      - 'modules/**/main.json'
       - 'utilities/tools/platform/**'
 
 variables:
@@ -38,7 +38,7 @@ jobs:
       - checkout: self
         persistCredentials: true
 
-      # Update the root ReadMe Module Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - task: PowerShell@2
         displayName: 'Update Module Pipelines table'
         inputs:
@@ -64,7 +64,7 @@ jobs:
 
             Set-ReadMeModuleTable @functionInput -Verbose
 
-      # Update the `modules` folder ReadMe ([`/modules/readme.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
+      # Update the `modules` folder ReadMe ([`/modules/README.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
       - task: PowerShell@2
         displayName: 'Update module folder ReadMe'
         inputs:
@@ -102,6 +102,10 @@ jobs:
             $functionInput = @{
               MarkdownFilePath = Join-Path '$(System.DefaultWorkingDirectory)' 'docs' 'wiki' 'The library - Module overview.md'
               ModuleFolderPath = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
+              Organization     = '$(System.CollectionUri)'.Split('/')[3]
+              RepositoryName   = '$(Build.Repository.Name)'
+              Environment      = 'ADO'
+              ProjectName      = '$(System.TeamProject)'
             }
 
             Write-Verbose "Invoke task with" -Verbose
@@ -109,7 +113,7 @@ jobs:
 
             Set-ModuleOverviewTable @functionInput -Verbose
 
-      # Update the root ReadMe Platform Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      # Update the root ReadMe Platform Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - task: PowerShell@2
         displayName: 'Update Platform Pipelines table'
         inputs:

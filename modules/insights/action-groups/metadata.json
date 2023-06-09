@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Action Groups",
+  "summary": "This module deploys an Action Group.",
+  "owner": "Azure/module-maintainers"
+}

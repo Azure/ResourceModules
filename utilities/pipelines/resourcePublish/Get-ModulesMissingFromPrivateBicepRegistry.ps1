@@ -19,7 +19,7 @@ Optional. Publish an absolute latest version.
 Note: This version may include breaking changes and is not recommended for production environments
 
 .EXAMPLE
-Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath 'C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\deploy.bicep' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
+Get-ModulesMissingFromPrivateBicepRegistry -TemplateFilePath 'C:\ResourceModules\modules\compute\virtual-machines\main.bicep' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Check if either the Virtual Machine module or any of its children (e.g. 'extension') is missing in the Container Registry 'adpsxxazacrx001' of Resource Group 'artifacts-rg'
 
@@ -27,21 +27,21 @@ Returns for example:
 Name                           Value
 ----                           -----
 Version                        0.4.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\extensions\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
 Version                        0.4
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\extensions\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\extensions\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\extensions\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\extensions\main.bicep
 Version                        0.6.0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
 Version                        0.6
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
 Version                        0
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
 Version                        latest
-TemplateFilePath               C:\ResourceModules\modules\Microsoft.Compute\virtualMachines\deploy.bicep
+TemplateFilePath               C:\ResourceModules\modules\compute\virtual-machines\main.bicep
 #>
 function Get-ModulesMissingFromPrivateBicepRegistry {
 
@@ -69,7 +69,7 @@ function Get-ModulesMissingFromPrivateBicepRegistry {
 
     process {
         # Get all children
-        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('deploy.bicep', 'deploy.json')).FullName
+        $availableModuleTemplatePaths = (Get-ChildItem -Path (Split-Path $TemplateFilePath) -Recurse -Include @('main.bicep', 'main.json')).FullName
 
         if (-not (Get-AzContainerRegistry -Name $BicepRegistryName -ResourceGroupName $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
             $missingTemplatePaths = $availableModuleTemplatePaths

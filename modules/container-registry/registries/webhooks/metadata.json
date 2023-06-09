@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "ContainerRegistry Registries Webhooks",
+  "summary": "This module deploys ContainerRegistry Registries Webhooks.",
+  "owner": "Azure/module-maintainers"
+}

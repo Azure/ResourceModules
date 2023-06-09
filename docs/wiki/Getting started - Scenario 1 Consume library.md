@@ -87,15 +87,15 @@ To publish a module by running the script:
     To publish the Keyvault module with version 0.4.740 on a Template Spec that will be created in the resource group 'artifact-rg' you can execute the following example:
 
          ```PowerShell
-        Publish-ModuleToTemplateSpecsRG -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
+        Publish-ModuleToTemplateSpecsRG -TemplateFilePath "D:\ResourcesModules\modules\KeyVault\vaults\main.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
     If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToTemplateSpecsRG'` function for each of the modules:
 
          ```PowerShell
-         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
+         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'main.bicep'
          $modules.FullName | ForEach-Object -Parallel {
             . '<pathToPublishScript>\Publish-ModuleToTemplateSpecsRG.ps1'
-            Publish-ModuleToTemplateSpecsRG -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -TemplateSpecsRgName '<templateSpecsRgName>' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec' 
+            Publish-ModuleToTemplateSpecsRG -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -TemplateSpecsRgName '<templateSpecsRgName>' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
             } -ThrottleLimit 4
         ```
 
@@ -127,15 +127,15 @@ To publish a module by running the script:
     To publish the Keyvault module with version 0.4.740 on a Bicep Registry called 'adpsxxazacrx001' that will be created in the resource group 'artifact-rg' you can execute the following command:
 
          ```PowerShell
-        Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
+        Publish-ModuleToPrivateBicepRegistry -TemplateFilePath "D:\ResourcesModules\modules\KeyVault\vaults\main.bicep" -ModuleVersion "0.4.740" -BicepRegistryName 'adpsxxazacrx001'  -BicepRegistryRgName 'artifact-rg'
         ```
     If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToPrivateBicepRegistry'` function for each of the modules:
 
          ```PowerShell
-         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
+         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'main.bicep'
          $modules.FullName | ForEach-Object -Parallel {
             . '<pathToPublishScript>\Publish-ModuleToPrivateBicepRegistry.ps1'
-            Publish-ModuleToPrivateBicepRegistry -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -BicepRegistryName '<registryName>' -BicepRegistryRgName '<bicepRGName>' 
+            Publish-ModuleToPrivateBicepRegistry -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' -BicepRegistryName '<registryName>' -BicepRegistryRgName '<bicepRGName>'
         } -ThrottleLimit 4
         ```
  1. Update your master template in order to use the new version of the published modules.
@@ -167,15 +167,15 @@ To publish a module by running the script:
     To publish the Keyvault module with version 0.4.740 on an artifact feed called 'Artifacts', in the project 'IaC' on organization 'fabrikam' you can execute the following command:
 
          ```PowerShell
-        Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath "D:\ResourcesModules\modules\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
+        Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath "D:\ResourcesModules\modules\KeyVault\vaults\main.bicep" -ModuleVersion "0.4.740" -VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
         ```
     If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToUniversalArtifactsFeed'` function for each of the modules:
 
          ```PowerShell
-         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'deploy.bicep'
+         $modules = Get-ChildItem -Path '<pathToModulesFolder>' -Recurse -Filter 'main.bicep'
          $modules.FullName | ForEach-Object -Parallel {
             . '<pathToPublishScript>\Publish-ModuleToUniversalArtifactsFeed.ps1'
-            Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts' 
+            Publish-ModuleToUniversalArtifactsFeed -TemplateFilePath $_ -ModuleVersion '<moduleVersion>' VstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsFeedProject 'IaC' -VstsFeedName 'Artifacts'
             } -ThrottleLimit 4
         ```
 

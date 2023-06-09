@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.routetables.yml'
-      - 'modules/Microsoft.Network/routeTables/**'
+      - 'modules/network/route-tables/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/routeTables'
+  modulePath: 'modules/network/route-tables'
   workflowPath: '.github/workflows/ms.network.routetables.yml'
 
 concurrency:

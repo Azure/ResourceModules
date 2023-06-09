@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.compute.virtualmachinescalesets.yml'
-      - 'modules/Microsoft.Compute/virtualMachineScaleSets/**'
+      - 'modules/compute/virtual-machine-scale-sets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Compute/virtualMachineScaleSets'
+  modulePath: 'modules/compute/virtual-machine-scale-sets'
   workflowPath: '.github/workflows/ms.compute.virtualmachinescalesets.yml'
 
 concurrency:

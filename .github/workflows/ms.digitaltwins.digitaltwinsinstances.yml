@@ -30,14 +30,14 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
-      - 'modules/Microsoft.DigitalTwins/digitalTwinsInstances/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/digital-twins/digital-twins-instances/**'
+      - 'modules/network/private-endpoints/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DigitalTwins/digitalTwinsInstances'
+  modulePath: 'modules/digital-twins/digital-twins-instances'
   workflowPath: '.github/workflows/ms.digitaltwins.digitaltwinsinstances.yml'
 
 concurrency:

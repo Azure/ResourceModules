@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Service Fabric Clusters",
+  "summary": "This module deploys a Service Fabric Cluster.",
+  "owner": "Azure/module-maintainers"
+}

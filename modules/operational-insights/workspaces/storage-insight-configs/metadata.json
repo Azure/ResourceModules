@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Operationalinsights Workspaces Storage Insight Configs",
+  "summary": "This template deploys a storage insights configuration for a Log Analytics workspace.",
+  "owner": "Azure/module-maintainers"
+}

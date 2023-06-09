@@ -28,19 +28,19 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Automation/automationAccounts/**'
-      - 'modules/Microsoft.OperationalInsights/workspaces/linkedServices/**'
-      - 'modules/Microsoft.OperationsManagement/solutions/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/automation/automation-accounts/**'
+      - 'modules/operational-insights/workspaces/linked-services/**'
+      - 'modules/operations-management/solutions/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.automation.automationaccounts.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Automation/automationAccounts'
+  modulePath: 'modules/automation/automation-accounts'
   workflowPath: '.github/workflows/ms.automation.automationaccounts.yml'
 
 concurrency:

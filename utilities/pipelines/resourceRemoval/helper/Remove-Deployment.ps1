@@ -31,7 +31,7 @@ Mandatory. The path to the deployment file
 Optional. The order of resource types to apply for deletion
 
 .EXAMPLE
-Remove-Deployment -DeploymentNames @('KeyVault-t1','KeyVault-t2') -TemplateFilePath 'C:/deploy.json'
+Remove-Deployment -DeploymentNames @('KeyVault-t1','KeyVault-t2') -TemplateFilePath 'C:/main.json'
 
 Remove all resources deployed via the with deployment names 'KeyVault-t1' & 'KeyVault-t2'
 #>

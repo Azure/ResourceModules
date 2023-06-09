@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Role Assignments",
+  "summary": "This module deploys Role Assignments across the management group, subscription or resource group scope.",
+  "owner": "Azure/module-maintainers"
+}

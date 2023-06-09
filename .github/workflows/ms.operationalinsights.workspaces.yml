@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.OperationalInsights/workspaces/**'
-      - 'modules/Microsoft.OperationsManagement/solutions/**'
+      - 'modules/operational-insights/workspaces/**'
+      - 'modules/operations-management/solutions/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.operationalinsights.workspaces.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.OperationalInsights/workspaces'
+  modulePath: 'modules/operational-insights/workspaces'
   workflowPath: '.github/workflows/ms.operationalinsights.workspaces.yml'
 
 concurrency:

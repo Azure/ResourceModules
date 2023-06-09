@@ -47,7 +47,7 @@ Get a list of all resource/module references in a given module path
 .DESCRIPTION
 As an output you will receive a hashtable that (for each provider namespace) lists the
 - Directly deployed resources (e.g. via "resource myDeployment 'Microsoft.(..)/(..)@(..)'")
-- Linked local module templates (e.g. via "module myDeployment '../../deploy.bicep'")
+- Linked local module templates (e.g. via "module myDeployment '../../main.bicep'")
 - Linked remote module tempaltes (e.g. via "module rg 'br/modules:(..):(..)'")
 
 .PARAMETER Path
@@ -59,11 +59,11 @@ Get-CrossReferencedModuleList
 
 Invoke the function with the default path. Returns an object such as:
 {
-    "Microsoft.Compute/availabilitySets": {
+    "Compute/availabilitySets": {
         "localPathReferences": [
-            Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems
-            Microsoft.Network/publicIPAddresses
-            Microsoft.Network/networkInterfaces
+            RecoveryServices/vaults/protectionContainers/protectedItems
+            Network/publicIPAddresses
+            Network/networkInterfaces
         ],
         "remoteReferences": null,
         "resourceReferences": [
@@ -78,9 +78,9 @@ Invoke the function with the default path. Returns an object such as:
 }
 
 .EXAMPLE
-Get-CrossReferencedModuleList -Path './Microsoft.Sql'
+Get-CrossReferencedModuleList -Path './Sql'
 
-Get only the references of the modules in folder path './Microsoft.Sql'
+Get only the references of the modules in folder path './Sql'
 #>
 function Get-CrossReferencedModuleList {
 
@@ -92,9 +92,8 @@ function Get-CrossReferencedModuleList {
 
     $resultSet = [ordered]@{}
 
-    # Get all top-level module folders (i.e. one level below 'Microsoft.*')
+    # Get all top-level module folders (i.e. one level below the Resource Provider folder)
     $topLevelFolderPaths = (Get-ChildItem -Path $path -Recurse -Depth 1 -Directory).FullName
-    $topLevelFolderPaths = $topLevelFolderPaths | Where-Object { $_ -like '*Microsoft.*' -and (Split-Path $_ -Leaf) -notlike 'Microsoft.*' } | Sort-Object
 
     foreach ($topLevelFolderPath in $topLevelFolderPaths) {
 
@@ -128,7 +127,7 @@ function Get-CrossReferencedModuleList {
         $relevantLocalReferences = $resultSet[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' } # e.g. '../
         if ($relevantLocalReferences) {
             $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
-                # remove deploy.bicep
+                # remove main.bicep
                 Split-Path $_ -Parent
             } | ForEach-Object {
                 # remove leading path elements

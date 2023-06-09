@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Azure Synapse Analytics",
+  "summary": "This module deploys Azure Synapse Analytics (private link hubs).",
+  "owner": "Azure/module-maintainers"
+}

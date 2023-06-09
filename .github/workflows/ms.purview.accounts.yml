@@ -27,17 +27,17 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Microsoft.Purview/accounts/**'
-      - 'modules/Microsoft.Network/privateEndpoints/**'
+      - 'modules/purview/accounts/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.purview.accounts.yml'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Purview/accounts'
+  modulePath: 'modules/purview/accounts'
   workflowPath: '.github/workflows/ms.purview.accounts.yml'
 
 concurrency:
