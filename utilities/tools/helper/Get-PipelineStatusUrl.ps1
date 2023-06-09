@@ -18,6 +18,12 @@ Mandatory. The repository to create the url for
 .PARAMETER Organization
 Mandatory. The Organization the repository is hosted in to create the url for
 
+.PARAMETER Environment
+Mandatory. The DevOps environment to generate the status badges for
+
+.PARAMETER ProjectName
+Optional. The project the repository is hosted in. Required if the 'environment' is 'ADO'
+
 .EXAMPLE
 Get-PipelineStatusUrl -PipelineFileName 'platform.updateReadMe.yml' -PipelineFolderPath '.github/workflows' -RepositoryName 'ResourceModules' -Organization 'Azure'
 

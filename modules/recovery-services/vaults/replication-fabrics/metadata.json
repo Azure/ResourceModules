@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "RecoveryServices Vaults ReplicationFabrics",
+    "summary": "This module deploys a Replication Fabric for Azure to Azure disaster recovery scenario of Azure Site Recovery.\n\n> Note: this module currently support only the `instanceType: 'Azure'` scenario.",
+    "owner": "Azure/module-maintainers"
+}

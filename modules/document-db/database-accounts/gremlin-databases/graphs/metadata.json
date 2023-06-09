@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "DocumentDB DatabaseAccounts GremlinDatabases Graphs",
+  "summary": "This module deploys DocumentDB DatabaseAccounts GremlinDatabases Graphs.",
+  "owner": "Azure/module-maintainers"
+}

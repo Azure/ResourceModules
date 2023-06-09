@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Disk Encryption Sets",
+  "summary": "This template deploys a disk encryption set.",
+  "owner": "Azure/module-maintainers"
+}

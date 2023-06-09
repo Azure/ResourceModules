@@ -1,4 +1,4 @@
-# AVD Host Pools `[Microsoft.DesktopVirtualization/hostpools]`
+# AVD Host Pools `[Microsoft.DesktopVirtualization/hostPools]`
 
 This module deploys an Azure virtual desktop host pool.
 

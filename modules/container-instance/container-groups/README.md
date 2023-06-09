@@ -1,5 +1,7 @@
 # Container Instances `[Microsoft.ContainerInstance/containerGroups]`
 
+This module deploys a Container Instance Container Group.
+
 ## Navigation
 
 - [Resource types](#Resource-types)

@@ -1,4 +1,4 @@
-# SQL Server Firewall rule `[Microsoft.Sql/servers/firewallrules]`
+# SQL Server Firewall rule `[Microsoft.Sql/servers/firewallRules]`
 
 This module deploys an SQL Server Firewall rule.
 

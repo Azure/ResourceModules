@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Virtual Network Gateway Connections",
+  "summary": "This template deploys a virtual network gateway connection.",
+  "owner": "Azure/module-maintainers"
+}

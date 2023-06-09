@@ -20,6 +20,9 @@ param baseTime string = utcNow('u')
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -35,12 +38,12 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    applicationInsightsName: 'dep-<<namePrefix>>-appI-${serviceShort}'
-    storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    applicationInsightsName: 'dep-${namePrefix}-appI-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}st${serviceShort}'
   }
 }
 
@@ -53,7 +56,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     associatedApplicationInsightsResourceId: nestedDependencies.outputs.applicationInsightsResourceId
     associatedKeyVaultResourceId: nestedDependencies.outputs.keyVaultResourceId
     associatedStorageAccountResourceId: nestedDependencies.outputs.storageAccountResourceId

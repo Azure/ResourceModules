@@ -1,4 +1,4 @@
-# Action Groups `[Microsoft.Insights/actionGroups]`
+# Action Groups `[microsoft.insights/actionGroups]`
 
 This module deploys an Action Group.
 
@@ -49,7 +49,7 @@ This module deploys an Action Group.
 
 ### Parameter Usage: receivers
 
-See [Documentation](https://learn.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
+See [Documentation](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
 
 <details>
 

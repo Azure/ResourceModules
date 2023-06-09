@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Load Balancers",
+  "summary": "This module deploys a load balancer.",
+  "owner": "Azure/module-maintainers"
+}

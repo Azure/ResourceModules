@@ -18,6 +18,9 @@ param serviceShort string = 'cspkcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -33,9 +36,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    generateSshPubKeyScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}-generateSshPubKey'
-    sshKeyName: 'dep-<<namePrefix>>-ssh-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    generateSshPubKeyScriptName: 'dep-${namePrefix}-ds-${serviceShort}-generateSshPubKey'
+    sshKeyName: 'dep-${namePrefix}-ssh-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 
@@ -48,7 +51,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-sshkey-${serviceShort}001'
+    name: '${namePrefix}-sshkey-${serviceShort}001'
     publicKey: nestedDependencies.outputs.publicKey
   }
 }

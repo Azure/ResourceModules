@@ -16,6 +16,9 @@ param serviceShort string = 'idcrcusbas'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // =========== //
 // Deployments //
 // =========== //
@@ -31,9 +34,9 @@ module resourceGroupResources 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-paramNested'
   params: {
-    dataCollectionEndpointName: 'dep-<<namePrefix>>-dce-${serviceShort}'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    dataCollectionEndpointName: 'dep-${namePrefix}-dce-${serviceShort}'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
     location: location
   }
 }
@@ -46,7 +49,7 @@ module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     dataCollectionEndpointId: resourceGroupResources.outputs.dataCollectionEndpointResourceId
     description: 'Collecting custom text logs without ingestion-time transformation.'
     dataFlows: [

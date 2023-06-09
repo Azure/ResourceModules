@@ -11,138 +11,137 @@ This section provides an overview of the library's feature set.
 
 # Feature table
 
-| # | Module | RBAC | Locks | Tags | Diag | PE | PIP | # children | # lines |
-| - | - | - | - | - | - | - | - | - | - |
-| 1 | AAD<p>DomainServices | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 234 |
-| 2 | AnalysisServices<p>servers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 153 |
-| 3 | ApiManagement<p>service | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:11, L2:3] | 429 |
-| 4 | App<p>containerApps | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 173 |
-| 5 | App<p>managedEnvironments | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 132 |
-| 6 | AppConfiguration<p>configurationStores | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:1] | 218 |
-| 7 | Authorization<p>locks |  |  |  |  |  |  | [L1:2] | 59 |
-| 8 | Authorization<p>policyAssignments |  |  |  |  |  |  | [L1:3] | 140 |
-| 9 | Authorization<p>policyDefinitions |  |  |  |  |  |  | [L1:2] | 83 |
-| 10 | Authorization<p>policyExemptions |  |  |  |  |  |  | [L1:3] | 111 |
-| 11 | Authorization<p>policySetDefinitions |  |  |  |  |  |  | [L1:2] | 73 |
-| 12 | Authorization<p>roleAssignments |  |  |  |  |  |  | [L1:3] | 104 |
-| 13 | Authorization<p>roleDefinitions |  |  |  |  |  |  | [L1:3] | 91 |
-| 14 | Automation<p>automationAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:6] | 377 |
-| 15 | Batch<p>batchAccounts |  | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 239 |
-| 16 | Cache<p>redis | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 247 |
-| 17 | CDN<p>profiles | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1, L2:1] | 106 |
-| 18 | CognitiveServices<p>accounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 294 |
-| 19 | Compute<p>availabilitySets | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 83 |
-| 20 | Compute<p>diskEncryptionSets | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 126 |
-| 21 | Compute<p>disks | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 182 |
-| 22 | Compute<p>galleries | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:2] | 123 |
-| 23 | Compute<p>images | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 107 |
-| 24 | Compute<p>proximityPlacementGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 80 |
-| 25 | Compute<p>sshPublicKeys | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 67 |
-| 26 | Compute<p>virtualMachines | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 640 |
-| 27 | Compute<p>virtualMachineScaleSets | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 562 |
-| 28 | Consumption<p>budgets |  |  |  |  |  |  |  | 89 |
-| 29 | ContainerInstance<p>containerGroups |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 157 |
-| 30 | ContainerRegistry<p>registries | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:2] | 349 |
-| 31 | ContainerService<p>managedClusters | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 538 |
-| 32 | Databricks<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 143 |
-| 33 | DataFactory<p>factories | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:2, L2:1] | 260 |
-| 34 | DataProtection<p>backupVaults | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1] | 105 |
-| 35 | DBforMySQL<p>flexibleServers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:2] | 340 |
-| 36 | DBforPostgreSQL<p>flexibleServers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:3] | 309 |
-| 37 | DesktopVirtualization<p>applicationGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 156 |
-| 38 | DesktopVirtualization<p>hostPools | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 214 |
-| 39 | DesktopVirtualization<p>scalingPlans | :white_check_mark: |  | :white_check_mark: | :white_check_mark: |  |  |  | 162 |
-| 40 | DesktopVirtualization<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 127 |
-| 41 | DevTestLab<p>labs | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:6, L2:1] | 262 |
-| 42 | DigitalTwins<p>digitalTwinsInstances | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3] | 233 |
-| 43 | DocumentDB<p>databaseAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:3, L2:3] | 320 |
-| 44 | EventGrid<p>domains | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:1] | 186 |
-| 45 | EventGrid<p>eventSubscriptions |  |  |  |  |  |  |  | 72 |
-| 46 | EventGrid<p>systemTopics | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 150 |
-| 47 | EventGrid<p>topics | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | 169 |
-| 48 | EventHub<p>namespaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:4, L2:2] | 285 |
-| 49 | HealthBot<p>healthBots | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 68 |
-| 50 | HealthcareApis<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:3, L2:1] | 175 |
-| 51 | Insights<p>actionGroups | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 85 |
-| 52 | Insights<p>activityLogAlerts | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 74 |
-| 53 | Insights<p>components | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 99 |
-| 54 | Insights<p>dataCollectionEndpoints | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 89 |
-| 55 | Insights<p>dataCollectionRules | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 98 |
-| 56 | Insights<p>diagnosticSettings |  |  |  | :white_check_mark: |  |  |  | 83 |
-| 57 | Insights<p>metricAlerts | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 122 |
-| 58 | Insights<p>privateLinkScopes | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:1] | 100 |
-| 59 | Insights<p>scheduledQueryRules | :white_check_mark: |  | :white_check_mark: |  |  |  |  | 106 |
-| 60 | Insights<p>webTests | :white_check_mark: | :white_check_mark: |  |  |  |  |  | 121 |
-| 61 | KeyVault<p>vaults | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:3] | 280 |
-| 62 | KubernetesConfiguration<p>extensions |  |  |  |  |  |  |  | 85 |
-| 63 | KubernetesConfiguration<p>fluxConfigurations |  |  |  |  |  |  |  | 68 |
-| 64 | Logic<p>workflows | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 207 |
-| 65 | MachineLearningServices<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:1] | 284 |
-| 66 | Maintenance<p>maintenanceConfigurations | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 101 |
-| 67 | ManagedIdentity<p>userAssignedIdentities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 66 |
-| 68 | ManagedServices<p>registrationDefinitions |  |  |  |  |  |  |  | 60 |
-| 69 | Management<p>managementGroups |  |  |  |  |  |  |  | 44 |
-| 70 | NetApp<p>netAppAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1, L2:1] | 106 |
-| 71 | Network<p>applicationGateways | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 334 |
-| 72 | Network<p>applicationGatewayWebApplicationFirewallPolicies |  |  | :white_check_mark: |  |  |  |  | 44 |
-| 73 | Network<p>applicationSecurityGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 63 |
-| 74 | Network<p>azureFirewalls | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | 281 |
-| 75 | Network<p>bastionHosts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | 218 |
-| 76 | Network<p>connections |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 139 |
-| 77 | Network<p>ddosProtectionPlans | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 64 |
-| 78 | Network<p>dnsResolvers | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 100 |
-| 79 | Network<p>dnsZones | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:10] | 211 |
-| 80 | Network<p>expressRouteCircuits | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 209 |
-| 81 | Network<p>expressRouteGateway |  |  | :white_check_mark: |  |  |  |  | 56 |
-| 82 | Network<p>firewallPolicies |  |  | :white_check_mark: |  |  |  | [L1:1] | 165 |
-| 83 | Network<p>frontDoors | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 161 |
-| 84 | Network<p>ipGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 68 |
-| 85 | Network<p>loadBalancers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:2] | 239 |
-| 86 | Network<p>localNetworkGateways | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 88 |
-| 87 | Network<p>natGateways | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 151 |
-| 88 | Network<p>networkInterfaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 155 |
-| 89 | Network<p>networkManagers | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:4, L2:2, L3:1] | 133 |
-| 90 | Network<p>networkSecurityGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 165 |
-| 91 | Network<p>networkWatchers | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:2] | 97 |
-| 92 | Network<p>privateDnsZones | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:9] | 189 |
-| 93 | Network<p>privateEndpoints | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1] | 108 |
-| 94 | Network<p>privateLinkServices | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 85 |
-| 95 | Network<p>publicIPAddresses | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 187 |
-| 96 | Network<p>publicIPPrefixes | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 77 |
-| 97 | Network<p>routeTables | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 70 |
-| 98 | Network<p>trafficmanagerprofiles | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 175 |
-| 99 | Network<p>virtualHubs |  | :white_check_mark: | :white_check_mark: |  |  |  | [L1:2] | 143 |
-| 100 | Network<p>virtualNetworkGateways | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:1] | 405 |
-| 101 | Network<p>virtualNetworks | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:2] | 259 |
-| 102 | Network<p>virtualWans | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 80 |
-| 103 | Network<p>vpnGateways |  | :white_check_mark: | :white_check_mark: |  |  |  | [L1:2] | 104 |
-| 104 | Network<p>vpnSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 88 |
-| 105 | OperationalInsights<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:7] | 312 |
-| 106 | OperationsManagement<p>solutions |  |  |  |  |  |  |  | 50 |
-| 107 | PolicyInsights<p>remediations |  |  |  |  |  |  | [L1:3] | 103 |
-| 108 | PowerBIDedicated<p>capacities | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 96 |
-| 109 | Purview<p>accounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 290 |
-| 110 | RecoveryServices<p>vaults | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:7, L2:2, L3:1] | 299 |
-| 111 | Resources<p>deploymentScripts |  | :white_check_mark: | :white_check_mark: |  |  |  |  | 121 |
-| 112 | Resources<p>resourceGroups | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 66 |
-| 113 | Resources<p>tags |  |  | :white_check_mark: |  |  |  | [L1:2] | 51 |
-| 114 | Security<p>azureSecurityCenter |  |  |  |  |  |  |  | 217 |
-| 115 | ServiceBus<p>namespaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:6, L2:2] | 339 |
-| 116 | ServiceFabric<p>clusters | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | [L1:1] | 281 |
-| 117 | SignalRService<p>signalR | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  |  | 186 |
-| 118 | SignalRService<p>webPubSub | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  |  | 156 |
-| 119 | Sql<p>managedInstances | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:6, L2:2] | 347 |
-| 120 | Sql<p>servers | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:8, L2:2] | 302 |
-| 121 | Storage<p>storageAccounts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:6, L2:4, L3:1] | 430 |
-| 122 | Synapse<p>privateLinkHubs | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  |  | 90 |
-| 123 | Synapse<p>workspaces | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:2] | 292 |
-| 124 | VirtualMachineImages<p>imageTemplates | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 197 |
-| 125 | Web<p>connections | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  |  | 87 |
-| 126 | Web<p>hostingEnvironments | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  | [L1:2] | 235 |
-| 127 | Web<p>serverfarms | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
-| 128 | Web<p>sites | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:4, L2:2] | 390 |
-| 129 | Web<p>staticSites | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 102 | 101 | 111 | 53 | 24 | 2 | 205 | 22780 |
+| # | Module | Status | # children | # lines |
+| - | - | - | - | - |
+| 1 | aad<p>domain-services | [![AAD - DomainServices](https://github.com/Azure/ResourceModules/workflows/AAD%20-%20DomainServices/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.aad.domainservices.yml) |  | 234 |
+| 2 | analysis-services<p>servers | [![AnalysisServices - Servers](https://github.com/Azure/ResourceModules/workflows/AnalysisServices%20-%20Servers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) |  | 153 |
+| 3 | api-management<p>service | [![ApiManagement - Service](https://github.com/Azure/ResourceModules/workflows/ApiManagement%20-%20Service/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.apimanagement.service.yml) | [L1:11, L2:3] | 429 |
+| 4 | app-configuration<p>configuration-stores | [![AppConfiguration - ConfigurationStores](https://github.com/Azure/ResourceModules/workflows/AppConfiguration%20-%20ConfigurationStores/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.appconfiguration.configurationstores.yml) | [L1:1] | 218 |
+| 5 | app<p>container-apps | [![App - ContainerApps](https://github.com/Azure/ResourceModules/workflows/App%20-%20ContainerApps/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.app.containerapps.yml) |  | 173 |
+| 6 | app<p>managed-environments | [![App - Managed Environments](https://github.com/Azure/ResourceModules/workflows/App%20-%20Managed%20Environments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.app.managedenvironments.yml) |  | 132 |
+| 7 | authorization<p>locks | [![Authorization - Locks](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20Locks/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.locks.yml) | [L1:2] | 59 |
+| 8 | authorization<p>policy-assignments | [![Authorization - PolicyAssignments](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20PolicyAssignments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policyassignments.yml) | [L1:3] | 140 |
+| 9 | authorization<p>policy-definitions | [![Authorization - PolicyDefinitions](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20PolicyDefinitions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policydefinitions.yml) | [L1:2] | 83 |
+| 10 | authorization<p>policy-exemptions | [![Authorization - PolicyExemptions](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20PolicyExemptions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policyexemptions.yml) | [L1:3] | 111 |
+| 11 | authorization<p>policy-set-definitions | [![Authorization - PolicySetDefinitions](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20PolicySetDefinitions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policysetdefinitions.yml) | [L1:2] | 73 |
+| 12 | authorization<p>role-assignments | [![Authorization - RoleAssignments](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20RoleAssignments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.roleassignments.yml) | [L1:3] | 104 |
+| 13 | authorization<p>role-definitions | [![Authorization - RoleDefinitions](https://github.com/Azure/ResourceModules/workflows/Authorization%20-%20RoleDefinitions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.roledefinitions.yml) | [L1:3] | 91 |
+| 14 | automation<p>automation-accounts | [![Automation - AutomationAccounts](https://github.com/Azure/ResourceModules/workflows/Automation%20-%20AutomationAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.automation.automationaccounts.yml) | [L1:6] | 377 |
+| 15 | batch<p>batch-accounts | [![Batch - BatchAccounts](https://github.com/Azure/ResourceModules/workflows/Batch%20-%20BatchAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.batch.batchaccounts.yml) |  | 239 |
+| 16 | cache<p>redis | [![Cache - Redis](https://github.com/Azure/ResourceModules/workflows/Cache%20-%20Redis/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cache.redis.yml) |  | 247 |
+| 17 | cdn<p>profiles | [![CDN - Profiles](https://github.com/Azure/ResourceModules/workflows/CDN%20-%20Profiles/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cdn.profiles.yml) | [L1:1, L2:1] | 106 |
+| 18 | cognitive-services<p>accounts | [![CognitiveServices - Accounts](https://github.com/Azure/ResourceModules/workflows/CognitiveServices%20-%20Accounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.cognitiveservices.accounts.yml) |  | 294 |
+| 19 | compute<p>availability-sets | [![Compute - AvailabilitySets](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20AvailabilitySets/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.availabilitysets.yml) |  | 83 |
+| 20 | compute<p>disk-encryption-sets | [![Compute - DiskEncryptionSets](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20DiskEncryptionSets/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.diskencryptionsets.yml) |  | 126 |
+| 21 | compute<p>disks | [![Compute - Disks](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20Disks/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.disks.yml) |  | 182 |
+| 22 | compute<p>galleries | [![Compute - Galleries](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20Galleries/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.galleries.yml) | [L1:2] | 123 |
+| 23 | compute<p>images | [![Compute - Images](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20Images/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.images.yml) |  | 107 |
+| 24 | compute<p>proximity-placement-groups | [![Compute - ProximityPlacementGroups](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20ProximityPlacementGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.proximityplacementgroups.yml) |  | 80 |
+| 25 | compute<p>ssh-public-keys | [![Compute - SshPublicKeys](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20SshPublicKeys/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.sshpublickeys.yml) |  | 67 |
+| 26 | compute<p>virtual-machine-scale-sets | [![Compute - VirtualMachineScaleSets](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20VirtualMachineScaleSets/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.virtualmachinescalesets.yml) | [L1:1] | 562 |
+| 27 | compute<p>virtual-machines | [![Compute - VirtualMachines](https://github.com/Azure/ResourceModules/workflows/Compute%20-%20VirtualMachines/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.virtualmachines.yml) | [L1:1] | 640 |
+| 28 | consumption<p>budgets | [![Consumption - Budgets](https://github.com/Azure/ResourceModules/workflows/Consumption%20-%20Budgets/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.consumption.budgets.yml) |  | 89 |
+| 29 | container-instance<p>container-groups | [![ContainerInstance - ContainerGroups](https://github.com/Azure/ResourceModules/workflows/ContainerInstance%20-%20ContainerGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerinstance.containergroups.yml) |  | 157 |
+| 30 | container-registry<p>registries | [![ContainerRegistry - Registries](https://github.com/Azure/ResourceModules/workflows/ContainerRegistry%20-%20Registries/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerregistry.registries.yml) | [L1:2] | 349 |
+| 31 | container-service<p>managed-clusters | [![ContainerService - ManagedClusters](https://github.com/Azure/ResourceModules/workflows/ContainerService%20-%20ManagedClusters/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.containerservice.managedclusters.yml) | [L1:1] | 538 |
+| 32 | data-factory<p>factories | [![DataFactory - Factories](https://github.com/Azure/ResourceModules/workflows/DataFactory%20-%20Factories/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.datafactory.factories.yml) | [L1:2, L2:1] | 260 |
+| 33 | data-protection<p>backup-vaults | [![DataProtection - BackupVaults](https://github.com/Azure/ResourceModules/workflows/DataProtection%20-%20BackupVaults/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.dataprotection.backupvaults.yml) | [L1:1] | 105 |
+| 34 | databricks<p>workspaces | [![Databricks - Workspaces](https://github.com/Azure/ResourceModules/workflows/Databricks%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.databricks.workspaces.yml) |  | 143 |
+| 35 | db-for-my-sql<p>flexible-servers | [![DbForMySQL - FlexibleServers](https://github.com/Azure/ResourceModules/workflows/DbForMySQL%20-%20FlexibleServers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.dbformysql.flexibleservers.yml) | [L1:2] | 340 |
+| 36 | db-for-postgre-sql<p>flexible-servers | [![DbForPostgreSQL - FlexibleServers](https://github.com/Azure/ResourceModules/workflows/DbForPostgreSQL%20-%20FlexibleServers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.dbforpostgresql.flexibleservers.yml) | [L1:3] | 314 |
+| 37 | desktop-virtualization<p>application-groups | [![DesktopVirtualization - ApplicationGroups](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization%20-%20ApplicationGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.applicationgroups.yml) | [L1:1] | 156 |
+| 38 | desktop-virtualization<p>host-pools | [![DesktopVirtualization - HostPools](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization%20-%20HostPools/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.hostpools.yml) |  | 214 |
+| 39 | desktop-virtualization<p>scaling-plans | [![DesktopVirtualization - Scalingplans](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization%20-%20Scalingplans/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.scalingplans.yml) |  | 162 |
+| 40 | desktop-virtualization<p>workspaces | [![DesktopVirtualization - Workspaces](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.workspaces.yml) |  | 127 |
+| 41 | dev-test-lab<p>labs | [![DevTestLab - Labs](https://github.com/Azure/ResourceModules/workflows/DevTestLab%20-%20Labs/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.devtestlab.labs.yml) | [L1:6, L2:1] | 262 |
+| 42 | digital-twins<p>digital-twins-instances | [![DigitalTwins - DigitalTwinsInstances](https://github.com/Azure/ResourceModules/workflows/DigitalTwins%20-%20DigitalTwinsInstances/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.digitaltwins.digitaltwinsinstances.yml) | [L1:3] | 233 |
+| 43 | document-db<p>database-accounts | [![DocumentDB - DatabaseAccounts](https://github.com/Azure/ResourceModules/workflows/DocumentDB%20-%20DatabaseAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.documentdb.databaseaccounts.yml) | [L1:3, L2:3] | 320 |
+| 44 | event-grid<p>domains | [![EventGrid - Domains](https://github.com/Azure/ResourceModules/workflows/EventGrid%20-%20Domains/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventgrid.domains.yml) | [L1:1] | 186 |
+| 45 | event-grid<p>system-topics | [![EventGrid - System Topics](https://github.com/Azure/ResourceModules/workflows/EventGrid%20-%20System%20Topics/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventgrid.systemtopics.yml) | [L1:1] | 171 |
+| 46 | event-grid<p>topics | [![EventGrid - Topics](https://github.com/Azure/ResourceModules/workflows/EventGrid%20-%20Topics/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventgrid.topics.yml) | [L1:1] | 190 |
+| 47 | event-hub<p>namespaces | [![EventHub - Namespaces](https://github.com/Azure/ResourceModules/workflows/EventHub%20-%20Namespaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventhub.namespaces.yml) | [L1:4, L2:2] | 285 |
+| 48 | health-bot<p>health-bots | [![HealthBot - HealthBots](https://github.com/Azure/ResourceModules/workflows/HealthBot%20-%20HealthBots/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.healthbot.healthbots.yml) |  | 68 |
+| 49 | healthcare-apis<p>workspaces | [![HealthcareApis - Workspaces](https://github.com/Azure/ResourceModules/workflows/HealthcareApis%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.healthcareapis.workspaces.yml) | [L1:3, L2:1] | 175 |
+| 50 | insights<p>action-groups | [![Insights - ActionGroups](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20ActionGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |  | 85 |
+| 51 | insights<p>activity-log-alerts | [![Insights - ActivityLogAlerts](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20ActivityLogAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |  | 74 |
+| 52 | insights<p>components | [![Insights - Components](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20Components/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.components.yml) |  | 177 |
+| 53 | insights<p>data-collection-endpoints | [![Insights - DataCollectionEndpoints](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20DataCollectionEndpoints/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.datacollectionendpoints.yml) |  | 89 |
+| 54 | insights<p>data-collection-rules | [![Insights - DataCollectionRules](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20DataCollectionRules/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.datacollectionrules.yml) |  | 98 |
+| 55 | insights<p>diagnostic-settings | [![Insights - DiagnosticSettings](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20DiagnosticSettings/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |  | 83 |
+| 56 | insights<p>metric-alerts | [![Insights - MetricAlerts](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20MetricAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.metricalerts.yml) |  | 122 |
+| 57 | insights<p>private-link-scopes | [![Insights - PrivateLinkScopes](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20PrivateLinkScopes/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.privatelinkscopes.yml) | [L1:1] | 100 |
+| 58 | insights<p>scheduled-query-rules | [![Insights - ScheduledQueryRules](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20ScheduledQueryRules/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.scheduledqueryrules.yml) |  | 106 |
+| 59 | insights<p>webtests | [![Insights - Web Tests](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20Web%20Tests/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.webtests.yml) |  | 121 |
+| 60 | key-vault<p>vaults | [![KeyVault - Vaults](https://github.com/Azure/ResourceModules/workflows/KeyVault%20-%20Vaults/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.keyvault.vaults.yml) | [L1:3] | 280 |
+| 61 | kubernetes-configuration<p>extensions | [![KubernetesConfiguration - Extensions](https://github.com/Azure/ResourceModules/workflows/KubernetesConfiguration%20-%20Extensions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.kubernetesconfiguration.extensions.yml) |  | 85 |
+| 62 | kubernetes-configuration<p>flux-configurations | [![KubernetesConfiguration - FluxConfigurations](https://github.com/Azure/ResourceModules/workflows/KubernetesConfiguration%20-%20FluxConfigurations/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml) |  | 68 |
+| 63 | logic<p>workflows | [![Logic - Workflows](https://github.com/Azure/ResourceModules/workflows/Logic%20-%20Workflows/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.logic.workflows.yml) |  | 207 |
+| 64 | machine-learning-services<p>workspaces | [![MachineLearningServices - Workspaces](https://github.com/Azure/ResourceModules/workflows/MachineLearningServices%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.machinelearningservices.workspaces.yml) | [L1:1] | 284 |
+| 65 | maintenance<p>maintenance-configurations | [![Maintenance - MaintenanceConfigurations](https://github.com/Azure/ResourceModules/workflows/Maintenance%20-%20MaintenanceConfigurations/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.maintenance.maintenanceconfigurations.yml) |  | 101 |
+| 66 | managed-identity<p>user-assigned-identities | [![ManagedIdentity - UserAssignedIdentities](https://github.com/Azure/ResourceModules/workflows/ManagedIdentity%20-%20UserAssignedIdentities/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedidentity.userassignedidentities.yml) |  | 66 |
+| 67 | managed-services<p>registration-definitions | [![ManagedServices - RegistrationDefinitions](https://github.com/Azure/ResourceModules/workflows/ManagedServices%20-%20RegistrationDefinitions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedservices.registrationdefinitions.yml) |  | 60 |
+| 68 | management<p>management-groups | [![Management - ManagementGroups](https://github.com/Azure/ResourceModules/workflows/Management%20-%20ManagementGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.management.managementgroups.yml) |  | 44 |
+| 69 | net-app<p>net-app-accounts | [![NetApp - NetAppAccounts](https://github.com/Azure/ResourceModules/workflows/NetApp%20-%20NetAppAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.netapp.netappaccounts.yml) | [L1:1, L2:1] | 106 |
+| 70 | network<p>application-gateway-web-application-firewall-policies | [![Network - ApplicationGatewayWebApplicationFirewallPolicies](https://github.com/Azure/ResourceModules/workflows/Network%20-%20ApplicationGatewayWebApplicationFirewallPolicies/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml) |  | 44 |
+| 71 | network<p>application-gateways | [![Network - ApplicationGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20ApplicationGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationgateways.yml) |  | 334 |
+| 72 | network<p>application-security-groups | [![Network - ApplicationSecurityGroups](https://github.com/Azure/ResourceModules/workflows/Network%20-%20ApplicationSecurityGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.applicationsecuritygroups.yml) |  | 63 |
+| 73 | network<p>azure-firewalls | [![Network - AzureFirewalls](https://github.com/Azure/ResourceModules/workflows/Network%20-%20AzureFirewalls/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.azurefirewalls.yml) |  | 281 |
+| 74 | network<p>bastion-hosts | [![Network - BastionHosts](https://github.com/Azure/ResourceModules/workflows/Network%20-%20BastionHosts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.bastionhosts.yml) |  | 218 |
+| 75 | network<p>connections | [![Network - Connections](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.connections.yml) |  | 139 |
+| 76 | network<p>ddos-protection-plans | [![Network - DdosProtectionPlans](https://github.com/Azure/ResourceModules/workflows/Network%20-%20DdosProtectionPlans/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.ddosprotectionplans.yml) |  | 64 |
+| 77 | network<p>dns-resolvers | [![Network - DNS Resolvers](https://github.com/Azure/ResourceModules/workflows/Network%20-%20DNS%20Resolvers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.dnsresolvers.yml) |  | 100 |
+| 78 | network<p>dns-zones | [![Network - Public DnsZones](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Public%20DnsZones/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.dnszones.yml) | [L1:10] | 211 |
+| 79 | network<p>express-route-circuits | [![Network - ExpressRouteCircuits](https://github.com/Azure/ResourceModules/workflows/Network%20-%20ExpressRouteCircuits/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.expressroutecircuits.yml) |  | 209 |
+| 80 | network<p>express-route-gateway | [![Network - ExpressRouteGateway](https://github.com/Azure/ResourceModules/workflows/Network%20-%20ExpressRouteGateway/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.expressroutegateway.yml) |  | 56 |
+| 81 | network<p>firewall-policies | [![Network - FirewallPolicies](https://github.com/Azure/ResourceModules/workflows/Network%20-%20FirewallPolicies/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.firewallpolicies.yml) | [L1:1] | 165 |
+| 82 | network<p>front-doors | [![Network - Frontdoors](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Frontdoors/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.frontdoors.yml) |  | 161 |
+| 83 | network<p>ip-groups | [![Network - IpGroups](https://github.com/Azure/ResourceModules/workflows/Network%20-%20IpGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.ipgroups.yml) |  | 68 |
+| 84 | network<p>load-balancers | [![Network - LoadBalancers](https://github.com/Azure/ResourceModules/workflows/Network%20-%20LoadBalancers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.loadbalancers.yml) | [L1:2] | 239 |
+| 85 | network<p>local-network-gateways | [![Network - LocalNetworkGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20LocalNetworkGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.localnetworkgateways.yml) |  | 88 |
+| 86 | network<p>nat-gateways | [![Network - NatGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NatGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml) |  | 151 |
+| 87 | network<p>network-interfaces | [![Network - NetworkInterfaces](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NetworkInterfaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkinterfaces.yml) |  | 155 |
+| 88 | network<p>network-managers | [![Network - Network Managers](https://github.com/Azure/ResourceModules/workflows/Network%20-%20Network%20Managers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkmanagers.yml) | [L1:4, L2:2, L3:1] | 133 |
+| 89 | network<p>network-security-groups | [![Network - NetworkSecurityGroups](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NetworkSecurityGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networksecuritygroups.yml) | [L1:1] | 165 |
+| 90 | network<p>network-watchers | [![Network - NetworkWatchers](https://github.com/Azure/ResourceModules/workflows/Network%20-%20NetworkWatchers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkwatchers.yml) | [L1:2] | 97 |
+| 91 | network<p>private-dns-zones | [![Network - PrivateDnsZones](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateDnsZones/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privatednszones.yml) | [L1:9] | 189 |
+| 92 | network<p>private-endpoints | [![Network - PrivateEndpoints](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateEndpoints/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privateendpoints.yml) | [L1:1] | 108 |
+| 93 | network<p>private-link-services | [![Network - PrivateLinkServices](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PrivateLinkServices/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.privatelinkservices.yml) |  | 85 |
+| 94 | network<p>public-ip-addresses | [![Network - PublicIpAddresses](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PublicIpAddresses/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.publicipaddresses.yml) |  | 187 |
+| 95 | network<p>public-ip-prefixes | [![Network - PublicIpPrefixes](https://github.com/Azure/ResourceModules/workflows/Network%20-%20PublicIpPrefixes/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.publicipprefixes.yml) |  | 77 |
+| 96 | network<p>route-tables | [![Network - RouteTables](https://github.com/Azure/ResourceModules/workflows/Network%20-%20RouteTables/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.routetables.yml) |  | 70 |
+| 97 | network<p>trafficmanagerprofiles | [![Network - TrafficManagerProfiles](https://github.com/Azure/ResourceModules/workflows/Network%20-%20TrafficManagerProfiles/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.trafficmanagerprofiles.yml) |  | 175 |
+| 98 | network<p>virtual-hubs | [![Network - VirtualHubs](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualHubs/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualhubs.yml) | [L1:2] | 143 |
+| 99 | network<p>virtual-network-gateways | [![Network - VirtualNetworkGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualNetworkGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualnetworkgateways.yml) | [L1:1] | 405 |
+| 100 | network<p>virtual-networks | [![Network - VirtualNetworks](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualNetworks/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualnetworks.yml) | [L1:2] | 259 |
+| 101 | network<p>virtual-wans | [![Network - VirtualWans](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualWans/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml) |  | 80 |
+| 102 | network<p>vpn-gateways | [![Network - VPNGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPNGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpngateways.yml) | [L1:2] | 104 |
+| 103 | network<p>vpn-sites | [![Network - VPN Sites](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPN%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpnsites.yml) |  | 88 |
+| 104 | operational-insights<p>workspaces | [![OperationalInsights - Workspaces](https://github.com/Azure/ResourceModules/workflows/OperationalInsights%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationalinsights.workspaces.yml) | [L1:7] | 312 |
+| 105 | operations-management<p>solutions | [![OperationsManagement - Solutions](https://github.com/Azure/ResourceModules/workflows/OperationsManagement%20-%20Solutions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationsmanagement.solutions.yml) |  | 50 |
+| 106 | policy-insights<p>remediations | [![PolicyInsights - Remediations](https://github.com/Azure/ResourceModules/workflows/PolicyInsights%20-%20Remediations/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.policyinsights.remediations.yml) | [L1:3] | 103 |
+| 107 | power-bi-dedicated<p>capacities | [![PowerBiDedicated - Capacities](https://github.com/Azure/ResourceModules/workflows/PowerBiDedicated%20-%20Capacities/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.powerbidedicated.capacities.yml) |  | 96 |
+| 108 | purview<p>accounts | [![Purview - Accounts](https://github.com/Azure/ResourceModules/workflows/Purview%20-%20Accounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.purview.accounts.yml) |  | 290 |
+| 109 | recovery-services<p>vaults | [![RecoveryServices - Vaults](https://github.com/Azure/ResourceModules/workflows/RecoveryServices%20-%20Vaults/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.recoveryservices.vaults.yml) | [L1:7, L2:2, L3:1] | 299 |
+| 110 | resources<p>deployment-scripts | [![Resources - DeploymentScripts](https://github.com/Azure/ResourceModules/workflows/Resources%20-%20DeploymentScripts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.resources.deploymentscripts.yml) |  | 121 |
+| 111 | resources<p>resource-groups | [![Resources - ResourceGroups](https://github.com/Azure/ResourceModules/workflows/Resources%20-%20ResourceGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.resources.resourcegroups.yml) |  | 66 |
+| 112 | resources<p>tags | [![Resources - Tags](https://github.com/Azure/ResourceModules/workflows/Resources%20-%20Tags/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.resources.tags.yml) | [L1:2] | 51 |
+| 113 | security<p>azure-security-center | [![Security - AzureSecurityCenter](https://github.com/Azure/ResourceModules/workflows/Security%20-%20AzureSecurityCenter/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.security.azuresecuritycenter.yml) |  | 217 |
+| 114 | service-bus<p>namespaces | [![ServiceBus - Namespaces](https://github.com/Azure/ResourceModules/workflows/ServiceBus%20-%20Namespaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.servicebus.namespaces.yml) | [L1:6, L2:2] | 339 |
+| 115 | service-fabric<p>clusters | [![ServiceFabric - Clusters](https://github.com/Azure/ResourceModules/workflows/ServiceFabric%20-%20Clusters/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.servicefabric.clusters.yml) | [L1:1] | 281 |
+| 116 | signal-r-service<p>signal-r | [![SignalRService - SignalR](https://github.com/Azure/ResourceModules/workflows/SignalRService%20-%20SignalR/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.signalrservice.signalr.yml) |  | 186 |
+| 117 | signal-r-service<p>web-pub-sub | [![SignalRService - WebPubSub](https://github.com/Azure/ResourceModules/workflows/SignalRService%20-%20WebPubSub/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.signalrservice.webpubsub.yml) |  | 156 |
+| 118 | sql<p>managed-instances | [![Sql - ManagedInstances](https://github.com/Azure/ResourceModules/workflows/Sql%20-%20ManagedInstances/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.managedinstances.yml) | [L1:6, L2:2] | 347 |
+| 119 | sql<p>servers | [![Sql - Servers](https://github.com/Azure/ResourceModules/workflows/Sql%20-%20Servers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml) | [L1:8, L2:2] | 302 |
+| 120 | storage<p>storage-accounts | [![Storage - StorageAccounts](https://github.com/Azure/ResourceModules/workflows/Storage%20-%20StorageAccounts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml) | [L1:6, L2:4, L3:1] | 430 |
+| 121 | synapse<p>private-link-hubs | [![Synapse - PrivateLinkHubs](https://github.com/Azure/ResourceModules/workflows/Synapse%20-%20PrivateLinkHubs/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.privatelinkhubs.yml) |  | 90 |
+| 122 | synapse<p>workspaces | [![Synapse - Workspaces](https://github.com/Azure/ResourceModules/workflows/Synapse%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.workspaces.yml) | [L1:2] | 294 |
+| 123 | virtual-machine-images<p>image-templates | [![VirtualMachineImages - ImageTemplates](https://github.com/Azure/ResourceModules/workflows/VirtualMachineImages%20-%20ImageTemplates/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.virtualmachineimages.imagetemplates.yml) |  | 197 |
+| 124 | web<p>connections | [![Web - Connections](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |  | 87 |
+| 125 | web<p>hosting-environments | [![Web - HostingEnvironments](https://github.com/Azure/ResourceModules/workflows/Web%20-%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) | [L1:2] | 235 |
+| 126 | web<p>serverfarms | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  | 159 |
+| 127 | web<p>sites | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) | [L1:4, L2:2] | 390 |
+| 128 | web<p>static-sites | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) | [L1:3] | 193 |
+| Sum | | 102 | 101 | 111 | 54 | 24 | 2 | 207 | 22835 |
 
 ## Legend
 

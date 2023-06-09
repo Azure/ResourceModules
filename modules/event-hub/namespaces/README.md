@@ -50,7 +50,7 @@ This module deploys an event hub namespace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfig` | object | `{object}` |  | The disaster recovery config for this namespace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `eventHubs` | _[eventHubs](event-hubs/README.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
+| `eventhubs` | _[eventhubs](eventhubs/README.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
 | `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -360,7 +360,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    eventHubs: [
+    eventhubs: [
       {
         name: '<<namePrefix>>-az-evh-x-001'
       }
@@ -391,7 +391,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
         captureDescriptionIntervalInSeconds: 300
         captureDescriptionSizeLimitInBytes: 314572800
         captureDescriptionSkipEmptyArchives: true
-        consumerGroups: [
+        consumergroups: [
           {
             name: 'custom'
             userMetadata: 'customMetadata'
@@ -519,7 +519,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
-    "eventHubs": {
+    "eventhubs": {
       "value": [
         {
           "name": "<<namePrefix>>-az-evh-x-001"
@@ -551,7 +551,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
           "captureDescriptionIntervalInSeconds": 300,
           "captureDescriptionSizeLimitInBytes": 314572800,
           "captureDescriptionSkipEmptyArchives": true,
-          "consumerGroups": [
+          "consumergroups": [
             {
               "name": "custom",
               "userMetadata": "customMetadata"

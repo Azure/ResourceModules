@@ -1,5 +1,7 @@
 # Data Factories `[Microsoft.DataFactory/factories]`
 
+This module deploys a Data Factory.
+
 ## Navigation
 
 - [Resource types](#Resource-types)

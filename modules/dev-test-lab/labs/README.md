@@ -39,14 +39,14 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `encryptionDiskEncryptionSetId` | string | `''` | The Disk Encryption Set Resource ID used to encrypt OS and data disks created as part of the the lab. Required if encryptionType is set to "EncryptionAtRestWithCustomerKey". |
-| `notificationChannels` | _[notificationChannels](notification-channels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
+| `notificationchannels` | _[notificationchannels](notificationchannels/README.md)_ array | `[]` | Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `announcement` | object | `{object}` |  | The properties of any lab announcement associated with this lab. |
-| `artifactSources` | _[artifactSources](artifact-sources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
+| `artifactsources` | _[artifactsources](artifactsources/README.md)_ array | `[]` |  | Artifact sources to create for the lab. |
 | `artifactsStorageAccount` | string | `''` |  | The resource ID of the storage account used to store artifacts and images by the lab. Also used for defaultStorageAccount, defaultPremiumStorageAccount and premiumDataDiskStorageAccount properties. If left empty, a default storage account will be created by the lab and used. |
 | `browserConnect` | string | `'Disabled'` | `[Disabled, Enabled]` | Enable browser connect on virtual machines if the lab's VNETs have configured Azure Bastion. |
 | `costs` | _[costs](costs/README.md)_ object | `{object}` |  | Costs to create for the lab. |
@@ -69,7 +69,7 @@ Azure DevTest Labs is a service for easily creating, using, and managing infrast
 | `support` | object | `{object}` |  | The properties of any lab support message associated with this lab. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `virtualNetworks` | _[virtualNetworks](virtual-networks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
+| `virtualnetworks` | _[virtualnetworks](virtualnetworks/README.md)_ array | `[]` |  | Virtual networks to create for the lab. |
 | `vmCreationResourceGroupId` | string | `[resourceGroup().id]` |  | Resource Group allocation for virtual machines. If left empty, virtual machines will be deployed in their own Resource Groups. Default is the same Resource Group for DevTest Lab. |
 
 
@@ -247,7 +247,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
       markdown: 'DevTest Lab announcement text. <br> New line. It also supports Markdown'
       title: 'DevTest announcement title'
     }
-    artifactSources: [
+    artifactsources: [
       {
         branchRef: 'master'
         displayName: 'Public Artifact Repo'
@@ -291,7 +291,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
     managementIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    notificationChannels: [
+    notificationchannels: [
       {
         description: 'Integration configured for auto-shutdown'
         emailRecipient: 'mail@contosodtlmail.com'
@@ -425,7 +425,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
-    virtualNetworks: [
+    virtualnetworks: [
       {
         allowedSubnets: [
           {
@@ -489,7 +489,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
         "title": "DevTest announcement title"
       }
     },
-    "artifactSources": {
+    "artifactsources": {
       "value": [
         {
           "branchRef": "master",
@@ -563,7 +563,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
         "<managedIdentityResourceId>": {}
       }
     },
-    "notificationChannels": {
+    "notificationchannels": {
       "value": [
         {
           "description": "Integration configured for auto-shutdown",
@@ -713,7 +713,7 @@ module labs './dev-test-lab/labs/main.bicep' = {
         "<managedIdentityResourceId>": {}
       }
     },
-    "virtualNetworks": {
+    "virtualnetworks": {
       "value": [
         {
           "allowedSubnets": [

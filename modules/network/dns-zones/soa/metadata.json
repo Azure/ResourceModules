@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Public DNS Zone SOA record",
+  "summary": "This module deploys a Public DNS Zone SOA record.",
+  "owner": "Azure/module-maintainers"
+}
