@@ -32,7 +32,7 @@ This template deploys Azure NetApp Files.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacityPools` | array | `[]` |  | Capacity pools to create. |
+| `capacityPools` | _[capacityPools](capacity-pools/README.md)_ array | `[]` |  | Capacity pools to create. |
 | `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
 | `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
 | `domainJoinPassword` | securestring | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
