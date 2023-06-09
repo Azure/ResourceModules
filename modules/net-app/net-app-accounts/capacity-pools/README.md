@@ -14,8 +14,8 @@ This template deploys capacity pools in an Azure NetApp Files.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts/capacityPools) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts/capacityPools/volumes) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools/volumes) |
 
 ## Parameters
 
@@ -43,7 +43,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serviceLevel` | string | `'Standard'` | `[Premium, Standard, StandardZRS, Ultra]` | The pool service level. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
-| `volumes` | _[volumes](volumes/README.md)_ array | `[]` |  | List of volumnes to create in the capacity pool. |
+| `volumes` | _[volumes](volumes/readme.md)_ array | `[]` |  | List of volumnes to create in the capacity pool. |
 
 
 ### Parameter Usage: `tags`
