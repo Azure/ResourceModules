@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.authorization.locks.yml'
-      - 'modules/Microsoft.Authorization/locks/**'
+      - 'modules/authorization/locks/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Authorization/locks'
+  modulePath: 'modules/authorization/locks'
   workflowPath: '.github/workflows/ms.authorization.locks.yml'
 
 concurrency:

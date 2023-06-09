@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "Policy Assignment on Resource Group level",
+  "summary": "With this module you can perform policy assignments on a resource group level",
+  "owner": "Azure/module-maintainers"
+}

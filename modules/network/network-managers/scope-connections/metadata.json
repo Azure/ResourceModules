@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Network NetworkManagers ScopeConnections",
+    "summary": "This module deploys Network NetworkManagers ScopeConnections.\nCreate a cross-tenant connection to manage a resource from another tenant.",
+    "owner": "Azure/module-maintainers"
+}

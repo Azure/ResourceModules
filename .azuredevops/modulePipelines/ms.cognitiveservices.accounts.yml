@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/Microsoft.CognitiveServices/accounts/*'
-      - '/modules/Microsoft.Network/privateEndpoints/*'
+      - '/modules/cognitive-services/accounts/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.cognitiveservices.accounts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.CognitiveServices/accounts'
+    value: '/modules/cognitive-services/accounts'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

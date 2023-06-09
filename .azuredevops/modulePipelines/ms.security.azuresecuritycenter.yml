@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.security.azuresecuritycenter.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Microsoft.Security/azureSecurityCenter/*'
+      - '/modules/security/azure-security-center/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Microsoft.Security/azureSecurityCenter'
+    value: '/modules/security/azure-security-center'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

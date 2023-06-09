@@ -1,4 +1,4 @@
-name: '.Platform: Linter'
+name: '.Platform: Linter (audit)'
 
 on:
   workflow_dispatch:

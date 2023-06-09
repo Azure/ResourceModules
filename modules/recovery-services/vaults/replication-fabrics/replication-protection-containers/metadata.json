@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "RecoveryServices Vaults ReplicationFabrics ReplicationProtectionContainers",
+    "summary": "This module deploys a Replication Protection Container.\n\n> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.",
+    "owner": "Azure/module-maintainers"
+}

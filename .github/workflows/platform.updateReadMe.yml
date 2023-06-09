@@ -10,8 +10,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/**/deploy.bicep'
-      - 'modules/**/deploy.json'
+      - 'modules/**/main.bicep'
+      - 'modules/**/main.json'
       - 'utilities/tools/platform/**'
 
 env:
@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
 
-      # Update the root ReadMe Module Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - name: 'Update Module Pipelines table'
         shell: pwsh
         run: |
@@ -44,8 +44,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'Status')
-            SortByColumn   = 'Name'
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
             Environment    = 'GitHub'
           }
 
@@ -54,7 +53,7 @@ jobs:
 
           Set-ReadMeModuleTable @functionInput -Verbose
 
-      # Update the `modules` folder ReadMe ([`/modules/readme.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
+      # Update the `modules` folder ReadMe ([`/modules/README.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
       - name: 'Update module folder ReadMe'
         shell: pwsh
         run: |
@@ -66,7 +65,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
             Environment    = 'GitHub'
           }
 
@@ -85,6 +84,9 @@ jobs:
           $functionInput = @{
             MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'
             ModuleFolderPath = Join-Path $env:GITHUB_WORKSPACE 'modules'
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            Environment    = 'GitHub'
           }
 
           Write-Verbose "Invoke task with" -Verbose
@@ -92,7 +94,7 @@ jobs:
 
           Set-ModuleOverviewTable @functionInput -Verbose
 
-      # Update the root ReadMe Platform Pipelines table ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
+      # Update the root ReadMe Platform Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
       - name: 'Update Platform Pipelines table'
         shell: pwsh
         run: |

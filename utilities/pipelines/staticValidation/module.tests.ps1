@@ -3,7 +3,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [array] $moduleFolderPaths = ((Get-ChildItem $repoRootPath -Recurse -Directory -Force).FullName | Where-Object {
-            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            (Get-ChildItem $_ -File -Depth 0 -Include @('main.json', 'main.bicep') -Force).Count -gt 0
         }),
 
     [Parameter(Mandatory = $false)]
@@ -30,8 +30,8 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $script:convertedTemplates = @{}
 
 # Shared exception messages
-$script:bicepTemplateCompilationFailedException = "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``bicep build {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
-$script:jsonTemplateLoadFailedException = "Unable to load the deploy.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
+$script:bicepTemplateCompilationFailedException = "Unable to compile the main.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``bicep build {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
+$script:jsonTemplateLoadFailedException = "Unable to load the main.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
@@ -43,23 +43,36 @@ Describe 'File/folder tests' -Tag 'Modules' {
 
     Context 'General module folder tests' {
 
-        It '[<moduleFolderName>] Module should contain a [` deploy.json ` / ` deploy.bicep `] file.' -TestCases $moduleFolderTestCases {
+        $moduleFolderTestCases = [System.Collections.ArrayList] @()
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            $moduleFolderTestCases += @{
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                moduleFolderPath = $moduleFolderPath
+                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            }
+        }
+
+        It '[<moduleFolderName>] Module should contain a [` main.json ` / ` main.bicep `] file.' -TestCases $moduleFolderTestCases {
 
             param( [string] $moduleFolderPath )
 
-            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json')
-            $hasBicep = Test-Path (Join-Path -Path $moduleFolderPath 'deploy.bicep')
+            $hasARM = Test-Path (Join-Path -Path $moduleFolderPath 'main.json')
+            $hasBicep = Test-Path (Join-Path -Path $moduleFolderPath 'main.bicep')
                 ($hasARM -or $hasBicep) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [` readme.md `] file.' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [` README.md `] file.' -TestCases $moduleFolderTestCases {
 
             param(
                 [string] $moduleFolderPath
             )
 
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')
+            $readMeFilePath = Join-Path -Path $moduleFolderPath 'README.md'
+            $pathExisting = Test-Path $readMeFilePath
             $pathExisting | Should -Be $true
+
+            $file = Get-Item -Path $readMeFilePath
+            $file.Name | Should -BeExactly 'README.md'
         }
 
         It '[<moduleFolderName>] Module should contain a [` .test `] folder.' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
@@ -79,6 +92,16 @@ Describe 'File/folder tests' -Tag 'Modules' {
             )
 
             $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
+            $pathExisting | Should -Be $true
+        }
+
+        It '[<moduleFolderName>] Module should contain a [` metadata.json `] file.' -TestCases $moduleFolderTestCases {
+
+            param (
+                [string] $moduleFolderPath
+            )
+
+            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'metadata.json')
             $pathExisting | Should -Be $true
         }
     }
@@ -158,7 +181,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
             $workflowPath = Join-Path $workflowsFolderName $workflowFileName
             Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
         }
@@ -178,7 +201,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             $workflowsFolderName = Join-Path $repoRootPath '.github' 'workflows'
-            $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $workflowFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
             $workflowFilePath = Join-Path $workflowsFolderName $workflowFileName
             $workflowContent = Get-Content -Path $workflowFilePath
 
@@ -227,7 +250,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             )
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
             $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
             Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
         }
@@ -247,7 +270,7 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
             }
 
             $pipelinesFolderName = Join-Path $repoRootPath '.azuredevops' 'modulePipelines'
-            $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+            $pipelineFileName = 'ms.{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('-', '').ToLower()
             $pipelineFilePath = Join-Path $pipelinesFolderName $pipelineFileName
             $pipelineContent = Get-Content -Path $pipelineFilePath
 
@@ -289,26 +312,26 @@ Describe 'Pipeline tests' -Tag 'Pipeline' {
 
 }
 
-Describe 'Readme tests' -Tag 'Readme' {
+Describe 'Module tests' -Tag 'Module' {
 
-    Context 'Readme content tests' {
+    Context 'Readme content tests' -Tag 'Readme' {
 
-        $readmeFolderTestCases = [System.Collections.ArrayList] @()
+        $readmeFileTestCases = [System.Collections.ArrayList] @()
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
             $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
-                if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
                     $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
                     }
-                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
@@ -328,29 +351,29 @@ Describe 'Readme tests' -Tag 'Readme' {
 
             $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
 
-            $readmeFolderTestCases += @{
+            $readmeFileTestCases += @{
                 moduleFolderName       = $resourceTypeIdentifier
                 moduleFolderPath       = $moduleFolderPath
                 templateContent        = $templateContent
                 templateFilePath       = $templateFilePath
-                readMeFilePath         = Join-Path -Path $moduleFolderPath 'readme.md'
-                readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
+                readMeFilePath         = Join-Path -Path $moduleFolderPath 'README.md'
+                readMeContent          = Get-Content (Join-Path -Path $moduleFolderPath 'README.md')
                 isTopLevelModule       = $resourceTypeIdentifier.Split('/').Count -eq 2 # <provider>/<resourceType>
                 resourceTypeIdentifier = $resourceTypeIdentifier
                 templateReferences     = $crossReferencedModuleList[$resourceTypeIdentifier]
             }
         }
 
-        It '[<moduleFolderName>] `Readme.md` file should not be empty.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `README.md` file should not be empty.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
                 [object[]] $readMeContent
             )
-            $readMeContent | Should -Not -Be $null
+            $readMeContent | Should -Not -BeNullOrEmpty
         }
 
-        It '[<moduleFolderName>] `Readme.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `README.md` file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Cross-referenced modules, Deployment examples.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -375,7 +398,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $filteredActuals | Should -Be $expectedHeadersInOrder -Because 'the headers should exist in the expected order'
         }
 
-        It '[<moduleFolderName>] Resources section should contain all resources from the template file.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should contain all resources from the template file.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -400,7 +423,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Resources section should not contain more resources than the template file.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should not contain more resources than the template file.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -425,7 +448,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -448,7 +471,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $actualParamCategories | Should -Be $expectedParamCategoriesInOrder
         }
 
-        It '[<moduleFolderName>] Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -488,7 +511,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             }
         }
 
-        It '[<moduleFolderName>] Parameters section should contain all parameters from the template file.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain all parameters from the template file.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -538,7 +561,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -555,7 +578,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of "Outputs" table columns missing in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Output section should contain all outputs defined in the template file.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Output section should contain all outputs defined in the template file.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -582,7 +605,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty.' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Dependencies section should contain all cross-references defined in the template file.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -635,7 +658,7 @@ Describe 'Readme tests' -Tag 'Readme' {
             }
         }
 
-        It '[<moduleFolderName>] `Set-ModuleReadMe` script should not apply any updates.' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] `Set-ModuleReadMe` script should not apply any updates.' -TestCases $readmeFileTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -670,143 +693,8 @@ Describe 'Readme tests' -Tag 'Readme' {
             $filesAreTheSame | Should -Be $true -Because ('The file hashes before and after applying the `Set-ModuleReadMe` function should be identical and should not have diff </br><pre>{0}</pre>. Please re-run the script for this module''s template.' -f $mdFormattedDiff)
         }
     }
-}
 
-Describe 'Test file tests' -Tag 'TestTemplate' {
-
-    Context 'General test file' {
-
-        $deploymentTestFileTestCases = @()
-
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
-                foreach ($testFilePath in $testFilePaths) {
-                    $testFileContent = Get-Content $testFilePath
-
-                    if ((Split-Path $testFilePath -Extension) -eq '.json') {
-                        # Skip any classic parameter files
-                        $contentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
-                        $isParameterFile = $contentHashtable.'$schema' -like '*deploymentParameters*'
-                        if ($isParameterFile) {
-                            continue
-                        }
-                    }
-
-                    $deploymentTestFileTestCases += @{
-                        testFilePath     = $testFilePath
-                        testFileContent  = $testFileContent
-                        moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                    }
-                }
-            }
-        }
-
-        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*deploy.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*deploy.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
-
-            $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
-        }
-
-        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            $expectedNameFormat = ($testFileContent | Out-String) -match '\s*name:.+-test-.+\s*'
-
-            $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
-        }
-
-        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            $hasExpectedParam = ($testFileContent | Out-String) -match '\s*param\s+serviceShort\s+string\s*'
-
-            $hasExpectedParam | Should -Be $true
-        }
-
-        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            # Handle case of deployment test file (instead of ARM-JSON parameter file)
-            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
-
-            # Uses deployment test file (instead of parameter file). Need to extract parameters.
-            $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
-
-            $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
-        }
-
-        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
-
-            param(
-                [object[]] $testFileContent
-            )
-
-            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99 -AsHashtable
-            $rawContentHashtable.parameters.keys | Should -Contain 'serviceShort'
-        }
-    }
-
-    Context 'Token usage' {
-
-        # Parameter file test cases
-        $parameterFileTokenTestCases = @()
-
-        foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
-                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
-                foreach ($testFilePath in $testFilePaths) {
-                    foreach ($token in $enforcedTokenList.Keys) {
-                        $parameterFileTokenTestCases += @{
-                            testFilePath      = $testFilePath
-                            parameterFileName = Split-Path $testFilePath -Leaf
-                            tokenSettings     = $Settings.parameterFileTokens
-                            tokenName         = $token
-                            tokenValue        = $enforcedTokenList[$token]
-                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
-                        }
-                    }
-                }
-            }
-        }
-
-        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid.' -TestCases $parameterFileTokenTestCases {
-            param (
-                [string] $testFilePath,
-                [string] $parameterFileName,
-                [hashtable] $tokenSettings,
-                [string] $tokenName,
-                [string] $tokenValue,
-                [string] $moduleFolderName
-            )
-            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $testFilePath
-
-            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-            if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}].' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
-            }
-        }
-    }
-}
-
-Describe 'Deployment template tests' -Tag 'Template' {
-
-    Context 'General template' {
+    Context 'General template' -Tag 'Template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -814,15 +702,15 @@ Describe 'Deployment template tests' -Tag 'Template' {
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
             $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
-                if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
                     $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
                     }
-                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
@@ -893,7 +781,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
                 [string] $moduleFolderName,
                 [hashtable] $templateContent
             )
-            $templateContent | Should -Not -Be $null
+            $templateContent | Should -Not -BeNullOrEmpty
         }
 
         It '[<moduleFolderName>] Template schema version should be the latest.' -TestCases $deploymentFolderTestCases {
@@ -1240,7 +1128,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
         }
 
         # PARAMETER Tests
-        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`deploy.json`).' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All parameters in parameters files exist in template file (`main.json`).' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1254,7 +1142,7 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
 
-        It '[<moduleFolderName>] All required parameters in template file (`deploy.json`) should exist in parameters files.' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] All required parameters in template file (`main.json`) should exist in parameters files.' -TestCases $deploymentFolderTestCases {
             param (
                 [hashtable[]] $testFileTestCases
             )
@@ -1284,6 +1172,197 @@ Describe 'Deployment template tests' -Tag 'Template' {
             }
         }
     }
+
+    Context 'Metadata content tests' -Tag 'Metadata' {
+
+        ####################
+        ##   Test Cases   ##
+        ####################
+        $metadataFileTestCases = [System.Collections.ArrayList] @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+            $metadataFilePath = $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+            $metadataFilePath = Join-Path -Path $moduleFolderPath 'metadata.json'
+            $readMeFilePath = Join-Path -Path $moduleFolderPath 'README.md'
+
+            $metadataFileTestCases += @{
+                moduleFolderName       = $resourceTypeIdentifier
+                moduleFolderPath       = $moduleFolderPath
+                metadataFilePath       = $metadataFilePath
+                metadataContent        = (Test-Path -Path $metadataFilePath) ? (ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw) -AsHashtable) : ''
+                readMeFilePath         = $readMeFilePath
+                readMeContent          = (Test-Path -Path $readMeFilePath) ? (Get-Content -Path $readMeFilePath -Raw) : ''
+                resourceTypeIdentifier = $resourceTypeIdentifier
+            }
+        }
+
+        ###############
+        ##   Tests   ##
+        ###############
+        It '[<moduleFolderName>] `metadata.json` file should not be empty.' -TestCases $metadataFileTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $metadataContent
+            )
+
+            $metadataContent | Should -Not -BeNullOrEmpty
+        }
+
+        It '[<moduleFolderName>] `metadata.json` file should have a module name specified.' -TestCases $metadataFileTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $metadataContent
+            )
+
+            $metadataContent.name | Should -Not -BeNullOrEmpty
+        }
+
+        It '[<moduleFolderName>] `metadata.json` file should have a module description / summary specified.' -TestCases $metadataFileTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $metadataContent
+            )
+
+            $metadataContent.summary | Should -Not -BeNullOrEmpty
+        }
+    }
+}
+
+Describe 'Test file tests' -Tag 'TestTemplate' {
+
+    Context 'General test file' {
+
+        $deploymentTestFileTestCases = @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
+                foreach ($testFilePath in $testFilePaths) {
+                    $testFileContent = Get-Content $testFilePath
+
+                    if ((Split-Path $testFilePath -Extension) -eq '.json') {
+                        # Skip any classic parameter files
+                        $contentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
+                        $isParameterFile = $contentHashtable.'$schema' -like '*deploymentParameters*'
+                        if ($isParameterFile) {
+                            continue
+                        }
+                    }
+
+                    $deploymentTestFileTestCases += @{
+                        testFilePath     = $testFilePath
+                        testFileContent  = $testFileContent
+                        moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                    }
+                }
+            }
+        }
+
+        It "[<moduleFolderName>] Bicep test deployment files should invoke test like [`module testDeployment '../.*main.bicep' = {`]" -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+
+            param(
+                [object[]] $testFileContent
+            )
+
+            $testIndex = ($testFileContent | Select-String ("^module testDeployment '..\/.*main.bicep' = {$") | ForEach-Object { $_.LineNumber - 1 })[0]
+
+            $testIndex -ne -1 | Should -Be $true -Because 'the module test invocation should be in the expected format to allow identification.'
+        }
+
+        It '[<moduleFolderName>] Bicep test deployment name should contain [`-test-`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+
+            param(
+                [object[]] $testFileContent
+            )
+
+            $expectedNameFormat = ($testFileContent | Out-String) -match '\s*name:.+-test-.+\s*'
+
+            $expectedNameFormat | Should -Be $true -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
+        }
+
+        It '[<moduleFolderName>] Bicep test deployment should have parameter [`serviceShort`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.bicep' }) {
+
+            param(
+                [object[]] $testFileContent
+            )
+
+            $hasExpectedParam = ($testFileContent | Out-String) -match '\s*param\s+serviceShort\s+string\s*'
+
+            $hasExpectedParam | Should -Be $true
+        }
+
+        It '[<moduleFolderName>] JSON test deployment name should contain [`-test-`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+
+            param(
+                [object[]] $testFileContent
+            )
+
+            # Handle case of deployment test file (instead of ARM-JSON parameter file)
+            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99
+
+            # Uses deployment test file (instead of parameter file). Need to extract parameters.
+            $testResource = $rawContentHashtable.resources | Where-Object { $_.name -like '*-test-*' }
+
+            $testResource | Should -Not -BeNullOrEmpty -Because 'the handle ''-test-'' should be part of the module test invocation''s resource name to allow identification.'
+        }
+
+        It '[<moduleFolderName>] JSON test deployment should have parameter [`serviceShort`].' -TestCases ($deploymentTestFileTestCases | Where-Object { (Split-Path $_.testFilePath -Extension) -eq '.json' }) {
+
+            param(
+                [object[]] $testFileContent
+            )
+
+            $rawContentHashtable = $testFileContent | ConvertFrom-Json -Depth 99 -AsHashtable
+            $rawContentHashtable.parameters.keys | Should -Contain 'serviceShort'
+        }
+    }
+
+    Context 'Token usage' {
+
+        # Parameter file test cases
+        $parameterFileTokenTestCases = @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            if (Test-Path (Join-Path $moduleFolderPath '.test')) {
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
+                foreach ($testFilePath in $testFilePaths) {
+                    foreach ($token in $enforcedTokenList.Keys) {
+                        $parameterFileTokenTestCases += @{
+                            testFilePath      = $testFilePath
+                            parameterFileName = Split-Path $testFilePath -Leaf
+                            tokenSettings     = $Settings.parameterFileTokens
+                            tokenName         = $token
+                            tokenValue        = $enforcedTokenList[$token]
+                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                        }
+                    }
+                }
+            }
+        }
+
+        It '[<moduleFolderName>] [Tokens] Test file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid.' -TestCases $parameterFileTokenTestCases {
+            param (
+                [string] $testFilePath,
+                [string] $parameterFileName,
+                [hashtable] $tokenSettings,
+                [string] $tokenName,
+                [string] $tokenValue,
+                [string] $moduleFolderName
+            )
+            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
+            $ParameterFileContent = Get-Content -Path $testFilePath
+
+            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
+            if ($incorrectReferencesFound.Matches) {
+                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}].' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
+            }
+        }
+    }
 }
 
 Describe 'API version tests' -Tag 'ApiCheck' {
@@ -1304,15 +1383,15 @@ Describe 'API version tests' -Tag 'ApiCheck' {
         # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
         $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
-            if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+            if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
+                $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
                 $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {
                     throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
                 }
-            } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+            } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                $templateFilePath = Join-Path $moduleFolderPath 'main.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {
@@ -1341,7 +1420,7 @@ Describe 'API version tests' -Tag 'ApiCheck' {
                     $testCases += @{
                         moduleName                     = $moduleFolderName
                         resourceType                   = 'diagnosticsettings'
-                        ProviderNamespace              = 'Microsoft.insights'
+                        ProviderNamespace              = 'Microsoft.Insights'
                         TargetApi                      = $resource.ApiVersion
                         AvailableApiVersions           = $ApiVersions
                         AllowPreviewVersionsInAPITests = $AllowPreviewVersionsInAPITests

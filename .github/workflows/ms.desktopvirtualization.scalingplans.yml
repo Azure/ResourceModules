@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.desktopvirtualization.scalingplans.yml'
-      - 'modules/Microsoft.DesktopVirtualization/scalingplans/**'
+      - 'modules/desktop-virtualization/scaling-plans/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.DesktopVirtualization/scalingplans'
+  modulePath: 'modules/desktop-virtualization/scaling-plans'
   workflowPath: '.github/workflows/ms.desktopvirtualization.scalingplans.yml'
 
 concurrency:

@@ -1,0 +1,6 @@
+{
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "DevTestLab Labs PolicySets Policies",
+    "summary": "This module deploys DevTestLab Labs PolicySets Policies.\n\nDevTest lab policies are used to modify the lab settings like only allowing certain VM Size SKUs, marketplace image types, number of VMs allowed per user and other settings.",
+    "owner": "Azure/module-maintainers"
+}

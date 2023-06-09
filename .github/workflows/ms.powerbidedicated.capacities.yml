@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.powerbidedicated.capacities.yml'
-      - 'modules/Microsoft.PowerBIDedicated/capacities/**'
+      - 'modules/power-bi-dedicated/capacities/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.PowerBIDedicated/capacities'
+  modulePath: 'modules/power-bi-dedicated/capacities'
   workflowPath: '.github/workflows/ms.powerbidedicated.capacities.yml'
 
 concurrency:

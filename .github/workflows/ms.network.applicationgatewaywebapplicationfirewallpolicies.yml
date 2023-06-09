@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml'
-      - 'modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/**'
+      - 'modules/network/application-gateway-web-application-firewall-policies/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies'
+  modulePath: 'modules/network/application-gateway-web-application-firewall-policies'
   workflowPath: '.github/workflows/ms.network.applicationgatewaywebapplicationfirewallpolicies.yml'
 
 concurrency:

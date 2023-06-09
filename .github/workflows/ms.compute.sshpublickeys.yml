@@ -1,4 +1,4 @@
-name: 'Compute: SshPublicKeys'
+name: 'Compute - SshPublicKeys'
 
 on:
   workflow_dispatch:
@@ -27,22 +27,16 @@ on:
     branches:
       - main
     paths:
+      - 'modules/compute/ssh-public-keys/**'
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.sshpublickeys.yml'
-      - 'modules/Microsoft.Compute/sshPublicKeys/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
-  variablesPath: 'settings.yml'
-  modulePath: 'modules/Microsoft.Compute/sshPublicKeys'
+  modulePath: 'modules/compute/ssh-public-keys'
   workflowPath: '.github/workflows/ms.compute.sshpublickeys.yml'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  TOKEN_NAMEPREFIX: '${{ secrets.TOKEN_NAMEPREFIX }}'
 
 concurrency:
   group: ${{ github.workflow }}
@@ -72,94 +66,18 @@ jobs:
     outputs:
       workflowInput: ${{ steps.get-workflow-param.outputs.workflowInput }}
       moduleTestFilePaths: ${{ steps.get-module-test-file-paths.outputs.moduleTestFilePaths }}
+      modulePath: '${{ env.modulePath }}'
 
-  #########################
-  #   Static validation   #
-  #########################
-  job_module_static_validation:
-    runs-on: ubuntu-20.04
-    name: 'Static validation'
-    if: (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).staticValidation == 'true'
+  ##############################
+  #   Call reusable workflow   #
+  ##############################
+  call-workflow-passing-data:
+    name: 'Module'
     needs:
       - job_initialize_pipeline
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ env.modulePath }}'
-          moduleTestFilePath: '${{ env.moduleTestFilePath }}'
-
-  #############################
-  #   Deployment validation   #
-  #############################
-  job_module_deploy_validation:
-    runs-on: ubuntu-20.04
-    name: 'Deploying'
-    if: |
-      !cancelled() &&
-      (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).deploymentValidation == 'true' &&
-      needs.job_module_static_validation.result != 'failure'
-    needs:
-      - job_initialize_pipeline
-      - job_module_static_validation
-    strategy:
-      fail-fast: false
-      matrix:
-        moduleTestFilePaths: ${{ fromJson(needs.job_initialize_pipeline.outputs.moduleTestFilePaths) }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Using test file [${{ matrix.moduleTestFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/${{ matrix.moduleTestFilePaths }}'
-          location: '${{ env.location }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ (fromJson(needs.job_initialize_pipeline.outputs.workflowInput)).removeDeployment }}'
-
-  ##################
-  #   Publishing   #
-  ##################
-  job_publish_module:
-    name: 'Publishing'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-    runs-on: ubuntu-20.04
-    needs:
-      - job_module_deploy_validation
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: ./.github/actions/templates/setEnvironmentVariables
-        with:
-          variablesPath: ${{ env.variablesPath }}
-      - name: 'Publishing'
-        uses: ./.github/actions/templates/publishModule
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
-          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
-          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
-          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
-          bicepRegistryName: '${{ env.bicepRegistryName }}'
-          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-          publishLatest: '${{ env.publishLatest }}'
+    uses: ./.github/workflows/template.module.yml
+    with:
+      workflowInput: '${{ needs.job_initialize_pipeline.outputs.workflowInput }}'
+      moduleTestFilePaths: '${{ needs.job_initialize_pipeline.outputs.moduleTestFilePaths }}'
+      modulePath: '${{ needs.job_initialize_pipeline.outputs.modulePath}}'
+    secrets: inherit

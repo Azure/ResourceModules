@@ -1,0 +1,6 @@
+{
+  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+  "name": "SQL Managed Instance Database Backup Long-Term Retention Policy",
+  "summary": "This module deploys a backup long-term retention policies for SQL Managed Instance databases",
+  "owner": "Azure/module-maintainers"
+}
