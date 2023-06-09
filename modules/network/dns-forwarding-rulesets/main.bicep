@@ -52,7 +52,7 @@ resource dnsForwardingRuleset 'Microsoft.Network/dnsForwardingRulesets@2022-07-0
   }
 }
 
-module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, index) in forwardingRules: {
+module forwardingRule 'forwarding-rules/main.bicep' = [for (forwardingRule, index) in forwardingRules: {
   name: '${uniqueString(deployment().name, location)}-forwardingRule-${index}'
   params: {
     dnsForwardingRulesetName: dnsForwardingRuleset.name
@@ -63,7 +63,7 @@ module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, ind
   }
 }]
 
-module dnsForwardingRuleset_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (vnetId, index) in vNetLinks: {
+module dnsForwardingRuleset_virtualNetworkLinks 'virtual-network-links/main.bicep' = [for (vnetId, index) in vNetLinks: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkLink-${index}'
   params: {
     dnsForwardingRulesetName: dnsForwardingRuleset.name
