@@ -48,10 +48,10 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    dnsResolverOutboundEndpointId: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
+    dnsResolverOutboundEndpointIds: [
+      {
+        id: nestedDependencies.outputs.dnsResolverOutboundEndpointsResourceId
+      }
+    ]
   }
 }

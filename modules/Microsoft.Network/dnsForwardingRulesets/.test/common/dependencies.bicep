@@ -7,6 +7,9 @@ param dnsResolverName string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
+@description('Required. The name of the Managed Identity to create.')
+param managedIdentityName string
+
 var addressPrefix = '10.0.0.0/16'
 var pdnsinSnetAddressPrefix = '10.10.100.0/25'
 var pdnsoutSnetAddressPrefix = '10.10.100.128/25'
@@ -75,8 +78,13 @@ resource outboundEndpoints 'Microsoft.Network/dnsResolvers/outboundEndpoints@202
   }
 }
 
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+  name: managedIdentityName
+  location: location
+}
+
 @description('The resource ID of the created Virtual Network.')
-output virtualNetworkId string = virtualNetwork.id
+output virtualNetworkResourceId string = virtualNetwork.id
 
 @description('The resource ID of the created inbound endpoint Virtual Network Subnet.')
 output subnetResourceId_dnsIn string = virtualNetwork.properties.subnets[0].id
@@ -86,3 +94,6 @@ output subnetResourceId_dnsOut string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created DNS Resolver.')
 output dnsResolverOutboundEndpointsId string = outboundEndpoints.id
+
+@description('The principal ID of the created Managed Identity.')
+output managedIdentityPrincipalId string = managedIdentity.properties.principalId

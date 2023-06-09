@@ -195,12 +195,22 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
         ]
       }
     ]
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
     vNetLinks: [
-      '<virtualNetworkId>'
+      '<virtualNetworkResourceId>'
     ]
   }
 }
@@ -244,6 +254,20 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
         }
       ]
     },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
+    },
     "tags": {
       "value": {
         "Environment": "Non-Prod",
@@ -252,7 +276,7 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
     },
     "vNetLinks": {
       "value": [
-        "<virtualNetworkId>"
+        "<virtualNetworkResourceId>"
       ]
     }
   }
@@ -277,10 +301,6 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
     name: '<<namePrefix>>ndfrsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
   }
 }
 ```
@@ -307,12 +327,6 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
-    },
-    "tags": {
-      "value": {
-        "Environment": "Non-Prod",
-        "Role": "DeploymentValidation"
-      }
     }
   }
 }

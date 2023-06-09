@@ -72,7 +72,7 @@ resource outboundEndpoints 'Microsoft.Network/dnsResolvers/outboundEndpoints@202
 }
 
 @description('The resource ID of the created Virtual Network.')
-output virtualNetworkId string = virtualNetwork.id
+output virtualNetworkResourceId string = virtualNetwork.id
 
 @description('The resource ID of the created inbound endpoint Virtual Network Subnet.')
 output subnetResourceId_dnsIn string = virtualNetwork.properties.subnets[0].id
@@ -81,4 +81,4 @@ output subnetResourceId_dnsIn string = virtualNetwork.properties.subnets[0].id
 output subnetResourceId_dnsOut string = virtualNetwork.properties.subnets[1].id
 
 @description('The resource ID of the created DNS Resolver.')
-output dnsResolverOutboundEndpointsId string = outboundEndpoints.id
+output dnsResolverOutboundEndpointsResourceId string = outboundEndpoints.id

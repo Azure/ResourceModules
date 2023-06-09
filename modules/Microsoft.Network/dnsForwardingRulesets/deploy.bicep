@@ -20,7 +20,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Required. The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.')
-param dnsResolverOutboundEndpointId string
+param dnsResolverOutboundEndpointIds array
 
 @description('Optional. Array of forwarding rules.')
 param forwardingRules array = []
@@ -48,11 +48,7 @@ resource dnsForwardingRulesets 'Microsoft.Network/dnsForwardingRulesets@2022-07-
   location: location
   tags: tags
   properties: {
-    dnsResolverOutboundEndpoints: [
-      {
-        id: dnsResolverOutboundEndpointId
-      }
-    ]
+    dnsResolverOutboundEndpoints: dnsResolverOutboundEndpointIds
   }
 }
 

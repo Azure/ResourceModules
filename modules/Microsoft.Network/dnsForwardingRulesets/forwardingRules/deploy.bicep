@@ -8,7 +8,7 @@ param location string = resourceGroup().location
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. Name of the parant DNS Forwarding Ruleset.')
+@description('Conditional. Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment.')
 param dnsForwardingRulesetName string
 
 @description('Required. The domain name for the forwarding rule.')

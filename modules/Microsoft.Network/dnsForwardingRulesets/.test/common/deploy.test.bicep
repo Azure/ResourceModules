@@ -35,6 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     dnsResolverName: 'dep-<<namePrefix>>-ndr-${serviceShort}'
     location: location
+    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
   }
 }
 
@@ -48,9 +49,13 @@ module testDeployment '../../deploy.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    dnsResolverOutboundEndpointId: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
+    dnsResolverOutboundEndpointIds: [
+      {
+        id: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
+      }
+    ]
     vNetLinks: [
-      nestedDependencies.outputs.virtualNetworkId
+      nestedDependencies.outputs.virtualNetworkResourceId
     ]
     forwardingRules: [
       {
@@ -65,6 +70,16 @@ module testDeployment '../../deploy.bicep' = {
         ]
       }
     ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    lock: 'CanNotDelete'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
