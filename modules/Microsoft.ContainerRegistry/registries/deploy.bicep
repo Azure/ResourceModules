@@ -185,6 +185,9 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
+@description('Optional. Array of cache rules. Objects with properties: source (req), target (opt), name (opt). name and target will be derived from source if not defined.')
+param repoCaches array = []
+
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
   enabled: true
@@ -297,6 +300,15 @@ resource registry 'Microsoft.ContainerRegistry/registries@2022-02-01-preview' = 
     zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
   }
 }
+
+resource cacheRules 'Microsoft.ContainerRegistry/registries/cacheRules@2023-01-01-preview' = [for repo in repoCaches: {
+  name: contains(repo, 'name') ? repo.name : replace(replace(repo.source, '/', '-'), '.', '-')
+  parent: registry
+  properties: {
+    sourceRepository: repo.source
+    targetRepository: contains(repo, 'target') ? repo.target : repo.source
+  }
+}]
 
 module registry_replications 'replications/deploy.bicep' = [for (replication, index) in replications: {
   name: '${uniqueString(deployment().name, location)}-Registry-Replication-${index}'
