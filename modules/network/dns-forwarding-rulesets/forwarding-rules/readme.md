@@ -1,7 +1,6 @@
-# Network DnsForwardingRulesets `[Microsoft.Network/dnsForwardingRulesets/forwardingRules]`
+# Dns Forwarding Rulesets Forwarding Rules `[Microsoft.Network/dnsForwardingRulesets/forwardingRules]`
 
-This module deploys Network DnsForwardingRulesets.
-// TODO: Replace Resource and fill in description
+This template deploys Forwarding Rule in a Dns Forwarding Ruleset.
 
 ## Navigation
 
@@ -23,10 +22,15 @@ This module deploys Network DnsForwardingRulesets.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `dnsForwardingRulesetName` | string | Name of the parant DNS Forwarding Ruleset. |
 | `domainName` | string | The domain name for the forwarding rule. |
 | `name` | string | Name of the Forwarding Rule. |
 | `targetDnsServers` | array | DNS servers to forward the DNS query to. |
+
+**Conditional parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `dnsForwardingRulesetName` | string | Name of the parent DNS Forwarding Ruleset. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

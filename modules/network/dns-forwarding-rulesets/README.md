@@ -1,6 +1,6 @@
-# DNS Forwarding Rulesets `[Microsoft.Network/dnsForwardingRulesets]`
+# Dns Forwarding Rulesets `[Microsoft.Network/dnsForwardingRulesets]`
 
-This module deploys a DNS Forwarding Ruleset.
+This template deploys an dns forwarding ruleset.
 
 ## Navigation
 
@@ -26,7 +26,7 @@ This module deploys a DNS Forwarding Ruleset.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `dnsResolverOutboundEndpointId` | string | The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers. |
+| `dnsResolverOutboundEndpointIds` | array | The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers. |
 | `name` | string | Name of the DNS Forwarding Ruleset. |
 
 **Optional parameters**
@@ -34,7 +34,7 @@ This module deploys a DNS Forwarding Ruleset.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
-| `forwardingRules` | _[forwardingRules](forwardingRules/readme.md)_ array | `[]` |  | Array of forwarding rules. |
+| `forwardingRules` | _[forwardingRules](forwarding-rules/README.md)_ array | `[]` |  | Array of forwarding rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
