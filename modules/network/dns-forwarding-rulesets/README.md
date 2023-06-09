@@ -169,11 +169,15 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.bicep' = {
+module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndfrscom'
   params: {
     // Required parameters
-    dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
+    dnsResolverOutboundEndpointIds: [
+      {
+        id: '<id>'
+      }
+    ]
     name: '<<namePrefix>>ndfrscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -224,8 +228,12 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "dnsResolverOutboundEndpointId": {
-      "value": "<dnsResolverOutboundEndpointId>"
+    "dnsResolverOutboundEndpointIds": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
     },
     "name": {
       "value": "<<namePrefix>>ndfrscom001"
@@ -288,11 +296,15 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
 <summary>via Bicep module</summary>
 
 ```bicep
-module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.bicep' = {
+module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndfrsmin'
   params: {
     // Required parameters
-    dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
+    dnsResolverOutboundEndpointIds: [
+      {
+        id: '<id>'
+      }
+    ]
     name: '<<namePrefix>>ndfrsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -313,8 +325,12 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "dnsResolverOutboundEndpointId": {
-      "value": "<dnsResolverOutboundEndpointId>"
+    "dnsResolverOutboundEndpointIds": {
+      "value": [
+        {
+          "id": "<id>"
+        }
+      ]
     },
     "name": {
       "value": "<<namePrefix>>ndfrsmin001"

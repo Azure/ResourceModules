@@ -34,7 +34,7 @@ on:
       - 'modules/network/dns-forwarding-rulesets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
-      - '!*/**/readme.md'
+      - '!*/**/README.md'
 
 env:
   modulePath: 'modules/network/dns-forwarding-rulesets'
