@@ -43,7 +43,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource dnsForwardingRulesets 'Microsoft.Network/dnsForwardingRulesets@2022-07-01' = {
+resource dnsForwardingRuleset 'Microsoft.Network/dnsForwardingRulesets@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -55,7 +55,7 @@ resource dnsForwardingRulesets 'Microsoft.Network/dnsForwardingRulesets@2022-07-
 module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, index) in forwardingRules: {
   name: '${uniqueString(deployment().name, location)}-forwardingRule-${index}'
   params: {
-    dnsForwardingRulesetName: dnsForwardingRulesets.name
+    dnsForwardingRulesetName: dnsForwardingRuleset.name
     name: forwardingRule.name
     forwardingRuleState: forwardingRule.forwardingRuleState
     domainName: forwardingRule.domainName
@@ -66,18 +66,18 @@ module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, ind
 module virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (vnetId, index) in vNetLinks: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkLink-${index}'
   params: {
-    dnsForwardingRulesetName: dnsForwardingRulesets.name
+    dnsForwardingRulesetName: dnsForwardingRuleset.name
     virtualNetworkResourceId: !empty(vNetLinks) ? vnetId : null
   }
 }]
 
 resource dnsForwardingRulesets_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
-  name: '${dnsForwardingRulesets.name}-${lock}-lock'
+  name: '${dnsForwardingRuleset.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: dnsForwardingRulesets
+  scope: dnsForwardingRuleset
 }
 
 module dnsForwardingRulesets_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -89,7 +89,7 @@ module dnsForwardingRulesets_roleAssignments '.bicep/nested_roleAssignments.bice
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     condition: contains(roleAssignment, 'condition') ? roleAssignment.condition : ''
     delegatedManagedIdentityResourceId: contains(roleAssignment, 'delegatedManagedIdentityResourceId') ? roleAssignment.delegatedManagedIdentityResourceId : ''
-    resourceId: dnsForwardingRulesets.id
+    resourceId: dnsForwardingRuleset.id
   }
 }]
 
@@ -97,10 +97,10 @@ module dnsForwardingRulesets_roleAssignments '.bicep/nested_roleAssignments.bice
 output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the DNS Forwarding Ruleset.')
-output resourceId string = dnsForwardingRulesets.id
+output resourceId string = dnsForwardingRuleset.id
 
 @description('The name of the DNS Forwarding Ruleset.')
-output name string = dnsForwardingRulesets.name
+output name string = dnsForwardingRuleset.name
 
 @description('The location the resource was deployed into.')
-output location string = dnsForwardingRulesets.location
+output location string = dnsForwardingRuleset.location
