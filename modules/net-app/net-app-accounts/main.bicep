@@ -68,7 +68,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-05-01' = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-09-01' = {
   name: name
   tags: tags
   location: location

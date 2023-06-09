@@ -16,9 +16,9 @@ This template deploys Azure NetApp Files.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.NetApp/netAppAccounts` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts/capacityPools) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts/capacityPools/volumes) |
+| `Microsoft.NetApp/netAppAccounts` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools/volumes) |
 
 ## Parameters
 
@@ -35,7 +35,7 @@ This template deploys Azure NetApp Files.
 | `capacityPools` | _[capacityPools](capacity-pools/README.md)_ array | `[]` |  | Capacity pools to create. |
 | `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
 | `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
-| `domainJoinPassword` | securestring | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
+| `domainJoinPassword` | secureString | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
 | `domainJoinUser` | string | `''` |  | Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. |
 | `domainName` | string | `''` |  | Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com'). |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
