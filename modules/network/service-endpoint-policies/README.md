@@ -1,7 +1,6 @@
 # Network ServiceEndpointPolicies `[Microsoft.Network/serviceEndpointPolicies]`
 
 This module deploys Network ServiceEndpointPolicies.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
