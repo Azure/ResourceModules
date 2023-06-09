@@ -1,7 +1,6 @@
-# Network DnsForwardingRulesets VirtualNetworkLinks `[Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks]`
+# DNS Forwarding Ruleset Virtual Network Links `[Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks]`
 
-This module deploys Network DnsForwardingRulesets VirtualNetworkLinks.
-// TODO: Replace Resource and fill in description
+This module deploys a DNS Forwarding Ruleset Virtual Network Link.
 
 ## Navigation
 
