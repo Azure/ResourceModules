@@ -26,6 +26,7 @@ on:
   push:
     branches:
       - main
+      - users/jpeasier/dnsForwardingRulesets
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
