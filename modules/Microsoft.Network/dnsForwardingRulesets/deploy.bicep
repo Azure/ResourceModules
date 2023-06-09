@@ -63,7 +63,7 @@ module forwardingRule 'forwardingRules/deploy.bicep' = [for (forwardingRule, ind
   }
 }]
 
-module virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (vnetId, index) in vNetLinks: {
+module dnsForwardingRuleset_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (vnetId, index) in vNetLinks: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkLink-${index}'
   params: {
     dnsForwardingRulesetName: dnsForwardingRulesets.name
