@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.dnsforwardingrulesets.yml'
-      - 'modules/Microsoft.Network/dnsForwardingRulesets/**'
+      - 'modules/network/dns-forwarding-rulesets/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/readme.md'
 
 env:
-  modulePath: 'modules/Microsoft.Network/dnsForwardingRulesets'
+  modulePath: 'modules/network/dns-forwarding-rulesets'
   workflowPath: '.github/workflows/ms.network.dnsforwardingrulesets.yml'
 
 concurrency:
