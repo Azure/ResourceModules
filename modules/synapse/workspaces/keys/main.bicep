@@ -14,7 +14,7 @@ param isActiveCMK bool
 param keyVaultResourceId string = ''
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 resource cMKKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2022-07-01' existing = if (!empty(keyVaultResourceId)) {
   name: '${last(split(keyVaultResourceId, '/'))}/${name}'
