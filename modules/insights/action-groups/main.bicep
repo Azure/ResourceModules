@@ -61,7 +61,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource actionGroup 'Microsoft.Insights/actionGroups@2019-06-01' = {
+resource actionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
   name: name
   location: location
   tags: tags
