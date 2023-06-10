@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Azure Virtual Network Managers (AVNM)",
+    "name": "Network Managers",
     "summary": "This module deploys an Azure Virtual Network Manager (AVNM).",
     "owner": "Azure/module-maintainers"
 }
