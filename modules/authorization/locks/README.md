@@ -1,6 +1,6 @@
-# Authorization Locks `[Microsoft.Authorization/locks]`
+# Authorization Locks (All scopes) `[Microsoft.Authorization/locks]`
 
-This module deploys an Authorization Lock.
+This module deploys an Authorization Lock at a Subscription or Resource Group scope..
 
 ## Navigation
 

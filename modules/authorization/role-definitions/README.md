@@ -1,6 +1,6 @@
 # Role Definitions (All scopes) `[Microsoft.Authorization/roleDefinitions]`
 
-This module deploys a Role Definition at a Management Group, Subscription and Resource Group scope.
+This module deploys a Role Definition at a Management Group, Subscription or Resource Group scope.
 
 ## Navigation
 

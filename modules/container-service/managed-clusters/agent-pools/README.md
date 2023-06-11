@@ -1,4 +1,4 @@
-# Azure Kubernetes Service (AKS) Managed Cluster Agent Pool `[Microsoft.ContainerService/managedClusters/agentPools]`
+# Azure Kubernetes Service (AKS) Managed Cluster Agent Pools `[Microsoft.ContainerService/managedClusters/agentPools]`
 
 This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.
 

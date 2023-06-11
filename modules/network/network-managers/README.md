@@ -1,6 +1,6 @@
-# Azure Virtual Network Managers (AVNM) `[Microsoft.Network/networkManagers]`
+# Network Managers `[Microsoft.Network/networkManagers]`
 
-This module deploys an Azure Virtual Network Manager (AVNM).
+This module deploys a Network Manager.
 
 ## Navigation
 

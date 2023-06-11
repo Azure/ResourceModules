@@ -1,6 +1,6 @@
-# AVNM Security Admin Configuration Rule Collections `[Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections]`
+# Network Manager Security Admin Configuration Rule Collections `[Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections]`
 
-This module deploys an Azure Virtual Network Manager (AVNM) Security Admin Configuration Rule Collection.
+This module deploys an Network Manager Security Admin Configuration Rule Collection.
 A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules. Security admin rules allows enforcing security policy criteria that matches the conditions set. Warning: A rule collection without rule will cause a deployment configuration for security admin goal state in network manager to fail.
 
 ## Navigation

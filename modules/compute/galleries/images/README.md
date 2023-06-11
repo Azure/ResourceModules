@@ -1,6 +1,6 @@
 # Compute Galleries Image Definitions `[Microsoft.Compute/galleries/images]`
 
-This module deploys an Image Definition in a Azure Compute Gallery.
+This module deploys an Azure Compute Gallery Image Definition.
 
 ## Navigation
 

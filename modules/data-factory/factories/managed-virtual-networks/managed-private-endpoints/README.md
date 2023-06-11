@@ -1,6 +1,6 @@
 # Data Factory Managed Virtual Network Managed PrivateEndpoints `[Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints]`
 
-This module deploys a Data Factory Managed Private Endpoint in a Managed Virtual Network.
+This module deploys a Data Factory Managed Virtual Network Managed Private Endpoint.
 
 ## Navigation
 

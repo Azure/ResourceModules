@@ -1,6 +1,6 @@
 # App ManagedEnvironments `[Microsoft.App/managedEnvironments]`
 
-This module deploys an App Managed Environments (also known as a Container App Environment).
+This module deploys an App Managed Environment (also known as a Container App Environment).
 
 ## Navigation
 

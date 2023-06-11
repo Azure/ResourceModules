@@ -1,6 +1,6 @@
 # Policy Exemptions (All scopes) `[Microsoft.Authorization/policyExemptions]`
 
-This module deploys a Policy Exemption at a Management Group, Subscription and Resource Group scope.
+This module deploys a Policy Exemption at a Management Group, Subscription or Resource Group scope.
 
 ## Navigation
 

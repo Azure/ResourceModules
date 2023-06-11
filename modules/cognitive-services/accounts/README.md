@@ -1,6 +1,6 @@
 # Cognitive Services `[Microsoft.CognitiveServices/accounts]`
 
-This module deploys a Cognitive Services.
+This module deploys a Cognitive Service.
 
 ## Navigation
 

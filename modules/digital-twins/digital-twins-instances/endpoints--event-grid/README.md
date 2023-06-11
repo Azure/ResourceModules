@@ -1,6 +1,6 @@
-# DigitalTwin Instance Event Grid Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints]`
+# Digital Twins Instance Event Grid Endpoints `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints]`
 
-This module deploys a Digital Twin Instance Event Grid Endpoint.
+This module deploys a Digital Twins Instance Event Grid Endpoint.
 
 ## Navigation
 
