@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Health Care API Workspace IoT Connector FHIR Destinations",
-    "summary": "This module deploys a Health Care API Workspace IoT Connector FHIR Destination.",
+    "name": "Healthcare API Workspace IoT Connector FHIR Destinations",
+    "summary": "This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.",
     "owner": "Azure/module-maintainers"
 }

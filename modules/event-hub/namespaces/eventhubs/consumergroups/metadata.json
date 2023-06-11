@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "EventHub Namespace EventHub Consumer Groups",
-    "summary": "This module deploys an EventHub Namespace EventHub Consumer Group.",
+    "name": "Event Hub Namespace Event Hub Consumer Groups",
+    "summary": "This module deploys an Event Hub Namespace Event Hub Consumer Group.",
     "owner": "Azure/module-maintainers"
 }
