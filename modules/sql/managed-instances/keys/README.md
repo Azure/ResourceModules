@@ -1,6 +1,6 @@
 # SQL Managed Instance Keys `[Microsoft.Sql/managedInstances/keys]`
 
-This module deploys an SQL Managed Instance Key.
+This module deploys a SQL Managed Instance Key.
 
 ## Navigation
 

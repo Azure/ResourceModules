@@ -1,6 +1,6 @@
 # SQL Managed Instance Encryption Protector `[Microsoft.Sql/managedInstances/encryptionProtector]`
 
-This module deploys an SQL Managed Instance Encryption Protector.
+This module deploys a SQL Managed Instance Encryption Protector.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # Machine Learning Services Workspaces Computes `[Microsoft.MachineLearningServices/workspaces/computes]`
 
-This module deploys a Compute for a Machine Learning Workspace.
+This module deploys a Machine Learning Services Workspaces Compute.
 
 Attaching a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML (see parameter `deployCompute`).
 

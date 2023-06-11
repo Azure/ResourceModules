@@ -1,6 +1,6 @@
-# App Service Environments (ASE) `[Microsoft.Web/hostingEnvironments]`
+# App Service Environments `[Microsoft.Web/hostingEnvironments]`
 
-This module deploys an App Service Environment (ASE).
+This module deploys an App Service Environment.
 
 ## Navigation
 

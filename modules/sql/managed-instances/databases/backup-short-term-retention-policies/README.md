@@ -1,6 +1,6 @@
 # SQL Managed Instance Database Backup Short-Term Retention Policies `[Microsoft.Sql/managedInstances/databases/backupShortTermRetentionPolicies]`
 
-This module deploys an SQL Managed Instance Database Backup Short-Term Retention Policy.
+This module deploys a SQL Managed Instance Database Backup Short-Term Retention Policy.
 
 ## Navigation
 

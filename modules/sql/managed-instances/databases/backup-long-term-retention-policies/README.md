@@ -1,6 +1,6 @@
 # SQL Managed Instance Database Backup Long-Term Retention Policies `[Microsoft.Sql/managedInstances/databases/backupLongTermRetentionPolicies]`
 
-This module deploys an SQL Managed Instance Database Backup Long-Term Retention Policy.
+This module deploys a SQL Managed Instance Database Backup Long-Term Retention Policy.
 
 ## Navigation
 

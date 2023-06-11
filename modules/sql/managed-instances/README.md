@@ -1,6 +1,6 @@
 # SQL Managed Instances `[Microsoft.Sql/managedInstances]`
 
-This module deploys an SQL Managed Instance.
+This module deploys a SQL Managed Instance.
 
 ## Navigation
 

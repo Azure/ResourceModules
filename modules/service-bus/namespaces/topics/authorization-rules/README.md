@@ -1,4 +1,4 @@
-# ServiceBus Namespace Topic Authorization Rules `[Microsoft.ServiceBus/namespaces/topics/authorizationRules]`
+# Service Bus Namespace Topic Authorization Rules `[Microsoft.ServiceBus/namespaces/topics/authorizationRules]`
 
 This module deploys a Service Bus Namespace Topic Authorization Rule.
 
