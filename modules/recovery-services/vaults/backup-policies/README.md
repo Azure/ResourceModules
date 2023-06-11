@@ -1,6 +1,6 @@
 # Recovery Services Vault Backup Policies `[Microsoft.RecoveryServices/vaults/backupPolicies]`
 
-This module deploys a Recovery Services Vault (RSV) Backup Policy.
+This module deploys a Recovery Services Vault Backup Policy.
 
 ## Navigation
 

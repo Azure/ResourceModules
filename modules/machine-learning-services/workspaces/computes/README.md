@@ -1,4 +1,4 @@
-# Machine Learning Workspaces Computes `[Microsoft.MachineLearningServices/workspaces/computes]`
+# Machine Learning Services Workspaces Computes `[Microsoft.MachineLearningServices/workspaces/computes]`
 
 This module deploys a Compute for a Machine Learning Workspace.
 

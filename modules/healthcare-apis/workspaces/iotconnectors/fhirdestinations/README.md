@@ -1,6 +1,6 @@
-# Health Care API Workspace IoT Connector FHIR Destinations `[Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations]`
+# Healthcare API Workspace IoT Connector FHIR Destinations `[Microsoft.HealthcareApis/workspaces/iotconnectors/fhirdestinations]`
 
-This module deploys a Health Care API Workspace IoT Connector FHIR Destination.
+This module deploys a Healthcare API Workspace IoT Connector FHIR Destination.
 
 ## Navigation
 

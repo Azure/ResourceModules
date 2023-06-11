@@ -1,6 +1,6 @@
-# Azure NetApp File Capacity Pools `[Microsoft.NetApp/netAppAccounts/capacityPools]`
+# Azure NetApp Files Capacity Pools `[Microsoft.NetApp/netAppAccounts/capacityPools]`
 
-This module deploys an Azure NetApp File Capacity Pool.
+This module deploys an Azure NetApp Files Capacity Pool.
 
 ## Navigation
 

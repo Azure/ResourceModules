@@ -1,6 +1,6 @@
-# DigitalTwin Instance ServiceBus Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints]`
+# Digital Twins Instance ServiceBus Endpoint `[Microsoft.DigitalTwins/digitalTwinsInstances/endpoints]`
 
-This module deploys a Digital Twin Instance ServiceBus Endpoint.
+This module deploys a Digital Twins Instance ServiceBus Endpoint.
 
 ## Navigation
 

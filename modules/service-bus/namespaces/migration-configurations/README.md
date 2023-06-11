@@ -1,4 +1,4 @@
-# ServiceBus Namespace Migration Configuration `[Microsoft.ServiceBus/namespaces/migrationConfigurations]`
+# Service Bus Namespace Migration Configuration `[Microsoft.ServiceBus/namespaces/migrationConfigurations]`
 
 This module deploys a Service Bus Namespace Migration Configuration.
 

@@ -1,6 +1,6 @@
 # Recovery Services Vault Backup Config `[Microsoft.RecoveryServices/vaults/backupconfig]`
 
-This module deploys a Recovery Services Vault (RSV) Backup Config.
+This module deploys a Recovery Services Vault Backup Config.
 
 ## Navigation
 

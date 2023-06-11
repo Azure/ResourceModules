@@ -1,6 +1,6 @@
-# Recovery Services Vaults (RSV) `[Microsoft.RecoveryServices/vaults]`
+# Recovery Services Vaults `[Microsoft.RecoveryServices/vaults]`
 
-This module deploys a Recovery Services Vault (RSV).
+This module deploys a Recovery Services Vault.
 
 ## Navigation
 

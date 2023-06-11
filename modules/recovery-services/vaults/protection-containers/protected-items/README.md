@@ -1,6 +1,6 @@
 # Recovery Service Vaults Protection Container Protected Item `[Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems]`
 
-This module deploys a Recovery Services Vault (RSV) Protection Container Protected Item.
+This module deploys a Recovery Services Vault Protection Container Protected Item.
 
 ## Navigation
 

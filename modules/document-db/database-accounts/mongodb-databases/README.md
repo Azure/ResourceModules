@@ -1,6 +1,6 @@
 # DocumentDB Database Account MongoDB Databases `[Microsoft.DocumentDB/databaseAccounts/mongodbDatabases]`
 
-This module deploys a MongoDB within a CosmosDB Account.
+This module deploys a MongoDB Database within a CosmosDB Account.
 
 ## Navigation
 

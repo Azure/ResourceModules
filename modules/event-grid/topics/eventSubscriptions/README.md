@@ -1,6 +1,6 @@
 # EventGrid Topic Event Subscriptions `[Microsoft.EventGrid/topics/eventSubscriptions]`
 
-This module deploys an Event Subscription for an Event Grid Topic.
+This module deploys an Event Grid Topic Event Subscription.
 
 ## Navigation
 

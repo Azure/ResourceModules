@@ -1,6 +1,6 @@
 # Recovery Services Vault Protection Container `[Microsoft.RecoveryServices/vaults/protectionContainers]`
 
-This module deploys a Recovery Services Vault (RSV) Protection Container.
+This module deploys a Recovery Services Vault Protection Container.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # DocumentDB Database Account SQL Database Containers `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers]`
 
-This module deploys an SQL Database Container in a CosmosDB Account.
+This module deploys a SQL Database Container in a CosmosDB Account.
 
 ## Navigation
 

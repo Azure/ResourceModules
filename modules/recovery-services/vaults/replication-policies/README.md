@@ -1,6 +1,6 @@
 # Recovery Services Vault Replication Policies `[Microsoft.RecoveryServices/vaults/replicationPolicies]`
 
-This module deploys a Recovery Services Vault (RSV) Replication Policy for Disaster Recovery scenario.
+This module deploys a Recovery Services Vault Replication Policy for Disaster Recovery scenario.
 
 > **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.
 

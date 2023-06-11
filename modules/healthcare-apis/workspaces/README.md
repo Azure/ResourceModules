@@ -1,6 +1,6 @@
-# HealthcareApis Workspaces `[Microsoft.HealthcareApis/workspaces]`
+# Healthcare API Workspaces `[Microsoft.HealthcareApis/workspaces]`
 
-This module deploys a Healthcare Data Service Workspace.
+This module deploys a Healthcare API Workspace.
 
 ## Navigation
 
