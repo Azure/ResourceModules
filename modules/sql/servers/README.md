@@ -853,6 +853,7 @@ module servers './sql/servers/main.bicep' = {
         sourceDatabaseResourceId: '<sourceDatabaseResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -895,6 +896,9 @@ module servers './sql/servers/main.bicep' = {
           "sourceDatabaseResourceId": "<sourceDatabaseResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "tags": {
       "value": {
