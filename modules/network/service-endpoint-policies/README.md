@@ -1,6 +1,6 @@
-# Network ServiceEndpointPolicies `[Microsoft.Network/serviceEndpointPolicies]`
+# Service Endpoint Policies `[Microsoft.Network/serviceEndpointPolicies]`
 
-This module deploys Network ServiceEndpointPolicies.
+This module deploys a Service Endpoint Policy.
 
 ## Navigation
 
@@ -176,6 +176,55 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<h3>Example 2: Min</h3>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-test-nsnpmin'
+  params: {
+    // Required parameters
+    name: '<<namePrefix>>nsnpmin001'
+    // Non-required parameters
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    serviceEndpointPolicyDefinitions: []
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "name": {
+      "value": "<<namePrefix>>nsnpmin001"
+    },
+    // Non-required parameters
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
+    },
+    "serviceEndpointPolicyDefinitions": {
+      "value": []
     }
   }
 }
