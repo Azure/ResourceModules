@@ -35,7 +35,7 @@ This module deploys a Synapse Workspaces Key.
 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `False` | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `keyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `location` | string | `[resourceGroup().location]` | The geo-location where the resource lives. |
 
