@@ -3,6 +3,7 @@ param name string
 
 @description('Optional. Tier of an Azure Firewall.')
 @allowed([
+  'Basic'
   'Standard'
   'Premium'
 ])
@@ -22,6 +23,12 @@ param isCreateDefaultPublicIP bool = true
 
 @description('Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
 param publicIPAddressObject object = {}
+
+@description('Optional. The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet.')
+param managementIPResourceID string = ''
+
+@description('Optional. Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it\'s not provided and managementIPAddressId is empty, a \'-mip\' suffix will be appended to the Firewall\'s name.')
+param managementIPAddressObject object = {}
 
 @description('Optional. Collection of application rule collections used by Azure Firewall.')
 param applicationRuleCollections array = []
@@ -115,6 +122,16 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
+var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
+var requiresManagementIp = azureSkuTier == 'Basic' ? true : false
+var isCreateDefaultManagementIP = empty(managementIPResourceID) && requiresManagementIp == true
+
+// ----------------------------------------------------------------------------
+// Prep ipConfigurations object AzureFirewallSubnet for different uses cases:
+// 1. Use existing Public IP
+// 2. Use new Public IP created in this module
+// 3. Do not use a Public IP if isCreateDefaultPublicIP is false
+
 var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPublicIpConfigurations: {
   name: ipConfiguration.name
   properties: {
@@ -123,13 +140,6 @@ var additionalPublicIpConfigurationsVar = [for ipConfiguration in additionalPubl
     } : null
   }
 }]
-
-// ----------------------------------------------------------------------------
-// Prep ipConfigurations object AzureFirewallSubnet for different uses cases:
-// 1. Use existing Public IP
-// 2. Use new Public IP created in this module
-// 3. Do not use a Public IP if isCreateDefaultPublicIP is false
-
 var subnetVar = {
   subnet: {
     id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
@@ -145,9 +155,6 @@ var newPip = {
     id: publicIPAddress.outputs.resourceId
   } : null
 }
-
-var azureSkuName = empty(vNetId) ? 'AZFW_Hub' : 'AZFW_VNet'
-
 var ipConfigurations = concat([
     {
       name: !empty(publicIPResourceID) ? last(split(publicIPResourceID, '/')) : publicIPAddress.outputs.name
@@ -155,6 +162,34 @@ var ipConfigurations = concat([
       properties: union(subnetVar, !empty(publicIPResourceID) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
     }
   ], additionalPublicIpConfigurationsVar)
+
+// ----------------------------------------------------------------------------
+
+// Prep managementIPConfiguration object for different uses cases:
+// 1. Use existing Management Public IP
+// 2. Use new Management Public IP created in this module
+// 3. Do not use a Management Public IP if isCreateDefaultManagementIP is false
+
+var managementSubnetVar = {
+  subnet: {
+    id: '${vNetId}/subnets/AzureFirewallManagementSubnet' // The subnet name must be AzureFirewallManagementSubnet for a 'Basic' SKU tier firewall
+  }
+}
+var existingMip = {
+  publicIPAddress: {
+    id: managementIPResourceID
+  }
+}
+var newMip = {
+  publicIPAddress: (empty(managementIPResourceID) && isCreateDefaultManagementIP) ? {
+    id: managementIPAddress.outputs.resourceId
+  } : null
+}
+var managementIPConfiguration = {
+  name: !empty(managementIPResourceID) ? last(split(managementIPResourceID, '/')) : managementIPAddress.outputs.name
+  //Use existing Management Public IP, new Management Public IP created in this module, or none if isCreateDefaultManagementIP is false
+  properties: union(managementSubnetVar, !empty(managementIPResourceID) ? existingMip : {}, (isCreateDefaultManagementIP ? newMip : {}))
+}
 
 // ----------------------------------------------------------------------------
 
@@ -233,6 +268,37 @@ module publicIPAddress '../../network/public-ip-addresses/main.bicep' = if (empt
   }
 }
 
+// create a Management Public IP address if one is not provided and the flag is true
+module managementIPAddress '../../network/public-ip-addresses/main.bicep' = if (empty(managementIPResourceID) && isCreateDefaultManagementIP && azureSkuName == 'AZFW_VNet') {
+  name: '${uniqueString(deployment().name, location)}-Firewall-MIP'
+  params: {
+    name: contains(managementIPAddressObject, 'name') ? (!(empty(managementIPAddressObject.name)) ? managementIPAddressObject.name : '${name}-mip') : '${name}-mip'
+    publicIPPrefixResourceId: contains(managementIPAddressObject, 'managementIPPrefixResourceId') ? (!(empty(managementIPAddressObject.publicIPPrefixResourceId)) ? managementIPAddressObject.publicIPPrefixResourceId : '') : ''
+    publicIPAllocationMethod: contains(managementIPAddressObject, 'managementIPAllocationMethod') ? (!(empty(managementIPAddressObject.publicIPAllocationMethod)) ? managementIPAddressObject.publicIPAllocationMethod : 'Static') : 'Static'
+    skuName: contains(managementIPAddressObject, 'skuName') ? (!(empty(managementIPAddressObject.skuName)) ? managementIPAddressObject.skuName : 'Standard') : 'Standard'
+    skuTier: contains(managementIPAddressObject, 'skuTier') ? (!(empty(managementIPAddressObject.skuTier)) ? managementIPAddressObject.skuTier : 'Regional') : 'Regional'
+    roleAssignments: contains(managementIPAddressObject, 'roleAssignments') ? (!empty(managementIPAddressObject.roleAssignments) ? managementIPAddressObject.roleAssignments : []) : []
+    diagnosticMetricsToEnable: contains(managementIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(managementIPAddressObject.diagnosticMetricsToEnable)) ? managementIPAddressObject.diagnosticMetricsToEnable : [
+      'AllMetrics'
+    ]) : [
+      'AllMetrics'
+    ]
+    diagnosticLogCategoriesToEnable: contains(managementIPAddressObject, 'diagnosticLogCategoriesToEnable') ? managementIPAddressObject.diagnosticLogCategoriesToEnable : [
+      'allLogs'
+    ]
+    location: location
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
+    lock: lock
+    tags: tags
+    zones: zones
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
   name: name
   location: location
@@ -244,6 +310,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
       id: firewallPolicyId
     } : null
     ipConfigurations: ipConfigurations
+    managementIpConfiguration: requiresManagementIp == true ? managementIPConfiguration : null
     sku: {
       name: azureSkuName
       tier: azureSkuTier
@@ -266,6 +333,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2022-07-01' = {
   }
   dependsOn: [
     publicIPAddress
+    managementIPAddress
   ]
 }
 
