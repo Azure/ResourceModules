@@ -21,13 +21,13 @@ param additionalPublicIpConfigurations array = []
 @description('Optional. Specifies if a Public IP should be created by default if one is not provided.')
 param isCreateDefaultPublicIP bool = true
 
-@description('Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
+@description('Optional. Specifies the properties of the Public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPResourceID is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
 param publicIPAddressObject object = {}
 
 @description('Optional. The Management Public IP resource ID to associate to the AzureFirewallManagementSubnet. If empty, then the Management Public IP that is created as part of this module will be applied to the AzureFirewallManagementSubnet.')
 param managementIPResourceID string = ''
 
-@description('Optional. Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it\'s not provided and managementIPAddressId is empty, a \'-mip\' suffix will be appended to the Firewall\'s name.')
+@description('Optional. Specifies the properties of the Management Public IP to create and be used by Azure Firewall. If it\'s not provided and managementIPResourceID is empty, a \'-mip\' suffix will be appended to the Firewall\'s name.')
 param managementIPAddressObject object = {}
 
 @description('Optional. Collection of application rule collections used by Azure Firewall.')
@@ -168,7 +168,6 @@ var ipConfigurations = concat([
 // Prep managementIPConfiguration object for different uses cases:
 // 1. Use existing Management Public IP
 // 2. Use new Management Public IP created in this module
-// 3. Do not use a Management Public IP if isCreateDefaultManagementIP is false
 
 var managementSubnetVar = {
   subnet: {
