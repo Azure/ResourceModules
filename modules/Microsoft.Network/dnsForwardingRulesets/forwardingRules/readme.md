@@ -1,7 +1,6 @@
-# Network DnsForwardingRulesets `[Microsoft.Network/dnsForwardingRulesets/forwardingRules]`
+# DNS Forwarding Ruleset Rules `[Microsoft.Network/dnsForwardingRulesets/forwardingRules]`
 
-This module deploys Network DnsForwardingRulesets.
-// TODO: Replace Resource and fill in description
+This module deploys a DNS Forwarding Ruleset Rule.
 
 ## Navigation
 
