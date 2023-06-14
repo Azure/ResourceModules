@@ -15,8 +15,10 @@ param apiRevisionDescription string = ''
 
 @description('Optional. Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
 @allowed([
+  'graphql'
   'http'
   'soap'
+  'websocket'
 ])
 param apiType string = 'http'
 
@@ -83,8 +85,10 @@ param subscriptionRequired bool = false
 
 @description('Optional. Type of API.')
 @allowed([
+  'graphql'
   'http'
   'soap'
+  'websocket'
 ])
 param type string = 'http'
 
