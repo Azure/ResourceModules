@@ -71,7 +71,7 @@ module dnsForwardingRuleset_virtualNetworkLinks 'virtualNetworkLinks/deploy.bice
   }
 }]
 
-resource dnsForwardingRulesets_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
+resource dnsForwardingRuleset_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {
   name: '${dnsForwardingRuleset.name}-${lock}-lock'
   properties: {
     level: any(lock)
