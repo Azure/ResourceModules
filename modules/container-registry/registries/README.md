@@ -69,7 +69,6 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `publicNetworkAccess` | string | `''` | `['', Disabled, Enabled]` | Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set and networkRuleSetIpRules are not set.  Note, requires the 'acrSku' to be 'Premium'. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
 | `replications` | _[replications](replications/README.md)_ array | `[]` |  | All replications to create. |
-| `repoCaches` | array | `[]` |  | Array of cache rules. Objects with properties: source (req), target (opt), name (opt). name and target will be derived from source if not defined. |
 | `retentionPolicyDays` | int | `15` |  | The number of days to retain an untagged manifest after which it gets purged. |
 | `retentionPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the retention policy is enabled or not. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -81,6 +80,12 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `webhooks` | _[webhooks](webhooks/README.md)_ array | `[]` |  | All webhooks to create. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
+
+**Optional Array of cache rules parameters**
+
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `repoCaches` | array | Objects with properties: source (req), target (opt), name (opt). name and target will be derived from source if not defined. |
 
 
 ### Parameter Usage: `roleAssignments`
