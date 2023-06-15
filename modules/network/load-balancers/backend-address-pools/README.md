@@ -1,6 +1,6 @@
-# Load Balancers Backend Address Pools `[Microsoft.Network/loadBalancers/backendAddressPools]`
+# Load Balancer Backend Address Pools `[Microsoft.Network/loadBalancers/backendAddressPools]`
 
-This module deploys load balancer backend address pools.
+This module deploys a Load Balancer Backend Address Pools.
 
 ## Navigation
 

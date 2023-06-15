@@ -1,6 +1,6 @@
-# EventHub Namespace Disaster Recovery Config `[Microsoft.EventHub/namespaces/disasterRecoveryConfigs]`
+# Event Hub Namespace Disaster Recovery Configs `[Microsoft.EventHub/namespaces/disasterRecoveryConfigs]`
 
-This module deploys an EventHub Namespace Disaster Recovery Config
+This module deploys an Event Hub Namespace Disaster Recovery Config.
 
 ## Navigation
 

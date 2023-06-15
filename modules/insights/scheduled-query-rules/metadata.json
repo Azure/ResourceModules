@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Scheduled Query Rules",
-  "summary": "This module deploys a scheduled query rule.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Scheduled Query Rules",
+    "summary": "This module deploys a Scheduled Query Rule.",
+    "owner": "Azure/module-maintainers"
 }

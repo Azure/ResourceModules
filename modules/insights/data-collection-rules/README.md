@@ -1,6 +1,6 @@
-# DataCollectionRules `[Microsoft.Insights/dataCollectionRules]`
+# Data Collection Rules `[Microsoft.Insights/dataCollectionRules]`
 
-This module deploys DataCollection Rules.
+This module deploys a Data Collection Rule.
 
 ## Navigation
 

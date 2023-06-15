@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Azure NetApp Files",
-  "summary": "This template deploys Azure NetApp Files.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Azure NetApp Files",
+    "summary": "This module deploys an Azure NetApp File.",
+    "owner": "Azure/module-maintainers"
 }

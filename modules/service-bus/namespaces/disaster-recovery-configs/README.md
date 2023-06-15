@@ -1,6 +1,6 @@
-# Service Bus Namespace Disaster Recovery Config `[Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs]`
+# Service Bus Namespace Disaster Recovery Configs `[Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs]`
 
-This module deploys a disaster recovery config for a service bus Namespace
+This module deploys a Service Bus Namespace Disaster Recovery Config
 
 ## Navigation
 

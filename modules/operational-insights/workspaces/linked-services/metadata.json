@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Operationalinsights Workspaces Linked Services",
-  "summary": "This template deploys a linked service for a Log Analytics workspace.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Log Analytics Workspace Linked Services",
+    "summary": "This module deploys a Log Analytics Workspace Linked Service.",
+    "owner": "Azure/module-maintainers"
 }

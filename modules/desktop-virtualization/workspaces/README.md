@@ -1,6 +1,6 @@
-# AVD Workspaces `[Microsoft.DesktopVirtualization/workspaces]`
+# Azure Virtual Desktop (AVD) Workspaces `[Microsoft.DesktopVirtualization/workspaces]`
 
-This module deploys an Azure virtual desktop workspace.
+This module deploys an Azure Virtual Desktop (AVD) Workspace.
 
 ## Navigation
 

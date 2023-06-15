@@ -1,6 +1,6 @@
-# DocumentDB DatabaseAccounts GremlinDatabases `[Microsoft.DocumentDB/databaseAccounts/gremlinDatabases]`
+# DocumentDB Database Account Gremlin Databases `[Microsoft.DocumentDB/databaseAccounts/gremlinDatabases]`
 
-This module deploys a GremlinDB within a CosmosDB account.
+This module deploys a Gremlin Database within a CosmosDB Account.
 
 ## Navigation
 

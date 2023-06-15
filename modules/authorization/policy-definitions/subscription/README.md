@@ -1,6 +1,6 @@
-# Policy Definitions on Subscription level `[Microsoft.Authorization/policyDefinitions/subscription]`
+# Policy Definitions (Subscription scope) `[Microsoft.Authorization/policyDefinitions/subscription]`
 
-With this module you can create policy definitions on a subscription level.
+This module deploys a Policy Definition at a Subscription scope.
 
 ## Navigation
 

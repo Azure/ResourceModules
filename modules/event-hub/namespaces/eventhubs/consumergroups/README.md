@@ -1,6 +1,6 @@
-# EventHub Namespace EventHubs Consumer Group `[Microsoft.EventHub/namespaces/eventhubs/consumergroups]`
+# Event Hub Namespace Event Hub Consumer Groups `[Microsoft.EventHub/namespaces/eventhubs/consumergroups]`
 
-This module deploys an EventHub Namespace EventHubs Consumer Group
+This module deploys an Event Hub Namespace Event Hub Consumer Group.
 
 ## Navigation
 

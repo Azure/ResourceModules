@@ -1,6 +1,6 @@
-# SQL Server Database Long Term Backup Retention Policy `[Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies]`
+# SQL Server Database Long Term Backup Retention Policies `[Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies]`
 
-This module deploys a long term retention policy for a Azure SQL Database.
+This module deploys an Azure SQL Server Database Long-Term Backup Retention Policy.
 
 ## Navigation
 

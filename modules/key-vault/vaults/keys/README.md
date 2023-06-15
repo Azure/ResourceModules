@@ -1,6 +1,6 @@
-# Key Vault Key `[Microsoft.KeyVault/vaults/keys]`
+# Key Vault Keys `[Microsoft.KeyVault/vaults/keys]`
 
-This module deploys a key vault key.
+This module deploys a Key Vault Key.
 
 ## Navigation
 

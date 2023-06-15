@@ -1,6 +1,6 @@
 # Compute Disks `[Microsoft.Compute/disks]`
 
-This template deploys a disk
+This module deploys a Compute Disk
 
 ## Navigation
 

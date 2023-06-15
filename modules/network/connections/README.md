@@ -1,6 +1,6 @@
 # Virtual Network Gateway Connections `[Microsoft.Network/connections]`
 
-This template deploys a virtual network gateway connection.
+This module deploys a Virtual Network Gateway Connection.
 
 ## Navigation
 

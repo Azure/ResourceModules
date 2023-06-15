@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Storage Account Queue",
-  "summary": "This module deploys a storage account queue",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Storage Account Queues",
+    "summary": "This module deploys a Storage Account Queue.",
+    "owner": "Azure/module-maintainers"
 }

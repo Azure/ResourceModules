@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Network Firewall Policies Rule Collection Groups",
-  "summary": "This module deploys Network Firewall Policies Rule Collection Groups.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Firewall Policy Rule Collection Groups",
+    "summary": "This module deploys a Firewall Policy Rule Collection Group.",
+    "owner": "Azure/module-maintainers"
 }

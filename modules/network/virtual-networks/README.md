@@ -1,6 +1,6 @@
 # Virtual Networks `[Microsoft.Network/virtualNetworks]`
 
-This template deploys a virtual network (vNet).
+This module deploys a Virtual Network (vNet).
 
 ## Navigation
 

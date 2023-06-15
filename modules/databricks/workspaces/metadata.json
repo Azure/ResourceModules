@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Azure Databricks",
-    "summary": "This module deploys an Azure Databricks workspace.",
+    "name": "Azure Databricks Workspaces",
+    "summary": "This module deploys an Azure Databricks Workspace.",
     "owner": "Azure/module-maintainers"
 }

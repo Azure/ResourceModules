@@ -1,6 +1,6 @@
-# Azure Kubernetes Services `[Microsoft.ContainerService/managedClusters]`
+# Azure Kubernetes Service (AKS) Managed Clusters `[Microsoft.ContainerService/managedClusters]`
 
-This module deploys Azure Kubernetes Cluster (AKS).
+This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 
 ## Navigation
 
