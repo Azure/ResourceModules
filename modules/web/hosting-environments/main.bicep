@@ -174,7 +174,7 @@ var enableReferencedModulesTelemetry = false
 var identity = identityType != 'None' ? {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : {}
+} : any(null)
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -197,7 +197,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2022-03-01' = 
   properties: {
     clusterSettings: clusterSettings
     dedicatedHostCount: dedicatedHostCount != 0 ? dedicatedHostCount : null
-    dnsSuffix: dnsSuffix
+    dnsSuffix: !empty(dnsSuffix) ? dnsSuffix : null
     frontEndScaleFactor: frontEndScaleFactor
     internalLoadBalancingMode: internalLoadBalancingMode
     ipsslAddressCount: ipsslAddressCount != 0 ? ipsslAddressCount : null
