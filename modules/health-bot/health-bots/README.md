@@ -316,6 +316,8 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>hbhbmin001'
+    sku: 'F0'
+    // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
 }
@@ -337,6 +339,10 @@ module healthBots './health-bot/health-bots/main.bicep' = {
     "name": {
       "value": "<<namePrefix>>hbhbmin001"
     },
+    "sku": {
+      "value": "F0"
+    },
+    // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     }
