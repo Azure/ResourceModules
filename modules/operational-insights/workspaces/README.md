@@ -67,13 +67,19 @@ This module deploys a Log Analytics Workspace.
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `savedSearches` | _[savedSearches](saved-searches/README.md)_ array | `[]` |  | Kusto Query Language searches to save. |
-| `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
+| `skuName` | string | `'PerGB2018'` | `[CapacityReservation, Free, LACluster, PerGB2018, PerNode, Premium, Standalone, Standard]` | The name of the SKU. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tables` | _[tables](tables/README.md)_ array | `[]` |  | LAW custom tables to be deployed. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
+
+**The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected parameters**
+
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `skuCapacityReservationLevel` | int | `100` | Must be in increments of 100 between 100 and 5000. |
 
 
 ### Parameter Usage: `gallerySolutions`
