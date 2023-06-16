@@ -1,6 +1,6 @@
 # Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
-This module deploys a scheduled query rule.
+This module deploys a Scheduled Query Rule.
 
 ## Navigation
 

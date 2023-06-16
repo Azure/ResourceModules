@@ -1,6 +1,6 @@
 # Local Network Gateways `[Microsoft.Network/localNetworkGateways]`
 
-This module deploys a local network gateway.
+This module deploys a Local Network Gateway.
 
 ## Navigation
 

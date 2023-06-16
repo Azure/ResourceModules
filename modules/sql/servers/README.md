@@ -1,6 +1,6 @@
-# SQL Servers `[Microsoft.Sql/servers]`
+# Azure SQL Servers `[Microsoft.Sql/servers]`
 
-This module deploys a SQL server.
+This module deploys an Azure SQL Server.
 
 ## Navigation
 

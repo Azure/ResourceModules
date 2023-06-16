@@ -1,6 +1,6 @@
-# Network NetworkManagers ConnectivityConfigurations `[Microsoft.Network/networkManagers/connectivityConfigurations]`
+# Network Manager Connectivity Configurations `[Microsoft.Network/networkManagers/connectivityConfigurations]`
 
-This module deploys Network NetworkManagers ConnectivityConfigurations.
+This module deploys a Network Manager Connectivity Configuration.
 Connectivity configurations define hub-and-spoke or mesh topologies applied to one or more network groups.
 
 ## Navigation

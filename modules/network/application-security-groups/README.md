@@ -1,6 +1,6 @@
-# Application Security Groups `[Microsoft.Network/applicationSecurityGroups]`
+# Application Security Groups (ASG) `[Microsoft.Network/applicationSecurityGroups]`
 
-This module deploys an application security group.
+This module deploys an Application Security Group (ASG).
 
 ## Navigation
 

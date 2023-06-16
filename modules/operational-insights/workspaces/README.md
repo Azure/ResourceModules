@@ -1,6 +1,6 @@
 # Log Analytics Workspaces `[Microsoft.OperationalInsights/workspaces]`
 
-This template deploys a log analytics workspace.
+This module deploys a Log Analytics Workspace.
 
 ## Navigation
 

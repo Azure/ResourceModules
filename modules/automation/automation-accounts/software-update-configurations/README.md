@@ -1,6 +1,6 @@
 # Automation Account Software Update Configurations `[Microsoft.Automation/automationAccounts/softwareUpdateConfigurations]`
 
-This module deploys an Azure Automation Account Software update Configuration.
+This module deploys an Azure Automation Account Software Update Configuration.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# Policy Exemptions on Resource Group level `[Microsoft.Authorization/policyExemptions/resourceGroup]`
+# Policy Exemptions (Resource Group scope) `[Microsoft.Authorization/policyExemptions/resourceGroup]`
 
-With this module you can create policy exemptions on a resource group level.
+This module deploys a Policy Exemption at a Resource Group scope.
 
 ## Navigation
 

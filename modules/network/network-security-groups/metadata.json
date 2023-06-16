@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Network Security Groups",
-  "summary": "This template deploys a network security group (NSG) with optional security rules.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Network Security Groups",
+    "summary": "This module deploys a Network security Group (NSG).",
+    "owner": "Azure/module-maintainers"
 }

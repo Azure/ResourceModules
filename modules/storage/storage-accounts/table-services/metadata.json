@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Storage Account Table Services",
-  "summary": "This module deploys a storage account table service",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Storage Account Table Services",
+    "summary": "This module deploys a Storage Account Table Service.",
+    "owner": "Azure/module-maintainers"
 }

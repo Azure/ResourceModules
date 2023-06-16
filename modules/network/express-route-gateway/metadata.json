@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Express Route Gateways",
-  "summary": "This module deploys Expess Route Gateways.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Express Route Gateways",
+    "summary": "This module deploys an Express Route Gateway.",
+    "owner": "Azure/module-maintainers"
 }

@@ -1,6 +1,6 @@
-# HealthcareApis Workspaces Fhirservices `[Microsoft.HealthcareApis/workspaces/fhirservices]`
+# Healthcare API Workspace FHIR Services `[Microsoft.HealthcareApis/workspaces/fhirservices]`
 
-This module deploys HealthcareApis Workspaces FHIR Service.
+This module deploys a Healthcare API Workspace FHIR Service.
 
 ## Navigation
 

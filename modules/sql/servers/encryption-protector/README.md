@@ -1,6 +1,6 @@
-# Sql Servers EncryptionProtector `[Microsoft.Sql/servers/encryptionProtector]`
+# Azure SQL Server Encryption Protector `[Microsoft.Sql/servers/encryptionProtector]`
 
-This module deploys an Sql Servers Encryption Protector.
+This module deploys an Azure SQL Server Encryption Protector.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Policy Exemptions",
-  "summary": "With this module you can create policy exemptions across the management group, subscription or resource group scope.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Policy Exemptions (All scopes)",
+    "summary": "This module deploys a Policy Exemption at a Management Group, Subscription or Resource Group scope.",
+    "owner": "Azure/module-maintainers"
 }

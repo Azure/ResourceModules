@@ -1,6 +1,6 @@
 # Private DNS Zone Virtual Network Link `[Microsoft.Network/privateDnsZones/virtualNetworkLinks]`
 
-This module deploys private dns zone virtual network links.
+This module deploys a Private DNS Zone Virtual Network Link.
 
 ## Navigation
 

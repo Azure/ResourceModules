@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "StorageAccounts LocalUsers",
-  "summary": "This module deploys LocalUsers used for SFTP authentication.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Storage Account Local Users",
+    "summary": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
+    "owner": "Azure/module-maintainers"
 }

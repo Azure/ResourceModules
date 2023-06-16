@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "API Management Service Identity Providers",
-  "summary": "This module deploys API Management Service Identity Provider.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "API Management Service Identity Providers",
+    "summary": "This module deploys an API Management Service Identity Provider.",
+    "owner": "Azure/module-maintainers"
 }

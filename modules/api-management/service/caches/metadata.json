@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "API Management Service Cache",
-  "summary": "This module deploys an API Management Service Cache.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "API Management Service Caches",
+    "summary": "This module deploys an API Management Service Cache.",
+    "owner": "Azure/module-maintainers"
 }

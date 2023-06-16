@@ -1,6 +1,6 @@
-# DBforPostgreSQL FlexibleServers FirewallRules `[Microsoft.DBforPostgreSQL/flexibleServers/firewallRules]`
+# DBforPostgreSQL Flexible Server Firewall Rules `[Microsoft.DBforPostgreSQL/flexibleServers/firewallRules]`
 
-This module deploys DBforPostgreSQL FlexibleServers FirewallRules.
+This module deploys a DBforPostgreSQL Flexible Server Firewall Rule.
 
 ## Navigation
 

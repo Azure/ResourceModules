@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Network NetworkManagers NetworkGroups StaticMembers",
-    "summary": "This module deploys Network NetworkManagers NetworkGroups StaticMembers.\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",
+    "name": "Network Manager Network Group Static Members",
+    "summary": "This module deploys a Network Manager Network Group Static Member.\nStatic membership allows you to explicitly add virtual networks to a group by manually selecting individual virtual networks.",
     "owner": "Azure/module-maintainers"
 }

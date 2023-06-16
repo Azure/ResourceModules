@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Policy Assignment on Subscription level",
-  "summary": "With this module you can perform policy assignments on a subscription level.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Policy Assignments (Subscription scope)",
+    "summary": "This module deploys a Policy Assignment at a Subscription scope.",
+    "owner": "Azure/module-maintainers"
 }
