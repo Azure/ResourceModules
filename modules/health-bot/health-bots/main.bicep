@@ -15,18 +15,6 @@ param userAssignedIdentities object = {}
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. The name of the customer managed key to use for encryption.')
-param cMKKeyName string = ''
-
-@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKKeyName\' is not empty.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
-param cMKKeyVersion string = ''
-
 @allowed([
   ''
   'CanNotDelete'
@@ -63,20 +51,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cMKUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
-  name: last(split(cMKUserAssignedIdentityResourceId, '/'))!
-  scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
-}
-
-resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))!
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-
-  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
-    name: cMKKeyName
-  }
-}
-
 resource azureHealthBot 'Microsoft.HealthBot/healthBots@2022-08-08' = {
   name: name
   location: location
@@ -85,14 +59,7 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2022-08-08' = {
   sku: {
     name: sku
   }
-  properties: {
-    keyVaultProperties: !empty(cMKKeyName) ? {
-      keyName: cMKKeyName
-      keyVaultUri: cMKKeyVault.properties.vaultUri
-      keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
-      userIdentity: cMKUserAssignedIdentity.id
-    } : null
-  }
+  properties: {}
 }
 
 resource azureHealthBot_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {

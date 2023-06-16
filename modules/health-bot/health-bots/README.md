@@ -27,19 +27,10 @@ This module deploys an Azure Health Bot.
 | `name` | string |  | Name of the resource. |
 | `sku` | string | `[C0, F0, S1]` | The name of the Azure Health Bot SKU. |
 
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKKeyName' is not empty. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
-
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
-| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -215,9 +206,6 @@ module healthBots './health-bot/health-bots/main.bicep' = {
     name: '<<namePrefix>>hbhbcom001'
     sku: 'F0'
     // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
     roleAssignments: [
@@ -260,15 +248,6 @@ module healthBots './health-bot/health-bots/main.bicep' = {
       "value": "F0"
     },
     // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
