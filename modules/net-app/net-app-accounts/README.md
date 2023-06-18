@@ -28,20 +28,11 @@ This module deploys an Azure NetApp File.
 | :-- | :-- | :-- |
 | `name` | string | The name of the NetApp account. |
 
-**Conditional parameters**
-
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cMKKeyVaultResourceId` | string | `''` | The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty. |
-| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty. |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty. |
-
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPools` | _[capacityPools](capacity-pools/README.md)_ array | `[]` |  | Capacity pools to create. |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
 | `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
 | `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
 | `domainJoinPassword` | securestring | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter. |
@@ -53,6 +44,7 @@ This module deploys an Azure NetApp File.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `smbServerNamePrefix` | string | `''` |  | Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -208,72 +200,7 @@ The following module usage examples are retrieved from the content of the files 
 
    >**Note**: Each example lists all the required parameters first, followed by the rest - each in alphabetical order.
 
-<h3>Example 1: Encr</h3>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-nanaaen'
-  params: {
-    // Required parameters
-    name: '<<namePrefix>>nanaaen001'
-    // Non-required parameters
-    cMKKeyName: '<cMKKeyName>'
-    cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
-    cMKUserAssignedIdentityResourceId: '<cMKUserAssignedIdentityResourceId>'
-    enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    // Required parameters
-    "name": {
-      "value": "<<namePrefix>>nanaaen001"
-    },
-    // Non-required parameters
-    "cMKKeyName": {
-      "value": "<cMKKeyName>"
-    },
-    "cMKKeyVaultResourceId": {
-      "value": "<cMKKeyVaultResourceId>"
-    },
-    "cMKUserAssignedIdentityResourceId": {
-      "value": "<cMKUserAssignedIdentityResourceId>"
-    },
-    "enableDefaultTelemetry": {
-      "value": "<enableDefaultTelemetry>"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
-    }
-  }
-}
-```
-
-</details>
-<p>
-
-<h3>Example 2: Min</h3>
+<h3>Example 1: Min</h3>
 
 <details>
 
@@ -318,7 +245,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 3: Nfs3</h3>
+<h3>Example 2: Nfs3</h3>
 
 <details>
 
@@ -543,7 +470,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Nfs41</h3>
+<h3>Example 3: Nfs41</h3>
 
 <details>
 
@@ -651,6 +578,9 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
       PurchaseOrder: '1234'
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -775,6 +705,11 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
         "PurchaseOrder": "1234",
         "Role": "DeploymentValidation",
         "ServiceName": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
       }
     }
   }
