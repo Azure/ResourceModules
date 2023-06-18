@@ -60,7 +60,7 @@ This section provides an overview of the library's feature set.
 | 45 | event-grid<p>system-topics | [![EventGrid - System Topics](https://github.com/Azure/ResourceModules/workflows/EventGrid%20-%20System%20Topics/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventgrid.systemtopics.yml) | [L1:1] | 171 |
 | 46 | event-grid<p>topics | [![EventGrid - Topics](https://github.com/Azure/ResourceModules/workflows/EventGrid%20-%20Topics/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventgrid.topics.yml) | [L1:1] | 190 |
 | 47 | event-hub<p>namespaces | [![EventHub - Namespaces](https://github.com/Azure/ResourceModules/workflows/EventHub%20-%20Namespaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.eventhub.namespaces.yml) | [L1:4, L2:2] | 285 |
-| 48 | health-bot<p>health-bots | [![HealthBot - HealthBots](https://github.com/Azure/ResourceModules/workflows/HealthBot%20-%20HealthBots/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.healthbot.healthbots.yml) |  | 68 |
+| 48 | health-bot<p>health-bots | [![HealthBot - HealthBots](https://github.com/Azure/ResourceModules/workflows/HealthBot%20-%20HealthBots/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.healthbot.healthbots.yml) |  | 81 |
 | 49 | healthcare-apis<p>workspaces | [![HealthcareApis - Workspaces](https://github.com/Azure/ResourceModules/workflows/HealthcareApis%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.healthcareapis.workspaces.yml) | [L1:3, L2:1] | 175 |
 | 50 | insights<p>action-groups | [![Insights - ActionGroups](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20ActionGroups/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |  | 85 |
 | 51 | insights<p>activity-log-alerts | [![Insights - ActivityLogAlerts](https://github.com/Azure/ResourceModules/workflows/Insights%20-%20ActivityLogAlerts/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |  | 74 |
@@ -116,7 +116,7 @@ This section provides an overview of the library's feature set.
 | 101 | network<p>virtual-wans | [![Network - VirtualWans](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VirtualWans/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml) |  | 80 |
 | 102 | network<p>vpn-gateways | [![Network - VPNGateways](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPNGateways/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpngateways.yml) | [L1:2] | 104 |
 | 103 | network<p>vpn-sites | [![Network - VPN Sites](https://github.com/Azure/ResourceModules/workflows/Network%20-%20VPN%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.vpnsites.yml) |  | 88 |
-| 104 | operational-insights<p>workspaces | [![OperationalInsights - Workspaces](https://github.com/Azure/ResourceModules/workflows/OperationalInsights%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationalinsights.workspaces.yml) | [L1:7] | 312 |
+| 104 | operational-insights<p>workspaces | [![OperationalInsights - Workspaces](https://github.com/Azure/ResourceModules/workflows/OperationalInsights%20-%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationalinsights.workspaces.yml) | [L1:7] | 321 |
 | 105 | operations-management<p>solutions | [![OperationsManagement - Solutions](https://github.com/Azure/ResourceModules/workflows/OperationsManagement%20-%20Solutions/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.operationsmanagement.solutions.yml) |  | 50 |
 | 106 | policy-insights<p>remediations | [![PolicyInsights - Remediations](https://github.com/Azure/ResourceModules/workflows/PolicyInsights%20-%20Remediations/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.policyinsights.remediations.yml) | [L1:3] | 103 |
 | 107 | power-bi-dedicated<p>capacities | [![PowerBiDedicated - Capacities](https://github.com/Azure/ResourceModules/workflows/PowerBiDedicated%20-%20Capacities/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.powerbidedicated.capacities.yml) |  | 96 |
@@ -141,7 +141,7 @@ This section provides an overview of the library's feature set.
 | 126 | web<p>serverfarms | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |  | 159 |
 | 127 | web<p>sites | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) | [L1:4, L2:2] | 390 |
 | 128 | web<p>static-sites | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) | [L1:3] | 193 |
-| Sum | | 102 | 101 | 111 | 54 | 24 | 2 | 207 | 22835 |
+| Sum | | 102 | 101 | 111 | 54 | 24 | 2 | 207 | 22857 |
 
 ## Legend
 
