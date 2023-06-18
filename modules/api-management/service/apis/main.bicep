@@ -13,7 +13,7 @@ param apiRevision string = ''
 @description('Optional. Description of the API Revision.')
 param apiRevisionDescription string = ''
 
-@description('Optional. Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API.')
+@description('Optional. Type of API to create. * http creates a REST API * soap creates a SOAP pass-through API * websocket creates websocket API * graphql creates GraphQL API.')
 @allowed([
   'graphql'
   'http'
