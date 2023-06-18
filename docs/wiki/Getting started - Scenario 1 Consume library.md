@@ -87,7 +87,7 @@ To publish a module by running the script:
     To publish the Keyvault module with version 0.4.740 on a Template Spec that will be created in the resource group 'artifact-rg' you can execute the following example:
 
          ```PowerShell
-        Publish-ModuleToTemplateSpecsRG -TemplateFilePath "D:\ResourcesModules\modules\KeyVault\vaults\main.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
+        Publish-ModuleToTemplateSpecsRG -TemplateFilePath "D:\ResourcesModules\modules\key-vault\vaults\main.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
     If you need to publish more than one module, you could use the following PowerShell script that calls the `'Publish-ModuleToTemplateSpecsRG'` function for each of the modules:
 
