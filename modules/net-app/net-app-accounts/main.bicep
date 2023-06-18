@@ -23,6 +23,18 @@ param smbServerNamePrefix string = ''
 @description('Optional. Capacity pools to create.')
 param capacityPools array = []
 
+@description('Conditional. The ID(s) to assign to the resource. Required if "cMKKeyName" is not empty.')
+param userAssignedIdentities object = {}
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
@@ -56,6 +68,13 @@ var activeDirectoryConnectionProperties = [
   }
 ]
 
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -68,12 +87,33 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))!
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+
+  resource cMKKey 'keys@2023-02-01' existing = if (!empty(cMKKeyName)) {
+    name: cMKKeyName
+  }
+}
+
 resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-09-01' = {
   name: name
   tags: tags
+  identity: identity
   location: location
   properties: {
     activeDirectories: !empty(domainName) ? activeDirectoryConnectionProperties : null
+    encryption: !empty(cMKKeyName) ? {
+      identity: {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      }
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: {
+        keyName: cMKKeyName
+        keyVaultResourceId: cMKKeyVaultResourceId
+        keyVaultUri: cMKKeyVault.properties.vaultUri
+      }
+    } : null
   }
 }
 
