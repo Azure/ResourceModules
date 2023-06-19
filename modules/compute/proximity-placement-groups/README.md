@@ -1,6 +1,6 @@
 # Proximity Placement Groups `[Microsoft.Compute/proximityPlacementGroups]`
 
-This template deploys a proximity placement group.
+This module deploys a Proximity Placement Group.
 
 ## Navigation
 

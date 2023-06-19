@@ -1,6 +1,6 @@
 # Private DNS Zones `[Microsoft.Network/privateDnsZones]`
 
-This template deploys a private DNS zone.
+This module deploys a Private DNS zone.
 
 ## Navigation
 

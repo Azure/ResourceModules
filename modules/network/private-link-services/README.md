@@ -1,6 +1,6 @@
-# Network PrivateLinkServices `[Microsoft.Network/privateLinkServices]`
+# Private Link Services `[Microsoft.Network/privateLinkServices]`
 
-This module deploys Network Private Link Services.
+This module deploys a Private Link Service.
 
 ## Navigation
 

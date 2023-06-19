@@ -1,4 +1,6 @@
-# Azure Databricks `[Microsoft.Databricks/workspaces]`
+# Azure Databricks Workspaces `[Microsoft.Databricks/workspaces]`
+
+This module deploys an Azure Databricks Workspace.
 
 ## Navigation
 

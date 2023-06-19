@@ -1,7 +1,6 @@
 # Network Watchers `[Microsoft.Network/networkWatchers]`
 
-- This template deploys a network watcher.
-- Network Watcher is a default resource which will get created automatically in every region where a virtual network is present with in the network watcher resource group.
+This module deploys a Network Watcher.
 
 ## Navigation
 

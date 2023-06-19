@@ -1,6 +1,6 @@
-# CDN Profiles Endpoint `[Microsoft.CDN/profiles/endpoints]`
+# CDN Profiles Endpoints `[Microsoft.Cdn/profiles/endpoints]`
 
-This module deploys CDN Profiles Endpoint.
+This module deploys a CDN Profile Endpoint.
 
 ## Navigation
 

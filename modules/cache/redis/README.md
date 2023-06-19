@@ -1,6 +1,6 @@
-# Cache Redis `[Microsoft.Cache/redis]`
+# Redis Cache `[Microsoft.Cache/redis]`
 
-This module deploys a Redis Cache service.
+This module deploys a Redis Cache.
 
 ## Navigation
 

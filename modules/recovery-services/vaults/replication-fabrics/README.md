@@ -1,4 +1,4 @@
-# RecoveryServices Vaults ReplicationFabrics `[Microsoft.RecoveryServices/vaults/replicationFabrics]`
+# Recovery Services Vault Replication Fabrics `[Microsoft.RecoveryServices/vaults/replicationFabrics]`
 
 This module deploys a Replication Fabric for Azure to Azure disaster recovery scenario of Azure Site Recovery.
 

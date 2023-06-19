@@ -90,7 +90,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2022-05-01' = {
+resource virtualHub 'Microsoft.Network/virtualHubs@2022-11-01' = {
   name: name
   location: location
   tags: tags

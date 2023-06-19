@@ -1,6 +1,6 @@
-# Operationalinsights Workspaces Storage Insight Configs `[Microsoft.OperationalInsights/workspaces/storageInsightConfigs]`
+# Log Analytics Workspace Storage Insight Configs `[Microsoft.OperationalInsights/workspaces/storageInsightConfigs]`
 
-This template deploys a storage insights configuration for a Log Analytics workspace.
+This module deploys a Log Analytics Workspace Storage Insight Config.
 
 ## Navigation
 

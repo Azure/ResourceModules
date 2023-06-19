@@ -1,6 +1,6 @@
 # Metric Alerts `[Microsoft.Insights/metricAlerts]`
 
-This module deploys an alert based on metrics.
+This module deploys a Metric Alert.
 
 ## Navigation
 
@@ -62,7 +62,7 @@ This module deploys an alert based on metrics.
 "actions": {
     "value": [
         {
-            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/ActionGroupName",
+            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/ActionGroupName",
             "webhookProperties": {}
         }
     ]
@@ -78,7 +78,7 @@ This module deploys an alert based on metrics.
 ```bicep
 actions: [
     {
-        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/ActionGroupName'
+        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/ActionGroupName'
         webhookProperties: {}
     }
 ]
@@ -98,7 +98,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 ```json
 "actions": {
   "value": [
-      "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName"
+      "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName"
   ]
 }
 ```

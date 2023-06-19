@@ -1,6 +1,6 @@
 # Azure NetApp Files `[Microsoft.NetApp/netAppAccounts]`
 
-This template deploys Azure NetApp Files.
+This module deploys an Azure NetApp File.
 
 ## Navigation
 
@@ -16,9 +16,9 @@ This template deploys Azure NetApp Files.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.NetApp/netAppAccounts` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts/capacityPools) |
-| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2022-05-01/netAppAccounts/capacityPools/volumes) |
+| `Microsoft.NetApp/netAppAccounts` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools) |
+| `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | [2022-09-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.NetApp/netAppAccounts/capacityPools/volumes) |
 
 ## Parameters
 

@@ -1,5 +1,7 @@
 # Public IP Addresses `[Microsoft.Network/publicIPAddresses]`
 
+This module deploys a Public IP Address.
+
 ## Navigation
 
 - [Resource types](#Resource-types)

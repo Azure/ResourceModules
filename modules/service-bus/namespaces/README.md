@@ -1,6 +1,6 @@
 # Service Bus Namespaces `[Microsoft.ServiceBus/namespaces]`
 
-This module deploys a service bus namespace resource.
+This module deploys a Service Bus Namespace.
 
 ## Navigation
 

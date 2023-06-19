@@ -1,6 +1,6 @@
 # Public IP Prefixes `[Microsoft.Network/publicIPPrefixes]`
 
-This template deploys a public IP prefix.
+This module deploys a Public IP Prefix.
 
 ## Navigation
 

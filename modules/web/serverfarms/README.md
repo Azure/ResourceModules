@@ -1,6 +1,6 @@
 # App Service Plans `[Microsoft.Web/serverfarms]`
 
-This module deploys an app service plan.
+This module deploys an App Service Plan.
 
 ## Navigation
 

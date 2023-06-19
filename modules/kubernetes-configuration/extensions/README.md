@@ -1,6 +1,6 @@
 # Kubernetes Configuration Extensions `[Microsoft.KubernetesConfiguration/extensions]`
 
-This module deploys Kubernetes Configuration Extensions.
+This module deploys a Kubernetes Configuration Extension.
 
 ## Navigation
 
