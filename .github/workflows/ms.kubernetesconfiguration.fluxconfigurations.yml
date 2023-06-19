@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
-      - 'modules/KubernetesConfiguration/fluxConfigurations/**'
+      - 'modules/kubernetes-configuration/flux-configurations/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/KubernetesConfiguration/fluxConfigurations'
+  modulePath: 'modules/kubernetes-configuration/flux-configurations'
   workflowPath: '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
 
 concurrency:

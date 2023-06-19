@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.ddosprotectionplans.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Network/ddosProtectionPlans/*'
+      - '/modules/network/ddos-protection-plans/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Network/ddosProtectionPlans'
+    value: '/modules/network/ddos-protection-plans'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

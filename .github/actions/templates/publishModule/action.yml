@@ -15,7 +15,7 @@
 ##   |===========================================================================================================================================================================================================|
 ##   | Parameter                | Required | Default | Description                                                                                      | Example                                                |
 ##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/ApiManagement/service/main.bicep'             |
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'modules/api-management/service/main.bicep'            |
 ##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                         |
 ##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                           |
 ##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'           |

@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.management.managementgroups.yml'
-      - 'modules/Management/managementGroups/**'
+      - 'modules/management/management-groups/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Management/managementGroups'
+  modulePath: 'modules/management/management-groups'
   workflowPath: '.github/workflows/ms.management.managementgroups.yml'
 
 concurrency:

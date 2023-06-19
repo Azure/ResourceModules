@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.virtualhubs.yml'
-      - 'modules/Network/virtualHubs/**'
+      - 'modules/network/virtual-hubs/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Network/virtualHubs'
+  modulePath: 'modules/network/virtual-hubs'
   workflowPath: '.github/workflows/ms.network.virtualhubs.yml'
 
 concurrency:

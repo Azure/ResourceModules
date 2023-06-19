@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.trafficmanagerprofiles.yml'
-      - 'modules/Network/trafficmanagerprofiles/**'
+      - 'modules/network/trafficmanagerprofiles/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Network/trafficmanagerprofiles'
+  modulePath: 'modules/network/trafficmanagerprofiles'
   workflowPath: '.github/workflows/ms.network.trafficmanagerprofiles.yml'
 
 concurrency:

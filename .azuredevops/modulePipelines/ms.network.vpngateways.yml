@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.vpngateways.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Network/vpnGateways/*'
+      - '/modules/network/vpn-gateways/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Network/vpnGateways'
+    value: '/modules/network/vpn-gateways'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

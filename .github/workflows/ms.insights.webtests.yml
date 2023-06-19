@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.insights.webtests.yml'
-      - 'modules/Insights/webTests/**'
+      - 'modules/insights/webtests/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Insights/webTests'
+  modulePath: 'modules/insights/webtests'
   workflowPath: '.github/workflows/ms.insights.webtests.yml'
 
 concurrency:

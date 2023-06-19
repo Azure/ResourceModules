@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.proximityplacementgroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Compute/proximityPlacementGroups/*'
+      - '/modules/compute/proximity-placement-groups/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Compute/proximityPlacementGroups'
+    value: '/modules/compute/proximity-placement-groups'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
