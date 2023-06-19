@@ -62,6 +62,8 @@ This module deploys a Redis Cache.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tenantSettings` | object | `{object}` |  | A dictionary of tenant settings. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `zoneRedundant` | bool | `True` |  | When true, replicas will be provisioned in availability zones specified in zones param. When false, service will choose where replicas are deployed. |
+| `zones` | array | `[]` |  | If zoneRedundant param is true, replicas will be provisioned in the availability zones specified here. |
 
 
 ### Parameter Usage: `roleAssignments`
