@@ -39,7 +39,7 @@ This module deploys an API Management Service API.
 | `apiDescription` | string | `''` |  | Description of the API. May include HTML formatting tags. |
 | `apiRevision` | string | `''` |  | Describes the Revision of the API. If no value is provided, default revision 1 is created. |
 | `apiRevisionDescription` | string | `''` |  | Description of the API Revision. |
-| `apiType` | string | `'http'` | `[graphql, http, soap, websocket]` | Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API. |
+| `apiType` | string | `'http'` | `[graphql, http, soap, websocket]` | Type of API to create. * http creates a REST API * soap creates a SOAP pass-through API * websocket creates websocket API * graphql creates GraphQL API. |
 | `apiVersion` | string | `''` |  | Indicates the Version identifier of the API if the API is versioned. |
 | `apiVersionDescription` | string | `''` |  | Description of the API Version. |
 | `apiVersionSetId` | string | `''` |  | Indicates the Version identifier of the API version set. |
