@@ -74,6 +74,7 @@ param wcfRelays array = []
 @allowed([
   'allLogs'
   'OperationalLogs'
+  'hybridConnectionsEvent'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'
