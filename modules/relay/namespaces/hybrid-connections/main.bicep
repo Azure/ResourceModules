@@ -8,7 +8,7 @@ param namespaceName string
 @maxLength(50)
 param name string
 
-@description('Required. User-defined string data for the Relay Hybrid Connection.')
+@description('Required. The user metadata is a placeholder to store user-defined string data for the hybrid connection endpoint. For example, it can be used to store descriptive data, such as a list of teams and their contact information. Also, user-defined configuration settings can be stored.')
 param userMetadata string
 
 @description('Optional. A value indicating if this hybrid connection requires duplicate detection.')
