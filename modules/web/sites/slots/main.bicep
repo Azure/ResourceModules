@@ -327,7 +327,7 @@ module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(auth
 module slot_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
   name: '${uniqueString(deployment().name, location)}-Slot-HybridConnectionRelay-${index}'
   params: {
-    resourceId: hybridConnectionRelay.resourceId
+    hybridConnectionResourceId: hybridConnectionRelay.resourceId
     appName: app.name
     slotName: slot.name
     sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
