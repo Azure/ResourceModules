@@ -375,7 +375,7 @@ module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-poli
 module app_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
   name: '${uniqueString(deployment().name, location)}-HybridConnectionRelay-${index}'
   params: {
-    resourceId: hybridConnectionRelay.resourceId
+    hybridConnectionResourceId: hybridConnectionRelay.resourceId
     appName: app.name
     sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry

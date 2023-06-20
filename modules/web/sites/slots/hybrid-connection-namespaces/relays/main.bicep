@@ -1,11 +1,11 @@
-@description('Required. The resource id of the resource.')
+@description('Required. The resource ID of the relay namespace hybrid connection.')
 param hybridConnectionResourceId string
 
 @description('Required. Slot name to be configured.')
 param slotName string
 
 @description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
-param webAppName string
+param appName string
 
 @description('Optional. Name of the authorization rule send key to use.')
 param sendKeyName string = 'defaultSender'
