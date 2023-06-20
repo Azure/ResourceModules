@@ -37,7 +37,7 @@ module nestedDependencies 'dependencies.bicep' = {
     serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
     storageAccountName: 'dep<<namePrefix>>st${serviceShort}'
     applicationInsightsName: 'dep-<<namePrefix>>-appi-${serviceShort}'
-    namespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
+    relayNamespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
     hybridConnectionName: 'dep-<<namePrefix>>-hc-${serviceShort}'
   }
 }

@@ -219,42 +219,6 @@ privateEndpoints:  [
 </details>
 <p>
 
-### Parameter Usage: `networkAcl`
-
-Configure networing options on premium SKU only.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"networkAclConfig": {
-    "value" : {
-        "publicNetworkAccess": "Disabled",
-        "allowTrustedServices": true
-    }
-}
-
-
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-networkingAclConfig: {
-    publicNetworkAccess: "Disabled"
-    allowTrustedServices: true
-}
-
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -290,39 +254,6 @@ tags: {
     CostCenter: '7890'
     ServiceName: 'DeploymentValidation'
     Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 

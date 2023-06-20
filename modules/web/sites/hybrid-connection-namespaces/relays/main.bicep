@@ -1,5 +1,5 @@
 @description('Required. The resource id of the resource.')
-param resourceId string
+param hybridConnectionResourceId string
 
 @description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
 param webAppName string
@@ -13,7 +13,7 @@ param location string = resourceGroup().location
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var splitResourceId = split(resourceId, '/')
+var splitResourceId = split(hybridConnectionResourceId, '/')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'

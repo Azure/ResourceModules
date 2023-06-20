@@ -17,7 +17,7 @@ param storageAccountName string
 param applicationInsightsName string
 
 @description('Required. The name of the Relay Namespace to create.')
-param namespaceName string
+param relayNamespaceName string
 
 @description('Required. The name of the Hybrid Connection to create.')
 param hybridConnectionName string
@@ -96,7 +96,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
 }
 
 resource namespace 'Microsoft.Relay/namespaces@2021-11-01' = {
-    name: namespaceName
+    name: relayNamespaceName
     location: location
     sku: {
         name: 'Standard'
