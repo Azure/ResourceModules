@@ -1,6 +1,6 @@
 {
   "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
   "name": "Web/Function Apps Slot Hybrid Connection Relay",
-  "summary": "This module configures a web or function app with a hybrid connection relay.",
+  "summary": "This module deploys a Site Slot Hybrid Connection Namespace Relay.",
   "owner": "Azure/module-maintainers"
 }
