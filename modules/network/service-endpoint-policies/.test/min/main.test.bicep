@@ -38,6 +38,5 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
-    serviceEndpointPolicyDefinitions: []
   }
 }
