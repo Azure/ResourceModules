@@ -1,4 +1,5 @@
 @description('Required. Name of the Relay Namespace.')
+@minLength(6)
 @maxLength(50)
 param name string
 
