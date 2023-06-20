@@ -167,7 +167,7 @@ module namespace_networkRuleSet 'network-rule-sets/main.bicep' = if (!empty(netw
 }
 
 module namespace_hybridConnections 'hybrid-connections/main.bicep' = [for (hybridConnection, index) in hybridConnections: {
-  name: '${uniqueString(deployment().name, location)}-hybridConnection-${index}'
+  name: '${uniqueString(deployment().name, location)}-HybridConnection-${index}'
   params: {
     namespaceName: namespace.name
     name: hybridConnection.name
