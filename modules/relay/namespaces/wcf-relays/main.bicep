@@ -92,7 +92,7 @@ resource wcfRelay 'Microsoft.Relay/namespaces/wcfRelays@2021-11-01' = {
 }
 
 module wcfRelay_authorizationRules 'authorization-rules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
-  name: '${deployment().name}-AuthRule-${index}'
+  name: '${deployment().name}-AuthorizationRule-${index}'
   params: {
     namespaceName: namespaceName
     wcfRelayName: wcfRelay.name
