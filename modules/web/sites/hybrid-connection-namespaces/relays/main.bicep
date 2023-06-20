@@ -41,11 +41,11 @@ resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
 }
 
 resource hybridConnectionRelay 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2022-03-01' = {
-  name: '${appName}/${namespace::hybridConnection.name}/${namespace::hybridConnection::authorizationRule.name}'
+  name: '${appName}/${namespace.name}/${namespace::hybridConnection.name}'
   properties: {
-    serviceBusNamespace: splitResourceId[8]
+    serviceBusNamespace: namespace.name
     serviceBusSuffix: split(substring(namespace.properties.serviceBusEndpoint, indexOf(namespace.properties.serviceBusEndpoint, '.servicebus')), ':')[0]
-    relayName: splitResourceId[10]
+    relayName: namespace::hybridConnection.name
     relayArmUri: namespace::hybridConnection.id
     hostname: split(json(namespace::hybridConnection.properties.userMetadata)[0].value, ':')[0]
     port: int(split(json(namespace::hybridConnection.properties.userMetadata)[0].value, ':')[1])

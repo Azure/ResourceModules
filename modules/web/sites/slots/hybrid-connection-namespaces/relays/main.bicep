@@ -1,5 +1,5 @@
 @description('Required. The resource id of the resource.')
-param resourceId string
+param hybridConnectionResourceId string
 
 @description('Required. Slot name to be configured.')
 param slotName string
@@ -16,7 +16,7 @@ param location string = resourceGroup().location
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var splitResourceId = split(resourceId, '/')
+var splitResourceId = split(hybridConnectionResourceId, '/')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -33,29 +33,27 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
   name: splitResourceId[8]
   scope: resourceGroup(splitResourceId[2], splitResourceId[4])
-}
 
-resource hybridConnection 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' existing = {
-  name: splitResourceId[10]
-  parent: namespace
-}
+  resource hybridConnection 'hybridConnections@2021-11-01' existing = {
+    name: splitResourceId[10]
 
-resource authorizationRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' existing = {
-  name: sendKeyName
-  parent: hybridConnection
+    resource authorizationRule 'authorizationRules@2021-11-01' existing = {
+      name: sendKeyName
+    }
+  }
 }
 
 resource hybridConnectionRelay 'Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays@2022-03-01' = {
-  name: '${webAppName}/${slotName}/${splitResourceId[8]}/${splitResourceId[10]}'
+  name: '${webAppName}/${slotName}/${namespace.name}/${namespace::hybridConnection.name}'
   properties: {
-    serviceBusNamespace: splitResourceId[8]
+    serviceBusNamespace: namespace.name
     serviceBusSuffix: split(substring(namespace.properties.serviceBusEndpoint, indexOf(namespace.properties.serviceBusEndpoint, '.servicebus')), ':')[0]
-    relayName: splitResourceId[10]
-    relayArmUri: hybridConnection.id
-    hostname: split(json(hybridConnection.properties.userMetadata)[0].value, ':')[0]
-    port: int(split(json(hybridConnection.properties.userMetadata)[0].value, ':')[1])
-    sendKeyName: authorizationRule.name
-    sendKeyValue: authorizationRule.listKeys().primaryKey
+    relayName: namespace::hybridConnection.name
+    relayArmUri: namespace::hybridConnection.id
+    hostname: split(json(namespace::hybridConnection.properties.userMetadata)[0].value, ':')[0]
+    port: int(split(json(namespace::hybridConnection.properties.userMetadata)[0].value, ':')[1])
+    sendKeyName: namespace::hybridConnection::authorizationRule.name
+    sendKeyValue: namespace::hybridConnection::authorizationRule.listKeys().primaryKey
   }
 }
 
