@@ -77,6 +77,7 @@ param wcfRelays array = []
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'
+  'hybridConnectionsEvent'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
