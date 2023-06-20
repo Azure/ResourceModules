@@ -1,6 +1,6 @@
 # Relay Namespaces `[Microsoft.Relay/namespaces]`
 
-This module deploys a relay namespace resource.
+This module deploys a Relay Namespace.
 
 ## Navigation
 
