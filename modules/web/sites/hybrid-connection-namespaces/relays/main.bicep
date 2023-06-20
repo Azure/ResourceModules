@@ -30,16 +30,14 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
   name: splitResourceId[8]
   scope: resourceGroup(splitResourceId[2], splitResourceId[4])
-}
 
-resource hybridConnection 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' existing = {
-  name: splitResourceId[10]
-  parent: namespace
-}
+  resource hybridConnection 'hybridConnections@2021-11-01' existing = {
+    name: splitResourceId[10]
 
-resource authorizationRule 'Microsoft.Relay/namespaces/hybridConnections/authorizationRules@2021-11-01' existing = {
-  name: sendKeyName
-  parent: hybridConnection
+    resource authorizationRule 'authorizationRules@2021-11-01' existing = {
+      name: sendKeyName
+    }
+  }
 }
 
 resource hybridConnectionRelay 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2022-03-01' = {
