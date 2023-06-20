@@ -36,10 +36,6 @@ This module deploys a Service Endpoint Policy.
 | `tags` | object | `{object}` | Tags of the resource. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
