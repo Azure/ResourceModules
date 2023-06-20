@@ -44,7 +44,7 @@ resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
 }
 
 resource hybridConnectionRelay 'Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays@2022-03-01' = {
-  name: '${webAppName}/${slotName}/${namespace.name}/${namespace::hybridConnection.name}'
+  name: '${appName}/${slotName}/${namespace.name}/${namespace::hybridConnection.name}'
   properties: {
     serviceBusNamespace: namespace.name
     serviceBusSuffix: split(substring(namespace.properties.serviceBusEndpoint, indexOf(namespace.properties.serviceBusEndpoint, '.servicebus')), ':')[0]
