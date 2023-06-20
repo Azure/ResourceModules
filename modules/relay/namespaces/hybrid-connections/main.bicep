@@ -3,7 +3,7 @@
 @maxLength(50)
 param namespaceName string
 
-@description('Required. Name of the Relay Hybrid Connection.')
+@description('Required. The name of the hybrid connection.')
 @minLength(6)
 @maxLength(50)
 param name string
