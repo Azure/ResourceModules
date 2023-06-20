@@ -1,4 +1,4 @@
-@description('Required. The resource id of the resource.')
+@description('Required. The resource ID of the relay namespace hybrid connection.')
 param hybridConnectionResourceId string
 
 @description('Required. Slot name to be configured.')
