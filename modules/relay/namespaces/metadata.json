@@ -1,6 +1,6 @@
 {
   "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
   "name": "Relay Namespaces",
-  "summary": "This module deploys a relay namespace resource.",
+  "summary": "This module deploys a Relay Namespace",
   "owner": "Azure/module-maintainers"
 }
