@@ -80,7 +80,7 @@ resource hybridConnection 'Microsoft.Relay/namespaces/hybridConnections@2021-11-
 }
 
 module hybridConnection_authorizationRules 'authorization-rules/main.bicep' = [for (authorizationRule, index) in authorizationRules: {
-  name: '${deployment().name}-AuthRule-${index}'
+  name: '${deployment().name}-AuthorizationRule-${index}'
   params: {
     namespaceName: namespaceName
     hybridConnectionName: hybridConnection.name
