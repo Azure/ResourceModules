@@ -200,7 +200,7 @@ module namespace_hybridConnections 'hybrid-connections/main.bicep' = [for (hybri
 }]
 
 module namespace_wcfRelays 'wcf-relays/main.bicep' = [for (wcfRelay, index) in wcfRelays: {
-  name: '${uniqueString(deployment().name, location)}-wcfRelay-${index}'
+  name: '${uniqueString(deployment().name, location)}-WcfRelay-${index}'
   params: {
     namespaceName: namespace.name
     name: wcfRelay.name
