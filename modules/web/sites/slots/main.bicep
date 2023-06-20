@@ -328,7 +328,7 @@ module slot_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bic
   name: '${uniqueString(deployment().name, location)}-Slot-HybridConnectionRelay-${index}'
   params: {
     resourceId: hybridConnectionRelay.resourceId
-    webAppName: app.name
+    appName: app.name
     slotName: slot.name
     sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
