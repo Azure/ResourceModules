@@ -2,7 +2,7 @@
 param resourceId string
 
 @description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
-param webAppName string
+param appName string
 
 @description('Optional. Name of the authorization rule send key to use.')
 param sendKeyName string = 'defaultSender'
