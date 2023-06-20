@@ -1,6 +1,6 @@
 # WCF Relay `[Microsoft.Relay/namespaces/wcfRelays]`
 
-This module deploys a wcf relay resource.
+This module deploys a Relay Namespace WCF Relay.
 
 ## Navigation
 
