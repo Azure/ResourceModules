@@ -43,7 +43,7 @@ resource authorizationRule 'Microsoft.Relay/namespaces/hybridConnections/authori
 }
 
 resource hybridConnectionRelay 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2022-03-01' = {
-  name: '${webAppName}/${splitResourceId[8]}/${splitResourceId[10]}'
+  name: '${appName}/${namespace::hybridConnection.name}/${namespace::hybridConnection::authorizationRule.name}'
   properties: {
     serviceBusNamespace: splitResourceId[8]
     serviceBusSuffix: split(substring(namespace.properties.serviceBusEndpoint, indexOf(namespace.properties.serviceBusEndpoint, '.servicebus')), ':')[0]
