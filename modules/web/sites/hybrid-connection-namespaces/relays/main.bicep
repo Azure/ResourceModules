@@ -1,5 +1,5 @@
 @description('Required. The resource id of the resource.')
-param resourceId string
+param hybridConnectionResourceId string
 
 @description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
 param appName string
