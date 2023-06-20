@@ -1,6 +1,6 @@
 {
   "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Hybrid Connection Relay Authorization Rules",
-  "summary": "This module deploys authorization rules for a hybrid connection relay.",
+  "name": "Hybrid Connection Authorization Rules",
+  "summary": "This module deploys a Hybrid Connection Authorization Rule.",
   "owner": "Azure/module-maintainers"
 }

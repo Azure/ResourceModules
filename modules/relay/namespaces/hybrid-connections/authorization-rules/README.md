@@ -1,6 +1,6 @@
 # Hybrid Connection Relay Authorization Rules `[Microsoft.Relay/namespaces/hybridConnections/authorizationRules]`
 
-This module deploys authorization rules for a hybrid connection relay.
+This module deploys a Hybrid Connection Authorization Rule.
 
 ## Navigation
 

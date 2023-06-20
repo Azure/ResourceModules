@@ -1,4 +1,5 @@
 @description('Required. Name of the Relay Namespace.')
+@minLength(6)
 @maxLength(50)
 param name string
 
@@ -76,6 +77,7 @@ param wcfRelays array = []
 ])
 param diagnosticLogCategoriesToEnable array = [
   'allLogs'
+  'hybridConnectionsEvent'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -165,7 +167,7 @@ module namespace_networkRuleSet 'network-rule-sets/main.bicep' = if (!empty(netw
 }
 
 module namespace_hybridConnections 'hybrid-connections/main.bicep' = [for (hybridConnection, index) in hybridConnections: {
-  name: '${uniqueString(deployment().name, location)}-hybridConnection-${index}'
+  name: '${uniqueString(deployment().name, location)}-HybridConnection-${index}'
   params: {
     namespaceName: namespace.name
     name: hybridConnection.name
@@ -198,7 +200,7 @@ module namespace_hybridConnections 'hybrid-connections/main.bicep' = [for (hybri
 }]
 
 module namespace_wcfRelays 'wcf-relays/main.bicep' = [for (wcfRelay, index) in wcfRelays: {
-  name: '${uniqueString(deployment().name, location)}-wcfRelay-${index}'
+  name: '${uniqueString(deployment().name, location)}-WcfRelay-${index}'
   params: {
     namespaceName: namespace.name
     name: wcfRelay.name

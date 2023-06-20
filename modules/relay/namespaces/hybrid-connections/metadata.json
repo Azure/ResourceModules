@@ -1,6 +1,6 @@
 {
   "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Hybrid Connection Relay",
-  "summary": "This module deploys a hybrid connection relay resource.",
+  "name": "Relay Namespace Hybrid Connections",
+  "summary": "This module deploys a Relay Namespace Hybrid Connection.",
   "owner": "Azure/module-maintainers"
 }

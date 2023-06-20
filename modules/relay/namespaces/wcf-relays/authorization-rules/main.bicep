@@ -1,4 +1,4 @@
-@description('Required. The name of the relay namepace wcf relay.')
+@description('Required. The name of the authorization rule.')
 param name string
 
 @description('Conditional. The name of the parent Relay Namespace. Required if the template is used in a standalone deployment.')
