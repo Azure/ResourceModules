@@ -1,5 +1,5 @@
 @description('Required. The resource id of the resource.')
-param resourceId string
+param hybridConnectionResourceId string
 
 @description('Required. Slot name to be configured.')
 param slotName string
