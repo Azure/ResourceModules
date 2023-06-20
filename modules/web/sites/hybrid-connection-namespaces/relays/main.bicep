@@ -46,11 +46,11 @@ resource hybridConnectionRelay 'Microsoft.Web/sites/hybridConnectionNamespaces/r
     serviceBusNamespace: splitResourceId[8]
     serviceBusSuffix: split(substring(namespace.properties.serviceBusEndpoint, indexOf(namespace.properties.serviceBusEndpoint, '.servicebus')), ':')[0]
     relayName: splitResourceId[10]
-    relayArmUri: hybridConnection.id
-    hostname: split(json(hybridConnection.properties.userMetadata)[0].value, ':')[0]
-    port: int(split(json(hybridConnection.properties.userMetadata)[0].value, ':')[1])
-    sendKeyName: authorizationRule.name
-    sendKeyValue: authorizationRule.listKeys().primaryKey
+    relayArmUri: namespace::hybridConnection.id
+    hostname: split(json(namespace::hybridConnection.properties.userMetadata)[0].value, ':')[0]
+    port: int(split(json(namespace::hybridConnection.properties.userMetadata)[0].value, ':')[1])
+    sendKeyName: namespace::hybridConnection::authorizationRule.name
+    sendKeyValue: namespace::hybridConnection::authorizationRule.listKeys().primaryKey
   }
 }
 
