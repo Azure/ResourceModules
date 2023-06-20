@@ -1,4 +1,4 @@
-@description('Required. The resource id of the resource.')
+@description('Required. The resource ID of the relay namespace hybrid connection.')
 param hybridConnectionResourceId string
 
 @description('Conditional. The name of the parent web site. Required if the template is used in a standalone deployment.')
@@ -41,7 +41,7 @@ resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
 }
 
 resource hybridConnectionRelay 'Microsoft.Web/sites/hybridConnectionNamespaces/relays@2022-03-01' = {
-  name: '${webAppName}/${splitResourceId[8]}/${splitResourceId[10]}'
+  name: '${appName}/${namespace::hybridConnection.name}/${namespace::hybridConnection::authorizationRule.name}'
   properties: {
     serviceBusNamespace: splitResourceId[8]
     serviceBusSuffix: split(substring(namespace.properties.serviceBusEndpoint, indexOf(namespace.properties.serviceBusEndpoint, '.servicebus')), ':')[0]
