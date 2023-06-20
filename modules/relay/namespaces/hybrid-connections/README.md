@@ -1,6 +1,6 @@
 # Hybrid Connection Relay `[Microsoft.Relay/namespaces/hybridConnections]`
 
-This module deploys a hybrid connection relay resource.
+This module deploys a Relay Namespace Hybrid Connection.
 
 ## Navigation
 
