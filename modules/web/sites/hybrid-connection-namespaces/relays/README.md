@@ -21,13 +21,13 @@ This module deploys a Site Hybrid Connection Namespace Relay.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `resourceId` | string | The resource id of the resource. |
+| `hybridConnectionResourceId` | string | The resource ID of the relay namespace hybrid connection. |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `webAppName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| `appName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -42,7 +42,9 @@ This module deploys a Site Hybrid Connection Namespace Relay.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the hybrid connection relay.. |
 | `resourceGroupName` | string | The name of the resource group the resource was deployed into. |
+| `resourceId` | string | The resource ID of the hybrid connection relay. |
 
 ## Cross-referenced modules
 

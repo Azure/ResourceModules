@@ -1,6 +1,6 @@
-# Web/Function Apps Hybrid Connection Relay `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`
+# Web/Function Apps Slot Hybrid Connection Relay `[Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays]`
 
-This module configures a web or function app with a hybrid connection relay.
+This module deploys a Site Slot Hybrid Connection Namespace Relay.
 
 ## Navigation
 
@@ -21,14 +21,14 @@ This module configures a web or function app with a hybrid connection relay.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `resourceId` | string | The resource id of the resource. |
-| `slotName` | string | Slot name to be configured. |
+| `hybridConnectionResourceId` | string | The resource ID of the relay namespace hybrid connection. |
 
 **Conditional parameters**
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `webAppName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| `appName` | string | The name of the parent web site. Required if the template is used in a standalone deployment. |
+| `slotName` | string | The name of the site slot. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 
@@ -43,7 +43,9 @@ This module configures a web or function app with a hybrid connection relay.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the hybrid connection relay.. |
 | `resourceGroupName` | string | The name of the resource group the resource was deployed into. |
+| `resourceId` | string | The resource ID of the hybrid connection relay. |
 
 ## Cross-referenced modules
 
