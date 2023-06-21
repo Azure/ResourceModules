@@ -11,7 +11,7 @@ param managedIdentityName string
 param serverFarmName string
 
 @description('Required. The name of the Relay Namespace to create.')
-param namespaceName string
+param relayNamespaceName string
 
 @description('Required. The name of the Hybrid Connection to create.')
 param hybridConnectionName string
