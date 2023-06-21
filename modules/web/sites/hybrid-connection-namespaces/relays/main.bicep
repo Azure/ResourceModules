@@ -13,8 +13,6 @@ param location string = resourceGroup().location
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-var splitResourceId = split(hybridConnectionResourceId, '/')
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -28,11 +26,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 resource namespace 'Microsoft.Relay/namespaces@2021-11-01' existing = {
-  name: splitResourceId[8]
-  scope: resourceGroup(splitResourceId[2], splitResourceId[4])
+  name: split(hybridConnectionResourceId, '/')[8]
+  scope: resourceGroup(split(hybridConnectionResourceId, '/')[2], split(hybridConnectionResourceId, '/')[4])
 
   resource hybridConnection 'hybridConnections@2021-11-01' existing = {
-    name: splitResourceId[10]
+    name: split(hybridConnectionResourceId, '/')[10]
 
     resource authorizationRule 'authorizationRules@2021-11-01' existing = {
       name: sendKeyName
