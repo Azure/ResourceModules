@@ -52,7 +52,7 @@ resource app 'Microsoft.Web/sites@2022-03-01' existing = {
   name: appName
 }
 
-resource appInsight 'microsoft.Insights/components@2020-02-02' existing = if (!empty(appInsightResourceId)) {
+resource appInsight 'Microsoft.Insights/components@2020-02-02' existing = if (!empty(appInsightResourceId)) {
   name: last(split(appInsightResourceId, '/'))!
   scope: resourceGroup(split(appInsightResourceId, '/')[2], split(appInsightResourceId, '/')[4])
 }
