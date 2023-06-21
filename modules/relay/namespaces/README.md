@@ -1,6 +1,6 @@
 # Relay Namespaces `[Microsoft.Relay/namespaces]`
 
-This module deploys a Relay Namespace.
+This module deploys a Relay Namespace
 
 ## Navigation
 
@@ -42,7 +42,7 @@ This module deploys a Relay Namespace.
 | `authorizationRules` | _[authorizationRules](authorization-rules/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Relay namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, OperationalLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs, hybridConnectionsEvent]` | `[allLogs, hybridConnectionsEvent, OperationalLogs]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -292,10 +292,10 @@ The following module usage examples are retrieved from the content of the files 
 
 ```bicep
 module namespaces './relay/namespaces/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-relcom'
+  name: '${uniqueString(deployment().name, location)}-test-rncom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>relcom001'
+    name: '<<namePrefix>>rncom001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -322,7 +322,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hybridConnections: [
       {
-        name: '<<namePrefix>>relcomhc001'
+        name: '<<namePrefix>>rncomhc001'
         roleAssignments: [
           {
             principalIds: [
@@ -389,7 +389,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     }
     wcfRelays: [
       {
-        name: '<<namePrefix>>relcomwcf001'
+        name: '<<namePrefix>>rncomwcf001'
         relayType: 'NetTcp'
         roleAssignments: [
           {
@@ -420,7 +420,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>relcom001"
+      "value": "<<namePrefix>>rncom001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -463,7 +463,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     "hybridConnections": {
       "value": [
         {
-          "name": "<<namePrefix>>relcomhc001",
+          "name": "<<namePrefix>>rncomhc001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -544,7 +544,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     "wcfRelays": {
       "value": [
         {
-          "name": "<<namePrefix>>relcomwcf001",
+          "name": "<<namePrefix>>rncomwcf001",
           "relayType": "NetTcp",
           "roleAssignments": [
             {
@@ -573,10 +573,10 @@ module namespaces './relay/namespaces/main.bicep' = {
 
 ```bicep
 module namespaces './relay/namespaces/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sbnmin'
+  name: '${uniqueString(deployment().name, location)}-test-rnmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnmin001'
+    name: '<<namePrefix>>rnmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -597,7 +597,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnmin001"
+      "value": "<<namePrefix>>rnmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -618,10 +618,10 @@ module namespaces './relay/namespaces/main.bicep' = {
 
 ```bicep
 module namespaces './relay/namespaces/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-sbnpe'
+  name: '${uniqueString(deployment().name, location)}-test-rnpe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnpe001'
+    name: '<<namePrefix>>rnpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -662,7 +662,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnpe001"
+      "value": "<<namePrefix>>rnpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

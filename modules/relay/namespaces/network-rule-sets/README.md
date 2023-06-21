@@ -1,4 +1,4 @@
-# Relay Namespaces Network Rules Sets `[Microsoft.Relay/namespaces/networkRuleSets]`
+# Relay Namespace Network Rules Sets `[Microsoft.Relay/namespaces/networkRuleSets]`
 
 This module deploys a Relay Namespace Network Rule Set.
 

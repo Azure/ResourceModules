@@ -1,4 +1,4 @@
-# Hybrid Connection Relay `[Microsoft.Relay/namespaces/hybridConnections]`
+# Relay Namespace Hybrid Connections `[Microsoft.Relay/namespaces/hybridConnections]`
 
 This module deploys a Relay Namespace Hybrid Connection.
 
@@ -24,8 +24,8 @@ This module deploys a Relay Namespace Hybrid Connection.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Relay Hybrid Connection. |
-| `userMetadata` | string | User-defined string data for the Relay Hybrid Connection. |
+| `name` | string | The name of the hybrid connection. |
+| `userMetadata` | string | The user metadata is a placeholder to store user-defined string data for the hybrid connection endpoint. For example, it can be used to store descriptive data, such as a list of teams and their contact information. Also, user-defined configuration settings can be stored. |
 
 **Conditional parameters**
 
@@ -40,7 +40,7 @@ This module deploys a Relay Namespace Hybrid Connection.
 | `authorizationRules` | _[authorizationRules](authorization-rules/README.md)_ array | `[System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable, System.Management.Automation.OrderedHashtable]` |  | Authorization Rules for the Relay Hybrid Connection. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `requiresClientAuthorization` | bool | `True` |  | A value indicating if this hybrid connection requires duplicate detection. |
+| `requiresClientAuthorization` | bool | `True` |  | A value indicating if this hybrid connection requires client authorization. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 

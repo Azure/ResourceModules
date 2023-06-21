@@ -1,4 +1,4 @@
-# Hybrid Connection Relay Authorization Rules `[Microsoft.Relay/namespaces/hybridConnections/authorizationRules]`
+# Hybrid Connection Authorization Rules `[Microsoft.Relay/namespaces/hybridConnections/authorizationRules]`
 
 This module deploys a Hybrid Connection Authorization Rule.
 
@@ -21,7 +21,7 @@ This module deploys a Hybrid Connection Authorization Rule.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the relay namepace hybrid connection. |
+| `name` | string | The name of the authorization rule. |
 
 **Conditional parameters**
 

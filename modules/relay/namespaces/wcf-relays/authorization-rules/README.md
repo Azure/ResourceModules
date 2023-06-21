@@ -21,7 +21,7 @@ This module deploys a WCF Relay Authorization Rule.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the relay namepace wcf relay. |
+| `name` | string | The name of the authorization rule. |
 
 **Conditional parameters**
 
