@@ -406,6 +406,11 @@ module redis './cache/redis/main.bicep' = {
     tags: {
       resourceType: 'Redis Cache'
     }
+    zoneRedundant: true
+    zones: [
+      1
+      2
+    ]
   }
 }
 ```
@@ -496,6 +501,15 @@ module redis './cache/redis/main.bicep' = {
       "value": {
         "resourceType": "Redis Cache"
       }
+    },
+    "zoneRedundant": {
+      "value": true
+    },
+    "zones": {
+      "value": [
+        1,
+        2
+      ]
     }
   }
 }
