@@ -54,5 +54,14 @@ resource hybridConnectionRelay 'Microsoft.Web/sites/hybridConnectionNamespaces/r
   }
 }
 
+// =========== //
+// Outputs     //
+// =========== //
+@description('The name of the hybrid connection relay..')
+output name string = hybridConnectionRelay.name
+
+@description('The resource ID of the hybrid connection relay.')
+output resourceId string = hybridConnectionRelay.id
+
 @description('The name of the resource group the resource was deployed into.')
 output resourceGroupName string = resourceGroup().name
