@@ -35,7 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
-    namespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
+    relayNamespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
     hybridConnectionName: 'dep-<<namePrefix>>-hc-${serviceShort}'
   }
 }
