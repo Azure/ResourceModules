@@ -72,7 +72,7 @@ resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     properties: {}
 }
 
-resource namespace 'Microsoft.Relay/namespaces@2021-11-01' = {
+resource relayNamespace 'Microsoft.Relay/namespaces@2021-11-01' = {
     name: namespaceName
     location: location
     sku: {
