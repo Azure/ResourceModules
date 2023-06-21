@@ -94,10 +94,10 @@ param subnetId string = ''
 @description('Optional. A dictionary of tenant settings.')
 param tenantSettings object = {}
 
-@description('Optional. When true, replicas will be provisioned in availability zones specified in zones param. When false, service will choose where replicas are deployed.')
+@description('Optional. When true, replicas will be provisioned in availability zones specified in the zones parameter.')
 param zoneRedundant bool = true
 
-@description('Optional. If zoneRedundant param is true, replicas will be provisioned in the availability zones specified here.')
+@description('Optional. If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed.')
 param zones array = []
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
