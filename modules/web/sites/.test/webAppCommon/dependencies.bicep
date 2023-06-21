@@ -72,7 +72,7 @@ resource serverFarm 'Microsoft.Web/serverfarms@2022-03-01' = {
     properties: {}
 }
 
-resource namespace 'Microsoft.Relay/namespaces@2021-11-01' = {
+resource relayNamespace 'Microsoft.Relay/namespaces@2021-11-01' = {
     name: relayNamespaceName
     location: location
     sku: {
@@ -83,7 +83,7 @@ resource namespace 'Microsoft.Relay/namespaces@2021-11-01' = {
 
 resource hybridConnection 'Microsoft.Relay/namespaces/hybridConnections@2021-11-01' = {
     name: hybridConnectionName
-    parent: namespace
+    parent: relayNamespace
     properties: {
         requiresClientAuthorization: true
         userMetadata: '[{"key":"endpoint","value":"db-server.constoso.com:1433"}]'
