@@ -62,6 +62,8 @@ This module deploys a Redis Cache.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tenantSettings` | object | `{object}` |  | A dictionary of tenant settings. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `zoneRedundant` | bool | `True` |  | When true, replicas will be provisioned in availability zones specified in the zones parameter. |
+| `zones` | array | `[]` |  | If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -404,6 +406,11 @@ module redis './cache/redis/main.bicep' = {
     tags: {
       resourceType: 'Redis Cache'
     }
+    zoneRedundant: true
+    zones: [
+      1
+      2
+    ]
   }
 }
 ```
@@ -494,6 +501,15 @@ module redis './cache/redis/main.bicep' = {
       "value": {
         "resourceType": "Redis Cache"
       }
+    },
+    "zoneRedundant": {
+      "value": true
+    },
+    "zones": {
+      "value": [
+        1,
+        2
+      ]
     }
   }
 }
