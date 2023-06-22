@@ -73,6 +73,8 @@ module testDeployment '../../main.bicep' = {
     enableNonSslPort: true
     lock: 'CanNotDelete'
     minimumTlsVersion: '1.2'
+    zoneRedundant: true
+    zones: [ 1, 2 ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
