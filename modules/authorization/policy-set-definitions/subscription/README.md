@@ -1,6 +1,6 @@
-# Policy Set Definitions on Subscription level `[Microsoft.Authorization/policySetDefinitions/subscription]`
+# Policy Set Definitions (Initiatives) (Subscription scope) `[Microsoft.Authorization/policySetDefinitions/subscription]`
 
-With this module you can create policy set definitions on a subscription level.
+This module deploys a Policy Set Definition (Initiative) at a Subscription scope.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Network Application Gateways",
-  "summary": "This module deploys Network ApplicationGateways.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Network Application Gateways",
+    "summary": "This module deploys a Network Application Gateway.",
+    "owner": "Azure/module-maintainers"
 }

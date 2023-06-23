@@ -1,6 +1,6 @@
 # Virtual Machine Scale Sets `[Microsoft.Compute/virtualMachineScaleSets]`
 
-This module deploys a virtual machine scale set.
+This module deploys a Virtual Machine Scale Set.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Azure Kubernetes Services",
-  "summary": "This module deploys Azure Kubernetes Cluster (AKS).",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Azure Kubernetes Service (AKS) Managed Clusters",
+    "summary": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.",
+    "owner": "Azure/module-maintainers"
 }

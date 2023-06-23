@@ -19,6 +19,21 @@ Optional. When `ReturnMarkdown` is set to true you can use this number to contro
 .PARAMETER OnlyTopLevel
 Optional. Only consider top-level modules (that is, no child-modules).
 
+.PARAMETER AddStatusBadges
+Optional. Add status badges for top-level modules as a column
+
+.PARAMETER RepositoryName
+Optional. The name of the repository the code resides in. Required if 'AddStatusBadges' is 'true'
+
+.PARAMETER Organization
+Optional. The name of the Organization the code resides in. Required if 'AddStatusBadges' is 'true'
+
+.PARAMETER Environment
+Optional. The DevOps environment to generate the status badges for. Required if 'AddStatusBadges' is 'true'.
+
+.PARAMETER ProjectName
+Optional. The project the repository is hosted in. Required if 'AddStatusBadges' is 'true' and the 'environment' is 'ADO'
+
 .EXAMPLE
 Get-ModulesFeatureOutline
 
@@ -33,6 +48,11 @@ Get an outline of top-level modules in the default module path, formatted in a m
 Get-ModulesFeatureOutline -ReturnMarkdown -BreakMarkdownModuleNameAt 2
 
 Get an outline of all modules in the default module path, formatted in a markdown table - with the module name column split after the top-level (i.e., <ProviderNamespace>/<ResourceType)
+
+.EXAMPLE
+Get-ModulesFeatureOutline -ReturnMarkdown -BreakMarkdownModuleNameAt 2 -AddStatusBadges -Environment 'GitHub' -RepositoryName 'ResourceModules' -Organization 'Azure'
+
+Get an outline of all modules in the default module path, formatted in a markdown table - with the module name column split after the top-level (i.e., <ProviderNamespace>/<ResourceType). Further, include the status badges for GitHub into the table.
 
 .NOTES
 Children (if any) are displayed in format `[L1:5, L2:4, L3:1]`. Each item (separated via ',') shows the level of nesting in the front (e.g. L1) and the number of children in this level (separated by a colon ':').
@@ -52,8 +72,27 @@ function Get-ModulesFeatureOutline {
         [int] $BreakMarkdownModuleNameAt = 1,
 
         [Parameter(Mandatory = $false)]
-        [switch] $OnlyTopLevel
+        [switch] $OnlyTopLevel,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $AddStatusBadges,
+
+        [Parameter(Mandatory = $false)]
+        [ValidateSet('GitHub', 'ADO')]
+        [string] $Environment,
+
+        [Parameter(Mandatory = $false)]
+        [string] $RepositoryName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $Organization,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ProjectName = ''
     )
+
+    # Load external functions
+    . (Join-Path $PSScriptRoot 'helper' 'Get-PipelineStatusUrl.ps1')
 
     if ($OnlyTopLevel) {
         $moduleTemplatePaths = (Get-ChildItem $ModuleFolderPath -Recurse -Filter 'main.bicep' -Depth 2).FullName
@@ -77,38 +116,67 @@ function Get-ModulesFeatureOutline {
     }
     foreach ($moduleTemplatePath in $moduleTemplatePaths) {
 
-        $fullResourcePath = (Split-Path $moduleTemplatePath -Parent).Replace('\', '/').split('/modules/')[1]
+        $fullResourcePath = (((Split-Path $moduleTemplatePath -Parent) -replace '\\', '/') -split '/modules/')[1]
         $moduleContentArray = Get-Content -Path $moduleTemplatePath
         $moduleContentString = Get-Content -Path $moduleTemplatePath -Raw
 
+        $moduleDataItem = [ordered]@{
+            Module = $fullResourcePath
+        }
+
+        # Status Badge
+        $isTopLevelModule = ($fullResourcePath -split '/').Count -eq 2
+        if ($AddStatusBadges -and $isTopLevelModule) {
+
+            $provider = ($fullResourcePath -split '/')[0]
+            $resourceType = ($fullResourcePath -split '/')[1]
+
+            $statusInputObject = @{
+                RepositoryName     = $RepositoryName
+                Organization       = $Organization
+                Environment        = $Environment
+                ProjectName        = $ProjectName
+                PipelineFileName   = ((('ms.{0}.{1}.yml' -f $provider, $resourceType) -replace '-', '') -replace '/', '.')
+                PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
+            }
+
+            $moduleDataItem['Status'] = Get-PipelineStatusUrl @statusInputObject
+        }
+
         # Supports RBAC
-        if ($supportsRBAC = [regex]::Match($moduleContentString, '(?m)^\s*param roleAssignments array\s*=.+').Success) {
+        if ([regex]::Match($moduleContentString, '(?m)^\s*param roleAssignments array\s*=.+').Success) {
             $summaryData.supportsRBAC++
+            $moduleDataItem['RBAC'] = $true
         }
 
         # Supports Locks
-        if ( $supportsLocks = [regex]::Match($moduleContentString, '(?m)^\s*param lock string\s*=.+').Success) {
+        if ([regex]::Match($moduleContentString, '(?m)^\s*param lock string\s*=.+').Success) {
             $summaryData.supportsLocks++
+            $moduleDataItem['Locks'] = $true
         }
 
         # Supports Tags
-        if ( $supportsTags = [regex]::Match($moduleContentString, '(?m)^\s*param tags object\s*=.+').Success) {
+        if ([regex]::Match($moduleContentString, '(?m)^\s*param tags object\s*=.+').Success) {
             $summaryData.supportsTags++
+            $moduleDataItem['Tags'] = $true
         }
 
         # Supports Diagnostics
-        if ($supportsDiagnostics = [regex]::Match($moduleContentString, '(?m)^\s*param diagnosticWorkspaceId string\s*=.+').Success) {
+        if ([regex]::Match($moduleContentString, '(?m)^\s*param diagnosticWorkspaceId string\s*=.+').Success) {
             $summaryData.supportsDiagnostics++
+            $moduleDataItem['Diag'] = $true
         }
 
         # Supports Private Endpoints
-        if ( $supportsEndpoints = [regex]::Match($moduleContentString, '(?m)^\s*param privateEndpoints array\s*=.+').Success) {
+        if ([regex]::Match($moduleContentString, '(?m)^\s*param privateEndpoints array\s*=.+').Success) {
             $summaryData.supportsEndpoints++
+            $moduleDataItem['PE'] = $true
         }
 
         # Supports PIPs
-        if ( $supportsPipDeployment = [regex]::Match($moduleContentString, '(?m)^\s*param publicIPAddressObject object\s*=.+').Success) {
+        if ([regex]::Match($moduleContentString, '(?m)^\s*param publicIPAddressObject object\s*=.+').Success) {
             $summaryData.supportsPipDeployment++
+            $moduleDataItem['PIP'] = $true
         }
 
         # Number of children
@@ -120,23 +188,16 @@ function Get-ModulesFeatureOutline {
         }
         $groupedNesting = $levelsOfNesting | Group-Object | Sort-Object -Property 'Name'
         $numberOfChildrenFormatted = '[{0}]' -f (($groupedNesting | ForEach-Object { 'L{0}:{1}' -f $_.Name, $_.Count }) -join ', ')
+        $moduleDataItem['# children'] = $numberOfChildrenFormatted
         $groupedNesting | ForEach-Object { $summaryData.numberOfChildren += $_.Count }
 
         # Number of lines
         $numberOfLines = ($moduleContentArray | Where-Object { -not [String]::IsNullOrEmpty($_) }).Count + 1
         $summaryData.numberOfLines += $numberOfLines
+        $moduleDataItem['# lines'] = $numberOfLines
 
-        $moduleData += [ordered]@{
-            Module       = $fullResourcePath -replace 'Microsoft.', 'MS.'
-            'RBAC'       = $supportsRBAC
-            'Locks'      = $supportsLocks
-            'Tags'       = $supportsTags
-            'Diag'       = $supportsDiagnostics
-            'PE'         = $supportsEndpoints
-            'PIP'        = $supportsPipDeployment
-            '# children' = $numberOfChildrenFormatted
-            '# lines'    = $numberOfLines
-        }
+        # Result
+        $moduleData += $moduleDataItem
     }
 
     #######################

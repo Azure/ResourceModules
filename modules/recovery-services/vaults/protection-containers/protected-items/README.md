@@ -1,6 +1,6 @@
-# Recovery Service Vault Protection Container Protected Item `[Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems]`
+# Recovery Service Vaults Protection Container Protected Item `[Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems]`
 
-This module deploys a Protection Container Protected Item for a Recovery Services Vault
+This module deploys a Recovery Services Vault Protection Container Protected Item.
 
 ## Navigation
 

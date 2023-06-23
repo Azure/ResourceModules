@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Insights PrivateLinkScopes ScopedResources",
-  "summary": "This module deploys Insights PrivateLinkScopes ScopedResources.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Private Link Scope Scoped Resources",
+    "summary": "This module deploys a Private Link Scope Scoped Resource.",
+    "owner": "Azure/module-maintainers"
 }

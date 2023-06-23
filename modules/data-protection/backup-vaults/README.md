@@ -1,6 +1,6 @@
-# DataProtection BackupVaults `[Microsoft.DataProtection/backupVaults]`
+# Data Protection Backup Vaults `[Microsoft.DataProtection/backupVaults]`
 
-This module deploys DataProtection BackupVaults.
+This module deploys a Data Protection Backup Vault.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # Network Security Groups `[Microsoft.Network/networkSecurityGroups]`
 
-This template deploys a network security group (NSG) with optional security rules.
+This module deploys a Network security Group (NSG).
 
 ## Navigation
 

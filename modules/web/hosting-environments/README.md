@@ -1,6 +1,6 @@
 # App Service Environments `[Microsoft.Web/hostingEnvironments]`
 
-This module deploys an app service environment.
+This module deploys an App Service Environment.
 
 ## Navigation
 

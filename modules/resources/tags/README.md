@@ -1,6 +1,6 @@
 # Resources Tags `[Microsoft.Resources/tags]`
 
-This module deploys Resources Tags on a subscription or resource group scope.
+This module deploys a Resource Tag at a Subscription or Resource Group scope.
 
 ## Navigation
 

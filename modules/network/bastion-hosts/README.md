@@ -1,6 +1,6 @@
 # Bastion Hosts `[Microsoft.Network/bastionHosts]`
 
-This module deploys a bastion host.
+This module deploys a Bastion Host.
 
 ## Navigation
 

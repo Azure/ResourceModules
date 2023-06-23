@@ -1,6 +1,6 @@
 # API Management Service Policies `[Microsoft.ApiManagement/service/policies]`
 
-This module deploys API Management Service Policy.
+This module deploys an API Management Service Policy.
 
 ## Navigation
 

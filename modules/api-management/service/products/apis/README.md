@@ -1,6 +1,6 @@
 # API Management Service Products APIs `[Microsoft.ApiManagement/service/products/apis]`
 
-This module deploys API Management Service Product APIs.
+This module deploys an API Management Service Product API.
 
 ## Navigation
 

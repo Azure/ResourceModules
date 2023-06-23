@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Web/Function Apps",
-  "summary": "This module deploys a web or function app.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Web/Function Apps",
+    "summary": "This module deploys a Web or Function App.",
+    "owner": "Azure/module-maintainers"
 }

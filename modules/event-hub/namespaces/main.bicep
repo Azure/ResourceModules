@@ -87,7 +87,7 @@ param tags object = {}
 param enableDefaultTelemetry bool = true
 
 @description('Optional. The event hubs to deploy into this namespace.')
-param eventHubs array = []
+param eventhubs array = []
 
 @description('Optional. The disaster recovery config for this namespace.')
 param disasterRecoveryConfig object = {}
@@ -210,7 +210,7 @@ module eventHubNamespace_disasterRecoveryConfig 'disaster-recovery-configs/main.
   }
 }
 
-module eventHubNamespace_eventHubs 'eventhubs/main.bicep' = [for (eventHub, index) in eventHubs: {
+module eventHubNamespace_eventhubs 'eventhubs/main.bicep' = [for (eventHub, index) in eventhubs: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-EventHub-${index}'
   params: {
     namespaceName: eventHubNamespace.name
@@ -234,7 +234,7 @@ module eventHubNamespace_eventHubs 'eventhubs/main.bicep' = [for (eventHub, inde
     captureDescriptionIntervalInSeconds: contains(eventHub, 'captureDescriptionIntervalInSeconds') ? eventHub.captureDescriptionIntervalInSeconds : 300
     captureDescriptionSizeLimitInBytes: contains(eventHub, 'captureDescriptionSizeLimitInBytes') ? eventHub.captureDescriptionSizeLimitInBytes : 314572800
     captureDescriptionSkipEmptyArchives: contains(eventHub, 'captureDescriptionSkipEmptyArchives') ? eventHub.captureDescriptionSkipEmptyArchives : false
-    consumerGroups: contains(eventHub, 'consumerGroups') ? eventHub.consumerGroups : []
+    consumergroups: contains(eventHub, 'consumergroups') ? eventHub.consumergroups : []
     lock: contains(eventHub, 'lock') ? eventHub.lock : ''
     messageRetentionInDays: contains(eventHub, 'messageRetentionInDays') ? eventHub.messageRetentionInDays : 1
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2

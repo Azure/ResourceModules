@@ -1,6 +1,6 @@
-# DBforPostgreSQL FlexibleServers `[Microsoft.DBforPostgreSQL/flexibleServers]`
+# DBforPostgreSQL Flexible Servers `[Microsoft.DBforPostgreSQL/flexibleServers]`
 
-This module deploys DBforPostgreSQL FlexibleServers.
+This module deploys a DBforPostgreSQL Flexible Server.
 
 ## Navigation
 
@@ -64,7 +64,7 @@ This module deploys DBforPostgreSQL FlexibleServers.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the PostgreSQL flexible server. |
 | `geoRedundantBackup` | string | `'Disabled'` | `[Disabled, Enabled]` | A value indicating whether Geo-Redundant backup is enabled on the server. Should be left disabled if 'cMKKeyName' is not empty. |
 | `highAvailability` | string | `'Disabled'` | `[Disabled, SameZone, ZoneRedundant]` | The mode for high availability. |

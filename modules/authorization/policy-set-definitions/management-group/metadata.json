@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Policy Set Definitions on Management Group level",
-  "summary": "With this module you can create policy set definitions on a management group level.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Policy Set Definitions (Initiatives) (Management Group scope)",
+    "summary": "This module deploys a Policy Set Definition (Initiative) at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
 }

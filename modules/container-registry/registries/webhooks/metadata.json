@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "ContainerRegistry Registries Webhooks",
-  "summary": "This module deploys ContainerRegistry Registries Webhooks.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Azure Container Registry (ACR) Webhooks",
+    "summary": "This module deploys an Azure Container Registry (ACR) Webhook.",
+    "owner": "Azure/module-maintainers"
 }

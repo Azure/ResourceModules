@@ -1,6 +1,6 @@
-# Role Definitions on Resource Group level `[Microsoft.Authorization/roleDefinitions/resourceGroup]`
+# Role Definitions (Resource Group scope) `[Microsoft.Authorization/roleDefinitions/resourceGroup]`
 
-With this module you can create role definitions on a resource group level
+This module deploys a Role Definition at a Resource Group scope.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# Role Definitions on Management Group level `[Microsoft.Authorization/roleDefinitions/managementGroup]`
+# Role Definitions (Management Group scope) `[Microsoft.Authorization/roleDefinitions/managementGroup]`
 
-With this module you can create role definitions on a management group level
+This module deploys a Role Definition at a Management Group scope.
 
 ## Navigation
 

@@ -44,8 +44,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'Status')
-            SortByColumn   = 'Name'
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
             Environment    = 'GitHub'
           }
 
@@ -66,7 +65,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'modules' 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
             Environment    = 'GitHub'
           }
 
@@ -85,6 +84,9 @@ jobs:
           $functionInput = @{
             MarkdownFilePath = Join-Path $env:GITHUB_WORKSPACE 'docs' 'wiki' 'The library - Module overview.md'
             ModuleFolderPath = Join-Path $env:GITHUB_WORKSPACE 'modules'
+            Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
+            RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
+            Environment    = 'GitHub'
           }
 
           Write-Verbose "Invoke task with" -Verbose

@@ -1,6 +1,6 @@
-# DBforMySQL FlexibleServers `[Microsoft.DBforMySQL/flexibleServers]`
+# DBforMySQL Flexible Servers `[Microsoft.DBforMySQL/flexibleServers]`
 
-This module deploys DBforMySQL FlexibleServers.
+This module deploys a DBforMySQL Flexible Server.
 
 ## Navigation
 
@@ -66,7 +66,7 @@ This module deploys DBforMySQL FlexibleServers.
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `firewallRules` | _[firewallRules](firewall-rules/README.md)_ array | `[]` |  | The firewall rules to create in the MySQL flexible server. |
 | `geoBackupCMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption when geoRedundantBackup is "Enabled". |
 | `geoBackupCMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption when geoRedundantBackup is "Enabled". If not provided, the latest key version is used. |

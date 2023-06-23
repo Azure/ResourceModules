@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "EventGrid SystemTopics EventSubscriptions",
-    "summary": "This module deploys event subscriptions for system topics.",
+    "name": "Event Grid System Topic Event Subscriptions",
+    "summary": "This module deploys an Event Grid System Topic Event Subscription.",
     "owner": "Azure/module-maintainers"
 }

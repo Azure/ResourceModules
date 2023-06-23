@@ -1,6 +1,6 @@
-# Web/Function Apps `[Microsoft.Web/sites/slots]`
+# Web/Function App Deployment Slots `[Microsoft.Web/sites/slots]`
 
-This module deploys a web or function app.
+This module deploys a Web or Function App Deployment Slot.
 
 ## Navigation
 

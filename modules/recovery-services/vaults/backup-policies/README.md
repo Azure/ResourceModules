@@ -1,6 +1,6 @@
-# RecoveryServicesVaultsBackupPolicies `[Microsoft.RecoveryServices/vaults/backupPolicies]`
+# Recovery Services Vault Backup Policies `[Microsoft.RecoveryServices/vaults/backupPolicies]`
 
-This module deploys a Backup Policy for a Recovery Services Vault
+This module deploys a Recovery Services Vault Backup Policy.
 
 ## Navigation
 

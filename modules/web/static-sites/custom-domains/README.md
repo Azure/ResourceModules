@@ -1,6 +1,6 @@
-# Static Site Custom Domain `[Microsoft.Web/staticSites/customDomains]`
+# Static Web App Site Custom Domains `[Microsoft.Web/staticSites/customDomains]`
 
-This module deploys a Custom Domain into a Static Site.
+This module deploys a Static Web App Site Custom Domain.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
-This module deploys a SQL Database within a CosmosDB account.
+This module deploys a SQL Database in a CosmosDB Account.
 
 ## Navigation
 
