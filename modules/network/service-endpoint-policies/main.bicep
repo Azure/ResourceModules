@@ -1,4 +1,4 @@
-@description('Required. Service Endpoint Policy name.')
+@description('Required. The Service Endpoint Policy name.')
 param name string
 
 @description('Optional. Location for all resources.')
@@ -63,7 +63,7 @@ resource serviceEndpointPolicy_lock 'Microsoft.Authorization/locks@2020-05-01' =
 }
 
 module serviceEndpointPolicy_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-RouteTable-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ServiceEndpointPolicy-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
