@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "EventHub Namespace EventHubs Authorization Rule",
-  "summary": "This module deploys an EventHub Namespace EventHubs Authorization Rule",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Event Hub Namespace Event Hub Authorization Rules",
+    "summary": "This module deploys an Event Hub Namespace Event Hub Authorization Rule.",
+    "owner": "Azure/module-maintainers"
 }

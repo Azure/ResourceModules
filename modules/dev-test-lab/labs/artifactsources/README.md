@@ -1,8 +1,8 @@
-# DevTestLab Labs ArtifactSources `[Microsoft.DevTestLab/labs/artifactsources]`
+# DevTest Lab Artifact Sources `[Microsoft.DevTestLab/labs/artifactsources]`
 
-This module deploys DevTestLab Labs ArtifactSources.
+This module deploys a DevTest Lab Artifact Source.
 
-An artifact source allows you to create custom artifacts for the VMs in the lab, or  use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.
+An artifact source allows you to create custom artifacts for the VMs in the lab, or use Azure Resource Manager templates to create a custom test environment. You must add a private Git repository for the artifacts or Resource Manager templates that your team creates. The repository can be hosted on GitHub or on Azure DevOps Services.
 
 ## Navigation
 

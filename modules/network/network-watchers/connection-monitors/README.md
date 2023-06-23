@@ -1,6 +1,6 @@
 # Network Watchers Connection Monitors `[Microsoft.Network/networkWatchers/connectionMonitors]`
 
-This template deploys Connection Monitors.
+This module deploys a Network Watcher Connection Monitor.
 
 ## Navigation
 

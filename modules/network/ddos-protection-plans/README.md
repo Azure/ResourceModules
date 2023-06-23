@@ -1,6 +1,6 @@
 # DDoS Protection Plans `[Microsoft.Network/ddosProtectionPlans]`
 
-This template deploys a DDoS protection plan.
+This module deploys a DDoS Protection Plan.
 
 ## Navigation
 

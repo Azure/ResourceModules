@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "ServiceBus Namespace Authorization Rules",
-  "summary": "This module deploys authorization rules for a service bus namespace",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Service Bus Namespace Authorization Rules",
+    "summary": "This module deploys a Service Bus Namespace Authorization Rule.",
+    "owner": "Azure/module-maintainers"
 }

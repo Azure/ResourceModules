@@ -1,6 +1,6 @@
 # Log Analytics Workspaces `[Microsoft.OperationalInsights/workspaces]`
 
-This template deploys a log analytics workspace.
+This module deploys a Log Analytics Workspace.
 
 ## Navigation
 
@@ -67,7 +67,8 @@ This template deploys a log analytics workspace.
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `savedSearches` | _[savedSearches](saved-searches/README.md)_ array | `[]` |  | Kusto Query Language searches to save. |
-| `serviceTier` | string | `'PerGB2018'` | `[Free, PerGB2018, PerNode, Standalone]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
+| `skuCapacityReservationLevel` | int | `100` |  | The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. Must be in increments of 100 between 100 and 5000. |
+| `skuName` | string | `'PerGB2018'` | `[CapacityReservation, Free, LACluster, PerGB2018, PerNode, Premium, Standalone, Standard]` | The name of the SKU. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tables` | _[tables](tables/README.md)_ array | `[]` |  | LAW custom tables to be deployed. |

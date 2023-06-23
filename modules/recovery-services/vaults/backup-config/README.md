@@ -1,6 +1,6 @@
 # Recovery Services Vault Backup Config `[Microsoft.RecoveryServices/vaults/backupconfig]`
 
-This module deploys recovery services vault backup config.
+This module deploys a Recovery Services Vault Backup Config.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "DICOM Services",
-  "summary": "This module deploys a DICOM service.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Healthcare API Workspace DICOM Services",
+    "summary": "This module deploys a Healthcare API Workspace DICOM Service.",
+    "owner": "Azure/module-maintainers"
 }

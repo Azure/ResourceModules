@@ -16,15 +16,16 @@ This module deploys an Azure Health Bot.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.HealthBot/healthBots` | [2020-12-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots) |
+| `Microsoft.HealthBot/healthBots` | [2022-08-08](https://learn.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2022-08-08/healthBots) |
 
 ## Parameters
 
 **Required parameters**
 
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the resource. |
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `name` | string |  | Name of the resource. |
+| `sku` | string | `[C0, F0, S1]` | The name of the Azure Health Bot SKU. |
 
 **Optional parameters**
 
@@ -34,8 +35,8 @@ This module deploys an Azure Health Bot.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'F0'` |  | The resource model definition representing SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `tags`
@@ -138,6 +139,39 @@ roleAssignments: [
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -170,6 +204,7 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>hbhbcom001'
+    sku: 'F0'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -185,6 +220,9 @@ module healthBots './health-bot/health-bots/main.bicep' = {
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
+    }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
     }
   }
 }
@@ -205,6 +243,9 @@ module healthBots './health-bot/health-bots/main.bicep' = {
     // Required parameters
     "name": {
       "value": "<<namePrefix>>hbhbcom001"
+    },
+    "sku": {
+      "value": "F0"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -229,6 +270,11 @@ module healthBots './health-bot/health-bots/main.bicep' = {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
@@ -249,6 +295,7 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   params: {
     // Required parameters
     name: '<<namePrefix>>hbhbmin001'
+    sku: 'F0'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -270,6 +317,9 @@ module healthBots './health-bot/health-bots/main.bicep' = {
     // Required parameters
     "name": {
       "value": "<<namePrefix>>hbhbmin001"
+    },
+    "sku": {
+      "value": "F0"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

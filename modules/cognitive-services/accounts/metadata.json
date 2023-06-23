@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Cognitive Services",
-  "summary": "This module deploys different kinds of cognitive services resources",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Cognitive Services",
+    "summary": "This module deploys a Cognitive Service.",
+    "owner": "Azure/module-maintainers"
 }

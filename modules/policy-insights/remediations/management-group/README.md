@@ -1,6 +1,6 @@
-# PolicyInsights Remediations ManagementGroup `[Microsoft.PolicyInsights/remediations/managementGroup]`
+# Policy Insights Remediations (Management Group scope) `[Microsoft.PolicyInsights/remediations/managementGroup]`
 
-This module deploys PolicyInsights Remediations ManagementGroup.
+This module deploys a Policy Insights Remediation on a Management Group scope.
 
 ## Navigation
 

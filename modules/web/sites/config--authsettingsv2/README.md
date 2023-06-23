@@ -1,6 +1,6 @@
-# Site AuthSettingsV2 Config `[Microsoft.Web/sites/config]`
+# Site Auth Settings V2 Config `[Microsoft.Web/sites/config]`
 
-This module deploys the auth settings v2.
+This module deploys a Site Auth Settings V2 Configuration.
 
 ## Navigation
 

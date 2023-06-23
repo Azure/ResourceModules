@@ -1,6 +1,6 @@
-# Network NetworkManagers SecurityAdminConfigurations `[Microsoft.Network/networkManagers/securityAdminConfigurations]`
+# Network Manager Security Admin Configurations `[Microsoft.Network/networkManagers/securityAdminConfigurations]`
 
-This module deploys Network NetworkManagers SecurityAdminConfigurations.
+This module deploys an Network Manager Security Admin Configuration.
 A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.
 
 ## Navigation

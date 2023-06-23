@@ -1,6 +1,6 @@
-# Budgets `[Microsoft.Consumption/budgets]`
+# Consumption Budgets `[Microsoft.Consumption/budgets]`
 
-This module deploys budgets for subscriptions.
+This module deploys a Consumption Budget for Subscriptions.
 
 ## Navigation
 

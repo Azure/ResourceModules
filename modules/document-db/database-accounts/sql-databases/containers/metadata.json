@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DocumentDB Database Account SQL Databases Containers",
-    "summary": "This module deploys a container within a SQL Database of a CosmosDB account.",
+    "name": "DocumentDB Database Account SQL Database Containers",
+    "summary": "This module deploys a SQL Database Container in a CosmosDB Account.",
     "owner": "Azure/module-maintainers"
 }

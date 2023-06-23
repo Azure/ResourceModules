@@ -1,6 +1,6 @@
 # API Management Service Products Groups `[Microsoft.ApiManagement/service/products/groups]`
 
-This module deploys API Management Service Product Groups.
+This module deploys an API Management Service Product Group.
 
 ## Navigation
 

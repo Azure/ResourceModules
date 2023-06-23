@@ -1,6 +1,6 @@
-# ServiceBus Namespace Topic `[Microsoft.ServiceBus/namespaces/topics]`
+# Service Bus Namespace Topic `[Microsoft.ServiceBus/namespaces/topics]`
 
-This module deploys a topic for a service bus namespace.
+This module deploys a Service Bus Namespace Topic.
 
 ## Navigation
 

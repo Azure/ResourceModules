@@ -1,6 +1,6 @@
 # Virtual Machine Extensions `[Microsoft.Compute/virtualMachines/extensions]`
 
-This module deploys a virtual machine extension.
+This module deploys a Virtual Machine Extension.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # Virtual Machines `[Microsoft.Compute/virtualMachines]`
 
-This module deploys one Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.
+This module deploys a Virtual Machine with one or multiple NICs and optionally one or multiple public IPs.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# HealthcareApis Workspaces Iotconnectors `[Microsoft.HealthcareApis/workspaces/iotconnectors]`
+# Healthcare API Workspace IoT Connectors `[Microsoft.HealthcareApis/workspaces/iotconnectors]`
 
-This module deploys HealthcareApis MedTech Service.
+This module deploys a Healthcare API Workspace IoT Connector.
 
 ## Navigation
 

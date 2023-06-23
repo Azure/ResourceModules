@@ -1,6 +1,6 @@
-# Role Assignments `[Microsoft.Authorization/roleAssignments]`
+# Role Assignments (All scopes) `[Microsoft.Authorization/roleAssignments]`
 
-This module deploys Role Assignments across the management group, subscription or resource group scope.
+This module deploys a Role Assignment at a Management Group, Subscription or Resource Group scope.
 
 ## Navigation
 

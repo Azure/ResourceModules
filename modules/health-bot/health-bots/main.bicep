@@ -1,8 +1,16 @@
 @description('Required. Name of the resource.')
 param name string
 
-@description('Optional. The resource model definition representing SKU.')
-param sku string = 'F0'
+@allowed([
+  'C0'
+  'F0'
+  'S1'
+])
+@description('Required. The name of the Azure Health Bot SKU.')
+param sku string
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -24,6 +32,13 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -36,10 +51,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
+resource azureHealthBot 'Microsoft.HealthBot/healthBots@2022-08-08' = {
   name: name
   location: location
   tags: tags
+  identity: identity
   sku: {
     name: sku
   }

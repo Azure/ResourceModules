@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "DataProtection BackupVaults BackupPolicies",
-  "summary": "This module deploys DataProtection BackupVaults BackupPolicies.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Data Protection Backup Vault Backup Policies",
+    "summary": "This module deploys a Data Protection Backup Vault Backup Policy.",
+    "owner": "Azure/module-maintainers"
 }

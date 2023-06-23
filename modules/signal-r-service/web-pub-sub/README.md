@@ -1,6 +1,6 @@
-# Web PubSub Services `[Microsoft.SignalRService/webPubSub]`
+# SignalR Web PubSub Services `[Microsoft.SignalRService/webPubSub]`
 
-This module deploys a Web PubSub Service resource.
+This module deploys a SignalR Web PubSub Service.
 
 ## Navigation
 

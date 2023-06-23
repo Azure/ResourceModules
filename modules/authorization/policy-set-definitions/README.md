@@ -1,6 +1,6 @@
-# Policy Set Definitions `[Microsoft.Authorization/policySetDefinitions]`
+# Policy Set Definitions (Initiatives) (All scopes) `[Microsoft.Authorization/policySetDefinitions]`
 
-With this module you can create policy set definitions across the management group or subscription scope.
+This module deploys a Policy Set Definition (Initiative) at a Management Group or Subscription scope.
 
 ## Navigation
 
