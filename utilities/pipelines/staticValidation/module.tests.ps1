@@ -1363,6 +1363,88 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             }
         }
     }
+
+    Context 'Public Bicep Registry tests' {
+
+        $deploymentTestFileTestCases = @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            $testFolderPath = Join-Path $moduleFolderPath '.test'
+            if (Test-Path $testFolderPath) {
+                $centralTestFilePath = Join-Path $testFolderPath 'main.test.bicep'
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
+
+                # Collect scopes for special modules that deploy to a diverse set of scopes
+                $scopes = @()
+                foreach ($testFilePath in $testFilePaths) {
+                    $content = Get-Content -Path $testFilePath
+
+                    if (($content | Where-Object { $_ -like '*targetScope =*' }).Count -gt 0) {
+                        # Custom scope
+                        $scopeLine = $content | Where-Object { $_ -like '*targetScope =*' }
+                        if ($scopeLine -match "targetScope = '([a-zA-Z]+)'") {
+                            $scopes += @{
+                                path  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+                                scope = $Matches[1]
+                            }
+                        } else {
+                            throw "Unable to detect scope in file [$testFilePath]"
+                        }
+                    } else {
+                        # Default scope
+                        $scopes += @{
+                            path  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+                            scope = 'resourceGroup'
+                        }
+                    }
+                }
+
+                # Create test cases
+                foreach ($testFilePath in $testFilePaths) {
+
+                    $deploymentTestFileTestCases += @{
+                        testFilePath        = $testFilePath
+                        allTestScopes       = $scopes
+                        testFileFolderName  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+                        centralTestFilePath = $centralTestFilePath
+                        moduleFolderName    = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                    }
+                }
+            }
+        }
+
+        It '[<moduleFolderName>] Module should have central test file [.test/main.test.bicep] for Public Bicep Registry CI' -TestCases ($deploymentTestFileTestCases | Select-Object -Unique) {
+
+            param(
+                [string] $centralTestFilePath
+            )
+
+            Test-Path $centralTestFilePath | Should -Be $true
+        }
+
+        It '[<moduleFolderName>] Module''s central test file should contain a reference to test folder [<testFileFolderName>] such as [module <testFileFolderName> ''<testFileFolderName>/main.test.bicep'' = {]' -TestCases $deploymentTestFileTestCases {
+
+            param(
+                [string] $testFileFolderName,
+                [string] $centralTestFilePath,
+                [hashtable[]] $allTestScopes
+            )
+
+            $unsupportedScopeCombination = $allTestScopes.scope -contains 'subscription' -and $allTestScopes.scope -contains 'managementGroup'
+            $currentInManagementGroupScope = ($allTestScopes | Where-Object { $_.path -eq $testFileFolderName }).scope -eq 'managementGroup'
+            if ($unsupportedScopeCombination -and $currentInManagementGroupScope) {
+                Set-ItResult -Skipped -Because 'the module has tests in the management group as well as subscription scope. In these cases we only require the subscription scope in the [.test/main.test.bicep] file.'
+                return
+            }
+
+            $centralTestFileContent = Get-Content $centralTestFilePath
+            $centralTestFileTestCases = $centralTestFileContent | Where-Object {
+                $_ -match "^module $testFileFolderName '$testFileFolderName\/main.test.bicep' = \{$"
+            }
+
+            $centralTestFileTestCases.Count | Should -Be 1
+        }
+    }
 }
 
 Describe 'API version tests' -Tag 'ApiCheck' {
