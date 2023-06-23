@@ -1,6 +1,6 @@
 {
     "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
     "name": "Public SSH Keys",
-    "summary": "This template deploys a Public SSH Key resource.\n\n> Note: The resource does not auto-generate the key for you.",
+    "summary": "This module deploys a Public SSH Key.\n\n> Note: The resource does not auto-generate the key for you.",
     "owner": "Azure/module-maintainers"
 }

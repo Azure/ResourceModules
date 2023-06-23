@@ -17,6 +17,9 @@ param serviceShort string = 'cdcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,7 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 
@@ -44,7 +47,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-${serviceShort}001'
+    name: '${namePrefix}-${serviceShort}001'
     sku: 'UltraSSD_LRS'
     diskIOPSReadWrite: 500
     diskMBpsReadWrite: 60

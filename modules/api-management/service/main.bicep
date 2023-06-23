@@ -154,7 +154,7 @@ param namedValues array = []
 param policies array = []
 
 @description('Optional. Portal settings.')
-param portalSettings array = []
+param portalsettings array = []
 
 @description('Optional. Products.')
 param products array = []
@@ -392,12 +392,12 @@ module service_namedValues 'named-values/main.bicep' = [for (namedValue, index) 
   }
 }]
 
-module service_portalSettings 'portalsettings/main.bicep' = [for (portalSetting, index) in portalSettings: {
+module service_portalsettings 'portalsettings/main.bicep' = [for (portalsetting, index) in portalsettings: {
   name: '${uniqueString(deployment().name, location)}-Apim-PortalSetting-${index}'
   params: {
     apiManagementServiceName: service.name
-    name: portalSetting.name
-    properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
+    name: portalsetting.name
+    properties: contains(portalsetting, 'properties') ? portalsetting.properties : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

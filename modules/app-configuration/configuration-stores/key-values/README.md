@@ -1,6 +1,6 @@
-# App Configuration `[Microsoft.AppConfiguration/configurationStores/keyValues]`
+# App Configuration Stores Key Values `[Microsoft.AppConfiguration/configurationStores/keyValues]`
 
-This module deploys an App Configuration Store.
+This module deploys an App Configuration Store Key Value.
 
 ## Navigation
 

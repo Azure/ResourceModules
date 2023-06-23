@@ -4,14 +4,23 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode.')
+@description('Optional. The name of the SKU.')
 @allowed([
+  'CapacityReservation'
   'Free'
-  'Standalone'
-  'PerNode'
+  'LACluster'
   'PerGB2018'
+  'PerNode'
+  'Premium'
+  'Standalone'
+  'Standard'
 ])
-param serviceTier string = 'PerGB2018'
+param skuName string = 'PerGB2018'
+
+@minValue(100)
+@maxValue(5000)
+@description('Optional. The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. Must be in increments of 100 between 100 and 5000.')
+param skuCapacityReservationLevel int = 100
 
 @description('Optional. List of storage accounts to be read by the workspace.')
 param storageInsightsConfigs array = []
@@ -189,7 +198,8 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
       enableLogAccessUsingOnlyResourcePermissions: useResourcePermissions
     }
     sku: {
-      name: serviceTier
+      name: skuName
+      capacityReservationLevel: skuName == 'CapacityReservation' ? skuCapacityReservationLevel : null
     }
     retentionInDays: dataRetention
     workspaceCapping: {

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "DBforMySQL FlexibleServers FirewallRules",
-  "summary": "This module deploys DBforMySQL FlexibleServers FirewallRules.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "DBforMySQL Flexible Server Firewall Rules",
+    "summary": "This module deploys a DBforMySQL Flexible Server Firewall Rule.",
+    "owner": "Azure/module-maintainers"
 }

@@ -1,6 +1,6 @@
-# PowerBIDedicated Capacities `[Microsoft.PowerBIDedicated/capacities]`
+# Power BI Dedicated Capacities `[Microsoft.PowerBIDedicated/capacities]`
 
-This module deploys PowerBIDedicated Capacities.
+This module deploys a Power BI Dedicated Capacity.
 
 ## Navigation
 

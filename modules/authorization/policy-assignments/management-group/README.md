@@ -1,6 +1,6 @@
-# Policy Assignment on Management Group level `[Microsoft.Authorization/policyAssignments/managementGroup]`
+# Policy Assignments (Management Group scope) `[Microsoft.Authorization/policyAssignments/managementGroup]`
 
-With this module you can perform policy assignments on a management group level.
+This module deploys a Policy Assignment at a Management Group scope.
 
 ## Navigation
 

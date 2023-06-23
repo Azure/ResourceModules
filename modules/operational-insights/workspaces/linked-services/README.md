@@ -1,6 +1,6 @@
-# Operationalinsights Workspaces Linked Services `[Microsoft.OperationalInsights/workspaces/linkedServices]`
+# Log Analytics Workspace Linked Services `[Microsoft.OperationalInsights/workspaces/linkedServices]`
 
-This template deploys a linked service for a Log Analytics workspace.
+This module deploys a Log Analytics Workspace Linked Service.
 
 ## Navigation
 

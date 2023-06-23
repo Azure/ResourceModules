@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Virtual Hub Route Table",
-  "summary": "This module deploys virtual hub route tables.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Virtual Hub Route Tables",
+    "summary": "This module deploys a Virtual Hub Route Table.",
+    "owner": "Azure/module-maintainers"
 }

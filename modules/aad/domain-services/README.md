@@ -1,6 +1,6 @@
 # Azure Active Directory Domain Services `[Microsoft.AAD/domainServices]`
 
-This template deploys Azure Active Directory Domain Services (AADDS).
+This module deploys an Azure Active Directory Domain Services (AADDS).
 
 ## Navigation
 

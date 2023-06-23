@@ -1,6 +1,6 @@
-# Network NetworkManagers NetworkGroups `[Microsoft.Network/networkManagers/networkGroups]`
+# Network Manager Network Groups `[Microsoft.Network/networkManagers/networkGroups]`
 
-This module deploys Network NetworkManagers NetworkGroups.
+This module deploys a Network Manager Network Group.
 A network group is a collection of same-type network resources that you can associate with network manager configurations. You can add same-type network resources after you create the network group.
 
 ## Navigation

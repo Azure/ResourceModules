@@ -17,6 +17,9 @@ param serviceShort string = 'nvhmin'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,7 +35,7 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualWANName: 'dep-<<namePrefix>>-vw-${serviceShort}'
+    virtualWANName: 'dep-${namePrefix}-vw-${serviceShort}'
   }
 }
 
@@ -45,7 +48,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-${serviceShort}'
+    name: '${namePrefix}-${serviceShort}'
     addressPrefix: '10.0.0.0/16'
     virtualWanId: nestedDependencies.outputs.virtualWWANResourceId
   }

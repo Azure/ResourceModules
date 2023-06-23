@@ -1,6 +1,6 @@
-# Network Security Groups Security Rules `[Microsoft.Network/networkSecurityGroups/securityRules]`
+# Network Security Group (NSG) Security Rules `[Microsoft.Network/networkSecurityGroups/securityRules]`
 
-This module deploys Network Security Group Security Rules.
+This module deploys a Network Security Group (NSG) Security Rule.
 
 ## Navigation
 

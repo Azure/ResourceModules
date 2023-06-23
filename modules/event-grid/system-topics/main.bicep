@@ -140,16 +140,16 @@ module systemTopics_eventSubscriptions 'eventSubscriptions/main.bicep' = [for (e
     destination: eventSubscription.destination
     systemTopicName: systemTopic.name
     name: eventSubscription.name
-    deadLetterDestination: contains(eventSubscriptions, 'deadLetterDestination') ? eventSubscription.deadLetterDestination : {}
-    deadLetterWithResourceIdentity: contains(eventSubscriptions, 'deadLetterWithResourceIdentity') ? eventSubscription.deadLetterWithResourceIdentity : {}
-    deliveryWithResourceIdentity: contains(eventSubscriptions, 'deliveryWithResourceIdentity') ? eventSubscription.deliveryWithResourceIdentity : {}
-    enableDefaultTelemetry: contains(eventSubscriptions, 'enableDefaultTelemetry') ? eventSubscription.enableDefaultTelemetry : true
-    eventDeliverySchema: contains(eventSubscriptions, 'eventDeliverySchema') ? eventSubscription.eventDeliverySchema : 'EventGridSchema'
-    expirationTimeUtc: contains(eventSubscriptions, 'expirationTimeUtc') ? eventSubscription.expirationTimeUtc : ''
-    filter: contains(eventSubscriptions, 'filter') ? eventSubscription.filter : {}
-    labels: contains(eventSubscriptions, 'labels') ? eventSubscription.labels : []
-    location: contains(eventSubscriptions, 'location') ? eventSubscription.location : systemTopic.location
-    retryPolicy: contains(eventSubscriptions, 'retryPolicy') ? eventSubscription.retryPolicy : {}
+    deadLetterDestination: contains(eventSubscription, 'deadLetterDestination') ? eventSubscription.deadLetterDestination : {}
+    deadLetterWithResourceIdentity: contains(eventSubscription, 'deadLetterWithResourceIdentity') ? eventSubscription.deadLetterWithResourceIdentity : {}
+    deliveryWithResourceIdentity: contains(eventSubscription, 'deliveryWithResourceIdentity') ? eventSubscription.deliveryWithResourceIdentity : {}
+    enableDefaultTelemetry: contains(eventSubscription, 'enableDefaultTelemetry') ? eventSubscription.enableDefaultTelemetry : true
+    eventDeliverySchema: contains(eventSubscription, 'eventDeliverySchema') ? eventSubscription.eventDeliverySchema : 'EventGridSchema'
+    expirationTimeUtc: contains(eventSubscription, 'expirationTimeUtc') ? eventSubscription.expirationTimeUtc : ''
+    filter: contains(eventSubscription, 'filter') ? eventSubscription.filter : {}
+    labels: contains(eventSubscription, 'labels') ? eventSubscription.labels : []
+    location: contains(eventSubscription, 'location') ? eventSubscription.location : systemTopic.location
+    retryPolicy: contains(eventSubscription, 'retryPolicy') ? eventSubscription.retryPolicy : {}
   }
 }]
 

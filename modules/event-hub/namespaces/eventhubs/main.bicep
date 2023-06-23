@@ -41,7 +41,7 @@ param partitionCount int = 2
 param status string = 'Active'
 
 @description('Optional. The consumer groups to create in this event hub instance.')
-param consumerGroups array = [
+param consumergroups array = [
   {
     name: '$Default'
   }
@@ -155,7 +155,7 @@ resource eventHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(l
   scope: eventHub
 }
 
-module eventHub_consumergroups 'consumergroups/main.bicep' = [for (consumerGroup, index) in consumerGroups: {
+module eventHub_consumergroups 'consumergroups/main.bicep' = [for (consumerGroup, index) in consumergroups: {
   name: '${deployment().name}-ConsumerGroup-${index}'
   params: {
     namespaceName: namespaceName

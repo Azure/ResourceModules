@@ -1,6 +1,6 @@
 # Route Tables `[Microsoft.Network/routeTables]`
 
-This module deploys a user defined route table.
+This module deploys a User Defined Route Table (UDR).
 
 ## Navigation
 

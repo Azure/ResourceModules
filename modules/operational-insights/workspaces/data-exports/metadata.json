@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Log Analytics Workspace Data Exports",
-  "summary": "This module deploys Log Analytics Workspace Data Exports.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Log Analytics Workspace Data Exports",
+    "summary": "This module deploys a Log Analytics Workspace Data Export.",
+    "owner": "Azure/module-maintainers"
 }

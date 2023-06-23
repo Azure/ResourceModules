@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Data Factory Integration RunTimes",
-  "summary": "This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Data Factory",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Data Factory Integration RunTimes",
+    "summary": "This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.",
+    "owner": "Azure/module-maintainers"
 }

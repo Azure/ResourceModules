@@ -1,6 +1,6 @@
-# Static Site Config `[Microsoft.Web/staticSites/config]`
+# Static Web App Site Config `[Microsoft.Web/staticSites/config]`
 
-This module deploys a Static Site Config.
+This module deploys a Static Web App Site Config.
 
 ## Navigation
 

@@ -241,7 +241,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 }]
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
 

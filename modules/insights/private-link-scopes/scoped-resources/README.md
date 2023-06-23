@@ -1,6 +1,6 @@
-# Insights PrivateLinkScopes ScopedResources `[Microsoft.Insights/privateLinkScopes/scopedResources]`
+# Private Link Scope Scoped Resources `[Microsoft.Insights/privateLinkScopes/scopedResources]`
 
-This module deploys Insights PrivateLinkScopes ScopedResources.
+This module deploys a Private Link Scope Scoped Resource.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# Policy Set Definitions on Management Group level `[Microsoft.Authorization/policySetDefinitions/managementGroup]`
+# Policy Set Definitions (Initiatives) (Management Group scope) `[Microsoft.Authorization/policySetDefinitions/managementGroup]`
 
-With this module you can create policy set definitions on a management group level.
+This module deploys a Policy Set Definition (Initiative) at a Management Group scope.
 
 ## Navigation
 

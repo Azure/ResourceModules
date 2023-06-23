@@ -21,6 +21,9 @@ param password string = newGuid()
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -36,9 +39,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
-    routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    networkSecurityGroupName: 'dep-${namePrefix}-nsg-${serviceShort}'
+    routeTableName: 'dep-${namePrefix}-rt-${serviceShort}'
     location: location
   }
 }
@@ -52,7 +55,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-${serviceShort}'
+    name: '${namePrefix}-${serviceShort}'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     subnetId: nestedDependencies.outputs.subnetResourceId

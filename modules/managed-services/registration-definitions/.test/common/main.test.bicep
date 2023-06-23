@@ -10,6 +10,9 @@ param serviceShort string = 'msrdcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -18,7 +21,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: 'Component Validation - <<namePrefix>>${serviceShort} Subscription assignment'
+    name: 'Component Validation - ${namePrefix}${serviceShort} Subscription assignment'
     authorizations: [
       {
         principalId: '9740a11d-a508-4a83-8ed5-4cb5bff5154a'

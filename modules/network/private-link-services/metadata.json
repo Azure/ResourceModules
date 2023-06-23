@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Network PrivateLinkServices",
-  "summary": "This module deploys Network Private Link Services.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Private Link Services",
+    "summary": "This module deploys a Private Link Service.",
+    "owner": "Azure/module-maintainers"
 }

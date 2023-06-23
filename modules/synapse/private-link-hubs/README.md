@@ -1,6 +1,6 @@
 # Azure Synapse Analytics `[Microsoft.Synapse/privateLinkHubs]`
 
-This module deploys Azure Synapse Analytics (private link hubs).
+This module deploys an Azure Synapse Analytics (Private Link Hub).
 
 ## Navigation
 

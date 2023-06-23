@@ -1,6 +1,6 @@
-# OperationsManagement Solutions `[Microsoft.OperationsManagement/solutions]`
+# Operations Management Solutions `[Microsoft.OperationsManagement/solutions]`
 
-This module deploys OperationsManagement Solutions.
+This module deploys an Operations Management Solution.
 
 ## Navigation
 

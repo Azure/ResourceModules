@@ -1,6 +1,6 @@
-# Role Definitions on Subscription level `[Microsoft.Authorization/roleDefinitions/subscription]`
+# Role Definitions (Subscription scope) `[Microsoft.Authorization/roleDefinitions/subscription]`
 
-With this module you can create role definitions on a subscription level
+This module deploys a Role Definition at a Subscription scope.
 
 ## Navigation
 

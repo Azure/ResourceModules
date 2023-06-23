@@ -17,6 +17,9 @@ param serviceShort string = 'oiwadv'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,11 +35,11 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>sa${serviceShort}'
-    automationAccountName: 'dep-<<namePrefix>>-auto-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-ehw-${serviceShort}'
-    eventHubName: 'dep-<<namePrefix>>-eh-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}sa${serviceShort}'
+    automationAccountName: 'dep-${namePrefix}-auto-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-ehw-${serviceShort}'
+    eventHubName: 'dep-${namePrefix}-eh-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
   }
 }
 
@@ -46,10 +49,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -63,7 +66,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     dailyQuotaGb: 10
     dataSources: [
       {

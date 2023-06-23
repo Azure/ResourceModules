@@ -1,6 +1,6 @@
-# SQL Servers `[Microsoft.Sql/servers]`
+# Azure SQL Servers `[Microsoft.Sql/servers]`
 
-This module deploys a SQL server.
+This module deploys an Azure SQL Server.
 
 ## Navigation
 
@@ -853,6 +853,7 @@ module servers './sql/servers/main.bicep' = {
         sourceDatabaseResourceId: '<sourceDatabaseResourceId>'
       }
     ]
+    enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -895,6 +896,9 @@ module servers './sql/servers/main.bicep' = {
           "sourceDatabaseResourceId": "<sourceDatabaseResourceId>"
         }
       ]
+    },
+    "enableDefaultTelemetry": {
+      "value": "<enableDefaultTelemetry>"
     },
     "tags": {
       "value": {

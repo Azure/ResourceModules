@@ -1,6 +1,6 @@
-# EventHub `[Microsoft.EventHub/namespaces/eventhubs]`
+# Event Hub Namespace Event Hubs `[Microsoft.EventHub/namespaces/eventhubs]`
 
-This module deploys an Event Hub.
+This module deploys an Event Hub Namespace Event Hub.
 
 ## Navigation
 
@@ -47,7 +47,7 @@ This module deploys an Event Hub.
 | `captureDescriptionIntervalInSeconds` | int | `300` |  | The time window allows you to set the frequency with which the capture to Azure Blobs will happen. |
 | `captureDescriptionSizeLimitInBytes` | int | `314572800` |  | The size window defines the amount of data built up in your Event Hub before an capture operation. |
 | `captureDescriptionSkipEmptyArchives` | bool | `False` |  | A value that indicates whether to Skip Empty Archives. |
-| `consumerGroups` | _[consumerGroups](consumer-groups/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | The consumer groups to create in this event hub instance. |
+| `consumergroups` | _[consumergroups](consumergroups/README.md)_ array | `[System.Management.Automation.OrderedHashtable]` |  | The consumer groups to create in this event hub instance. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `lock` | string | `''` | `['', CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `messageRetentionInDays` | int | `1` |  | Number of days to retain the events for this Event Hub, value should be 1 to 7 days. |
