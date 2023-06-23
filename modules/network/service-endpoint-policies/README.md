@@ -24,7 +24,7 @@ This module deploys a Service Endpoint Policy.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Service Endpoint Policy name. |
+| `name` | string | The Service Endpoint Policy name. |
 
 **Optional parameters**
 
@@ -171,9 +171,19 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   name: '${uniqueString(deployment().name, location)}-test-nsnpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nsnpcom001'
+    name: '<<namePrefix>>-nsnpcom-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        principalIds: [
+          '<managedIdentityPrincipalId>'
+        ]
+        principalType: 'ServicePrincipal'
+        roleDefinitionIdOrName: 'Reader'
+      }
+    ]
     serviceEndpointPolicyDefinitions: [
       {
         name: 'Storage.ServiceEndpoint'
@@ -209,11 +219,25 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nsnpcom001"
+      "value": "<<namePrefix>>-nsnpcom-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
+    },
+    "lock": {
+      "value": "CanNotDelete"
+    },
+    "roleAssignments": {
+      "value": [
+        {
+          "principalIds": [
+            "<managedIdentityPrincipalId>"
+          ],
+          "principalType": "ServicePrincipal",
+          "roleDefinitionIdOrName": "Reader"
+        }
+      ]
     },
     "serviceEndpointPolicyDefinitions": {
       "value": [
@@ -254,7 +278,7 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   name: '${uniqueString(deployment().name, location)}-test-nsnpmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nsnpmin001'
+    name: '<<namePrefix>>-nsnpmin-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -275,7 +299,7 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nsnpmin001"
+      "value": "<<namePrefix>>-nsnpmin-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

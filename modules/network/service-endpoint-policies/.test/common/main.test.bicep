@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.privateendpoints-${serviceShort}-rg'
+param resourceGroupName string = 'ms.network.serviceendpointpolicies-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -16,6 +16,9 @@ param serviceShort string = 'nsnpcom'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
 
 // ============ //
 // Dependencies //
@@ -28,6 +31,14 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module nestedDependencies 'dependencies.bicep' = {
+  scope: resourceGroup
+  name: '${uniqueString(deployment().name, location)}-nestedDependencies'
+  params: {
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+  }
+}
+
 // ============== //
 // Test Execution //
 // ============== //
@@ -37,7 +48,21 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}-${serviceShort}-001'
+    lock: 'CanNotDelete'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          nestedDependencies.outputs.managedIdentityPrincipalId
+        ]
+        principalType: 'ServicePrincipal'
+      }
+    ]
+    tags: {
+      Environment: 'Non-Prod'
+      Role: 'DeploymentValidation'
+    }
     serviceEndpointPolicyDefinitions: [
       {
         name: 'Storage.ServiceEndpoint'
@@ -51,9 +76,5 @@ module testDeployment '../../main.bicep' = {
         type: 'Microsoft.Network/serviceEndpointPolicies/serviceEndpointPolicyDefinitions'
       }
     ]
-    tags: {
-      Environment: 'Non-Prod'
-      Role: 'DeploymentValidation'
-    }
   }
 }
