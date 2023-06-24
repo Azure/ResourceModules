@@ -58,6 +58,7 @@ module testDeployment '../../main.bicep' = {
         principalType: 'ServicePrincipal'
       }
     ]
+    azureMonitorAlertSettingsAlertsForAllJobFailures: 'Disabled'
     systemAssignedIdentity: true
     backupPolicies: [
       {
