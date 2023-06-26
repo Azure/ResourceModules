@@ -180,7 +180,7 @@ var builtInRoleNames = {
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

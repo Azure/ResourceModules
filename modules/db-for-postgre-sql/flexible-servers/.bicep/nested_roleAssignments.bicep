@@ -50,7 +50,7 @@ var builtInRoleNames = {
 }
 
 resource flexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@2022-01-20-preview' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

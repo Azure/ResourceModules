@@ -55,7 +55,7 @@ var builtInRoleNames = {
 }
 
 resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

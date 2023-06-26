@@ -52,7 +52,7 @@ var builtInRoleNames = {
 }
 
 resource lab 'Microsoft.DevTestLab/labs@2018-09-15' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

@@ -79,7 +79,7 @@ var builtInRoleNames = {
 }
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

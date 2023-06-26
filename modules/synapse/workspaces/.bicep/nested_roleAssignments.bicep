@@ -19,7 +19,7 @@ var builtInRoleNames = {
 }
 
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

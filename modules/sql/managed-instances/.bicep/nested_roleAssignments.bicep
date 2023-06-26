@@ -57,7 +57,7 @@ var builtInRoleNames = {
 }
 
 resource managedInstance 'Microsoft.Sql/managedInstances@2022-02-01-preview' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

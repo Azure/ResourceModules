@@ -51,7 +51,7 @@ var builtInRoleNames = {
 }
 
 resource managedEnvironment 'Microsoft.App/managedEnvironments@2022-10-01' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

@@ -53,7 +53,7 @@ var builtInRoleNames = {
 }
 
 resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {

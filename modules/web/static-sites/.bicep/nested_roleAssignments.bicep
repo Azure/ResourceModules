@@ -26,7 +26,7 @@ var builtInRoleNames = {
 }
 
 resource staticSite 'Microsoft.Web/staticSites@2021-02-01' existing = {
-  name: last(split(resourceId, '/'))!
+  name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for principalId in principalIds: {
