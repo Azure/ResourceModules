@@ -25,15 +25,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' existing = {
   name: namespaceName
 
-  resource eventhub 'eventHubs@2021-11-01' existing = {
+  resource eventhub 'eventhubs@2022-01-01-preview' existing = {
     name: eventHubName
   }
 }
 
-resource consumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2021-11-01' = {
+resource consumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
   name: name
   parent: namespace::eventhub
   properties: {
