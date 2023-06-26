@@ -22,11 +22,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' existing = {
   name: namespaceName
 }
 
-resource disasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2021-11-01' = {
+resource disasterRecoveryConfig 'Microsoft.EventHub/namespaces/disasterRecoveryConfigs@2022-01-01-preview' = {
   name: name
   parent: namespace
   properties: {
