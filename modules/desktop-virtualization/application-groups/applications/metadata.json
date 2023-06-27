@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "AVD Applications",
-  "summary": "This module deploys AVD Applications.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Azure Virtual Desktop (AVD) Application Group Applications",
+    "summary": "This module deploys an Azure Virtual Desktop (AVD) Application Group Application.",
+    "owner": "Azure/module-maintainers"
 }

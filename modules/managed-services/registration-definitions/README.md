@@ -1,6 +1,6 @@
 # Registration Definitions `[Microsoft.ManagedServices/registrationDefinitions]`
 
-This module deploys `registrationDefinitions` and `registrationAssignments` (often referred to as 'Lighthouse' or 'resource delegation')
+This module deploys a `Registration Definition` and a `Registration Assignment` (often referred to as 'Lighthouse' or 'resource delegation')
 on subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is
 assigned a role is in a remote/managing Azure Active Directory tenant. The templates are run towards the tenant where
 the Azure resources you want to delegate access to are, providing 'authorizations' (aka. access delegation) to principals in a

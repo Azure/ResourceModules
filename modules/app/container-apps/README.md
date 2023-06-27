@@ -1,6 +1,6 @@
-# App ContainerApps `[Microsoft.App/containerApps]`
+# Container Apps `[Microsoft.App/containerApps]`
 
-This module deploys Container Apps.
+This module deploys a Container App.
 
 ## Navigation
 

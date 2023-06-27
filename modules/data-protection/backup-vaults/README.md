@@ -1,6 +1,6 @@
-# DataProtection BackupVaults `[Microsoft.DataProtection/backupVaults]`
+# Data Protection Backup Vaults `[Microsoft.DataProtection/backupVaults]`
 
-This module deploys DataProtection BackupVaults.
+This module deploys a Data Protection Backup Vault.
 
 ## Navigation
 
@@ -16,8 +16,8 @@ This module deploys DataProtection BackupVaults.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.DataProtection/backupVaults` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults) |
-| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults/backupPolicies) |
+| `Microsoft.DataProtection/backupVaults` | [2022-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-11-01-preview/backupVaults) |
+| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-11-01-preview/backupVaults/backupPolicies) |
 
 ## Parameters
 
@@ -31,6 +31,7 @@ This module deploys DataProtection BackupVaults.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `azureMonitorAlertSettingsAlertsForAllJobFailures` | string | `'Enabled'` | `[Disabled, Enabled]` | Settings for Azure Monitor based alerts for job failures. |
 | `backupPolicies` | _[backupPolicies](backup-policies/README.md)_ array | `[]` |  | List of all backup policies. |
 | `dataStoreType` | string | `'VaultStore'` | `[ArchiveStore, OperationalStore, VaultStore]` | The datastore type to use. ArchiveStore does not support ZoneRedundancy. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
@@ -356,6 +357,7 @@ module backupVaults './data-protection/backup-vaults/main.bicep' = {
     // Required parameters
     name: '<<namePrefix>>dpbvcom001'
     // Non-required parameters
+    azureMonitorAlertSettingsAlertsForAllJobFailures: 'Disabled'
     backupPolicies: [
       {
         name: 'DefaultPolicy'
@@ -455,6 +457,9 @@ module backupVaults './data-protection/backup-vaults/main.bicep' = {
       "value": "<<namePrefix>>dpbvcom001"
     },
     // Non-required parameters
+    "azureMonitorAlertSettingsAlertsForAllJobFailures": {
+      "value": "Disabled"
+    },
     "backupPolicies": {
       "value": [
         {

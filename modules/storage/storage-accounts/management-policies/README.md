@@ -1,6 +1,6 @@
 # Storage Account Management Policies `[Microsoft.Storage/storageAccounts/managementPolicies]`
 
-This module can be used to deploy a management policies into a storage account.
+This module deploys a Storage Account Management Policy.
 
 ## Navigation
 

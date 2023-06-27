@@ -1,6 +1,6 @@
 # Availability Sets `[Microsoft.Compute/availabilitySets]`
 
-This template deploys an availability set
+This module deploys an Availability Set.
 
 ## Navigation
 

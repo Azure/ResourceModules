@@ -1,6 +1,6 @@
-# Network NetworkManagers ScopeConnections `[Microsoft.Network/networkManagers/scopeConnections]`
+# Network Manager Scope Connections `[Microsoft.Network/networkManagers/scopeConnections]`
 
-This module deploys Network NetworkManagers ScopeConnections.
+This module deploys a Network Manager Scope Connection.
 Create a cross-tenant connection to manage a resource from another tenant.
 
 ## Navigation

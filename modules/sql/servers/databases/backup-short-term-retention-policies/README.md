@@ -1,6 +1,6 @@
-# SQL Server Database Short Term Backup Retention Policy `[Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies]`
+# Azure SQL Server Database Short Term Backup Retention Policies `[Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies]`
 
-This module deploys a short term retention policy for a Azure SQL Database.
+This module deploys an Azure SQL Server Database Short-Term Backup Retention Policy.
 
 ## Navigation
 

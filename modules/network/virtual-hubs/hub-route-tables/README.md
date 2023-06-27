@@ -1,6 +1,6 @@
-# Virtual Hub Route Table `[Microsoft.Network/virtualHubs/hubRouteTables]`
+# Virtual Hub Route Tables `[Microsoft.Network/virtualHubs/hubRouteTables]`
 
-This module deploys virtual hub route tables.
+This module deploys a Virtual Hub Route Table.
 
 ## Navigation
 

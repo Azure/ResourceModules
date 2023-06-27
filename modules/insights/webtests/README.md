@@ -1,6 +1,6 @@
 # Web Tests `[Microsoft.Insights/webtests]`
 
-This module deploys Web Tests.
+This module deploys a Web Test.
 
 ## Navigation
 

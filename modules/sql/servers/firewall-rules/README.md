@@ -1,6 +1,6 @@
-# SQL Server Firewall rule `[Microsoft.Sql/servers/firewallRules]`
+# Azure SQL Server Firewall Rule `[Microsoft.Sql/servers/firewallRules]`
 
-This module deploys an SQL Server Firewall rule.
+This module deploys an Azure SQL Server Firewall Rule.
 
 ## Navigation
 

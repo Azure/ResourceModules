@@ -1,6 +1,6 @@
-# DevTestLab Labs VirtualNetworks `[Microsoft.DevTestLab/labs/virtualnetworks]`
+# DevTest Lab Virtual Networks `[Microsoft.DevTestLab/labs/virtualnetworks]`
 
-This module deploys DevTestLab Labs VirtualNetworks.
+This module deploys a DevTest Lab Virtual Network.
 
 Lab virtual machines must be deployed into a virtual network. This resource type allows configuring the virtual network and subnet settings used for the lab virtual machines.
 

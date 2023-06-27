@@ -1,6 +1,6 @@
-# Front Doors `[Microsoft.Network/frontDoors]`
+# Azure Front Doors `[Microsoft.Network/frontDoors]`
 
-This module deploys Front Doors.
+This module deploys an Azure Front Door.
 
 ## Navigation
 

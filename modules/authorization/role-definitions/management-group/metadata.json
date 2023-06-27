@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Role Definitions on Management Group level",
-  "summary": "With this module you can create role definitions on a management group level",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Role Definitions (Management Group scope)",
+    "summary": "This module deploys a Role Definition at a Management Group scope.",
+    "owner": "Azure/module-maintainers"
 }

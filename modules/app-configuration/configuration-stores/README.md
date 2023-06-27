@@ -1,4 +1,4 @@
-# App Configuration `[Microsoft.AppConfiguration/configurationStores]`
+# App Configuration Stores `[Microsoft.AppConfiguration/configurationStores]`
 
 This module deploys an App Configuration Store.
 

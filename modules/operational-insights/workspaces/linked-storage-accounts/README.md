@@ -1,6 +1,6 @@
-# Operational Insights Workspaces Linked Storage Accounts `[Microsoft.OperationalInsights/workspaces/linkedStorageAccounts]`
+# Log Analytics Workspace Linked Storage Accounts `[Microsoft.OperationalInsights/workspaces/linkedStorageAccounts]`
 
-This template deploys a linked Storage Accounts for a Log Analytics workspace.
+This module deploys a Log Analytics Workspace Linked Storage Account.
 
 ## Navigation
 

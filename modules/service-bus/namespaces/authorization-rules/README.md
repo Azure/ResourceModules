@@ -1,6 +1,6 @@
-# ServiceBus Namespace Authorization Rules `[Microsoft.ServiceBus/namespaces/AuthorizationRules]`
+# Service Bus Namespace Authorization Rules `[Microsoft.ServiceBus/namespaces/AuthorizationRules]`
 
-This module deploys authorization rules for a service bus namespace
+This module deploys a Service Bus Namespace Authorization Rule.
 
 ## Navigation
 

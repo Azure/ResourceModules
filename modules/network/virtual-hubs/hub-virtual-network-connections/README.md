@@ -1,6 +1,6 @@
 # Virtual Hub Virtual Network Connections `[Microsoft.Network/virtualHubs/hubVirtualNetworkConnections]`
 
-This module deploys virtual hub virtual network connections.
+This module deploys a Virtual Hub Virtual Network Connection.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Activity Logs",
-  "summary": "This module deploys a subscription wide export of the activity log.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Diagnostic Settings (Activity Logs) for Azure Subscriptions",
+    "summary": "This module deploys a Subscription wide export of the Activity Log.",
+    "owner": "Azure/module-maintainers"
 }

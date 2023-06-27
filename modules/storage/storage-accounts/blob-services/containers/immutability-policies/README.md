@@ -1,6 +1,6 @@
-# Blob Container Immutability Policy `[Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies]`
+# Storage Account Blob Container Immutability Policies `[Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies]`
 
-This module deploys an Immutability Policy for a blob container
+This module deploys a Storage Account Blob Container Immutability Policy.
 
 ## Navigation
 

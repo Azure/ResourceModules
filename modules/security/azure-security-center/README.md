@@ -1,6 +1,6 @@
-# Azure Security Center `[Microsoft.Security/azureSecurityCenter]`
+# Azure Security Center (Defender for Cloud) `[Microsoft.Security/azureSecurityCenter]`
 
-This template enables Azure security center - Standard tier by default, could be overridden.
+This module deploys an Azure Security Center (Defender for Cloud) Configuration.
 
 ## Navigation
 

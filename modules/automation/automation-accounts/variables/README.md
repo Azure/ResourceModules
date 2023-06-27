@@ -1,6 +1,6 @@
 # Automation Account Variables `[Microsoft.Automation/automationAccounts/variables]`
 
-This module deploys a variable to an Azure Automation Account.
+This module deploys an Azure Automation Account Variable.
 
 ## Navigation
 

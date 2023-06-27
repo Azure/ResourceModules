@@ -1,6 +1,6 @@
 # API Connections `[Microsoft.Web/connections]`
 
-This module deploys an Azure API connection.
+This module deploys an Azure API Connection.
 
 ## Navigation
 

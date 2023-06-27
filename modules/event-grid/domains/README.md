@@ -1,6 +1,6 @@
-# EventGrid Domains `[Microsoft.EventGrid/domains]`
+# Event Grid Domains `[Microsoft.EventGrid/domains]`
 
-This module deploys EventGrid Domains.
+This module deploys an Event Grid Domain.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# Sql Servers VirtualNetworkRules `[Microsoft.Sql/servers/virtualNetworkRules]`
+# Azure SQL Server Virtual Network Rules `[Microsoft.Sql/servers/virtualNetworkRules]`
 
-This module deploys a Sql Server Virtual Network Rule.
+This module deploys an Azure SQL Server Virtual Network Rule.
 
 ## Navigation
 

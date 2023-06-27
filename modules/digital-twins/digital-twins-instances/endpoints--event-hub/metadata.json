@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "DigitalTwin Instance EventHub Endpoint",
-  "summary": "This module deploys Digital Twin Instance Endpoints.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Digital Twins Instance EventHub Endpoint",
+    "summary": "This module deploys a Digital Twins Instance EventHub Endpoint.",
+    "owner": "Azure/module-maintainers"
 }

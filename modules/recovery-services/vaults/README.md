@@ -1,6 +1,6 @@
 # Recovery Services Vaults `[Microsoft.RecoveryServices/vaults]`
 
-This module deploys a recovery service vault.
+This module deploys a Recovery Services Vault.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # Virtual WANs `[Microsoft.Network/virtualWans]`
 
-This template deploys a virtual WAN.
+This module deploys a Virtual WAN.
 
 ## Navigation
 

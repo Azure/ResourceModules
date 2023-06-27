@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Policy Assignments",
-  "summary": "With this module you can perform policy assignments across the management group, subscription or resource group scope.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Policy Assignments (All scopes)",
+    "summary": "This module deploys a Policy Assignment at a Management Group, Subscription or Resource Group scope.",
+    "owner": "Azure/module-maintainers"
 }

@@ -1,6 +1,6 @@
-# Role Assignment on Subscription level `[Microsoft.Authorization/roleAssignments/subscription]`
+# Role Assignments (Subscription scope) `[Microsoft.Authorization/roleAssignments/subscription]`
 
-With this module you can perform role assignments on a subscription level
+This module deploys a Role Assignment at a Subscription scope.
 
 ## Navigation
 

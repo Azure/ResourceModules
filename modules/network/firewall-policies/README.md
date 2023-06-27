@@ -1,6 +1,6 @@
 # Firewall Policies `[Microsoft.Network/firewallPolicies]`
 
-This module deploys Firewall Policies.
+This module deploys a Firewall Policy.
 
 ## Navigation
 

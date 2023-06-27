@@ -1,6 +1,6 @@
-# PolicyInsights Remediations Subscription `[Microsoft.PolicyInsights/remediations/subscription]`
+# Policy Insights Remediations (Subscription scope) `[Microsoft.PolicyInsights/remediations/subscription]`
 
-This module deploys PolicyInsights Remediations Subscription.
+This module deploys a Policy Insights Remediation on a Subscription scope.
 
 ## Navigation
 

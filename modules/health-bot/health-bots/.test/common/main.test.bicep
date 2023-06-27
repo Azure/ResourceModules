@@ -63,5 +63,9 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    sku: 'F0'
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
   }
 }
