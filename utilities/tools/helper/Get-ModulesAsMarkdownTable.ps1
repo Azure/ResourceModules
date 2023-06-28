@@ -563,4 +563,3 @@ function Get-ModulesAsMarkdownTable {
 
     return $table
 }
-Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -Environment 'GitHub' -ColumnsInOrder @('Name', 'Deploy')
