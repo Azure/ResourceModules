@@ -42,8 +42,10 @@ function Get-DeployToAzureUrl {
         return ''
     }
 
+    $path = $Path -replace '\\', '/'
     $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
-    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
+    # Splitting by [/$RepositoryName/modules/] as the repository on the agent is checked out with a path such as [/home/runner/work/ResourceModules/ResourceModules/modules]. Splitting by only the repository name would yield wrong results.
+    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/modules/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\/$RepositoryName\/modules\/")[1]
 
     return ('{0}{1}>)' -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
 }
