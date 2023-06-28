@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.dbformysql.flexibleservers.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/DBforMySQL/flexibleServers/*'
+      - '/modules/db-for-my-sql/flexible-servers/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/DBforMySQL/flexibleServers'
+    value: '/modules/db-for-my-sql/flexible-servers'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

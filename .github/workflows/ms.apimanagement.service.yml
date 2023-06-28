@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.apimanagement.service.yml'
-      - 'modules/ApiManagement/service/**'
+      - 'modules/api-management/service/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/ApiManagement/service'
+  modulePath: 'modules/api-management/service'
   workflowPath: '.github/workflows/ms.apimanagement.service.yml'
 
 concurrency:

@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/ServiceBus/namespaces/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/service-bus/namespaces/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.servicebus.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/ServiceBus/namespaces'
+    value: '/modules/service-bus/namespaces'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

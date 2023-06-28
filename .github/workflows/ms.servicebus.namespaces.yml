@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/ServiceBus/namespaces/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/service-bus/namespaces/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.servicebus.namespaces.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/ServiceBus/namespaces'
+  modulePath: 'modules/service-bus/namespaces'
   workflowPath: '.github/workflows/ms.servicebus.namespaces.yml'
 
 concurrency:

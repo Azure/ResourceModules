@@ -42,8 +42,10 @@ function Get-DeployToAzureUrl {
         return ''
     }
 
+    $path = $Path -replace '\\', '/'
     $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
-    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
+    # Splitting by [/$RepositoryName/modules/] as the repository on the agent is checked out with a path such as [/home/runner/work/ResourceModules/ResourceModules/modules]. Splitting by only the repository name would yield wrong results.
+    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/modules/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\/$RepositoryName\/modules\/")[1]
 
     return ('{0}{1}>)' -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
 }
@@ -206,7 +208,7 @@ Mandatory. The name of the repository the code resides in
 Mandatory. The name of the Organization the code resides in
 
 .EXAMPLE
-> Get-ResolvedSubServiceRow -subPath 'C:\dev\ApiManagement\serviceResources' -concatedBase "ApiManagement\serviceResources" -output @() -provider 'ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
+Get-ResolvedSubServiceRow -subPath 'C:\dev\ApiManagement\serviceResources' -concatedBase "ApiManagement\serviceResources" -output @() -provider 'ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
 
 Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
 #>
@@ -308,7 +310,7 @@ function Get-ResolvedSubServiceRow {
                     $statusInputObject = @{
                         RepositoryName     = $RepositoryName
                         Organization       = $Organization
-                        PipelineFileName   = ('ms.{0}.{1}.yml' -f $provider, $subName).Replace('\', '/').Replace('/', '.').ToLower()
+                        PipelineFileName   = (((('ms.{0}.{1}.yml' -f $provider, $subName) -replace '-', '') -replace '\\', '/') -replace '/', '.').ToLower()
                         PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
                     }
                     $row['Status'] += Get-PipelineStatusUrl @statusInputObject
@@ -365,6 +367,12 @@ Mandatory. The name of the repository the code resides in
 .PARAMETER Organization
 Mandatory. The name of the Organization the code resides in
 
+.PARAMETER Environment
+Mandatory. The DevOps environment to generate the status badges for
+
+.PARAMETER ProjectName
+Optional. The project the repository is hosted in. Required if the 'environment' is 'ADO'
+
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
 
@@ -381,9 +389,14 @@ Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -ColumnsInOrder @('Resource Ty
 Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
 
 .EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-Modules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy')
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy') -Environment 'GitHub'
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name','TemplateType','Status' &'Deploy' columns, sorted by 'Name'
+Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name', 'TemplateType', 'Status'  &'Deploy' columns, sorted by 'Name' for GitHub
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'CARML' -ProjectName 'ResourceModules' -Environment 'ADO' -ColumnsInOrder @('Name', 'TemplateType', 'Status', 'Deploy')
+
+Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name', 'TemplateType', 'Status' & 'Deploy' columns, sorted by 'Name' for Azure DevOps
 #>
 function Get-ModulesAsMarkdownTable {
 
@@ -515,7 +528,7 @@ function Get-ModulesAsMarkdownTable {
                                 Organization       = $Organization
                                 Environment        = $Environment
                                 ProjectName        = $ProjectName
-                                PipelineFileName   = ('ms.{0}.{1}.yml' -f $provider, $containedFolderName).Replace('\', '/').Replace('/', '.').ToLower()
+                                PipelineFileName   = (((('ms.{0}.{1}.yml' -f $provider, $containedFolderName) -replace '-', '') -replace '\\', '/') -replace '/', '.').ToLower()
                                 PipelineFolderPath = $Environment -eq 'GitHub' ? (Join-Path '.github' 'workflows') : (Join-Path '.azuredevops' 'modulePipelines')
                             }
                             $row['Status'] += Get-PipelineStatusUrl @statusInputObject

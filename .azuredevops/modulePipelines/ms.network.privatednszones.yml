@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.privatednszones.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Network/privateDnsZones/*'
+      - '/modules/network/private-dns-zones/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Network/privateDnsZones'
+    value: '/modules/network/private-dns-zones'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

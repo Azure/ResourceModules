@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.network.expressroutecircuits.yml'
-      - 'modules/Network/expressRouteCircuits/**'
+      - 'modules/network/express-route-circuits/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Network/expressRouteCircuits'
+  modulePath: 'modules/network/express-route-circuits'
   workflowPath: '.github/workflows/ms.network.expressroutecircuits.yml'
 
 concurrency:

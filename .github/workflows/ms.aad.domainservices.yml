@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.aad.domainservices.yml'
-      - 'modules/AAD/DomainServices/**'
+      - 'modules/aad/domain-services/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/AAD/DomainServices'
+  modulePath: 'modules/aad/domain-services'
   workflowPath: '.github/workflows/ms.aad.domainservices.yml'
 
 concurrency:

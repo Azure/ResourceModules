@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.web.connections.yml'
-      - 'modules/Web/connections/**'
+      - 'modules/web/connections/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Web/connections'
+  modulePath: 'modules/web/connections'
   workflowPath: '.github/workflows/ms.web.connections.yml'
 
 concurrency:

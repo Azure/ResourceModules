@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.apimanagement.service.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/ApiManagement/service/*'
+      - '/modules/api-management/service/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/ApiManagement/service'
+    value: '/modules/api-management/service'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

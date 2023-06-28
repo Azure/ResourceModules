@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.maintenance.maintenanceconfigurations.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/Maintenance/maintenanceConfigurations/*'
+      - '/modules/maintenance/maintenance-configurations/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/Maintenance/maintenanceConfigurations'
+    value: '/modules/maintenance/maintenance-configurations'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

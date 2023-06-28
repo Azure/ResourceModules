@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/CognitiveServices/accounts/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/cognitive-services/accounts/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.cognitiveservices.accounts.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/CognitiveServices/accounts'
+  modulePath: 'modules/cognitive-services/accounts'
   workflowPath: '.github/workflows/ms.cognitiveservices.accounts.yml'
 
 concurrency:
