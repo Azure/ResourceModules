@@ -33,7 +33,7 @@ jobs:
           token: '${{ secrets.PLATFORM_REPO_UPDATE_PAT }}' # Sets general GIT credentials up
 
       # Update the root ReadMe Module Pipelines table ([`/README.md`](https://github.com/Azure/ResourceModules/blob/main/README.md))
-      - name: 'Update Module Pipelines table'
+      - name: 'Update Front Module table'
         shell: pwsh
         run: |
           # Load used functions
@@ -44,7 +44,7 @@ jobs:
             FilePath       = Join-Path $env:GITHUB_WORKSPACE 'README.md'
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
-            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name')
+            ColumnsInOrder = @('ProviderNamespace','ResourceType', 'Name', 'Deploy')
             Environment    = 'GitHub'
           }
 
