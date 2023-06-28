@@ -2,7 +2,7 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in the GitHub secrets.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: '.Platform: Update ReadMe status Tables'
+name: '.Platform: Update ReadMe Module Tables'
 
 on:
   workflow_dispatch:
