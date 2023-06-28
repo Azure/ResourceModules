@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/ContainerRegistry/registries/**'
-      - 'modules/Network/privateEndpoints/**'
+      - 'modules/container-registry/registries/**'
+      - 'modules/network/private-endpoints/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.containerregistry.registries.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/ContainerRegistry/registries'
+  modulePath: 'modules/container-registry/registries'
   workflowPath: '.github/workflows/ms.containerregistry.registries.yml'
 
 concurrency:

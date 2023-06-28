@@ -27,8 +27,8 @@ on:
     branches:
       - main
     paths:
-      - 'modules/Resources/resourceGroups/**'
-      - 'modules/Authorization/locks/resourceGroup/**'
+      - 'modules/resources/resource-groups/**'
+      - 'modules/authorization/locks/resource-group/**'
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.resources.resourcegroups.yml'
@@ -37,7 +37,7 @@ on:
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/Resources/resourceGroups'
+  modulePath: 'modules/resources/resource-groups'
   workflowPath: '.github/workflows/ms.resources.resourcegroups.yml'
 
 concurrency:

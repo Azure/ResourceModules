@@ -30,13 +30,13 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/template.module.yml'
       - '.github/workflows/ms.managedidentity.userassignedidentities.yml'
-      - 'modules/ManagedIdentity/userAssignedIdentities/**'
+      - 'modules/managed-identity/user-assigned-identities/**'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/deploymentRemoval/**'
       - '!*/**/README.md'
 
 env:
-  modulePath: 'modules/ManagedIdentity/userAssignedIdentities'
+  modulePath: 'modules/managed-identity/user-assigned-identities'
   workflowPath: '.github/workflows/ms.managedidentity.userassignedidentities.yml'
 
 concurrency:

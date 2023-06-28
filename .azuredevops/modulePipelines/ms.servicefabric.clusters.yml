@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.servicefabric.clusters.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/ServiceFabric/clusters/*'
+      - '/modules/service-fabric/clusters/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/ServiceFabric/clusters'
+    value: '/modules/service-fabric/clusters'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

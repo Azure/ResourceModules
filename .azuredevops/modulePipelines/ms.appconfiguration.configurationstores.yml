@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/AppConfiguration/configurationStores/*'
-      - '/modules/Network/privateEndpoints/*'
+      - '/modules/app-configuration/configuration-stores/*'
+      - '/modules/network/private-endpoints/*'
       - '/.azuredevops/modulePipelines/ms.appconfiguration.configurationstores.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/AppConfiguration/configurationStores'
+    value: '/modules/app-configuration/configuration-stores'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

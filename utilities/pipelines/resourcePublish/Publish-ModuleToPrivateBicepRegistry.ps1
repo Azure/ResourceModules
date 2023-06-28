@@ -7,7 +7,7 @@ Publish a new version of a given module to a private bicep registry
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
-Example: 'C:\modules\KeyVault\vaults\main.bicep'
+Example: 'C:\modules\key-vault\vaults\main.bicep'
 
 .PARAMETER ModuleVersion
 Mandatory. Version of the module to publish, following SemVer convention.
@@ -26,7 +26,7 @@ Optional. The location of the resourceGroup the private bicep registry is deploy
 Example: 'West Europe'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\KeyVault\vaults\main.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
+Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a private bicep registry called 'adpsxxazacrx001' in resource group 'artifacts-rg'.
 #>
