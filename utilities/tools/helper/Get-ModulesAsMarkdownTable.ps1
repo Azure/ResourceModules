@@ -44,7 +44,7 @@ function Get-DeployToAzureUrl {
 
     $path = $Path -replace '\\', '/'
     $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
-    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
+    $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "/$RepositoryName/")[1]
 
     return ('{0}{1}>)' -f $baseUrl, ([System.Web.HttpUtility]::UrlEncode($templateUri)))
 }
