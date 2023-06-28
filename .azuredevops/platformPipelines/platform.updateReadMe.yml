@@ -53,7 +53,7 @@ jobs:
               FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
               Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
-              ColumnsInOrder = @('Name', 'Status', 'Deploy')
+              ColumnsInOrder = @('Name', 'Status')
               SortByColumn   = 'Name'
               Environment    = 'ADO'
               ProjectName    = '$(System.TeamProject)'

@@ -42,6 +42,7 @@ function Get-DeployToAzureUrl {
         return ''
     }
 
+    $path = $Path -replace '\\', '/'
     $baseUrl = '[![Deploy to Azure](/docs/media/deploytoazure.svg?sanitize=true)](<https://portal.azure.com/#create/Microsoft.Template/uri/'
     $templateUri = 'https://raw.githubusercontent.com/{0}/{1}/main/{2}/main.json' -f $Organization, $RepositoryName, ($Path -split "\\$RepositoryName\\")[1]
 
@@ -562,3 +563,4 @@ function Get-ModulesAsMarkdownTable {
 
     return $table
 }
+Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -Environment 'GitHub' -ColumnsInOrder @('Name', 'Deploy')
