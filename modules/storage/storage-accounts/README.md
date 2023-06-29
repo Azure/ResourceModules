@@ -489,6 +489,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
       diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
       shares: [
         {
+          accessTier: 'Hot'
           name: 'avdprofiles'
           roleAssignments: [
             {
@@ -718,6 +719,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
         "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
         "shares": [
           {
+            "accessTier": "Hot",
             "name": "avdprofiles",
             "roleAssignments": [
               {

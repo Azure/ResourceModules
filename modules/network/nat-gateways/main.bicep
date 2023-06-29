@@ -146,6 +146,7 @@ resource natGateway 'Microsoft.Network/natGateways@2022-07-01' = {
     publicIpAddresses: publicIPAddressResourceIds
   }
   zones: zones
+  dependsOn: [ publicIPAddress ]
 }
 
 resource natGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {

@@ -189,5 +189,7 @@ module testDeployment '../../main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    kafkaEnabled: true
+    disableLocalAuth: true
   }
 }
