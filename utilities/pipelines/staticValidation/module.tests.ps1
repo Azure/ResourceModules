@@ -766,7 +766,7 @@ Describe 'Module tests' -Tag 'Module' {
             $newJson = Remove-JSONMetadata -TemplateObject $newJson
 
             # compare
-            $originalJson | Should -Be $newJson
+            (ConvertTo-Json $originalJson -Depth 99) | Should -Be (ConvertTo-Json $newJson -Depth 99)
 
             # Reset template file to original state
             git checkout HEAD -- $armTemplatePath
