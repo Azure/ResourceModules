@@ -701,30 +701,9 @@ Describe 'Module tests' -Tag 'Module' {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # Skipping folders without a [main.bicep] template
-            if (-not (Test-Path (Join-Path $moduleFolderPath 'main.bicep'))) {
+            $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
+            if (-not (Test-Path $templateFilePath)) {
                 continue
-            }
-
-            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-            $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
-            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
-                if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
-                    $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
-                    $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-
-                    if (-not $templateContent) {
-                        throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
-                    }
-                } else {
-                    throw ($templateNotFoundException -f $moduleFolderPath)
-                }
-                $convertedTemplates[$moduleFolderPathKey] = @{
-                    templateFilePath = $templateFilePath
-                    templateContent  = $templateContent
-                }
-            } else {
-                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
-                $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
             $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
@@ -732,20 +711,16 @@ Describe 'Module tests' -Tag 'Module' {
             $armTemplateTestCases += @{
                 moduleFolderName = $resourceTypeIdentifier
                 moduleFolderPath = $moduleFolderPath
-                templateContent  = $templateContent
                 templateFilePath = $templateFilePath
             }
         }
-
 
         It '[<moduleFolderName>] Compiled ARM template should be latest.' -TestCases $armTemplateTestCases {
 
             param(
                 [string] $moduleFolderName,
                 [string] $moduleFolderPath,
-                [string] $templateFilePath,
-                [hashtable] $templateContent,
-                [string] $readMeFilePath
+                [string] $templateFilePath
             )
 
             $armTemplatePath = Join-Path $moduleFolderPath 'main.json'
