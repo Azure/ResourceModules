@@ -694,7 +694,86 @@ Describe 'Module tests' -Tag 'Module' {
         }
     }
 
-    Context 'General template' -Tag 'Template' {
+    Context 'Compiled ARM template tests' -Tag 'ARM' {
+
+        $armTemplateTestCases = [System.Collections.ArrayList] @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+            # Skipping folders without a [main.bicep] template
+            if (-not (Test-Path (Join-Path $moduleFolderPath 'main.bicep'))) {
+                continue
+            }
+
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
+                if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
+                    $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
+                    }
+                } else {
+                    throw ($templateNotFoundException -f $moduleFolderPath)
+                }
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateFilePath = $templateFilePath
+                    templateContent  = $templateContent
+                }
+            } else {
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+                $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
+            }
+
+            $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+            $armTemplateTestCases += @{
+                moduleFolderName = $resourceTypeIdentifier
+                moduleFolderPath = $moduleFolderPath
+                templateContent  = $templateContent
+                templateFilePath = $templateFilePath
+            }
+        }
+
+
+        It '[<moduleFolderName>] Compiled ARM template should be latest.' -TestCases $armTemplateTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [string] $templateFilePath,
+                [hashtable] $templateContent,
+                [string] $readMeFilePath
+            )
+
+            $armTemplatePath = Join-Path $moduleFolderPath 'main.json'
+
+            # Current json
+            if (-not (Test-Path $armTemplatePath)) {
+                throw "[main.json] file for module [$moduleFolderName] is missing."
+            }
+
+            $originalJson = ConvertTo-OrderedHashtable -JSONInputObject (Get-Content $armTemplatePath -Raw)
+            $originalJson = Remove-JSONMetadata -TemplateObject $originalJson
+
+            # Recompile json
+            $null = Remove-Item -Path $armTemplatePath -Force
+            bicep build $templateFilePath
+
+            $newJson = ConvertTo-OrderedHashtable -JSONInputObject (Get-Content $armTemplatePath -Raw)
+            $newJson = Remove-JSONMetadata -TemplateObject $newJson
+
+            # compare
+            $originalJson | Should -Be $newJson
+
+            # Reset template file to original state
+            git checkout HEAD -- $armTemplatePath
+        }
+    }
+
+    Context 'General template tests' -Tag 'Template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {

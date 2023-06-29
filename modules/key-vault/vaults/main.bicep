@@ -11,6 +11,9 @@ param location string = resourceGroup().location
 @description('Optional. All access policies to create.')
 param accessPolicies array = []
 
+@description('Optional. Dummy par desc.')
+param dummyPar array = []
+
 @description('Optional. All secrets to create.')
 @secure()
 param secrets object = {}
