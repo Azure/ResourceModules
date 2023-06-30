@@ -741,7 +741,7 @@ Describe 'Module tests' -Tag 'Module' {
             $newJson = Remove-JSONMetadata -TemplateObject $newJson
 
             # compare
-            (ConvertTo-Json $originalJson -Depth 99) | Should -Be (ConvertTo-Json $newJson -Depth 99)
+            (ConvertTo-Json $originalJson -Depth 99) | Should -Be (ConvertTo-Json $newJson -Depth 99) -Because "the [$moduleFolderName] [main.json] should be based on the latest [main.bicep] file. Please run [bicep build <bicepFilePath>] using the latest Bicep CLI version."
 
             # Reset template file to original state
             git checkout HEAD -- $armTemplatePath
