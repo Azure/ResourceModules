@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7739161671694395702"
+      "templateHash": "10270500552863561106"
     }
   },
   "parameters": {
@@ -124,7 +124,7 @@
         "V2"
       ],
       "metadata": {
-        "description": "Optional. The hypervisor generation of the Virtual Machine.\r\n* If this value is not specified, then it is determined by the securityType parameter.\r\n* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.\r\n"
+        "description": "Optional. The hypervisor generation of the Virtual Machine.</p>- If this value is not specified, then it is determined by the securityType parameter.</p>- If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1."
       }
     },
     "securityType": {
