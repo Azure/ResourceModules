@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "6637908402270571679"
+      "templateHash": "6260158512579983435"
     }
   },
   "parameters": {
@@ -281,7 +281,7 @@
         "Required"
       ],
       "metadata": {
-        "description": "Optional. This composes with ClientCertEnabled setting.\r\n- ClientCertEnabled: false means ClientCert is ignored.\r\n- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.\r\n- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted."
+        "description": "Optional. This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted."
       }
     },
     "cloningInfo": {

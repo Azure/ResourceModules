@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7200436037277741860"
+      "templateHash": "11381558505756866873"
     }
   },
   "parameters": {
@@ -721,7 +721,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "10270500552863561106"
+              "templateHash": "17020882528338679735"
             }
           },
           "parameters": {
@@ -875,7 +875,7 @@
                 "false"
               ],
               "metadata": {
-                "description": "Optional. The image supports accelerated networking.\r\nAccelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.\r\nThis high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the\r\nmost demanding network workloads on supported VM types.\r\n"
+                "description": "Optional. The image supports accelerated networking.</p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.</p>This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the most demanding network workloads on supported VM types."
               }
             },
             "description": {

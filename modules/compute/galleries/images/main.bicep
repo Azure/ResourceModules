@@ -78,11 +78,7 @@ param securityType string = 'Standard'
 ])
 param isHibernateSupported string = 'false'
 
-@sys.description('''Optional. The image supports accelerated networking.
-Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.
-This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the
-most demanding network workloads on supported VM types.
-''')
+@sys.description('Optional. The image supports accelerated networking.</p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.</p>This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the most demanding network workloads on supported VM types.')
 @allowed([
   'true'
   'false'
