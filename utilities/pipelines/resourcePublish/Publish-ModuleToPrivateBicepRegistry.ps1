@@ -87,7 +87,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         #############################################
         $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $BicepRegistryName, $moduleRegistryIdentifier, $ModuleVersion
         if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$ModuleVersion] to registry [$BicepRegistryName]", 'Publish')) {
-            bicep publish $TemplateFilePath --target $publishingTarget
+            bicep publish $TemplateFilePath --target $publishingTarget --force
         }
         Write-Verbose 'Publish complete'
     }
