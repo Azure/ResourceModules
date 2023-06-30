@@ -96,5 +96,3 @@ function Publish-ModuleToPrivateBicepRegistry {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules\aad\domain-services\main.bicep' -ModuleVersion '0.1' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg' -Verbose
-
