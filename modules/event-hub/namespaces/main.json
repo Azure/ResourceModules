@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "3146031880855681613"
+      "templateHash": "12863324937037450144"
     }
   },
   "parameters": {
@@ -28,7 +28,8 @@
       "defaultValue": "Standard",
       "allowedValues": [
         "Basic",
-        "Standard"
+        "Standard",
+        "Premium"
       ],
       "metadata": {
         "description": "Optional. event hub plan SKU name."
@@ -40,7 +41,7 @@
       "maxValue": 20,
       "minValue": 1,
       "metadata": {
-        "description": "Optional. Event Hub plan scale-out capacity of the resource."
+        "description": "Optional. The Event Hub's throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium units."
       }
     },
     "zoneRedundant": {
@@ -80,6 +81,45 @@
       ],
       "metadata": {
         "description": "Optional. Authorization Rules for the Event Hub namespace."
+      }
+    },
+    "disableLocalAuth": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Optional. This property disables SAS authentication for the Event Hubs namespace."
+      }
+    },
+    "kafkaEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Value that indicates whether Kafka is enabled for Event Hubs Namespace."
+      }
+    },
+    "minimumTlsVersion": {
+      "type": "string",
+      "defaultValue": "1.2",
+      "metadata": {
+        "description": "Optional. The minimum TLS version for the cluster to support."
+      },
+      "allowedValues": [
+        "1.0",
+        "1.1",
+        "1.2"
+      ]
+    },
+    "publicNetworkAccess": {
+      "type": "string",
+      "defaultValue": "",
+      "allowedValues": [
+        "",
+        "Disabled",
+        "Enabled",
+        "SecuredByPerimeter"
+      ],
+      "metadata": {
+        "description": "Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set."
       }
     },
     "privateEndpoints": {
@@ -157,6 +197,41 @@
       "defaultValue": {},
       "metadata": {
         "description": "Optional. The ID(s) to assign to the resource."
+      }
+    },
+    "cMKKeyName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The name of the customer managed key to use for encryption. Customer-managed key encryption at rest is only available for namespaces of premium SKU or namespaces created in a Dedicated Cluster."
+      }
+    },
+    "cMKKeyVaultResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \"cMKKeyName\" is not empty."
+      }
+    },
+    "cMKKeyVersion": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used."
+      }
+    },
+    "cMKUserAssignedIdentityResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if \"cMKKeyName\" is not empty."
+      }
+    },
+    "requireInfrastructureEncryption": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Optional. Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters."
       }
     },
     "roleAssignments": {
@@ -286,7 +361,7 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-01-01-preview",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -297,9 +372,14 @@
         "capacity": "[parameters('skuCapacity')]"
       },
       "properties": {
-        "zoneRedundant": "[parameters('zoneRedundant')]",
+        "disableLocalAuth": "[parameters('disableLocalAuth')]",
+        "encryption": "[if(not(empty(parameters('cMKKeyName'))), createObject('keySource', 'Microsoft.KeyVault', 'keyVaultProperties', createArray(createObject('identity', if(not(empty(parameters('cMKUserAssignedIdentityResourceId'))), createObject('userAssignedIdentity', parameters('cMKUserAssignedIdentityResourceId')), null()), 'keyName', parameters('cMKKeyName'), 'keyVaultUri', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults', last(split(parameters('cMKKeyVaultResourceId'), '/'))), '2023-02-01').vaultUri, 'keyVersion', if(not(empty(parameters('cMKKeyVersion'))), parameters('cMKKeyVersion'), last(split(reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', split(parameters('cMKKeyVaultResourceId'), '/')[2], split(parameters('cMKKeyVaultResourceId'), '/')[4]), 'Microsoft.KeyVault/vaults/keys', last(split(parameters('cMKKeyVaultResourceId'), '/')), parameters('cMKKeyName')), '2022-07-01').keyUriWithVersion, '/'))))), 'requireInfrastructureEncryption', parameters('requireInfrastructureEncryption')), null())]",
         "isAutoInflateEnabled": "[parameters('isAutoInflateEnabled')]",
-        "maximumThroughputUnits": "[variables('maximumThroughputUnitsVar')]"
+        "kafkaEnabled": "[parameters('kafkaEnabled')]",
+        "maximumThroughputUnits": "[variables('maximumThroughputUnitsVar')]",
+        "minimumTlsVersion": "[parameters('minimumTlsVersion')]",
+        "publicNetworkAccess": "[if(contains(parameters('networkRuleSets'), 'publicNetworkAccess'), parameters('networkRuleSets').publicNetworkAccess, if(and(not(empty(parameters('privateEndpoints'))), empty(parameters('networkRuleSets'))), 'Disabled', parameters('publicNetworkAccess')))]",
+        "zoneRedundant": "[parameters('zoneRedundant')]"
       }
     },
     {
@@ -366,7 +446,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "4848399350072664355"
+              "templateHash": "16575121179236370672"
             }
           },
           "parameters": {
@@ -419,7 +499,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/authorizationRules",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-01-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": {
                 "rights": "[parameters('rights')]"
@@ -484,7 +564,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "5400034950186917573"
+              "templateHash": "10085016406808154586"
             }
           },
           "parameters": {
@@ -532,7 +612,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/disasterRecoveryConfigs",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-01-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": {
                 "partnerNamespace": "[parameters('partnerNamespaceId')]"
@@ -615,7 +695,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "7349784339490112566"
+              "templateHash": "10222556087726415534"
             }
           },
           "parameters": {
@@ -837,7 +917,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/eventhubs",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-01-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
               "properties": "[if(parameters('captureDescriptionEnabled'), variables('eventHubPropertiesWithCapture'), variables('eventHubPropertiesSimple'))]"
             },
@@ -890,7 +970,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "7730677806520284112"
+                      "templateHash": "16455538961916415405"
                     }
                   },
                   "parameters": {
@@ -944,7 +1024,7 @@
                     },
                     {
                       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-                      "apiVersion": "2021-11-01",
+                      "apiVersion": "2022-01-01-preview",
                       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('eventHubName'), parameters('name'))]",
                       "properties": {
                         "userMetadata": "[if(not(empty(parameters('userMetadata'))), parameters('userMetadata'), null())]"
@@ -1015,7 +1095,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "6360421405223473116"
+                      "templateHash": "5766625813315412046"
                     }
                   },
                   "parameters": {
@@ -1074,7 +1154,7 @@
                     },
                     {
                       "type": "Microsoft.EventHub/namespaces/eventhubs/authorizationRules",
-                      "apiVersion": "2021-11-01",
+                      "apiVersion": "2022-01-01-preview",
                       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('eventHubName'), parameters('name'))]",
                       "properties": {
                         "rights": "[parameters('rights')]"
@@ -1330,7 +1410,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "5103691038121257112"
+              "templateHash": "3757435120716828453"
             }
           },
           "parameters": {
@@ -1420,7 +1500,7 @@
             },
             {
               "type": "Microsoft.EventHub/namespaces/networkRuleSets",
-              "apiVersion": "2021-11-01",
+              "apiVersion": "2022-01-01-preview",
               "name": "[format('{0}/{1}', parameters('namespaceName'), 'default')]",
               "properties": {
                 "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
@@ -2201,14 +2281,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.EventHub/namespaces', parameters('name')), '2021-11-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.EventHub/namespaces', parameters('name')), '2021-11-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.EventHub/namespaces', parameters('name')), '2022-01-01-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.EventHub/namespaces', parameters('name')), '2022-01-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.EventHub/namespaces', parameters('name')), '2021-11-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.EventHub/namespaces', parameters('name')), '2022-01-01-preview', 'full').location]"
     }
   }
 }
