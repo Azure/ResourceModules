@@ -86,7 +86,7 @@ module testDeployment '../../main.bicep' = {
         {
           subnet: {
             ignoreMissingVnetServiceEndpoint: true
-            id: nestedDependencies.outputs.subnetResourceId
+            subnetResourceId: nestedDependencies.outputs.subnetResourceId
           }
         }
       ]
