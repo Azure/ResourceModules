@@ -22,8 +22,14 @@ Mandatory. The name of the workflow to trigger
 .PARAMETER TargetBranch
 Optional. The branch to trigger the pipeline for.
 
+.PARAMETER GitHubPipelineInputs
+Optional. Input parameters to pass into the pipeline. Must match the names of the runtime parameters in the yaml file(s)
+
+.PARAMETER WorkflowFilePath
+Required. The path to the workflow.
+
 .EXAMPLE
-Invoke-GitHubWorkflow -PersonalAccessToken '<Placeholder>' -GitHubRepositoryOwner 'Azure' -GitHubRepositoryName 'ResourceModules' -WorkflowFileName 'ms.analysisservices.servers.yml' -TargetBranch 'main'
+Invoke-GitHubWorkflow -PersonalAccessToken '<Placeholder>' -GitHubRepositoryOwner 'Azure' -GitHubRepositoryName 'ResourceModules' -WorkflowFileName 'ms.analysisservices.servers.yml' -TargetBranch 'main' -GitHubPipelineInputs @{ prerelease = 'false'; deploymentValidation = 'false'; removeDeployment = 'true' }
 
 Trigger the workflow 'ms.analysisservices.servers.yml' with branch 'main' in repository 'Azure/ResourceModules'.
 #>
@@ -40,6 +46,9 @@ function Invoke-GitHubWorkflow {
         [Parameter(Mandatory = $true)]
         [string] $GitHubRepositoryName,
 
+        [Parameter(Mandatory = $false)]
+        [hashtable] $GitHubPipelineInputs = @{},
+
         [Parameter(Mandatory = $true)]
         [string] $WorkflowFilePath,
 
@@ -51,8 +60,6 @@ function Invoke-GitHubWorkflow {
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-GitHubWorkflowDefaultInput.ps1')
 
     $workflowFileName = Split-Path $WorkflowFilePath -Leaf
-    $workflowParameters = Get-GitHubWorkflowDefaultInput -workflowPath $WorkflowFilePath -Verbose:$false
-    $removeDeploymentFlag = $workflowParameters.removeDeployment
 
     $requestInputObject = @{
         Method  = 'POST'
@@ -62,10 +69,7 @@ function Invoke-GitHubWorkflow {
         }
         Body    = @{
             ref    = $TargetBranch
-            inputs = @{
-                prerelease       = 'false'
-                removeDeployment = "$removeDeploymentFlag".ToLower()
-            }
+            inputs = $GitHubPipelineInputs
         } | ConvertTo-Json
     }
     if ($PSCmdlet.ShouldProcess("GitHub workflow [$workflowFileName] for branch [$TargetBranch]", 'Invoke')) {
@@ -189,12 +193,12 @@ Optional. The Azure DevOps project to run the pipelines in. Required if the chos
 Optional. The folder in Azure DevOps the pipelines are registerd in. Required if the chosen environment is `AzureDevOps`. Defaults to 'CARML-Modules'.
 
 .EXAMPLE
-Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*'
+Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'GitHub' -PipelineFilter 'ms.network.*' -GitHubPipelineInputs @{ prerelease = 'false'; deploymentValidation = 'false'; removeDeployment = 'true' }
 
 Run all GitHub workflows that start with 'ms.network.*' using branch 'feature/branch'. Also returns all GitHub status badges.
 
 .EXAMPLE
-Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'AzureDevOps'  -PipelineFilter 'ms.network.*' -AzureDevOpsOrganizationName 'contoso' -AzureDevOpsProjectName 'Sanchez' -AzureDevOpsPipelineFolderPath 'CARML-Modules'
+Invoke-PipelinesForBranch -PersonalAccessToken '<Placeholder>' -TargetBranch 'feature/branch' -Environment 'AzureDevOps' -PipelineFilter 'ms.network.*' -AzureDevOpsOrganizationName 'contoso' -AzureDevOpsProjectName 'Sanchez' -AzureDevOpsPipelineFolderPath 'CARML-Modules'
 
 Run all Azure DevOps pipelines that start with 'ms.network.*' using branch 'feature/branch'. Also returns all Azure DevOps pipeline status badges.
 #>
@@ -226,6 +230,13 @@ function Invoke-PipelinesForBranch {
 
         [Parameter(Mandatory = $false, ParameterSetName = 'GitHub')]
         [string] $GitHubRepositoryName = 'ResourceModules',
+
+        [Parameter(Mandatory = $false, ParameterSetName = 'GitHub')]
+        [hashtable] $GitHubPipelineInputs = @{
+            prerelease           = 'false'
+            deploymentValidation = 'false'
+            removeDeployment     = 'true'
+        },
 
         [Parameter(Mandatory = $false, ParameterSetName = 'AzureDevOps')]
         [string] $AzureDevOpsOrganizationName = '',
@@ -259,7 +270,7 @@ function Invoke-PipelinesForBranch {
 
             if (Test-Path (Join-Path $RepositoryRoot $workflowFilePath)) {
                 if ($PSCmdlet.ShouldProcess("GitHub workflow [$WorkflowFileName] for branch [$TargetBranch]", 'Invoke')) {
-                    $null = Invoke-GitHubWorkflow @baseInputObject -TargetBranch $TargetBranch -WorkflowFilePath (Join-Path $RepositoryRoot $workflowFilePath)
+                    $null = Invoke-GitHubWorkflow @baseInputObject -TargetBranch $TargetBranch -WorkflowFilePath (Join-Path $RepositoryRoot $workflowFilePath) -GitHubPipelineInputs $GitHubPipelineInputs
                 }
             } else {
                 Write-Warning ('Warning: Workflow [{0}] is registered, but no workflow file in the target branch [{1}] available' -f (Join-Path $RepositoryRoot $workflowFilePath), $TargetBranch) -Verbose

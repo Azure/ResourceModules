@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "5400034950186917573"
+      "templateHash": "10085016406808154586"
     }
   },
   "parameters": {
@@ -53,7 +53,7 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces/disasterRecoveryConfigs",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-01-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
       "properties": {
         "partnerNamespace": "[parameters('partnerNamespaceId')]"
