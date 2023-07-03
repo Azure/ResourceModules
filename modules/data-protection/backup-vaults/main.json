@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7003898712057514693"
+      "templateHash": "1886354944114182729"
     }
   },
   "parameters": {
@@ -86,6 +86,17 @@
         "description": "Optional. The vault redundancy level to use."
       }
     },
+    "azureMonitorAlertSettingsAlertsForAllJobFailures": {
+      "type": "string",
+      "defaultValue": "Enabled",
+      "metadata": {
+        "description": "Optional. Settings for Azure Monitor based alerts for job failures."
+      },
+      "allowedValues": [
+        "Disabled",
+        "Enabled"
+      ]
+    },
     "backupPolicies": {
       "type": "array",
       "defaultValue": [],
@@ -116,12 +127,17 @@
     },
     {
       "type": "Microsoft.DataProtection/backupVaults",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2022-11-01-preview",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
       "identity": "[variables('identity')]",
       "properties": {
+        "monitoringSettings": {
+          "azureMonitorAlertSettings": {
+            "alertsForAllJobFailures": "[parameters('azureMonitorAlertSettingsAlertsForAllJobFailures')]"
+          }
+        },
         "storageSettings": [
           {
             "type": "[parameters('type')]",
@@ -178,7 +194,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "2937083165095701055"
+              "templateHash": "11483883002574750098"
             }
           },
           "parameters": {
@@ -227,7 +243,7 @@
             },
             {
               "type": "Microsoft.DataProtection/backupVaults/backupPolicies",
-              "apiVersion": "2022-05-01",
+              "apiVersion": "2022-11-01-preview",
               "name": "[format('{0}/{1}', parameters('backupVaultName'), parameters('name'))]",
               "properties": "[parameters('properties')]"
             }
@@ -440,14 +456,14 @@
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.DataProtection/backupVaults', parameters('name')), '2022-05-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.DataProtection/backupVaults', parameters('name')), '2022-05-01', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.DataProtection/backupVaults', parameters('name')), '2022-11-01-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.DataProtection/backupVaults', parameters('name')), '2022-11-01-preview', 'full').identity.principalId, '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.DataProtection/backupVaults', parameters('name')), '2022-05-01', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.DataProtection/backupVaults', parameters('name')), '2022-11-01-preview', 'full').location]"
     }
   }
 }

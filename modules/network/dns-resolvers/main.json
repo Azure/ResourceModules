@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "9879845631361953704"
+      "templateHash": "12927188505813001566"
     }
   },
   "parameters": {
@@ -195,7 +195,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "11223316220022201916"
+              "templateHash": "3336891156509542007"
             }
           },
           "parameters": {
@@ -318,8 +318,8 @@
               },
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.Network/ddosProtectionPlans/{0}', last(split(parameters('resourceId'), '/')))]",
-              "name": "[guid(resourceId('Microsoft.Network/ddosProtectionPlans', last(split(parameters('resourceId'), '/'))), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
+              "scope": "[format('Microsoft.Network/dnsResolvers/{0}', last(split(parameters('resourceId'), '/')))]",
+              "name": "[guid(resourceId('Microsoft.Network/dnsResolvers', last(split(parameters('resourceId'), '/'))), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
               "properties": {
                 "description": "[parameters('description')]",
                 "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleDefinitionIdOrName')), variables('builtInRoleNames')[parameters('roleDefinitionIdOrName')], parameters('roleDefinitionIdOrName'))]",

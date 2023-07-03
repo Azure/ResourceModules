@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "17683705446677644593"
+      "templateHash": "4239463034351259619"
     }
   },
   "parameters": {
@@ -33,7 +33,7 @@
       "type": "string",
       "defaultValue": "Aligned",
       "metadata": {
-        "description": "Optional. SKU of the availability set.\r\n- Use \\'Aligned\\' for virtual machines with managed disks.\r\n- Use \\'Classic\\' for virtual machines with unmanaged disks.\r\n"
+        "description": "Optional. SKU of the availability set.</p>- Use 'Aligned' for virtual machines with managed disks.</p>- Use 'Classic' for virtual machines with unmanaged disks."
       }
     },
     "proximityPlacementGroupResourceId": {
