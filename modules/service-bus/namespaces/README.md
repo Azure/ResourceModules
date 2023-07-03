@@ -424,7 +424,9 @@ module namespaces './service-bus/namespaces/main.bicep' = {
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
-          subnetResourceId: '<subnetResourceId>'
+          subnet: {
+            id: '<id>'
+          }
         }
       ]
     }
@@ -601,7 +603,9 @@ module namespaces './service-bus/namespaces/main.bicep' = {
         "virtualNetworkRules": [
           {
             "ignoreMissingVnetServiceEndpoint": true,
-            "subnetResourceId": "<subnetResourceId>"
+            "subnet": {
+              "id": "<id>"
+            }
           }
         ]
       }
@@ -773,9 +777,9 @@ module namespaces './service-bus/namespaces/main.bicep' = {
       trustedServiceAccessEnabled: true
       virtualNetworkRules: [
         {
+          ignoreMissingVnetServiceEndpoint: true
           subnet: {
-            ignoreMissingVnetServiceEndpoint: true
-            subnetResourceId: '<subnetResourceId>'
+            id: '<id>'
           }
         }
       ]
@@ -866,9 +870,9 @@ module namespaces './service-bus/namespaces/main.bicep' = {
         "trustedServiceAccessEnabled": true,
         "virtualNetworkRules": [
           {
+            "ignoreMissingVnetServiceEndpoint": true,
             "subnet": {
-              "ignoreMissingVnetServiceEndpoint": true,
-              "subnetResourceId": "<subnetResourceId>"
+              "id": "<id>"
             }
           }
         ]
