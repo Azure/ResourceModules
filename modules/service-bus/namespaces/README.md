@@ -4,11 +4,11 @@ This module deploys a Service Bus Namespace.
 
 ## Navigation
 
-- [Resource types](#resource-types)
-- [Parameters](#parameters)
-- [Outputs](#outputs)
-- [Cross-referenced modules](#cross-referenced-modules)
-- [Deployment examples](#deployment-examples)
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Cross-referenced modules](#Cross-referenced-modules)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -75,6 +75,7 @@ This module deploys a Service Bus Namespace.
 | `topics` | _[topics](topics/README.md)_ array | `[]` |  | The topics to create in the service bus namespace. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `False` |  | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
+
 
 ### Parameter Usage: `roleAssignments`
 
