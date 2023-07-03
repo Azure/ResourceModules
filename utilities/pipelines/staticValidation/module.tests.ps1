@@ -694,7 +694,61 @@ Describe 'Module tests' -Tag 'Module' {
         }
     }
 
-    Context 'General template' -Tag 'Template' {
+    Context 'Compiled ARM template tests' -Tag 'ARM' {
+
+        $armTemplateTestCases = [System.Collections.ArrayList] @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+            # Skipping folders without a [main.bicep] template
+            $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
+            if (-not (Test-Path $templateFilePath)) {
+                continue
+            }
+
+            $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+            $armTemplateTestCases += @{
+                moduleFolderName = $resourceTypeIdentifier
+                moduleFolderPath = $moduleFolderPath
+                templateFilePath = $templateFilePath
+            }
+        }
+
+        It '[<moduleFolderName>] Compiled ARM template should be latest.' -TestCases $armTemplateTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [string] $templateFilePath
+            )
+
+            $armTemplatePath = Join-Path $moduleFolderPath 'main.json'
+
+            # Current json
+            if (-not (Test-Path $armTemplatePath)) {
+                throw "[main.json] file for module [$moduleFolderName] is missing."
+            }
+
+            $originalJson = Remove-JSONMetadata -TemplateObject (Get-Content $armTemplatePath -Raw | ConvertFrom-Json -Depth 99 -AsHashtable)
+            $originalJson = ConvertTo-OrderedHashtable -JSONInputObject (ConvertTo-Json $originalJson -Depth 99)
+
+            # Recompile json
+            $null = Remove-Item -Path $armTemplatePath -Force
+            bicep build $templateFilePath
+
+            $newJson = Remove-JSONMetadata -TemplateObject (Get-Content $armTemplatePath -Raw | ConvertFrom-Json -Depth 99 -AsHashtable)
+            $newJson = ConvertTo-OrderedHashtable -JSONInputObject (ConvertTo-Json $newJson -Depth 99)
+
+            # compare
+            (ConvertTo-Json $originalJson -Depth 99) | Should -Be (ConvertTo-Json $newJson -Depth 99) -Because "the [$moduleFolderName] [main.json] should be based on the latest [main.bicep] file. Please run [` bicep build >bicepFilePath< `] using the latest Bicep CLI version."
+
+            # Reset template file to original state
+            git checkout HEAD -- $armTemplatePath
+        }
+    }
+
+    Context 'General template tests' -Tag 'Template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {

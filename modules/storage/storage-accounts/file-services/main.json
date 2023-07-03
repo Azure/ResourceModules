@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "11735671726195697680"
+      "templateHash": "11613596621855409908"
     }
   },
   "parameters": {
@@ -222,6 +222,7 @@
           "name": {
             "value": "[parameters('shares')[copyIndex()].name]"
           },
+          "accessTier": "[if(contains(parameters('shares')[copyIndex()], 'accessTier'), createObject('value', parameters('shares')[copyIndex()].accessTier), if(equals(reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2021-09-01', 'full').kind, 'FileStorage'), createObject('value', 'Premium'), createObject('value', 'TransactionOptimized')))]",
           "enabledProtocols": "[if(contains(parameters('shares')[copyIndex()], 'enabledProtocols'), createObject('value', parameters('shares')[copyIndex()].enabledProtocols), createObject('value', 'SMB'))]",
           "rootSquash": "[if(contains(parameters('shares')[copyIndex()], 'rootSquash'), createObject('value', parameters('shares')[copyIndex()].rootSquash), createObject('value', 'NoRootSquash'))]",
           "shareQuota": "[if(contains(parameters('shares')[copyIndex()], 'shareQuota'), createObject('value', parameters('shares')[copyIndex()].shareQuota), createObject('value', 5120))]",
@@ -237,7 +238,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "6048855322985506812"
+              "templateHash": "5466678674425977487"
             }
           },
           "parameters": {
@@ -260,6 +261,19 @@
               "metadata": {
                 "description": "Required. The name of the file share to create."
               }
+            },
+            "accessTier": {
+              "type": "string",
+              "defaultValue": "TransactionOptimized",
+              "metadata": {
+                "description": "Conditional. Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to \"Premium\"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool."
+              },
+              "allowedValues": [
+                "Premium",
+                "Hot",
+                "Cool",
+                "TransactionOptimized"
+              ]
             },
             "shareQuota": {
               "type": "int",
@@ -326,6 +340,7 @@
               "apiVersion": "2021-09-01",
               "name": "[format('{0}/{1}/{2}', parameters('storageAccountName'), parameters('fileServicesName'), parameters('name'))]",
               "properties": {
+                "accessTier": "[parameters('accessTier')]",
                 "shareQuota": "[parameters('shareQuota')]",
                 "rootSquash": "[if(equals(parameters('enabledProtocols'), 'NFS'), parameters('rootSquash'), null())]",
                 "enabledProtocols": "[parameters('enabledProtocols')]"

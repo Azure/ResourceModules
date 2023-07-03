@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7730677806520284112"
+      "templateHash": "16455538961916415405"
     }
   },
   "parameters": {
@@ -59,7 +59,7 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-01-01-preview",
       "name": "[format('{0}/{1}/{2}', parameters('namespaceName'), parameters('eventHubName'), parameters('name'))]",
       "properties": {
         "userMetadata": "[if(not(empty(parameters('userMetadata'))), parameters('userMetadata'), null())]"

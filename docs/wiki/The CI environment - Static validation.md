@@ -46,7 +46,9 @@ The following activities are performed by the [`utilities/pipelines/staticValida
     1. Output section should contain all outputs defined in the template file.
     1. Dependencies section should contain all cross-references defined in the template file.
     1. `Set-ModuleReadMe` script should not apply any updates.
-  - **General template**
+  - **Compiled ARM template tests**
+    1. Compiled ARM template should be latest.
+  - **General template tests**
     1. The template file should not be empty.
     1. Template schema version should be the latest.
     1. Template schema should use HTTPS reference.
