@@ -75,7 +75,7 @@
         "count": "[length(parameters('virtualNetworkRules'))]",
         "input": {
           "ignoreMissingVnetServiceEndpoint": "[if(contains(parameters('virtualNetworkRules')[copyIndex('networkRules')], 'ignoreMissingVnetServiceEndpoint'), parameters('virtualNetworkRules')[copyIndex('networkRules')].ignoreMissingVnetServiceEndpoint, null())]",
-          "subnet": "[if(contains(parameters('virtualNetworkRules')[copyIndex('networkRules')], 'subnetResourceId'), createObject('id', parameters('virtualNetworkRules')[copyIndex('networkRules')].subnetResourceId), null())]"
+          "subnet": "[if(contains(parameters('virtualNetworkRules')[copyIndex('networkRules')].subnet, 'id'), createObject('id', parameters('virtualNetworkRules')[copyIndex('networkRules')].subnet.id), null())]"
         }
       }
     ]
