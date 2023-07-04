@@ -150,6 +150,21 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.MachineLearningServices/workspaces' {
+            $subscriptionId = $resourceId.Split('/')[2]
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $resourceId -Leaf
+
+            $purgePath = 'subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.MachineLearningServices/workspaces/{2}?api-version=2023-04-01-preview&forceToPurge={3}' -f $subscriptionId, $resourceGroupName, $resourceName, $true
+            $purgeRequestInputObject = @{
+                Method = 'DELETE'
+                Path   = $purgePath
+            }
+            if ($PSCmdlet.ShouldProcess("Machine Learning Workspace [$resourceName]", 'Remove')) {
+                $null = Invoke-AzRestMethod @purgeRequestInputObject
+            }
+            break
+        }
 
         ### CODE LOCATION: Add custom removal action here
         Default {
