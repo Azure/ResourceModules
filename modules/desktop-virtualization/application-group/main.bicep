@@ -143,7 +143,7 @@ resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021
   scope: appGroup
 }
 
-module appGroup_applications 'applications/main.bicep' = [for (application, index) in applications: {
+module appGroup_applications 'application/main.bicep' = [for (application, index) in applications: {
   name: '${uniqueString(deployment().name, location)}-AppGroup-App-${index}'
   params: {
     name: application.name
