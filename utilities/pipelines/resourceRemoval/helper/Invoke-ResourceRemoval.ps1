@@ -150,7 +150,31 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.Resources/tags' {
+            # Get current tags on the subscription
+            $subscriptionId = $resourceId.Split('/')[2]
+            $currentTags = $(Get-AzTag -ResourceId /subscriptions/$subscriptionId).Properties
 
+            # Get the tags to remove
+            $tagsToRemove = @('Test', 'TestToo')
+            $tagsToKeep = @{}
+
+            # Loop over each key and add it to the new tags if it is not in the list of tags to remove
+            $currentTags.TagsProperty.Keys | ForEach-Object {
+                $key = $_
+                if ($tagsToRemove -notcontains $key) {
+                    $value = $currentTags.TagsProperty.$key
+                    $tagsToKeep.Add($key, $value)
+                }
+            }
+
+            $null = Remove-AzTag -ResourceId /subscriptions/$subscriptionId
+
+            if ($tagsToKeep.count -ne 0) {
+                $null = Update-AzTag -ResourceId /subscriptions/$subscriptionId -Tag $tagsToKeep -Operation Replace
+            }
+            break
+        }
         ### CODE LOCATION: Add custom removal action here
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'

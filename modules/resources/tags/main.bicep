@@ -4,7 +4,7 @@ targetScope = 'subscription'
 param tags object = {}
 
 @description('Optional. Instead of overwriting the existing tags, combine them with the new tags.')
-param onlyUpdate bool = false
+param onlyUpdate bool = true
 
 @description('Optional. Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription.')
 param resourceGroupName string = ''
