@@ -74,7 +74,6 @@ function Get-SpecsAlignedResourceName {
         $providerNamespace = "Microsoft.$rawProviderNamespace"
         Write-Warning "Failed to identifier provider namespace [$rawProviderNamespace]. Falling back to [$providerNamespace]."
     } else {
-        Write-Verbose ($foundProviderNamespaceMatches | ConvertTo-Json -Compress | Out-String) -Verbose
         $providerNamespace = ($foundProviderNamespaceMatches.Count -eq 1) ? $foundProviderNamespaceMatches : $foundProviderNamespaceMatches[0]
     }
 
