@@ -470,6 +470,7 @@ function Get-ModulesAsMarkdownTable {
             $concatedBase = $containedFolderPath.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
 
             $provider = Split-Path $topLevelFolder -Leaf
+            Write-Verbose ('TEMP: Find resource name for [{0}]' -f ($concatedBase -replace '\\', '/')) -Verbose
             $specsAlignedResourceName = Get-SpecsAlignedResourceName -ResourceIdentifier ($concatedBase -replace '\\', '/')
             $specsAlignedProviderNamespace = $specsAlignedResourceName.Split('/')[0]
             $specsAlignedResourceType = $specsAlignedResourceName -replace "$specsAlignedProviderNamespace/", ''
