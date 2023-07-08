@@ -147,36 +147,48 @@ function Get-ModulesFeatureOutline {
         if ([regex]::Match($moduleContentString, '(?m)^\s*param roleAssignments array\s*=.+').Success) {
             $summaryData.supportsRBAC++
             $moduleDataItem['RBAC'] = $true
+        } else {
+            $moduleDataItem['RBAC'] = $false
         }
 
         # Supports Locks
         if ([regex]::Match($moduleContentString, '(?m)^\s*param lock string\s*=.+').Success) {
             $summaryData.supportsLocks++
             $moduleDataItem['Locks'] = $true
+        } else {
+            $moduleDataItem['Locks'] = $false
         }
 
         # Supports Tags
         if ([regex]::Match($moduleContentString, '(?m)^\s*param tags object\s*=.+').Success) {
             $summaryData.supportsTags++
             $moduleDataItem['Tags'] = $true
+        } else {
+            $moduleDataItem['Tags'] = $false
         }
 
         # Supports Diagnostics
         if ([regex]::Match($moduleContentString, '(?m)^\s*param diagnosticWorkspaceId string\s*=.+').Success) {
             $summaryData.supportsDiagnostics++
             $moduleDataItem['Diag'] = $true
+        } else {
+            $moduleDataItem['Diag'] = $false
         }
 
         # Supports Private Endpoints
         if ([regex]::Match($moduleContentString, '(?m)^\s*param privateEndpoints array\s*=.+').Success) {
             $summaryData.supportsEndpoints++
             $moduleDataItem['PE'] = $true
+        } else {
+            $moduleDataItem['PE'] = $false
         }
 
         # Supports PIPs
         if ([regex]::Match($moduleContentString, '(?m)^\s*param publicIPAddressObject object\s*=.+').Success) {
             $summaryData.supportsPipDeployment++
             $moduleDataItem['PIP'] = $true
+        } else {
+            $moduleDataItem['PIP'] = $false
         }
 
         # Number of children
