@@ -143,7 +143,7 @@ This section provides an overview of the library's feature set.
 | 128 | web<p>serverfarms | [![Web - Serverfarms](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  |  |  | 159 |
 | 129 | web<p>sites | [![Web - Sites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20Sites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | [L1:5, L2:4, L3:1] | 399 |
 | 130 | web<p>static-sites | [![Web - StaticSites](https://github.com/Azure/ResourceModules/workflows/Web%20-%20StaticSites/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.staticsites.yml) | :white_check_mark: | :white_check_mark: | :white_check_mark: |  | :white_check_mark: |  | [L1:3] | 193 |
-| Sum | | 104 | 103 | 113 | 55 | 25 | 2 | 217 | 23274 |
+| Sum | | | 104 | 103 | 113 | 55 | 25 | 2 | 217 | 23274 |
 
 ## Legend
 
