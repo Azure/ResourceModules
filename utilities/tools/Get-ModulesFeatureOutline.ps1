@@ -241,7 +241,7 @@ function Get-ModulesFeatureOutline {
             $counter++
         }
 
-        $markdownTable += '| Sum | | {0} |' -f (($summaryData.Keys | ForEach-Object { $summaryData[$_] }) -join ' | ')
+        $markdownTable += '| Sum | | | {0} |' -f (($summaryData.Keys | ForEach-Object { $summaryData[$_] }) -join ' | ')
 
         return $markdownTable | Out-String
 
