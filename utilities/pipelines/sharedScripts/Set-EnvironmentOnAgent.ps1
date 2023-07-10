@@ -300,7 +300,7 @@ function Set-EnvironmentOnAgent {
     ##   Install Bicep for CLI   #
     ##############################
 
-    if ($PSCmdlet.ShouldProcess("BIcep CLI version [$RequiredBicepCLIVersion]", 'Ensure')) {
+    if ($PSCmdlet.ShouldProcess("Bicep CLI version [$RequiredBicepCLIVersion]", 'Ensure')) {
         Set-BicepCLIVersion -RequiredBicepCLIVersion $RequiredBicepCLIVersion
     }
 
