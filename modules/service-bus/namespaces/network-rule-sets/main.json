@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.14.85.62628",
-      "templateHash": "9495879328632079292"
+      "templateHash": "16252573524540791580"
     }
   },
   "parameters": {
@@ -75,7 +75,7 @@
         "count": "[length(parameters('virtualNetworkRules'))]",
         "input": {
           "ignoreMissingVnetServiceEndpoint": "[if(contains(parameters('virtualNetworkRules')[copyIndex('networkRules')], 'ignoreMissingVnetServiceEndpoint'), parameters('virtualNetworkRules')[copyIndex('networkRules')].ignoreMissingVnetServiceEndpoint, null())]",
-          "subnet": "[if(contains(parameters('virtualNetworkRules')[copyIndex('networkRules')].subnet, 'id'), createObject('id', parameters('virtualNetworkRules')[copyIndex('networkRules')].subnet.id), null())]"
+          "subnet": "[if(contains(parameters('virtualNetworkRules')[copyIndex('networkRules')], 'subnetResourceId'), createObject('id', parameters('virtualNetworkRules')[copyIndex('networkRules')].subnetResourceId), null())]"
         }
       }
     ]

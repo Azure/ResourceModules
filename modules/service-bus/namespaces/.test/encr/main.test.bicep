@@ -71,9 +71,7 @@ module testDeployment '../../main.bicep' = {
       virtualNetworkRules: [
         {
           ignoreMissingVnetServiceEndpoint: true
-          subnet: {
-            id: nestedDependencies.outputs.subnetResourceId
-          }
+          subnetResourceId: nestedDependencies.outputs.subnetResourceId
         }
       ]
       ipRules: [
