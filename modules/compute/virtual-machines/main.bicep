@@ -579,7 +579,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/main.bicep' = if (extens
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
-      workspaceId: !empty(monitoringWorkspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
+      workspaceId: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.properties.customerId : ''
     }
     tags: contains(extensionMonitoringAgentConfig, 'tags') ? extensionMonitoringAgentConfig.tags : {}
     protectedSettings: {
