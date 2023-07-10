@@ -70,10 +70,8 @@ module testDeployment '../../main.bicep' = {
       trustedServiceAccessEnabled: true
       virtualNetworkRules: [
         {
-          subnet: {
-            ignoreMissingVnetServiceEndpoint: true
-            id: nestedDependencies.outputs.subnetResourceId
-          }
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: nestedDependencies.outputs.subnetResourceId
         }
       ]
       ipRules: [
