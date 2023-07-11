@@ -72,14 +72,6 @@ variables:
   bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
   bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
 
-  # ----------------- #
-  # Software versions #
-  # ----------------- #
-
-  requiredPowerShellVersion: 'latest'
-  requiredAzureCLIVersion: 'latest'
-  requiredBicepCLIVersion: 'latest'
-
   ###########################################################################################################################
   ################################################## Azure DevOps Only ######################################################
   ###########################################################################################################################
