@@ -111,16 +111,8 @@ jobs:
               )
             }
 
-            # TODO: Add versions & add this snippet to all other places required
             # Set agent up
-            $agentSetupInputObject = @{
-              PSModules                 = $Modules
-              RequiredPowerShellVersion = ''
-              RequiredAzureCLIVersion   = ''
-              RequiredBicepCLIVersion   = ''
-            }
-            Set-EnvironmentOnAgent @agentSetupInputObject
-
+            Set-EnvironmentOnAgent -PSModules $Modules
 
       # [Agent] Replace tokens
       #-----------------------

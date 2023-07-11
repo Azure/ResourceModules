@@ -75,17 +75,8 @@ runs:
           )
         }
 
-        # Variable file
-        $variableFileContent = Get-Content -Path '${{ inputs.variablesPath }}'
-
         # Set agent up
-        $agentSetupInputObject = @{
-          PSModules                 = $Modules
-          RequiredPowerShellVersion = $variableFileContent | Foreach-Object { if($_ -match "\s*requiredPowerShellVersion: '(.+)'.*") { return $matches[1] }}
-          RequiredAzureCLIVersion   = $variableFileContent | Foreach-Object { if($_ -match "\s*requiredAzureCLIVersion: '(.+)'.*") { return $matches[1] }}
-          RequiredBicepCLIVersion   = $variableFileContent | Foreach-Object { if($_ -match "\s*requiredBicepCLIVersion: '(.+)'.*") { return $matches[1] }}
-        }
-        Set-EnvironmentOnAgent @agentSetupInputObject
+        Set-EnvironmentOnAgent -PSModules $Modules
 
         Write-Output '::endgroup::'
 

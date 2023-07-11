@@ -86,136 +86,6 @@ function Install-CustomModule {
         }
     }
 }
-
-function Set-PowerShellVersion {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $false)]
-        [string] $RequiredPowerShellVersion = 'latest'
-    )
-
-    if ($IsLinux) {
-        if (which 'pwsh') {
-            $latestAvailablePowerShellVersion = $PSVersionTable.PSVersion
-            Write-Verbose ("Pre-installed PowerShell version: [$latestAvailablePowerShellVersion]") -Verbose
-        }
-
-        if ($RequiredPowerShellVersion -eq $latestAvailablePowerShellVersion) {
-            return
-        }
-
-        if ($RequiredPowerShellVersion -eq 'latest') {
-            # TODO: Only install if not already installed (latest or specific version)
-            # TODO: check if the installed version is already latest. If so, break.
-            $latestAvailableVersion = ''
-            if ($preInstalledPowerShellVersion -eq $latestAvailablePowerShellVersion) {
-                return
-            }
-        }
-
-        # Update the list of packages
-        sudo apt-get update
-        # Install pre-requisite packages.
-        sudo apt-get install -y wget apt-transport-https software-properties-common
-        # Download the Microsoft repository GPG keys
-        wget -q "https://packages.microsoft.com/config/ubuntu/`$(lsb_release -rs)/packages-microsoft-prod.deb"
-        # Register the Microsoft repository GPG keys
-        sudo dpkg -i packages-microsoft-prod.deb
-        # Update the list of packages after we added packages.microsoft.com
-        sudo apt-get update
-
-        # Install PowerShell
-        if ($RequiredPowerShellVersion -ne 'latest') {
-            sudo apt-get install -y powershell=$RequiredPowerShellVersion
-        } else {
-            sudo apt-get install -y powershell
-        }
-
-        Write-Verbose ('Using PowerShell version: [{0}]' -f ($PSVersionTable.PSVersion)) -Verbose
-
-    } elseif ($IsWindows) {
-        # TODO: Add windows block
-    }
-}
-
-function Set-AzureCLIVersion {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $false)]
-        [string] $RequiredAzureCLIVersion = 'latest'
-    )
-
-    # AzCLI is pre-installed on GitHub hosted runners.
-    # https://github.com/actions/virtual-environments#available-environments
-
-    Write-Verbose 'Az CLI version:' -Verbose
-    az --version
-
-    if ($IsLinux) {
-        if (which 'az') {
-            Write-Verbose ('Pre-installed Azure CLI version: [{0}]' -f ( -join (az version) | ConvertFrom-Json).'azure-cli') -Verbose
-        }
-
-        <#
-        Write-Verbose ("Install azure cli start") -Verbose
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-        Write-Verbose ("Install azure cli end") -Verbose
-        #>
-
-        if ($RequiredAzureCLIVersion -ne 'latest') {
-            curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-        } else {
-        }
-
-        Write-Verbose ('Using Azure CLI version: [{0}]' -f ( -join (az version) | ConvertFrom-Json).'azure-cli') -Verbose
-
-    } elseif ($IsWindows) {
-        # TODO: Add windows block
-    }
-}
-
-function Set-BicepCLIVersion {
-
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $false)]
-        [string] $RequiredBicepCLIVersion = 'latest'
-    )
-
-    # Bicep CLI is pre-installed on GitHub hosted runners.
-    # https://github.com/actions/virtual-environments#available-environments
-
-    Write-Verbose 'Bicep CLI version:' -Verbose
-    bicep --version
-
-
-    if ($IsLinux) {
-        if (which 'az') {
-            Write-Verbose ('Pre-installed Bicep CLI version: [{0}]' -f '') -Verbose
-        }
-
-        <#
-        Write-Verbose ("Install bicep start") -Verbose
-        # Fetch the latest Bicep CLI binary
-        curl -Lo bicep 'https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64'
-
-        # Mark it as executable
-        chmod +x ./bicep
-
-        # Add bicep to your PATH (requires admin)
-        sudo mv ./bicep /usr/local/bin/bicep
-        Write-Verbose ("Install bicep end") -Verbose
-        #>
-
-        if ($RequiredBicepCLIVersion -ne 'latest') {
-        } else {
-        }
-    } elseif ($IsWindows) {
-        # TODO: Add windows block
-    }
-}
 #endregion
 
 <#
@@ -244,65 +114,62 @@ Optional. The PowerShell modules that should be installed on the agent.
     }
 )
 
-.PARAMETER RequiredPowerShellVersion
-Optional. The PowerShell version to enforce on the agent. Defaults to 'latest'.
-
-.PARAMETER RequiredAzureCLIVersion
-Optional. The Azure CLI to enforce on the agent. Defaults to 'latest'.
-
-.PARAMETER RequiredBicepCLIVersion
-Optional. The Bicep CLI version to enforce on the agent. Defaults to 'latest'.
-
 .EXAMPLE
 Set-EnvironmentOnAgent
 
-Install the default PowerShell modules and software to configure the agent
-
-.EXAMPLE
-Set-EnvironmentOnAgent -RequiredPowerShellVersion '2.7.3' -RequiredBicepCLIVersion '0.17.1'
-
-Install the default PowerShell modules, the latest version of the Azure CLI, version '2.7.3' of PowerShell and '0.17.1' of the Bicep CLI.
+Install the default PowerShell modules to configure the agent
 #>
 function Set-EnvironmentOnAgent {
 
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [Hashtable[]] $PSModules = @(),
-
-        [Parameter(Mandatory = $false)]
-        [string] $RequiredPowerShellVersion = 'latest',
-
-        [Parameter(Mandatory = $false)]
-        [string] $RequiredAzureCLIVersion = 'latest',
-
-        [Parameter(Mandatory = $false)]
-        [string] $RequiredBicepCLIVersion = 'latest'
+        [Hashtable[]] $PSModules = @()
     )
 
     ############################
     ##   PowerShell version   ##
     ############################
 
-    if ($PSCmdlet.ShouldProcess("PowerShell version [$RequiredPowerShellVersion]", 'Ensure')) {
-        Set-PowerShellVersion -RequiredPowerShellVersion $RequiredPowerShellVersion
-    }
+    Write-Verbose 'Powershell version:' -Verbose
+    $PSVersionTable
 
     ###########################
     ##   Install Azure CLI   ##
     ###########################
 
-    if ($PSCmdlet.ShouldProcess("Azure CLI version [$RequiredAzureCLIVersion]", 'Ensure')) {
-        Set-AzureCLIVersion -RequiredAzureCLIVersion $RequiredAzureCLIVersion
-    }
+    # AzCLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
+    Write-Verbose 'Az CLI version:' -Verbose
+    az --version
+    <#
+    Write-Verbose ("Install azure cli start") -Verbose
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    Write-Verbose ("Install azure cli end") -Verbose
+    #>
 
     ##############################
     ##   Install Bicep for CLI   #
     ##############################
 
-    if ($PSCmdlet.ShouldProcess("Bicep CLI version [$RequiredBicepCLIVersion]", 'Ensure')) {
-        Set-BicepCLIVersion -RequiredBicepCLIVersion $RequiredBicepCLIVersion
-    }
+    # Bicep CLI is pre-installed on GitHub hosted runners.
+    # https://github.com/actions/virtual-environments#available-environments
+
+    Write-Verbose 'Bicep CLI version:' -Verbose
+    bicep --version
+    <#
+    Write-Verbose ("Install bicep start") -Verbose
+    # Fetch the latest Bicep CLI binary
+    curl -Lo bicep 'https://github.com/Azure/bicep/releases/latest/download/bicep-linux-x64'
+
+    # Mark it as executable
+    chmod +x ./bicep
+
+    # Add bicep to your PATH (requires admin)
+    sudo mv ./bicep /usr/local/bin/bicep
+    Write-Verbose ("Install bicep end") -Verbose
+    #>
 
     ###############################
     ##   Install Extensions CLI   #
@@ -381,4 +248,21 @@ function Set-EnvironmentOnAgent {
     }
 
     Write-Verbose ('Install-CustomModule end') -Verbose
+
+    #####################################
+    ##  TEMP PowerShell installation   ##
+    #####################################
+
+    # Update the list of packages
+    sudo apt-get update
+    # Install pre-requisite packages.
+    sudo apt-get install -y wget apt-transport-https software-properties-common
+    # Download the Microsoft repository GPG keys
+    wget -q "https://packages.microsoft.com/config/ubuntu/`$(lsb_release -rs)/packages-microsoft-prod.deb"
+    # Register the Microsoft repository GPG keys
+    sudo dpkg -i packages-microsoft-prod.deb
+    # Update the list of packages after we added packages.microsoft.com
+    sudo apt-get update
+    # Install PowerShell
+    sudo apt-get install -y powershell
 }
