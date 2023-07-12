@@ -52,7 +52,7 @@ resource dnsForwardingRuleset 'Microsoft.Network/dnsForwardingRulesets@2022-07-0
   }
 }
 
-module forwardingRule 'forwarding-rules/main.bicep' = [for (forwardingRule, index) in forwardingRules: {
+module dnsForwardingRuleset_forwardingRule 'forwarding-rules/main.bicep' = [for (forwardingRule, index) in forwardingRules: {
   name: '${uniqueString(deployment().name, location)}-forwardingRule-${index}'
   params: {
     dnsForwardingRulesetName: dnsForwardingRuleset.name
