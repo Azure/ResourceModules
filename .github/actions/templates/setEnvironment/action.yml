@@ -105,5 +105,3 @@ runs:
         Add-YamlListToFile @functionInput
 
         Write-Output '::endgroup::'
-
-        Write-Verbose (Get-Content $Env:GITHUB_ENV -Raw | ConvertTo-Json) -Verbose
