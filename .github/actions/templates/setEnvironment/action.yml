@@ -104,6 +104,6 @@ runs:
         # Convert YAML Variable File to Environment Variables
         Add-YamlListToFile @functionInput
 
-        Write-Verbose "Made it out" -Verbose
-
         Write-Output '::endgroup::'
+
+        Write-Verbose (Get-Content $Env:GITHUB_ENV -Raw) -Verbose

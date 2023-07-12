@@ -76,8 +76,6 @@ function Add-YamlListToFile {
     }
 
     end {
-        Write-Verbose 'Made it to the end' -Verbose
-
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
