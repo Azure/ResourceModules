@@ -111,7 +111,7 @@
     },
     {
       "copy": {
-        "name": "forwardingRule",
+        "name": "dnsForwardingRuleset_forwardingRule",
         "count": "[length(parameters('forwardingRules'))]"
       },
       "type": "Microsoft.Resources/deployments",
