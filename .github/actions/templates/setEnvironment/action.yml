@@ -104,4 +104,6 @@ runs:
         # Convert YAML Variable File to Environment Variables
         Add-YamlListToFile @functionInput
 
+        Write-Verbose "Made it out" -Verbose
+
         Write-Output '::endgroup::'
