@@ -1,6 +1,6 @@
-# RecoveryServices Vaults ReplicationFabrics ReplicationProtectionContainers ReplicationProtectionContainerMappings `[Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings]`
+# Recovery Services Vault Replication Fabric Replication Protection Container Replication Protection Container Mappings `[Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings]`
 
-This module deploys a Replication Protection Container Mapping.
+This module deploys a Recovery Services Vault (RSV) Replication Protection Container Mapping.
 
 > **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.
 

@@ -1,6 +1,6 @@
-# Policy Definitions on Management Group level `[Microsoft.Authorization/policyDefinitions/managementGroup]`
+# Policy Definitions (Management Group scope) `[Microsoft.Authorization/policyDefinitions/managementGroup]`
 
-With this module you can create policy definitions on a management group level.
+This module deploys a Policy Definition at a Management Group scope.
 
 ## Navigation
 

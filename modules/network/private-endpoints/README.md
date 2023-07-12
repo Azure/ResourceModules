@@ -1,6 +1,6 @@
 # Private Endpoints `[Microsoft.Network/privateEndpoints]`
 
-This template deploys a private endpoint for a generic service.
+This module deploys a Private Endpoint.
 
 ## Navigation
 

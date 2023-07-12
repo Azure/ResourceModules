@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "VPN Gateways NATRules",
-  "summary": "This module deploys Virtual Network Gateways NATRules",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "VPN Gateway NAT Rules",
+    "summary": "This module deploys a Virtual Network Gateway NAT Rule.",
+    "owner": "Azure/module-maintainers"
 }

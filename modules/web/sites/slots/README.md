@@ -1,6 +1,6 @@
-# Web/Function Apps `[Microsoft.Web/sites/slots]`
+# Web/Function App Deployment Slots `[Microsoft.Web/sites/slots]`
 
-This module deploys a web or function app.
+This module deploys a Web or Function App Deployment Slot.
 
 ## Navigation
 
@@ -22,6 +22,7 @@ This module deploys a web or function app.
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/privateEndpoints/privateDnsZoneGroups) |
 | `Microsoft.Web/sites/slots` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots) |
 | `Microsoft.Web/sites/slots/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots/hybridConnectionNamespaces/relays) |
 
 ## Parameters
 
@@ -49,7 +50,7 @@ This module deploys a web or function app.
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
-| `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.<p>- ClientCertEnabled: false means ClientCert is ignored.<p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.<p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
+| `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
 | `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
 | `containerSize` | int | `-1` |  | Size of the function container. |
 | `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
@@ -66,6 +67,7 @@ This module deploys a web or function app.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hostNameSslStates` | array | `[]` |  | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
 | `httpsOnly` | bool | `True` |  | Configures a slot to accept only HTTPS requests. Issues redirect for HTTP requests. |
+| `hybridConnectionRelays` | array | `[]` |  | Names of hybrid connection relays to connect app with. |
 | `hyperV` | bool | `False` |  | Hyper-V sandbox. |
 | `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |

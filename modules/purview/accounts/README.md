@@ -1,6 +1,6 @@
 # Purview Accounts `[Microsoft.Purview/accounts]`
 
-This module deploys Purview Accounts.
+This module deploys a Purview Account.
 
 ## Navigation
 

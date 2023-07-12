@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "HealthcareApis Workspaces Fhirservices",
-  "summary": "This module deploys HealthcareApis Workspaces FHIR Service.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Healthcare API Workspace FHIR Services",
+    "summary": "This module deploys a Healthcare API Workspace FHIR Service.",
+    "owner": "Azure/module-maintainers"
 }

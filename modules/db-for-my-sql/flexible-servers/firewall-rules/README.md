@@ -1,6 +1,6 @@
-# DBforMySQL FlexibleServers FirewallRules `[Microsoft.DBforMySQL/flexibleServers/firewallRules]`
+# DBforMySQL Flexible Server Firewall Rules `[Microsoft.DBforMySQL/flexibleServers/firewallRules]`
 
-This module deploys DBforMySQL FlexibleServers FirewallRules.
+This module deploys a DBforMySQL Flexible Server Firewall Rule.
 
 ## Navigation
 
@@ -13,7 +13,7 @@ This module deploys DBforMySQL FlexibleServers FirewallRules.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/flexibleServers/firewallRules) |
+| `Microsoft.DBforMySQL/flexibleServers/firewallRules` | [2022-01-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DBforMySQL/2022-01-01/flexibleServers/firewallRules) |
 
 ## Parameters
 

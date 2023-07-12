@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "Authorization Locks on Subscription level",
-  "summary": "This module deploys Authorization Locks on Subscription level.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "Authorization Locks (Subscription scope)",
+    "summary": "This module deploys an Authorization Lock at a Subscription scope.",
+    "owner": "Azure/module-maintainers"
 }

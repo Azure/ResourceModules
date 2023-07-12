@@ -1,6 +1,6 @@
-# SQL Managed Instance Security Alert Policy `[Microsoft.Sql/managedInstances/securityAlertPolicies]`
+# SQL Managed Instance Security Alert Policies `[Microsoft.Sql/managedInstances/securityAlertPolicies]`
 
-This module deploys a security alert policy for a SQL managed instance.
+This module deploys a SQL Managed Instance Security Alert Policy.
 
 ## Navigation
 

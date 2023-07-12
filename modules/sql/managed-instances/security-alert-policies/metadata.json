@@ -1,6 +1,6 @@
 {
-  "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-  "name": "SQL Managed Instance Security Alert Policy",
-  "summary": "This module deploys a security alert policy for a SQL managed instance.",
-  "owner": "Azure/module-maintainers"
+    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
+    "name": "SQL Managed Instance Security Alert Policies",
+    "summary": "This module deploys a SQL Managed Instance Security Alert Policy.",
+    "owner": "Azure/module-maintainers"
 }

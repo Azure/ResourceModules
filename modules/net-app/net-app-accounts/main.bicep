@@ -23,6 +23,9 @@ param smbServerNamePrefix string = ''
 @description('Optional. Capacity pools to create.')
 param capacityPools array = []
 
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
@@ -56,6 +59,13 @@ var activeDirectoryConnectionProperties = [
   }
 ]
 
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -68,9 +78,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-05-01' = {
+resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2022-09-01' = {
   name: name
   tags: tags
+  identity: identity
   location: location
   properties: {
     activeDirectories: !empty(domainName) ? activeDirectoryConnectionProperties : null

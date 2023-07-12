@@ -1,6 +1,6 @@
-# Operationalinsights Workspaces Saved Searches `[Microsoft.OperationalInsights/workspaces/savedSearches]`
+# Log Analytics Workspace Saved Searches `[Microsoft.OperationalInsights/workspaces/savedSearches]`
 
-This template deploys a saved search for a Log Analytics workspace.
+This module deploys a Log Analytics Workspace Saved Search.
 
 ## Navigation
 

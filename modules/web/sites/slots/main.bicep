@@ -148,10 +148,7 @@ param clientCertEnabled bool = false
 @description('Optional. Client certificate authentication comma-separated exclusion paths.')
 param clientCertExclusionPaths string = ''
 
-@description('''Optional. This composes with ClientCertEnabled setting.
-- ClientCertEnabled: false means ClientCert is ignored.
-- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
-- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.''')
+@description('Optional. This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.')
 @allowed([
   'Optional'
   'OptionalInteractiveUser'
@@ -206,6 +203,9 @@ param vnetImagePullEnabled bool = false
 
 @description('Optional. Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined Routes applied.')
 param vnetRouteAllEnabled bool = false
+
+@description('Optional. Names of hybrid connection relays to connect app with.')
+param hybridConnectionRelays array = []
 
 // =========== //
 // Variables   //
@@ -320,6 +320,17 @@ module slot_authsettingsv2 'config--authsettingsv2/main.bicep' = if (!empty(auth
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
+
+module slot_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
+  name: '${uniqueString(deployment().name, location)}-Slot-HybridConnectionRelay-${index}'
+  params: {
+    hybridConnectionResourceId: hybridConnectionRelay.resourceId
+    appName: app.name
+    slotName: slot.name
+    sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
 
 resource slot_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${slot.name}-${lock}-lock'

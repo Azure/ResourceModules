@@ -1,6 +1,6 @@
 # API Management Service API Version Sets `[Microsoft.ApiManagement/service/apiVersionSets]`
 
-This module deploys API Management Service APIs Version Set.
+This module deploys an API Management Service API Version Set.
 
 ## Navigation
 

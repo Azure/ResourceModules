@@ -1,6 +1,6 @@
 # Load Balancer Inbound NAT Rules `[Microsoft.Network/loadBalancers/inboundNatRules]`
 
-This module deploys load balancers inbound NAT rules.
+This module deploys a Load Balancer Inbound NAT Rules.
 
 ## Navigation
 

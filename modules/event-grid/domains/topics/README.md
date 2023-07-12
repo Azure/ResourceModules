@@ -1,6 +1,6 @@
-# EventGrid Domains Topics `[Microsoft.EventGrid/domains/topics]`
+# Event Grid Domain Topics `[Microsoft.EventGrid/domains/topics]`
 
-This module deploys EventGrid Domains Topics.
+This module deploys an Event Grid Domain Topic.
 
 ## Navigation
 

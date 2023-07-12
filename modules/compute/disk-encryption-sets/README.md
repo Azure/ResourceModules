@@ -1,6 +1,6 @@
 # Disk Encryption Sets `[Microsoft.Compute/diskEncryptionSets]`
 
-This template deploys a disk encryption set.
+This module deploys a Disk Encryption Set.
 
 ## Navigation
 

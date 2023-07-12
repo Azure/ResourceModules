@@ -1,6 +1,6 @@
 # API Management Services `[Microsoft.ApiManagement/service]`
 
-This module deploys an API management service.
+This module deploys an API Management Service.
 
 ## Navigation
 

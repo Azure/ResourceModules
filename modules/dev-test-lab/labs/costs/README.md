@@ -1,6 +1,6 @@
-# DevTestLab Labs Costs `[Microsoft.DevTestLab/labs/costs]`
+# DevTest Lab Costs `[Microsoft.DevTestLab/labs/costs]`
 
-This module deploys DevTestLab Labs Costs.
+This module deploys a DevTest Lab Cost.
 
 Manage lab costs by setting a spending target that can be viewed in the Monthly Estimated Cost Trend chart. DevTest Labs can send a notification when spending reaches the specified target threshold.
 

@@ -1,6 +1,6 @@
 # API Management Service Backends `[Microsoft.ApiManagement/service/backends]`
 
-This module deploys API Management Service Backends.
+This module deploys an API Management Service Backend.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # Storage Account Queue Services `[Microsoft.Storage/storageAccounts/queueServices]`
 
-This module can be used to deploy a file share service into a storage account.
+This module deploys a Storage Account Queue Service.
 
 ## Navigation
 

@@ -168,6 +168,7 @@ module testDeployment '../../main.bicep' = {
       shares: [
         {
           name: 'avdprofiles'
+          accessTier: 'Hot'
           shareQuota: 5120
           roleAssignments: [
             {

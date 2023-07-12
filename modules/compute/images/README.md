@@ -1,6 +1,6 @@
 # Images `[Microsoft.Compute/images]`
 
-This module deploys a compute image.
+This module deploys a Compute Image.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # IP Groups `[Microsoft.Network/ipGroups]`
 
-This module deploys an IP group.
+This module deploys an IP Group.
 
 ## Navigation
 

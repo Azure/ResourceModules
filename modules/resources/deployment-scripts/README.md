@@ -1,6 +1,6 @@
 # Deployment Scripts `[Microsoft.Resources/deploymentScripts]`
 
-This module deploys a deployment script.
+This module deploys a Deployment Script.
 
 ## Navigation
 
