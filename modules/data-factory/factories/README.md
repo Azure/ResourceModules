@@ -57,6 +57,7 @@ This module deploys a Data Factory.
 | `gitAccountName` | string | `''` |  | The account name. |
 | `gitCollaborationBranch` | string | `'main'` |  | The collaboration branch name. Default is 'main'. |
 | `gitConfigureLater` | bool | `True` |  | Boolean to define whether or not to configure git during template deployment. |
+| `gitHostName` | string | `''` |  | The GitHub Enterprise Server host (prefixed with 'https://'). Only relevant for 'FactoryGitHubConfiguration'. |
 | `gitProjectName` | string | `''` |  | The project name. Only relevant for 'FactoryVSTSConfiguration'. |
 | `gitRepositoryName` | string | `''` |  | The repository name. |
 | `gitRepoType` | string | `'FactoryVSTSConfiguration'` |  | Repository type - can be 'FactoryVSTSConfiguration' or 'FactoryGitHubConfiguration'. Default is 'FactoryVSTSConfiguration'. |
