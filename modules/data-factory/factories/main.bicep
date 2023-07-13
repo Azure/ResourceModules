@@ -42,7 +42,7 @@ param gitCollaborationBranch string = 'main'
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
 
-@description('Optional. The GitHub Enterprise Server host (prefixed with \'https://\'). . Only relevant for \'FactoryGitHubConfiguration\'. Default is \'\'.')
+@description('Optional. The GitHub Enterprise Server host (prefixed with \'https://\'). Only relevant for \'FactoryGitHubConfiguration\'.')
 param gitHostName string = ''
 
 @description('Optional. List of Global Parameters for the factory.')
