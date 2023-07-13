@@ -42,6 +42,9 @@ param gitCollaborationBranch string = 'main'
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
 
+@description('Optional. The GitHub Enterprise Server host (prefixed with \'https://\'). . Only relevant for \'FactoryGitHubConfiguration\'. Default is \'\'.')
+param gitHostName string = ''
+
 @description('Optional. List of Global Parameters for the factory.')
 param globalParameters object = {}
 
@@ -192,6 +195,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   properties: {
     repoConfiguration: bool(gitConfigureLater) ? null : union({
         type: gitRepoType
+        hostName: gitHostName
         accountName: gitAccountName
         repositoryName: gitRepositoryName
         collaborationBranch: gitCollaborationBranch
