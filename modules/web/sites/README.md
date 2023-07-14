@@ -1,6 +1,6 @@
 # Web/Function Apps `[Microsoft.Web/sites]`
 
-This module deploys a web or function app.
+This module deploys a Web or Function App.
 
 ## Navigation
 
@@ -24,8 +24,10 @@ This module deploys a web or function app.
 | `Microsoft.Web/sites` | [2021-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites) |
 | `Microsoft.Web/sites/basicPublishingCredentialsPolicies` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 | `Microsoft.Web/sites/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/hybridConnectionNamespaces/relays` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/hybridConnectionNamespaces/relays) |
 | `Microsoft.Web/sites/slots` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots) |
 | `Microsoft.Web/sites/slots/config` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
+| `Microsoft.Web/sites/slots/hybridConnectionNamespaces/relays` | [2022-03-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Web/2022-03-01/sites/slots/hybridConnectionNamespaces/relays) |
 
 ## Parameters
 
@@ -49,7 +51,7 @@ This module deploys a web or function app.
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `clientCertEnabled` | bool | `False` |  | To enable client certificate authentication (TLS mutual authentication). |
 | `clientCertExclusionPaths` | string | `''` |  | Client certificate authentication comma-separated exclusion paths. |
-| `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.<p>- ClientCertEnabled: false means ClientCert is ignored.<p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.<p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
+| `clientCertMode` | string | `'Optional'` | `[Optional, OptionalInteractiveUser, Required]` | This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted. |
 | `cloningInfo` | object | `{object}` |  | If specified during app creation, the app is cloned from a source app. |
 | `containerSize` | int | `-1` |  | Size of the function container. |
 | `customDomainVerificationId` | string | `''` |  | Unique identifier that verifies the custom domains assigned to the app. Customer will add this ID to a txt record for verification. |
@@ -66,6 +68,7 @@ This module deploys a web or function app.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `hostNameSslStates` | array | `[]` |  | Hostname SSL states are used to manage the SSL bindings for app's hostnames. |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
+| `hybridConnectionRelays` | array | `[]` |  | Names of hybrid connection relays to connect app with. |
 | `hyperV` | bool | `False` |  | Hyper-V sandbox. |
 | `keyVaultAccessIdentityResourceId` | string | `''` |  | The resource ID of the assigned identity to be used to access a key vault with. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -536,6 +539,12 @@ module sites './web/sites/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
+    hybridConnectionRelays: [
+      {
+        resourceId: '<resourceId>'
+        sendKeyName: 'defaultSender'
+      }
+    ]
     keyVaultAccessIdentityResourceId: '<keyVaultAccessIdentityResourceId>'
     lock: 'CanNotDelete'
     privateEndpoints: [
@@ -692,6 +701,14 @@ module sites './web/sites/main.bicep' = {
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
+    "hybridConnectionRelays": {
+      "value": [
+        {
+          "resourceId": "<resourceId>",
+          "sendKeyName": "defaultSender"
+        }
+      ]
+    },
     "keyVaultAccessIdentityResourceId": {
       "value": "<keyVaultAccessIdentityResourceId>"
     },
@@ -844,6 +861,12 @@ module sites './web/sites/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     httpsOnly: true
+    hybridConnectionRelays: [
+      {
+        resourceId: '<resourceId>'
+        sendKeyName: 'defaultSender'
+      }
+    ]
     privateEndpoints: [
       {
         privateDnsZoneGroup: {
@@ -884,6 +907,12 @@ module sites './web/sites/main.bicep' = {
         diagnosticLogsRetentionInDays: 7
         diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+        hybridConnectionRelays: [
+          {
+            resourceId: '<resourceId>'
+            sendKeyName: 'defaultSender'
+          }
+        ]
         name: 'slot1'
         privateEndpoints: [
           {
@@ -985,6 +1014,14 @@ module sites './web/sites/main.bicep' = {
     "httpsOnly": {
       "value": true
     },
+    "hybridConnectionRelays": {
+      "value": [
+        {
+          "resourceId": "<resourceId>",
+          "sendKeyName": "defaultSender"
+        }
+      ]
+    },
     "privateEndpoints": {
       "value": [
         {
@@ -1032,6 +1069,12 @@ module sites './web/sites/main.bicep' = {
           "diagnosticLogsRetentionInDays": 7,
           "diagnosticStorageAccountId": "<diagnosticStorageAccountId>",
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
+          "hybridConnectionRelays": [
+            {
+              "resourceId": "<resourceId>",
+              "sendKeyName": "defaultSender"
+            }
+          ],
           "name": "slot1",
           "privateEndpoints": [
             {

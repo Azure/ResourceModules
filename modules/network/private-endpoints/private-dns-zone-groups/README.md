@@ -1,6 +1,6 @@
-# Network Private Endpoint Private DNS Zone Group `[Microsoft.Network/privateEndpoints/privateDnsZoneGroups]`
+# Private Endpoint Private DNS Zone Groups `[Microsoft.Network/privateEndpoints/privateDnsZoneGroups]`
 
-This module deploys a private endpoint private DNS zone group
+This module deploys a Private Endpoint Private DNS Zone Group.
 
 ## Navigation
 

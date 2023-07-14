@@ -1,6 +1,6 @@
 # Network Interface `[Microsoft.Network/networkInterfaces]`
 
-This module deploys Network Interfaces.
+This module deploys a Network Interface.
 
 ## Navigation
 

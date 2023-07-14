@@ -1,6 +1,6 @@
-# Policy Assignment on Subscription level `[Microsoft.Authorization/policyAssignments/subscription]`
+# Policy Assignments (Subscription scope) `[Microsoft.Authorization/policyAssignments/subscription]`
 
-With this module you can perform policy assignments on a subscription level.
+This module deploys a Policy Assignment at a Subscription scope.
 
 ## Navigation
 

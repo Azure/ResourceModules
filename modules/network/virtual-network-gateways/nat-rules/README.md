@@ -1,6 +1,6 @@
-# VPN Gateways NATRules `[Microsoft.Network/virtualNetworkGateways/natRules]`
+# VPN Gateway NAT Rules `[Microsoft.Network/virtualNetworkGateways/natRules]`
 
-This module deploys Virtual Network Gateways NATRules
+This module deploys a Virtual Network Gateway NAT Rule.
 
 ## Navigation
 

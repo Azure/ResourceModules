@@ -17,6 +17,9 @@ param serviceShort string = 'sfccom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,8 +35,8 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}azsa${serviceShort}01'
   }
 }
 
@@ -46,11 +49,11 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     lock: 'CanNotDelete'
     tags: {
       resourceType: 'Service Fabric'
-      clusterName: '<<namePrefix>>${serviceShort}001'
+      clusterName: '${namePrefix}${serviceShort}001'
     }
     addOnFeatures: [
       'RepairManager'
@@ -122,7 +125,7 @@ module testDeployment '../../main.bicep' = {
         ]
       }
     ]
-    managementEndpoint: 'https://<<namePrefix>>${serviceShort}001.westeurope.cloudapp.azure.com:19080'
+    managementEndpoint: 'https://${namePrefix}${serviceShort}001.westeurope.cloudapp.azure.com:19080'
     reliabilityLevel: 'Silver'
     nodeTypes: [
       {

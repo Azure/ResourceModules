@@ -1,6 +1,6 @@
-# App ContainerApps `[Microsoft.App/containerApps]`
+# Container Apps `[Microsoft.App/containerApps]`
 
-This module deploys Container Apps.
+This module deploys a Container App.
 
 ## Navigation
 
@@ -35,7 +35,7 @@ This module deploys Container Apps.
 | `activeRevisionsMode` | string | `'Single'` | `[Multiple, Single]` | ActiveRevisionsMode controls how active revisions are handled for the Container app. |
 | `customDomains` | array | `[]` |  | Custom domain bindings for Container App hostnames. |
 | `dapr` | object | `{object}` |  | Dapr configuration for the Container App. |
-| `enableDefaultTelemetry` | bool | `False` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `exposedPort` | int | `0` |  | Exposed Port in containers for TCP traffic from ingress. |
 | `ingressAllowInsecure` | bool | `True` |  | Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS connections. |
 | `ingressExternal` | bool | `True` |  | Bool indicating if app exposes an external http endpoint. |

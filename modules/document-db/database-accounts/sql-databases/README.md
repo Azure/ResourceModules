@@ -1,5 +1,7 @@
 # DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
+This module deploys a SQL Database in a CosmosDB Account.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)

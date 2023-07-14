@@ -17,6 +17,9 @@ param serviceShort string = 'wswa'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -35,6 +38,8 @@ module nestedDependencies 'dependencies.bicep' = {
     virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
     serverFarmName: 'dep-<<namePrefix>>-sf-${serviceShort}'
+    relayNamespaceName: 'dep-<<namePrefix>>-ns-${serviceShort}'
+    hybridConnectionName: 'dep-<<namePrefix>>-hc-${serviceShort}'
   }
 }
 
@@ -44,10 +49,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -55,13 +60,12 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 // ============== //
 // Test Execution //
 // ============== //
-
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     kind: 'app'
     serverFarmResourceId: nestedDependencies.outputs.serverFarmResourceId
     diagnosticLogsRetentionInDays: 7
@@ -111,6 +115,12 @@ module testDeployment '../../main.bicep' = {
             }
           ]
         }
+        hybridConnectionRelays: [
+          {
+            resourceId: nestedDependencies.outputs.hybridConnectionResourceId
+            sendKeyName: 'defaultSender'
+          }
+        ]
       }
       {
         name: 'slot2'
@@ -161,6 +171,12 @@ module testDeployment '../../main.bicep' = {
         name: 'scm'
       }
 
+    ]
+    hybridConnectionRelays: [
+      {
+        resourceId: nestedDependencies.outputs.hybridConnectionResourceId
+        sendKeyName: 'defaultSender'
+      }
     ]
   }
 }

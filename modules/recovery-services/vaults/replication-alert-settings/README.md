@@ -1,6 +1,6 @@
-# RecoveryServices Vaults ReplicationAlertSettings `[Microsoft.RecoveryServices/vaults/replicationAlertSettings]`
+# Recovery Services Vault Replication Alert Settings `[Microsoft.RecoveryServices/vaults/replicationAlertSettings]`
 
-This module deploys RecoveryServices Vaults ReplicationAlertSettings.
+This module deploys a Recovery Services Vault Replication Alert Settings.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
 # Public DNS Zones `[Microsoft.Network/dnsZones]`
 
-This template deploys a Public DNS zone.
+This module deploys a Public DNS zone.
 
 ## Navigation
 

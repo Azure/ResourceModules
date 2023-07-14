@@ -1,6 +1,6 @@
 # API Management Service APIs `[Microsoft.ApiManagement/service/apis]`
 
-This module deploys API Management Service APIs.
+This module deploys an API Management Service API.
 
 ## Navigation
 
@@ -39,7 +39,7 @@ This module deploys API Management Service APIs.
 | `apiDescription` | string | `''` |  | Description of the API. May include HTML formatting tags. |
 | `apiRevision` | string | `''` |  | Describes the Revision of the API. If no value is provided, default revision 1 is created. |
 | `apiRevisionDescription` | string | `''` |  | Description of the API Revision. |
-| `apiType` | string | `'http'` | `[http, soap]` | Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API. |
+| `apiType` | string | `'http'` | `[graphql, http, soap, websocket]` | Type of API to create. * http creates a REST API * soap creates a SOAP pass-through API * websocket creates websocket API * graphql creates GraphQL API. |
 | `apiVersion` | string | `''` |  | Indicates the Version identifier of the API if the API is versioned. |
 | `apiVersionDescription` | string | `''` |  | Description of the API Version. |
 | `apiVersionSetId` | string | `''` |  | Indicates the Version identifier of the API version set. |
@@ -53,7 +53,7 @@ This module deploys API Management Service APIs.
 | `sourceApiId` | string | `''` |  | API identifier of the source API. |
 | `subscriptionKeyParameterNames` | object | `{object}` |  | Protocols over which API is made available. |
 | `subscriptionRequired` | bool | `False` |  | Specifies whether an API or Product subscription is required for accessing the API. |
-| `type` | string | `'http'` | `[http, soap]` | Type of API. |
+| `type` | string | `'http'` | `[graphql, http, soap, websocket]` | Type of API. |
 | `value` | string | `''` |  | Content value when Importing an API. |
 | `wsdlSelector` | object | `{object}` |  | Criteria to limit import of WSDL to a subset of the document. |
 

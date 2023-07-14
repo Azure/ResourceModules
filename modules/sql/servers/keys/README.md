@@ -1,6 +1,6 @@
-# SQL Servers Keys `[Microsoft.Sql/servers/keys]`
+# Azure SQL Server Keys `[Microsoft.Sql/servers/keys]`
 
-This module deploys a key for a SQL server.
+This module deploys an Azure SQL Server Key.
 
 ## Navigation
 

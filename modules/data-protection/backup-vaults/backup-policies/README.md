@@ -1,6 +1,6 @@
-# DataProtection BackupVaults BackupPolicies `[Microsoft.DataProtection/backupVaults/backupPolicies]`
+# Data Protection Backup Vault Backup Policies `[Microsoft.DataProtection/backupVaults/backupPolicies]`
 
-This module deploys DataProtection BackupVaults BackupPolicies.
+This module deploys a Data Protection Backup Vault Backup Policy.
 
 ## Navigation
 
@@ -13,7 +13,7 @@ This module deploys DataProtection BackupVaults BackupPolicies.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-05-01/backupVaults/backupPolicies) |
+| `Microsoft.DataProtection/backupVaults/backupPolicies` | [2022-11-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.DataProtection/2022-11-01-preview/backupVaults/backupPolicies) |
 
 ## Parameters
 

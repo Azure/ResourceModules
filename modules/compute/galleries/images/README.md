@@ -1,6 +1,6 @@
-# Shared Image Definition `[Microsoft.Compute/galleries/images]`
+# Compute Galleries Image Definitions `[Microsoft.Compute/galleries/images]`
 
-This module deploys an Image Definition in a Shared Image Gallery.
+This module deploys an Azure Compute Gallery Image Definition.
 
 ## Navigation
 
@@ -39,8 +39,8 @@ This module deploys an Image Definition in a Shared Image Gallery.
 | `endOfLife` | string | `''` |  | The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable. Allowed format: 2020-01-10T23:00:00.000Z. |
 | `eula` | string | `''` |  | The Eula agreement for the gallery Image Definition. Has to be a valid URL. |
 | `excludedDiskTypes` | array | `[]` |  | List of the excluded disk types. E.g. Standard_LRS. |
-| `hyperVGeneration` | string | `''` | `['', V1, V2]` | The hypervisor generation of the Virtual Machine.<p>* If this value is not specified, then it is determined by the securityType parameter.<p>* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.<p> |
-| `isAcceleratedNetworkSupported` | string | `'false'` | `[false, true]` | The image supports accelerated networking.<p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.<p>This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the<p>most demanding network workloads on supported VM types.<p> |
+| `hyperVGeneration` | string | `''` | `['', V1, V2]` | The hypervisor generation of the Virtual Machine.</p>- If this value is not specified, then it is determined by the securityType parameter.</p>- If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1. |
+| `isAcceleratedNetworkSupported` | string | `'false'` | `[false, true]` | The image supports accelerated networking.</p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.</p>This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the most demanding network workloads on supported VM types. |
 | `isHibernateSupported` | string | `'false'` | `[false, true]` | The image will support hibernation. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `maxRecommendedMemory` | int | `16` |  | The maximum amount of RAM in GB recommended for this image. |

@@ -150,10 +150,7 @@ param clientCertEnabled bool = false
 @description('Optional. Client certificate authentication comma-separated exclusion paths.')
 param clientCertExclusionPaths string = ''
 
-@description('''Optional. This composes with ClientCertEnabled setting.
-- ClientCertEnabled: false means ClientCert is ignored.
-- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
-- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.''')
+@description('Optional. This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.')
 @allowed([
   'Optional'
   'OptionalInteractiveUser'
@@ -194,6 +191,9 @@ param redundancyMode string = 'None'
 
 @description('Optional. The site publishing credential policy names which are associated with the sites.')
 param basicPublishingCredentialsPolicies array = []
+
+@description('Optional. Names of hybrid connection relays to connect app with.')
+param hybridConnectionRelays array = []
 
 // =========== //
 // Variables   //
@@ -356,6 +356,7 @@ module app_slots 'slots/main.bicep' = [for (slot, index) in slots: {
     vnetContentShareEnabled: contains(slot, 'vnetContentShareEnabled') ? slot.vnetContentShareEnabled : false
     vnetImagePullEnabled: contains(slot, 'vnetImagePullEnabled') ? slot.vnetImagePullEnabled : false
     vnetRouteAllEnabled: contains(slot, 'vnetRouteAllEnabled') ? slot.vnetRouteAllEnabled : false
+    hybridConnectionRelays: contains(slot, 'hybridConnectionRelays') ? slot.hybridConnectionRelays : []
   }
 }]
 
@@ -364,6 +365,16 @@ module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-poli
   params: {
     webAppName: app.name
     name: basicPublishingCredentialsPolicy.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module app_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
+  name: '${uniqueString(deployment().name, location)}-HybridConnectionRelay-${index}'
+  params: {
+    hybridConnectionResourceId: hybridConnectionRelay.resourceId
+    appName: app.name
+    sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

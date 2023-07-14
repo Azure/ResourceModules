@@ -1,6 +1,6 @@
-# Policy Exemptions on Subscription level `[Microsoft.Authorization/policyExemptions/subscription]`
+# Policy Exemptions (Subscription scope) `[Microsoft.Authorization/policyExemptions/subscription]`
 
-With this module you can create policy exemptions on a subscription level.
+This module deploys a Policy Exemption at a Subscription scope.
 
 ## Navigation
 

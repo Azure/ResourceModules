@@ -1,4 +1,6 @@
-# Container Instances `[Microsoft.ContainerInstance/containerGroups]`
+# Container Instances Container Groups `[Microsoft.ContainerInstance/containerGroups]`
+
+This module deploys a Container Instance Container Group.
 
 ## Navigation
 

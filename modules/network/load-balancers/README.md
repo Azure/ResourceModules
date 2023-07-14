@@ -1,6 +1,6 @@
 # Load Balancers `[Microsoft.Network/loadBalancers]`
 
-This module deploys a load balancer.
+This module deploys a Load Balancer.
 
 ## Navigation
 

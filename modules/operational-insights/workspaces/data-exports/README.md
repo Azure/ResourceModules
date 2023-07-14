@@ -1,6 +1,6 @@
 # Log Analytics Workspace Data Exports `[Microsoft.OperationalInsights/workspaces/dataExports]`
 
-This module deploys Log Analytics Workspace Data Exports.
+This module deploys a Log Analytics Workspace Data Export.
 
 ## Navigation
 

@@ -176,7 +176,7 @@ module server_databases 'databases/main.bicep' = [for (database, index) in datab
     diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
-    location: contains(database, 'location') ? database.location : server.location
+    location: location
     diagnosticLogCategoriesToEnable: contains(database, 'diagnosticLogCategoriesToEnable') ? database.diagnosticLogCategoriesToEnable : []
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
@@ -222,7 +222,7 @@ module server_elasticPools 'elastic-pools/main.bicep' = [for (elasticPool, index
     skuTier: contains(elasticPool, 'skuTier') ? elasticPool.skuTier : 'GeneralPurpose'
     zoneRedundant: contains(elasticPool, 'zoneRedundant') ? elasticPool.zoneRedundant : false
     enableDefaultTelemetry: enableReferencedModulesTelemetry
-    location: contains(elasticPool, 'location') ? elasticPool.location : server.location
+    location: location
     tags: contains(elasticPool, 'tags') ? elasticPool.tags : {}
   }
 }]

@@ -1,6 +1,6 @@
 # Key Vault Access Policies `[Microsoft.KeyVault/vaults/accessPolicies]`
 
-This module deploys key vault access policies.
+This module deploys a Key Vault Access Policy.
 
 ## Navigation
 

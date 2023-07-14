@@ -1,6 +1,6 @@
 # Storage Account Table `[Microsoft.Storage/storageAccounts/tableServices/tables]`
 
-This module deploys a storage account table
+This module deploys a Storage Account Table.
 
 ## Navigation
 

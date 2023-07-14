@@ -1,6 +1,6 @@
 # Service Bus Namespaces `[Microsoft.ServiceBus/namespaces]`
 
-This module deploys a service bus namespace resource.
+This module deploys a Service Bus Namespace.
 
 ## Navigation
 
@@ -423,10 +423,8 @@ module namespaces './service-bus/namespaces/main.bicep' = {
       trustedServiceAccessEnabled: true
       virtualNetworkRules: [
         {
-          subnet: {
-            id: '<id>'
-            ignoreMissingVnetServiceEndpoint: true
-          }
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: '<subnetResourceId>'
         }
       ]
     }
@@ -602,10 +600,8 @@ module namespaces './service-bus/namespaces/main.bicep' = {
         "trustedServiceAccessEnabled": true,
         "virtualNetworkRules": [
           {
-            "subnet": {
-              "id": "<id>",
-              "ignoreMissingVnetServiceEndpoint": true
-            }
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnetResourceId": "<subnetResourceId>"
           }
         ]
       }
@@ -777,10 +773,8 @@ module namespaces './service-bus/namespaces/main.bicep' = {
       trustedServiceAccessEnabled: true
       virtualNetworkRules: [
         {
-          subnet: {
-            id: '<id>'
-            ignoreMissingVnetServiceEndpoint: true
-          }
+          ignoreMissingVnetServiceEndpoint: true
+          subnetResourceId: '<subnetResourceId>'
         }
       ]
     }
@@ -870,10 +864,8 @@ module namespaces './service-bus/namespaces/main.bicep' = {
         "trustedServiceAccessEnabled": true,
         "virtualNetworkRules": [
           {
-            "subnet": {
-              "id": "<id>",
-              "ignoreMissingVnetServiceEndpoint": true
-            }
+            "ignoreMissingVnetServiceEndpoint": true,
+            "subnetResourceId": "<subnetResourceId>"
           }
         ]
       }

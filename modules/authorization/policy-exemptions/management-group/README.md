@@ -1,6 +1,6 @@
-# Policy Exemptions on Management Group level `[Microsoft.Authorization/policyExemptions/managementGroup]`
+# Policy Exemptions (Management Group scope) `[Microsoft.Authorization/policyExemptions/managementGroup]`
 
-With this module you can create policy exemptions on a management group level.
+This module deploys a Policy Exemption at a Management Group scope.
 
 ## Navigation
 

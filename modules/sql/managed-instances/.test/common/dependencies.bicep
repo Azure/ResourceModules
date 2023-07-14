@@ -304,7 +304,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
       name: 'standard'
     }
     tenantId: tenant().tenantId
-    enablePurgeProtection: null
+    enablePurgeProtection: true
+    softDeleteRetentionInDays: 7
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true
     enabledForDeployment: true

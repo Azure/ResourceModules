@@ -1,6 +1,6 @@
 # Activity Log Alerts `[Microsoft.Insights/activityLogAlerts]`
 
-This module deploys an Alert based on Activity Log.
+This module deploys an Activity Log Alert.
 
 ## Navigation
 
@@ -50,7 +50,7 @@ This module deploys an Alert based on Activity Log.
 "actions": {
     "value": [
         {
-            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName",
+            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName",
             "webhookProperties": {}
         }
     ]
@@ -66,7 +66,7 @@ This module deploys an Alert based on Activity Log.
 ```bicep
 actions: [
     {
-        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName'
+        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName'
         webhookProperties: {}
     }
 ]
@@ -86,7 +86,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 ```json
 "actions": {
     "value": [
-        "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName"
+        "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName"
     ]
 }
 ```
@@ -99,7 +99,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 
 ```bicep
 actions: [
-    '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName'
+    '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/Microsoft.Insights/actiongroups/actionGroupName'
 ]
 ```
 

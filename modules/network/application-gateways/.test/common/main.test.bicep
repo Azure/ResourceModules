@@ -17,6 +17,9 @@ param serviceShort string = 'nagcom'
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -32,11 +35,11 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    publicIPName: 'dep-<<namePrefix>>-pip-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    publicIPName: 'dep-${namePrefix}-pip-${serviceShort}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    certDeploymentScriptName: 'dep-${namePrefix}-ds-${serviceShort}'
+    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}'
   }
 }
 
@@ -46,10 +49,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>diasa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}diasa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -58,7 +61,7 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
 // Test Execution //
 // ============== //
 
-var appGWName = '<<namePrefix>>${serviceShort}001'
+var appGWName = '${namePrefix}${serviceShort}001'
 var appGWExpectedResourceID = '${resourceGroup.id}/providers/Microsoft.Network/applicationGateways/${appGWName}'
 module testDeployment '../../main.bicep' = {
   scope: resourceGroup
@@ -190,7 +193,7 @@ module testDeployment '../../main.bicep' = {
           protocol: 'https'
           requireServerNameIndication: false
           sslCertificate: {
-            id: '${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+            id: '${appGWExpectedResourceID}/sslCertificates/${namePrefix}-az-apgw-x-001-ssl-certificate'
           }
         }
       }
@@ -207,7 +210,7 @@ module testDeployment '../../main.bicep' = {
           protocol: 'https'
           requireServerNameIndication: false
           sslCertificate: {
-            id: '${appGWExpectedResourceID}/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+            id: '${appGWExpectedResourceID}/sslCertificates/${namePrefix}-az-apgw-x-001-ssl-certificate'
           }
         }
       }
@@ -371,7 +374,7 @@ module testDeployment '../../main.bicep' = {
     sku: 'WAF_v2'
     sslCertificates: [
       {
-        name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
+        name: '${namePrefix}-az-apgw-x-001-ssl-certificate'
         properties: {
           keyVaultSecretId: nestedDependencies.outputs.certificateSecretUrl
         }

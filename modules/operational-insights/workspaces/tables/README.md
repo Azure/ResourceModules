@@ -1,6 +1,6 @@
 # Log Analytics Workspace Tables `[Microsoft.OperationalInsights/workspaces/tables]`
 
-This module deploys Log Analytics Workspace Tables.
+This module deploys a Log Analytics Workspace Table.
 
 ## Navigation
 

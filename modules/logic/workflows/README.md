@@ -1,6 +1,6 @@
-# Logic Apps `[Microsoft.Logic/workflows]`
+# Logic Apps (Workflows) `[Microsoft.Logic/workflows]`
 
-This module deploys a Logic App resource.
+This module deploys a Logic App (Workflow).
 
 ## Navigation
 

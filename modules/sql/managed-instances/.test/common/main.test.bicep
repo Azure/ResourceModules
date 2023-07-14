@@ -14,12 +14,18 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
 param serviceShort string = 'sqlmicom'
 
+@description('Generated. Used as a basis for unique resource names.')
+param baseTime string = utcNow('u')
+
 @description('Optional. The password to leverage for the login.')
 @secure()
 param password string = newGuid()
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '<<namePrefix>>'
 
 // ============ //
 // Dependencies //
@@ -36,11 +42,12 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    virtualNetworkName: 'dep-<<namePrefix>>-vnet-${serviceShort}'
-    networkSecurityGroupName: 'dep-<<namePrefix>>-nsg-${serviceShort}'
-    routeTableName: 'dep-<<namePrefix>>-rt-${serviceShort}'
+    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
+    keyVaultName: 'dep${namePrefix}kv${serviceShort}${substring(uniqueString(baseTime), 0, 3)}'
+    managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
+    networkSecurityGroupName: 'dep-${namePrefix}-nsg-${serviceShort}'
+    routeTableName: 'dep-${namePrefix}-rt-${serviceShort}'
     location: location
   }
 }
@@ -51,10 +58,10 @@ module diagnosticDependencies '../../../../.shared/.templates/diagnostic.depende
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-diagnosticDependencies'
   params: {
-    storageAccountName: 'dep<<namePrefix>>azsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'dep-<<namePrefix>>-law-${serviceShort}'
-    eventHubNamespaceEventHubName: 'dep-<<namePrefix>>-evh-${serviceShort}'
-    eventHubNamespaceName: 'dep-<<namePrefix>>-evhns-${serviceShort}'
+    storageAccountName: 'dep${namePrefix}azsa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'dep-${namePrefix}-law-${serviceShort}'
+    eventHubNamespaceEventHubName: 'dep-${namePrefix}-evh-${serviceShort}'
+    eventHubNamespaceName: 'dep-${namePrefix}-evhns-${serviceShort}'
     location: location
   }
 }
@@ -68,7 +75,7 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>-${serviceShort}'
+    name: '${namePrefix}-${serviceShort}'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: password
     subnetId: nestedDependencies.outputs.subnetResourceId
@@ -81,7 +88,7 @@ module testDeployment '../../main.bicep' = {
         backupShortTermRetentionPolicies: {
           name: 'default'
         }
-        name: '<<namePrefix>>-${serviceShort}-db-001'
+        name: '${namePrefix}-${serviceShort}-db-001'
       }
     ]
     diagnosticLogsRetentionInDays: 7

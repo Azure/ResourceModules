@@ -94,6 +94,12 @@ param subnetId string = ''
 @description('Optional. A dictionary of tenant settings.')
 param tenantSettings object = {}
 
+@description('Optional. When true, replicas will be provisioned in availability zones specified in the zones parameter.')
+param zoneRedundant bool = true
+
+@description('Optional. If the zoneRedundant parameter is true, replicas will be provisioned in the availability zones specified here. Otherwise, the service will choose where replicas are deployed.')
+param zones array = []
+
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
@@ -136,6 +142,8 @@ param diagnosticMetricsToEnable array = [
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+var availabilityZones = skuName == 'Premium' ? zoneRedundant ? !empty(zones) ? zones : pickZones('Microsoft.Cache', 'redis', location, 3) : [] : []
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
   category: category
@@ -211,7 +219,7 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
     subnetId: !empty(subnetId) ? subnetId : null
     tenantSettings: tenantSettings
   }
-  zones: skuName == 'Premium' ? pickZones('Microsoft.Cache', 'redis', location, 1) : null
+  zones: availabilityZones
 }
 
 resource redisCache_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock)) {

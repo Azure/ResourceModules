@@ -1,6 +1,6 @@
-# CDN Profiles `[Microsoft.CDN/profiles]`
+# CDN Profiles `[Microsoft.Cdn/profiles]`
 
-This module deploys CDN Profiles.
+This module deploys a CDN Profile.
 
 ## Navigation
 

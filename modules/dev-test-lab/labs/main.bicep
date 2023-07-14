@@ -95,7 +95,7 @@ param encryptionType string = 'EncryptionAtRestWithPlatformKey'
 param encryptionDiskEncryptionSetId string = ''
 
 @description('Optional. Virtual networks to create for the lab.')
-param virtualNetworks array = []
+param virtualnetworks array = []
 
 @description('Optional. Policies to create for the lab.')
 param policies array = []
@@ -104,10 +104,10 @@ param policies array = []
 param schedules array = []
 
 @description('Conditional. Notification Channels to create for the lab. Required if the schedules property "notificationSettingsStatus" is set to "Enabled.')
-param notificationChannels array = []
+param notificationchannels array = []
 
 @description('Optional. Artifact sources to create for the lab.')
-param artifactSources array = []
+param artifactsources array = []
 
 @description('Optional. Costs to create for the lab.')
 param costs object = {}
@@ -168,7 +168,7 @@ resource lab_lock 'Microsoft.Authorization/locks@2020-05-01' = if (!empty(lock))
   scope: lab
 }
 
-module lab_virtualNetworks 'virtual-networks/main.bicep' = [for (virtualNetwork, index) in virtualNetworks: {
+module lab_virtualNetworks 'virtualnetworks/main.bicep' = [for (virtualNetwork, index) in virtualnetworks: {
   name: '${uniqueString(deployment().name, location)}-Lab-VirtualNetwork-${index}'
   params: {
     labName: lab.name
@@ -182,7 +182,7 @@ module lab_virtualNetworks 'virtual-networks/main.bicep' = [for (virtualNetwork,
   }
 }]
 
-module lab_policies 'policy-sets/policies/main.bicep' = [for (policy, index) in policies: {
+module lab_policies 'policysets/policies/main.bicep' = [for (policy, index) in policies: {
   name: '${uniqueString(deployment().name, location)}-Lab-PolicySets-Policy-${index}'
   params: {
     labName: lab.name
@@ -217,7 +217,7 @@ module lab_schedules 'schedules/main.bicep' = [for (schedule, index) in schedule
   }
 }]
 
-module lab_notificationChannels 'notification-channels/main.bicep' = [for (notificationChannel, index) in notificationChannels: {
+module lab_notificationChannels 'notificationchannels/main.bicep' = [for (notificationChannel, index) in notificationchannels: {
   name: '${uniqueString(deployment().name, location)}-Lab-NotificationChannels-${index}'
   params: {
     labName: lab.name
@@ -232,7 +232,7 @@ module lab_notificationChannels 'notification-channels/main.bicep' = [for (notif
   }
 }]
 
-module lab_artifactSources 'artifact-sources/main.bicep' = [for (artifactSource, index) in artifactSources: {
+module lab_artifactSources 'artifactsources/main.bicep' = [for (artifactSource, index) in artifactsources: {
   name: '${uniqueString(deployment().name, location)}-Lab-ArtifactSources-${index}'
   params: {
     labName: lab.name

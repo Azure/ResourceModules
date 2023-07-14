@@ -1,6 +1,6 @@
-# Role Definitions `[Microsoft.Authorization/roleDefinitions]`
+# Role Definitions (All scopes) `[Microsoft.Authorization/roleDefinitions]`
 
-This module deploys custom RBAC Role Definitions across the management group, subscription or resource group scope.
+This module deploys a Role Definition at a Management Group, Subscription or Resource Group scope.
 
 ## Navigation
 

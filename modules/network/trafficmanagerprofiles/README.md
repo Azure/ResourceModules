@@ -1,6 +1,6 @@
 # Traffic Manager Profiles `[Microsoft.Network/trafficmanagerprofiles]`
 
-This module deploys a traffic manager profile.
+This module deploys a Traffic Manager Profile.
 
 ## Navigation
 
