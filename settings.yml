@@ -16,8 +16,8 @@ variables:
   localToken_namePrefix: '' # A 3-5 character length unique string, included in the resources names (e.g. 'cntso'). Used for local module testing and pipelines.
 
   # this determines the starting prefix and ending suffix of the token in your file.
-  tokenPrefix: '<<'
-  tokenSuffix: '>>'
+  tokenPrefix: '$.' #'<<'
+  tokenSuffix: '.$'
 
   ########################
   ##   Agent settings   ##
