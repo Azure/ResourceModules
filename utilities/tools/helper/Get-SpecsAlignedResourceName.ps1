@@ -83,7 +83,7 @@ function Get-SpecsAlignedResourceName {
 
     if (-not $foundResourceTypeMatches) {
         $resourceType = $reducedResourceIdentifier.Split('/')[0]
-        Write-Warning "Failed to identifier resource type [$rawResourceType] in provider namespace [$providerNamespace]. Fallback to [$resourceType]."
+        Write-Warning "Failed to identify resource type [$rawResourceType] in provider namespace [$providerNamespace]. Fallback to [$resourceType]."
     } else {
         $resourceType = ($foundResourceTypeMatches.Count -eq 1) ? $foundResourceTypeMatches : $foundResourceTypeMatches[0]
     }
