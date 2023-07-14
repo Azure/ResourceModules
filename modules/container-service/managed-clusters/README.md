@@ -398,7 +398,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
-    name: 'csmaz001'
+    name: '<<namePrefix>>csmaz001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -572,7 +572,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "csmaz001"
+      "value": "<<namePrefix>>csmaz001"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -779,7 +779,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
-    name: 'csmkube001'
+    name: '<<namePrefix>>csmkube001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -892,7 +892,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "csmkube001"
+      "value": "<<namePrefix>>csmkube001"
     },
     "primaryAgentPoolProfile": {
       "value": [
