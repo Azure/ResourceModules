@@ -1,3 +1,7 @@
+metadata name = 'Traffic Manager Profiles'
+metadata description = 'This module deploys a Traffic Manager Profile.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Traffic Manager.')
 @minLength(1)
 param name string

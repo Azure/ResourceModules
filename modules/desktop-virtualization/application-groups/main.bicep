@@ -1,3 +1,7 @@
+metadata name = 'Azure Virtual Desktop (AVD) Application Groups'
+metadata description = 'This module deploys an Azure Virtual Desktop (AVD) Application Group.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the Application Group to create this application in.')
 @minLength(1)
 param name string

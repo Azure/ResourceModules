@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Azure NetApp Files Capacity Pool Volumes",
-    "summary": "This module deploys an Azure NetApp Files Capacity Pool Volume.",
-    "owner": "Azure/module-maintainers"
-}

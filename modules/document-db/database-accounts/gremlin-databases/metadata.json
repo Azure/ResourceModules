@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DocumentDB Database Account Gremlin Databases",
-    "summary": "This module deploys a Gremlin Database within a CosmosDB Account.",
-    "owner": "Azure/module-maintainers"
-}

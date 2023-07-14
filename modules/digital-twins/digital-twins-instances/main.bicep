@@ -1,3 +1,7 @@
+metadata name = 'Digital Twins Instances'
+metadata description = 'This module deploys an Azure Digital Twins Instance.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Digital Twin Instance.')
 @minLength(3)
 @maxLength(63)

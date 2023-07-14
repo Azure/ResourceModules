@@ -1,3 +1,7 @@
+metadata name = 'Azure Compute Galleries'
+metadata description = 'This module deploys an Azure Compute Gallery (formerly known as Shared Image Gallery).'
+metadata owner = 'Azure/module-maintainers'
+
 @minLength(1)
 @sys.description('Required. Name of the Azure Compute Gallery.')
 param name string

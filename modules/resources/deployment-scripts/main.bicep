@@ -1,3 +1,7 @@
+metadata name = 'Deployment Scripts'
+metadata description = 'This module deploys a Deployment Script.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Display name of the script to be run.')
 param name string
 

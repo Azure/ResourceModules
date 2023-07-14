@@ -1,3 +1,7 @@
+metadata name = 'App Service Plans'
+metadata description = 'This module deploys an App Service Plan.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //

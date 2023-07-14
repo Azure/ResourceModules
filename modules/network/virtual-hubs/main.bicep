@@ -1,3 +1,7 @@
+metadata name = 'Virtual Hubs'
+metadata description = '''This module deploys a Virtual Hub.
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The virtual hub name.')
 param name string
 

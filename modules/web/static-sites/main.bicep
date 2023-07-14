@@ -1,3 +1,7 @@
+metadata name = 'Static Web Apps'
+metadata description = 'This module deploys a Static Web App.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the static site.')
 @minLength(1)
 @maxLength(40)

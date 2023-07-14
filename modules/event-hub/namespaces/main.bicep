@@ -1,3 +1,7 @@
+metadata name = 'Event Hub Namespaces'
+metadata description = 'This module deploys an Event Hub Namespace.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the event hub namespace.')
 @maxLength(50)
 param name string

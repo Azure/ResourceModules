@@ -1,3 +1,7 @@
+metadata name = 'Azure Virtual Desktop (AVD) Host Pools'
+metadata description = 'This module deploys an Azure Virtual Desktop (AVD) Host Pool.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the Host Pool.')
 @minLength(1)
 param name string

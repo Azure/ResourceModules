@@ -1,3 +1,7 @@
+metadata name = 'Digital Twins Instance EventHub Endpoint'
+metadata description = 'This module deploys a Digital Twins Instance EventHub Endpoint.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The name of the Digital Twin Endpoint.')
 param name string = 'EventHubEndpoint'
 

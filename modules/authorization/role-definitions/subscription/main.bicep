@@ -1,3 +1,7 @@
+metadata name = 'Role Definitions (Subscription scope)'
+metadata description = 'This module deploys a Role Definition at a Subscription scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'subscription'
 
 @sys.description('Required. Name of the custom RBAC role to be created.')

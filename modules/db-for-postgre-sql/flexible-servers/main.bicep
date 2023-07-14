@@ -1,3 +1,7 @@
+metadata name = 'DBforPostgreSQL Flexible Servers'
+metadata description = 'This module deploys a DBforPostgreSQL Flexible Server.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the PostgreSQL flexible server.')
 param name string
 

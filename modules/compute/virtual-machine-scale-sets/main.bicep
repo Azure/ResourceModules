@@ -1,3 +1,7 @@
+metadata name = 'Virtual Machine Scale Sets'
+metadata description = 'This module deploys a Virtual Machine Scale Set.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the VMSS.')
 param name string
 

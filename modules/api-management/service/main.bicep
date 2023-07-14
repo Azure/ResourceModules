@@ -1,3 +1,7 @@
+metadata name = 'API Management Services'
+metadata description = 'This module deploys an API Management Service.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 

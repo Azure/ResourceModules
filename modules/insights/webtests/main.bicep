@@ -1,3 +1,7 @@
+metadata name = 'Web Tests'
+metadata description = 'This module deploys a Web Test.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the webtest.')
 param name string
 

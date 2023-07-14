@@ -1,3 +1,7 @@
+metadata name = 'Policy Definitions (All scopes)'
+metadata description = 'This module deploys a Policy Definition at a Management Group or Subscription scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'managementGroup'
 
 @sys.description('Required. Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope.')

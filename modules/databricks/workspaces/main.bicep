@@ -1,3 +1,7 @@
+metadata name = 'Azure Databricks Workspaces'
+metadata description = 'This module deploys an Azure Databricks Workspace.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Azure Databricks workspace to create.')
 param name string
 

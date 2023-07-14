@@ -1,3 +1,7 @@
+metadata name = 'CDN Profiles'
+metadata description = 'This module deploys a CDN Profile.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the CDN profile.')
 param name string
 

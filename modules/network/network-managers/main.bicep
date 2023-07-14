@@ -1,3 +1,7 @@
+metadata name = 'Network Managers'
+metadata description = 'This module deploys a Network Manager.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the Network Manager.')
 @minLength(1)
 @maxLength(64)

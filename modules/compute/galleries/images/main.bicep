@@ -1,3 +1,7 @@
+metadata name = 'Compute Galleries Image Definitions'
+metadata description = 'This module deploys an Azure Compute Gallery Image Definition.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the image definition.')
 param name string
 

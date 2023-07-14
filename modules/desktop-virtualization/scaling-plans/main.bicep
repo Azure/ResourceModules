@@ -1,3 +1,7 @@
+metadata name = 'Azure Virtual Desktop (AVD) Scaling Plans'
+metadata description = 'This module deploys an Azure Virtual Desktop (AVD) Scaling Plan.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. Name of the scaling plan.')
 @minLength(1)
 param name string

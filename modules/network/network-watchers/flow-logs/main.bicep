@@ -1,3 +1,7 @@
+metadata name = 'NSG Flow Logs'
+metadata description = '''This module controls the Network Security Group Flow Logs and analytics settings
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.')
 param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 

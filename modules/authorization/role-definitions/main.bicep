@@ -1,3 +1,7 @@
+metadata name = 'Role Definitions (All scopes)'
+metadata description = 'This module deploys a Role Definition at a Management Group, Subscription or Resource Group scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'managementGroup'
 
 @sys.description('Required. Name of the custom RBAC role to be created.')

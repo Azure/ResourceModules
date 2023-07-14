@@ -1,3 +1,7 @@
+metadata name = 'Network Manager Connectivity Configurations'
+metadata description = '''This module deploys a Network Manager Connectivity Configuration.
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Conditional. The name of the parent network manager. Required if the template is used in a standalone deployment.')
 param networkManagerName string
 

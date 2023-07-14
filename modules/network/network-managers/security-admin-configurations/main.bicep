@@ -1,3 +1,7 @@
+metadata name = 'Network Manager Security Admin Configurations'
+metadata description = '''This module deploys an Network Manager Security Admin Configuration.
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Conditional. The name of the parent network manager. Required if the template is used in a standalone deployment.')
 param networkManagerName string
 
