@@ -554,6 +554,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
+    webApplicationRoutingEnabled: true
   }
 }
 ```
@@ -760,6 +761,9 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
         "Environment": "Non-Prod",
         "Role": "DeploymentValidation"
       }
+    },
+    "webApplicationRoutingEnabled": {
+      "value": true
     }
   }
 }
@@ -857,6 +861,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
+    dnsZoneResourceId: '<dnsZoneResourceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     roleAssignments: [
       {
@@ -874,6 +879,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
     }
+    webApplicationRoutingEnabled: true
   }
 }
 ```
@@ -987,6 +993,9 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     "diagnosticWorkspaceId": {
       "value": "<diagnosticWorkspaceId>"
     },
+    "dnsZoneResourceId": {
+      "value": "<dnsZoneResourceId>"
+    },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
@@ -1011,6 +1020,9 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       "value": {
         "<managedIdentityResourceId>": {}
       }
+    },
+    "webApplicationRoutingEnabled": {
+      "value": true
     }
   }
 }
