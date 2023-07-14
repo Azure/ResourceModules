@@ -33,6 +33,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
+    dnsZoneName: 'dep-<<namePrefix>>-dns.com'
   }
 }
 
@@ -60,6 +61,8 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '<<namePrefix>>${serviceShort}001'
+    webApplicationRoutingEnabled:true
+    dnsZoneResourceId: nestedDependencies.outputs.dnsZoneResourceId
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
