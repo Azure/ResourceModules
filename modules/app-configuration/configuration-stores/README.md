@@ -328,7 +328,7 @@ module configurationStores './app-configuration/configuration-stores/main.bicep'
   name: '${uniqueString(deployment().name, location)}-test-acccom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]acccom001'
+    name: 'acccom001'
     // Non-required parameters
     createMode: 'Default'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -389,7 +389,7 @@ module configurationStores './app-configuration/configuration-stores/main.bicep'
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]acccom001"
+      "value": "acccom001"
     },
     // Non-required parameters
     "createMode": {
@@ -481,7 +481,7 @@ module configurationStores './app-configuration/configuration-stores/main.bicep'
   name: '${uniqueString(deployment().name, location)}-test-accmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]accmin001'
+    name: 'accmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -502,7 +502,7 @@ module configurationStores './app-configuration/configuration-stores/main.bicep'
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]accmin001"
+      "value": "accmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -526,7 +526,7 @@ module configurationStores './app-configuration/configuration-stores/main.bicep'
   name: '${uniqueString(deployment().name, location)}-test-accpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]accpe001'
+    name: 'accpe001'
     // Non-required parameters
     createMode: 'Default'
     disableLocalAuth: false
@@ -570,7 +570,7 @@ module configurationStores './app-configuration/configuration-stores/main.bicep'
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]accpe001"
+      "value": "accpe001"
     },
     // Non-required parameters
     "createMode": {

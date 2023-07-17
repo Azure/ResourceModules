@@ -295,7 +295,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rncom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rncom001'
+    name: 'rncom001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -322,7 +322,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hybridConnections: [
       {
-        name: '[[namePrefix]]rncomhc001'
+        name: 'rncomhc001'
         roleAssignments: [
           {
             principalIds: [
@@ -389,7 +389,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     }
     wcfRelays: [
       {
-        name: '[[namePrefix]]rncomwcf001'
+        name: 'rncomwcf001'
         relayType: 'NetTcp'
         roleAssignments: [
           {
@@ -420,7 +420,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rncom001"
+      "value": "rncom001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -463,7 +463,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     "hybridConnections": {
       "value": [
         {
-          "name": "[[namePrefix]]rncomhc001",
+          "name": "rncomhc001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -544,7 +544,7 @@ module namespaces './relay/namespaces/main.bicep' = {
     "wcfRelays": {
       "value": [
         {
-          "name": "[[namePrefix]]rncomwcf001",
+          "name": "rncomwcf001",
           "relayType": "NetTcp",
           "roleAssignments": [
             {
@@ -576,7 +576,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rnmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rnmin001'
+    name: 'rnmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -597,7 +597,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rnmin001"
+      "value": "rnmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -621,7 +621,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rnpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rnpe001'
+    name: 'rnpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -662,7 +662,7 @@ module namespaces './relay/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rnpe001"
+      "value": "rnpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

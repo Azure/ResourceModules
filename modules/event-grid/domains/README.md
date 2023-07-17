@@ -290,7 +290,7 @@ module domains './event-grid/domains/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egdcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]egdcom001'
+    name: 'egdcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -334,7 +334,7 @@ module domains './event-grid/domains/main.bicep' = {
       Role: 'DeploymentValidation'
     }
     topics: [
-      '[[namePrefix]]-topic-egdcom001'
+      'topic-egdcom001'
     ]
   }
 }
@@ -354,7 +354,7 @@ module domains './event-grid/domains/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]egdcom001"
+      "value": "egdcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -422,7 +422,7 @@ module domains './event-grid/domains/main.bicep' = {
     },
     "topics": {
       "value": [
-        "[[namePrefix]]-topic-egdcom001"
+        "topic-egdcom001"
       ]
     }
   }
@@ -443,7 +443,7 @@ module domains './event-grid/domains/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egdmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]egdmin001'
+    name: 'egdmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -464,7 +464,7 @@ module domains './event-grid/domains/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]egdmin001"
+      "value": "egdmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -488,7 +488,7 @@ module domains './event-grid/domains/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egdpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]egdpe001'
+    name: 'egdpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -528,7 +528,7 @@ module domains './event-grid/domains/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]egdpe001"
+      "value": "egdpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

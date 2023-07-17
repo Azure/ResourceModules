@@ -335,7 +335,7 @@ module workflows './logic/workflows/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-lwcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]lwcom001'
+    name: 'lwcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -409,7 +409,7 @@ module workflows './logic/workflows/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]lwcom001"
+      "value": "lwcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {

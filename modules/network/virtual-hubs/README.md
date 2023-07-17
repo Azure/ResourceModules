@@ -16,9 +16,9 @@ If you are planning to deploy a Secure Virtual Hub (with an Azure Firewall integ
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
-| `Microsoft.Network/virtualHubs` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualHubs) |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualHubs/hubRouteTables) |
-| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualHubs/hubVirtualNetworkConnections) |
+| `Microsoft.Network/virtualHubs` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs) |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs/hubRouteTables) |
+| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Parameters
 
@@ -127,7 +127,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '[[namePrefix]]-nvhcom'
+    name: 'nvhcom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -183,7 +183,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "[[namePrefix]]-nvhcom"
+      "value": "nvhcom"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -250,7 +250,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
   params: {
     // Required parameters
     addressPrefix: '10.0.0.0/16'
-    name: '[[namePrefix]]-nvhmin'
+    name: 'nvhmin'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -275,7 +275,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
       "value": "10.0.0.0/16"
     },
     "name": {
-      "value": "[[namePrefix]]-nvhmin"
+      "value": "nvhmin"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"

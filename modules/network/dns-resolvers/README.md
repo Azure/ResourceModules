@@ -255,19 +255,19 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndrcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ndrcom001'
+    name: 'ndrcom001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundEndpoints: [
       {
-        name: '[[namePrefix]]-az-pdnsin-x-001'
+        name: 'az-pdnsin-x-001'
         subnetId: '<subnetId>'
       }
     ]
     outboundEndpoints: [
       {
-        name: '[[namePrefix]]-az-pdnsout-x-001'
+        name: 'az-pdnsout-x-001'
         subnetId: '<subnetId>'
       }
     ]
@@ -293,7 +293,7 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ndrcom001"
+      "value": "ndrcom001"
     },
     "virtualNetworkId": {
       "value": "<virtualNetworkId>"
@@ -305,7 +305,7 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
     "inboundEndpoints": {
       "value": [
         {
-          "name": "[[namePrefix]]-az-pdnsin-x-001",
+          "name": "az-pdnsin-x-001",
           "subnetId": "<subnetId>"
         }
       ]
@@ -313,7 +313,7 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
     "outboundEndpoints": {
       "value": [
         {
-          "name": "[[namePrefix]]-az-pdnsout-x-001",
+          "name": "az-pdnsout-x-001",
           "subnetId": "<subnetId>"
         }
       ]

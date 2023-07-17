@@ -920,7 +920,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '[[namePrefix]]cvmsslin001'
+    name: 'cvmsslin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1067,7 +1067,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "[[namePrefix]]cvmsslin001"
+      "value": "cvmsslin001"
     },
     "osDisk": {
       "value": {
@@ -1273,7 +1273,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '[[namePrefix]]cvmsslinmin001'
+    name: 'cvmsslinmin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1336,7 +1336,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "[[namePrefix]]cvmsslinmin001"
+      "value": "cvmsslinmin001"
     },
     "osDisk": {
       "value": {
@@ -1410,7 +1410,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '[[namePrefix]]cvmsslcmk001'
+    name: 'cvmsslcmk001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1494,7 +1494,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "[[namePrefix]]cvmsslcmk001"
+      "value": "cvmsslcmk001"
     },
     "osDisk": {
       "value": {
@@ -1595,7 +1595,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '[[namePrefix]]cvmsswin001'
+    name: 'cvmsswin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1735,7 +1735,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "[[namePrefix]]cvmsswin001"
+      "value": "cvmsswin001"
     },
     "osDisk": {
       "value": {
@@ -1930,7 +1930,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '[[namePrefix]]cvmsswinmin001'
+    name: 'cvmsswinmin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1987,7 +1987,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "[[namePrefix]]cvmsswinmin001"
+      "value": "cvmsswinmin001"
     },
     "osDisk": {
       "value": {

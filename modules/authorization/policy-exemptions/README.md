@@ -224,7 +224,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apemgcom001'
+    name: 'apemgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     assignmentScopeValidation: 'Default'
@@ -270,7 +270,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apemgcom001"
+      "value": "apemgcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -337,7 +337,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apemgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apemgmin001'
+    name: 'apemgmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -359,7 +359,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apemgmin001"
+      "value": "apemgmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -386,7 +386,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apergcom001'
+    name: 'apergcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     assignmentScopeValidation: 'Default'
@@ -432,7 +432,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apergcom001"
+      "value": "apergcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -499,7 +499,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apergmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apergmin001'
+    name: 'apergmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -521,7 +521,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apergmin001"
+      "value": "apergmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -548,7 +548,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apesubcom001'
+    name: 'apesubcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     assignmentScopeValidation: 'Default'
@@ -594,7 +594,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apesubcom001"
+      "value": "apesubcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -661,7 +661,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apesubmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apesubmin001'
+    name: 'apesubmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -683,7 +683,7 @@ module policyExemptions './authorization/policy-exemptions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apesubmin001"
+      "value": "apesubmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"

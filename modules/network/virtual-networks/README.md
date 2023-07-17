@@ -378,7 +378,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '[[namePrefix]]nvncom001'
+    name: 'nvncom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -408,7 +408,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       }
       {
         addressPrefix: '10.0.0.0/24'
-        name: '[[namePrefix]]-az-subnet-x-001'
+        name: 'az-subnet-x-001'
         networkSecurityGroupId: '<networkSecurityGroupId>'
         roleAssignments: [
           {
@@ -439,11 +439,11 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
             }
           }
         ]
-        name: '[[namePrefix]]-az-subnet-x-002'
+        name: 'az-subnet-x-002'
       }
       {
         addressPrefix: '10.0.6.0/24'
-        name: '[[namePrefix]]-az-subnet-x-003'
+        name: 'az-subnet-x-003'
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
       }
@@ -475,7 +475,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       ]
     },
     "name": {
-      "value": "[[namePrefix]]nvncom001"
+      "value": "nvncom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -527,7 +527,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
         },
         {
           "addressPrefix": "10.0.0.0/24",
-          "name": "[[namePrefix]]-az-subnet-x-001",
+          "name": "az-subnet-x-001",
           "networkSecurityGroupId": "<networkSecurityGroupId>",
           "roleAssignments": [
             {
@@ -558,11 +558,11 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
               }
             }
           ],
-          "name": "[[namePrefix]]-az-subnet-x-002"
+          "name": "az-subnet-x-002"
         },
         {
           "addressPrefix": "10.0.6.0/24",
-          "name": "[[namePrefix]]-az-subnet-x-003",
+          "name": "az-subnet-x-003",
           "privateEndpointNetworkPolicies": "Disabled",
           "privateLinkServiceNetworkPolicies": "Enabled"
         }
@@ -595,7 +595,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
     addressPrefixes: [
       '10.0.0.0/16'
     ]
-    name: '[[namePrefix]]nvnmin001'
+    name: 'nvnmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -621,7 +621,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       ]
     },
     "name": {
-      "value": "[[namePrefix]]nvnmin001"
+      "value": "nvnmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -648,7 +648,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
     addressPrefixes: [
       '10.1.0.0/24'
     ]
-    name: '[[namePrefix]]nvnpeer001'
+    name: 'nvnpeer001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     peerings: [
@@ -697,7 +697,7 @@ module virtualNetworks './network/virtual-networks/main.bicep' = {
       ]
     },
     "name": {
-      "value": "[[namePrefix]]nvnpeer001"
+      "value": "nvnpeer001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -430,7 +430,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssacom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ssacom001'
+    name: 'ssacom001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -523,7 +523,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
             service: 'blob'
           }
         ]
-        storageAccountName: '[[namePrefix]]ssacom001'
+        storageAccountName: 'ssacom001'
       }
     ]
     lock: 'CanNotDelete'
@@ -636,7 +636,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ssacom001"
+      "value": "ssacom001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -757,7 +757,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
               "service": "blob"
             }
           ],
-          "storageAccountName": "[[namePrefix]]ssacom001"
+          "storageAccountName": "ssacom001"
         }
       ]
     },
@@ -895,7 +895,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssaencr'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ssaencr001'
+    name: 'ssaencr001'
     // Non-required parameters
     allowBlobPublicAccess: false
     blobServices: {
@@ -907,7 +907,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
       containerDeleteRetentionPolicyEnabled: true
       containers: [
         {
-          name: '[[namePrefix]]container'
+          name: 'container'
           publicAccess: 'None'
         }
       ]
@@ -966,7 +966,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ssaencr001"
+      "value": "ssaencr001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -982,7 +982,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
         "containerDeleteRetentionPolicyEnabled": true,
         "containers": [
           {
-            "name": "[[namePrefix]]container",
+            "name": "container",
             "publicAccess": "None"
           }
         ],
@@ -1062,7 +1062,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssamin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ssamin001'
+    name: 'ssamin001'
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1084,7 +1084,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ssamin001"
+      "value": "ssamin001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -1111,7 +1111,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssanfs'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ssanfs001'
+    name: 'ssanfs001'
     // Non-required parameters
     allowBlobPublicAccess: false
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -1167,7 +1167,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ssanfs001"
+      "value": "ssanfs001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {
@@ -1256,7 +1256,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssav1'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ssav1001'
+    name: 'ssav1001'
     // Non-required parameters
     allowBlobPublicAccess: false
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1283,7 +1283,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ssav1001"
+      "value": "ssav1001"
     },
     // Non-required parameters
     "allowBlobPublicAccess": {

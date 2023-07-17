@@ -291,9 +291,9 @@ module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apiscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apiscom001'
+    name: 'apiscom001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: '[[namePrefix]]-az-amorg-x-001'
+    publisherName: 'az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -352,13 +352,13 @@ module service './api-management/service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apiscom001"
+      "value": "apiscom001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
-      "value": "[[namePrefix]]-az-amorg-x-001"
+      "value": "az-amorg-x-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -430,9 +430,9 @@ module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismax'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apismax001'
+    name: 'apismax001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: '[[namePrefix]]-az-amorg-x-001'
+    publisherName: 'az-amorg-x-001'
     // Non-required parameters
     apis: [
       {
@@ -582,13 +582,13 @@ module service './api-management/service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apismax001"
+      "value": "apismax001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
-      "value": "[[namePrefix]]-az-amorg-x-001"
+      "value": "az-amorg-x-001"
     },
     // Non-required parameters
     "apis": {
@@ -781,9 +781,9 @@ module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apismin001'
+    name: 'apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: '[[namePrefix]]-az-amorg-x-001'
+    publisherName: 'az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -804,13 +804,13 @@ module service './api-management/service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apismin001"
+      "value": "apismin001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
-      "value": "[[namePrefix]]-az-amorg-x-001"
+      "value": "az-amorg-x-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

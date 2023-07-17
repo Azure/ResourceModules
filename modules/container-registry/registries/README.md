@@ -386,7 +386,7 @@ module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]crrcom001'
+    name: 'crrcom001'
     // Non-required parameters
     acrAdminUserEnabled: false
     acrSku: 'Premium'
@@ -449,7 +449,7 @@ module registries './container-registry/registries/main.bicep' = {
     }
     webhooks: [
       {
-        name: '[[namePrefix]]acrx001webhook'
+        name: 'acrx001webhook'
         serviceUri: 'https://www.contoso.com/webhook'
       }
     ]
@@ -471,7 +471,7 @@ module registries './container-registry/registries/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]crrcom001"
+      "value": "crrcom001"
     },
     // Non-required parameters
     "acrAdminUserEnabled": {
@@ -580,7 +580,7 @@ module registries './container-registry/registries/main.bicep' = {
     "webhooks": {
       "value": [
         {
-          "name": "[[namePrefix]]acrx001webhook",
+          "name": "acrx001webhook",
           "serviceUri": "https://www.contoso.com/webhook"
         }
       ]
@@ -603,7 +603,7 @@ module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrencr'
   params: {
     // Required parameters
-    name: '[[namePrefix]]crrencr001'
+    name: 'crrencr001'
     // Non-required parameters
     acrSku: 'Premium'
     cMKKeyName: '<cMKKeyName>'
@@ -636,7 +636,7 @@ module registries './container-registry/registries/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]crrencr001"
+      "value": "crrencr001"
     },
     // Non-required parameters
     "acrSku": {
@@ -686,7 +686,7 @@ module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]crrmin001'
+    name: 'crrmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -707,7 +707,7 @@ module registries './container-registry/registries/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]crrmin001"
+      "value": "crrmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -731,7 +731,7 @@ module registries './container-registry/registries/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crrpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]crrpe001'
+    name: 'crrpe001'
     // Non-required parameters
     acrSku: 'Premium'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -772,7 +772,7 @@ module registries './container-registry/registries/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]crrpe001"
+      "value": "crrpe001"
     },
     // Non-required parameters
     "acrSku": {

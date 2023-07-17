@@ -275,7 +275,7 @@ module privateLinkHubs './synapse/private-link-hubs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-splhcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]splhcom001'
+    name: 'splhcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -331,7 +331,7 @@ module privateLinkHubs './synapse/private-link-hubs/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]splhcom001"
+      "value": "splhcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -398,7 +398,7 @@ module privateLinkHubs './synapse/private-link-hubs/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-splhmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]splhmin001'
+    name: 'splhmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -419,7 +419,7 @@ module privateLinkHubs './synapse/private-link-hubs/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]splhmin001"
+      "value": "splhmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

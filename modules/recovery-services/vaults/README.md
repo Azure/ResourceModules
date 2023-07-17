@@ -948,7 +948,7 @@ module vaults './recovery-services/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rsvcom001'
+    name: 'rsvcom001'
     // Non-required parameters
     backupConfig: {
       enhancedSecurityState: 'Disabled'
@@ -1261,7 +1261,7 @@ module vaults './recovery-services/vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rsvcom001"
+      "value": "rsvcom001"
     },
     // Non-required parameters
     "backupConfig": {
@@ -1776,7 +1776,7 @@ module vaults './recovery-services/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rsvmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rsvmin001'
+    name: 'rsvmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -1797,7 +1797,7 @@ module vaults './recovery-services/vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rsvmin001"
+      "value": "rsvmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -187,7 +187,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npiacom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]npiacom001'
+    name: 'npiacom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -234,7 +234,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]npiacom001"
+      "value": "npiacom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -306,7 +306,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npiamin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]npiamin001'
+    name: 'npiamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -327,7 +327,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]npiamin001"
+      "value": "npiamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

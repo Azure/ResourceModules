@@ -351,7 +351,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '[[namePrefix]]swcom001'
+    name: 'swcom001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -428,7 +428,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "[[namePrefix]]swcom001"
+      "value": "swcom001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -530,7 +530,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '[[namePrefix]]swensa001'
+    name: 'swensa001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -563,7 +563,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "[[namePrefix]]swensa001"
+      "value": "swensa001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -607,7 +607,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '[[namePrefix]]swenua001'
+    name: 'swenua001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -643,7 +643,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "[[namePrefix]]swenua001"
+      "value": "swenua001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -690,7 +690,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '[[namePrefix]]swmanv001'
+    name: 'swmanv001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     allowedAadTenantIdsForLinking: [
@@ -727,7 +727,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "[[namePrefix]]swmanv001"
+      "value": "swmanv001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -773,7 +773,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '[[namePrefix]]swmin001'
+    name: 'swmin001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -801,7 +801,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "[[namePrefix]]swmin001"
+      "value": "swmin001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"

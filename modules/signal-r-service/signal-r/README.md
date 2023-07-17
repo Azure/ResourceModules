@@ -288,7 +288,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srssrcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-srssrcom-001'
+    name: 'srssrcom-001'
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
@@ -307,7 +307,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
             'ServerConnection'
             'Trace'
           ]
-          name: 'pe-[[namePrefix]]-srssrcom-001'
+          name: 'pe-srssrcom-001'
         }
       ]
       publicNetwork: {
@@ -367,7 +367,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-srssrcom-001"
+      "value": "srssrcom-001"
     },
     // Non-required parameters
     "capacity": {
@@ -404,7 +404,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-[[namePrefix]]-srssrcom-001"
+            "name": "pe-srssrcom-001"
           }
         ],
         "publicNetwork": {
@@ -475,7 +475,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-srsdrmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-srsdrmin-001'
+    name: 'srsdrmin-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -496,7 +496,7 @@ module signalR './signal-r-service/signal-r/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-srsdrmin-001"
+      "value": "srsdrmin-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

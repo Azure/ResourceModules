@@ -186,7 +186,7 @@ module privateDnsZones './network/private-dns-zones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npdzcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]npdzcom001.com'
+    name: 'npdzcom001.com'
     // Non-required parameters
     a: [
       {
@@ -386,7 +386,7 @@ module privateDnsZones './network/private-dns-zones/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]npdzcom001.com"
+      "value": "npdzcom001.com"
     },
     // Non-required parameters
     "a": {
@@ -613,7 +613,7 @@ module privateDnsZones './network/private-dns-zones/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npdzmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]npdzmin001.com'
+    name: 'npdzmin001.com'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -634,7 +634,7 @@ module privateDnsZones './network/private-dns-zones/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]npdzmin001.com"
+      "value": "npdzmin001.com"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

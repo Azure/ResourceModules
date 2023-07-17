@@ -395,7 +395,7 @@ module factories './data-factory/factories/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dffcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dffcom001'
+    name: 'dffcom001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -490,7 +490,7 @@ module factories './data-factory/factories/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dffcom001"
+      "value": "dffcom001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -626,7 +626,7 @@ module factories './data-factory/factories/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dffmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dffmin001'
+    name: 'dffmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -647,7 +647,7 @@ module factories './data-factory/factories/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dffmin001"
+      "value": "dffmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

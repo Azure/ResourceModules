@@ -180,7 +180,7 @@ module servers './analysis-services/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-asscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]asscom'
+    name: 'asscom'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -221,7 +221,7 @@ module servers './analysis-services/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]asscom"
+      "value": "asscom"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -283,7 +283,7 @@ module servers './analysis-services/servers/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmax'
   params: {
     // Required parameters
-    name: '[[namePrefix]]assmax'
+    name: 'assmax'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -338,7 +338,7 @@ module servers './analysis-services/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]assmax"
+      "value": "assmax"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -420,7 +420,7 @@ module servers './analysis-services/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-assmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]assmin'
+    name: 'assmin'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -441,7 +441,7 @@ module servers './analysis-services/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]assmin"
+      "value": "assmin"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

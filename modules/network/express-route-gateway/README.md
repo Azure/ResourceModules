@@ -202,7 +202,7 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nergcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nergcom001'
+    name: 'nergcom001'
     virtualHubId: '<virtualHubId>'
     // Non-required parameters
     autoScaleConfigurationBoundsMax: 3
@@ -229,7 +229,7 @@ module expressRouteGateway './network/express-route-gateway/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nergcom001"
+      "value": "nergcom001"
     },
     "virtualHubId": {
       "value": "<virtualHubId>"

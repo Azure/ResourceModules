@@ -149,7 +149,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdmgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apdmgcom001'
+    name: 'apdmgcom001'
     policyRule: {
       if: {
         allOf: [
@@ -220,7 +220,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apdmgcom001"
+      "value": "apdmgcom001"
     },
     "policyRule": {
       "value": {
@@ -304,7 +304,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdmgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apdmgmin001'
+    name: 'apdmgmin001'
     policyRule: {
       if: {
         allOf: [
@@ -347,7 +347,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apdmgmin001"
+      "value": "apdmgmin001"
     },
     "policyRule": {
       "value": {
@@ -397,7 +397,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdsubcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apdsubcom001'
+    name: 'apdsubcom001'
     policyRule: {
       if: {
         allOf: [
@@ -468,7 +468,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apdsubcom001"
+      "value": "apdsubcom001"
     },
     "policyRule": {
       "value": {
@@ -552,7 +552,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apdsubmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]apdsubmin001'
+    name: 'apdsubmin001'
     policyRule: {
       if: {
         allOf: [
@@ -595,7 +595,7 @@ module policyDefinitions './authorization/policy-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]apdsubmin001"
+      "value": "apdsubmin001"
     },
     "policyRule": {
       "value": {

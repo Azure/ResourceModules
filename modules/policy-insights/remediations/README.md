@@ -184,7 +184,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-pirmgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]pirmgcom001'
+    name: 'pirmgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -215,7 +215,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]pirmgcom001"
+      "value": "pirmgcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -265,7 +265,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirmgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]pirmgmin001'
+    name: 'pirmgmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -287,7 +287,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]pirmgmin001"
+      "value": "pirmgmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -314,7 +314,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirrgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]pirrgcom001'
+    name: 'pirrgcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -345,7 +345,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]pirrgcom001"
+      "value": "pirrgcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -395,7 +395,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirrgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]pirrgmin001'
+    name: 'pirrgmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -417,7 +417,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]pirrgmin001"
+      "value": "pirrgmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -444,7 +444,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirsubcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]pirsubcom001'
+    name: 'pirsubcom001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -475,7 +475,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]pirsubcom001"
+      "value": "pirsubcom001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"
@@ -525,7 +525,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-pirsubmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]pirsubmin001'
+    name: 'pirsubmin001'
     policyAssignmentId: '<policyAssignmentId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -547,7 +547,7 @@ module remediations './policy-insights/remediations/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]pirsubmin001"
+      "value": "pirsubmin001"
     },
     "policyAssignmentId": {
       "value": "<policyAssignmentId>"

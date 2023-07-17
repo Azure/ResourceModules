@@ -413,7 +413,7 @@ The following module usage examples are retrieved from the content of the files 
 module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvcom'
   params: {
-    name: '[[namePrefix]]kvvcom002'
+    name: 'kvvcom002'
     accessPolicies: [
       {
         objectId: '<objectId>'
@@ -572,7 +572,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "[[namePrefix]]kvvcom002"
+      "value": "kvvcom002"
     },
     "accessPolicies": {
       "value": [
@@ -767,7 +767,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]kvvmin002'
+    name: 'kvvmin002'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
@@ -789,7 +789,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]kvvmin002"
+      "value": "kvvmin002"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -816,7 +816,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-kvvpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]kvvpe001'
+    name: 'kvvpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePurgeProtection: false
@@ -857,7 +857,7 @@ module vaults './key-vault/vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]kvvpe001"
+      "value": "kvvpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

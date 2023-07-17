@@ -454,7 +454,7 @@ module workspaces './machine-learning-services/workspaces/main.bicep' = {
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '[[namePrefix]]mlswcom001'
+    name: 'mlswcom001'
     sku: 'Premium'
     // Non-required parameters
     computes: [
@@ -555,7 +555,7 @@ module workspaces './machine-learning-services/workspaces/main.bicep' = {
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "[[namePrefix]]mlswcom001"
+      "value": "mlswcom001"
     },
     "sku": {
       "value": "Premium"
@@ -687,7 +687,7 @@ module workspaces './machine-learning-services/workspaces/main.bicep' = {
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '[[namePrefix]]mlswecr001'
+    name: 'mlswecr001'
     sku: 'Basic'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -745,7 +745,7 @@ module workspaces './machine-learning-services/workspaces/main.bicep' = {
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "[[namePrefix]]mlswecr001"
+      "value": "mlswecr001"
     },
     "sku": {
       "value": "Basic"
@@ -818,7 +818,7 @@ module workspaces './machine-learning-services/workspaces/main.bicep' = {
     associatedApplicationInsightsResourceId: '<associatedApplicationInsightsResourceId>'
     associatedKeyVaultResourceId: '<associatedKeyVaultResourceId>'
     associatedStorageAccountResourceId: '<associatedStorageAccountResourceId>'
-    name: '[[namePrefix]]mlswmin001'
+    name: 'mlswmin001'
     sku: 'Basic'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -850,7 +850,7 @@ module workspaces './machine-learning-services/workspaces/main.bicep' = {
       "value": "<associatedStorageAccountResourceId>"
     },
     "name": {
-      "value": "[[namePrefix]]mlswmin001"
+      "value": "mlswmin001"
     },
     "sku": {
       "value": "Basic"

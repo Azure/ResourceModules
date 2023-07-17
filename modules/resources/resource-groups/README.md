@@ -177,7 +177,7 @@ module resourceGroups './resources/resource-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rrgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rrgcom001'
+    name: 'rrgcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -212,7 +212,7 @@ module resourceGroups './resources/resource-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rrgcom001"
+      "value": "rrgcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -256,7 +256,7 @@ module resourceGroups './resources/resource-groups/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-rrgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]rrgmin001'
+    name: 'rrgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -277,7 +277,7 @@ module resourceGroups './resources/resource-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]rrgmin001"
+      "value": "rrgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

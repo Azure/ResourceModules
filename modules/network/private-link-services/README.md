@@ -16,7 +16,7 @@ This module deploys a Private Link Service.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
-| `Microsoft.Network/privateLinkServices` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/privateLinkServices) |
+| `Microsoft.Network/privateLinkServices` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/privateLinkServices) |
 
 ## Parameters
 
@@ -444,7 +444,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nplscom001'
+    name: 'nplscom001'
     // Non-required parameters
     autoApproval: {
       subscriptions: [
@@ -510,7 +510,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nplscom001"
+      "value": "nplscom001"
     },
     // Non-required parameters
     "autoApproval": {
@@ -597,7 +597,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplsmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nplsmin001'
+    name: 'nplsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipConfigurations: [
@@ -633,7 +633,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nplsmin001"
+      "value": "nplsmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
