@@ -168,7 +168,7 @@ module applicationSecurityGroups './network/application-security-groups/main.bic
   name: '${uniqueString(deployment().name, location)}-test-nasgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nasgcom001'
+    name: '[[namePrefix]]nasgcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -203,7 +203,7 @@ module applicationSecurityGroups './network/application-security-groups/main.bic
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nasgcom001"
+      "value": "[[namePrefix]]nasgcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

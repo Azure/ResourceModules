@@ -180,7 +180,7 @@ module webtests './insights/webtests/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iwtcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iwtcom001'
+    name: '[[namePrefix]]iwtcom001'
     request: {
       HttpVerb: 'GET'
       RequestUrl: 'https://learn.microsoft.com/en-us/'
@@ -188,7 +188,7 @@ module webtests './insights/webtests/main.bicep' = {
     tags: {
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
     }
-    webTestName: 'wt<<namePrefix>>$iwtcom001'
+    webTestName: 'wt[[namePrefix]]$iwtcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     locations: [
@@ -197,7 +197,7 @@ module webtests './insights/webtests/main.bicep' = {
       }
     ]
     lock: 'CanNotDelete'
-    syntheticMonitorId: '<<namePrefix>>iwtcom001'
+    syntheticMonitorId: '[[namePrefix]]iwtcom001'
   }
 }
 ```
@@ -216,7 +216,7 @@ module webtests './insights/webtests/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iwtcom001"
+      "value": "[[namePrefix]]iwtcom001"
     },
     "request": {
       "value": {
@@ -230,7 +230,7 @@ module webtests './insights/webtests/main.bicep' = {
       }
     },
     "webTestName": {
-      "value": "wt<<namePrefix>>$iwtcom001"
+      "value": "wt[[namePrefix]]$iwtcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -247,7 +247,7 @@ module webtests './insights/webtests/main.bicep' = {
       "value": "CanNotDelete"
     },
     "syntheticMonitorId": {
-      "value": "<<namePrefix>>iwtcom001"
+      "value": "[[namePrefix]]iwtcom001"
     }
   }
 }
@@ -267,7 +267,7 @@ module webtests './insights/webtests/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iwtmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iwtmin001'
+    name: '[[namePrefix]]iwtmin001'
     request: {
       HttpVerb: 'GET'
       RequestUrl: 'https://learn.microsoft.com/en-us/'
@@ -275,7 +275,7 @@ module webtests './insights/webtests/main.bicep' = {
     tags: {
       'hidden-link:${nestedDependencies.outputs.appInsightResourceId}': 'Resource'
     }
-    webTestName: 'wt<<namePrefix>>$iwtmin001'
+    webTestName: 'wt[[namePrefix]]$iwtmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -296,7 +296,7 @@ module webtests './insights/webtests/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iwtmin001"
+      "value": "[[namePrefix]]iwtmin001"
     },
     "request": {
       "value": {
@@ -310,7 +310,7 @@ module webtests './insights/webtests/main.bicep' = {
       }
     },
     "webTestName": {
-      "value": "wt<<namePrefix>>$iwtmin001"
+      "value": "wt[[namePrefix]]$iwtmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

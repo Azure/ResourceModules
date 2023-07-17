@@ -91,7 +91,7 @@ module fluxConfigurations './kubernetes-configuration/flux-configurations/main.b
   params: {
     // Required parameters
     clusterName: '<clusterName>'
-    name: '<<namePrefix>>kcfccom001'
+    name: '[[namePrefix]]kcfccom001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
     // Non-required parameters
@@ -136,7 +136,7 @@ module fluxConfigurations './kubernetes-configuration/flux-configurations/main.b
       "value": "<clusterName>"
     },
     "name": {
-      "value": "<<namePrefix>>kcfccom001"
+      "value": "[[namePrefix]]kcfccom001"
     },
     "namespace": {
       "value": "flux-system"
@@ -190,7 +190,7 @@ module fluxConfigurations './kubernetes-configuration/flux-configurations/main.b
   params: {
     // Required parameters
     clusterName: '<clusterName>'
-    name: '<<namePrefix>>kcfcmin001'
+    name: '[[namePrefix]]kcfcmin001'
     namespace: 'flux-system'
     sourceKind: 'GitRepository'
     // Non-required parameters
@@ -225,7 +225,7 @@ module fluxConfigurations './kubernetes-configuration/flux-configurations/main.b
       "value": "<clusterName>"
     },
     "name": {
-      "value": "<<namePrefix>>kcfcmin001"
+      "value": "[[namePrefix]]kcfcmin001"
     },
     "namespace": {
       "value": "flux-system"

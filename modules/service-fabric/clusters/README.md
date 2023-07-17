@@ -251,8 +251,8 @@ module clusters './service-fabric/clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfccer'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>sfccer001'
+    managementEndpoint: 'https://[[namePrefix]]sfccer001.westeurope.cloudapp.azure.com:19080'
+    name: '[[namePrefix]]sfccer001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -299,10 +299,10 @@ module clusters './service-fabric/clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>sfccer001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://[[namePrefix]]sfccer001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "<<namePrefix>>sfccer001"
+      "value": "[[namePrefix]]sfccer001"
     },
     "nodeTypes": {
       "value": [
@@ -360,8 +360,8 @@ module clusters './service-fabric/clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfccom'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>sfccom001'
+    managementEndpoint: 'https://[[namePrefix]]sfccom001.westeurope.cloudapp.azure.com:19080'
+    name: '[[namePrefix]]sfccom001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -504,7 +504,7 @@ module clusters './service-fabric/clusters/main.bicep' = {
       }
     ]
     tags: {
-      clusterName: '<<namePrefix>>sfccom001'
+      clusterName: '[[namePrefix]]sfccom001'
       resourceType: 'Service Fabric'
     }
     upgradeDescription: {
@@ -544,10 +544,10 @@ module clusters './service-fabric/clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>sfccom001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://[[namePrefix]]sfccom001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "<<namePrefix>>sfccom001"
+      "value": "[[namePrefix]]sfccom001"
     },
     "nodeTypes": {
       "value": [
@@ -722,7 +722,7 @@ module clusters './service-fabric/clusters/main.bicep' = {
     },
     "tags": {
       "value": {
-        "clusterName": "<<namePrefix>>sfccom001",
+        "clusterName": "[[namePrefix]]sfccom001",
         "resourceType": "Service Fabric"
       }
     },
@@ -767,8 +767,8 @@ module clusters './service-fabric/clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sfcmin'
   params: {
     // Required parameters
-    managementEndpoint: 'https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080'
-    name: '<<namePrefix>>sfcmin001'
+    managementEndpoint: 'https://[[namePrefix]]sfcmin001.westeurope.cloudapp.azure.com:19080'
+    name: '[[namePrefix]]sfcmin001'
     nodeTypes: [
       {
         applicationPorts: {
@@ -807,10 +807,10 @@ module clusters './service-fabric/clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "managementEndpoint": {
-      "value": "https://<<namePrefix>>sfcmin001.westeurope.cloudapp.azure.com:19080"
+      "value": "https://[[namePrefix]]sfcmin001.westeurope.cloudapp.azure.com:19080"
     },
     "name": {
-      "value": "<<namePrefix>>sfcmin001"
+      "value": "[[namePrefix]]sfcmin001"
     },
     "nodeTypes": {
       "value": [

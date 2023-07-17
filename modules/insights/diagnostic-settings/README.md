@@ -68,7 +68,7 @@ module diagnosticSettings './insights/diagnostic-settings/main.bicep' = {
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    name: '<<namePrefix>>idscom001'
+    name: '[[namePrefix]]idscom001'
   }
 }
 ```
@@ -104,7 +104,7 @@ module diagnosticSettings './insights/diagnostic-settings/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "name": {
-      "value": "<<namePrefix>>idscom001"
+      "value": "[[namePrefix]]idscom001"
     }
   }
 }

@@ -488,7 +488,7 @@ module loadBalancers './network/load-balancers/main.bicep' = {
         publicIPAddressId: '<publicIPAddressId>'
       }
     ]
-    name: '<<namePrefix>>nlbcom001'
+    name: '[[namePrefix]]nlbcom001'
     // Non-required parameters
     backendAddressPools: [
       {
@@ -610,7 +610,7 @@ module loadBalancers './network/load-balancers/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nlbcom001"
+      "value": "[[namePrefix]]nlbcom001"
     },
     // Non-required parameters
     "backendAddressPools": {
@@ -759,7 +759,7 @@ module loadBalancers './network/load-balancers/main.bicep' = {
         subnetId: '<subnetId>'
       }
     ]
-    name: '<<namePrefix>>nlbint001'
+    name: '[[namePrefix]]nlbint001'
     // Non-required parameters
     backendAddressPools: [
       {
@@ -855,7 +855,7 @@ module loadBalancers './network/load-balancers/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nlbint001"
+      "value": "[[namePrefix]]nlbint001"
     },
     // Non-required parameters
     "backendAddressPools": {
@@ -976,7 +976,7 @@ module loadBalancers './network/load-balancers/main.bicep' = {
         publicIPAddressId: '<publicIPAddressId>'
       }
     ]
-    name: '<<namePrefix>>nlbmin001'
+    name: '[[namePrefix]]nlbmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -1005,7 +1005,7 @@ module loadBalancers './network/load-balancers/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nlbmin001"
+      "value": "[[namePrefix]]nlbmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -168,7 +168,7 @@ module ddosProtectionPlans './network/ddos-protection-plans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndppcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndppcom001'
+    name: '[[namePrefix]]ndppcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -203,7 +203,7 @@ module ddosProtectionPlans './network/ddos-protection-plans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndppcom001"
+      "value": "[[namePrefix]]ndppcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -247,7 +247,7 @@ module ddosProtectionPlans './network/ddos-protection-plans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndppmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndppmin001'
+    name: '[[namePrefix]]ndppmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -268,7 +268,7 @@ module ddosProtectionPlans './network/ddos-protection-plans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndppmin001"
+      "value": "[[namePrefix]]ndppmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -410,7 +410,7 @@ module metricAlerts './insights/metric-alerts/main.bicep' = {
         timeAggregation: 'Average'
       }
     ]
-    name: '<<namePrefix>>imacom001'
+    name: '[[namePrefix]]imacom001'
     // Non-required parameters
     actions: [
       '<actionGroupResourceId>'
@@ -464,7 +464,7 @@ module metricAlerts './insights/metric-alerts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>imacom001"
+      "value": "[[namePrefix]]imacom001"
     },
     // Non-required parameters
     "actions": {

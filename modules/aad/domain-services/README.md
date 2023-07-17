@@ -184,10 +184,10 @@ tags: {
 Follow the below PowerShell commands to get base64 encoded string of a self-signed certificate (with a `pfxCertificatePassword`)
 
 ```PowerShell
-$pfxCertificatePassword = ConvertTo-SecureString '<<YourPfxCertificatePassword>>' -AsPlainText -Force
+$pfxCertificatePassword = ConvertTo-SecureString '[[YourPfxCertificatePassword]]' -AsPlainText -Force
 $certInputObject = @{
-    Subject           = 'CN=*.<<YourDomainName>>'
-    DnsName           = '*.<<YourDomainName>>'
+    Subject           = 'CN=*.[[YourDomainName]]'
+    DnsName           = '*.[[YourDomainName]]'
     CertStoreLocation = 'cert:\LocalMachine\My'
     KeyExportPolicy   = 'Exportable'
     Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
@@ -231,10 +231,10 @@ module domainServices './aad/domain-services/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aaddscom'
   params: {
     // Required parameters
-    domainName: '<<namePrefix>>.onmicrosoft.com'
+    domainName: '[[namePrefix]].onmicrosoft.com'
     // Non-required parameters
     additionalRecipients: [
-      '<<namePrefix>>@noreply.github.com'
+      '[[namePrefix]]@noreply.github.com'
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -243,7 +243,7 @@ module domainServices './aad/domain-services/main.bicep' = {
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>aaddscom001'
+    name: '[[namePrefix]]aaddscom001'
     pfxCertificate: '<pfxCertificate>'
     pfxCertificatePassword: '<pfxCertificatePassword>'
     replicaSets: [
@@ -275,12 +275,12 @@ module domainServices './aad/domain-services/main.bicep' = {
   "parameters": {
     // Required parameters
     "domainName": {
-      "value": "<<namePrefix>>.onmicrosoft.com"
+      "value": "[[namePrefix]].onmicrosoft.com"
     },
     // Non-required parameters
     "additionalRecipients": {
       "value": [
-        "<<namePrefix>>@noreply.github.com"
+        "[[namePrefix]]@noreply.github.com"
       ]
     },
     "diagnosticEventHubAuthorizationRuleId": {
@@ -305,7 +305,7 @@ module domainServices './aad/domain-services/main.bicep' = {
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>aaddscom001"
+      "value": "[[namePrefix]]aaddscom001"
     },
     "pfxCertificate": {
       "value": "<pfxCertificate>"

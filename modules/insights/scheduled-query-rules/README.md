@@ -207,7 +207,7 @@ module scheduledQueryRules './insights/scheduled-query-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>isqrcom001'
+    name: '[[namePrefix]]isqrcom001'
     scopes: [
       '<logAnalyticsWorkspaceResourceId>'
     ]
@@ -279,7 +279,7 @@ module scheduledQueryRules './insights/scheduled-query-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>isqrcom001"
+      "value": "[[namePrefix]]isqrcom001"
     },
     "scopes": {
       "value": [

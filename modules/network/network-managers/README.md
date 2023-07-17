@@ -125,7 +125,7 @@ networkManagerScopes: {
     '/subscriptions/<subscriptionId>'
   ]
   managementGroups: [
-    '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
+    '/providers/Microsoft.Management/managementGroups/[[managementGroupId]]'
   ]
 }
 ```

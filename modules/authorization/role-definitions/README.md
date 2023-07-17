@@ -194,7 +194,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgcom'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardmgcom'
+    roleName: '[[namePrefix]]-testRole-ardmgcom'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -228,7 +228,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardmgcom"
+      "value": "[[namePrefix]]-testRole-ardmgcom"
     },
     // Non-required parameters
     "actions": {
@@ -273,7 +273,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardmgmin'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardmgmin'
+    roleName: '[[namePrefix]]-testRole-ardmgmin'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
@@ -298,7 +298,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardmgmin"
+      "value": "[[namePrefix]]-testRole-ardmgmin"
     },
     // Non-required parameters
     "actions": {
@@ -328,7 +328,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgcom'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardrgcom'
+    roleName: '[[namePrefix]]-testRole-ardrgcom'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -368,7 +368,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardrgcom"
+      "value": "[[namePrefix]]-testRole-ardrgcom"
     },
     // Non-required parameters
     "actions": {
@@ -423,7 +423,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardrgmin'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardrgmin'
+    roleName: '[[namePrefix]]-testRole-ardrgmin'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
@@ -448,7 +448,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardrgmin"
+      "value": "[[namePrefix]]-testRole-ardrgmin"
     },
     // Non-required parameters
     "actions": {
@@ -478,7 +478,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubcom'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardsubcom'
+    roleName: '[[namePrefix]]-testRole-ardsubcom'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/*'
@@ -518,7 +518,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardsubcom"
+      "value": "[[namePrefix]]-testRole-ardsubcom"
     },
     // Non-required parameters
     "actions": {
@@ -573,7 +573,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-ardsubmin'
   params: {
     // Required parameters
-    roleName: '<<namePrefix>>-testRole-ardsubmin'
+    roleName: '[[namePrefix]]-testRole-ardsubmin'
     // Non-required parameters
     actions: [
       'Microsoft.Compute/galleries/images/read'
@@ -599,7 +599,7 @@ module roleDefinitions './authorization/role-definitions/main.bicep' = {
   "parameters": {
     // Required parameters
     "roleName": {
-      "value": "<<namePrefix>>-testRole-ardsubmin"
+      "value": "[[namePrefix]]-testRole-ardsubmin"
     },
     // Non-required parameters
     "actions": {
