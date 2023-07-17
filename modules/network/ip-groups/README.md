@@ -169,7 +169,7 @@ module ipGroups './network/ip-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nigcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nigcom001'
+    name: '[[namePrefix]]nigcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipAddresses: [
@@ -208,7 +208,7 @@ module ipGroups './network/ip-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nigcom001"
+      "value": "[[namePrefix]]nigcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -258,7 +258,7 @@ module ipGroups './network/ip-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nigmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nigmin001'
+    name: '[[namePrefix]]nigmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -279,7 +279,7 @@ module ipGroups './network/ip-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nigmin001"
+      "value": "[[namePrefix]]nigmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

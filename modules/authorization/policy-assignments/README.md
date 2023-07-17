@@ -193,7 +193,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apamgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apamgcom001'
+    name: '[[namePrefix]]apamgcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611'
     // Non-required parameters
     description: '[Description] Policy Assignment at the management group scope'
@@ -213,7 +213,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
       }
     ]
     notScopes: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
+      '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg'
     ]
     overrides: [
       {
@@ -278,7 +278,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apamgcom001"
+      "value": "[[namePrefix]]apamgcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611"
@@ -320,7 +320,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
     },
     "notScopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg"
+        "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg"
       ]
     },
     "overrides": {
@@ -394,7 +394,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apamgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apamgmin001'
+    name: '[[namePrefix]]apamgmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -416,7 +416,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apamgmin001"
+      "value": "[[namePrefix]]apamgmin001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
@@ -443,7 +443,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apargcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apargcom001'
+    name: '[[namePrefix]]apargcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611'
     // Non-required parameters
     description: '[Description] Policy Assignment at the resource group scope'
@@ -530,7 +530,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apargcom001"
+      "value": "[[namePrefix]]apargcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611"
@@ -652,7 +652,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apargmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apargmin001'
+    name: '[[namePrefix]]apargmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -675,7 +675,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apargmin001"
+      "value": "[[namePrefix]]apargmin001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"
@@ -705,7 +705,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apasubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apasubcom001'
+    name: '[[namePrefix]]apasubcom001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611'
     // Non-required parameters
     description: '[Description] Policy Assignment at the subscription scope'
@@ -724,7 +724,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
       }
     ]
     notScopes: [
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
+      '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg'
     ]
     overrides: [
       {
@@ -791,7 +791,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apasubcom001"
+      "value": "[[namePrefix]]apasubcom001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policySetDefinitions/39a366e6-fdde-4f41-bbf8-3757f46d1611"
@@ -830,7 +830,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
     },
     "notScopes": {
       "value": [
-        "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg"
+        "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg"
       ]
     },
     "overrides": {
@@ -910,7 +910,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-apasubmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apasubmin001'
+    name: '[[namePrefix]]apasubmin001'
     policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -933,7 +933,7 @@ module policyAssignments './authorization/policy-assignments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apasubmin001"
+      "value": "[[namePrefix]]apasubmin001"
     },
     "policyDefinitionId": {
       "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"

@@ -6,7 +6,7 @@
             "value": 1
         },
         "vmNamePrefix": {
-            "value": "<<namePrefix>>-vm-linux-prefix"
+            "value": "[[namePrefix]]-vm-linux-prefix"
         },
         "vmNumberOfInstances": {
             "value": 3
@@ -54,7 +54,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                            "subnetId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01"
                             }

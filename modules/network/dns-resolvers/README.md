@@ -54,8 +54,8 @@ Create a inbound endpoint for Azure DNS Private Resolver
     "inboundEndpoints": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-pdnsin-x-001",
-          "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002/subnets/<<namePrefix>>-az-subnet-x-001"
+          "name": "[[namePrefix]]-az-pdnsin-x-001",
+          "subnetId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-002/subnets/[[namePrefix]]-az-subnet-x-001"
         }
       ]
     },
@@ -70,12 +70,12 @@ Create a inbound endpoint for Azure DNS Private Resolver
 ```bicep
 inboundEndpoints: [
     {
-        name: '<<namePrefix>>-az-pdnsin-x-001'
-        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002/subnets/<<namePrefix>>-az-subnet-x-001'
+        name: '[[namePrefix]]-az-pdnsin-x-001'
+        subnetId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-002/subnets/[[namePrefix]]-az-subnet-x-001'
     }
     {
-        name: '<<namePrefix>>-az-pdnsin-x-002'
-        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002/subnets/<<namePrefix>>-az-subnet-x-002'
+        name: '[[namePrefix]]-az-pdnsin-x-002'
+        subnetId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-002/subnets/[[namePrefix]]-az-subnet-x-002'
     }
 ]
 ```
@@ -95,8 +95,8 @@ Create a inbound endpoint for Azure DNS Private Resolver
     "outboundEndpoints": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-pdnsout-x-001",
-          "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002/subnets/<<namePrefix>>-az-subnet-x-001"
+          "name": "[[namePrefix]]-az-pdnsout-x-001",
+          "subnetId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-002/subnets/[[namePrefix]]-az-subnet-x-001"
         }
       ]
     },
@@ -111,12 +111,12 @@ Create a inbound endpoint for Azure DNS Private Resolver
 ```bicep
 outboundEndpoints: [
     {
-        name: '<<namePrefix>>-az-pdnsout-x-001'
-        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002/subnets/<<namePrefix>>-az-subnet-x-001'
+        name: '[[namePrefix]]-az-pdnsout-x-001'
+        subnetId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-002/subnets/[[namePrefix]]-az-subnet-x-001'
     }
     {
-        name: '<<namePrefix>>-az-pdnsout-x-002'
-        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-002/subnets/<<namePrefix>>-az-subnet-x-002'
+        name: '[[namePrefix]]-az-pdnsout-x-002'
+        subnetId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-002/subnets/[[namePrefix]]-az-subnet-x-002'
     }
 ]
 ```
@@ -255,19 +255,19 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndrcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>ndrcom001'
+    name: '[[namePrefix]]ndrcom001'
     virtualNetworkId: '<virtualNetworkId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     inboundEndpoints: [
       {
-        name: '<<namePrefix>>-az-pdnsin-x-001'
+        name: '[[namePrefix]]-az-pdnsin-x-001'
         subnetId: '<subnetId>'
       }
     ]
     outboundEndpoints: [
       {
-        name: '<<namePrefix>>-az-pdnsout-x-001'
+        name: '[[namePrefix]]-az-pdnsout-x-001'
         subnetId: '<subnetId>'
       }
     ]
@@ -293,7 +293,7 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>ndrcom001"
+      "value": "[[namePrefix]]ndrcom001"
     },
     "virtualNetworkId": {
       "value": "<virtualNetworkId>"
@@ -305,7 +305,7 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
     "inboundEndpoints": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-pdnsin-x-001",
+          "name": "[[namePrefix]]-az-pdnsin-x-001",
           "subnetId": "<subnetId>"
         }
       ]
@@ -313,7 +313,7 @@ module dnsResolvers './network/dns-resolvers/main.bicep' = {
     "outboundEndpoints": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-pdnsout-x-001",
+          "name": "[[namePrefix]]-az-pdnsout-x-001",
           "subnetId": "<subnetId>"
         }
       ]

@@ -59,7 +59,7 @@ This module deploys a VPN Gateway Connection.
 ```json
 "routingConfiguration": {
     "associatedRouteTable": {
-        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+        "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
     },
     "propagatedRouteTables": {
         "labels": [
@@ -67,7 +67,7 @@ This module deploys a VPN Gateway Connection.
         ],
         "ids": [
             {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
             }
         ]
     },
@@ -86,7 +86,7 @@ This module deploys a VPN Gateway Connection.
 ```bicep
 routingConfiguration: {
     associatedRouteTable: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable'
+        id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable'
     }
     propagatedRouteTables: {
         labels: [
@@ -94,7 +94,7 @@ routingConfiguration: {
         ]
         ids: [
             {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable'
+                id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable'
             }
         ]
     }

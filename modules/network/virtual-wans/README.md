@@ -172,7 +172,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvwcom001'
+    name: '[[namePrefix]]nvwcom001'
     // Non-required parameters
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true
@@ -211,7 +211,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvwcom001"
+      "value": "[[namePrefix]]nvwcom001"
     },
     // Non-required parameters
     "allowBranchToBranchTraffic": {
@@ -267,7 +267,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvwmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nvwmin001'
+    name: '[[namePrefix]]nvwmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -288,7 +288,7 @@ module virtualWans './network/virtual-wans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nvwmin001"
+      "value": "[[namePrefix]]nvwmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

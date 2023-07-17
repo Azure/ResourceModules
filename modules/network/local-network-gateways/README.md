@@ -178,7 +178,7 @@ module localNetworkGateways './network/local-network-gateways/main.bicep' = {
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
-    name: '<<namePrefix>>nlngcom001'
+    name: '[[namePrefix]]nlngcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     localAsn: '65123'
@@ -223,7 +223,7 @@ module localNetworkGateways './network/local-network-gateways/main.bicep' = {
       "value": "8.8.8.8"
     },
     "name": {
-      "value": "<<namePrefix>>nlngcom001"
+      "value": "[[namePrefix]]nlngcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -277,7 +277,7 @@ module localNetworkGateways './network/local-network-gateways/main.bicep' = {
       '192.168.1.0/24'
     ]
     localGatewayPublicIpAddress: '8.8.8.8'
-    name: '<<namePrefix>>nlngmin001'
+    name: '[[namePrefix]]nlngmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -306,7 +306,7 @@ module localNetworkGateways './network/local-network-gateways/main.bicep' = {
       "value": "8.8.8.8"
     },
     "name": {
-      "value": "<<namePrefix>>nlngmin001"
+      "value": "[[namePrefix]]nlngmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

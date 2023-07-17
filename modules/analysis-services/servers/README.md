@@ -180,7 +180,7 @@ module servers './analysis-services/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-asscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>asscom'
+    name: '[[namePrefix]]asscom'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -221,7 +221,7 @@ module servers './analysis-services/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>asscom"
+      "value": "[[namePrefix]]asscom"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -283,7 +283,7 @@ module servers './analysis-services/servers/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-assmax'
   params: {
     // Required parameters
-    name: '<<namePrefix>>assmax'
+    name: '[[namePrefix]]assmax'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -338,7 +338,7 @@ module servers './analysis-services/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>assmax"
+      "value": "[[namePrefix]]assmax"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -420,7 +420,7 @@ module servers './analysis-services/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-assmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>assmin'
+    name: '[[namePrefix]]assmin'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -441,7 +441,7 @@ module servers './analysis-services/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>assmin"
+      "value": "[[namePrefix]]assmin"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

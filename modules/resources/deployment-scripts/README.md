@@ -109,8 +109,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -123,8 +123,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -167,7 +167,7 @@ module deploymentScripts './resources/deployment-scripts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rdscli'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rdscli001'
+    name: '[[namePrefix]]rdscli001'
     // Non-required parameters
     azCliVersion: '2.40.0'
     cleanupPreference: 'Always'
@@ -215,7 +215,7 @@ module deploymentScripts './resources/deployment-scripts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rdscli001"
+      "value": "[[namePrefix]]rdscli001"
     },
     // Non-required parameters
     "azCliVersion": {
@@ -288,7 +288,7 @@ module deploymentScripts './resources/deployment-scripts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-rdsps'
   params: {
     // Required parameters
-    name: '<<namePrefix>>rdsps001'
+    name: '[[namePrefix]]rdsps001'
     // Non-required parameters
     azPowerShellVersion: '8.0'
     cleanupPreference: 'Always'
@@ -325,7 +325,7 @@ module deploymentScripts './resources/deployment-scripts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>rdsps001"
+      "value": "[[namePrefix]]rdsps001"
     },
     // Non-required parameters
     "azPowerShellVersion": {

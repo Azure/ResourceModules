@@ -195,7 +195,7 @@ module expressRouteCircuits './network/express-route-circuits/main.bicep' = {
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: '<<namePrefix>>nerccom001'
+    name: '[[namePrefix]]nerccom001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
     // Non-required parameters
@@ -243,7 +243,7 @@ module expressRouteCircuits './network/express-route-circuits/main.bicep' = {
       "value": 50
     },
     "name": {
-      "value": "<<namePrefix>>nerccom001"
+      "value": "[[namePrefix]]nerccom001"
     },
     "peeringLocation": {
       "value": "Amsterdam"
@@ -318,7 +318,7 @@ module expressRouteCircuits './network/express-route-circuits/main.bicep' = {
   params: {
     // Required parameters
     bandwidthInMbps: 50
-    name: '<<namePrefix>>nercmin001'
+    name: '[[namePrefix]]nercmin001'
     peeringLocation: 'Amsterdam'
     serviceProviderName: 'Equinix'
     // Non-required parameters
@@ -344,7 +344,7 @@ module expressRouteCircuits './network/express-route-circuits/main.bicep' = {
       "value": 50
     },
     "name": {
-      "value": "<<namePrefix>>nercmin001"
+      "value": "[[namePrefix]]nercmin001"
     },
     "peeringLocation": {
       "value": "Amsterdam"

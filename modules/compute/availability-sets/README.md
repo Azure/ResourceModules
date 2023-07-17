@@ -172,7 +172,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cascom001'
+    name: '[[namePrefix]]cascom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -208,7 +208,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cascom001"
+      "value": "[[namePrefix]]cascom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -255,7 +255,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>casmin001'
+    name: '[[namePrefix]]casmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -276,7 +276,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>casmin001"
+      "value": "[[namePrefix]]casmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

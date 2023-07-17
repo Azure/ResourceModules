@@ -431,7 +431,7 @@ module activityLogAlerts './insights/activity-log-alerts/main.bicep' = {
         field: 'operationName'
       }
     ]
-    name: '<<namePrefix>>ialacom001'
+    name: '[[namePrefix]]ialacom001'
     // Non-required parameters
     actions: [
       {
@@ -489,7 +489,7 @@ module activityLogAlerts './insights/activity-log-alerts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>ialacom001"
+      "value": "[[namePrefix]]ialacom001"
     },
     // Non-required parameters
     "actions": {
