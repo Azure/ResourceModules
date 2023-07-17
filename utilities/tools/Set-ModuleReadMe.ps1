@@ -919,7 +919,10 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Deployment examples'
+        [string] $SectionStartIdentifier = '## Deployment examples',
+
+        [Parameter(Mandatory = $false)]
+        [hashtable] $ProjectSettings = @{}
     )
 
     # Load used function(s)
@@ -1004,8 +1007,11 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
-            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '<<namePrefix>>' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
-            $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
+            $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'' '
+
+            # $tokenPrefix = $ProjectSettings.Keys -contains 'tokenPrefix' ? $ProjectSettings.tokenPrefix : '[['
+            # $tokenSuffix = $ProjectSettings.Keys -contains 'tokenSuffix' ? $ProjectSettings.tokenSuffix : ']]'
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
@@ -1138,7 +1144,7 @@ function Set-DeploymentExamplesSection {
                         # e.g. "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
                         $expectedValue = $matches[1]
                     } elseif ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+).*\].*"') {
-                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $expectedValue = $matches[1]
                     } else {
                         throw "Unhandled case [$row] in file [$testFilePath]"
@@ -1155,7 +1161,7 @@ function Set-DeploymentExamplesSection {
                     if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
                         # e.g.
                         # "policyAssignmentId": {
-                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
+                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-[[namePrefix]]-psa-{0}', parameters('serviceShort')))]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1173,7 +1179,7 @@ function Set-DeploymentExamplesSection {
                         # e.g.
                         # "policyDefinitionReferenceIds": {
                         #  "value": [
-                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1573,6 +1579,9 @@ function Set-ModuleReadMe {
     . (Join-Path $PSScriptRoot 'helper' 'Merge-FileWithNewContent.ps1')
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
+    # External files
+    $projectSettingsFilePath = Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'settings.yml'
+
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
@@ -1663,6 +1672,7 @@ function Set-ModuleReadMe {
             FullModuleIdentifier = $fullModuleIdentifier
             ReadMeFileContent    = $readMeFileContent
             TemplateFileContent  = $templateFileContent
+            ProjectSettings      = (Test-Path $projectSettingsFilePath) ? ((Get-Content -Path $projectSettingsFilePath) | ConvertFrom-Yaml).Variables : @{}
         }
         $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }
