@@ -180,7 +180,7 @@ module images './compute/images/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cicom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cicom001'
+    name: '[[namePrefix]]cicom001'
     osAccountType: 'Premium_LRS'
     osDiskBlobUri: '<osDiskBlobUri>'
     osDiskCaching: 'ReadWrite'
@@ -223,7 +223,7 @@ module images './compute/images/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cicom001"
+      "value": "[[namePrefix]]cicom001"
     },
     "osAccountType": {
       "value": "Premium_LRS"

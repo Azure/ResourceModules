@@ -155,7 +155,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   name: '${uniqueString(deployment().name)}-test-apsdmgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdmgcom001'
+    name: '[[namePrefix]]apsdmgcom001'
     policyDefinitions: [
       {
         groupNames: [
@@ -220,7 +220,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdmgcom001"
+      "value": "[[namePrefix]]apsdmgcom001"
     },
     "policyDefinitions": {
       "value": [
@@ -298,7 +298,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   name: '${uniqueString(deployment().name)}-test-apsdmgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdmgmin001'
+    name: '[[namePrefix]]apsdmgmin001'
     policyDefinitions: [
       {
         parameters: {
@@ -331,7 +331,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdmgmin001"
+      "value": "[[namePrefix]]apsdmgmin001"
     },
     "policyDefinitions": {
       "value": [
@@ -369,7 +369,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   name: '${uniqueString(deployment().name)}-test-apsdsubcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdsubcom001'
+    name: '[[namePrefix]]apsdsubcom001'
     policyDefinitions: [
       {
         groupNames: [
@@ -434,7 +434,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdsubcom001"
+      "value": "[[namePrefix]]apsdsubcom001"
     },
     "policyDefinitions": {
       "value": [
@@ -512,7 +512,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   name: '${uniqueString(deployment().name)}-test-apsdsubmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apsdsubmin001'
+    name: '[[namePrefix]]apsdsubmin001'
     policyDefinitions: [
       {
         parameters: {
@@ -545,7 +545,7 @@ module policySetDefinitions './authorization/policy-set-definitions/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apsdsubmin001"
+      "value": "[[namePrefix]]apsdsubmin001"
     },
     "policyDefinitions": {
       "value": [

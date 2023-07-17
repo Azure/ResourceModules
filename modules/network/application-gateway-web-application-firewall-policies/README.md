@@ -108,7 +108,7 @@ module applicationGatewayWebApplicationFirewallPolicies './network/application-g
   name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nagwafpcom001'
+    name: '[[namePrefix]]nagwafpcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
@@ -152,7 +152,7 @@ module applicationGatewayWebApplicationFirewallPolicies './network/application-g
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nagwafpcom001"
+      "value": "[[namePrefix]]nagwafpcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

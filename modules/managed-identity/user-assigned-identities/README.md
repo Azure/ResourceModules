@@ -166,7 +166,7 @@ module userAssignedIdentities './managed-identity/user-assigned-identities/main.
   params: {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
-    name: '<<namePrefix>>miuaicom001'
+    name: '[[namePrefix]]miuaicom001'
     roleAssignments: [
       {
         principalIds: [
@@ -203,7 +203,7 @@ module userAssignedIdentities './managed-identity/user-assigned-identities/main.
       "value": "CanNotDelete"
     },
     "name": {
-      "value": "<<namePrefix>>miuaicom001"
+      "value": "[[namePrefix]]miuaicom001"
     },
     "roleAssignments": {
       "value": [

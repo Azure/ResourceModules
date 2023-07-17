@@ -173,7 +173,7 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
   params: {
     // Required parameters
     dnsResolverOutboundEndpointId: '<dnsResolverOutboundEndpointId>'
-    name: '<<namePrefix>>ndfrscom001'
+    name: '[[namePrefix]]ndfrscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     tags: {
@@ -201,7 +201,7 @@ module dnsForwardingRulesets './Microsoft.Network/dnsForwardingRulesets/deploy.b
       "value": "<dnsResolverOutboundEndpointId>"
     },
     "name": {
-      "value": "<<namePrefix>>ndfrscom001"
+      "value": "[[namePrefix]]ndfrscom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

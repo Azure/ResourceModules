@@ -59,15 +59,15 @@ The IP configurations to apply to the network interface.
 ```json
 {
     "name": "ipconfig01",
-    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+    "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001",
     "loadBalancerBackendAddressPools": [
         {
-            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
+            "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-[[namePrefix]]-az-lb-internal-001/backendAddressPools/servers"
         }
     ],
     "applicationSecurityGroups": [
         {
-            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+            "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-[[namePrefix]]-az-asg-x-001"
         }
     ]
 }
@@ -228,7 +228,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>nnicom001'
+    name: '[[namePrefix]]nnicom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -294,7 +294,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nnicom001"
+      "value": "[[namePrefix]]nnicom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -359,7 +359,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '<<namePrefix>>nnimin001'
+    name: '[[namePrefix]]nnimin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -388,7 +388,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>nnimin001"
+      "value": "[[namePrefix]]nnimin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
