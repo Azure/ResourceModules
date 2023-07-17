@@ -127,7 +127,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
   params: {
     // Required parameters
     addressPrefix: '10.1.0.0/16'
-    name: '<<namePrefix>>-nvhcom'
+    name: '[[namePrefix]]-nvhcom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -183,7 +183,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
       "value": "10.1.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-nvhcom"
+      "value": "[[namePrefix]]-nvhcom"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -250,7 +250,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
   params: {
     // Required parameters
     addressPrefix: '10.0.0.0/16'
-    name: '<<namePrefix>>-nvhmin'
+    name: '[[namePrefix]]-nvhmin'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -275,7 +275,7 @@ module virtualHubs './network/virtual-hubs/main.bicep' = {
       "value": "10.0.0.0/16"
     },
     "name": {
-      "value": "<<namePrefix>>-nvhmin"
+      "value": "[[namePrefix]]-nvhmin"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"

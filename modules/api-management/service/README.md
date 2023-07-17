@@ -233,8 +233,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -247,8 +247,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -291,9 +291,9 @@ module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apiscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apiscom001'
+    name: '[[namePrefix]]apiscom001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: '<<namePrefix>>-az-amorg-x-001'
+    publisherName: '[[namePrefix]]-az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -352,13 +352,13 @@ module service './api-management/service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apiscom001"
+      "value": "[[namePrefix]]apiscom001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
-      "value": "<<namePrefix>>-az-amorg-x-001"
+      "value": "[[namePrefix]]-az-amorg-x-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -430,9 +430,9 @@ module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismax'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apismax001'
+    name: '[[namePrefix]]apismax001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: '<<namePrefix>>-az-amorg-x-001'
+    publisherName: '[[namePrefix]]-az-amorg-x-001'
     // Non-required parameters
     apis: [
       {
@@ -582,13 +582,13 @@ module service './api-management/service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apismax001"
+      "value": "[[namePrefix]]apismax001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
-      "value": "<<namePrefix>>-az-amorg-x-001"
+      "value": "[[namePrefix]]-az-amorg-x-001"
     },
     // Non-required parameters
     "apis": {
@@ -781,9 +781,9 @@ module service './api-management/service/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-apismin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>apismin001'
+    name: '[[namePrefix]]apismin001'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
-    publisherName: '<<namePrefix>>-az-amorg-x-001'
+    publisherName: '[[namePrefix]]-az-amorg-x-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -804,13 +804,13 @@ module service './api-management/service/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>apismin001"
+      "value": "[[namePrefix]]apismin001"
     },
     "publisherEmail": {
       "value": "apimgmt-noreply@mail.windowsazure.com"
     },
     "publisherName": {
-      "value": "<<namePrefix>>-az-amorg-x-001"
+      "value": "[[namePrefix]]-az-amorg-x-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -170,7 +170,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npipcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npipcom001'
+    name: '[[namePrefix]]npipcom001'
     prefixLength: 28
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -206,7 +206,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npipcom001"
+      "value": "[[namePrefix]]npipcom001"
     },
     "prefixLength": {
       "value": 28
@@ -253,7 +253,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npipmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npipmin001'
+    name: '[[namePrefix]]npipmin001'
     prefixLength: 28
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -275,7 +275,7 @@ module publicIPPrefixes './network/public-ip-prefixes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npipmin001"
+      "value": "[[namePrefix]]npipmin001"
     },
     "prefixLength": {
       "value": 28

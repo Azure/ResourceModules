@@ -58,20 +58,20 @@ Create a FHIR service with the workspace.
 "fhirServices": {
     "value": [
       {
-        "name": "<<namePrefix>>-az-fhir-x-001",
+        "name": "[[namePrefix]]-az-fhir-x-001",
         "kind": "fhir-R4",
-        "workspaceName": "<<namePrefix>>001",
+        "workspaceName": "[[namePrefix]]001",
         "corsOrigins": [ "*" ],
         "corsHeaders": [ "*" ],
         "corsMethods": [ "GET" ],
         "corsMaxAge": 600,
         "corsAllowCredentials": false,
-        "location": "<<location>>",
+        "location": "[[location]]",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<<storageAccountResourceId>>",
-        "diagnosticWorkspaceId": "<<logAnalyticsWorkspaceResourceId>>",
-        "diagnosticEventHubAuthorizationRuleId": "<<eventHubAuthorizationRuleId>>",
-        "diagnosticEventHubName": "<<eventHubNamespaceEventHubName>>",
+        "diagnosticStorageAccountId": "[[storageAccountResourceId]]",
+        "diagnosticWorkspaceId": "[[logAnalyticsWorkspaceResourceId]]",
+        "diagnosticEventHubAuthorizationRuleId": "[[eventHubAuthorizationRuleId]]",
+        "diagnosticEventHubName": "[[eventHubNamespaceEventHubName]]",
         "publicNetworkAccess": "Enabled",
         "resourceVersionPolicy": "versioned",
         "smartProxyEnabled": false,
@@ -80,7 +80,7 @@ Create a FHIR service with the workspace.
         "importEnabled": false,
         "initialImportMode": false,
         "userAssignedIdentities": {
-          "<<managedIdentityResourceId>>": {}
+          "[[managedIdentityResourceId]]": {}
         },
         "roleAssignments": [
           {
@@ -105,9 +105,9 @@ Create a FHIR service with the workspace.
 ```bicep
 fhirServices: [
     {
-        name: '<<namePrefix>>-az-fhir-x-001'
+        name: '[[namePrefix]]-az-fhir-x-001'
         kind: 'fhir-R4'
-        workspaceName: '<<namePrefix>>001'
+        workspaceName: '[[namePrefix]]001'
         corsOrigins: [ '*' ]
         corsHeaders: [ '*' ]
         corsMethods: [ 'GET' ]
@@ -157,24 +157,24 @@ Create a DICOM service with the workspace.
 "dicomServices": {
     "value": [
       {
-        "name": "<<namePrefix>>-az-dicom-x-001",
-        "workspaceName": "<<namePrefix>>001",
+        "name": "[[namePrefix]]-az-dicom-x-001",
+        "workspaceName": "[[namePrefix]]001",
         "corsOrigins": [ "*" ],
         "corsHeaders": [ "*" ],
         "corsMethods": [ "GET" ],
         "corsMaxAge": 600,
         "corsAllowCredentials": false,
-        "location": "<<location>>",
+        "location": "[[location]]",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<<storageAccountResourceId>>",
-        "diagnosticWorkspaceId": "<<logAnalyticsWorkspaceResourceId>>",
-        "diagnosticEventHubAuthorizationRuleId": "<<eventHubAuthorizationRuleId>>",
-        "diagnosticEventHubName": "<<eventHubNamespaceEventHubName>>",
+        "diagnosticStorageAccountId": "[[storageAccountResourceId]]",
+        "diagnosticWorkspaceId": "[[logAnalyticsWorkspaceResourceId]]",
+        "diagnosticEventHubAuthorizationRuleId": "[[eventHubAuthorizationRuleId]]",
+        "diagnosticEventHubName": "[[eventHubNamespaceEventHubName]]",
         "publicNetworkAccess": "Enabled",
         "enableDefaultTelemetry": false,
         "systemAssignedIdentity": true,
         "userAssignedIdentities": {
-          "<<managedIdentityResourceId>>": {}
+          "[[managedIdentityResourceId]]": {}
         }
       }
     ]
@@ -190,8 +190,8 @@ Create a DICOM service with the workspace.
 ```bicep
 dicomServices: [
     {
-        name: '<<namePrefix>>-az-dicom-x-001'
-        workspaceName: '<<namePrefix>>001'
+        name: '[[namePrefix]]-az-dicom-x-001'
+        workspaceName: '[[namePrefix]]001'
         corsOrigins: [ '*' ]
         corsHeaders: [ '*' ]
         corsMethods: [ 'GET' ]
@@ -228,31 +228,31 @@ Create an IOT Connector (MedTech) service with the workspace.
 "iotConnectors": {
     "value": [
       {
-        "name": "<<namePrefix>>-az-iomt-x-001",
-        "workspaceName": "<<namePrefix>>001",
+        "name": "[[namePrefix]]-az-iomt-x-001",
+        "workspaceName": "[[namePrefix]]001",
         "corsOrigins": [ "*" ],
         "corsHeaders": [ "*" ],
         "corsMethods": [ "GET" ],
         "corsMaxAge": 600,
         "corsAllowCredentials": false,
-        "location": "<<location>>",
+        "location": "[[location]]",
         "diagnosticLogsRetentionInDays": 7,
-        "diagnosticStorageAccountId": "<<storageAccountResourceId>>",
-        "diagnosticWorkspaceId": "<<logAnalyticsWorkspaceResourceId>>",
-        "diagnosticEventHubAuthorizationRuleId": "<<eventHubAuthorizationRuleId>>",
-        "diagnosticEventHubName": "<<eventHubNamespaceEventHubName>>",
+        "diagnosticStorageAccountId": "[[storageAccountResourceId]]",
+        "diagnosticWorkspaceId": "[[logAnalyticsWorkspaceResourceId]]",
+        "diagnosticEventHubAuthorizationRuleId": "[[eventHubAuthorizationRuleId]]",
+        "diagnosticEventHubName": "[[eventHubNamespaceEventHubName]]",
         "publicNetworkAccess": "Enabled",
         "enableDefaultTelemetry": false,
         "systemAssignedIdentity": true,
         "userAssignedIdentities": {
-          "<<managedIdentityResourceId>>": {}
+          "[[managedIdentityResourceId]]": {}
         },
-        "eventHubName": "<<eventHubName>>",
-        "consumerGroup": "<<consumerGroup>>",
-        "eventHubNamespaceName": "<<eventHubNamespaceName>>",
-        "deviceMapping": "<<deviceMapping>>",
-        "destinationMapping": "<<destinationMapping>>",
-        "fhirServiceResourceId": "<<fhirServiceResourceId>>",
+        "eventHubName": "[[eventHubName]]",
+        "consumerGroup": "[[consumerGroup]]",
+        "eventHubNamespaceName": "[[eventHubNamespaceName]]",
+        "deviceMapping": "[[deviceMapping]]",
+        "destinationMapping": "[[destinationMapping]]",
+        "fhirServiceResourceId": "[[fhirServiceResourceId]]",
       }
     ]
 }
@@ -267,8 +267,8 @@ Create an IOT Connector (MedTech) service with the workspace.
 ```bicep
 iotConnectors: [
     {
-        name: '<<namePrefix>>-az-iomt-x-001'
-        workspaceName: '<<namePrefix>>001'
+        name: '[[namePrefix]]-az-iomt-x-001'
+        workspaceName: '[[namePrefix]]001'
         corsOrigins: [ '*' ]
         corsHeaders: [ '*' ]
         corsMethods: [ 'GET' ]
@@ -286,12 +286,12 @@ iotConnectors: [
         userAssignedIdentities: {
           '${resourceGroupResources.outputs.managedIdentityResourceId}': {}
         }
-        eventHubName: '<<eventHubName>>'
-        consumerGroup: '<<consumerGroup>>'
-        eventHubNamespaceName: '<<eventHubNamespaceName>>'
-        deviceMapping: '<<deviceMapping>>'
-        destinationMapping: '<<destinationMapping>>'
-        fhirServiceResourceId: '<<fhirServiceResourceId>>'
+        eventHubName: '[[eventHubName]]'
+        consumerGroup: '[[consumerGroup]]'
+        eventHubNamespaceName: '[[eventHubNamespaceName]]'
+        deviceMapping: '[[deviceMapping]]'
+        destinationMapping: '[[destinationMapping]]'
+        fhirServiceResourceId: '[[fhirServiceResourceId]]'
       }
 ]
 ```
@@ -430,7 +430,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>hawcom001'
+    name: '[[namePrefix]]hawcom001'
     // Non-required parameters
     dicomservices: [
       {
@@ -452,13 +452,13 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         enableDefaultTelemetry: '<enableDefaultTelemetry>'
         location: '<location>'
-        name: '<<namePrefix>>-az-dicom-x-001'
+        name: '[[namePrefix]]-az-dicom-x-001'
         publicNetworkAccess: 'Enabled'
         systemAssignedIdentity: false
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
-        workspaceName: '<<namePrefix>>hawcom001'
+        workspaceName: '[[namePrefix]]hawcom001'
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -485,7 +485,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
         initialImportMode: false
         kind: 'fhir-R4'
         location: '<location>'
-        name: '<<namePrefix>>-az-fhir-x-001'
+        name: '[[namePrefix]]-az-fhir-x-001'
         publicNetworkAccess: 'Enabled'
         resourceVersionPolicy: 'versioned'
         roleAssignments: [
@@ -502,7 +502,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
-        workspaceName: '<<namePrefix>>hawcom001'
+        workspaceName: '[[namePrefix]]hawcom001'
       }
     ]
     location: '<location>'
@@ -530,7 +530,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>hawcom001"
+      "value": "[[namePrefix]]hawcom001"
     },
     // Non-required parameters
     "dicomservices": {
@@ -554,13 +554,13 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "enableDefaultTelemetry": "<enableDefaultTelemetry>",
           "location": "<location>",
-          "name": "<<namePrefix>>-az-dicom-x-001",
+          "name": "[[namePrefix]]-az-dicom-x-001",
           "publicNetworkAccess": "Enabled",
           "systemAssignedIdentity": false,
           "userAssignedIdentities": {
             "<managedIdentityResourceId>": {}
           },
-          "workspaceName": "<<namePrefix>>hawcom001"
+          "workspaceName": "[[namePrefix]]hawcom001"
         }
       ]
     },
@@ -591,7 +591,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
           "initialImportMode": false,
           "kind": "fhir-R4",
           "location": "<location>",
-          "name": "<<namePrefix>>-az-fhir-x-001",
+          "name": "[[namePrefix]]-az-fhir-x-001",
           "publicNetworkAccess": "Enabled",
           "resourceVersionPolicy": "versioned",
           "roleAssignments": [
@@ -608,7 +608,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
           "userAssignedIdentities": {
             "<managedIdentityResourceId>": {}
           },
-          "workspaceName": "<<namePrefix>>hawcom001"
+          "workspaceName": "[[namePrefix]]hawcom001"
         }
       ]
     },
@@ -645,7 +645,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>hawmin001'
+    name: '[[namePrefix]]hawmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -668,7 +668,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>hawmin001"
+      "value": "[[namePrefix]]hawmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

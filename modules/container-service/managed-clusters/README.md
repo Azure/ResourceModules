@@ -332,8 +332,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -346,8 +346,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -395,7 +395,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmaz'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmaz001'
+    name: '[[namePrefix]]csmaz001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -569,7 +569,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmaz001"
+      "value": "[[namePrefix]]csmaz001"
     },
     "primaryAgentPoolProfile": {
       "value": [
@@ -776,7 +776,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-csmkube'
   params: {
     // Required parameters
-    name: '<<namePrefix>>csmkube001'
+    name: '[[namePrefix]]csmkube001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -889,7 +889,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>csmkube001"
+      "value": "[[namePrefix]]csmkube001"
     },
     "primaryAgentPoolProfile": {
       "value": [

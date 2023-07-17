@@ -206,7 +206,7 @@ module registrationDefinitions './managed-services/registration-definitions/main
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - <<namePrefix>>msrdcom Subscription assignment'
+    name: 'Component Validation - [[namePrefix]]msrdcom Subscription assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -250,7 +250,7 @@ module registrationDefinitions './managed-services/registration-definitions/main
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - <<namePrefix>>msrdcom Subscription assignment"
+      "value": "Component Validation - [[namePrefix]]msrdcom Subscription assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"
@@ -295,7 +295,7 @@ module registrationDefinitions './managed-services/registration-definitions/main
       }
     ]
     managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-    name: 'Component Validation - <<namePrefix>>msrdrg Resource group assignment'
+    name: 'Component Validation - [[namePrefix]]msrdrg Resource group assignment'
     registrationDescription: 'Managed by Lighthouse'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -340,7 +340,7 @@ module registrationDefinitions './managed-services/registration-definitions/main
       "value": "195ee85d-2f10-4764-8352-a3c99aa772fb"
     },
     "name": {
-      "value": "Component Validation - <<namePrefix>>msrdrg Resource group assignment"
+      "value": "Component Validation - [[namePrefix]]msrdrg Resource group assignment"
     },
     "registrationDescription": {
       "value": "Managed by Lighthouse"

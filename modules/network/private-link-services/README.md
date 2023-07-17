@@ -60,7 +60,7 @@ This property refers to the NAT (Network Address Translation) IP configuration f
       "name": "minpls01", // Name of the IP configuration
       "properties": {
         "subnet": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001" // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+          "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001" // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
         }
       }
     },
@@ -73,7 +73,7 @@ This property refers to the NAT (Network Address Translation) IP configuration f
         "privateIPAllocationMethod": "Static", // The private IP address allocation method
         "privateIPAddress": "10.0.1.10", // If "privateIPAllocationMethod" is set to "Static" then this needs to be supplied
         "subnet": {
-          "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001" // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+          "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001" // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
         }
       }
     }
@@ -94,7 +94,7 @@ ipConfigurations: [
     name: 'minpls01' // Name of the IP configuration
     properties: {
       subnet: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001' // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+        id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001' // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
       }
     }
   }
@@ -107,7 +107,7 @@ ipConfigurations: [
       privateIPAllocationMethod: 'Static' // Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4
       privateIPAddress: '10.0.1.10' // If "privateIPAllocationMethod" is set to "Static" then this needs to be supplied
       subnet: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001' // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
+        id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-[[namePrefix]]-az-vnet-x-001/subnets/[[namePrefix]]-az-subnet-x-001' // The subnet selected here will be used by the Private Link Service to pick up the NAT IP
       }
     }
   }
@@ -130,7 +130,7 @@ Private Link service is tied to the frontend IP address of a Standard Load Balan
   "value": [
     // Example showing reference to the font end IP configuration of the load balancer
     {
-      "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
+      "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-[[namePrefix]]-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1"
     }
   ]
 }
@@ -146,7 +146,7 @@ Private Link service is tied to the frontend IP address of a Standard Load Balan
 loadBalancerFrontendIpConfigurations: [
   // Example showing reference to the font end IP configuration of the load balancer
   {
-    id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1'
+    id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-[[namePrefix]]-az-lb-internal-001/frontendIPConfigurations/privateIPConfig1'
   }
 ]
 ```
@@ -444,7 +444,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplscom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nplscom001'
+    name: '[[namePrefix]]nplscom001'
     // Non-required parameters
     autoApproval: {
       subscriptions: [
@@ -510,7 +510,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nplscom001"
+      "value": "[[namePrefix]]nplscom001"
     },
     // Non-required parameters
     "autoApproval": {
@@ -597,7 +597,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nplsmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nplsmin001'
+    name: '[[namePrefix]]nplsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ipConfigurations: [
@@ -633,7 +633,7 @@ module privateLinkServices './network/private-link-services/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nplsmin001"
+      "value": "[[namePrefix]]nplsmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

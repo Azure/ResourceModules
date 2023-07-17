@@ -96,11 +96,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -124,7 +124,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -142,11 +142,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -170,7 +170,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -290,8 +290,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -304,8 +304,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -351,7 +351,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swcom001'
+    name: '[[namePrefix]]swcom001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -428,7 +428,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "<<namePrefix>>swcom001"
+      "value": "[[namePrefix]]swcom001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -530,7 +530,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swensa001'
+    name: '[[namePrefix]]swensa001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -563,7 +563,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "<<namePrefix>>swensa001"
+      "value": "[[namePrefix]]swensa001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -607,7 +607,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swenua001'
+    name: '[[namePrefix]]swenua001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -643,7 +643,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "<<namePrefix>>swenua001"
+      "value": "[[namePrefix]]swenua001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -690,7 +690,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swmanv001'
+    name: '[[namePrefix]]swmanv001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     allowedAadTenantIdsForLinking: [
@@ -727,7 +727,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "<<namePrefix>>swmanv001"
+      "value": "[[namePrefix]]swmanv001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
@@ -773,7 +773,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
     // Required parameters
     defaultDataLakeStorageAccountResourceId: '<defaultDataLakeStorageAccountResourceId>'
     defaultDataLakeStorageFilesystem: '<defaultDataLakeStorageFilesystem>'
-    name: '<<namePrefix>>swmin001'
+    name: '[[namePrefix]]swmin001'
     sqlAdministratorLogin: 'synwsadmin'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -801,7 +801,7 @@ module workspaces './synapse/workspaces/main.bicep' = {
       "value": "<defaultDataLakeStorageFilesystem>"
     },
     "name": {
-      "value": "<<namePrefix>>swmin001"
+      "value": "[[namePrefix]]swmin001"
     },
     "sqlAdministratorLogin": {
       "value": "synwsadmin"

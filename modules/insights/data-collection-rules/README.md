@@ -215,7 +215,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>idcrcusadv001'
+    name: '[[namePrefix]]idcrcusadv001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
     description: 'Collecting custom text logs with ingestion-time transformation to columns. Expected format of a log line (comma separated values): \'<DateTime><EventLevel><EventCode><Message>\' for example: \'2023-01-25T20:15:05ZERROR404Page not found\''
@@ -329,7 +329,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrcusadv001"
+      "value": "[[namePrefix]]idcrcusadv001"
     },
     // Non-required parameters
     "dataCollectionEndpointId": {
@@ -454,7 +454,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>idcrcusbas001'
+    name: '[[namePrefix]]idcrcusbas001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
     description: 'Collecting custom text logs without ingestion-time transformation.'
@@ -552,7 +552,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrcusbas001"
+      "value": "[[namePrefix]]idcrcusbas001"
     },
     // Non-required parameters
     "dataCollectionEndpointId": {
@@ -654,7 +654,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>idcrcusiis001'
+    name: '[[namePrefix]]idcrcusiis001'
     // Non-required parameters
     dataCollectionEndpointId: '<dataCollectionEndpointId>'
     description: 'Collecting IIS logs.'
@@ -731,7 +731,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrcusiis001"
+      "value": "[[namePrefix]]idcrcusiis001"
     },
     // Non-required parameters
     "dataCollectionEndpointId": {
@@ -931,7 +931,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>idcrlin001'
+    name: '[[namePrefix]]idcrlin001'
     // Non-required parameters
     description: 'Collecting Linux-specific performance counters and Linux Syslog'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1121,7 +1121,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrlin001"
+      "value": "[[namePrefix]]idcrlin001"
     },
     // Non-required parameters
     "description": {
@@ -1209,7 +1209,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
         name: 'azureMonitorMetrics-default'
       }
     }
-    name: '<<namePrefix>>idcrmin001'
+    name: '[[namePrefix]]idcrmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     kind: 'Windows'
@@ -1275,7 +1275,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrmin001"
+      "value": "[[namePrefix]]idcrmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -1403,7 +1403,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
         }
       ]
     }
-    name: '<<namePrefix>>idcrwin001'
+    name: '[[namePrefix]]idcrwin001'
     // Non-required parameters
     description: 'Collecting Windows-specific performance counters and Windows Event Logs'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1547,7 +1547,7 @@ module dataCollectionRules './insights/data-collection-rules/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>idcrwin001"
+      "value": "[[namePrefix]]idcrwin001"
     },
     // Non-required parameters
     "description": {

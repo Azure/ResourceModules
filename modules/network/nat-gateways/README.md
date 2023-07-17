@@ -190,7 +190,7 @@ module natGateways './network/nat-gateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nngcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nngcom001'
+    name: '[[namePrefix]]nngcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -231,7 +231,7 @@ module natGateways './network/nat-gateways/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nngcom001"
+      "value": "[[namePrefix]]nngcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {

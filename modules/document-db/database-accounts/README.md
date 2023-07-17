@@ -502,8 +502,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -516,8 +516,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -568,7 +568,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddagrm002'
+    name: '[[namePrefix]]dddagrm002'
     // Non-required parameters
     capabilitiesToAdd: [
       'EnableGremlin'
@@ -601,7 +601,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-gdb-dddagrm-001'
+        name: '[[namePrefix]]-gdb-dddagrm-001'
       }
       {
         collections: [
@@ -624,7 +624,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-gdb-dddagrm-002'
+        name: '[[namePrefix]]-gdb-dddagrm-002'
       }
     ]
     location: '<location>'
@@ -674,7 +674,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddagrm002"
+      "value": "[[namePrefix]]dddagrm002"
     },
     // Non-required parameters
     "capabilitiesToAdd": {
@@ -723,7 +723,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-gdb-dddagrm-001"
+          "name": "[[namePrefix]]-gdb-dddagrm-001"
         },
         {
           "collections": [
@@ -746,7 +746,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-gdb-dddagrm-002"
+          "name": "[[namePrefix]]-gdb-dddagrm-002"
         }
       ]
     },
@@ -803,7 +803,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddamng001'
+    name: '[[namePrefix]]dddamng001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -902,7 +902,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-mdb-dddamng-001'
+        name: '[[namePrefix]]-mdb-dddamng-001'
       }
       {
         collections: [
@@ -993,7 +993,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-mdb-dddamng-002'
+        name: '[[namePrefix]]-mdb-dddamng-002'
       }
     ]
     roleAssignments: [
@@ -1042,7 +1042,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddamng001"
+      "value": "[[namePrefix]]dddamng001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -1157,7 +1157,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               }
             }
           ],
-          "name": "<<namePrefix>>-mdb-dddamng-001"
+          "name": "[[namePrefix]]-mdb-dddamng-001"
         },
         {
           "collections": [
@@ -1248,7 +1248,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               }
             }
           ],
-          "name": "<<namePrefix>>-mdb-dddamng-002"
+          "name": "[[namePrefix]]-mdb-dddamng-002"
         }
       ]
     },
@@ -1302,7 +1302,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddapln001'
+    name: '[[namePrefix]]dddapln001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -1356,7 +1356,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddapln001"
+      "value": "[[namePrefix]]dddapln001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -1427,7 +1427,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddasql001'
+    name: '[[namePrefix]]dddasql001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -1478,12 +1478,12 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-sql-dddasql-001'
+        name: '[[namePrefix]]-sql-dddasql-001'
         throughput: 1000
       }
       {
         containers: []
-        name: '<<namePrefix>>-sql-dddasql-002'
+        name: '[[namePrefix]]-sql-dddasql-002'
       }
       {
         autoscaleSettingsMaxThroughput: 1000
@@ -1518,7 +1518,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-sql-dddasql-003'
+        name: '[[namePrefix]]-sql-dddasql-003'
       }
     ]
     tags: {
@@ -1560,7 +1560,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddasql001"
+      "value": "[[namePrefix]]dddasql001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -1629,12 +1629,12 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-001",
+          "name": "[[namePrefix]]-sql-dddasql-001",
           "throughput": 1000
         },
         {
           "containers": [],
-          "name": "<<namePrefix>>-sql-dddasql-002"
+          "name": "[[namePrefix]]-sql-dddasql-002"
         },
         {
           "autoscaleSettingsMaxThroughput": 1000,
@@ -1669,7 +1669,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-003"
+          "name": "[[namePrefix]]-sql-dddasql-003"
         }
       ]
     },
