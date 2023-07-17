@@ -919,10 +919,7 @@ function Set-DeploymentExamplesSection {
         [bool] $addBicep = $true,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Deployment examples',
-
-        [Parameter(Mandatory = $false)]
-        [hashtable] $ProjectSettings = @{}
+        [string] $SectionStartIdentifier = '## Deployment examples'
     )
 
     # Load used function(s)
@@ -1007,11 +1004,8 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
-            $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'' '
-
-            # $tokenPrefix = $ProjectSettings.Keys -contains 'tokenPrefix' ? $ProjectSettings.tokenPrefix : '[['
-            # $tokenSuffix = $ProjectSettings.Keys -contains 'tokenSuffix' ? $ProjectSettings.tokenSuffix : ']]'
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
+            $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'' '
 
             # [3/6] Format header, remove scope property & any empty line
             $rawBicepExample = $rawBicepExampleString -split '\n'
@@ -1579,9 +1573,6 @@ function Set-ModuleReadMe {
     . (Join-Path $PSScriptRoot 'helper' 'Merge-FileWithNewContent.ps1')
     . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
-    # External files
-    $projectSettingsFilePath = Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'settings.yml'
-
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
@@ -1672,7 +1663,6 @@ function Set-ModuleReadMe {
             FullModuleIdentifier = $fullModuleIdentifier
             ReadMeFileContent    = $readMeFileContent
             TemplateFileContent  = $templateFileContent
-            ProjectSettings      = (Test-Path $projectSettingsFilePath) ? ((Get-Content -Path $projectSettingsFilePath) | ConvertFrom-Yaml).Variables : @{}
         }
         $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }
