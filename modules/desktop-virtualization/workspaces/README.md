@@ -179,7 +179,7 @@ module workspaces './desktop-virtualization/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvwcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dvwcom001'
+    name: 'dvwcom001'
     // Non-required parameters
     appGroupResourceIds: [
       '<applicationGroupResourceId>'
@@ -225,7 +225,7 @@ module workspaces './desktop-virtualization/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dvwcom001"
+      "value": "dvwcom001"
     },
     // Non-required parameters
     "appGroupResourceIds": {
@@ -298,7 +298,7 @@ module workspaces './desktop-virtualization/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvwmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dvwmin001'
+    name: 'dvwmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -319,7 +319,7 @@ module workspaces './desktop-virtualization/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dvwmin001"
+      "value": "dvwmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

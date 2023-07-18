@@ -171,7 +171,7 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   name: '${uniqueString(deployment().name, location)}-test-nsnpcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-nsnpcom-001'
+    name: 'nsnpcom-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -219,7 +219,7 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-nsnpcom-001"
+      "value": "nsnpcom-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -278,7 +278,7 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   name: '${uniqueString(deployment().name, location)}-test-nsnpmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-nsnpmin-001'
+    name: 'nsnpmin-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -299,7 +299,7 @@ module serviceEndpointPolicies './network/service-endpoint-policies/main.bicep' 
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-nsnpmin-001"
+      "value": "nsnpmin-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

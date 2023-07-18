@@ -454,7 +454,7 @@ module digitalTwinsInstances './digital-twins/digital-twins-instances/main.bicep
   name: '${uniqueString(deployment().name, location)}-test-dtdticom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dtdticom001'
+    name: 'dtdticom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -524,7 +524,7 @@ module digitalTwinsInstances './digital-twins/digital-twins-instances/main.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dtdticom001"
+      "value": "dtdticom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -623,7 +623,7 @@ module digitalTwinsInstances './digital-twins/digital-twins-instances/main.bicep
   name: '${uniqueString(deployment().name, location)}-test-dtdtimin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dtdtimin001'
+    name: 'dtdtimin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -644,7 +644,7 @@ module digitalTwinsInstances './digital-twins/digital-twins-instances/main.bicep
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dtdtimin001"
+      "value": "dtdtimin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -279,7 +279,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
   params: {
     // Required parameters
     gatewayType: 'Vpn'
-    name: '[[namePrefix]]nvngavpn001'
+    name: 'nvngavpn001'
     skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
@@ -289,7 +289,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '[[namePrefix]]-dm-nvngavpn'
+      'dm-nvngavpn'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -342,7 +342,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
       "value": "Vpn"
     },
     "name": {
-      "value": "[[namePrefix]]nvngavpn001"
+      "value": "nvngavpn001"
     },
     "skuName": {
       "value": "VpnGw2AZ"
@@ -368,7 +368,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     },
     "domainNameLabel": {
       "value": [
-        "[[namePrefix]]-dm-nvngavpn"
+        "dm-nvngavpn"
       ]
     },
     "enableDefaultTelemetry": {
@@ -434,7 +434,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
   params: {
     // Required parameters
     gatewayType: 'ExpressRoute'
-    name: '[[namePrefix]]nvger001'
+    name: 'nvger001'
     skuName: 'ErGw1AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
@@ -444,10 +444,10 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     diagnosticStorageAccountId: '<diagnosticStorageAccountId>'
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     domainNameLabel: [
-      '[[namePrefix]]-dm-nvger'
+      'dm-nvger'
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    gatewayPipName: '[[namePrefix]]-pip-nvger'
+    gatewayPipName: 'pip-nvger'
     roleAssignments: [
       {
         principalIds: [
@@ -485,7 +485,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
       "value": "ExpressRoute"
     },
     "name": {
-      "value": "[[namePrefix]]nvger001"
+      "value": "nvger001"
     },
     "skuName": {
       "value": "ErGw1AZ"
@@ -511,14 +511,14 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     },
     "domainNameLabel": {
       "value": [
-        "[[namePrefix]]-dm-nvger"
+        "dm-nvger"
       ]
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"
     },
     "gatewayPipName": {
-      "value": "[[namePrefix]]-pip-nvger"
+      "value": "pip-nvger"
     },
     "roleAssignments": {
       "value": [
@@ -559,7 +559,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
   params: {
     // Required parameters
     gatewayType: 'Vpn'
-    name: '[[namePrefix]]nvgvpn001'
+    name: 'nvgvpn001'
     skuName: 'VpnGw2AZ'
     vNetResourceId: '<vNetResourceId>'
     // Non-required parameters
@@ -572,7 +572,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
     disableIPSecReplayProtection: true
     domainNameLabel: [
-      '[[namePrefix]]-dm-nvgvpn'
+      'dm-nvgvpn'
     ]
     enableBgpRouteTranslationForNat: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -651,7 +651,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
       "value": "Vpn"
     },
     "name": {
-      "value": "[[namePrefix]]nvgvpn001"
+      "value": "nvgvpn001"
     },
     "skuName": {
       "value": "VpnGw2AZ"
@@ -686,7 +686,7 @@ module virtualNetworkGateways './network/virtual-network-gateways/main.bicep' = 
     },
     "domainNameLabel": {
       "value": [
-        "[[namePrefix]]-dm-nvgvpn"
+        "dm-nvgvpn"
       ]
     },
     "enableBgpRouteTranslationForNat": {

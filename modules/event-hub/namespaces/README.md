@@ -349,7 +349,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehncom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ehncom001'
+    name: 'ehncom001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -377,7 +377,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     eventhubs: [
       {
-        name: '[[namePrefix]]-az-evh-x-001'
+        name: 'az-evh-x-001'
       }
       {
         authorizationRules: [
@@ -413,7 +413,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
           }
         ]
         messageRetentionInDays: 1
-        name: '[[namePrefix]]-az-evh-x-002'
+        name: 'az-evh-x-002'
         partitionCount: 2
         roleAssignments: [
           {
@@ -495,7 +495,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ehncom001"
+      "value": "ehncom001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -541,7 +541,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
     "eventhubs": {
       "value": [
         {
-          "name": "[[namePrefix]]-az-evh-x-001"
+          "name": "az-evh-x-001"
         },
         {
           "authorizationRules": [
@@ -577,7 +577,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
             }
           ],
           "messageRetentionInDays": 1,
-          "name": "[[namePrefix]]-az-evh-x-002",
+          "name": "az-evh-x-002",
           "partitionCount": 2,
           "roleAssignments": [
             {
@@ -676,7 +676,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnenc'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ehnenc001'
+    name: 'ehnenc001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -711,7 +711,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ehnenc001"
+      "value": "ehnenc001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -767,7 +767,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ehnmin001'
+    name: 'ehnmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -788,7 +788,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ehnmin001"
+      "value": "ehnmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -812,7 +812,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ehnpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]ehnpe001'
+    name: 'ehnpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -852,7 +852,7 @@ module namespaces './event-hub/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]ehnpe001"
+      "value": "ehnpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

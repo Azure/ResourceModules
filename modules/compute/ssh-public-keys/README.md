@@ -171,7 +171,7 @@ module sshPublicKeys './compute/ssh-public-keys/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cspkcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-sshkey-cspkcom001'
+    name: 'sshkey-cspkcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicKey: '<publicKey>'
@@ -193,7 +193,7 @@ module sshPublicKeys './compute/ssh-public-keys/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-sshkey-cspkcom001"
+      "value": "sshkey-cspkcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -220,7 +220,7 @@ module sshPublicKeys './compute/ssh-public-keys/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cspkmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-cspkmin001'
+    name: 'cspkmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -241,7 +241,7 @@ module sshPublicKeys './compute/ssh-public-keys/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-cspkmin001"
+      "value": "cspkmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

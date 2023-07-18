@@ -276,7 +276,7 @@ module batchAccounts './batch/batch-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbacom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]bbacom001'
+    name: 'bbacom001'
     storageAccountId: '<storageAccountId>'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -336,7 +336,7 @@ module batchAccounts './batch/batch-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]bbacom001"
+      "value": "bbacom001"
     },
     "storageAccountId": {
       "value": "<storageAccountId>"
@@ -425,7 +425,7 @@ module batchAccounts './batch/batch-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbaencr'
   params: {
     // Required parameters
-    name: '[[namePrefix]]bbaencr001'
+    name: 'bbaencr001'
     storageAccountId: '<storageAccountId>'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
@@ -474,7 +474,7 @@ module batchAccounts './batch/batch-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]bbaencr001"
+      "value": "bbaencr001"
     },
     "storageAccountId": {
       "value": "<storageAccountId>"
@@ -544,7 +544,7 @@ module batchAccounts './batch/batch-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-bbamin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]bbamin001'
+    name: 'bbamin001'
     storageAccountId: '<storageAccountId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -566,7 +566,7 @@ module batchAccounts './batch/batch-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]bbamin001"
+      "value": "bbamin001"
     },
     "storageAccountId": {
       "value": "<storageAccountId>"

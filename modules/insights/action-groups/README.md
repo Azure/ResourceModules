@@ -256,7 +256,7 @@ module actionGroups './insights/action-groups/main.bicep' = {
   params: {
     // Required parameters
     groupShortName: 'agiagcom001'
-    name: '[[namePrefix]]iagcom001'
+    name: 'iagcom001'
     // Non-required parameters
     emailReceivers: [
       {
@@ -311,7 +311,7 @@ module actionGroups './insights/action-groups/main.bicep' = {
       "value": "agiagcom001"
     },
     "name": {
-      "value": "[[namePrefix]]iagcom001"
+      "value": "iagcom001"
     },
     // Non-required parameters
     "emailReceivers": {
@@ -375,7 +375,7 @@ module actionGroups './insights/action-groups/main.bicep' = {
   params: {
     // Required parameters
     groupShortName: 'agiagmin001'
-    name: '[[namePrefix]]iagmin001'
+    name: 'iagmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -399,7 +399,7 @@ module actionGroups './insights/action-groups/main.bicep' = {
       "value": "agiagmin001"
     },
     "name": {
-      "value": "[[namePrefix]]iagmin001"
+      "value": "iagmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

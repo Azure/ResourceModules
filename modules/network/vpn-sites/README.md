@@ -346,7 +346,7 @@ module vpnSites './network/vpn-sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-nvscom'
+    name: 'nvscom'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     deviceProperties: {
@@ -376,7 +376,7 @@ module vpnSites './network/vpn-sites/main.bicep' = {
     }
     vpnSiteLinks: [
       {
-        name: '[[namePrefix]]-vSite-nvscom'
+        name: 'vSite-nvscom'
         properties: {
           bgpProperties: {
             asn: 65010
@@ -422,7 +422,7 @@ module vpnSites './network/vpn-sites/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-nvscom"
+      "value": "nvscom"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"
@@ -468,7 +468,7 @@ module vpnSites './network/vpn-sites/main.bicep' = {
     "vpnSiteLinks": {
       "value": [
         {
-          "name": "[[namePrefix]]-vSite-nvscom",
+          "name": "vSite-nvscom",
           "properties": {
             "bgpProperties": {
               "asn": 65010,
@@ -515,7 +515,7 @@ module vpnSites './network/vpn-sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvsmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-nvsmin'
+    name: 'nvsmin'
     virtualWanId: '<virtualWanId>'
     // Non-required parameters
     addressPrefixes: [
@@ -541,7 +541,7 @@ module vpnSites './network/vpn-sites/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-nvsmin"
+      "value": "nvsmin"
     },
     "virtualWanId": {
       "value": "<virtualWanId>"

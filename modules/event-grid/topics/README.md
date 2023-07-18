@@ -361,7 +361,7 @@ module topics './event-grid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]egtcom001'
+    name: 'egtcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -386,7 +386,7 @@ module topics './event-grid/topics/main.bicep' = {
           enableAdvancedFilteringOnArrays: true
           isSubjectCaseSensitive: false
         }
-        name: '[[namePrefix]]egtcom001'
+        name: 'egtcom001'
         retryPolicy: {
           eventTimeToLive: '120'
           maxDeliveryAttempts: 10
@@ -446,7 +446,7 @@ module topics './event-grid/topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]egtcom001"
+      "value": "egtcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -485,7 +485,7 @@ module topics './event-grid/topics/main.bicep' = {
             "enableAdvancedFilteringOnArrays": true,
             "isSubjectCaseSensitive": false
           },
-          "name": "[[namePrefix]]egtcom001",
+          "name": "egtcom001",
           "retryPolicy": {
             "eventTimeToLive": "120",
             "maxDeliveryAttempts": 10
@@ -556,7 +556,7 @@ module topics './event-grid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]egtmin001'
+    name: 'egtmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -577,7 +577,7 @@ module topics './event-grid/topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]egtmin001"
+      "value": "egtmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -601,7 +601,7 @@ module topics './event-grid/topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egtpe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]egtpe001'
+    name: 'egtpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -641,7 +641,7 @@ module topics './event-grid/topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]egtpe001"
+      "value": "egtpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -382,7 +382,7 @@ module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsadmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-sqlsadmin'
+    name: 'sqlsadmin'
     // Non-required parameters
     administrators: {
       azureADOnlyAuthentication: true
@@ -410,7 +410,7 @@ module servers './sql/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-sqlsadmin"
+      "value": "sqlsadmin"
     },
     // Non-required parameters
     "administrators": {
@@ -442,7 +442,7 @@ module servers './sql/servers/main.bicep' = {
 module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlscom'
   params: {
-    name: '[[namePrefix]]-sqlscom'
+    name: 'sqlscom'
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
     databases: [
@@ -467,7 +467,7 @@ module servers './sql/servers/main.bicep' = {
         }
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
-        name: '[[namePrefix]]-sqlscomdb-001'
+        name: 'sqlscomdb-001'
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -475,7 +475,7 @@ module servers './sql/servers/main.bicep' = {
     elasticPools: [
       {
         maintenanceConfigurationId: '<maintenanceConfigurationId>'
-        name: '[[namePrefix]]-sqlscom-ep-001'
+        name: 'sqlscom-ep-001'
         skuCapacity: 10
         skuName: 'GP_Gen5'
         skuTier: 'GeneralPurpose'
@@ -573,7 +573,7 @@ module servers './sql/servers/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "[[namePrefix]]-sqlscom"
+      "value": "sqlscom"
     },
     "administratorLogin": {
       "value": "adminUserName"
@@ -604,7 +604,7 @@ module servers './sql/servers/main.bicep' = {
           },
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
-          "name": "[[namePrefix]]-sqlscomdb-001",
+          "name": "sqlscomdb-001",
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
@@ -614,7 +614,7 @@ module servers './sql/servers/main.bicep' = {
       "value": [
         {
           "maintenanceConfigurationId": "<maintenanceConfigurationId>",
-          "name": "[[namePrefix]]-sqlscom-ep-001",
+          "name": "sqlscom-ep-001",
           "skuCapacity": 10,
           "skuName": "GP_Gen5",
           "skuTier": "GeneralPurpose"
@@ -744,7 +744,7 @@ module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlspe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-sqlspe'
+    name: 'sqlspe'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -786,7 +786,7 @@ module servers './sql/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-sqlspe"
+      "value": "sqlspe"
     },
     // Non-required parameters
     "administratorLogin": {
@@ -839,7 +839,7 @@ module servers './sql/servers/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sqlsec'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-sqlsec-sec'
+    name: 'sqlsec-sec'
     // Non-required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
@@ -876,7 +876,7 @@ module servers './sql/servers/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-sqlsec-sec"
+      "value": "sqlsec-sec"
     },
     // Non-required parameters
     "administratorLogin": {

@@ -394,7 +394,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-srswpscom-001'
+    name: 'srswpscom-001'
     // Non-required parameters
     capacity: 2
     clientCertEnabled: false
@@ -412,7 +412,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
             'ServerConnection'
             'Trace'
           ]
-          name: 'pe-[[namePrefix]]-srswpscom-001'
+          name: 'pe-srswpscom-001'
         }
       ]
       publicNetwork: {
@@ -473,7 +473,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-srswpscom-001"
+      "value": "srswpscom-001"
     },
     // Non-required parameters
     "capacity": {
@@ -507,7 +507,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
               "ServerConnection",
               "Trace"
             ],
-            "name": "pe-[[namePrefix]]-srswpscom-001"
+            "name": "pe-srswpscom-001"
           }
         ],
         "publicNetwork": {
@@ -581,7 +581,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpsmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-srswpsmin-001'
+    name: 'srswpsmin-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -602,7 +602,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-srswpsmin-001"
+      "value": "srswpsmin-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -626,7 +626,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-srswpspe'
   params: {
     // Required parameters
-    name: '[[namePrefix]]-srswpspe-001'
+    name: 'srswpspe-001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -667,7 +667,7 @@ module webPubSub './signal-r-service/web-pub-sub/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]-srswpspe-001"
+      "value": "srswpspe-001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -332,7 +332,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafaddpip'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nafaddpip001'
+    name: 'nafaddpip001'
     // Non-required parameters
     additionalPublicIpConfigurations: [
       {
@@ -364,7 +364,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nafaddpip001"
+      "value": "nafaddpip001"
     },
     // Non-required parameters
     "additionalPublicIpConfigurations": {
@@ -405,7 +405,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nafcom001'
+    name: 'nafcom001'
     // Non-required parameters
     applicationRuleCollections: [
       {
@@ -533,7 +533,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nafcom001"
+      "value": "nafcom001"
     },
     // Non-required parameters
     "applicationRuleCollections": {
@@ -690,7 +690,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafcstpip'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nafcstpip001'
+    name: 'nafcstpip001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     publicIPAddressObject: {
@@ -702,7 +702,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: 'new-[[namePrefix]]-pip-nafcstpip'
+      name: 'new-pip-nafcstpip'
       publicIPAllocationMethod: 'Static'
       publicIPPrefixResourceId: ''
       roleAssignments: [
@@ -740,7 +740,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nafcstpip001"
+      "value": "nafcstpip001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -756,7 +756,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "new-[[namePrefix]]-pip-nafcstpip",
+        "name": "new-pip-nafcstpip",
         "publicIPAllocationMethod": "Static",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
@@ -799,7 +799,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nafhubcom001'
+    name: 'nafhubcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     firewallPolicyId: '<firewallPolicyId>'
@@ -831,7 +831,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nafhubcom001"
+      "value": "nafhubcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -874,7 +874,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafhubmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nafhubmin001'
+    name: 'nafhubmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     hubIPAddresses: {
@@ -901,7 +901,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nafhubmin001"
+      "value": "nafhubmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -935,7 +935,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nafmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nafmin001'
+    name: 'nafmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     vNetId: '<vNetId>'
@@ -957,7 +957,7 @@ module azureFirewalls './network/azure-firewalls/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nafmin001"
+      "value": "nafmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

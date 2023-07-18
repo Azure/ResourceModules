@@ -259,7 +259,7 @@ module routeTables './network/route-tables/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nrtcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nrtcom001'
+    name: 'nrtcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -304,7 +304,7 @@ module routeTables './network/route-tables/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nrtcom001"
+      "value": "nrtcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -360,7 +360,7 @@ module routeTables './network/route-tables/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nrtmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nrtmin001'
+    name: 'nrtmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -381,7 +381,7 @@ module routeTables './network/route-tables/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nrtmin001"
+      "value": "nrtmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

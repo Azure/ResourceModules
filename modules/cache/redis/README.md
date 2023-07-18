@@ -370,7 +370,7 @@ module redis './cache/redis/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]crcom001'
+    name: 'crcom001'
     // Non-required parameters
     capacity: 2
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -429,7 +429,7 @@ module redis './cache/redis/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]crcom001"
+      "value": "crcom001"
     },
     // Non-required parameters
     "capacity": {
@@ -529,7 +529,7 @@ module redis './cache/redis/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-crmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]crmin001'
+    name: 'crmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -550,7 +550,7 @@ module redis './cache/redis/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]crmin001"
+      "value": "crmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

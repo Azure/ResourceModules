@@ -461,7 +461,7 @@ module sites './web/sites/main.bicep' = {
   params: {
     // Required parameters
     kind: 'functionapp'
-    name: '[[namePrefix]]wsfacom001'
+    name: 'wsfacom001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     appInsightResourceId: '<appInsightResourceId>'
@@ -602,7 +602,7 @@ module sites './web/sites/main.bicep' = {
       "value": "functionapp"
     },
     "name": {
-      "value": "[[namePrefix]]wsfacom001"
+      "value": "wsfacom001"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
@@ -782,7 +782,7 @@ module sites './web/sites/main.bicep' = {
   params: {
     // Required parameters
     kind: 'functionapp'
-    name: '[[namePrefix]]wsfamin001'
+    name: 'wsfamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -810,7 +810,7 @@ module sites './web/sites/main.bicep' = {
       "value": "functionapp"
     },
     "name": {
-      "value": "[[namePrefix]]wsfamin001"
+      "value": "wsfamin001"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
@@ -843,7 +843,7 @@ module sites './web/sites/main.bicep' = {
   params: {
     // Required parameters
     kind: 'app'
-    name: '[[namePrefix]]wswa001'
+    name: 'wswa001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     basicPublishingCredentialsPolicies: [
@@ -977,7 +977,7 @@ module sites './web/sites/main.bicep' = {
       "value": "app"
     },
     "name": {
-      "value": "[[namePrefix]]wswa001"
+      "value": "wswa001"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"
@@ -1142,7 +1142,7 @@ module sites './web/sites/main.bicep' = {
   params: {
     // Required parameters
     kind: 'app'
-    name: '[[namePrefix]]wswamin001'
+    name: 'wswamin001'
     serverFarmResourceId: '<serverFarmResourceId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -1167,7 +1167,7 @@ module sites './web/sites/main.bicep' = {
       "value": "app"
     },
     "name": {
-      "value": "[[namePrefix]]wswamin001"
+      "value": "wswamin001"
     },
     "serverFarmResourceId": {
       "value": "<serverFarmResourceId>"

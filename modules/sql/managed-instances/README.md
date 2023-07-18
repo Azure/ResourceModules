@@ -300,7 +300,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
   params: {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '[[namePrefix]]-sqlmicom'
+    name: 'sqlmicom'
     subnetId: '<subnetId>'
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
@@ -311,7 +311,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
         backupShortTermRetentionPolicies: {
           name: 'default'
         }
-        name: '[[namePrefix]]-sqlmicom-db-001'
+        name: 'sqlmicom-db-001'
       }
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -398,7 +398,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "[[namePrefix]]-sqlmicom"
+      "value": "sqlmicom"
     },
     "subnetId": {
       "value": "<subnetId>"
@@ -415,7 +415,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
           "backupShortTermRetentionPolicies": {
             "name": "default"
           },
-          "name": "[[namePrefix]]-sqlmicom-db-001"
+          "name": "sqlmicom-db-001"
         }
       ]
     },
@@ -552,7 +552,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '[[namePrefix]]-sqlmimin'
+    name: 'sqlmimin'
     subnetId: '<subnetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -580,7 +580,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "[[namePrefix]]-sqlmimin"
+      "value": "sqlmimin"
     },
     "subnetId": {
       "value": "<subnetId>"

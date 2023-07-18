@@ -459,9 +459,9 @@ module accounts './cognitive-services/accounts/main.bicep' = {
   params: {
     // Required parameters
     kind: 'Face'
-    name: '[[namePrefix]]csacom001'
+    name: 'csacom001'
     // Non-required parameters
-    customSubDomainName: '[[namePrefix]]xdomain'
+    customSubDomainName: 'xdomain'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -537,11 +537,11 @@ module accounts './cognitive-services/accounts/main.bicep' = {
       "value": "Face"
     },
     "name": {
-      "value": "[[namePrefix]]csacom001"
+      "value": "csacom001"
     },
     // Non-required parameters
     "customSubDomainName": {
-      "value": "[[namePrefix]]xdomain"
+      "value": "xdomain"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -644,7 +644,7 @@ module accounts './cognitive-services/accounts/main.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '[[namePrefix]]csaencr001'
+    name: 'csaencr001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -677,7 +677,7 @@ module accounts './cognitive-services/accounts/main.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "[[namePrefix]]csaencr001"
+      "value": "csaencr001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -725,7 +725,7 @@ module accounts './cognitive-services/accounts/main.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '[[namePrefix]]csamin001'
+    name: 'csamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -749,7 +749,7 @@ module accounts './cognitive-services/accounts/main.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "[[namePrefix]]csamin001"
+      "value": "csamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -774,9 +774,9 @@ module accounts './cognitive-services/accounts/main.bicep' = {
   params: {
     // Required parameters
     kind: 'SpeechServices'
-    name: '[[namePrefix]]csaspeech001'
+    name: 'csaspeech001'
     // Non-required parameters
-    customSubDomainName: '[[namePrefix]]speechdomain'
+    customSubDomainName: 'speechdomain'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
       {
@@ -823,11 +823,11 @@ module accounts './cognitive-services/accounts/main.bicep' = {
       "value": "SpeechServices"
     },
     "name": {
-      "value": "[[namePrefix]]csaspeech001"
+      "value": "csaspeech001"
     },
     // Non-required parameters
     "customSubDomainName": {
-      "value": "[[namePrefix]]speechdomain"
+      "value": "speechdomain"
     },
     "enableDefaultTelemetry": {
       "value": "<enableDefaultTelemetry>"

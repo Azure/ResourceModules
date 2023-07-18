@@ -277,7 +277,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]iplscom001'
+    name: 'iplscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -332,7 +332,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]iplscom001"
+      "value": "iplscom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -398,7 +398,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iplsmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]iplsmin001'
+    name: 'iplsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -419,7 +419,7 @@ module privateLinkScopes './insights/private-link-scopes/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]iplsmin001"
+      "value": "iplsmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

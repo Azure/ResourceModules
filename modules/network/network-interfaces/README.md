@@ -228,7 +228,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '[[namePrefix]]nnicom001'
+    name: 'nnicom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -294,7 +294,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
       ]
     },
     "name": {
-      "value": "[[namePrefix]]nnicom001"
+      "value": "nnicom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -359,7 +359,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
         subnetResourceId: '<subnetResourceId>'
       }
     ]
-    name: '[[namePrefix]]nnimin001'
+    name: 'nnimin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -388,7 +388,7 @@ module networkInterfaces './network/network-interfaces/main.bicep' = {
       ]
     },
     "name": {
-      "value": "[[namePrefix]]nnimin001"
+      "value": "nnimin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

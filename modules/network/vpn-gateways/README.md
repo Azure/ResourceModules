@@ -193,7 +193,7 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nvgcom001'
+    name: 'nvgcom001'
     virtualHubResourceId: '<virtualHubResourceId>'
     // Non-required parameters
     bgpSettings: {
@@ -255,7 +255,7 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nvgcom001"
+      "value": "nvgcom001"
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"
@@ -332,7 +332,7 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nvgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nvgmin001'
+    name: 'nvgmin001'
     virtualHubResourceId: '<virtualHubResourceId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -354,7 +354,7 @@ module vpnGateways './network/vpn-gateways/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nvgmin001"
+      "value": "nvgmin001"
     },
     "virtualHubResourceId": {
       "value": "<virtualHubResourceId>"

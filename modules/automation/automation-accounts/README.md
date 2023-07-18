@@ -405,7 +405,7 @@ module automationAccounts './automation/automation-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aacom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]aacom001'
+    name: 'aacom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -604,7 +604,7 @@ module automationAccounts './automation/automation-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]aacom001"
+      "value": "aacom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -846,7 +846,7 @@ module automationAccounts './automation/automation-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aaencr'
   params: {
     // Required parameters
-    name: '[[namePrefix]]aaencr001'
+    name: 'aaencr001'
     // Non-required parameters
     cMKKeyName: '<cMKKeyName>'
     cMKKeyVaultResourceId: '<cMKKeyVaultResourceId>'
@@ -873,7 +873,7 @@ module automationAccounts './automation/automation-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]aaencr001"
+      "value": "aaencr001"
     },
     // Non-required parameters
     "cMKKeyName": {
@@ -911,7 +911,7 @@ module automationAccounts './automation/automation-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-aamin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]aamin001'
+    name: 'aamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -932,7 +932,7 @@ module automationAccounts './automation/automation-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]aamin001"
+      "value": "aamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

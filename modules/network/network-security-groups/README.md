@@ -179,7 +179,7 @@ module networkSecurityGroups './network/network-security-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnsgcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nnsgcom001'
+    name: 'nnsgcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -283,7 +283,7 @@ module networkSecurityGroups './network/network-security-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nnsgcom001"
+      "value": "nnsgcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -408,7 +408,7 @@ module networkSecurityGroups './network/network-security-groups/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nnsgmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]nnsgmin001'
+    name: 'nnsgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -429,7 +429,7 @@ module networkSecurityGroups './network/network-security-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]nnsgmin001"
+      "value": "nnsgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

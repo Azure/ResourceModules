@@ -362,7 +362,7 @@ module staticSites './web/static-sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wsscom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]wsscom001'
+    name: 'wsscom001'
     // Non-required parameters
     allowConfigFileUpdates: true
     appSettings: {
@@ -431,7 +431,7 @@ module staticSites './web/static-sites/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]wsscom001"
+      "value": "wsscom001"
     },
     // Non-required parameters
     "allowConfigFileUpdates": {
@@ -529,7 +529,7 @@ module staticSites './web/static-sites/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-wssmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]wssmin001'
+    name: 'wssmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -550,7 +550,7 @@ module staticSites './web/static-sites/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]wssmin001"
+      "value": "wssmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

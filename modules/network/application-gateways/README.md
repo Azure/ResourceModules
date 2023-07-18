@@ -583,7 +583,7 @@ module applicationGateways './network/application-gateways/main.bicep' = {
     sku: 'WAF_v2'
     sslCertificates: [
       {
-        name: '[[namePrefix]]-az-apgw-x-001-ssl-certificate'
+        name: 'az-apgw-x-001-ssl-certificate'
         properties: {
           keyVaultSecretId: '<keyVaultSecretId>'
         }
@@ -1018,7 +1018,7 @@ module applicationGateways './network/application-gateways/main.bicep' = {
     "sslCertificates": {
       "value": [
         {
-          "name": "[[namePrefix]]-az-apgw-x-001-ssl-certificate",
+          "name": "az-apgw-x-001-ssl-certificate",
           "properties": {
             "keyVaultSecretId": "<keyVaultSecretId>"
           }

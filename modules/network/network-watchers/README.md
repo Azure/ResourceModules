@@ -180,7 +180,7 @@ module networkWatchers './network/network-watchers/main.bicep' = {
             type: 'ExternalAddress'
           }
         ]
-        name: '[[namePrefix]]-nnwcom-cm-001'
+        name: 'nnwcom-cm-001'
         testConfigurations: [
           {
             httpConfiguration: {
@@ -209,7 +209,7 @@ module networkWatchers './network/network-watchers/main.bicep' = {
             disable: false
             name: 'test-http-Bing'
             sources: [
-              '[[namePrefix]]-subnet-001(${resourceGroup.name})'
+              'subnet-001(${resourceGroup.name})'
             ]
             testConfigurations: [
               'HTTP Bing Test'
@@ -228,7 +228,7 @@ module networkWatchers './network/network-watchers/main.bicep' = {
       }
       {
         formatVersion: 1
-        name: '[[namePrefix]]-nnwcom-fl-001'
+        name: 'nnwcom-fl-001'
         retentionInDays: 8
         storageId: '<storageId>'
         targetResourceId: '<targetResourceId>'
@@ -282,7 +282,7 @@ module networkWatchers './network/network-watchers/main.bicep' = {
               "type": "ExternalAddress"
             }
           ],
-          "name": "[[namePrefix]]-nnwcom-cm-001",
+          "name": "nnwcom-cm-001",
           "testConfigurations": [
             {
               "httpConfiguration": {
@@ -311,7 +311,7 @@ module networkWatchers './network/network-watchers/main.bicep' = {
               "disable": false,
               "name": "test-http-Bing",
               "sources": [
-                "[[namePrefix]]-subnet-001(${resourceGroup.name})"
+                "subnet-001(${resourceGroup.name})"
               ],
               "testConfigurations": [
                 "HTTP Bing Test"
@@ -334,7 +334,7 @@ module networkWatchers './network/network-watchers/main.bicep' = {
         },
         {
           "formatVersion": 1,
-          "name": "[[namePrefix]]-nnwcom-fl-001",
+          "name": "nnwcom-fl-001",
           "retentionInDays": 8,
           "storageId": "<storageId>",
           "targetResourceId": "<targetResourceId>",

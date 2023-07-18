@@ -285,7 +285,7 @@ module hostPools './desktop-virtualization/host-pools/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvhpcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dvhpcom001'
+    name: 'dvhpcom001'
     // Non-required parameters
     agentUpdate: {
       maintenanceWindows: [
@@ -365,7 +365,7 @@ module hostPools './desktop-virtualization/host-pools/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dvhpcom001"
+      "value": "dvhpcom001"
     },
     // Non-required parameters
     "agentUpdate": {
@@ -484,7 +484,7 @@ module hostPools './desktop-virtualization/host-pools/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvhpmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]dvhpmin001'
+    name: 'dvhpmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -505,7 +505,7 @@ module hostPools './desktop-virtualization/host-pools/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]dvhpmin001"
+      "value": "dvhpmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

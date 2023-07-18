@@ -430,7 +430,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawcom'
   params: {
     // Required parameters
-    name: '[[namePrefix]]hawcom001'
+    name: 'hawcom001'
     // Non-required parameters
     dicomservices: [
       {
@@ -452,13 +452,13 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
         diagnosticWorkspaceId: '<diagnosticWorkspaceId>'
         enableDefaultTelemetry: '<enableDefaultTelemetry>'
         location: '<location>'
-        name: '[[namePrefix]]-az-dicom-x-001'
+        name: 'az-dicom-x-001'
         publicNetworkAccess: 'Enabled'
         systemAssignedIdentity: false
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
-        workspaceName: '[[namePrefix]]hawcom001'
+        workspaceName: 'hawcom001'
       }
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -485,7 +485,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
         initialImportMode: false
         kind: 'fhir-R4'
         location: '<location>'
-        name: '[[namePrefix]]-az-fhir-x-001'
+        name: 'az-fhir-x-001'
         publicNetworkAccess: 'Enabled'
         resourceVersionPolicy: 'versioned'
         roleAssignments: [
@@ -502,7 +502,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
         userAssignedIdentities: {
           '<managedIdentityResourceId>': {}
         }
-        workspaceName: '[[namePrefix]]hawcom001'
+        workspaceName: 'hawcom001'
       }
     ]
     location: '<location>'
@@ -530,7 +530,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]hawcom001"
+      "value": "hawcom001"
     },
     // Non-required parameters
     "dicomservices": {
@@ -554,13 +554,13 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
           "diagnosticWorkspaceId": "<diagnosticWorkspaceId>",
           "enableDefaultTelemetry": "<enableDefaultTelemetry>",
           "location": "<location>",
-          "name": "[[namePrefix]]-az-dicom-x-001",
+          "name": "az-dicom-x-001",
           "publicNetworkAccess": "Enabled",
           "systemAssignedIdentity": false,
           "userAssignedIdentities": {
             "<managedIdentityResourceId>": {}
           },
-          "workspaceName": "[[namePrefix]]hawcom001"
+          "workspaceName": "hawcom001"
         }
       ]
     },
@@ -591,7 +591,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
           "initialImportMode": false,
           "kind": "fhir-R4",
           "location": "<location>",
-          "name": "[[namePrefix]]-az-fhir-x-001",
+          "name": "az-fhir-x-001",
           "publicNetworkAccess": "Enabled",
           "resourceVersionPolicy": "versioned",
           "roleAssignments": [
@@ -608,7 +608,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
           "userAssignedIdentities": {
             "<managedIdentityResourceId>": {}
           },
-          "workspaceName": "[[namePrefix]]hawcom001"
+          "workspaceName": "hawcom001"
         }
       ]
     },
@@ -645,7 +645,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-hawmin'
   params: {
     // Required parameters
-    name: '[[namePrefix]]hawmin001'
+    name: 'hawmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
@@ -668,7 +668,7 @@ module workspaces './healthcare-apis/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "[[namePrefix]]hawmin001"
+      "value": "hawmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
