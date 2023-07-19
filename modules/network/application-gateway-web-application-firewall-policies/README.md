@@ -14,7 +14,7 @@ This module deploys an Application Gateway Web Application Firewall (WAF) Policy
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies) |
+| `Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/ApplicationGatewayWebApplicationFirewallPolicies) |
 
 ## Parameters
 
@@ -108,7 +108,7 @@ module applicationGatewayWebApplicationFirewallPolicies './network/application-g
   name: '${uniqueString(deployment().name, location)}-test-nagwafpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nagwafpcom001'
+    name: 'nagwafpcom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     managedRules: {
@@ -152,7 +152,7 @@ module applicationGatewayWebApplicationFirewallPolicies './network/application-g
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nagwafpcom001"
+      "value": "nagwafpcom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

@@ -153,11 +153,11 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing all available fields
         {
             "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>", // e.g. vault, registry, blob
             "privateDnsZoneGroup": {
                 "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
                 ]
             },
             "ipConfigurations":[
@@ -181,7 +181,7 @@ To use Private Endpoint the following dependencies must be deployed:
         },
         // Example showing only mandatory fields
         {
-            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
+            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
             "service": "<serviceName>" // e.g. vault, registry, blob
         }
     ]
@@ -199,11 +199,11 @@ privateEndpoints:  [
     // Example showing all available fields
     {
         name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
         privateDnsZoneGroup: {
             privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
+                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
             ]
         }
         customDnsConfigs: [
@@ -227,7 +227,7 @@ privateEndpoints:  [
     }
     // Example showing only mandatory fields
     {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
         service: '<serviceName>' // e.g. vault, registry, blob
     }
 ]
@@ -324,8 +324,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -338,8 +338,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -382,7 +382,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbncom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbncom001'
+    name: 'sbncom001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -462,7 +462,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>sbncomq001'
+        name: 'sbncomq001'
         roleAssignments: [
           {
             principalIds: [
@@ -508,7 +508,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>sbncomt001'
+        name: 'sbncomt001'
         roleAssignments: [
           {
             principalIds: [
@@ -541,7 +541,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbncom001"
+      "value": "sbncom001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -643,7 +643,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>sbncomq001",
+          "name": "sbncomq001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -699,7 +699,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>sbncomt001",
+          "name": "sbncomt001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -735,7 +735,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnencr'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnencr001'
+    name: 'sbnencr001'
     // Non-required parameters
     authorizationRules: [
       {
@@ -814,7 +814,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnencr001"
+      "value": "sbnencr001"
     },
     // Non-required parameters
     "authorizationRules": {
@@ -916,7 +916,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnmin001'
+    name: 'sbnmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -937,7 +937,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnmin001"
+      "value": "sbnmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -961,7 +961,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-sbnpe'
   params: {
     // Required parameters
-    name: '<<namePrefix>>sbnpe001'
+    name: 'sbnpe001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     privateEndpoints: [
@@ -1002,7 +1002,7 @@ module namespaces './service-bus/namespaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>sbnpe001"
+      "value": "sbnpe001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

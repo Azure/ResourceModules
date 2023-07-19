@@ -218,8 +218,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -232,8 +232,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -271,7 +271,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-whasev2'
   params: {
     // Required parameters
-    name: '<<namePrefix>>whasev2001'
+    name: 'whasev2001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     clusterSettings: [
@@ -302,7 +302,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
     ]
     systemAssignedIdentity: true
     tags: {
-      hostingEnvironmentName: '<<namePrefix>>whasev2001'
+      hostingEnvironmentName: 'whasev2001'
       resourceType: 'App Service Environment'
     }
     userAssignedIdentities: {
@@ -326,7 +326,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>whasev2001"
+      "value": "whasev2001"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -389,7 +389,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
     },
     "tags": {
       "value": {
-        "hostingEnvironmentName": "<<namePrefix>>whasev2001",
+        "hostingEnvironmentName": "whasev2001",
         "resourceType": "App Service Environment"
       }
     },
@@ -416,7 +416,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-whasev3'
   params: {
     // Required parameters
-    name: '<<namePrefix>>whasev3001'
+    name: 'whasev3001'
     subnetResourceId: '<subnetResourceId>'
     // Non-required parameters
     allowNewPrivateEndpointConnections: true
@@ -452,7 +452,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
     ]
     systemAssignedIdentity: true
     tags: {
-      hostingEnvironmentName: '<<namePrefix>>whasev3001'
+      hostingEnvironmentName: 'whasev3001'
       resourceType: 'App Service Environment'
     }
     upgradePreference: 'Late'
@@ -477,7 +477,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>whasev3001"
+      "value": "whasev3001"
     },
     "subnetResourceId": {
       "value": "<subnetResourceId>"
@@ -555,7 +555,7 @@ module hostingEnvironments './web/hosting-environments/main.bicep' = {
     },
     "tags": {
       "value": {
-        "hostingEnvironmentName": "<<namePrefix>>whasev3001",
+        "hostingEnvironmentName": "whasev3001",
         "resourceType": "App Service Environment"
       }
     },

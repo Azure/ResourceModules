@@ -1004,7 +1004,7 @@ function Set-DeploymentExamplesSection {
 
             $rawBicepExampleString = ($rawBicepExample | Out-String)
             $rawBicepExampleString = $rawBicepExampleString -replace '\$\{serviceShort\}', $serviceShort
-            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}', '<<namePrefix>>' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
+            $rawBicepExampleString = $rawBicepExampleString -replace '\$\{namePrefix\}[-|\.|_]?', '' # Replacing with empty to not expose prefix and avoid potential deployment conflicts
             $rawBicepExampleString = $rawBicepExampleString -replace '(?m):\s*location\s*$', ': ''<location>'''
 
             # [3/6] Format header, remove scope property & any empty line
@@ -1138,7 +1138,7 @@ function Set-DeploymentExamplesSection {
                         # e.g. "[format('{0}', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('{0}-paramNested', uniqueString(deployment().name, parameters('location')))), '2020-10-01').outputs.managedIdentityResourceId.value)]": {}
                         $expectedValue = $matches[1]
                     } elseif ($row -match '\[.*reference\(extensionResourceId.+\.([a-zA-Z]+).*\].*"') {
-                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        # e.g. "[reference(extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $expectedValue = $matches[1]
                     } else {
                         throw "Unhandled case [$row] in file [$testFilePath]"
@@ -1155,7 +1155,7 @@ function Set-DeploymentExamplesSection {
                     if ($jsonParameterContentArray[$index] -match '(\s*"value"): "\[.+\]"') {
                         # e.g.
                         # "policyAssignmentId": {
-                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-<<namePrefix>>-psa-{0}', parameters('serviceShort')))]"
+                        #   "value": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyAssignments', format('dep-[[namePrefix]]-psa-{0}', parameters('serviceShort')))]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
@@ -1173,7 +1173,7 @@ function Set-DeploymentExamplesSection {
                         # e.g.
                         # "policyDefinitionReferenceIds": {
                         #  "value": [
-                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-<<namePrefix>>-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
+                        #     "[reference(subscriptionResourceId('Microsoft.Authorization/policySetDefinitions', format('dep-[[namePrefix]]-polSet-{0}', parameters('serviceShort'))), '2021-06-01').policyDefinitions[0].policyDefinitionReferenceId]"
                         $prefix = $matches[1]
 
                         $headerIndex = $index
