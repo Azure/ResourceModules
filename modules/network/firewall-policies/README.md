@@ -108,8 +108,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -122,8 +122,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -161,14 +161,14 @@ module firewallPolicies './network/firewall-policies/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfpcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nfpcom001'
+    name: 'nfpcom001'
     // Non-required parameters
     allowSqlRedirect: true
     autoLearnPrivateRanges: 'Enabled'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     ruleCollectionGroups: [
       {
-        name: '<<namePrefix>>-rule-001'
+        name: 'rule-001'
         priority: 5000
         ruleCollections: [
           {
@@ -226,7 +226,7 @@ module firewallPolicies './network/firewall-policies/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nfpcom001"
+      "value": "nfpcom001"
     },
     // Non-required parameters
     "allowSqlRedirect": {
@@ -241,7 +241,7 @@ module firewallPolicies './network/firewall-policies/main.bicep' = {
     "ruleCollectionGroups": {
       "value": [
         {
-          "name": "<<namePrefix>>-rule-001",
+          "name": "rule-001",
           "priority": 5000,
           "ruleCollections": [
             {
@@ -302,7 +302,7 @@ module firewallPolicies './network/firewall-policies/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nfpmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nfpmin001'
+    name: 'nfpmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -323,7 +323,7 @@ module firewallPolicies './network/firewall-policies/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nfpmin001"
+      "value": "nfpmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

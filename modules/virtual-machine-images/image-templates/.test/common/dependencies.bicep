@@ -55,7 +55,7 @@ resource galleryImageDefinition 'Microsoft.Compute/galleries/images@2022-03-03' 
 }
 
 resource msi_contibutorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, 'Contributor', '<<namePrefix>>')
+  name: guid(resourceGroup().id, 'Contributor', '[[namePrefix]]')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c') // Contributor
     principalId: managedIdentity.properties.principalId

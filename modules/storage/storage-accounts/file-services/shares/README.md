@@ -26,10 +26,11 @@ This module deploys a Storage Account File Share.
 
 **Conditional parameters**
 
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `fileServicesName` | string | `'default'` | The name of the parent file service. Required if the template is used in a standalone deployment. |
-| `storageAccountName` | string |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `accessTier` | string | `'TransactionOptimized'` | `[Cool, Hot, Premium, TransactionOptimized]` | Access tier for specific share. Required if the Storage Account kind is set to FileStorage (should be set to "Premium"). GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. |
+| `fileServicesName` | string | `'default'` |  | The name of the parent file service. Required if the template is used in a standalone deployment. |
+| `storageAccountName` | string |  |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 

@@ -457,8 +457,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -471,8 +471,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -516,7 +516,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwadv'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwadv001'
+    name: 'oiwadv001'
     // Non-required parameters
     dailyQuotaGb: 10
     dataExports: [
@@ -760,7 +760,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwadv001"
+      "value": "oiwadv001"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -1047,7 +1047,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwcom001'
+    name: 'oiwcom001'
     // Non-required parameters
     dailyQuotaGb: 10
     dataSources: [
@@ -1220,7 +1220,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwcom001"
+      "value": "oiwcom001"
     },
     // Non-required parameters
     "dailyQuotaGb": {
@@ -1434,7 +1434,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-oiwmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>oiwmin001'
+    name: 'oiwmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -1455,7 +1455,7 @@ module workspaces './operational-insights/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>oiwmin001"
+      "value": "oiwmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

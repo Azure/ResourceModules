@@ -39,8 +39,14 @@ param gitRepositoryName string = ''
 @description('Optional. The collaboration branch name. Default is \'main\'.')
 param gitCollaborationBranch string = 'main'
 
+@description('Optional. Disable manual publish operation in ADF studio to favor automated publish.')
+param gitDisablePublish bool = false
+
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
+
+@description('Optional. The GitHub Enterprise Server host (prefixed with \'https://\'). Only relevant for \'FactoryGitHubConfiguration\'.')
+param gitHostName string = ''
 
 @description('Optional. List of Global Parameters for the factory.')
 param globalParameters object = {}
@@ -192,10 +198,12 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   properties: {
     repoConfiguration: bool(gitConfigureLater) ? null : union({
         type: gitRepoType
+        hostName: gitHostName
         accountName: gitAccountName
         repositoryName: gitRepositoryName
         collaborationBranch: gitCollaborationBranch
         rootFolder: gitRootFolder
+        disablePublish: gitDisablePublish
       }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
         projectName: gitProjectName
       } : {}), {})

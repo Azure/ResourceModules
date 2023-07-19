@@ -281,7 +281,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvspcom001'
+    name: 'dvspcom001'
     // Non-required parameters
     description: 'My Scaling Plan Description'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -323,7 +323,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvspcom001"
+      "value": "dvspcom001"
     },
     // Non-required parameters
     "description": {
@@ -388,7 +388,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvspmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dvspmin001'
+    name: 'dvspmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -409,7 +409,7 @@ module scalingPlans './desktop-virtualization/scaling-plans/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dvspmin001"
+      "value": "dvspmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

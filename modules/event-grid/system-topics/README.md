@@ -79,7 +79,7 @@ You can specify multiple event subscriptions using the following format:
           "enableAdvancedFilteringOnArrays": true,
           "isSubjectCaseSensitive": false
         },
-        "name": "<<namePrefix>>egstcom001",
+        "name": "[[namePrefix]]egstcom001",
         "retryPolicy": {
           "eventTimeToLive": "120",
           "maxDeliveryAttempts": 10
@@ -113,7 +113,7 @@ eventSubscriptions: [
         enableAdvancedFilteringOnArrays: true
         isSubjectCaseSensitive: false
       }
-      name: '<<namePrefix>>egstcom001'
+      name: '[[namePrefix]]egstcom001'
       retryPolicy: {
         eventTimeToLive: '120'
         maxDeliveryAttempts: 10
@@ -236,8 +236,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -250,8 +250,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -290,7 +290,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egstcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstcom001'
+    name: 'egstcom001'
     source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
@@ -317,7 +317,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
           enableAdvancedFilteringOnArrays: true
           isSubjectCaseSensitive: false
         }
-        name: '<<namePrefix>>egstcom001'
+        name: 'egstcom001'
         retryPolicy: {
           eventTimeToLive: '120'
           maxDeliveryAttempts: 10
@@ -356,7 +356,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egstcom001"
+      "value": "egstcom001"
     },
     "source": {
       "value": "<source>"
@@ -401,7 +401,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
             "enableAdvancedFilteringOnArrays": true,
             "isSubjectCaseSensitive": false
           },
-          "name": "<<namePrefix>>egstcom001",
+          "name": "egstcom001",
           "retryPolicy": {
             "eventTimeToLive": "120",
             "maxDeliveryAttempts": 10
@@ -447,7 +447,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egstmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstmin001'
+    name: 'egstmin001'
     source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
@@ -470,7 +470,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egstmin001"
+      "value": "egstmin001"
     },
     "source": {
       "value": "<source>"

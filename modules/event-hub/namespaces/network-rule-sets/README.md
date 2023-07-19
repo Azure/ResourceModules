@@ -45,13 +45,13 @@ Contains an array of subnets that this Event Hub Namespace is exposed to via Ser
       {
         "ignoreMissingVnetServiceEndpoint": true,
         "subnet": {
-          "id": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/<<virtualNetworkName>>/subnets/<<subnetName1>>"
+          "id": "/subscriptions/[[subscriptionId]]/resourcegroups/[[resourceGroupName]]/providers/Microsoft.Network/virtualNetworks/[[virtualNetworkName]]/subnets/[[subnetName1]]"
         }
       },
       {
       "ignoreMissingVnetServiceEndpoint": false,
       "subnet": {
-        "id": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/<<virtualNetworkName>>/subnets/<<subnetName2>>"
+        "id": "/subscriptions/[[subscriptionId]]/resourcegroups/[[resourceGroupName]]/providers/Microsoft.Network/virtualNetworks/[[virtualNetworkName]]/subnets/[[subnetName2]]"
         }
       }
     ]

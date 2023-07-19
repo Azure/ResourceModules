@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "5103691038121257112"
+      "templateHash": "3757435120716828453"
     }
   },
   "parameters": {
@@ -95,7 +95,7 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces/networkRuleSets",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-01-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), 'default')]",
       "properties": {
         "publicNetworkAccess": "[parameters('publicNetworkAccess')]",

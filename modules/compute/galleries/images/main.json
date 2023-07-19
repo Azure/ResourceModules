@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7739161671694395702"
+      "templateHash": "17020882528338679735"
     }
   },
   "parameters": {
@@ -124,7 +124,7 @@
         "V2"
       ],
       "metadata": {
-        "description": "Optional. The hypervisor generation of the Virtual Machine.\r\n* If this value is not specified, then it is determined by the securityType parameter.\r\n* If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1.\r\n"
+        "description": "Optional. The hypervisor generation of the Virtual Machine.</p>- If this value is not specified, then it is determined by the securityType parameter.</p>- If the securityType parameter is specified, then the value of hyperVGeneration will be V2, else V1."
       }
     },
     "securityType": {
@@ -159,7 +159,7 @@
         "false"
       ],
       "metadata": {
-        "description": "Optional. The image supports accelerated networking.\r\nAccelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.\r\nThis high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the\r\nmost demanding network workloads on supported VM types.\r\n"
+        "description": "Optional. The image supports accelerated networking.</p>Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, greatly improving its networking performance.</p>This high-performance path bypasses the host from the data path, which reduces latency, jitter, and CPU utilization for the most demanding network workloads on supported VM types."
       }
     },
     "description": {

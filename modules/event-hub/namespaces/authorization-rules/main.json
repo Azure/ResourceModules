@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "4848399350072664355"
+      "templateHash": "16575121179236370672"
     }
   },
   "parameters": {
@@ -58,7 +58,7 @@
     },
     {
       "type": "Microsoft.EventHub/namespaces/authorizationRules",
-      "apiVersion": "2021-11-01",
+      "apiVersion": "2022-01-01-preview",
       "name": "[format('{0}/{1}', parameters('namespaceName'), parameters('name'))]",
       "properties": {
         "rights": "[parameters('rights')]"

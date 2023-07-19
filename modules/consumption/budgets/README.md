@@ -77,7 +77,7 @@ module budgets './consumption/budgets/main.bicep' = {
   params: {
     // Required parameters
     amount: 500
-    name: '<<namePrefix>>cbcom001'
+    name: 'cbcom001'
     // Non-required parameters
     contactEmails: [
       'dummy@contoso.com'
@@ -111,7 +111,7 @@ module budgets './consumption/budgets/main.bicep' = {
       "value": 500
     },
     "name": {
-      "value": "<<namePrefix>>cbcom001"
+      "value": "cbcom001"
     },
     // Non-required parameters
     "contactEmails": {
@@ -150,7 +150,7 @@ module budgets './consumption/budgets/main.bicep' = {
   params: {
     // Required parameters
     amount: 500
-    name: '<<namePrefix>>cbmin001'
+    name: 'cbmin001'
     // Non-required parameters
     contactEmails: [
       'dummy@contoso.com'
@@ -177,7 +177,7 @@ module budgets './consumption/budgets/main.bicep' = {
       "value": 500
     },
     "name": {
-      "value": "<<namePrefix>>cbmin001"
+      "value": "cbmin001"
     },
     // Non-required parameters
     "contactEmails": {

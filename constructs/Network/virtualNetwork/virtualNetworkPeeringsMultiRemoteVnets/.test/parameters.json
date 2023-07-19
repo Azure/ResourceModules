@@ -9,11 +9,11 @@
             "value": [
                 {
                     "peeringName": "sxx-az-peering-x-002-sxx-az-peering-x-003",
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-003",
+                    "remoteVirtualNetworkId": "/subscriptions/[[subscriptionId]]/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-003",
                     "useRemoteGateways": false
                 },
                 {
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/peeringNetwork",
+                    "remoteVirtualNetworkId": "/subscriptions/[[subscriptionId]]/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/peeringNetwork",
                     "useRemoteGateways": false
                 }
             ]

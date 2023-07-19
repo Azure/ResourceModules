@@ -18,7 +18,7 @@ param serviceShort string = 'ssacom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -168,6 +168,7 @@ module testDeployment '../../main.bicep' = {
       shares: [
         {
           name: 'avdprofiles'
+          accessTier: 'Hot'
           shareQuota: 5120
           roleAssignments: [
             {
