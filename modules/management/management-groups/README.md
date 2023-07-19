@@ -145,7 +145,7 @@ module managementGroups './management/management-groups/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmgcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>mmgcom001'
+    name: 'mmgcom001'
     // Non-required parameters
     displayName: 'Test MG'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -168,7 +168,7 @@ module managementGroups './management/management-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>mmgcom001"
+      "value": "mmgcom001"
     },
     // Non-required parameters
     "displayName": {
@@ -198,7 +198,7 @@ module managementGroups './management/management-groups/main.bicep' = {
   name: '${uniqueString(deployment().name)}-test-mmgmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>mmgmin001'
+    name: 'mmgmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -219,7 +219,7 @@ module managementGroups './management/management-groups/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>mmgmin001"
+      "value": "mmgmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

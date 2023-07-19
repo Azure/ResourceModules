@@ -37,7 +37,7 @@ This module deploys an Availability Set.
 | `platformUpdateDomainCount` | int | `5` |  | The number of update domains to use. |
 | `proximityPlacementGroupResourceId` | string | `''` |  | Resource ID of a proximity placement group. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `skuName` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks.<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
+| `skuName` | string | `'Aligned'` |  | SKU of the availability set.</p>- Use 'Aligned' for virtual machines with managed disks.</p>- Use 'Classic' for virtual machines with unmanaged disks. |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
 
 
@@ -172,7 +172,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cascom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>cascom001'
+    name: 'cascom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     lock: 'CanNotDelete'
@@ -208,7 +208,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>cascom001"
+      "value": "cascom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -255,7 +255,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-casmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>casmin001'
+    name: 'casmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -276,7 +276,7 @@ module availabilitySets './compute/availability-sets/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>casmin001"
+      "value": "casmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

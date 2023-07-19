@@ -184,7 +184,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagcom001'
+    name: 'dvagcom001'
     // Non-required parameters
     applications: [
       {
@@ -251,7 +251,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagcom001"
+      "value": "dvagcom001"
     },
     // Non-required parameters
     "applications": {
@@ -341,7 +341,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
     // Required parameters
     applicationGroupType: 'RemoteApp'
     hostpoolName: '<hostpoolName>'
-    name: '<<namePrefix>>dvagmin001'
+    name: 'dvagmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -368,7 +368,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
       "value": "<hostpoolName>"
     },
     "name": {
-      "value": "<<namePrefix>>dvagmin001"
+      "value": "dvagmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

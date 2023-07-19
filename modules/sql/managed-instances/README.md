@@ -111,8 +111,8 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://learn.
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -126,8 +126,8 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://learn.
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -245,8 +245,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -259,8 +259,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -300,7 +300,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
   params: {
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmicom'
+    name: 'sqlmicom'
     subnetId: '<subnetId>'
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     databases: [
@@ -311,7 +311,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
         backupShortTermRetentionPolicies: {
           name: 'default'
         }
-        name: '<<namePrefix>>-sqlmicom-db-001'
+        name: 'sqlmicom-db-001'
       }
     ]
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -398,7 +398,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmicom"
+      "value": "sqlmicom"
     },
     "subnetId": {
       "value": "<subnetId>"
@@ -415,7 +415,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
           "backupShortTermRetentionPolicies": {
             "name": "default"
           },
-          "name": "<<namePrefix>>-sqlmicom-db-001"
+          "name": "sqlmicom-db-001"
         }
       ]
     },
@@ -552,7 +552,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>-sqlmimin'
+    name: 'sqlmimin'
     subnetId: '<subnetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -580,7 +580,7 @@ module managedInstances './sql/managed-instances/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>-sqlmimin"
+      "value": "sqlmimin"
     },
     "subnetId": {
       "value": "<subnetId>"

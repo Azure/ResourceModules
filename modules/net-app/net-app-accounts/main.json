@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "15578497575189275727"
+      "templateHash": "16320339203828114710"
     }
   },
   "parameters": {
@@ -64,6 +64,13 @@
         "description": "Optional. Capacity pools to create."
       }
     },
+    "userAssignedIdentities": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. The ID(s) to assign to the resource."
+      }
+    },
     "roleAssignments": {
       "type": "array",
       "defaultValue": [],
@@ -116,7 +123,9 @@
         "smbServerName": "[if(not(empty(parameters('domainName'))), parameters('smbServerNamePrefix'), null())]",
         "organizationalUnit": "[if(not(empty(parameters('domainJoinOU'))), parameters('domainJoinOU'), null())]"
       }
-    ]
+    ],
+    "identityType": "[if(not(empty(parameters('userAssignedIdentities'))), 'UserAssigned', 'None')]",
+    "identity": "[if(not(equals(variables('identityType'), 'None')), createObject('type', variables('identityType'), 'userAssignedIdentities', if(not(empty(parameters('userAssignedIdentities'))), parameters('userAssignedIdentities'), null())), null())]"
   },
   "resources": [
     {
@@ -138,6 +147,7 @@
       "apiVersion": "2022-09-01",
       "name": "[parameters('name')]",
       "tags": "[parameters('tags')]",
+      "identity": "[variables('identity')]",
       "location": "[parameters('location')]",
       "properties": {
         "activeDirectories": "[if(not(empty(parameters('domainName'))), variables('activeDirectoryConnectionProperties'), null())]"

@@ -21,16 +21,10 @@ param vmSize string = 'Standard_D2s_v3'
 @description('Optional. Specifies the size of OS disk.')
 param osDiskSizeGB int = 128
 
-@description('''
-Optional. Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.
-If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.
-''')
+@description('Optional. Resource ID of an already existing subnet, e.g.: /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Network/virtualNetworks/<vnetName>/subnets/<subnetName>.</p>If no value is provided, a new temporary VNET and subnet will be created in the staging resource group and will be deleted along with the remaining temporary resources.')
 param subnetId string = ''
 
-@description('''Optional. List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.
-Be aware, the user assigned identity specified in the \'userMsiName\' parameter must have the \'Managed Identity Operator\' role assignment on all the user assigned identities
-specified in this parameter for Azure Image Builder to be able to associate them to the build VM.
-''')
+@description('Optional. List of User-Assigned Identities associated to the Build VM for accessing Azure resources such as Key Vaults from your customizer scripts.</p>Be aware, the user assigned identity specified in the \'userMsiName\' parameter must have the \'Managed Identity Operator\' role assignment on all the user assigned identities specified in this parameter for Azure Image Builder to be able to associate them to the build VM.')
 param userAssignedIdentities array = []
 
 @description('Required. Image source definition in object format.')
@@ -64,13 +58,7 @@ param imageReplicationRegions array = []
 @description('Optional. Storage account type to be used to store the image in the Azure Compute Gallery.')
 param storageAccountType string = 'Standard_LRS'
 
-@description('''Optional. Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.
-If this field is empty, a resource group with a random name will be created.
-If the resource group specified in this field doesn\'t exist, it will be created with the same name.
-If the resource group specified exists, it must be empty and in the same region as the image template.
-The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,
-but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.
-''')
+@description('Optional. Resource ID of the staging resource group in the same subscription and location as the image template that will be used to build the image.</p>If this field is empty, a resource group with a random name will be created.</p>If the resource group specified in this field doesn\'t exist, it will be created with the same name.</p>If the resource group specified exists, it must be empty and in the same region as the image template.</p>The resource group created will be deleted during template deletion if this field is empty or the resource group specified doesn\'t exist,</p>but if the resource group specified exists the resources created in the resource group will be deleted during template deletion and the resource group itself will remain.')
 param stagingResourceGroup string = ''
 
 @allowed([

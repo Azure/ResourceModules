@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "16464499480350772100"
+      "templateHash": "5725666690644486446"
     }
   },
   "parameters": {
@@ -231,7 +231,10 @@
         "publicIpPrefixes": "[variables('publicIPPrefixResourceIds')]",
         "publicIpAddresses": "[variables('publicIPAddressResourceIds')]"
       },
-      "zones": "[parameters('zones')]"
+      "zones": "[parameters('zones')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', format('{0}-NatGateway-PIP', uniqueString(deployment().name, parameters('location'))))]"
+      ]
     },
     {
       "condition": "[not(empty(parameters('lock')))]",
