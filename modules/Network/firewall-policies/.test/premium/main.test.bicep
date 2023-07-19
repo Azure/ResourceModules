@@ -34,9 +34,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    managedIdentityName: 'dep-<<namePrefix>>-msi-${serviceShort}'
-    certDeploymentScriptName: 'dep-<<namePrefix>>-ds-${serviceShort}'
-    keyVaultName: 'dep-<<namePrefix>>-kv-${serviceShort}'
+    managedIdentityName: 'dep-[[namePrefix]]-msi-${serviceShort}'
+    certDeploymentScriptName: 'dep-[[namePrefix]]-ds-${serviceShort}'
+    keyVaultName: 'dep-[[namePrefix]]-kv-${serviceShort}'
     certName: certName
   }
 }
@@ -51,7 +51,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     tier: 'Premium'
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '[[namePrefix]]${serviceShort}001'
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }
@@ -77,7 +77,7 @@ module testDeployment '../../main.bicep' = {
     ]
     ruleCollectionGroups: [
       {
-        name: '<<namePrefix>>-rule-001'
+        name: '[[namePrefix]]-rule-001'
         priority: 5000
         ruleCollections: [
           {
