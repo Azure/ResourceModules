@@ -209,7 +209,7 @@ module maintenanceConfigurations './maintenance/maintenance-configurations/main.
   name: '${uniqueString(deployment().name, location)}-test-mmccom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>mmccom001'
+    name: 'mmccom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     extensionProperties: {}
@@ -254,7 +254,7 @@ module maintenanceConfigurations './maintenance/maintenance-configurations/main.
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>mmccom001"
+      "value": "mmccom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -316,7 +316,7 @@ module maintenanceConfigurations './maintenance/maintenance-configurations/main.
   name: '${uniqueString(deployment().name, location)}-test-mmcmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>mmcmin001'
+    name: 'mmcmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -337,7 +337,7 @@ module maintenanceConfigurations './maintenance/maintenance-configurations/main.
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>mmcmin001"
+      "value": "mmcmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

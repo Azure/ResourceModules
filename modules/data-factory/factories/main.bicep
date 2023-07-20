@@ -39,6 +39,9 @@ param gitRepositoryName string = ''
 @description('Optional. The collaboration branch name. Default is \'main\'.')
 param gitCollaborationBranch string = 'main'
 
+@description('Optional. Disable manual publish operation in ADF studio to favor automated publish.')
+param gitDisablePublish bool = false
+
 @description('Optional. The root folder path name. Default is \'/\'.')
 param gitRootFolder string = '/'
 
@@ -200,6 +203,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
         repositoryName: gitRepositoryName
         collaborationBranch: gitCollaborationBranch
         rootFolder: gitRootFolder
+        disablePublish: gitDisablePublish
       }, (gitRepoType == 'FactoryVSTSConfiguration' ? {
         projectName: gitProjectName
       } : {}), {})

@@ -244,7 +244,7 @@ module workspaces './databricks/workspaces/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dwcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dwcom001'
+    name: 'dwcom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -284,7 +284,7 @@ module workspaces './databricks/workspaces/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dwcom001"
+      "value": "dwcom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {

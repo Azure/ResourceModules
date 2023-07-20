@@ -301,8 +301,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -315,8 +315,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -355,7 +355,7 @@ module backupVaults './data-protection/backup-vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dpbvcom001'
+    name: 'dpbvcom001'
     // Non-required parameters
     azureMonitorAlertSettingsAlertsForAllJobFailures: 'Disabled'
     backupPolicies: [
@@ -454,7 +454,7 @@ module backupVaults './data-protection/backup-vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dpbvcom001"
+      "value": "dpbvcom001"
     },
     // Non-required parameters
     "azureMonitorAlertSettingsAlertsForAllJobFailures": {
@@ -568,7 +568,7 @@ module backupVaults './data-protection/backup-vaults/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dpbvmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>dpbvmin001'
+    name: 'dpbvmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -589,7 +589,7 @@ module backupVaults './data-protection/backup-vaults/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>dpbvmin001"
+      "value": "dpbvmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

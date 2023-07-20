@@ -195,8 +195,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -209,8 +209,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -250,7 +250,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfmsfsmin001'
+    name: 'dfmsfsmin001'
     skuName: 'Standard_B1ms'
     tier: 'Burstable'
     // Non-required parameters
@@ -279,7 +279,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfmsfsmin001"
+      "value": "dfmsfsmin001"
     },
     "skuName": {
       "value": "Standard_B1ms"
@@ -311,7 +311,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfmsfspvt001'
+    name: 'dfmsfspvt001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -347,7 +347,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     storageSizeGB: 64
     tags: {
       resourceType: 'MySQL Flexible Server'
-      serverName: '<<namePrefix>>dfmsfspvt001'
+      serverName: 'dfmsfspvt001'
     }
     userAssignedIdentities: {
       '<managedIdentityResourceId>': {}
@@ -376,7 +376,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfmsfspvt001"
+      "value": "dfmsfspvt001"
     },
     "skuName": {
       "value": "Standard_D2ds_v4"
@@ -454,7 +454,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     "tags": {
       "value": {
         "resourceType": "MySQL Flexible Server",
-        "serverName": "<<namePrefix>>dfmsfspvt001"
+        "serverName": "dfmsfspvt001"
       }
     },
     "userAssignedIdentities": {
@@ -482,7 +482,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     // Required parameters
     administratorLogin: 'adminUserName'
     administratorLoginPassword: '<administratorLoginPassword>'
-    name: '<<namePrefix>>dfmsfsp001'
+    name: 'dfmsfsp001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -546,7 +546,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     storageSizeGB: 32
     tags: {
       resourceType: 'MySQL Flexible Server'
-      serverName: '<<namePrefix>>dfmsfsp001'
+      serverName: 'dfmsfsp001'
     }
     userAssignedIdentities: {
       '<geoBackupManagedIdentityResourceId>': {}
@@ -577,7 +577,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
       "value": "<administratorLoginPassword>"
     },
     "name": {
-      "value": "<<namePrefix>>dfmsfsp001"
+      "value": "dfmsfsp001"
     },
     "skuName": {
       "value": "Standard_D2ds_v4"
@@ -697,7 +697,7 @@ module flexibleServers './db-for-my-sql/flexible-servers/main.bicep' = {
     "tags": {
       "value": {
         "resourceType": "MySQL Flexible Server",
-        "serverName": "<<namePrefix>>dfmsfsp001"
+        "serverName": "dfmsfsp001"
       }
     },
     "userAssignedIdentities": {

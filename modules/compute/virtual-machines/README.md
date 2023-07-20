@@ -551,8 +551,8 @@ extensionDomainJoinConfig: {
 }
 
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+  name: 'adp-[[namePrefix]]-az-kv-x-001'
+  scope: resourceGroup('[[subscriptionId]]','validation-rg')
 }
 
 extensionDomainJoinPassword: kv1.getSecret('domainJoinUser02-Password')
@@ -636,9 +636,9 @@ extensionAntiMalwareConfig: {
     "settings": {
       "EncryptionOperation": "EnableEncryption",
       "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
-      "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+      "KeyVaultResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
       "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
-      "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+      "KekVaultResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
       "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
       "VolumeType": "All", //'OS'/'Data'/'All'
       "ResizeOSDisk": "false"
@@ -660,9 +660,9 @@ extensionAzureDiskEncryptionConfig: {
     settings: {
         EncryptionOperation: 'EnableEncryption'
         KeyVaultURL: 'https://mykeyvault.vault.azure.net/'
-        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
+        KeyVaultResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
         KeyEncryptionKeyURL: 'https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5' // ID must be updated for new keys
-        KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
+        KekVaultResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
         KeyEncryptionAlgorithm: 'RSA-OAEP' //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
         VolumeType: 'All' //'OS'/'Data'/'All'
         ResizeOSDisk: 'false'
@@ -981,8 +981,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -995,8 +995,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -1114,7 +1114,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     backupPolicyName: '<backupPolicyName>'
     backupVaultName: '<backupVaultName>'
     backupVaultResourceGroup: '<backupVaultResourceGroup>'
-    computerName: '<<namePrefix>>linvm1'
+    computerName: 'linvm1'
     dataDisks: [
       {
         caching: 'ReadWrite'
@@ -1215,7 +1215,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     location: '<location>'
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>cvmlincom'
+    name: 'cvmlincom'
     patchMode: 'AutomaticByPlatform'
     publicKeys: [
       {
@@ -1344,7 +1344,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<backupVaultResourceGroup>"
     },
     "computerName": {
-      "value": "<<namePrefix>>linvm1"
+      "value": "linvm1"
     },
     "dataDisks": {
       "value": [
@@ -1489,7 +1489,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<monitoringWorkspaceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmlincom"
+      "value": "cvmlincom"
     },
     "patchMode": {
       "value": "AutomaticByPlatform"
@@ -1587,7 +1587,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     disablePasswordAuthentication: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    name: '<<namePrefix>>cvmlinatmg'
+    name: 'cvmlinatmg'
     publicKeys: [
       {
         keyData: '<keyData>'
@@ -1678,7 +1678,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmlinatmg"
+      "value": "cvmlinatmg"
     },
     "publicKeys": {
       "value": [
@@ -1745,7 +1745,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     disablePasswordAuthentication: true
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    name: '<<namePrefix>>cvmlinmin'
+    name: 'cvmlinmin'
     publicKeys: [
       {
         keyData: '<keyData>'
@@ -1821,7 +1821,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmlinmin"
+      "value": "cvmlinmin"
     },
     "publicKeys": {
       "value": [
@@ -1916,7 +1916,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     backupPolicyName: '<backupPolicyName>'
     backupVaultName: '<backupVaultName>'
     backupVaultResourceGroup: '<backupVaultResourceGroup>'
-    computerName: '<<namePrefix>>winvm1'
+    computerName: 'winvm1'
     dataDisks: [
       {
         caching: 'None'
@@ -2038,7 +2038,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     location: '<location>'
     lock: 'CanNotDelete'
     monitoringWorkspaceId: '<monitoringWorkspaceId>'
-    name: '<<namePrefix>>cvmwincom'
+    name: 'cvmwincom'
     patchMode: 'AutomaticByPlatform'
     proximityPlacementGroupResourceId: '<proximityPlacementGroupResourceId>'
     roleAssignments: [
@@ -2165,7 +2165,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<backupVaultResourceGroup>"
     },
     "computerName": {
-      "value": "<<namePrefix>>winvm1"
+      "value": "winvm1"
     },
     "dataDisks": {
       "value": [
@@ -2331,7 +2331,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<monitoringWorkspaceId>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwincom"
+      "value": "cvmwincom"
     },
     "patchMode": {
       "value": "AutomaticByPlatform"
@@ -2413,7 +2413,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    name: '<<namePrefix>>cvmwinatmg'
+    name: 'cvmwinatmg'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -2487,7 +2487,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwinatmg"
+      "value": "cvmwinatmg"
     },
     "tags": {
       "value": {
@@ -2543,7 +2543,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     adminPassword: '<adminPassword>'
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    name: '<<namePrefix>>cvmwinmin'
+    name: 'cvmwinmin'
   }
 }
 ```
@@ -2610,7 +2610,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwinmin"
+      "value": "cvmwinmin"
     }
   }
 }
@@ -2674,7 +2674,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
     ]
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     location: '<location>'
-    name: '<<namePrefix>>cvmwincmk'
+    name: 'cvmwincmk'
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -2761,7 +2761,7 @@ module virtualMachines './compute/virtual-machines/main.bicep' = {
       "value": "<location>"
     },
     "name": {
-      "value": "<<namePrefix>>cvmwincmk"
+      "value": "cvmwincmk"
     },
     "tags": {
       "value": {

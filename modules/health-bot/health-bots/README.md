@@ -150,8 +150,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -164,8 +164,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -203,7 +203,7 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-hbhbcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>hbhbcom001'
+    name: 'hbhbcom001'
     sku: 'F0'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -242,7 +242,7 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>hbhbcom001"
+      "value": "hbhbcom001"
     },
     "sku": {
       "value": "F0"
@@ -294,7 +294,7 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-hbhbmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>hbhbmin001'
+    name: 'hbhbmin001'
     sku: 'F0'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -316,7 +316,7 @@ module healthBots './health-bot/health-bots/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>hbhbmin001"
+      "value": "hbhbmin001"
     },
     "sku": {
       "value": "F0"

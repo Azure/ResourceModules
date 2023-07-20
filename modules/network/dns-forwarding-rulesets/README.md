@@ -178,7 +178,7 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
         id: '<id>'
       }
     ]
-    name: '<<namePrefix>>ndfrscom001'
+    name: 'ndfrscom001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     forwardingRules: [
@@ -236,7 +236,7 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>ndfrscom001"
+      "value": "ndfrscom001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -305,7 +305,7 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
         id: '<id>'
       }
     ]
-    name: '<<namePrefix>>ndfrsmin001'
+    name: 'ndfrsmin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -333,7 +333,7 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>ndfrsmin001"
+      "value": "ndfrsmin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
