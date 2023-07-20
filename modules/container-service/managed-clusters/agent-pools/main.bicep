@@ -170,7 +170,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-p
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-03-02-preview' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-05-02-preview' = {
   name: name
   parent: managedCluster
   properties: {
