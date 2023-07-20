@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "8294847149726463705"
+      "templateHash": "15903452996250901966"
     }
   },
   "parameters": {
@@ -775,7 +775,7 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters",
-      "apiVersion": "2023-03-02-preview",
+      "apiVersion": "2023-05-02-preview",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -928,7 +928,7 @@
       "name": "[guid(parameters('dnsZoneResourceId'), subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314'), 'DNS Zone Contributor')]",
       "properties": {
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314')]",
-        "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').ingressProfile.webAppRouting.identity.objectId]",
+        "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').ingressProfile.webAppRouting.identity.objectId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
@@ -1000,7 +1000,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "4460617358875023069"
+              "templateHash": "14718876477350380320"
             }
           },
           "parameters": {
@@ -1324,7 +1324,7 @@
             },
             {
               "type": "Microsoft.ContainerService/managedClusters/agentPools",
-              "apiVersion": "2023-03-02-preview",
+              "apiVersion": "2023-05-02-preview",
               "name": "[format('{0}/{1}', parameters('managedClusterName'), parameters('name'))]",
               "properties": {
                 "availabilityZones": "[parameters('availabilityZones')]",
@@ -1970,42 +1970,42 @@
       "metadata": {
         "description": "The control plane FQDN of the managed cluster."
       },
-      "value": "[if(parameters('enablePrivateCluster'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').privateFQDN, reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').fqdn)]"
+      "value": "[if(parameters('enablePrivateCluster'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').privateFQDN, reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').fqdn)]"
     },
     "systemAssignedPrincipalId": {
       "type": "string",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
       },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview', 'full').identity.principalId, '')]"
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview', 'full').identity.principalId, '')]"
     },
     "kubeletidentityObjectId": {
       "type": "string",
       "metadata": {
         "description": "The Object ID of the AKS identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview'), 'identityProfile'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').identityProfile, 'kubeletidentity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').identityProfile.kubeletidentity.objectId, ''), '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview'), 'identityProfile'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').identityProfile, 'kubeletidentity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').identityProfile.kubeletidentity.objectId, ''), '')]"
     },
     "omsagentIdentityObjectId": {
       "type": "string",
       "metadata": {
         "description": "The Object ID of the OMS agent identity."
       },
-      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').addonProfiles, 'omsagent'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').addonProfiles.omsagent.identity.objectId, ''), ''), '')]"
+      "value": "[if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview'), 'addonProfiles'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').addonProfiles, 'omsagent'), if(contains(reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').addonProfiles.omsagent, 'identity'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').addonProfiles.omsagent.identity.objectId, ''), ''), '')]"
     },
     "location": {
       "type": "string",
       "metadata": {
         "description": "The location the resource was deployed into."
       },
-      "value": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview', 'full').location]"
+      "value": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview', 'full').location]"
     },
     "oidcIssuerUrl": {
       "type": "string",
       "metadata": {
         "description": "The OIDC token issuer URL."
       },
-      "value": "[if(parameters('enableOidcIssuerProfile'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-03-02-preview').oidcIssuerProfile.issuerURL, '')]"
+      "value": "[if(parameters('enableOidcIssuerProfile'), reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('name')), '2023-05-02-preview').oidcIssuerProfile.issuerURL, '')]"
     }
   }
 }
