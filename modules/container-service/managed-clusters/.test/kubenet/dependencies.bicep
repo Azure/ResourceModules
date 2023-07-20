@@ -14,7 +14,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
 
 resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
     name: dnsZoneName
-    location: location
+    location: 'global'
 }
 
 @description('The principal ID of the created Managed Identity.')
