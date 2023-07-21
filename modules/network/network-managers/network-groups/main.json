@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "7805292700491577010"
+      "templateHash": "17774741753143440188"
     }
   },
   "parameters": {
@@ -52,7 +52,7 @@
     {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
       "properties": {
         "mode": "Incremental",
@@ -65,7 +65,7 @@
     },
     {
       "type": "Microsoft.Network/networkManagers/networkGroups",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-02-01",
       "name": "[format('{0}/{1}', parameters('networkManagerName'), parameters('name'))]",
       "properties": {
         "description": "[parameters('description')]"
@@ -108,7 +108,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "16074472044760493"
+              "templateHash": "11795370987355550158"
             }
           },
           "parameters": {
@@ -148,7 +148,7 @@
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "mode": "Incremental",
@@ -161,7 +161,7 @@
             },
             {
               "type": "Microsoft.Network/networkManagers/networkGroups/staticMembers",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-02-01",
               "name": "[format('{0}/{1}/{2}', parameters('networkManagerName'), parameters('networkGroupName'), parameters('name'))]",
               "properties": {
                 "resourceId": "[parameters('resourceId')]"
