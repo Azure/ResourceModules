@@ -61,7 +61,7 @@ param sources array = []
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -73,19 +73,19 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' existing = {
+resource networkManager 'Microsoft.Network/networkManagers@2023-02-01' existing = {
   name: networkManagerName
 
-  resource securityAdminConfiguration 'securityAdminConfigurations@2022-07-01' existing = {
+  resource securityAdminConfiguration 'securityAdminConfigurations@2023-02-01' existing = {
     name: securityAdminConfigurationName
 
-    resource ruleCollection 'ruleCollections@2022-07-01' existing = {
+    resource ruleCollection 'ruleCollections@2023-02-01' existing = {
       name: ruleCollectionName
     }
   }
 }
 
-resource rule 'Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules@2022-07-01' = {
+resource rule 'Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules@2023-02-01' = {
   name: name
   parent: networkManager::securityAdminConfiguration::ruleCollection
   kind: 'Custom'
