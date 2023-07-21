@@ -1007,6 +1007,43 @@ Describe 'Module tests' -Tag 'Module' {
             $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
+        It '[<moduleFolderName>] CUA ID deployment name should be also based on location.' -TestCases $deploymentFolderTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
+            )
+
+            $LocationFlag = $false
+            $Locationparamoutput = $templateContent.parameters.Keys
+            if ($Locationparamoutput -contains 'Location') {
+                $LocationFlag = $true
+            }
+            if (-not $LocationFlag) {
+                Set-ItResult -Skipped -Because 'the module template has no location parameter.'
+                return
+            }
+
+            $enableDefaultTelemetryFlag = $false
+            if (($templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[parameters('enableDefaultTelemetry')]*") -or ($templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[parameters('enableDefaultTelemetry')]*")) {
+                $enableDefaultTelemetryFlag = $true
+            }
+            if (-not $enableDefaultTelemetryFlag) {
+                Set-ItResult -Skipped -Because 'the module template has no default telemetry.'
+                return
+            }
+
+            $telemetryDeploymentNameFlag = $false
+            if ($LocationFlag -and $enableDefaultTelemetryFlag) {
+                if ($templateContent.resources.name -like "*uniqueString(deployment().name, parameters('location'))*") {
+                    $telemetryDeploymentNameFlag = $true
+                }
+            }
+
+            $telemetryDeploymentNameFlag | Should -Contain $true
+
+        }
+
         It '[<moduleFolderName>] The Location should be defined as a parameter, with the default value of [resourceGroup().Location] or global for ResourceGroup deployment scope.' -TestCases $deploymentFolderTestCases {
 
             param(
