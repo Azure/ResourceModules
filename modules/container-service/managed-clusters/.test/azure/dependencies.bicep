@@ -16,6 +16,9 @@ param keyVaultName string
 @description('Required. The name of the Proximity Placement Group to create.')
 param proximityPlacementGroupName string
 
+@description('Required. The name of the DNS Zone to create.')
+param dnsZoneName string
+
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-09-01' = {
     name: virtualNetworkName
     location: location
@@ -118,6 +121,11 @@ output subnetResourceIds array = [
     virtualNetwork.properties.subnets[2].id
 ]
 
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
+    name: dnsZoneName
+    location: 'global'
+}
+
 @description('The principal ID of the created Managed Identity.')
 output managedIdentityPrincipalId string = managedIdentity.properties.principalId
 
@@ -126,3 +134,6 @@ output diskEncryptionSetResourceId string = diskEncryptionSet.id
 
 @description('The resource ID of the created Proximity Placement Group.')
 output proximityPlacementGroupResourceId string = proximityPlacementGroup.id
+
+@description('The resource ID of the created DNS Zone.')
+output dnsZoneResourceId string = dnsZone.id
