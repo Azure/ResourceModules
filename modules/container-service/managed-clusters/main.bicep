@@ -132,6 +132,15 @@ param agentPools array = []
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
 
+@description('Optional. Specifies whether the webApplicationRoutingEnabled add-on is enabled or not.')
+param webApplicationRoutingEnabled bool = false
+
+@description('Optional. Specifies the resource ID of connected DNS zone. It will be ignored if `webApplicationRoutingEnabled` is set to `false`.')
+param dnsZoneResourceId string = ''
+
+@description('Optional. Specifies whether assing the DNS zone contributor role to the cluster service principal. It will be ignored if `webApplicationRoutingEnabled` is set to `false` or `dnsZoneResourceId` not provided.')
+param enableDnsZoneContributorRoleAssignment bool = true
+
 @description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
 param ingressApplicationGatewayEnabled bool = false
 
@@ -400,13 +409,13 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-preview' = {
   name: name
   location: location
   tags: tags
   identity: identity
   sku: {
-    name: 'Basic'
+    name: 'Base'
     tier: aksClusterSkuTier
   }
   properties: {
@@ -416,6 +425,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' 
     agentPoolProfiles: primaryAgentPoolProfile
     linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
+    ingressProfile: {
+      webAppRouting: {
+        enabled: webApplicationRoutingEnabled
+        dnsZoneResourceId: !empty(dnsZoneResourceId) ? any(dnsZoneResourceId) : null
+      }
+    }
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
@@ -618,6 +633,20 @@ module managedCluster_roleAssignments '.bicep/nested_roleAssignments.bicep' = [f
     resourceId: managedCluster.id
   }
 }]
+
+resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' existing = if (dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+  name: last(split(dnsZoneResourceId, '/'))!
+}
+
+resource dnsZone_roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (enableDnsZoneContributorRoleAssignment == true && dnsZoneResourceId != null && webApplicationRoutingEnabled) {
+  name: guid(dnsZoneResourceId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314'), 'DNS Zone Contributor')
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'befefa01-2a29-4197-83a8-272ff33ce314') // 'DNS Zone Contributor'
+    principalId: managedCluster.properties.ingressProfile.webAppRouting.identity.objectId
+    principalType: 'ServicePrincipal'
+  }
+  scope: dnsZone
+}
 
 @description('The resource ID of the managed cluster.')
 output resourceId string = managedCluster.id
