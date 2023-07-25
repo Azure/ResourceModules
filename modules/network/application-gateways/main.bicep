@@ -310,10 +310,10 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2022-07-01' =
       frontendIPConfigurations: frontendIPConfigurations
       frontendPorts: frontendPorts
       gatewayIPConfigurations: gatewayIPConfigurations
-      globalConfiguration: {
+      globalConfiguration: endsWith(sku, 'v2') ? {
         enableRequestBuffering: enableRequestBuffering
         enableResponseBuffering: enableResponseBuffering
-      }
+      } : null
       httpListeners: httpListeners
       loadDistributionPolicies: loadDistributionPolicies
       listeners: listeners
