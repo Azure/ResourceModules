@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "14871283848922516549"
+      "templateHash": "2265382529605229791"
     }
   },
   "parameters": {
@@ -63,7 +63,7 @@
     {
       "condition": "[parameters('enableDefaultTelemetry')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
       "properties": {
         "mode": "Incremental",
@@ -76,7 +76,7 @@
     },
     {
       "type": "Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections",
-      "apiVersion": "2022-07-01",
+      "apiVersion": "2023-02-01",
       "name": "[format('{0}/{1}/{2}', parameters('networkManagerName'), parameters('securityAdminConfigurationName'), parameters('name'))]",
       "properties": {
         "description": "[parameters('description')]",
@@ -137,7 +137,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "11792808555690600356"
+              "templateHash": "8294086787341170610"
             }
           },
           "parameters": {
@@ -257,7 +257,7 @@
             {
               "condition": "[parameters('enableDefaultTelemetry')]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2021-04-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-{0}', uniqueString(deployment().name))]",
               "properties": {
                 "mode": "Incremental",
@@ -270,7 +270,7 @@
             },
             {
               "type": "Microsoft.Network/networkManagers/securityAdminConfigurations/ruleCollections/rules",
-              "apiVersion": "2022-07-01",
+              "apiVersion": "2023-02-01",
               "name": "[format('{0}/{1}/{2}/{3}', parameters('networkManagerName'), parameters('securityAdminConfigurationName'), parameters('ruleCollectionName'), parameters('name'))]",
               "kind": "Custom",
               "properties": {

@@ -378,6 +378,15 @@ module namespaces './event-hub/namespaces/main.bicep' = {
     eventhubs: [
       {
         name: 'az-evh-x-001'
+        roleAssignments: [
+          {
+            principalIds: [
+              '<managedIdentityPrincipalId>'
+            ]
+            principalType: 'ServicePrincipal'
+            roleDefinitionIdOrName: 'Reader'
+          }
+        ]
       }
       {
         authorizationRules: [
@@ -541,7 +550,16 @@ module namespaces './event-hub/namespaces/main.bicep' = {
     "eventhubs": {
       "value": [
         {
-          "name": "az-evh-x-001"
+          "name": "az-evh-x-001",
+          "roleAssignments": [
+            {
+              "principalIds": [
+                "<managedIdentityPrincipalId>"
+              ],
+              "principalType": "ServicePrincipal",
+              "roleDefinitionIdOrName": "Reader"
+            }
+          ]
         },
         {
           "authorizationRules": [

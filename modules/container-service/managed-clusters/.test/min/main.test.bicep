@@ -35,7 +35,7 @@ module testDeployment '../../main.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
-    name: '${serviceShort}001'
+    name: '${namePrefix}${serviceShort}001'
     enableDefaultTelemetry: enableDefaultTelemetry
     systemAssignedIdentity: true
     primaryAgentPoolProfile: [

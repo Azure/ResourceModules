@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.18.4.5664",
-      "templateHash": "12863324937037450144"
+      "templateHash": "234993039195821021"
     }
   },
   "parameters": {
@@ -695,7 +695,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.18.4.5664",
-              "templateHash": "10222556087726415534"
+              "templateHash": "3626705120581865104"
             }
           },
           "parameters": {
@@ -1225,7 +1225,7 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.18.4.5664",
-                      "templateHash": "15621031357191909045"
+                      "templateHash": "17884890758704755863"
                     }
                   },
                   "parameters": {
@@ -1325,7 +1325,7 @@
                       "type": "Microsoft.Authorization/roleAssignments",
                       "apiVersion": "2022-04-01",
                       "scope": "[format('Microsoft.EventHub/namespaces/{0}/eventhubs/{1}', split(format('{0}/{1}', split(parameters('resourceId'), '/')[8], split(parameters('resourceId'), '/')[10]), '/')[0], split(format('{0}/{1}', split(parameters('resourceId'), '/')[8], split(parameters('resourceId'), '/')[10]), '/')[1])]",
-                      "name": "[guid(split(parameters('resourceId'), '/')[0], split(parameters('resourceId'), '/')[1], parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
+                      "name": "[guid(resourceId('Microsoft.EventHub/namespaces/eventhubs', split(format('{0}/{1}', split(parameters('resourceId'), '/')[8], split(parameters('resourceId'), '/')[10]), '/')[0], split(format('{0}/{1}', split(parameters('resourceId'), '/')[8], split(parameters('resourceId'), '/')[10]), '/')[1]), parameters('principalIds')[copyIndex()], parameters('roleDefinitionIdOrName'))]",
                       "properties": {
                         "description": "[parameters('description')]",
                         "roleDefinitionId": "[if(contains(variables('builtInRoleNames'), parameters('roleDefinitionIdOrName')), variables('builtInRoleNames')[parameters('roleDefinitionIdOrName')], parameters('roleDefinitionIdOrName'))]",

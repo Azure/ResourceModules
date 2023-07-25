@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "13561536489894419213"
+      "version": "0.19.5.34762",
+      "templateHash": "14718876477350380320"
     }
   },
   "parameters": {
@@ -329,7 +329,7 @@
     },
     {
       "type": "Microsoft.ContainerService/managedClusters/agentPools",
-      "apiVersion": "2022-11-01",
+      "apiVersion": "2023-05-02-preview",
       "name": "[format('{0}/{1}', parameters('managedClusterName'), parameters('name'))]",
       "properties": {
         "availabilityZones": "[parameters('availabilityZones')]",

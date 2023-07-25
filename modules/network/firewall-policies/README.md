@@ -48,7 +48,6 @@ This module deploys a Firewall Policy.
 | `ruleCollectionGroups` | _[ruleCollectionGroups](rule-collection-groups/README.md)_ array | `[]` |  | Rule collection groups. |
 | `servers` | array | `[]` |  | List of Custom DNS Servers. |
 | `signatureOverrides` | array | `[]` |  | List of specific signatures states. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Firewall policy resource. |
 | `threatIntelMode` | string | `'Off'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `tier` | string | `'Standard'` | `[Premium, Standard]` | Tier of Firewall Policy. |
