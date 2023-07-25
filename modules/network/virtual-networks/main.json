@@ -1,6 +1,13 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.19.5.34762",
+      "templateHash": "1931271665284885822"
+    }
+  },
   "parameters": {
     "name": {
       "type": "string",
@@ -233,7 +240,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-11-01",
+      "apiVersion": "2022-07-01",
       "name": "[parameters('name')]",
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
@@ -247,7 +254,7 @@
               "properties": {
                 "addressPrefix": "[parameters('subnets')[copyIndex('subnets')].addressPrefix]",
                 "addressPrefixes": "[if(contains(parameters('subnets')[copyIndex('subnets')], 'addressPrefixes'), parameters('subnets')[copyIndex('subnets')].addressPrefixes, createArray())]",
-                "applicationGatewayIPConfigurations": "[if(contains(parameters('subnets')[copyIndex('subnets')], 'applicationGatewayIPConfigurations'), parameters('subnets')[copyIndex('subnets')].applicationGatewayIPConfigurations, createArray())]",
+                "applicationGatewayIpConfigurations": "[if(contains(parameters('subnets')[copyIndex('subnets')], 'applicationGatewayIpConfigurations'), parameters('subnets')[copyIndex('subnets')].applicationGatewayIpConfigurations, createArray())]",
                 "delegations": "[if(contains(parameters('subnets')[copyIndex('subnets')], 'delegations'), parameters('subnets')[copyIndex('subnets')].delegations, createArray())]",
                 "ipAllocations": "[if(contains(parameters('subnets')[copyIndex('subnets')], 'ipAllocations'), parameters('subnets')[copyIndex('subnets')].ipAllocations, createArray())]",
                 "natGateway": "[if(contains(parameters('subnets')[copyIndex('subnets')], 'natGatewayId'), createObject('id', parameters('subnets')[copyIndex('subnets')].natGatewayId), null())]",
@@ -309,7 +316,7 @@
         "count": "[length(parameters('subnets'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}-subnet-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -327,7 +334,7 @@
             "value": "[parameters('subnets')[copyIndex()].addressPrefix]"
           },
           "addressPrefixes": "[if(contains(parameters('subnets')[copyIndex()], 'addressPrefixes'), createObject('value', parameters('subnets')[copyIndex()].addressPrefixes), createObject('value', createArray()))]",
-          "applicationGatewayIPConfigurations": "[if(contains(parameters('subnets')[copyIndex()], 'applicationGatewayIPConfigurations'), createObject('value', parameters('subnets')[copyIndex()].applicationGatewayIPConfigurations), createObject('value', createArray()))]",
+          "applicationGatewayIpConfigurations": "[if(contains(parameters('subnets')[copyIndex()], 'applicationGatewayIpConfigurations'), createObject('value', parameters('subnets')[copyIndex()].applicationGatewayIpConfigurations), createObject('value', createArray()))]",
           "delegations": "[if(contains(parameters('subnets')[copyIndex()], 'delegations'), createObject('value', parameters('subnets')[copyIndex()].delegations), createObject('value', createArray()))]",
           "ipAllocations": "[if(contains(parameters('subnets')[copyIndex()], 'ipAllocations'), createObject('value', parameters('subnets')[copyIndex()].ipAllocations), createObject('value', createArray()))]",
           "natGatewayId": "[if(contains(parameters('subnets')[copyIndex()], 'natGatewayId'), createObject('value', parameters('subnets')[copyIndex()].natGatewayId), createObject('value', ''))]",
@@ -345,6 +352,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "5239437568291997506"
+            }
+          },
           "parameters": {
             "name": {
               "type": "string",
@@ -430,7 +444,7 @@
                 "description": "Optional. List of address prefixes for the subnet."
               }
             },
-            "applicationGatewayIPConfigurations": {
+            "applicationGatewayIpConfigurations": {
               "type": "array",
               "defaultValue": [],
               "metadata": {
@@ -483,7 +497,7 @@
             },
             {
               "type": "Microsoft.Network/virtualNetworks/subnets",
-              "apiVersion": "2022-11-01",
+              "apiVersion": "2022-07-01",
               "name": "[format('{0}/{1}', parameters('virtualNetworkName'), parameters('name'))]",
               "properties": {
                 "addressPrefix": "[parameters('addressPrefix')]",
@@ -495,7 +509,7 @@
                 "privateEndpointNetworkPolicies": "[if(not(empty(parameters('privateEndpointNetworkPolicies'))), parameters('privateEndpointNetworkPolicies'), null())]",
                 "privateLinkServiceNetworkPolicies": "[if(not(empty(parameters('privateLinkServiceNetworkPolicies'))), parameters('privateLinkServiceNetworkPolicies'), null())]",
                 "addressPrefixes": "[parameters('addressPrefixes')]",
-                "applicationGatewayIPConfigurations": "[parameters('applicationGatewayIPConfigurations')]",
+                "applicationGatewayIpConfigurations": "[parameters('applicationGatewayIpConfigurations')]",
                 "ipAllocations": "[parameters('ipAllocations')]",
                 "serviceEndpointPolicies": "[parameters('serviceEndpointPolicies')]"
               }
@@ -506,7 +520,7 @@
                 "count": "[length(parameters('roleAssignments'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2020-10-01",
+              "apiVersion": "2022-09-01",
               "name": "[format('{0}-Subnet-Rbac-{1}', uniqueString(deployment().name, resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name'))), copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -531,6 +545,13 @@
                 "template": {
                   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                   "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.19.5.34762",
+                      "templateHash": "16022559382364910663"
+                    }
+                  },
                   "parameters": {
                     "principalIds": {
                       "type": "array",
@@ -674,38 +695,38 @@
           "outputs": {
             "resourceGroupName": {
               "type": "string",
-              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group the virtual network peering was deployed into."
-              }
+              },
+              "value": "[resourceGroup().name]"
             },
             "name": {
               "type": "string",
-              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the virtual network peering."
-              }
+              },
+              "value": "[parameters('name')]"
             },
             "resourceId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the virtual network peering."
-              }
+              },
+              "value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name'))]"
             },
             "subnetAddressPrefix": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-11-01').addressPrefix]",
               "metadata": {
                 "description": "The address prefix for the subnet."
-              }
+              },
+              "value": "[reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-07-01').addressPrefix]"
             },
             "subnetAddressPrefixes": {
               "type": "array",
-              "value": "[if(not(empty(parameters('addressPrefixes'))), reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-11-01').addressPrefixes, createArray())]",
               "metadata": {
                 "description": "List of address prefixes for the subnet."
-              }
+              },
+              "value": "[if(not(empty(parameters('addressPrefixes'))), reference(resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('name')), '2022-07-01').addressPrefixes, createArray())]"
             }
           }
         }
@@ -720,7 +741,7 @@
         "count": "[length(parameters('peerings'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}-virtualNetworkPeering-local-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -747,6 +768,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "2278855343435905865"
+            }
+          },
           "parameters": {
             "name": {
               "type": "string",
@@ -844,24 +872,24 @@
           "outputs": {
             "resourceGroupName": {
               "type": "string",
-              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group the virtual network peering was deployed into."
-              }
+              },
+              "value": "[resourceGroup().name]"
             },
             "name": {
               "type": "string",
-              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the virtual network peering."
-              }
+              },
+              "value": "[parameters('name')]"
             },
             "resourceId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('localVnetName'), parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the virtual network peering."
-              }
+              },
+              "value": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('localVnetName'), parameters('name'))]"
             }
           }
         }
@@ -877,7 +905,7 @@
       },
       "condition": "[if(contains(parameters('peerings')[copyIndex()], 'remotePeeringEnabled'), equals(parameters('peerings')[copyIndex()].remotePeeringEnabled, true()), false())]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}-virtualNetworkPeering-remote-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "subscriptionId": "[split(parameters('peerings')[copyIndex()].remoteVirtualNetworkId, '/')[2]]",
       "resourceGroup": "[split(parameters('peerings')[copyIndex()].remoteVirtualNetworkId, '/')[4]]",
@@ -906,6 +934,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "2278855343435905865"
+            }
+          },
           "parameters": {
             "name": {
               "type": "string",
@@ -1003,24 +1038,24 @@
           "outputs": {
             "resourceGroupName": {
               "type": "string",
-              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group the virtual network peering was deployed into."
-              }
+              },
+              "value": "[resourceGroup().name]"
             },
             "name": {
               "type": "string",
-              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the virtual network peering."
-              }
+              },
+              "value": "[parameters('name')]"
             },
             "resourceId": {
               "type": "string",
-              "value": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('localVnetName'), parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the virtual network peering."
-              }
+              },
+              "value": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('localVnetName'), parameters('name'))]"
             }
           }
         }
@@ -1035,7 +1070,7 @@
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2022-09-01",
       "name": "[format('{0}-VNet-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1060,6 +1095,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.19.5.34762",
+              "templateHash": "5870660949078211536"
+            }
+          },
           "parameters": {
             "principalIds": {
               "type": "array",
@@ -1203,58 +1245,58 @@
   "outputs": {
     "resourceGroupName": {
       "type": "string",
-      "value": "[resourceGroup().name]",
       "metadata": {
         "description": "The resource group the virtual network was deployed into."
-      }
+      },
+      "value": "[resourceGroup().name]"
     },
     "resourceId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('name'))]",
       "metadata": {
         "description": "The resource ID of the virtual network."
-      }
+      },
+      "value": "[resourceId('Microsoft.Network/virtualNetworks', parameters('name'))]"
     },
     "name": {
       "type": "string",
-      "value": "[parameters('name')]",
       "metadata": {
         "description": "The name of the virtual network."
-      }
+      },
+      "value": "[parameters('name')]"
     },
     "subnetNames": {
       "type": "array",
+      "metadata": {
+        "description": "The names of the deployed subnets."
+      },
       "copy": {
         "count": "[length(parameters('subnets'))]",
         "input": "[parameters('subnets')[copyIndex()].name]"
-      },
-      "metadata": {
-        "description": "The names of the deployed subnets."
       }
     },
     "subnetResourceIds": {
       "type": "array",
+      "metadata": {
+        "description": "The resource IDs of the deployed subnets."
+      },
       "copy": {
         "count": "[length(parameters('subnets'))]",
         "input": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('name'), parameters('subnets')[copyIndex()].name)]"
-      },
-      "metadata": {
-        "description": "The resource IDs of the deployed subnets."
       }
     },
     "location": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('name')), '2022-11-01', 'full').location]",
       "metadata": {
         "description": "The location the resource was deployed into."
-      }
+      },
+      "value": "[reference(resourceId('Microsoft.Network/virtualNetworks', parameters('name')), '2022-07-01', 'full').location]"
     },
     "diagnosticsLogs": {
       "type": "array",
-      "value": "[variables('diagnosticsLogs')]",
       "metadata": {
         "description": "The Diagnostic Settings of the virtual network."
-      }
+      },
+      "value": "[variables('diagnosticsLogs')]"
     }
   }
 }
