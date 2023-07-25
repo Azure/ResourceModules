@@ -140,7 +140,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-02-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-07-01' = {
   name: name
   location: location
   tags: tags
