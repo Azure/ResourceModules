@@ -30,13 +30,13 @@ This module deploys a Key Vault.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Key Vault. Must be globally unique. |
+| [`name`](#parameter-name) | string | Name of the Key Vault. Must be globally unique. |
 
 **Optional parameters**
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `accessPolicies` | _[accessPolicies](access-policies/README.md)_ array | `[]` |  | All access policies to create. |
+| [`accessPolicies`](#parameter-accesspolicies) | _[accessPolicies](access-policies/README.md)_ array | `[]` |  | All access policies to create. |
 | `createMode` | string | `'default'` |  | The vault's create mode to indicate whether the vault need to be recovered or not. - recover or default. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
@@ -65,318 +65,90 @@ This module deploys a Key Vault.
 | `tags` | object | `{object}` |  | Resource tags. |
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault. |
 
+### Parameter: `name`
 
-### Parameter Usage: `roleAssignments`
+| Required |
+| - |
+| string |
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+Name of the Key Vault. Must be globally unique.
 
-<details>
+### Parameter: `accessPolicies`
 
-<summary>Parameter JSON format</summary>
+| Optional |
+| - |
+| object array |
 
-```json
-"roleAssignments": {
-    "value": [
-        {
-            "roleDefinitionIdOrName": "Reader",
-            "description": "Reader Role Assignment",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
-            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012" // object 1
-            ],
-            "principalType": "ServicePrincipal"
-        }
-    ]
-}
-```
+An array of all access policies to create.
 
-</details>
+| Parameter Name | Required | Type | Description |
+| :-- | :-- | :-- | :-- |
+| [`tenantId`](#parameter-accesspoliciestenantid) | No | String | The tenant ID to create the access policy in. |
+| [`applicationId`](#parameter-accesspoliciesapplicationid) | No | String | The application ID of the service principal to create the access policy for. |
+| [`objectId`](#parameter-accesspoliciesobjectid) | No | String | The object ID of the group or user to create the access policy for. |
+| [`permissions`](#parameter-accesspoliciespermissions) | No | Object | The permissions to set in the access policy. |
 
-<details>
+### Parameter: `accessPolicies.tenantId`
 
-<summary>Bicep format</summary>
+| Optional |
+| - |
+| string |
 
-```bicep
-roleAssignments: [
-    {
-        roleDefinitionIdOrName: 'Reader'
-        description: 'Reader Role Assignment'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-            '78945612-1234-1234-1234-123456789012' // object 2
-        ]
-    }
-    {
-        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
-        principalIds: [
-            '12345678-1234-1234-1234-123456789012' // object 1
-        ]
-        principalType: 'ServicePrincipal'
-    }
-]
-```
+The tenant ID to create the access policy in.
 
-</details>
-<p>
+### Parameter `accessPolicies.applicationId`
 
-### Parameter Usage: `tags`
+| Optional |
+| - |
+| string |
 
-Tag names and tag values can be provided as needed. A tag can be left without a value.
+The application ID of the service principal to create the access policy for.
 
-<details>
+### Parameter `accessPolicies.objectId`
 
-<summary>Parameter JSON format</summary>
+| Optional |
+| - |
+| string |
 
-```json
-"tags": {
-    "value": {
-        "Environment": "Non-Prod",
-        "Contact": "test.user@testcompany.com",
-        "PurchaseOrder": "1234",
-        "CostCenter": "7890",
-        "ServiceName": "DeploymentValidation",
-        "Role": "DeploymentValidation"
-    }
-}
-```
+The object ID of the group or user to create the access policy for.
 
-</details>
+### Parameter `accessPolicies.permissions`
 
-<details>
+| Optional |
+| - |
+| object |
 
-<summary>Bicep format</summary>
+The permissions to set in the access policy.
 
-```bicep
-tags: {
-    Environment: 'Non-Prod'
-    Contact: 'test.user@testcompany.com'
-    PurchaseOrder: '1234'
-    CostCenter: '7890'
-    ServiceName: 'DeploymentValidation'
-    Role: 'DeploymentValidation'
-}
-```
+| Parameter Name | Required | Type | Description |
+| :-- | :-- | :-- | :-- |
+| [`certificates`](#parameter-accesspoliciespermissionscertificates) | No | string array | The certificates permissions to set in the access policy. |
+| [`keys`](#parameter-accesspoliciespermissionskeys) | No | string array | The keys permissions to set in the access policy. |
+| [`secrets`](#parameter-accesspoliciespermissionssecrets) | No | string array | The secrets permissions to set in the access policy. |
 
-</details>
-<p>
+### Parameter `accessPolicies.permissions.certificates`
 
-### Parameter Usage: `networkAcls`
+| Optional |
+| - |
+| string array |
 
-<details>
+The certificate permissions to set in the access policy.
 
-<summary>Parameter JSON format</summary>
+### Parameter `accessPolicies.permissions.keys`
 
-```json
-"networkAcls": {
-    "value": {
-        "bypass": "AzureServices",
-        "defaultAction": "Deny",
-        "virtualNetworkRules": [
-            {
-                "id": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-                "ignoreMissingVnetServiceEndpoint": false
-            }
-        ],
-        "ipRules": [
-            {
-                "value": "40.74.28.0/23"
-            }
-        ]
-    }
-}
-```
+| Optional |
+| - |
+| string array |
 
-</details>
+The keys permissions to set in the access policy.
 
-<details>
+### Parameter `accessPolicies.permissions.secrets`
 
-<summary>Bicep format</summary>
+| Optional |
+| - |
+| string array |
 
-```bicep
-networkAcls: {
-    bypass: 'AzureServices'
-    defaultAction: 'Deny'
-    virtualNetworkRules: [
-        {
-            id: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-            ignoreMissingVnetServiceEndpoint: false
-        }
-    ]
-    ipRules: [
-        {
-            value: '40.74.28.0/23'
-        }
-    ]
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `accessPolicies`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"accessPolicies": {
-    "value": [
-        {
-            "tenantId": null, // Optional
-            "applicationId": null, // Optional
-            "objectId": null,
-            "permissions": {
-                "certificates": [
-                    "All"
-                ],
-                "keys": [
-                    "All"
-                ],
-                "secrets": [
-                    "All"
-                ]
-            }
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-accessPolicies: [
-    {
-        tenantId: null // Optional
-        applicationId: null // Optional
-        objectId: null
-        permissions: {
-            certificates: [
-                'All'
-            ]
-            keys: [
-                'All'
-            ]
-            secrets: [
-                'All'
-            ]
-        }
-    }
-]
-```
-
-</details>
-<p>
-
-### Parameter Usage: `privateEndpoints`
-
-To use Private Endpoint the following dependencies must be deployed:
-
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
-- Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"privateEndpoints": {
-    "value": [
-        // Example showing all available fields
-        {
-            "name": "sxx-az-pe", // Optional: Name will be automatically generated if one is not provided here
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>", // e.g. vault, registry, blob
-            "privateDnsZoneGroup": {
-                "privateDNSResourceIds": [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                    "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>" // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-                ]
-            },
-            "ipConfigurations":[
-                {
-                    "name": "myIPconfigTest02",
-                    "properties": {
-                        "groupId": "blob",
-                        "memberName": "blob",
-                        "privateIPAddress": "10.0.0.30"
-                    }
-                }
-            ],
-            "customDnsConfigs": [
-                {
-                    "fqdn": "customname.test.local",
-                    "ipAddresses": [
-                        "10.10.10.10"
-                    ]
-                }
-            ]
-        },
-        // Example showing only mandatory fields
-        {
-            "subnetResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "service": "<serviceName>" // e.g. vault, registry, blob
-        }
-    ]
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-privateEndpoints:  [
-    // Example showing all available fields
-    {
-        name: 'sxx-az-pe' // Optional: Name will be automatically generated if one is not provided here
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-        privateDnsZoneGroup: {
-            privateDNSResourceIds: [ // Optional: No DNS record will be created if a private DNS zone Resource ID is not specified
-                '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/privateDnsZones/<privateDnsZoneName>' // e.g. privatelink.vaultcore.azure.net, privatelink.azurecr.io, privatelink.blob.core.windows.net
-            ]
-        }
-        customDnsConfigs: [
-            {
-                fqdn: 'customname.test.local'
-                ipAddresses: [
-                    '10.10.10.10'
-                ]
-            }
-        ]
-        ipConfigurations:[
-          {
-            name: 'myIPconfigTest02'
-            properties: {
-              groupId: 'blob'
-              memberName: 'blob'
-              privateIPAddress: '10.0.0.30'
-            }
-          }
-        ]
-    }
-    // Example showing only mandatory fields
-    {
-        subnetResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
-        service: '<serviceName>' // e.g. vault, registry, blob
-    }
-]
-```
-
-</details>
-<p>
+The secrets permissions to set in the access policy.
 
 ## Outputs
 
