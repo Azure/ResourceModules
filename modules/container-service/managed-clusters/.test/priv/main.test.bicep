@@ -139,7 +139,8 @@ module testDeployment '../../main.bicep' = {
         vmSize: 'Standard_DS2_v2'
       }
     ]
-    aksClusterNetworkPlugin: 'kubenet'
+    aksClusterNetworkPlugin: 'azure'
+    aksClusterSkuTier: 'Paid'
     aksClusterDnsServiceIP: '10.10.200.10'
     aksClusterServiceCidr: '10.10.200.0/24'
     diagnosticLogsRetentionInDays: 7
@@ -148,15 +149,6 @@ module testDeployment '../../main.bicep' = {
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
     privateDNSZone: nestedDependencies.outputs.privateDnsZoneResourceId
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
     userAssignedIdentities: {
       '${nestedDependencies.outputs.managedIdentityResourceId}': {}
     }

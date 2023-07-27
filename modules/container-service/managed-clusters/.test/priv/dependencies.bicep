@@ -50,9 +50,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
     }
 }
 
-resource msivNetRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource msiVnetRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(resourceGroup().id, 'NetworkContributor', managedIdentity.id)
-    scope: virtualNetwork
+    scope: resourceGroup()
     properties: {
         principalId: managedIdentity.properties.principalId
         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7') // Network Contributor
@@ -60,9 +60,9 @@ resource msivNetRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-
     }
 }
 
-resource msiprivDNSZoneRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource msiPrivDnsZoneRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
     name: guid(resourceGroup().id, 'PrivateDNSZoneContributor', managedIdentity.id)
-    scope: privateDnsZone
+    scope: resourceGroup()
     properties: {
         principalId: managedIdentity.properties.principalId
         roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b12aa53e-6015-4669-85d0-8515ebb3ae7f') // Private DNS Zone Contributor

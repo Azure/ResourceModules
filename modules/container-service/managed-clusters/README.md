@@ -1086,7 +1086,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
 </details>
 <p>
 
-<h3>Example 4: Privatecluster</h3>
+<h3>Example 4: Priv</h3>
 
 <details>
 
@@ -1172,8 +1172,9 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       }
     ]
     aksClusterDnsServiceIP: '10.10.200.10'
-    aksClusterNetworkPlugin: 'kubenet'
+    aksClusterNetworkPlugin: 'azure'
     aksClusterServiceCidr: '10.10.200.0/24'
+    aksClusterSkuTier: 'Paid'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -1182,15 +1183,6 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     enablePrivateCluster: true
     privateDNSZone: '<privateDNSZone>'
-    roleAssignments: [
-      {
-        principalIds: [
-          '<managedIdentityPrincipalId>'
-        ]
-        principalType: 'ServicePrincipal'
-        roleDefinitionIdOrName: 'Reader'
-      }
-    ]
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
@@ -1299,10 +1291,13 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       "value": "10.10.200.10"
     },
     "aksClusterNetworkPlugin": {
-      "value": "kubenet"
+      "value": "azure"
     },
     "aksClusterServiceCidr": {
       "value": "10.10.200.0/24"
+    },
+    "aksClusterSkuTier": {
+      "value": "Paid"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
@@ -1327,17 +1322,6 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     },
     "privateDNSZone": {
       "value": "<privateDNSZone>"
-    },
-    "roleAssignments": {
-      "value": [
-        {
-          "principalIds": [
-            "<managedIdentityPrincipalId>"
-          ],
-          "principalType": "ServicePrincipal",
-          "roleDefinitionIdOrName": "Reader"
-        }
-      ]
     },
     "tags": {
       "value": {
