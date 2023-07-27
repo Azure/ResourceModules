@@ -64,31 +64,6 @@ jobs:
 
             Set-ReadMeModuleTable @functionInput -Verbose
 
-      # Update the `modules` folder ReadMe ([`/modules/README.md`](https://github.com/Azure/ResourceModules/blob/main/modules/README.md))
-      - task: PowerShell@2
-        displayName: 'Update module folder ReadMe'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(relativeScriptPath_SetReadMeModuleTable)')
-
-            $functionInput = @{
-              ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'modules'
-              FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'modules' 'README.md'
-              Organization   = '$(System.CollectionUri)'.Split('/')[3]
-              RepositoryName = '$(Build.Repository.Name)'
-              ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
-              Environment    = 'ADO'
-              ProjectName    = '$(System.TeamProject)'
-            }
-
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Set-ReadMeModuleTable @functionInput -Verbose
-
       # Update the module overview table ([`/docs/wiki/The library - Module overview.md`](https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20overview))
       - task: PowerShell@2
         displayName: 'Update module outline'
