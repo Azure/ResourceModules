@@ -29,3 +29,11 @@ module min 'min/main.test.bicep' = {
     namePrefix: namePrefix
   }
 }
+
+// TEST 4 - Private AKS Cluster
+module privateCluster 'privateCluster/main.test.bicep' = {
+  name: '${uniqueString(deployment().name)}-privateCluster-test'
+  params: {
+    namePrefix: namePrefix
+  }
+}

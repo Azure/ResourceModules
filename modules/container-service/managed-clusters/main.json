@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "15903452996250901966"
+      "templateHash": "7974498563441114899"
     }
   },
   "parameters": {
@@ -261,11 +261,11 @@
         "description": "Optional. Whether to create additional public FQDN for private cluster or not."
       }
     },
-    "usePrivateDNSZone": {
-      "type": "bool",
-      "defaultValue": false,
+    "privateDNSZone": {
+      "type": "string",
+      "defaultValue": "System",
       "metadata": {
-        "description": "Optional. If AKS will create a Private DNS Zone in the Node Resource Group."
+        "description": "Optional. Private DNS Zone configuration. Set to 'System' and AKS will create a private DNS zone in the node resource group. Set to 'None' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone."
       }
     },
     "primaryAgentPoolProfile": {
@@ -877,7 +877,7 @@
           "disableRunCommand": "[parameters('disableRunCommand')]",
           "enablePrivateCluster": "[parameters('enablePrivateCluster')]",
           "enablePrivateClusterPublicFQDN": "[parameters('enablePrivateClusterPublicFQDN')]",
-          "privateDNSZone": "[if(parameters('usePrivateDNSZone'), 'system', '')]"
+          "privateDNSZone": "[parameters('privateDNSZone')]"
         },
         "podIdentityProfile": {
           "allowNetworkPluginKubenet": "[parameters('podIdentityProfileAllowNetworkPluginKubenet')]",
