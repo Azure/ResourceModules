@@ -84,7 +84,7 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '${nestedDependencies.outputs.vNetResourceId}/defaultSubnet'
+        vnetSubnetID: '${nestedDependencies.outputs.vNetResourceId}/subnets/defaultSubnet'
       }
     ]
     agentPools: [
@@ -111,7 +111,7 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: '${nestedDependencies.outputs.vNetResourceId}/defaultSubnet'
+        vnetSubnetID: '${nestedDependencies.outputs.vNetResourceId}/subnets/defaultSubnet'
       }
       {
         availabilityZones: [
