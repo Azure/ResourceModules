@@ -4,9 +4,6 @@ param location string = resourceGroup().location
 @description('Required. The name of the Managed Identity to create.')
 param managedIdentityName string
 
-@description('Required. The name of the DNS Zone to create.')
-param dnsZoneName string
-
 @description('Required. The Private DNS Zone Name to create for Private AKS Cluster.')
 param privateDnsZoneName string
 
@@ -18,11 +15,6 @@ var addressPrefix = '10.0.0.0/16'
 resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
     name: managedIdentityName
     location: location
-}
-
-resource dnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
-    name: dnsZoneName
-    location: 'global'
 }
 
 resource privateDnsZone 'Microsoft.Network/dnsZones@2018-05-01' = {
@@ -47,6 +39,17 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 }
             }
         ]
+    }
+}
+
+resource privateDNSZoneVNetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+    name: 'pDnsLink-${virtualNetworkName}-${privateDnsZoneName}'
+    location: location
+    properties: {
+        registrationEnabled: true
+        virtualNetwork: {
+            id: virtualNetwork.id
+        }
     }
 }
 
@@ -75,9 +78,6 @@ output managedIdentityPrincipalId string = managedIdentity.properties.principalI
 
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
-
-@description('The resource ID of the created DNS Zone.')
-output dnsZoneResourceId string = dnsZone.id
 
 @description('The resource ID of the private DNS Zone created.')
 output privateDnsZoneResourceId string = privateDnsZone.id
