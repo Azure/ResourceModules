@@ -121,7 +121,7 @@ param enablePrivateCluster bool = false
 param enablePrivateClusterPublicFQDN bool = false
 
 @description('Optional. Private DNS Zone configuration. Set to \'System\' and AKS will create a private DNS zone in the node resource group. Set to \'None\' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone.')
-param privateDNSZone string = 'System'
+param privateDNSZone string = 'None'
 
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
