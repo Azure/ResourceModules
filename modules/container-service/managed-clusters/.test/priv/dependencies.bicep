@@ -20,15 +20,6 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     name: privateDnsZoneName
     location: 'global'
-    resource privateDNSZoneVNetLink 'virtualNetworkLinks' = {
-        name: 'pDnsLink-${virtualNetworkName}-${privateDnsZoneName}'
-        properties: {
-            registrationEnabled: true
-            virtualNetwork: {
-                id: virtualNetwork.id
-            }
-        }
-    }
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -48,6 +39,18 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
                 }
             }
         ]
+    }
+}
+
+resource privateDNSZoneVNetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
+    name: 'pDnsLink-${virtualNetworkName}-${privateDnsZoneName}'
+    location: location
+    parent: privateDnsZone
+    properties: {
+        registrationEnabled: true
+        virtualNetwork: {
+            id: virtualNetwork.id
+        }
     }
 }
 
