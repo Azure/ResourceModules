@@ -67,20 +67,17 @@ This module deploys a Key Vault.
 
 ### Parameter: `name`
 
-| Required |
-| - |
-| string |
-
 Name of the Key Vault. Must be globally unique.
+
+- Required: Yes
+- Type: string
 
 ### Parameter: `accessPolicies`
 
-| Optional |
-| - |
-| object array |
-
 An array of all access policies to create.
 
+- Required: No
+- Type: object array
 - Default value: `[]`
 
 | Parameter Name | Required | Type | Description |
@@ -92,35 +89,31 @@ An array of all access policies to create.
 
 ### Parameter: `accessPolicies.tenantId`
 
-| Optional |
-| - |
-| string |
-
 The tenant ID to create the access policy in.
+
+- Required: No
+- Type: string
 
 ### Parameter `accessPolicies.applicationId`
 
-| Optional |
-| - |
-| string |
-
 The application ID of the service principal to create the access policy for.
+
+- Required: No
+- Type: string
 
 ### Parameter `accessPolicies.objectId`
 
-| Optional |
-| - |
-| string |
-
 The object ID of the group or user to create the access policy for.
+
+- Required: No
+- Type: string
 
 ### Parameter `accessPolicies.permissions`
 
-| Optional |
-| - |
-| object |
-
 The permissions to set in the access policy.
+
+- Required: No
+- Type: object
 
 | Parameter Name | Required | Type | Description |
 | :-- | :-- | :-- | :-- |
@@ -130,27 +123,24 @@ The permissions to set in the access policy.
 
 ### Parameter `accessPolicies.permissions.certificates`
 
-| Optional |
-| - |
-| string array |
-
 The certificate permissions to set in the access policy.
+
+- Required: No
+- Type: string array
 
 ### Parameter `accessPolicies.permissions.keys`
 
-| Optional |
-| - |
-| string array |
-
 The keys permissions to set in the access policy.
+
+- Required: No
+- Type: string array
 
 ### Parameter `accessPolicies.permissions.secrets`
 
-| Optional |
-| - |
-| string array |
-
 The secrets permissions to set in the access policy.
+
+- Required: No
+- Type: string array
 
 ## Outputs
 
