@@ -263,9 +263,9 @@
     },
     "privateDNSZone": {
       "type": "string",
-      "defaultValue": "None",
+      "defaultValue": "none",
       "metadata": {
-        "description": "Optional. Private DNS Zone configuration. Set to 'System' and AKS will create a private DNS zone in the node resource group. Set to 'None' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone."
+        "description": "Optional. Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to 'none' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone."
       }
     },
     "primaryAgentPoolProfile": {

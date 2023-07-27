@@ -122,7 +122,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `podIdentityProfileEnable` | bool | `False` |  | Whether the pod identity addon is enabled. |
 | `podIdentityProfileUserAssignedIdentities` | array | `[]` |  | The pod identities to use in the cluster. |
 | `podIdentityProfileUserAssignedIdentityExceptions` | array | `[]` |  | The pod identity exceptions to allow. |
-| `privateDNSZone` | string | `'None'` |  | Private DNS Zone configuration. Set to 'System' and AKS will create a private DNS zone in the node resource group. Set to 'None' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone. |
+| `privateDNSZone` | string | `'none'` |  | Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to 'none' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
