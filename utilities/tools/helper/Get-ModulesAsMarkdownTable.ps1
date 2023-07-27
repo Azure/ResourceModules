@@ -429,6 +429,7 @@ function Get-ModulesAsMarkdownTable {
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'Get-PipelineStatusUrl.ps1')
+    . (Join-Path $PSScriptRoot 'Get-SpecsAlignedResourceName.ps1')
 
     # Header
     # ------
@@ -461,13 +462,17 @@ function Get-ModulesAsMarkdownTable {
 
     $previousProvider = ''
     foreach ($topLevelFolder in $topLevelFolders) {
-        $provider = Split-Path $topLevelFolder -Leaf
 
         $containedFolderPaths = (Get-ChildItem -Path $topLevelFolder -Directory -Recurse -Exclude @('.bicep', '.test') -Depth 0 -Force).FullName
 
         foreach ($containedFolderPath in $containedFolderPaths) {
             $containedFolderName = Split-Path $containedFolderPath -Leaf
             $concatedBase = $containedFolderPath.Replace((Split-Path $topLevelFolder -Parent), '').Substring(1)
+
+            $provider = Split-Path $topLevelFolder -Leaf
+            $specsAlignedResourceName = Get-SpecsAlignedResourceName -ResourceIdentifier ($concatedBase -replace '\\', '/')
+            $specsAlignedProviderNamespace = $specsAlignedResourceName.Split('/')[0]
+            $specsAlignedResourceType = $specsAlignedResourceName -replace "$specsAlignedProviderNamespace/", ''
 
             if (Measure-FolderHasNestedModule -path $containedFolderPath) {
                 $recursiveSubServiceInputObject = @{
@@ -498,20 +503,20 @@ function Get-ModulesAsMarkdownTable {
                             }
                         }
                         'ProviderNamespace' {
-                            if ($previousProvider -eq $provider -and $SortByColumn -ne 'Name') {
+                            if ($previousProvider -eq $specsAlignedProviderNamespace -and $SortByColumn -ne 'Name') {
                                 $row['ProviderNamespace'] += ''
                             } else {
-                                $row['ProviderNamespace'] += "``$provider``"
-                                $previousProvider = $provider
+                                $row['ProviderNamespace'] += "``$specsAlignedProviderNamespace``"
+                                $previousProvider = $specsAlignedProviderNamespace
                             }
                         }
                         'ResourceType' {
                             switch ($Environment) {
                                 'ADO' {
-                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f (Get-ResourceModuleName -path $containedFolderPath), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/modules/{4})' -f $specsAlignedResourceType, $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                                 'GitHub' {
-                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/modules/{3})' -f $specsAlignedResourceType, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
                                 }
                             }
 
