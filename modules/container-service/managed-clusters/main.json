@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "18163829161136753721"
+      "templateHash": "7238741749893507587"
     }
   },
   "parameters": {
@@ -263,9 +263,9 @@
     },
     "privateDNSZone": {
       "type": "string",
-      "defaultValue": "none",
+      "defaultValue": "",
       "metadata": {
-        "description": "Optional. Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to 'none' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone."
+        "description": "Optional. Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to '' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone."
       }
     },
     "primaryAgentPoolProfile": {
