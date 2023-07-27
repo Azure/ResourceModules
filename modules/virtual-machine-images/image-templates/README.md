@@ -268,8 +268,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "vmUserAssignedIdentities": {
     "value": [
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001",
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002"
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001",
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002"
     ]
 }
 ```
@@ -282,8 +282,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 vmUserAssignedIdentities: [
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001'
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002'
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001'
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002'
 ]
 ```
 
@@ -301,8 +301,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -315,8 +315,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -369,14 +369,14 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmiitcom001'
+    name: 'vmiitcom001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     buildTimeoutInMinutes: 60
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
     imageReplicationRegions: []
     lock: 'CanNotDelete'
-    managedImageName: '<<namePrefix>>-mi-vmiitcom-001'
+    managedImageName: 'mi-vmiitcom-001'
     osDiskSizeGB: 127
     roleAssignments: [
       {
@@ -395,7 +395,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
     }
-    unManagedImageName: '<<namePrefix>>-umi-vmiitcom-001'
+    unManagedImageName: 'umi-vmiitcom-001'
     userAssignedIdentities: [
       '<managedIdentityResourceId>'
     ]
@@ -436,7 +436,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmiitcom001"
+      "value": "vmiitcom001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -455,7 +455,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       "value": "CanNotDelete"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmiitcom-001"
+      "value": "mi-vmiitcom-001"
     },
     "osDiskSizeGB": {
       "value": 127
@@ -490,7 +490,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       }
     },
     "unManagedImageName": {
-      "value": "<<namePrefix>>-umi-vmiitcom-001"
+      "value": "umi-vmiitcom-001"
     },
     "userAssignedIdentities": {
       "value": [
@@ -534,11 +534,11 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       type: 'PlatformImage'
       version: 'latest'
     }
-    name: '<<namePrefix>>vmiitmin001'
+    name: 'vmiitmin001'
     userMsiName: '<userMsiName>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
-    managedImageName: '<<namePrefix>>-mi-vmiitmin-001'
+    managedImageName: 'mi-vmiitmin-001'
     userMsiResourceGroup: '<userMsiResourceGroup>'
   }
 }
@@ -575,7 +575,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       }
     },
     "name": {
-      "value": "<<namePrefix>>vmiitmin001"
+      "value": "vmiitmin001"
     },
     "userMsiName": {
       "value": "<userMsiName>"
@@ -585,7 +585,7 @@ module imageTemplates './virtual-machine-images/image-templates/main.bicep' = {
       "value": "<enableDefaultTelemetry>"
     },
     "managedImageName": {
-      "value": "<<namePrefix>>-mi-vmiitmin-001"
+      "value": "mi-vmiitmin-001"
     },
     "userMsiResourceGroup": {
       "value": "<userMsiResourceGroup>"

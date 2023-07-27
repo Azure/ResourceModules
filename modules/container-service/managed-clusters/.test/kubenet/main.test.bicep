@@ -18,7 +18,7 @@ param serviceShort string = 'csmkube'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -36,6 +36,7 @@ module nestedDependencies 'dependencies.bicep' = {
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
+    dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
   }
 }
 

@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "8419949996808990746"
+      "version": "0.14.85.62628",
+      "templateHash": "6169568143954846377"
     }
   },
   "parameters": {
@@ -353,7 +353,7 @@
         "count": "[length(parameters('authorizationRules'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-AuthorizationRules-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -378,8 +378,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "18150725130303896464"
+              "version": "0.14.85.62628",
+              "templateHash": "850293290997544119"
             }
           },
           "parameters": {
@@ -444,24 +444,24 @@
           "outputs": {
             "name": {
               "type": "string",
+              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the authorization rule."
-              },
-              "value": "[parameters('name')]"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.ServiceBus/namespaces/AuthorizationRules', parameters('namespaceName'), parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the authorization rule."
-              },
-              "value": "[resourceId('Microsoft.ServiceBus/namespaces/AuthorizationRules', parameters('namespaceName'), parameters('name'))]"
+              }
             },
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The name of the Resource Group the authorization rule was created in."
-              },
-              "value": "[resourceGroup().name]"
+              }
             }
           }
         }
@@ -473,7 +473,7 @@
     {
       "condition": "[not(empty(parameters('disasterRecoveryConfigs')))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-DisasterRecoveryConfig', uniqueString(deployment().name, parameters('location')))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -497,8 +497,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "6900128723706168337"
+              "version": "0.14.85.62628",
+              "templateHash": "1772219903496781800"
             }
           },
           "parameters": {
@@ -567,24 +567,24 @@
           "outputs": {
             "name": {
               "type": "string",
+              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the disaster recovery config."
-              },
-              "value": "[parameters('name')]"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs', parameters('namespaceName'), parameters('name'))]",
               "metadata": {
                 "description": "The Resource ID of the disaster recovery config."
-              },
-              "value": "[resourceId('Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs', parameters('namespaceName'), parameters('name'))]"
+              }
             },
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The name of the Resource Group the disaster recovery config was created in."
-              },
-              "value": "[resourceGroup().name]"
+              }
             }
           }
         }
@@ -596,7 +596,7 @@
     {
       "condition": "[not(empty(parameters('migrationConfigurations')))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-MigrationConfigurations', uniqueString(deployment().name, parameters('location')))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -623,8 +623,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "14452278371142532778"
+              "version": "0.14.85.62628",
+              "templateHash": "3750535521426357541"
             }
           },
           "parameters": {
@@ -684,24 +684,24 @@
           "outputs": {
             "name": {
               "type": "string",
+              "value": "$default",
               "metadata": {
                 "description": "The name of the migration configuration."
-              },
-              "value": "$default"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.ServiceBus/namespaces/migrationConfigurations', parameters('namespaceName'), '$default')]",
               "metadata": {
                 "description": "The Resource ID of the migration configuration."
-              },
-              "value": "[resourceId('Microsoft.ServiceBus/namespaces/migrationConfigurations', parameters('namespaceName'), '$default')]"
+              }
             },
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The name of the Resource Group the migration configuration was created in."
-              },
-              "value": "[resourceGroup().name]"
+              }
             }
           }
         }
@@ -713,7 +713,7 @@
     {
       "condition": "[or(not(empty(parameters('networkRuleSets'))), not(empty(parameters('privateEndpoints'))))]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-NetworkRuleSet', uniqueString(deployment().name, parameters('location')))]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -739,8 +739,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "2794396421857733958"
+              "version": "0.14.85.62628",
+              "templateHash": "16252573524540791580"
             }
           },
           "parameters": {
@@ -846,24 +846,24 @@
           "outputs": {
             "name": {
               "type": "string",
+              "value": "default",
               "metadata": {
                 "description": "The name of the network rule set."
-              },
-              "value": "default"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.ServiceBus/namespaces/networkRuleSets', parameters('namespaceName'), 'default')]",
               "metadata": {
                 "description": "The resource ID of the network rule set."
-              },
-              "value": "[resourceId('Microsoft.ServiceBus/namespaces/networkRuleSets', parameters('namespaceName'), 'default')]"
+              }
             },
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The name of the resource group the network rule set was created in."
-              },
-              "value": "[resourceGroup().name]"
+              }
             }
           }
         }
@@ -878,7 +878,7 @@
         "count": "[length(parameters('queues'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-Queue-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -917,8 +917,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "9144991973384744146"
+              "version": "0.14.85.62628",
+              "templateHash": "3833242685186147395"
             }
           },
           "parameters": {
@@ -1135,7 +1135,7 @@
                 "count": "[length(parameters('authorizationRules'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2020-10-01",
               "name": "[format('{0}-AuthRule-{1}', deployment().name, copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -1163,8 +1163,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3821768472654766434"
+                      "version": "0.14.85.62628",
+                      "templateHash": "8319594662240113157"
                     }
                   },
                   "parameters": {
@@ -1233,24 +1233,24 @@
                   "outputs": {
                     "name": {
                       "type": "string",
+                      "value": "[parameters('name')]",
                       "metadata": {
                         "description": "The name of the authorization rule."
-                      },
-                      "value": "[parameters('name')]"
+                      }
                     },
                     "resourceId": {
                       "type": "string",
+                      "value": "[resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', parameters('namespaceName'), parameters('queueName'), parameters('name'))]",
                       "metadata": {
                         "description": "The Resource ID of the authorization rule."
-                      },
-                      "value": "[resourceId('Microsoft.ServiceBus/namespaces/queues/authorizationRules', parameters('namespaceName'), parameters('queueName'), parameters('name'))]"
+                      }
                     },
                     "resourceGroupName": {
                       "type": "string",
+                      "value": "[resourceGroup().name]",
                       "metadata": {
                         "description": "The name of the Resource Group the authorization rule was created in."
-                      },
-                      "value": "[resourceGroup().name]"
+                      }
                     }
                   }
                 }
@@ -1265,7 +1265,7 @@
                 "count": "[length(parameters('roleAssignments'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2020-10-01",
               "name": "[format('{0}-Rbac-{1}', deployment().name, copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -1293,8 +1293,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11451783893313319107"
+                      "version": "0.14.85.62628",
+                      "templateHash": "9488244535053538673"
                     }
                   },
                   "parameters": {
@@ -1414,24 +1414,24 @@
           "outputs": {
             "name": {
               "type": "string",
+              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the deployed queue."
-              },
-              "value": "[parameters('name')]"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.ServiceBus/namespaces/queues', parameters('namespaceName'), parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the deployed queue."
-              },
-              "value": "[resourceId('Microsoft.ServiceBus/namespaces/queues', parameters('namespaceName'), parameters('name'))]"
+              }
             },
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group of the deployed queue."
-              },
-              "value": "[resourceGroup().name]"
+              }
             }
           }
         }
@@ -1446,7 +1446,7 @@
         "count": "[length(parameters('topics'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-Topic-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -1484,8 +1484,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "10644808740576492034"
+              "version": "0.14.85.62628",
+              "templateHash": "5011947316353203176"
             }
           },
           "parameters": {
@@ -1694,7 +1694,7 @@
                 "count": "[length(parameters('authorizationRules'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2020-10-01",
               "name": "[format('{0}-AuthRule-{1}', deployment().name, copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -1722,8 +1722,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "2543578108597137276"
+                      "version": "0.14.85.62628",
+                      "templateHash": "6047147262024432021"
                     }
                   },
                   "parameters": {
@@ -1792,24 +1792,24 @@
                   "outputs": {
                     "name": {
                       "type": "string",
+                      "value": "[parameters('name')]",
                       "metadata": {
                         "description": "The name of the authorization rule."
-                      },
-                      "value": "[parameters('name')]"
+                      }
                     },
                     "resourceId": {
                       "type": "string",
+                      "value": "[resourceId('Microsoft.ServiceBus/namespaces/topics/authorizationRules', parameters('namespaceName'), parameters('topicName'), parameters('name'))]",
                       "metadata": {
                         "description": "The Resource ID of the authorization rule."
-                      },
-                      "value": "[resourceId('Microsoft.ServiceBus/namespaces/topics/authorizationRules', parameters('namespaceName'), parameters('topicName'), parameters('name'))]"
+                      }
                     },
                     "resourceGroupName": {
                       "type": "string",
+                      "value": "[resourceGroup().name]",
                       "metadata": {
                         "description": "The name of the Resource Group the authorization rule was created in."
-                      },
-                      "value": "[resourceGroup().name]"
+                      }
                     }
                   }
                 }
@@ -1824,7 +1824,7 @@
                 "count": "[length(parameters('roleAssignments'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2020-10-01",
               "name": "[format('{0}-Rbac-{1}', deployment().name, copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -1852,8 +1852,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "7924225930514461698"
+                      "version": "0.14.85.62628",
+                      "templateHash": "3418500870386448340"
                     }
                   },
                   "parameters": {
@@ -1973,24 +1973,24 @@
           "outputs": {
             "name": {
               "type": "string",
+              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the deployed topic."
-              },
-              "value": "[parameters('name')]"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('namespaceName'), parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the deployed topic."
-              },
-              "value": "[resourceId('Microsoft.ServiceBus/namespaces/topics', parameters('namespaceName'), parameters('name'))]"
+              }
             },
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group of the deployed topic."
-              },
-              "value": "[resourceGroup().name]"
+              }
             }
           }
         }
@@ -2005,7 +2005,7 @@
         "count": "[length(parameters('privateEndpoints'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-Namespace-PrivateEndpoint-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2047,8 +2047,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "12991773916541265724"
+              "version": "0.14.85.62628",
+              "templateHash": "6069008463688664145"
             }
           },
           "parameters": {
@@ -2220,7 +2220,7 @@
             {
               "condition": "[not(empty(parameters('privateDnsZoneGroup')))]",
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2020-10-01",
               "name": "[format('{0}-PrivateEndpoint-PrivateDnsZoneGroup', uniqueString(deployment().name, parameters('location')))]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2244,8 +2244,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3520683536217550590"
+                      "version": "0.14.85.62628",
+                      "templateHash": "1348282443889146765"
                     }
                   },
                   "parameters": {
@@ -2319,24 +2319,24 @@
                   "outputs": {
                     "name": {
                       "type": "string",
+                      "value": "[parameters('name')]",
                       "metadata": {
                         "description": "The name of the private endpoint DNS zone group."
-                      },
-                      "value": "[parameters('name')]"
+                      }
                     },
                     "resourceId": {
                       "type": "string",
+                      "value": "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', parameters('privateEndpointName'), parameters('name'))]",
                       "metadata": {
                         "description": "The resource ID of the private endpoint DNS zone group."
-                      },
-                      "value": "[resourceId('Microsoft.Network/privateEndpoints/privateDnsZoneGroups', parameters('privateEndpointName'), parameters('name'))]"
+                      }
                     },
                     "resourceGroupName": {
                       "type": "string",
+                      "value": "[resourceGroup().name]",
                       "metadata": {
                         "description": "The resource group the private endpoint DNS zone group was deployed into."
-                      },
-                      "value": "[resourceGroup().name]"
+                      }
                     }
                   }
                 }
@@ -2351,7 +2351,7 @@
                 "count": "[length(parameters('roleAssignments'))]"
               },
               "type": "Microsoft.Resources/deployments",
-              "apiVersion": "2022-09-01",
+              "apiVersion": "2020-10-01",
               "name": "[format('{0}-PrivateEndpoint-Rbac-{1}', uniqueString(deployment().name, parameters('location')), copyIndex())]",
               "properties": {
                 "expressionEvaluationOptions": {
@@ -2379,8 +2379,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "11724106538771429164"
+                      "version": "0.14.85.62628",
+                      "templateHash": "8979338004540534697"
                     }
                   },
                   "parameters": {
@@ -2526,31 +2526,31 @@
           "outputs": {
             "resourceGroupName": {
               "type": "string",
+              "value": "[resourceGroup().name]",
               "metadata": {
                 "description": "The resource group the private endpoint was deployed into."
-              },
-              "value": "[resourceGroup().name]"
+              }
             },
             "resourceId": {
               "type": "string",
+              "value": "[resourceId('Microsoft.Network/privateEndpoints', parameters('name'))]",
               "metadata": {
                 "description": "The resource ID of the private endpoint."
-              },
-              "value": "[resourceId('Microsoft.Network/privateEndpoints', parameters('name'))]"
+              }
             },
             "name": {
               "type": "string",
+              "value": "[parameters('name')]",
               "metadata": {
                 "description": "The name of the private endpoint."
-              },
-              "value": "[parameters('name')]"
+              }
             },
             "location": {
               "type": "string",
+              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]",
               "metadata": {
                 "description": "The location the resource was deployed into."
-              },
-              "value": "[reference(resourceId('Microsoft.Network/privateEndpoints', parameters('name')), '2022-07-01', 'full').location]"
+              }
             }
           }
         }
@@ -2565,7 +2565,7 @@
         "count": "[length(parameters('roleAssignments'))]"
       },
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2022-09-01",
+      "apiVersion": "2020-10-01",
       "name": "[format('{0}-Rbac-{1}', deployment().name, copyIndex())]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -2593,8 +2593,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "2815351803418998382"
+              "version": "0.14.85.62628",
+              "templateHash": "1651754244099476857"
             }
           },
           "parameters": {
@@ -2714,38 +2714,38 @@
   "outputs": {
     "resourceId": {
       "type": "string",
+      "value": "[resourceId('Microsoft.ServiceBus/namespaces', parameters('name'))]",
       "metadata": {
         "description": "The resource ID of the deployed service bus namespace."
-      },
-      "value": "[resourceId('Microsoft.ServiceBus/namespaces', parameters('name'))]"
+      }
     },
     "resourceGroupName": {
       "type": "string",
+      "value": "[resourceGroup().name]",
       "metadata": {
         "description": "The resource group of the deployed service bus namespace."
-      },
-      "value": "[resourceGroup().name]"
+      }
     },
     "name": {
       "type": "string",
+      "value": "[parameters('name')]",
       "metadata": {
         "description": "The name of the deployed service bus namespace."
-      },
-      "value": "[parameters('name')]"
+      }
     },
     "systemAssignedPrincipalId": {
       "type": "string",
+      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').identity.principalId, '')]",
       "metadata": {
         "description": "The principal ID of the system assigned identity."
-      },
-      "value": "[if(and(parameters('systemAssignedIdentity'), contains(reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').identity, 'principalId')), reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').identity.principalId, '')]"
+      }
     },
     "location": {
       "type": "string",
+      "value": "[reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').location]",
       "metadata": {
         "description": "The location the resource was deployed into."
-      },
-      "value": "[reference(resourceId('Microsoft.ServiceBus/namespaces', parameters('name')), '2021-11-01', 'full').location]"
+      }
     }
   }
 }

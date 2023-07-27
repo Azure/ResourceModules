@@ -14,7 +14,7 @@ Connectivity configurations define hub-and-spoke or mesh topologies applied to o
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkManagers/connectivityConfigurations` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/networkManagers/connectivityConfigurations) |
+| `Microsoft.Network/networkManagers/connectivityConfigurations` | [2023-02-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2023-02-01/networkManagers/connectivityConfigurations) |
 
 ## Parameters
 

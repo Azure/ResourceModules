@@ -17,7 +17,7 @@ This module deploys a Bastion Host.
 | `Microsoft.Authorization/locks` | [2020-05-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2022-04-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2022-04-01/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/bastionHosts` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/bastionHosts) |
+| `Microsoft.Network/bastionHosts` | [2022-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-11-01/bastionHosts) |
 | `Microsoft.Network/publicIPAddresses` | [2022-07-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2022-07-01/publicIPAddresses) |
 
 ## Parameters
@@ -70,11 +70,11 @@ Create additional public ip configurations from existing public ips
     "value": [
         {
             "name": "ipConfig01",
-            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01"
+            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01"
         },
         {
             "name": "ipConfig02",
-            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02"
+            "publicIPAddressResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02"
         }
     ]
 }
@@ -90,11 +90,11 @@ Create additional public ip configurations from existing public ips
 additionalPublicIpConfigurations: [
     {
         name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01'
+        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-01'
     }
     {
         name: 'ipConfig02'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02'
+        publicIPAddressResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-[[namePrefix]]-az-pip-x-fw-02'
     }
 ]
 ```
@@ -114,7 +114,7 @@ The Public IP Address object to create as part of the module. This will be creat
 ```json
 "publicIPAddressObject": {
     "value": {
-        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "name": "adp-[[namePrefix]]-az-pip-custom-x-fw",
         "publicIPPrefixResourceId": "",
         "publicIPAllocationMethod": "Static",
         "skuName": "Standard",
@@ -151,7 +151,7 @@ The Public IP Address object to create as part of the module. This will be creat
 ```bicep
 publicIPAddressObject: {
     name: 'mypip'
-    publicIPPrefixResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
+    publicIPPrefixResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
     publicIPAllocationMethod: 'Dynamic'
     skuName: 'Basic'
     skuTier: 'Regional'
@@ -314,7 +314,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nbhcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhcom001'
+    name: 'nbhcom001'
     vNetId: '<vNetId>'
     // Non-required parameters
     bastionSubnetPublicIpResourceId: '<bastionSubnetPublicIpResourceId>'
@@ -362,7 +362,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhcom001"
+      "value": "nbhcom001"
     },
     "vNetId": {
       "value": "<vNetId>"
@@ -445,7 +445,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nbhctmpip'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhctmpip001'
+    name: 'nbhctmpip001'
     vNetId: '<vNetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -459,7 +459,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
       diagnosticMetricsToEnable: [
         'AllMetrics'
       ]
-      name: '<<namePrefix>>nbhctmpip001-pip'
+      name: 'nbhctmpip001-pip'
       publicIPPrefixResourceId: ''
       roleAssignments: [
         {
@@ -495,7 +495,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhctmpip001"
+      "value": "nbhctmpip001"
     },
     "vNetId": {
       "value": "<vNetId>"
@@ -515,7 +515,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
         "diagnosticMetricsToEnable": [
           "AllMetrics"
         ],
-        "name": "<<namePrefix>>nbhctmpip001-pip",
+        "name": "nbhctmpip001-pip",
         "publicIPPrefixResourceId": "",
         "roleAssignments": [
           {
@@ -554,7 +554,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nbhmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nbhmin001'
+    name: 'nbhmin001'
     vNetId: '<vNetId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -576,7 +576,7 @@ module bastionHosts './network/bastion-hosts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nbhmin001"
+      "value": "nbhmin001"
     },
     "vNetId": {
       "value": "<vNetId>"

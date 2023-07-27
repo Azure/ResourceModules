@@ -18,7 +18,7 @@ param serviceShort string = 'nnmcom'
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -26,7 +26,7 @@ param namePrefix string = '<<namePrefix>>'
 
 // General resources
 // =================
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   name: resourceGroupName
   location: location
 }

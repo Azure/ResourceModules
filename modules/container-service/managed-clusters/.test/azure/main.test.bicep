@@ -21,7 +21,7 @@ param baseTime string = utcNow('u')
 param enableDefaultTelemetry bool = true
 
 @description('Optional. A token to inject into the name of each resource.')
-param namePrefix string = '<<namePrefix>>'
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -44,6 +44,7 @@ module nestedDependencies 'dependencies.bicep' = {
     proximityPlacementGroupName: 'dep-${namePrefix}-ppg-${serviceShort}'
     // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
     keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
+    dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
   }
 }
 

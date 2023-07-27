@@ -175,7 +175,7 @@ module profiles './cdn/profiles/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-cdnpcom'
   params: {
     // Required parameters
-    name: 'dep-<<namePrefix>>-test-cdnpcom'
+    name: 'dep-test-cdnpcom'
     sku: 'Standard_Verizon'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -198,7 +198,7 @@ module profiles './cdn/profiles/main.bicep' = {
       originHostHeader: '<originHostHeader>'
       origins: [
         {
-          name: 'dep-<<namePrefix>>-cdn-endpoint01'
+          name: 'dep-cdn-endpoint01'
           properties: {
             enabled: true
             hostName: '<hostName>'
@@ -239,7 +239,7 @@ module profiles './cdn/profiles/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dep-<<namePrefix>>-test-cdnpcom"
+      "value": "dep-test-cdnpcom"
     },
     "sku": {
       "value": "Standard_Verizon"
@@ -268,7 +268,7 @@ module profiles './cdn/profiles/main.bicep' = {
         "originHostHeader": "<originHostHeader>",
         "origins": [
           {
-            "name": "dep-<<namePrefix>>-cdn-endpoint01",
+            "name": "dep-cdn-endpoint01",
             "properties": {
               "enabled": true,
               "hostName": "<hostName>",

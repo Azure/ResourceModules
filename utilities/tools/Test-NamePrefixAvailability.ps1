@@ -107,7 +107,7 @@ function Test-NamePrefixAvailability {
 
                     # trim the entry and replace placeholder values
                     $temp = $temp.Replace("'", '') # remove trailing quotes
-                    $temp = $temp.Replace('<<namePrefix>>', $namePrefix)
+                    $temp = $temp.Replace('[[namePrefix]]', $namePrefix)
                     $temp = $temp.Replace('${serviceShort}', $serviceShort)
                     $temp = $temp.Replace(' ', '') # remove trailing whitespaces
 

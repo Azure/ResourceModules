@@ -184,7 +184,7 @@ module components './insights/components/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-iccom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>iccom001'
+    name: 'iccom001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
@@ -224,7 +224,7 @@ module components './insights/components/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>iccom001"
+      "value": "iccom001"
     },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
@@ -283,7 +283,7 @@ module components './insights/components/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-icmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>icmin001'
+    name: 'icmin001'
     workspaceResourceId: '<workspaceResourceId>'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -305,7 +305,7 @@ module components './insights/components/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>icmin001"
+      "value": "icmin001"
     },
     "workspaceResourceId": {
       "value": "<workspaceResourceId>"
