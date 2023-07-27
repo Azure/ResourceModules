@@ -1094,10 +1094,10 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
 
 ```bicep
 module managedClusters './container-service/managed-clusters/main.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-test-csmkube'
+  name: '${uniqueString(deployment().name, location)}-test-csmpriv'
   params: {
     // Required parameters
-    name: 'csmkube001'
+    name: 'csmpriv001'
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -1216,7 +1216,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "csmkube001"
+      "value": "csmpriv001"
     },
     "primaryAgentPoolProfile": {
       "value": [
