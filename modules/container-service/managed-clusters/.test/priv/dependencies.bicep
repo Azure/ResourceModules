@@ -20,9 +20,8 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
     name: privateDnsZoneName
     location: 'global'
-    resource privateDNSZoneVNetLink 'virtualNetworkLinks@2020-06-01' = {
+    resource privateDNSZoneVNetLink 'virtualNetworkLinks' = {
         name: 'pDnsLink-${virtualNetworkName}-${privateDnsZoneName}'
-        location: location
         properties: {
             registrationEnabled: true
             virtualNetwork: {
