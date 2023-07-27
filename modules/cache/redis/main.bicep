@@ -123,8 +123,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'ConnectedClientList'
 ])
@@ -145,7 +146,7 @@ param enableDefaultTelemetry bool = true
 
 var availabilityZones = skuName == 'Premium' ? zoneRedundant ? !empty(zones) ? zones : pickZones('Microsoft.Cache', 'redis', location, 3) : [] : []
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -163,7 +164,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric

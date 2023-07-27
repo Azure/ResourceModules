@@ -97,8 +97,9 @@ param workflowStaticResults object = {}
 @description('Optional. The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer.')
 param workflowTriggers object = {}
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'WorkflowRuntime'
 ])
@@ -117,7 +118,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -135,7 +136,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric

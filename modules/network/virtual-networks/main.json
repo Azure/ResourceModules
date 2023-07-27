@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "1931271665284885822"
+      "templateHash": "8050151724516154993"
     }
   },
   "parameters": {
@@ -163,7 +163,7 @@
         "VMProtectionAlerts"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
