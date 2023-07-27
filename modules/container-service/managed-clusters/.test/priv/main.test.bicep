@@ -139,7 +139,7 @@ module testDeployment '../../main.bicep' = {
       }
     ]
     aksClusterNetworkPlugin: 'azure'
-    aksClusterSkuTier: 'Paid'
+    aksClusterSkuTier: 'Standard'
     aksClusterDnsServiceIP: '10.10.200.10'
     aksClusterServiceCidr: '10.10.200.0/24'
     diagnosticLogsRetentionInDays: 7

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "7238741749893507587"
+      "templateHash": "14139525601830400226"
     }
   },
   "parameters": {
@@ -129,7 +129,8 @@
       "defaultValue": "Free",
       "allowedValues": [
         "Free",
-        "Paid"
+        "Premium",
+        "Standard"
       ],
       "metadata": {
         "description": "Optional. Tier of a managed cluster SKU. - Free or Paid."

@@ -61,7 +61,8 @@ param aksClusterOutboundType string = 'loadBalancer'
 @description('Optional. Tier of a managed cluster SKU. - Free or Paid.')
 @allowed([
   'Free'
-  'Paid'
+  'Premium'
+  'Standard'
 ])
 param aksClusterSkuTier string = 'Free'
 

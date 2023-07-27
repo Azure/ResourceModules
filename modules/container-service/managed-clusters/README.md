@@ -61,7 +61,7 @@ This module deploys an Azure Kubernetes Service (AKS) Managed Cluster.
 | `aksClusterOutboundType` | string | `'loadBalancer'` | `[loadBalancer, userDefinedRouting]` | Specifies outbound (egress) routing method. - loadBalancer or userDefinedRouting. |
 | `aksClusterPodCidr` | string | `''` |  | Specifies the CIDR notation IP range from which to assign pod IPs when kubenet is used. |
 | `aksClusterServiceCidr` | string | `''` |  | A CIDR notation IP range from which to assign service cluster IPs. It must not overlap with any Subnet IP ranges. |
-| `aksClusterSkuTier` | string | `'Free'` | `[Free, Paid]` | Tier of a managed cluster SKU. - Free or Paid. |
+| `aksClusterSkuTier` | string | `'Free'` | `[Free, Premium, Standard]` | Tier of a managed cluster SKU. - Free or Paid. |
 | `aksClusterSshPublicKey` | string | `''` |  | Specifies the SSH RSA public key string for the Linux nodes. |
 | `aksServicePrincipalProfile` | object | `{object}` |  | Information about a service principal identity for the cluster to use for manipulating Azure APIs. |
 | `authorizedIPRanges` | array | `[]` |  | IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer. |
@@ -1174,7 +1174,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     aksClusterDnsServiceIP: '10.10.200.10'
     aksClusterNetworkPlugin: 'azure'
     aksClusterServiceCidr: '10.10.200.0/24'
-    aksClusterSkuTier: 'Paid'
+    aksClusterSkuTier: 'Standard'
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
     diagnosticLogsRetentionInDays: 7
@@ -1297,7 +1297,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       "value": "10.10.200.0/24"
     },
     "aksClusterSkuTier": {
-      "value": "Paid"
+      "value": "Standard"
     },
     "diagnosticEventHubAuthorizationRuleId": {
       "value": "<diagnosticEventHubAuthorizationRuleId>"
