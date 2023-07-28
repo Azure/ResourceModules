@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.18.4.5664",
-      "templateHash": "11613596621855409908"
+      "version": "0.19.5.34762",
+      "templateHash": "11673401817542578236"
     }
   },
   "parameters": {
@@ -97,13 +97,14 @@
         "allLogs"
       ],
       "allowedValues": [
+        "",
         "allLogs",
         "StorageRead",
         "StorageWrite",
         "StorageDelete"
       ],
       "metadata": {
-        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource."
+        "description": "Optional. The name of logs that will be streamed. \"allLogs\" includes all possible logs for the resource. Set to '' to disable log collection."
       }
     },
     "diagnosticMetricsToEnable": {
@@ -130,9 +131,9 @@
     "copy": [
       {
         "name": "diagnosticsLogsSpecified",
-        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs')))))]",
+        "count": "[length(filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), ''))))))]",
         "input": {
-          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', not(equals(lambdaVariables('item'), 'allLogs'))))[copyIndex('diagnosticsLogsSpecified')]]",
+          "category": "[filter(parameters('diagnosticLogCategoriesToEnable'), lambda('item', and(not(equals(lambdaVariables('item'), 'allLogs')), not(equals(lambdaVariables('item'), '')))))[copyIndex('diagnosticsLogsSpecified')]]",
           "enabled": true,
           "retentionPolicy": {
             "enabled": true,
@@ -154,7 +155,7 @@
         }
       }
     ],
-    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), variables('diagnosticsLogsSpecified'))]",
+    "diagnosticsLogs": "[if(contains(parameters('diagnosticLogCategoriesToEnable'), 'allLogs'), createArray(createObject('categoryGroup', 'allLogs', 'enabled', true(), 'retentionPolicy', createObject('enabled', true(), 'days', parameters('diagnosticLogsRetentionInDays')))), if(contains(parameters('diagnosticLogCategoriesToEnable'), ''), createArray(), variables('diagnosticsLogsSpecified')))]",
     "enableReferencedModulesTelemetry": false
   },
   "resources": [
@@ -237,8 +238,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.18.4.5664",
-              "templateHash": "5466678674425977487"
+              "version": "0.19.5.34762",
+              "templateHash": "7389077354310638042"
             }
           },
           "parameters": {
@@ -380,8 +381,8 @@
                   "metadata": {
                     "_generator": {
                       "name": "bicep",
-                      "version": "0.18.4.5664",
-                      "templateHash": "3454304478574190517"
+                      "version": "0.19.5.34762",
+                      "templateHash": "2300763779336807238"
                     }
                   },
                   "parameters": {

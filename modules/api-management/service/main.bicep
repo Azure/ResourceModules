@@ -109,8 +109,9 @@ param diagnosticWorkspaceId string = ''
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
 param zones array = []
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'GatewayLogs'
 ])
@@ -169,7 +170,7 @@ var enableReferencedModulesTelemetry = false
 
 var authorizationServerList = !empty(authorizationServers) ? authorizationServers.secureList : []
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -187,7 +188,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric

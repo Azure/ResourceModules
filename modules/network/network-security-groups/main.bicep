@@ -44,8 +44,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'NetworkSecurityGroupEvent'
   'NetworkSecurityGroupRuleCounter'
@@ -59,7 +60,7 @@ param diagnosticSettingsName string = ''
 
 var enableReferencedModulesTelemetry = false
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -77,7 +78,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'

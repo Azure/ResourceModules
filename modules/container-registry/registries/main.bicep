@@ -132,8 +132,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
@@ -185,7 +186,7 @@ param cMKKeyVersion string = ''
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Note, CMK requires the \'acrSku\' to be \'Premium\'. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -203,7 +204,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
