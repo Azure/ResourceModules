@@ -67,7 +67,7 @@ module testDeployment '../../main.bicep' = {
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
-          '1'
+          '3'
         ]
         count: 1
         enableAutoScaling: true

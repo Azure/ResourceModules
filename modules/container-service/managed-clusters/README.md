@@ -782,7 +782,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
-          '1'
+          '3'
         ]
         count: 1
         enableAutoScaling: true
@@ -897,7 +897,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       "value": [
         {
           "availabilityZones": [
-            "1"
+            "3"
           ],
           "count": 1,
           "enableAutoScaling": true,
@@ -1147,7 +1147,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
       }
       {
         availabilityZones: [
-          '1'
+          '3'
         ]
         count: 2
         enableAutoScaling: true
@@ -1262,7 +1262,7 @@ module managedClusters './container-service/managed-clusters/main.bicep' = {
         },
         {
           "availabilityZones": [
-            "1"
+            "3"
           ],
           "count": 2,
           "enableAutoScaling": true,

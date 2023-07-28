@@ -115,7 +115,7 @@ module testDeployment '../../main.bicep' = {
       }
       {
         availabilityZones: [
-          '1'
+          '3'
         ]
         count: 2
         enableAutoScaling: true
