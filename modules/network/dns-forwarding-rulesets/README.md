@@ -26,7 +26,7 @@ This template deploys an dns forwarding ruleset.
 
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `dnsResolverOutboundEndpointIds` | array | The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers. |
+| `dnsResolverOutboundEndpointResourceIds` | array | The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers. |
 | `name` | string | Name of the DNS Forwarding Ruleset. |
 
 **Optional parameters**
@@ -173,10 +173,8 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndfrscom'
   params: {
     // Required parameters
-    dnsResolverOutboundEndpointIds: [
-      {
-        id: '<id>'
-      }
+    dnsResolverOutboundEndpointResourceIds: [
+      '<dnsResolverOutboundEndpointsId>'
     ]
     name: 'ndfrscom001'
     // Non-required parameters
@@ -228,11 +226,9 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "dnsResolverOutboundEndpointIds": {
+    "dnsResolverOutboundEndpointResourceIds": {
       "value": [
-        {
-          "id": "<id>"
-        }
+        "<dnsResolverOutboundEndpointsId>"
       ]
     },
     "name": {
@@ -300,10 +296,8 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ndfrsmin'
   params: {
     // Required parameters
-    dnsResolverOutboundEndpointIds: [
-      {
-        id: '<id>'
-      }
+    dnsResolverOutboundEndpointResourceIds: [
+      '<dnsResolverOutboundEndpointsResourceId>'
     ]
     name: 'ndfrsmin001'
     // Non-required parameters
@@ -325,11 +319,9 @@ module dnsForwardingRulesets './network/dns-forwarding-rulesets/main.bicep' = {
   "contentVersion": "1.0.0.0",
   "parameters": {
     // Required parameters
-    "dnsResolverOutboundEndpointIds": {
+    "dnsResolverOutboundEndpointResourceIds": {
       "value": [
-        {
-          "id": "<id>"
-        }
+        "<dnsResolverOutboundEndpointsResourceId>"
       ]
     },
     "name": {

@@ -1,6 +1,13 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.18.4.5664",
+      "templateHash": "6120226132023367818"
+    }
+  },
   "parameters": {
     "name": {
       "type": "string",
@@ -42,7 +49,7 @@
         "description": "Optional. Tags of the resource."
       }
     },
-    "dnsResolverOutboundEndpointIds": {
+    "dnsResolverOutboundEndpointResourceIds": {
       "type": "array",
       "metadata": {
         "description": "Required. The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers."
@@ -92,7 +99,15 @@
       "location": "[parameters('location')]",
       "tags": "[parameters('tags')]",
       "properties": {
-        "dnsResolverOutboundEndpoints": "[parameters('dnsResolverOutboundEndpointIds')]"
+        "copy": [
+          {
+            "name": "dnsResolverOutboundEndpoints",
+            "count": "[length(parameters('dnsResolverOutboundEndpointResourceIds'))]",
+            "input": {
+              "id": "[parameters('dnsResolverOutboundEndpointResourceIds')[copyIndex('dnsResolverOutboundEndpoints')]]"
+            }
+          }
+        ]
       }
     },
     {
@@ -142,6 +157,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "15974628788273884251"
+            }
+          },
           "parameters": {
             "name": {
               "type": "string",
@@ -279,6 +301,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "15625871831521285672"
+            }
+          },
           "parameters": {
             "dnsForwardingRulesetName": {
               "type": "string",
@@ -400,6 +429,13 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.18.4.5664",
+              "templateHash": "5621141103615196068"
+            }
+          },
           "parameters": {
             "principalIds": {
               "type": "array",
