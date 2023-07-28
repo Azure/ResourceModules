@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.metricalerts.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/insights/metric-alerts/*'
+      - '/modules/insights/metric-alert/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/insights/metric-alerts'
+    value: '/modules/insights/metric-alert'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

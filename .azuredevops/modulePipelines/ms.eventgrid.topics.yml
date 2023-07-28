@@ -27,8 +27,8 @@ trigger:
       - main
   paths:
     include:
-      - '/modules/event-grid/topics/*'
-      - '/modules/network/private-endpoints/*'
+      - '/modules/event-grid/topic/*'
+      - '/modules/network/private-endpoint/*'
       - '/.azuredevops/modulePipelines/ms.eventgrid.topics.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
@@ -40,7 +40,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/event-grid/topics'
+    value: '/modules/event-grid/topic'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

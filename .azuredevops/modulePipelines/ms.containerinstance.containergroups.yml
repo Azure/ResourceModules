@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.containerinstance.containergroups.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/container-instance/container-groups/*'
+      - '/modules/container-instance/container-group/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/container-instance/container-groups'
+    value: '/modules/container-instance/container-group'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

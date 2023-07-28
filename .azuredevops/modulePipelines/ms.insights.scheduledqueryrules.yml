@@ -29,7 +29,7 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.scheduledqueryrules.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
-      - '/modules/insights/scheduled-query-rules/*'
+      - '/modules/insights/scheduled-query-rule/*'
       - '/utilities/pipelines/*'
     exclude:
       - '/utilities/pipelines/deploymentRemoval/*'
@@ -39,7 +39,7 @@ variables:
   - template: '../../settings.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/modules/insights/scheduled-query-rules'
+    value: '/modules/insights/scheduled-query-rule'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml
