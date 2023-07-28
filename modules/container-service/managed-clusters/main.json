@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "14139525601830400226"
+      "templateHash": "5348474603795558795"
     }
   },
   "parameters": {
@@ -86,13 +86,6 @@
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr."
-      }
-    },
-    "aksClusterDockerBridgeCidr": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range."
       }
     },
     "aksClusterLoadBalancerSku": {
@@ -840,7 +833,6 @@
           "podCidr": "[if(not(empty(parameters('aksClusterPodCidr'))), parameters('aksClusterPodCidr'), null())]",
           "serviceCidr": "[if(not(empty(parameters('aksClusterServiceCidr'))), parameters('aksClusterServiceCidr'), null())]",
           "dnsServiceIP": "[if(not(empty(parameters('aksClusterDnsServiceIP'))), parameters('aksClusterDnsServiceIP'), null())]",
-          "dockerBridgeCidr": "[if(not(empty(parameters('aksClusterDockerBridgeCidr'))), parameters('aksClusterDockerBridgeCidr'), null())]",
           "outboundType": "[parameters('aksClusterOutboundType')]",
           "loadBalancerSku": "[parameters('aksClusterLoadBalancerSku')]",
           "loadBalancerProfile": "[if(not(equals(parameters('managedOutboundIPCount'), 0)), variables('lbProfile'), null())]"
