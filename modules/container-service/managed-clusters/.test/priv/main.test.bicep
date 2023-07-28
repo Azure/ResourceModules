@@ -12,10 +12,7 @@ param resourceGroupName string = 'ms.containerservice.managedclusters-${serviceS
 param location string = deployment().location
 
 @description('Optional. A short identifier for the kind of deployment. Should be kept short to not run into resource-name length-constraints.')
-param serviceShort string = 'csmaz'
-
-@description('Generated. Used as a basis for unique resource names.')
-param baseTime string = utcNow('u')
+param serviceShort string = 'csmpriv'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -38,13 +35,9 @@ module nestedDependencies 'dependencies.bicep' = {
   scope: resourceGroup
   name: '${uniqueString(deployment().name, location)}-nestedDependencies'
   params: {
-    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
     managedIdentityName: 'dep-${namePrefix}-msi-${serviceShort}'
-    diskEncryptionSetName: 'dep-${namePrefix}-des-${serviceShort}'
-    proximityPlacementGroupName: 'dep-${namePrefix}-ppg-${serviceShort}'
-    // Adding base time to make the name unique as purge protection must be enabled (but may not be longer than 24 characters total)
-    keyVaultName: 'dep-${namePrefix}-kv-${serviceShort}-${substring(uniqueString(baseTime), 0, 3)}'
-    dnsZoneName: 'dep-${namePrefix}-dns-${serviceShort}.com'
+    privateDnsZoneName: 'privatelink.${location}.azmk8s.io'
+    virtualNetworkName: 'dep-${namePrefix}-vnet-${serviceShort}'
   }
 }
 
@@ -72,6 +65,7 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
+    enablePrivateCluster: true
     primaryAgentPoolProfile: [
       {
         availabilityZones: [
@@ -90,7 +84,7 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[0]
+        vnetSubnetID: '${nestedDependencies.outputs.vNetResourceId}/subnets/defaultSubnet'
       }
     ]
     agentPools: [
@@ -117,8 +111,7 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[1]
-        proximityPlacementGroupResourceId: nestedDependencies.outputs.proximityPlacementGroupResourceId
+        vnetSubnetID: '${nestedDependencies.outputs.vNetResourceId}/subnets/defaultSubnet'
       }
       {
         availabilityZones: [
@@ -143,89 +136,24 @@ module testDeployment '../../main.bicep' = {
         storageProfile: 'ManagedDisks'
         type: 'VirtualMachineScaleSets'
         vmSize: 'Standard_DS2_v2'
-        vnetSubnetID: nestedDependencies.outputs.subnetResourceIds[2]
       }
     ]
     aksClusterNetworkPlugin: 'azure'
+    aksClusterSkuTier: 'Standard'
+    aksClusterDnsServiceIP: '10.10.200.10'
+    aksClusterServiceCidr: '10.10.200.0/24'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: diagnosticDependencies.outputs.storageAccountResourceId
     diagnosticWorkspaceId: diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
     diagnosticEventHubAuthorizationRuleId: diagnosticDependencies.outputs.eventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticDependencies.outputs.eventHubNamespaceEventHubName
-    diskEncryptionSetID: nestedDependencies.outputs.diskEncryptionSetResourceId
-    openServiceMeshEnabled: true
-    lock: 'CanNotDelete'
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Reader'
-        principalIds: [
-          nestedDependencies.outputs.managedIdentityPrincipalId
-        ]
-        principalType: 'ServicePrincipal'
-      }
-    ]
-    systemAssignedIdentity: true
+    privateDNSZone: nestedDependencies.outputs.privateDnsZoneResourceId
+    userAssignedIdentities: {
+      '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+    }
     tags: {
       Environment: 'Non-Prod'
       Role: 'DeploymentValidation'
-    }
-    fluxExtension: {
-      configurationSettings: {
-        'helm-controller.enabled': 'true'
-        'source-controller.enabled': 'true'
-        'kustomize-controller.enabled': 'true'
-        'notification-controller.enabled': 'true'
-        'image-automation-controller.enabled': 'false'
-        'image-reflector-controller.enabled': 'false'
-      }
-      configurations: [
-        {
-          namespace: 'flux-system'
-          scope: 'cluster'
-          gitRepository: {
-            repositoryRef: {
-              branch: 'main'
-            }
-            sshKnownHosts: ''
-            syncIntervalInSeconds: 300
-            timeoutInSeconds: 180
-            url: 'https://github.com/mspnp/aks-baseline'
-          }
-        }
-        {
-          namespace: 'flux-system-helm'
-          scope: 'cluster'
-          gitRepository: {
-            repositoryRef: {
-              branch: 'main'
-            }
-            sshKnownHosts: ''
-            syncIntervalInSeconds: 300
-            timeoutInSeconds: 180
-            url: 'https://github.com/Azure/gitops-flux2-kustomize-helm-mt'
-          }
-          kustomizations: {
-            infra: {
-              path: './infrastructure'
-              dependsOn: []
-              timeoutInSeconds: 600
-              syncIntervalInSeconds: 600
-              validation: 'none'
-              prune: true
-            }
-            apps: {
-              path: './apps/staging'
-              dependsOn: [
-                'infra'
-              ]
-              timeoutInSeconds: 600
-              syncIntervalInSeconds: 600
-              retryIntervalInSeconds: 120
-              prune: true
-            }
-          }
-        }
-      ]
     }
   }
 }
