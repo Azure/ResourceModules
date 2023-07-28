@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "15903452996250901966"
+      "templateHash": "5348474603795558795"
     }
   },
   "parameters": {
@@ -88,13 +88,6 @@
         "description": "Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr."
       }
     },
-    "aksClusterDockerBridgeCidr": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range."
-      }
-    },
     "aksClusterLoadBalancerSku": {
       "type": "string",
       "defaultValue": "standard",
@@ -129,7 +122,8 @@
       "defaultValue": "Free",
       "allowedValues": [
         "Free",
-        "Paid"
+        "Premium",
+        "Standard"
       ],
       "metadata": {
         "description": "Optional. Tier of a managed cluster SKU. - Free or Paid."
@@ -261,11 +255,11 @@
         "description": "Optional. Whether to create additional public FQDN for private cluster or not."
       }
     },
-    "usePrivateDNSZone": {
-      "type": "bool",
-      "defaultValue": false,
+    "privateDNSZone": {
+      "type": "string",
+      "defaultValue": "",
       "metadata": {
-        "description": "Optional. If AKS will create a Private DNS Zone in the Node Resource Group."
+        "description": "Optional. Private DNS Zone configuration. Set to 'system' and AKS will create a private DNS zone in the node resource group. Set to '' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone."
       }
     },
     "primaryAgentPoolProfile": {
@@ -839,7 +833,6 @@
           "podCidr": "[if(not(empty(parameters('aksClusterPodCidr'))), parameters('aksClusterPodCidr'), null())]",
           "serviceCidr": "[if(not(empty(parameters('aksClusterServiceCidr'))), parameters('aksClusterServiceCidr'), null())]",
           "dnsServiceIP": "[if(not(empty(parameters('aksClusterDnsServiceIP'))), parameters('aksClusterDnsServiceIP'), null())]",
-          "dockerBridgeCidr": "[if(not(empty(parameters('aksClusterDockerBridgeCidr'))), parameters('aksClusterDockerBridgeCidr'), null())]",
           "outboundType": "[parameters('aksClusterOutboundType')]",
           "loadBalancerSku": "[parameters('aksClusterLoadBalancerSku')]",
           "loadBalancerProfile": "[if(not(equals(parameters('managedOutboundIPCount'), 0)), variables('lbProfile'), null())]"
@@ -877,7 +870,7 @@
           "disableRunCommand": "[parameters('disableRunCommand')]",
           "enablePrivateCluster": "[parameters('enablePrivateCluster')]",
           "enablePrivateClusterPublicFQDN": "[parameters('enablePrivateClusterPublicFQDN')]",
-          "privateDNSZone": "[if(parameters('usePrivateDNSZone'), 'system', '')]"
+          "privateDNSZone": "[parameters('privateDNSZone')]"
         },
         "podIdentityProfile": {
           "allowNetworkPluginKubenet": "[parameters('podIdentityProfileAllowNetworkPluginKubenet')]",

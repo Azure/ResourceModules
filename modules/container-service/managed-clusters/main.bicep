@@ -38,9 +38,6 @@ param aksClusterServiceCidr string = ''
 @description('Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr.')
 param aksClusterDnsServiceIP string = ''
 
-@description('Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.')
-param aksClusterDockerBridgeCidr string = ''
-
 @description('Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools.')
 @allowed([
   'basic'
@@ -61,7 +58,8 @@ param aksClusterOutboundType string = 'loadBalancer'
 @description('Optional. Tier of a managed cluster SKU. - Free or Paid.')
 @allowed([
   'Free'
-  'Paid'
+  'Premium'
+  'Standard'
 ])
 param aksClusterSkuTier string = 'Free'
 
@@ -120,8 +118,8 @@ param enablePrivateCluster bool = false
 @description('Optional. Whether to create additional public FQDN for private cluster or not.')
 param enablePrivateClusterPublicFQDN bool = false
 
-@description('Optional. If AKS will create a Private DNS Zone in the Node Resource Group.')
-param usePrivateDNSZone bool = false
+@description('Optional. Private DNS Zone configuration. Set to \'system\' and AKS will create a private DNS zone in the node resource group. Set to \'\' to disable private DNS Zone creation and use public DNS. Supply the resource ID here of an existing Private DNS zone to use an existing zone.')
+param privateDNSZone string = ''
 
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
@@ -484,7 +482,6 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-p
       podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
       serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
       dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
-      dockerBridgeCidr: !empty(aksClusterDockerBridgeCidr) ? aksClusterDockerBridgeCidr : null
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
       loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
@@ -522,7 +519,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-p
       disableRunCommand: disableRunCommand
       enablePrivateCluster: enablePrivateCluster
       enablePrivateClusterPublicFQDN: enablePrivateClusterPublicFQDN
-      privateDNSZone: usePrivateDNSZone ? 'system' : ''
+      privateDNSZone: privateDNSZone
     }
     podIdentityProfile: {
       allowNetworkPluginKubenet: podIdentityProfileAllowNetworkPluginKubenet
