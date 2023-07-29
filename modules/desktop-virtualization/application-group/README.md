@@ -1,4 +1,4 @@
-# Azure Virtual Desktop (AVD) Application Groups `[Microsoft.DesktopVirtualization/applicationGroups]`
+# Azure Virtual Desktop (AVD) Application Groups `[Microsoft.DesktopVirtualization/applicationGroup]`
 
 This module deploys an Azure Virtual Desktop (AVD) Application Group.
 
@@ -34,7 +34,7 @@ This module deploys an Azure Virtual Desktop (AVD) Application Group.
 
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applications` | _[applications](applications/README.md)_ array | `[]` |  | List of applications to be created in the Application Group. |
+| `applications` | array | `[]` |  | List of applications to be created in the Application Group. |
 | `description` | string | `''` |  | The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -178,7 +178,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGroups './desktop-virtualization/application-groups/main.bicep' = {
+module applicationGroup './desktop-virtualization/application-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvagcom'
   params: {
     // Required parameters
@@ -335,7 +335,7 @@ module applicationGroups './desktop-virtualization/application-groups/main.bicep
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationGroups './desktop-virtualization/application-groups/main.bicep' = {
+module applicationGroup './desktop-virtualization/application-group/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-dvagmin'
   params: {
     // Required parameters

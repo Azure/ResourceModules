@@ -1,4 +1,4 @@
-# Azure Virtual Desktop (AVD) Application Group Applications `[Microsoft.DesktopVirtualization/applicationGroups/applications]`
+# Azure Virtual Desktop (AVD) Application Group Applications `[Microsoft.DesktopVirtualization/applicationGroup/application]`
 
 This module deploys an Azure Virtual Desktop (AVD) Application Group Application.
 
