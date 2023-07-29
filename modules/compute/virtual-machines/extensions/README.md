@@ -41,8 +41,7 @@ This module deploys a Virtual Machine Extension.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via a Globally Unique Identifier (GUID). |
 | `forceUpdateTag` | string | `''` | How the extension handler should be forced to update even if the extension configuration has not changed. |
 | `location` | string | `[resourceGroup().location]` | The location the extension is deployed to. |
-| `asdasdasd` | secureObject | `{object}` | Any object that contains the extension specific protected settings. |
-| `protectedSettings` | secureObject | `string` | Any object that contains the extension specific protected settings. |
+| `protectedSettings` | secureObject | `{object}` | Any object that contains the extension specific protected settings. |
 | `settings` | object | `{object}` | Any object that contains the extension specific settings. |
 | `supressFailures` | bool | `False` | Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false. |
 | `tags` | object | `{object}` | Tags of the resource. |
