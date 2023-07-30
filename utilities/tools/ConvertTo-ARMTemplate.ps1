@@ -46,7 +46,7 @@ Converts bicep modules to json-based ARM template, cleaning up all bicep files a
 Regenerates compiled 'main.json' for the whole library.
 
 .EXAMPLE
-. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ModuleRelativePath "modules\desktop-virtualization\application-groups" -RemoveExistingTemplates -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate -SkipTest -Verbose
+. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ModuleRelativePath "modules\desktop-virtualization\application-group" -RemoveExistingTemplates -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate -SkipTest -Verbose
 
 Regenerates compiled 'main.json' for the provided ModuleRelativePath folder.
 

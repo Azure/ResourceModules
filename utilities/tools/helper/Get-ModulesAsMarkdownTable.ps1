@@ -61,9 +61,9 @@ Extract the resource name from the provided module path's readme
 Mandatory. The path to the module to process
 
 .EXAMPLE
-Get-ResourceModuleName -path 'C:\KeyVault'
+Get-ResourceModuleName -path 'C:\key-vault\vault'
 
-Get the resource name defined in the KeyVault-Module's readme. E.g. 'Key Vault'
+Get the resource name defined in the 'key-vault\vault'-module's readme. E.g. 'Key Vault'
 #>
 function Get-ResourceModuleName {
 
@@ -150,9 +150,9 @@ In other words, a module would contain a folder with e.g. a '.test' folder and w
 Mandatory. The path to search in.
 
 .EXAMPLE
-Measure-FolderHasNestedModule -path 'C:\dev\ApiManagement'
+Measure-FolderHasNestedModule -path 'C:\dev\api-management'
 
-Check if the path 'C:\dev\ApiManagement' contains any number of nested modules
+Check if the path 'C:\dev\api-management' contains any number of nested modules
 #>
 function Measure-FolderHasNestedModule {
 
@@ -208,9 +208,9 @@ Mandatory. The name of the repository the code resides in
 Mandatory. The name of the Organization the code resides in
 
 .EXAMPLE
-Get-ResolvedSubServiceRow -subPath 'C:\dev\ApiManagement\serviceResources' -concatedBase "ApiManagement\serviceResources" -output @() -provider 'ApiManagement' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
+Get-ResolvedSubServiceRow -subPath 'C:\dev\api-management\api' -concatedBase "api-management\api" -output @() -provider 'api-management' -ColumnsInOrder @('Name','ProviderNamespace') -SortByColumn 'Name'
 
-Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `ApiManagement` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
+Adds a hashtable like  @{ Name = 'API Management'; 'Provider Namespace' = `api-management` }. As the specified column for sorting is 'Name', the 'Provider Namespace' will be added to each entry.
 #>
 function Get-ResolvedSubServiceRow {
 
@@ -343,10 +343,10 @@ Where sub-resources are part of a subfolder [<parentResource>Resources]
 
 Results in a table like
 
-    "| Name                           | Provider namespace | Resource Type                                                                   |"
-    "| ------------------------------ | ------------------ | ------------------------------------------------------------------------------- |"
-    "| SQL Managed Instances          | `Sql`              | [managedInstances](Sql/managedInstances)                                        |"
-    "| SQL Managed Instances Database |                    | [managedInstances\databases](Sql\managedInstancesResources\databases)           |"
+    "| Name                           | Provider namespace | Resource Type                                               |"
+    "| ------------------------------ | ------------------ | ------------------------------------------------------------|"
+    "| SQL Managed Instances          | `Sql`              | [managedInstances](sql/managed-instance)                    |"
+    "| SQL Managed Instances Database |                    | [managedInstances/databases](sql/managed-instance/database) |"
 
 .PARAMETER Path
 Mandatory. The path to resolve
@@ -374,29 +374,29 @@ Mandatory. The DevOps environment to generate the status badges for
 Optional. The project the repository is hosted in. Required if the 'environment' is 'ADO'
 
 .EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\Modules'
+Get-ModulesAsMarkdownTable -path 'C:\dev\modules'
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with all default columns, sorted by 'Provider Namespace'
-
-.EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -ColumnsInOrder @('Resource Type', 'Name')
-
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, sorted by 'Provider Namespace'
+Generate a markdown table for all modules in path 'C:\dev\modules' with all default columns, sorted by 'Provider Namespace'
 
 .EXAMPLE
-Get-ModulesAsMarkdownTable -path 'C:\dev\Modules' -ColumnsInOrder @('Resource Type', 'Name') -SortByColumn 'Name'
+Get-ModulesAsMarkdownTable -path 'C:\dev\modules' -ColumnsInOrder @('Resource Type', 'Name')
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Resource Type' & 'Name' columns, sorted by 'Provider Namespace'
+
+.EXAMPLE
+Get-ModulesAsMarkdownTable -path 'C:\dev\modules' -ColumnsInOrder @('Resource Type', 'Name') -SortByColumn 'Name'
+
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Resource Type' & 'Name' columns, , sorted by 'Name'
 
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','TemplateType','Status','Deploy') -Environment 'GitHub'
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name', 'TemplateType', 'Status'  &'Deploy' columns, sorted by 'Name' for GitHub
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Name', 'TemplateType', 'Status'  &'Deploy' columns, sorted by 'Name' for GitHub
 
 .EXAMPLE
 Get-ModulesAsMarkdownTable -path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' -RepositoryName 'ResourceModules' -Organization 'CARML' -ProjectName 'ResourceModules' -Environment 'ADO' -ColumnsInOrder @('Name', 'TemplateType', 'Status', 'Deploy')
 
-Generate a markdown table for all modules in path 'C:\dev\Modules' with only the 'Name', 'TemplateType', 'Status' & 'Deploy' columns, sorted by 'Name' for Azure DevOps
+Generate a markdown table for all modules in path 'C:\dev\modules' with only the 'Name', 'TemplateType', 'Status' & 'Deploy' columns, sorted by 'Name' for Azure DevOps
 #>
 function Get-ModulesAsMarkdownTable {
 

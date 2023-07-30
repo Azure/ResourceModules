@@ -336,7 +336,7 @@ Mandatory. The readme file content array to update
 Optional. The identifier of the 'outputs' section. Defaults to '## Cross-referenced modules'
 
 .EXAMPLE
-Set-CrossReferencesSection -ModuleRoot 'C:/KeyVault/vaults' -FullModuleIdentifier 'Microsoft.KeyVault/vaults' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-CrossReferencesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 Update the given readme file's 'Cross-referenced modules' section based on the given template file content
 #>
 function Set-CrossReferencesSection {
@@ -892,7 +892,7 @@ Optional. A switch to control whether or not to add a ARM-JSON-Parameter file ex
 Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
 
 .EXAMPLE
-Set-DeploymentExamplesSection -ModuleRoot 'C:/KeyVault/vaults' -FullModuleIdentifier 'Microsoft.KeyVault/vaults' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+Set-DeploymentExamplesSection -ModuleRoot 'C:/key-vault/vault' -FullModuleIdentifier 'key-vault/vault' -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
 
 Update the given readme file's 'Deployment Examples' section based on the given template file content
 #>
@@ -1393,15 +1393,15 @@ If a readme file does exist, its title and description are updated with whatever
 Required. The path to the readme file to initialize.
 
 .PARAMETER FullModuleIdentifier
-Required. The full identifier of the module. For example: 'sql/managed-instances/administrators'
+Required. The full identifier of the module. For example: 'sql/managed-instance/administrator'
 
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
 
 .EXAMPLE
-Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instances/administrators' -TemplateFileContent @{ resource = @{}; ... }
+Initialize-ReadMe -ReadMeFilePath 'C:/ResourceModules/modules/sql/managed-instances/administrators/readme.md' -FullModuleIdentifier 'sql/managed-instance/administrator' -TemplateFileContent @{ resource = @{}; ... }
 
-Initialize the readme of the 'sql/managed-instances/administrators' module
+Initialize the readme of the 'sql/managed-instance/administrator' module
 #>
 function Initialize-ReadMe {
 
@@ -1525,7 +1525,7 @@ Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -ReadMe
 Generate the Module ReadMe files into a specific folder path
 
 .EXAMPLE
-$templatePaths = (Get-ChildItem 'C:/Network' -Filter 'main.bicep' -Recurse).FullName
+$templatePaths = (Get-ChildItem 'C:/network' -Filter 'main.bicep' -Recurse).FullName
 $templatePaths | ForEach-Object -Parallel { . '<PathToRepo>/utilities/tools/Set-ModuleReadMe.ps1' ; Set-ModuleReadMe -TemplateFilePath $_ }
 
 Generate the Module ReadMe for any template in a folder path
@@ -1595,7 +1595,7 @@ function Set-ModuleReadMe {
     $moduleRoot = Split-Path $TemplateFilePath -Parent
     $fullModuleIdentifier = $moduleRoot.Replace('\', '/').split('modules/')[1]
     # Custom modules are modules having the same resource type but different properties based on the name
-    # E.g., web/sites/config--appsettings vs web/sites/config--authsettingsv2
+    # E.g., web/site/config--appsetting vs web/site/config--authsettingv2
     $customModuleSeparator = '--'
     if ($fullModuleIdentifier.Contains($customModuleSeparator)) {
         $fullModuleIdentifier = $fullModuleIdentifier.split($customModuleSeparator)[0]
