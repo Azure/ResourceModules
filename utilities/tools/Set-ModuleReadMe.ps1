@@ -1510,17 +1510,17 @@ Set-ModuleReadMe -TemplateFilePath 'C:\main.bicep'
 Update the readme in path 'C:\README.md' based on the bicep template in path 'C:\main.bicep'
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Network/loadBalancers/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
+Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
 
 Generate the Module ReadMe only for specific sections. Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Network/loadBalancers/main.bicep' -TemplateFileContent @{...}
+Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -TemplateFileContent @{...}
 
 (Re)Generate the readme file for template 'loadBalancer' based on the content provided in the TemplateFileContent parameter
 
 .EXAMPLE
-Set-ModuleReadMe -TemplateFilePath 'C:/Network/loadBalancers/main.bicep' -ReadMeFilePath 'C:/differentFolder'
+Set-ModuleReadMe -TemplateFilePath 'C:/network/load-balancer/main.bicep' -ReadMeFilePath 'C:/differentFolder'
 
 Generate the Module ReadMe files into a specific folder path
 

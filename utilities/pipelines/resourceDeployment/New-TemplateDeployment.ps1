@@ -102,17 +102,17 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-TemplateDeploymentInner -templateFilePath 'C:/KeyVault/main.json' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeploymentInner -templateFilePath 'C:/key-vault/vault/main.json' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the main.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeploymentInner -templateFilePath 'C:/KeyVault/main.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeploymentInner -templateFilePath 'C:/key-vault/vault/main.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the main.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeploymentInner -templateFilePath 'C:/ResourceGroup/main.json' -location 'WestEurope'
+New-TemplateDeploymentInner -templateFilePath 'C:/resources/resource-group/main.json' -location 'WestEurope'
 
 Deploy the main.json of the ResourceGroup module without a parameter file in location 'WestEurope'
 #>
@@ -374,12 +374,12 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/KeyVault/main.bicep' -parameterFilePath 'C:/KeyVault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeployment -templateFilePath 'C:/key-vault/vault/main.bicep' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Deploy the main.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/main.bicep' -location 'WestEurope'
+New-TemplateDeployment -templateFilePath 'C:/resources/resource-group/main.bicep' -location 'WestEurope'
 
 Deploy the main.bicep of the ResourceGroup module in location 'WestEurope' without a parameter file
 

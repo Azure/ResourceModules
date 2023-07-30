@@ -34,9 +34,9 @@ Mandatory. The Pester tests results to parse. Can be fetched by running Pester w
     Failed                = ''
     FailedBlocks          = ''
     FailedContainers      = ''
-    Passed                = '[+] [Microsoft.KeyVault/vaults/secrets] Module should contain a [main.json/main.bicep] file. [+] ...'
+    Passed                = '[+] [key-vault/vault/secret] Module should contain a [main.json/main.bicep] file. [+] ...'
     NotRun                = ''
-    Tests                 = '[+] [Microsoft.KeyVault/vaults/secrets] Module should contain a [main.json/main.bicep] file. [+] ...'
+    Tests                 = '[+] [key-vault/vault/secret] Module should contain a [main.json/main.bicep] file. [+] ...'
     CodeCoverage          = null
 }
 
