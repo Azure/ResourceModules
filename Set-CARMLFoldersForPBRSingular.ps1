@@ -21,6 +21,11 @@ Set-CARMLFoldersForPBRSingular -ModulesFolderPath 'C:\dev\ip\Azure-ResourceModul
 Convert all folders in path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules'
 
 .EXAMPLE
+Set-CARMLFoldersForPBRSingular -ModulesFolderPath 'C:\dev\ip\GitHub\Azure\ResourceModules\modules' -WorkflowsPath 'C:\dev\ip\GitHub\Azure\ResourceModules\.github\workflows' -PipelinesPath 'C:\dev\ip\GitHub\Azure\ResourceModules\.azuredevops\modulePipelines' -UtilitiesPath 'C:\dev\ip\GitHub\Azure\ResourceModules\utilities' -Verbose
+
+Convert all folders in path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules' and replaces all pipeline, workflows and utility references
+
+.EXAMPLE
 Set-CARMLFoldersForPBRSingular -ResourceProviderPath 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules\KeyVault'
 
 Convert all folders in path 'C:\dev\ip\Azure-ResourceModules\ResourceModules\modules\KeyVault' included
