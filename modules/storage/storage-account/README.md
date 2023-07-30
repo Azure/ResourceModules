@@ -426,7 +426,7 @@ The following module usage examples are retrieved from the content of the files 
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './storage/storage-accounts/main.bicep' = {
+module storageAccounts './storage/storage-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssacom'
   params: {
     // Required parameters
@@ -891,7 +891,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './storage/storage-accounts/main.bicep' = {
+module storageAccounts './storage/storage-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssaencr'
   params: {
     // Required parameters
@@ -1058,7 +1058,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './storage/storage-accounts/main.bicep' = {
+module storageAccounts './storage/storage-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssamin'
   params: {
     // Required parameters
@@ -1107,7 +1107,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './storage/storage-accounts/main.bicep' = {
+module storageAccounts './storage/storage-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssanfs'
   params: {
     // Required parameters
@@ -1252,7 +1252,7 @@ module storageAccounts './storage/storage-accounts/main.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module storageAccounts './storage/storage-accounts/main.bicep' = {
+module storageAccounts './storage/storage-account/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-ssav1'
   params: {
     // Required parameters
