@@ -1,4 +1,4 @@
-# Storage Account Local Users `[Microsoft.Storage/storageAccounts/localUsers]`
+# Storage Account Local Users `[Microsoft.Storage/storageAccount/localUser]`
 
 This module deploys a Storage Account Local User, which is used for SFTP authentication.
 
