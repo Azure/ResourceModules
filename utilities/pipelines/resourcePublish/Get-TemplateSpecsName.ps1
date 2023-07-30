@@ -9,9 +9,9 @@ Convert the given template file path into a valid Template Specs repository name
 Mandatory. The template file path to convert
 
 .EXAMPLE
-Get-TemplateSpecsName -TemplateFilePath 'C:\modules\key-vault\vaults\main.bicep'
+Get-TemplateSpecsName -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep'
 
-Convert 'C:\modules\key-vault\vaults\main.bicep' to e.g. 'microsoft.keyvault.vaults'
+Convert 'C:\modules\key-vault\vault\main.bicep' to e.g. 'microsoft.key-vault.vault'
 #>
 function Get-TemplateSpecsName {
 
@@ -26,8 +26,8 @@ function Get-TemplateSpecsName {
     $templateSpecIdentifier = $templateSpecIdentifier -replace 'microsoft', 'ms'
 
     # Shorten the name
-    # This is requried as certain modules generate names such as `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.replicationProtectionContainerMappings` which are longer than the allowed 90 characters for template specs
-    # Using the logic below, the name is shortened to `MS.RecoveryServices.vaults.replicationFabrics.replicationProtectionContainers.Mappings` which has 'only' 86 characters
+    # This is requried as certain modules generate names such as `ms.recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` which are longer than the allowed 90 characters for template specs
+    # Using the logic below, the name is shortened to `ms.recovery-services.vault.replication-fabric.replication-protection-container.mapping` which has 'only' 86 characters
     $nameElems = $templateSpecIdentifier -split '\.'
     # Starting at index 2 to skip the resource provider
     for ($index = 2; $index -lt $nameElems.Count; $index++) {
@@ -36,7 +36,7 @@ function Get-TemplateSpecsName {
             $stringToCheck = $nameElems[($index + 1)]
 
             # If a name is replicated in a path, it is usually plural in the parent, and singular in the child path.
-            # For example: /virtualNetworks/ (plural) & /virtualNetworks/virtualNetworkPeerings/ (singular)
+            # For example: /virtual-networks/ (plural) & /virtual-networks/virtualNetwork-peering/ (singular)
             # In this case we want to remove the singular version from the subsequent string & format it accordingly
             if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
                 $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)

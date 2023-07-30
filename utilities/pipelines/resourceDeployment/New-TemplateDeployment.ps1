@@ -362,7 +362,7 @@ Optional. ID of the subscription to deploy into. Mandatory if deploying into a s
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
 .PARAMETER additionalTags
-Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue',myKey2 = 'myValue2'}.
+Optional. Provde a Key Value Pair (Object) that will be appended to the Parameter file tags. Example: @{myKey = 'myValue', myKey2 = 'myValue2'}.
 
 .PARAMETER additionalParameters
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
@@ -376,17 +376,17 @@ Optional. Do not throw an exception if it failed. Still returns the error messag
 .EXAMPLE
 New-TemplateDeployment -templateFilePath 'C:/key-vault/vault/main.bicep' -parameterFilePath 'C:/key-vault/vault/.test/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
-Deploy the main.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
+Deploy the main.bicep of the 'key-vault/vault' module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
 New-TemplateDeployment -templateFilePath 'C:/resources/resource-group/main.bicep' -location 'WestEurope'
 
-Deploy the main.bicep of the ResourceGroup module in location 'WestEurope' without a parameter file
+Deploy the main.bicep of the 'resources/resource-group' module in location 'WestEurope' without a parameter file
 
 .EXAMPLE
-New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/main.json' -parameterFilePath 'C:/ResourceGroup/.test/parameters.json' -location 'WestEurope'
+New-TemplateDeployment -templateFilePath 'C:/resources/resource-group/main.json' -parameterFilePath 'C:/resources/resource-group/.test/parameters.json' -location 'WestEurope'
 
-Deploy the main.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
+Deploy the main.json of the 'resources/resource-group' module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
 function New-TemplateDeployment {
 
