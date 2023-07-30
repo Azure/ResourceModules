@@ -29,7 +29,7 @@ trigger:
     include:
       - '/modules/storage/storage-account/*'
       - '/modules/network/private-endpoints/*'
-      - '/.azuredevops/modulePipelines/ms.storage.storageaccounts.yml'
+      - '/.azuredevops/modulePipelines/ms.storage.storageaccount.yml'
       - '/.azuredevops/pipelineTemplates/*.yml'
       - '/utilities/pipelines/*'
     exclude:
