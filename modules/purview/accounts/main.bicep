@@ -1,3 +1,7 @@
+metadata name = 'Purview Accounts'
+metadata description = 'This module deploys a Purview Account.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Purview Account.')
 @minLength(3)
 @maxLength(63)

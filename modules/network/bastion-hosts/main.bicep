@@ -1,3 +1,7 @@
+metadata name = 'Bastion Hosts'
+metadata description = 'This module deploys a Bastion Host.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Azure Bastion resource.')
 param name string
 

@@ -1,3 +1,7 @@
+metadata name = 'Proximity Placement Groups'
+metadata description = 'This module deploys a Proximity Placement Group.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the proximity placement group that is being created.')
 param name string
 

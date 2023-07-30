@@ -1,3 +1,7 @@
+metadata name = 'Network Application Gateways'
+metadata description = 'This module deploys a Network Application Gateway.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Application Gateway.')
 @maxLength(80)
 param name string

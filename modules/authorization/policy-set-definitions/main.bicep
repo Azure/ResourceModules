@@ -1,3 +1,7 @@
+metadata name = 'Policy Set Definitions (Initiatives) (All scopes)'
+metadata description = 'This module deploys a Policy Set Definition (Initiative) at a Management Group or Subscription scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'managementGroup'
 
 @sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')

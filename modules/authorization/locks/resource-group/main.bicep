@@ -1,3 +1,7 @@
+metadata name = 'Authorization Locks (Resource Group scope)'
+metadata description = 'This module deploys an Authorization Lock at a Resource Group scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'resourceGroup'
 
 @description('Optional. The name of the lock.')

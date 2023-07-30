@@ -46,7 +46,7 @@ resource ehns 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
             messageRetentionInDays: 1
             partitionCount: 1
         }
-        
+
         resource consumergroup 'consumergroups@2022-01-01-preview' = {
             name: eventHubConsumerGroupName
         }

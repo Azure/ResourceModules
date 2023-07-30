@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "DBforPostgreSQL Flexible Server Databases",
-    "summary": "This module deploys a DBforPostgreSQL Flexible Server Database.",
-    "owner": "Azure/module-maintainers"
-}

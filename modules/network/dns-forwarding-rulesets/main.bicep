@@ -1,3 +1,7 @@
+metadata name = 'Dns Forwarding Rulesets'
+metadata description = 'This template deploys an dns forwarding ruleset.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the DNS Forwarding Ruleset.')
 @minLength(1)
 param name string

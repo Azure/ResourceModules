@@ -1,3 +1,7 @@
+metadata name = 'API Connections'
+metadata description = 'This module deploys an Azure API Connection.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. Specific values for some API connections.')
 param api object = {}
 

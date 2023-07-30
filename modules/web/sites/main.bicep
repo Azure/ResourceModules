@@ -1,3 +1,7 @@
+metadata name = 'Web/Function Apps'
+metadata description = 'This module deploys a Web or Function App.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //

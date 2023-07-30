@@ -1,3 +1,7 @@
+metadata name = 'Kubernetes Configuration Flux Configurations'
+metadata description = 'This module deploys a Kubernetes Configuration Flux Configuration.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Flux Configuration.')
 param name string
 

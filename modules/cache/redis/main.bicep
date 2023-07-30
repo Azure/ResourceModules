@@ -1,3 +1,7 @@
+metadata name = 'Redis Cache'
+metadata description = 'This module deploys a Redis Cache.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The location to deploy the Redis cache service.')
 param location string = resourceGroup().location
 

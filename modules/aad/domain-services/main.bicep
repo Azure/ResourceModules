@@ -1,3 +1,7 @@
+metadata name = 'Azure Active Directory Domain Services'
+metadata description = 'This module deploys an Azure Active Directory Domain Services (AADDS).'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
 param name string = domainName
 

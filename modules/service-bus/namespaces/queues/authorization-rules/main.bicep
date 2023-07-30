@@ -1,3 +1,7 @@
+metadata name = 'Service Bus Namespace Queue Authorization Rules'
+metadata description = 'This module deploys a Service Bus Namespace Queue Authorization Rule.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the service bus namepace queue.')
 param name string
 

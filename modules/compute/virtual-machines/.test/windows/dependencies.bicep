@@ -101,8 +101,7 @@ resource recoveryServicesVault 'Microsoft.RecoveryServices/vaults@2022-04-01' = 
     name: 'RS0'
     tier: 'Standard'
   }
-  properties: {
-  }
+  properties: {}
 
   resource backupPolicy 'backupPolicies@2022-03-01' = {
     name: 'backupPolicy'

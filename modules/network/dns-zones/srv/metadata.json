@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Public DNS Zone SRV record",
-    "summary": "This module deploys a Public DNS Zone SRV record.",
-    "owner": "Azure/module-maintainers"
-}

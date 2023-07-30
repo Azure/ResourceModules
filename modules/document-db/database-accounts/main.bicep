@@ -1,3 +1,7 @@
+metadata name = 'DocumentDB Database Accounts'
+metadata description = 'This module deploys a DocumentDB Database Account.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Database Account.')
 param name string
 

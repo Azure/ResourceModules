@@ -1,3 +1,7 @@
+metadata name = 'Azure Virtual Desktop (AVD) Workspaces'
+metadata description = 'This module deploys an Azure Virtual Desktop (AVD) Workspace.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. The name of the workspace to be attach to new Application Group.')
 param name string
 

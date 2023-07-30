@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Web/Function App Deployment Slots",
-    "summary": "This module deploys a Web or Function App Deployment Slot.",
-    "owner": "Azure/module-maintainers"
-}

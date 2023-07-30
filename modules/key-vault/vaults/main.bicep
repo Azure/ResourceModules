@@ -1,3 +1,7 @@
+metadata name = 'Key Vaults'
+metadata description = 'This module deploys a Key Vault.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //

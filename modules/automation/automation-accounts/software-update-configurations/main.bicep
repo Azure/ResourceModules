@@ -1,3 +1,7 @@
+metadata name = 'Automation Account Software Update Configurations'
+metadata description = 'This module deploys an Azure Automation Account Software Update Configuration.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Deployment schedule.')
 param name string
 
