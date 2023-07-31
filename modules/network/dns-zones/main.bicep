@@ -1,3 +1,7 @@
+metadata name = 'Public DNS Zones'
+metadata description = 'This module deploys a Public DNS zone.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. DNS zone name.')
 @minLength(1)
 @maxLength(63)

@@ -1,3 +1,7 @@
+metadata name = 'Service Bus Namespace Network Rule Sets'
+metadata description = 'This module deploys a ServiceBus Namespace Network Rule Set.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Network Rule Set. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)

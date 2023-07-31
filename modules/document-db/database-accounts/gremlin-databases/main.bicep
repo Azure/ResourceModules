@@ -1,3 +1,7 @@
+metadata name = 'DocumentDB Database Account Gremlin Databases'
+metadata description = 'This module deploys a Gremlin Database within a CosmosDB Account.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Gremlin database.')
 param name string
 

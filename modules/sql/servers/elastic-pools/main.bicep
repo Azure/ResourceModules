@@ -1,3 +1,7 @@
+metadata name = 'SQL Server Elastic Pool'
+metadata description = 'This module deploys an Azure SQL Server Elastic Pool.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Elastic Pool.')
 param name string
 

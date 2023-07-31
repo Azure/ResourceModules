@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Availability Sets",
-    "summary": "This module deploys an Availability Set.",
-    "owner": "Azure/module-maintainers"
-}

@@ -91,6 +91,15 @@ module testDeployment '../../main.bicep' = {
     eventhubs: [
       {
         name: '${namePrefix}-az-evh-x-001'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              nestedDependencies.outputs.managedIdentityPrincipalId
+            ]
+            principalType: 'ServicePrincipal'
+          }
+        ]
       }
       {
         name: '${namePrefix}-az-evh-x-002'

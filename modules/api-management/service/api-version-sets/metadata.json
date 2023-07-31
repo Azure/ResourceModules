@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "API Management Service API Version Sets",
-    "summary": "This module deploys an API Management Service API Version Set.",
-    "owner": "Azure/module-maintainers"
-}

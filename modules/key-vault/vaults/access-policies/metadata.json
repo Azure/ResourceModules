@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Key Vault Access Policies",
-    "summary": "This module deploys a Key Vault Access Policy.",
-    "owner": "Azure/module-maintainers"
-}

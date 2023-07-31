@@ -23,8 +23,7 @@ var addressPrefix = '10.0.0.0/24'
 resource gallery 'Microsoft.Compute/galleries@2022-03-03' = {
   name: galleryName
   location: location
-  properties: {
-  }
+  properties: {}
 }
 
 resource galleryImageDefinition 'Microsoft.Compute/galleries/images@2022-03-03' = {

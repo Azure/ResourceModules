@@ -1,3 +1,7 @@
+metadata name = 'Network Security Group (NSG) Security Rules'
+metadata description = 'This module deploys a Network Security Group (NSG) Security Rule.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. The name of the security rule.')
 param name string
 

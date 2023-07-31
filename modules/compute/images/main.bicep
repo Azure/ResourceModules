@@ -1,3 +1,7 @@
+metadata name = 'Images'
+metadata description = 'This module deploys a Compute Image.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the image.')
 param name string
 

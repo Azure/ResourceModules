@@ -1,3 +1,7 @@
+metadata name = 'Policy Exemptions (Subscription scope)'
+metadata description = 'This module deploys a Policy Exemption at a Subscription scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'subscription'
 
 @sys.description('Required. Specifies the name of the policy exemption. Maximum length is 64 characters for subscription scope.')

@@ -52,10 +52,8 @@ module testDeployment '../../main.bicep' = {
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
     name: '${namePrefix}${serviceShort}001'
-    dnsResolverOutboundEndpointIds: [
-      {
-        id: nestedDependencies.outputs.dnsResolverOutboundEndpointsId
-      }
+    dnsResolverOutboundEndpointResourceIds: [
+      nestedDependencies.outputs.dnsResolverOutboundEndpointsId
     ]
     vNetLinks: [
       nestedDependencies.outputs.virtualNetworkResourceId

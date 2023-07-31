@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Static Web App Site Config",
-    "summary": "This module deploys a Static Web App Site Config.",
-    "owner": "Azure/module-maintainers"
-}
