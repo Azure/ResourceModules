@@ -45,6 +45,7 @@ variables:
   # --------------------- #
 
   location: 'centralus' # The default location to test deploy resources to
+  resourceGroupTags: '{"Environment": "Lab";"Expiry Date": "12/31/2023";"Business Unit": "Cloud Enablement";"Owner": "Joe Thompson";"DeployedBy": "Lunavi"}'
 
   #############################
   ##   Publishing settings   ##

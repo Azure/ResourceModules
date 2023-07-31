@@ -61,6 +61,10 @@ inputs:
     description: 'Flag to indicate whether or not to publish to the private bicep registry'
     default: 'false'
     required: false
+  resourceGroupTags:
+    description: 'Required tags for LunaviLab'
+    default: 'false'
+    required: false
   publishLatest:
     description: 'Flag to indicate whether or not to publish a "latest" version'
     default: 'true'
@@ -188,7 +192,8 @@ runs:
               TemplateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
               BicepRegistryName   = '${{ inputs.bicepRegistryName }}'
               BicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
-              PublishLatest    = [bool] "${{ inputs.publishLatest }}"
+              BicepRegistryRgTags = '${{ inputs.resourceGroupTags }}'
+              PublishLatest       = [bool] "${{ inputs.publishLatest }}"
           }
 
           Write-Verbose "Invoke Get-ModulesMissingFromPrivateBicepRegistry with" -Verbose
@@ -214,6 +219,7 @@ runs:
               BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
               BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
               BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+              BicepRegistryRgTags     = '${{ inputs.resourceGroupTags }}'
               ModuleVersion           = $moduleToPublish.Version
             }
 

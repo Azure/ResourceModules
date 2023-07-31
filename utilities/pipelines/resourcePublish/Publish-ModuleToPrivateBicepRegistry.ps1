@@ -47,7 +47,10 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgLocation
+        [string] $BicepRegistryRgLocation,
+
+        [Parameter(Mandatory = $false)]
+        [string] $BicepRegistryRgTags
     )
 
     begin {
@@ -68,7 +71,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         # Resource Group
         if (-not (Get-AzResourceGroup -Name $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
             if ($PSCmdlet.ShouldProcess("Resource group [$BicepRegistryRgName] to location [$BicepRegistryRgLocation]", 'Deploy')) {
-                New-AzResourceGroup -Name $BicepRegistryRgName -Location $BicepRegistryRgLocation
+                New-AzResourceGroup -Name $BicepRegistryRgName -Location $BicepRegistryRgLocation -Tag $BicepRegistryRgTags
             }
         }
 
