@@ -26,7 +26,7 @@ function Get-TemplateSpecsName {
     $templateSpecIdentifier = $templateSpecIdentifier -replace 'microsoft', 'ms'
 
     # Shorten the name
-    # This is requried as certain modules generate names such as `ms.recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` which are longer than the allowed 90 characters for template specs
+    # This is required as certain modules generate names such as `ms.recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` which are longer than the allowed 90 characters for template specs
     # Using the logic below, the name is shortened to `ms.recovery-services.vault.replication-fabric.replication-protection-container.mapping` which has 'only' 86 characters
     $nameElems = $templateSpecIdentifier -split '\.'
     # Starting at index 2 to skip the resource provider
