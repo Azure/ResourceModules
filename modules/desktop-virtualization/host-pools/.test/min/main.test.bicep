@@ -20,6 +20,15 @@ param enableDefaultTelemetry bool = true
 @description('Optional. A token to inject into the name of each resource.')
 param namePrefix string = '[[namePrefix]]'
 
+@description('Optional. Required tags for LunaviLab.')
+param tags object = {
+  Environment: 'Lab'
+  'Expiry Date': '12/31/2023'
+  'Business Unit': 'Cloud Enablement'
+  Owner: 'Joe Thompson'
+  DeployedBy: 'Lunavi'
+}
+
 // ============ //
 // Dependencies //
 // ============ //
@@ -29,6 +38,7 @@ param namePrefix string = '[[namePrefix]]'
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: resourceGroupName
   location: location
+  tags: tags
 }
 
 // ============== //
