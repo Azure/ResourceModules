@@ -96,3 +96,13 @@ function Publish-ModuleToPrivateBicepRegistry {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
+
+
+
+#Loads module
+. ./utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry
+
+
+Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'modules\key-vault\main.bicep' `
+    -ModuleVersion '0.5' -BicepRegistryName 'acrcuslunavibr001' `
+    -BicepRegistryRgName 'artifact-rg' -BicepRegistryRgLocation 'Central US' -Verbose
