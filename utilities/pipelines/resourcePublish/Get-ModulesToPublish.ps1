@@ -181,7 +181,7 @@ Optional. If true, the function will recurse up the folder structure to find the
 .EXAMPLE
 Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service\table\main.bicep' -Recurse
 
-    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-account\tableService
+    Directory: C:\Repos\Azure\ResourceModules\modules\storage\storage-account\table-service
 
 Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
