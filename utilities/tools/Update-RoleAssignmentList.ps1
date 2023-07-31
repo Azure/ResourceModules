@@ -163,7 +163,7 @@ function Update-RoleAssignmentList {
                     $null = Update-RoleAssignmentListInner -ProviderNamespace $provider -ResourceType $type -Verbose
                 }
             }
-            # also updating the roles in the [authorization/role-assignments] module,
+            # also updating the roles in the [authorization/role-assignment] module,
             # which needs to be triggered separately, as the roles are not stored in the nested_roleAssignments.bicep
             # and therefore it's not detected by the search
             if ($PSCmdlet.ShouldProcess('Role Assignments for module [authorization/role-assignment]', 'Update')) {
