@@ -26,6 +26,7 @@ Test-NamePrefixAvailability @inputObject
 
 Test if namePrefix 'carml' is available.
 #>
+#test update
 function Test-NamePrefixAvailability {
 
     [CmdletBinding()]
