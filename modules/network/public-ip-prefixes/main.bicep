@@ -1,3 +1,7 @@
+metadata name = 'Public IP Prefixes'
+metadata description = 'This module deploys a Public IP Prefix.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Public IP Prefix.')
 @minLength(1)
 param name string

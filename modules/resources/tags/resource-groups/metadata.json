@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Resources Tags Resource Group",
-    "summary": "This module deploys a Resource Tag on a Resource Group scope.",
-    "owner": "Azure/module-maintainers"
-}

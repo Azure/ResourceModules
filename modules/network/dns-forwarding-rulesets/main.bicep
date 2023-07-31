@@ -1,3 +1,7 @@
+metadata name = 'Dns Forwarding Rulesets'
+metadata description = 'This template deploys an dns forwarding ruleset.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the DNS Forwarding Ruleset.')
 @minLength(1)
 param name string
@@ -20,7 +24,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Required. The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.')
-param dnsResolverOutboundEndpointIds array
+param dnsResolverOutboundEndpointResourceIds array
 
 @description('Optional. Array of forwarding rules.')
 param forwardingRules array = []
@@ -48,7 +52,9 @@ resource dnsForwardingRuleset 'Microsoft.Network/dnsForwardingRulesets@2022-07-0
   location: location
   tags: tags
   properties: {
-    dnsResolverOutboundEndpoints: dnsResolverOutboundEndpointIds
+    dnsResolverOutboundEndpoints: [for dnsResolverOutboundEndpointResourceId in dnsResolverOutboundEndpointResourceIds: {
+      id: dnsResolverOutboundEndpointResourceId
+    }]
   }
 }
 

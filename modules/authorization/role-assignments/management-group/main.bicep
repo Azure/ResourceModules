@@ -1,3 +1,7 @@
+metadata name = 'Role Assignments (Management Group scope)'
+metadata description = 'This module deploys a Role Assignment at a Management Group scope.'
+metadata owner = 'Azure/module-maintainers'
+
 targetScope = 'managementGroup'
 
 @sys.description('Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')

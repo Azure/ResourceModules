@@ -1,3 +1,7 @@
+metadata name = 'Healthcare API Workspaces'
+metadata description = 'This module deploys a Healthcare API Workspace.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Health Data Services Workspace service.')
 @maxLength(50)
 param name string

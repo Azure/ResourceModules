@@ -1,3 +1,7 @@
+metadata name = 'Virtual Network Peerings'
+metadata description = 'This module deploys a Virtual Network Peering.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Optional. The Name of Vnet Peering resource. If not provided, default value will be localVnetName-remoteVnetName.')
 param name string = '${localVnetName}-${last(split(remoteVirtualNetworkId, '/'))}'
 

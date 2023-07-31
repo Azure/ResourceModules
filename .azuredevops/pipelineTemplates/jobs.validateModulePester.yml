@@ -154,7 +154,7 @@ jobs:
             }
 
             Write-Verbose 'Invoke test with' -Verbose
-            Write-Verbose ($testContainerData | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose ($testContainerData | ConvertTo-Json -Depth 5 | Out-String) -Verbose
 
             Invoke-Pester -Configuration @{
               Run        = @{

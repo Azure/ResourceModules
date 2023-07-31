@@ -1,3 +1,7 @@
+metadata name = 'Azure SQL Server Keys'
+metadata description = 'This module deploys an Azure SQL Server Key.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
 param name string
 

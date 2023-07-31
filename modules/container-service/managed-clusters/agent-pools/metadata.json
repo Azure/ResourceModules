@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Azure Kubernetes Service (AKS) Managed Cluster Agent Pools",
-    "summary": "This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.",
-    "owner": "Azure/module-maintainers"
-}

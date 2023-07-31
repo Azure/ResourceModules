@@ -1387,7 +1387,7 @@ Initialize the readme file
 
 .DESCRIPTION
 If no readme file exists, the initial content is generated (e.g., the skeleton of the section headers).
-If a readme file does exist, its title and description are updated with whatever is documented in the metadata.json file.
+If a readme file does exist, its title and description are updated with whatever is documented as metadata in the template file.
 
 .PARAMETER ReadMeFilePath
 Required. The path to the readme file to initialize.
@@ -1417,10 +1417,8 @@ function Initialize-ReadMe {
         [hashtable] $TemplateFileContent
     )
 
-    $metadataFilePath = Join-Path (Split-Path $ReadMeFilePath -Parent) 'metadata.json'
-    $metadataFileContent = ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw)
-    $moduleName = $metadataFileContent.name
-    $moduleDescription = $metadataFileContent.summary
+    $moduleName = $TemplateFileContent.metadata.name
+    $moduleDescription = $TemplateFileContent.metadata.description
 
     $splitHyphens = $FullModuleIdentifier.split('-')
     $splitHyphens = $splitHyphens | ForEach-Object { $_.substring(0, 1).toupper() + $_.substring(1) }
@@ -1457,7 +1455,7 @@ function Initialize-ReadMe {
         # We want to inject the description right below the header and before the [Resource Types] section
 
         # Find start- and end-index of description section
-        $startIndex = 1 # One ofter the readme header
+        $startIndex = 1 # One after the readme header
         $endIndex = $startIndex
 
         while (-not ($endIndex -ge $readMeFileContent.Count - 1) -and -not $readMeFileContent[$endIndex].StartsWith('#')) {

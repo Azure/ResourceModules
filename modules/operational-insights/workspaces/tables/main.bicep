@@ -1,3 +1,7 @@
+metadata name = 'Log Analytics Workspace Tables'
+metadata description = 'This module deploys a Log Analytics Workspace Table.'
+metadata owner = 'Azure/module-maintainers'
+
 // ============== //
 //   Parameters   //
 // ============== //

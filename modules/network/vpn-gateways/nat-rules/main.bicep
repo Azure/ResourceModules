@@ -1,3 +1,7 @@
+metadata name = 'VPN Gateway NAT Rules'
+metadata description = 'This module deploys a VPN Gateway NAT Rule.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the NAT rule.')
 param name string
 

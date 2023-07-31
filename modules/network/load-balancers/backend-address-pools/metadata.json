@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Load Balancer Backend Address Pools",
-    "summary": "This module deploys a Load Balancer Backend Address Pools.",
-    "owner": "Azure/module-maintainers"
-}

@@ -1,3 +1,7 @@
+metadata name = 'Site App Settings'
+metadata description = 'This module deploys a Site App Setting.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //

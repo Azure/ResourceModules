@@ -129,7 +129,7 @@ function Set-PesterGitHubOutput {
 
             $errorTestLine = $failedTest.ErrorRecord.TargetObject.Line
             $errorTestFile = (Split-Path $failedTest.ErrorRecord.TargetObject.File -Leaf).Trim()
-            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim()
+            $errorMessage = $failedTest.ErrorRecord.TargetObject.Message.Trim() -replace '\n', '<br>' # Replace new lines with <br> to enable line breaks in markdown
 
             $testReference = '{0}:{1}' -f $errorTestFile, $errorTestLine
             if (-not [String]::IsNullOrEmpty($GitHubRepository) -and -not [String]::IsNullOrEmpty($BranchName)) {

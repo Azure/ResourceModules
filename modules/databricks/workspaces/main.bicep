@@ -1,3 +1,7 @@
+metadata name = 'Azure Databricks Workspaces'
+metadata description = 'This module deploys an Azure Databricks Workspace.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the Azure Databricks workspace to create.')
 param name string
 
@@ -52,8 +56,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'dbfs'
   'clusters'
@@ -73,7 +78,7 @@ param diagnosticLogCategoriesToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -91,7 +96,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var managedResourceGroupName = '${name}-rg'
 var managedResourceGroupIdVar = '${subscription().id}/resourceGroups/${managedResourceGroupName}'

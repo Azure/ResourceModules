@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Virtual Machine Image Templates",
-    "summary": "This module deploys a Virtual Machine Image Template that can be consumed by Azure Image Builder (AIB).",
-    "owner": "Azure/module-maintainers"
-}

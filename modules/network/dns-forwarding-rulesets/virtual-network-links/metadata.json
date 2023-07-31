@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Dns Forwarding Rulesets Virtual Network Links",
-    "summary": "This template deploys Virtual Network Link in a Dns Forwarding Ruleset.",
-    "owner": "Azure/module-maintainers"
-}
