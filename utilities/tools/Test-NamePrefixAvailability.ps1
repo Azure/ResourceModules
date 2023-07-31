@@ -26,7 +26,6 @@ Test-NamePrefixAvailability @inputObject
 
 Test if namePrefix 'carml' is available.
 #>
-Test-NamePrefixAvailability
 function Test-NamePrefixAvailability {
 
     [CmdletBinding()]
@@ -203,7 +202,8 @@ function Test-NamePrefixAvailability {
         Write-Host '======' -ForegroundColor 'Cyan'
         if (-not $prefixAvailable) {
             Write-Error "=> Prefix [$namePrefix] is not available for all resources. Please try a different one."
-        } else {
+        }
+        else {
             Write-Host "=> Prefix [$namePrefix] is available for all resources." -ForegroundColor 'Green'
         }
     }
