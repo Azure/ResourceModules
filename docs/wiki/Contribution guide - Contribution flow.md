@@ -51,7 +51,6 @@ How you proceed from here, depends on your scenario:
 - In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to first review the [Module design](./The%20library%20-%20Module%20design) and/or the [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design) sections respectively, to make sure your contribution complies with the repository's design and principles.
 
 - If your contribution involves the creation of a new module or an update to an existing module:
-  - Make sure you also reflect your changes in the module's `README.md` file. Refer to the [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) section for details on how to leverage the Readme generator utility to support you with this task.
   - If you are adding or updating role assignments to resources deployable by the module, refer to the [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) section for details on how to leverage the RBAC roles formatting utility to support you with this task.
   - If applicable, make sure you set or update the major and minor versions in the corresponding module `version.json` file.
 
@@ -64,18 +63,18 @@ Once the contribution is implemented and the changes are pushed to your forked r
 - In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates in your own cloud environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage) section.
    > **Note**: In case your contribution involves changes to a module, you can also optionally leverage the [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally) utility to validate the updated module from your local host before validating it through its pipeline.
 
-# Open a PR
+# Open a Pull Request (PR)
 
 Finally, once your contribution is implemented and validated, open a PR for the CARML maintainers to review. Make sure you:
 
-- Provide a meaningful PR title in the following format: `[<Category>] <PR title>`. For `[<Category>]` use one of the following, depending on which one is the primary improvement your PR intends to make:
+- Provide a meaningful title in the following format: `[<Category>] <PR title>`. For `[<Category>]` use one of the following, depending on which one is the primary improvement your PR intends to make:
   - `[Modules]`: For improvements to the CARML library.
   - `[CI environment]`: For improvements to the CI environment pipelines.
   - `[Static Validation]`: For improvements to Pester tests.
   - `[Wiki]`: For improvements to the documentation.
   - `[Utilities]`: For improvements to the tools in the utilities.
   - `[Fixes]`: For bug fixes when not specifically related to any of the above categories.
-- Provide a meaningful PR description.
+- Provide a meaningful description.
 - Follow instructions you find in the PR template.
 - Reference the issue number as per the [Create or pick up an issue](#create-or-pick-up-an-issue) step.
 - If applicable, please reference the badge status of your pipeline run. This badge will show the reviewer that the code changes were successfully validated & tested in your environment. To create a badge, first select the three dots (`...`) at the top right of the pipeline, and then chose the `Create status badge` option.
