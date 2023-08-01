@@ -11,7 +11,7 @@ Mandatory. The template file path to convert
 .EXAMPLE
 Get-TemplateSpecsName -TemplateFilePath 'C:\modules\key-vault\vault\main.bicep'
 
-Convert 'C:\modules\key-vault\vault\main.bicep' to e.g. 'microsoft.key-vault.vault'
+Convert 'C:\modules\key-vault\vault\main.bicep' to e.g. 'key-vault.vault'
 #>
 function Get-TemplateSpecsName {
 
@@ -23,29 +23,21 @@ function Get-TemplateSpecsName {
 
     $moduleIdentifier = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').Split('/modules/')[1]
     $templateSpecIdentifier = $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
-    $templateSpecIdentifier = $templateSpecIdentifier -replace 'microsoft', 'ms'
 
     # Shorten the name
-    # This is required as certain modules generate names such as `ms.recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` which are longer than the allowed 90 characters for template specs
-    # Using the logic below, the name is shortened to `ms.recovery-services.vault.replication-fabric.replication-protection-container.mapping` which has 'only' 86 characters
+    # This is required as certain modules generate names such as `recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping` which are longer than the allowed 90 characters for template specs
+    # Using the logic below, the name is shortened to `recovery-services.vault.replication-fabric.replication-protection-container.mapping` which has 'only' 86 characters
     $nameElems = $templateSpecIdentifier -split '\.'
-    # Starting at index 2 to skip the resource provider
-    for ($index = 2; $index -lt $nameElems.Count; $index++) {
+    # Starting at index 1 to skip the resource provider
+    for ($index = 1; $index -lt $nameElems.Count; $index++) {
+        # Only run as long as we're not already at last element of the array
         if ($index -lt ($nameElems.count - 1)) {
             $stringToRemove = $nameElems[($index)]
             $stringToCheck = $nameElems[($index + 1)]
 
             # If a name is replicated in a path, it is usually plural in the parent, and singular in the child path.
-            # For example: /virtual-networks/ (plural) & /virtual-network/virtual-network-peering/ (singular)
-            # In this case we want to remove the singular version from the subsequent string & format it accordingly
-            if ($stringToRemove.EndsWith('s') -and $stringToCheck.StartsWith($stringToRemove.Substring(0, $stringToRemove.length - 1))) {
-                $singularString = $stringToRemove.Substring(0, $stringToRemove.length - 1)
-                $rest = $stringToCheck.length - $singularString.Length
-                $shortenedString = $stringToCheck.Substring($singularString.length, $rest)
-                $camelCaseString = [Regex]::Replace($shortenedString , '\b.', { $args[0].Value.Tolower() })
-                $nameElems[($index + 1)] = $camelCaseString
-            } elseif ($stringToCheck.StartsWith($stringToRemove)) {
-                $nameElems[($index + 1)] = $stringToCheck.Substring($stringToRemove.length, $stringToCheck.length)
+            if ($stringToCheck.StartsWith($stringToRemove)) {
+                $nameElems[($index + 1)] = $stringToCheck -replace "$stringToRemove-"
             }
         }
     }
