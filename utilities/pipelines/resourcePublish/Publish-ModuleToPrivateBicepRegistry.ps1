@@ -47,10 +47,8 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgLocation,
+        [string] $BicepRegistryRgLocation
 
-        [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgTags
     )
 
     begin {
@@ -104,9 +102,9 @@ function Publish-ModuleToPrivateBicepRegistry {
 
 
 #Loads module
-. ./utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry
+# . ./utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry
 
 
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'modules\key-vault\main.bicep' `
-    -ModuleVersion '0.5' -BicepRegistryName 'acrcuslunavibr001' `
-    -BicepRegistryRgName 'artifact-rg' -BicepRegistryRgLocation 'Central US' -Verbose
+# Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'modules\key-vault\main.bicep' `
+#     -ModuleVersion '0.5' -BicepRegistryName 'acrcuslunavibr001' `
+#     -BicepRegistryRgName 'artifact-rg' -BicepRegistryRgLocation 'Central US' -Verbose
