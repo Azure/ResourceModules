@@ -163,14 +163,16 @@ function New-TemplateDeploymentInner {
         if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
             $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
         }
-        if ($templateFilePath -match '.*(\\|\/)Microsoft.+') {
-            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
-            $shortPathElem = (($templateFilePath -split 'Microsoft\.')[1] -replace '\\', '/') -split '/' # e.g., AppConfiguration, configurationStores, .test, common, main.test.bicep
-            $providerNamespace = $shortPathElem[0] # e.g., AppConfiguration
-            $providerNamespaceShort = ($providerNamespace -creplace '[^A-Z]').ToLower() # e.g., ac
 
-            $resourceType = $shortPathElem[1] # e.g., configurationStores
-            $resourceTypeShort = ('{0}{1}' -f ($resourceType.ToLower())[0], ($resourceType -creplace '[^A-Z]')).ToLower() # e.g. cs
+        $modulesRegex = '.+[\\|\/]modules[\\|\/]'
+        if ($templateFilePath -match $modulesRegex) {
+            # If we can assume we're operating in a module structure, we can further fetch the provider namespace & resource type
+            $shortPathElem = (($templateFilePath -split $modulesRegex)[1] -replace '\\', '/') -split '/' # e.g., app-configuration, configuration-store, .test, common, main.test.bicep
+            $providerNamespace = $shortPathElem[0] # e.g., app-configuration
+            $providerNamespaceShort = ($providerNamespace -split '-' | ForEach-Object { $_[0] }) -join '' # e.g., ac
+
+            $resourceType = $shortPathElem[1] # e.g., configuration-store
+            $resourceTypeShort = ($resourceType -split '-' | ForEach-Object { $_[0] }) -join '' # e.g. cs
 
             $testFolderShort = Split-Path (Split-Path $templateFilePath -Parent) -Leaf  # e.g., common
 
