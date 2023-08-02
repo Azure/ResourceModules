@@ -62,7 +62,7 @@ If you have customized your library without contributing on the public CARML rep
 
 To automate the import of new code and speed up the test process we recommend to adopt [module library with the CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment).
 
-If you are not using a local repository, you'll also need to publish the modules. Different procedures can apply, depending on where your version of the library is stored:
+If you don't want to use a local copy of the library (i.e., local path references), you'll also need to publish the modules. Different procedures can apply, depending on where your version of the library is stored:
 
 <details>
 <summary>Modules publishing in Template Spec</summary>
