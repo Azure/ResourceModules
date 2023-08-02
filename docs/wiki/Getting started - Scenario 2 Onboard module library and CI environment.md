@@ -183,7 +183,7 @@ To use the environment's pipelines you should use the information you gathered d
 > {"clientId": "<client_id>", "clientSecret": "<client_secret>", "subscriptionId": "<subscriptionId>", "tenantId": "<tenant_id>" }
 > ```
 >
-> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
+> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the JSON object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
 ### 3.2.2 Set up settings file
 
@@ -195,7 +195,6 @@ The primary pipeline settings file ([`settings.yml`](https://github.com/Azure/Re
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying module test file, this location is used. |
-| `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to. |
 
 </details>
 
