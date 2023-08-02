@@ -25,7 +25,7 @@ param containerDeleteRetentionPolicyEnabled bool = true
 @description('Optional. Indicates the number of days that the deleted item should be retained.')
 param containerDeleteRetentionPolicyDays int = 7
 
-@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
+@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
 param containerDeleteRetentionPolicyAllowPermanentDelete bool = false
 
 @description('Optional. Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Blob service.')
@@ -33,6 +33,9 @@ param corsRules array = []
 
 @description('Optional. Indicates the default version to use for requests to the Blob service if an incoming request\'s version is not specified. Possible values include version 2008-10-27 and all more recent versions.')
 param defaultServiceVersion string = ''
+
+@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
+param deleteRetentionPolicyAllowPermanentDelete bool = false
 
 @description('Optional. The blob service properties for blob soft delete.')
 param deleteRetentionPolicyEnabled bool = true
