@@ -34,9 +34,6 @@ param corsRules array = []
 @description('Optional. Indicates the default version to use for requests to the Blob service if an incoming request\'s version is not specified. Possible values include version 2008-10-27 and all more recent versions.')
 param defaultServiceVersion string = ''
 
-@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
-param deleteRetentionPolicyAllowPermanentDelete bool = false
-
 @description('Optional. The blob service properties for blob soft delete.')
 param deleteRetentionPolicyEnabled bool = true
 
@@ -44,6 +41,9 @@ param deleteRetentionPolicyEnabled bool = true
 @maxValue(365)
 @description('Optional. Indicates the number of days that the deleted blob should be retained.')
 param deleteRetentionPolicyDays int = 7
+
+@description('Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share.')
+param deleteRetentionPolicyAllowPermanentDelete bool = false
 
 @description('Optional. Use versioning to automatically maintain previous versions of your blobs.')
 param isVersioningEnabled bool = true
@@ -176,6 +176,7 @@ resource blobServices 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01
     deleteRetentionPolicy: {
       enabled: deleteRetentionPolicyEnabled
       days: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyDays : null
+      allowPermanentDelete: deleteRetentionPolicyEnabled == true ? deleteRetentionPolicyAllowPermanentDelete : null
     }
     isVersioningEnabled: isVersioningEnabled
     lastAccessTimeTrackingPolicy: {
