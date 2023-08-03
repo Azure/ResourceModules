@@ -85,7 +85,7 @@ The following activities are performed by the [`utilities/pipelines/staticValida
 
 ## Output example
 
-<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="700">
 
 ## Additional resources
 
@@ -122,7 +122,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\modules\Authorization\roleDefinitions\main.bicep"
+    templateFilePath              = "$pathToRepository\modules\Authorization\role-definition\main.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false
