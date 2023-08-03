@@ -52,6 +52,7 @@ How you proceed from here, depends on your scenario:
 
 - If your contribution involves the creation of a new module or an update to an existing module:
   - Make sure you also reflect your changes in the module's `README.md` file. Refer to the [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) section for details on how to leverage the Readme generator utility to support you with this task.
+  - Regenerate/update the `main.json` template using either the command `bicep build '<bicep-template-file-path>'` or `az bicep build -f '<bicep-template-file-path>'`
   - If you are adding or updating role assignments to resources deployable by the module, refer to the [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) section for details on how to leverage the RBAC roles formatting utility to support you with this task.
   - If applicable, make sure you set or update the major and minor versions in the corresponding module `version.json` file.
 
