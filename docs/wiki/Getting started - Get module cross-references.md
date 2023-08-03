@@ -110,7 +110,7 @@ VERBOSE:
 VERBOSE: Resource: operational-insights/workspace
 VERBOSE: - operations-management/solution
 VERBOSE:
-VERBOSE: Resource: purview/accounts
+VERBOSE: Resource: purview/account
 VERBOSE: - network/private-endpoint
 VERBOSE:
 VERBOSE: Resource: recovery-services/vault
