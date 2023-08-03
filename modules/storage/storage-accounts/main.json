@@ -5,8 +5,11 @@
     "_generator": {
       "name": "bicep",
       "version": "0.19.5.34762",
-      "templateHash": "7264817694256717867"
-    }
+      "templateHash": "1914765175351147873"
+    },
+    "name": "Storage Accounts",
+    "description": "This module deploys a Storage Account.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -761,8 +764,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "11825715538543749879"
-            }
+              "templateHash": "15343651026946310931"
+            },
+            "name": "Private Endpoints",
+            "description": "This module deploys a Private Endpoint.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "name": {
@@ -958,8 +964,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.19.5.34762",
-                      "templateHash": "12684511314187066258"
-                    }
+                      "templateHash": "5406224106432076575"
+                    },
+                    "name": "Private Endpoint Private DNS Zone Groups",
+                    "description": "This module deploys a Private Endpoint Private DNS Zone Group.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "privateEndpointName": {
@@ -1300,8 +1309,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "7454408641260922049"
-            }
+              "templateHash": "4029702167029348713"
+            },
+            "name": "Storage Account Management Policies",
+            "description": "This module deploys a Storage Account Management Policy.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -1424,8 +1436,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "12172582011221745114"
-            }
+              "templateHash": "8681428573950584850"
+            },
+            "name": "Storage Account Local Users",
+            "description": "This module deploys a Storage Account Local User, which is used for SFTP authentication.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -1569,7 +1584,8 @@
           "containerDeleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'containerDeleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').containerDeleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
           "corsRules": "[if(contains(parameters('blobServices'), 'corsRules'), createObject('value', parameters('blobServices').corsRules), createObject('value', createArray()))]",
           "defaultServiceVersion": "[if(contains(parameters('blobServices'), 'defaultServiceVersion'), createObject('value', parameters('blobServices').defaultServiceVersion), createObject('value', ''))]",
-          "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicy'), createObject('value', parameters('blobServices').deleteRetentionPolicy), createObject('value', false()))]",
+          "deleteRetentionPolicyAllowPermanentDelete": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyAllowPermanentDelete'), createObject('value', parameters('blobServices').deleteRetentionPolicyAllowPermanentDelete), createObject('value', false()))]",
+          "deleteRetentionPolicyEnabled": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyEnabled'), createObject('value', parameters('blobServices').deleteRetentionPolicyEnabled), createObject('value', false()))]",
           "deleteRetentionPolicyDays": "[if(contains(parameters('blobServices'), 'deleteRetentionPolicyDays'), createObject('value', parameters('blobServices').deleteRetentionPolicyDays), createObject('value', 7))]",
           "isVersioningEnabled": "[if(contains(parameters('blobServices'), 'isVersioningEnabled'), createObject('value', parameters('blobServices').isVersioningEnabled), createObject('value', false()))]",
           "lastAccessTimeTrackingPolicyEnable": "[if(contains(parameters('blobServices'), 'lastAccessTimeTrackingPolicyEnable'), createObject('value', parameters('blobServices').lastAccessTimeTrackingPolicyEnable), createObject('value', false()))]",
@@ -1593,8 +1609,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "15527351253700024077"
-            }
+              "templateHash": "16447230298066657473"
+            },
+            "name": "Storage Account blob Services",
+            "description": "This module deploys a Storage Account Blob Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -1647,7 +1666,7 @@
               "type": "bool",
               "defaultValue": false,
               "metadata": {
-                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
               }
             },
             "corsRules": {
@@ -1679,6 +1698,13 @@
               },
               "maxValue": 365,
               "minValue": 1
+            },
+            "deleteRetentionPolicyAllowPermanentDelete": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "Optional. This property when set to true allows deletion of the soft deleted blob versions and snapshots. This property cannot be used with blob restore policy. This property only applies to blob service and does not apply to containers or file share."
+              }
             },
             "isVersioningEnabled": {
               "type": "bool",
@@ -1864,7 +1890,8 @@
                 "defaultServiceVersion": "[if(not(empty(parameters('defaultServiceVersion'))), parameters('defaultServiceVersion'), null())]",
                 "deleteRetentionPolicy": {
                   "enabled": "[parameters('deleteRetentionPolicyEnabled')]",
-                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]"
+                  "days": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyDays'), null())]",
+                  "allowPermanentDelete": "[if(equals(parameters('deleteRetentionPolicyEnabled'), true()), parameters('deleteRetentionPolicyAllowPermanentDelete'), null())]"
                 },
                 "isVersioningEnabled": "[parameters('isVersioningEnabled')]",
                 "lastAccessTimeTrackingPolicy": {
@@ -1936,8 +1963,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.19.5.34762",
-                      "templateHash": "16864636039691597197"
-                    }
+                      "templateHash": "14530356576010725125"
+                    },
+                    "name": "Storage Account Blob Containers",
+                    "description": "This module deploys a Storage Account Blob Container.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -2099,8 +2129,11 @@
                             "_generator": {
                               "name": "bicep",
                               "version": "0.19.5.34762",
-                              "templateHash": "16934496734737846581"
-                            }
+                              "templateHash": "14717393030797088003"
+                            },
+                            "name": "Storage Account Blob Container Immutability Policies",
+                            "description": "This module deploys a Storage Account Blob Container Immutability Policy.",
+                            "owner": "Azure/module-maintainers"
                           },
                           "parameters": {
                             "storageAccountName": {
@@ -2473,8 +2506,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "11673401817542578236"
-            }
+              "templateHash": "17305633148655742675"
+            },
+            "name": "Storage Account File Share Services",
+            "description": "This module deploys a Storage Account File Share Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -2707,8 +2743,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.19.5.34762",
-                      "templateHash": "7389077354310638042"
-                    }
+                      "templateHash": "10592618793965531986"
+                    },
+                    "name": "Storage Account File Shares",
+                    "description": "This module deploys a Storage Account File Share.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -3089,8 +3128,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "16629237483959370486"
-            }
+              "templateHash": "6872044350237818019"
+            },
+            "name": "Storage Account Queue Services",
+            "description": "This module deploys a Storage Account Queue Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -3291,8 +3333,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.19.5.34762",
-                      "templateHash": "7151911553853543662"
-                    }
+                      "templateHash": "750052858467042668"
+                    },
+                    "name": "Storage Account Queues",
+                    "description": "This module deploys a Storage Account Queue.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
@@ -3624,8 +3669,11 @@
             "_generator": {
               "name": "bicep",
               "version": "0.19.5.34762",
-              "templateHash": "18190940953857130422"
-            }
+              "templateHash": "14335506796617737505"
+            },
+            "name": "Storage Account Table Services",
+            "description": "This module deploys a Storage Account Table Service.",
+            "owner": "Azure/module-maintainers"
           },
           "parameters": {
             "storageAccountName": {
@@ -3824,8 +3872,11 @@
                     "_generator": {
                       "name": "bicep",
                       "version": "0.19.5.34762",
-                      "templateHash": "10978796725407723500"
-                    }
+                      "templateHash": "13430513335987158525"
+                    },
+                    "name": "Storage Account Table",
+                    "description": "This module deploys a Storage Account Table.",
+                    "owner": "Azure/module-maintainers"
                   },
                   "parameters": {
                     "storageAccountName": {
