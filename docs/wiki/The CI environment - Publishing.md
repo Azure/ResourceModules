@@ -24,7 +24,7 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 ## Module identifiers
 
-The names of published modules differ slighly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
+The names of published modules differ slightly depending on the location they are published to. This is rooted in the different requirements per target location. In the following you can find the rules applied for each:
 
 <details>
 <summary>Template Specs</summary>
@@ -35,16 +35,16 @@ The names of published modules differ slighly depending on the location they are
 - Make lowercase
 - Replace `Microsoft` with `MS`
 - Replace all `\` or `/` with `.`
-- Remove all duplications in the path. For example, the path `virtualNetwork/virtualNetworkPeerings` would be shortened to `virtualNetwork/peerings`
+- Remove all duplications in the path. For example, the path `virtual-network/virtual-network-peering` would be shortened to `virtual-network/peering`
 
 **Examples**
 
-  - Vaults
-    - Before: `modules\RecoveryServices\vaults`
-    - After: `ms.recoveryservices.vaults`
-  - ReplicationProtectionContainerMappings
-    - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-    - After: `ms.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.mappings`
+  - vault
+    - Before: `modules\recovery-services\vault`
+    - After: `recovery-services.vault`
+  - replication-protection-container-mapping
+    - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+    - After: `recovery-services.vault.replication-fabric.replication-protection-container.mapping`
 
 </details>
 
@@ -60,12 +60,12 @@ The names of published modules differ slighly depending on the location they are
 
 **Examples**
 
-- Vaults
-   - Before: `modules\RecoveryServices\vaults`
-   - After: `bicep/modules/recoveryservices.vaults`
-- ReplicationProtectionContainerMappings
-   - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-   - After: `bicep/modules/recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+- vault
+   - Before: `modules\recovery-services\vault`
+   - After: `bicep/modules/recovery-services.vault`
+- replication-protection-container-mapping
+   - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+   - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
 
 </details>
 
@@ -80,12 +80,12 @@ The names of published modules differ slighly depending on the location they are
 
 **Examples**
 
-- Vaults
-  - Before: `modules\RecoveryServices\vaults`
-  - After: `microsoft.recoveryservices.vaults`
-- ReplicationProtectionContainerMappings
-  - Before: `modules\RecoveryServices\vaults\replicationFabrics\replicationProtectionContainers\replicationProtectionContainerMappings`
-  - After: `microsoft.recoveryservices.vaults.replicationfabrics.replicationprotectioncontainers.replicationprotectioncontainermappings`
+- vault
+  - Before: `modules\recovery-services\vault`
+  - After: `recovery-services.vault`
+- replication-protection-container-mapping
+  - Before: `modules\recovery-services\vault\replication-fabric\replication-protection-container\replication-protection-container-mapping`
+  - After: `bicep/modules/recovery-services.vault.replication-fabric.replication-protection-container.replication-protection-container-mapping`
 
 </details>
 
@@ -100,9 +100,9 @@ The publishing works as follows:
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
    1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`), a `major.minor` version (`x.y`) and a `latest` version are also updated, allowing a consumer to:
       - Reference the latest version of a major, i.e., the latest minor and patch of a major version.
-         > Example: Using Template Specs, the reference to a `major` could look like: `ts/modules:resources.resourcegroups:1` which means that the template will always consume whatever the potentially overwritten/updated version `1` contains.
+         > Example: Using Template Specs, the reference to a `major` could look like: `ts/modules:resources.resource-group:1` which means that the template will always consume whatever the potentially overwritten/updated version `1` contains.
       - Reference the latest version of a minor, i.e., the latest patch of a minor version.
-         > Example: Using the Bicep registry, the reference to a `major.minor` could look like: `br/modules:resources.resourcegroups:0.4` which means that the template will always consume whatever the potentially overwritten/updated version `0.4` contains.
+         > Example: Using the Bicep registry, the reference to a `major.minor` could look like: `br/modules:resources.resource-group:0.4` which means that the template will always consume whatever the potentially overwritten/updated version `0.4` contains.
    1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
    1. The list of module files paths and their versions are passed on as a array list.
 1. The [Get-ModulesMissingFrom*.ps1](https://github.com/Azure/ResourceModules/tree/main/utilities/pipelines/resourcePublish) scripts further check if a given module is missing from the corresponding target location (e.g., Azure Container Registry) and adds each missing entry to to aforementioned array - using the version specified in the module's `version.json` file.
@@ -146,4 +146,4 @@ C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
 
 ## Output example
 
-<img src="./media/CIEnvironment/publishingOutput.png" alt="Publishing Output" height="300">
+<img src="./media/CIEnvironment/publishingOutput.png" alt="Publishing Output" height="400">
