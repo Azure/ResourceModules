@@ -75,7 +75,7 @@ Technical documentation for each composite action, such as required input and ou
 <details>
 <summary>Azure DevOps</summary>
 
-<img src="./media/CIEnvironment/pipelinePhasesADO.png" alt="Pipeline phases ADO" height="300">
+<img src="./media/CIEnvironment/pipelinePhasesADO.png" alt="Pipeline phases ADO" height="400">
 
 Azure DevOps pipelines map each pipeline phase to a dedicated pipeline template, to maximize code reusability.
 The mapping to the specific YAML template file is provided below:
