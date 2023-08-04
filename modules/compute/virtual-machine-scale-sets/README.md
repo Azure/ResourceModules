@@ -354,7 +354,7 @@ Comments:
                     "name": "ipconfig1",
                     "properties": {
                         "subnet": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
+                            "id": "/subscriptions/[[subscriptionId]]/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux"
                         }
                     }
                 }
@@ -379,7 +379,7 @@ nicConfigurations: [
                 name: 'ipconfig1'
                 properties: {
                     subnet: {
-                        id: '/subscriptions/<<subscriptionId>>/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux'
+                        id: '/subscriptions/[[subscriptionId]]/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux'
                     }
                 }
             }
@@ -439,8 +439,8 @@ extensionDomainJoinConfig: {
 }
 
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-  name: 'adp-<<namePrefix>>-az-kv-x-001'
-  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+  name: 'adp-[[namePrefix]]-az-kv-x-001'
+  scope: resourceGroup('[[subscriptionId]]','validation-rg')
 }
 
 extensionDomainJoinPassword: kv1.getSecret('domainJoinUser02-Password')
@@ -553,9 +553,9 @@ extensionAntiMalwareConfig: {
         "settings": {
             "EncryptionOperation": "EnableEncryption",
             "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
-            "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+            "KeyVaultResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
             "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
-            "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+            "KekVaultResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
             "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
             "VolumeType": "All", //'OS'/'Data'/'All'
             "ResizeOSDisk": "false"
@@ -577,9 +577,9 @@ extensionAzureDiskEncryptionConfig: {
     settings: {
         EncryptionOperation: 'EnableEncryption'
         KeyVaultURL: 'https://mykeyvault.vault.azure.net/'
-        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
+        KeyVaultResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
         KeyEncryptionKeyURL: 'https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5' // ID must be updated for new keys
-        KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
+        KekVaultResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
         KeyEncryptionAlgorithm: 'RSA-OAEP' //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
         VolumeType: 'All' //'OS'/'Data'/'All'
         ResizeOSDisk: 'false'
@@ -859,8 +859,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -873,8 +873,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -920,7 +920,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslin001'
+    name: 'cvmsslin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1067,7 +1067,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslin001"
+      "value": "cvmsslin001"
     },
     "osDisk": {
       "value": {
@@ -1273,7 +1273,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslinmin001'
+    name: 'cvmsslinmin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1336,7 +1336,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslinmin001"
+      "value": "cvmsslinmin001"
     },
     "osDisk": {
       "value": {
@@ -1410,7 +1410,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '22_04-lts-gen2'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsslcmk001'
+    name: 'cvmsslcmk001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1494,7 +1494,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsslcmk001"
+      "value": "cvmsslcmk001"
     },
     "osDisk": {
       "value": {
@@ -1595,7 +1595,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsswin001'
+    name: 'cvmsswin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1735,7 +1735,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsswin001"
+      "value": "cvmsswin001"
     },
     "osDisk": {
       "value": {
@@ -1930,7 +1930,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
-    name: '<<namePrefix>>cvmsswinmin001'
+    name: 'cvmsswinmin001'
     osDisk: {
       createOption: 'fromImage'
       diskSizeGB: '128'
@@ -1987,7 +1987,7 @@ module virtualMachineScaleSets './compute/virtual-machine-scale-sets/main.bicep'
       }
     },
     "name": {
-      "value": "<<namePrefix>>cvmsswinmin001"
+      "value": "cvmsswinmin001"
     },
     "osDisk": {
       "value": {

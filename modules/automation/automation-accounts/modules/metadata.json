@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Automation Account Modules",
-    "summary": "This module deploys an Azure Automation Account Module.",
-    "owner": "Azure/module-maintainers"
-}

@@ -75,6 +75,7 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Authorization/policySetDefinitions',
             'Microsoft.Authorization/policyDefinitions'
             'Microsoft.Sql/managedInstances',
+            'Microsoft.MachineLearningServices/workspaces',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )

@@ -94,16 +94,6 @@ Describe 'File/folder tests' -Tag 'Modules' {
             $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'version.json')
             $pathExisting | Should -Be $true
         }
-
-        It '[<moduleFolderName>] Module should contain a [` metadata.json `] file.' -TestCases $moduleFolderTestCases {
-
-            param (
-                [string] $moduleFolderPath
-            )
-
-            $pathExisting = Test-Path (Join-Path -Path $moduleFolderPath 'metadata.json')
-            $pathExisting | Should -Be $true
-        }
     }
 
     Context '.test folder' {
@@ -694,7 +684,61 @@ Describe 'Module tests' -Tag 'Module' {
         }
     }
 
-    Context 'General template' -Tag 'Template' {
+    Context 'Compiled ARM template tests' -Tag 'ARM' {
+
+        $armTemplateTestCases = [System.Collections.ArrayList] @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+
+            # Skipping folders without a [main.bicep] template
+            $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
+            if (-not (Test-Path $templateFilePath)) {
+                continue
+            }
+
+            $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+
+            $armTemplateTestCases += @{
+                moduleFolderName = $resourceTypeIdentifier
+                moduleFolderPath = $moduleFolderPath
+                templateFilePath = $templateFilePath
+            }
+        }
+
+        It '[<moduleFolderName>] Compiled ARM template should be latest.' -TestCases $armTemplateTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [string] $moduleFolderPath,
+                [string] $templateFilePath
+            )
+
+            $armTemplatePath = Join-Path $moduleFolderPath 'main.json'
+
+            # Current json
+            if (-not (Test-Path $armTemplatePath)) {
+                throw "[main.json] file for module [$moduleFolderName] is missing."
+            }
+
+            $originalJson = Remove-JSONMetadata -TemplateObject (Get-Content $armTemplatePath -Raw | ConvertFrom-Json -Depth 99 -AsHashtable)
+            $originalJson = ConvertTo-OrderedHashtable -JSONInputObject (ConvertTo-Json $originalJson -Depth 99)
+
+            # Recompile json
+            $null = Remove-Item -Path $armTemplatePath -Force
+            bicep build $templateFilePath
+
+            $newJson = Remove-JSONMetadata -TemplateObject (Get-Content $armTemplatePath -Raw | ConvertFrom-Json -Depth 99 -AsHashtable)
+            $newJson = ConvertTo-OrderedHashtable -JSONInputObject (ConvertTo-Json $newJson -Depth 99)
+
+            # compare
+            (ConvertTo-Json $originalJson -Depth 99) | Should -Be (ConvertTo-Json $newJson -Depth 99) -Because "the [$moduleFolderName] [main.json] should be based on the latest [main.bicep] file. Please run [` bicep build >bicepFilePath< `] using the latest Bicep CLI version."
+
+            # Reset template file to original state
+            git checkout HEAD -- $armTemplatePath
+        }
+    }
+
+    Context 'General template tests' -Tag 'Template' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
@@ -1182,53 +1226,62 @@ Describe 'Module tests' -Tag 'Module' {
 
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            $metadataFilePath = $resourceTypeIdentifier = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+            $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
 
-            $metadataFilePath = Join-Path -Path $moduleFolderPath 'metadata.json'
-            $readMeFilePath = Join-Path -Path $moduleFolderPath 'README.md'
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
+                if (Test-Path (Join-Path $moduleFolderPath 'main.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.bicep'
+                    $templateContent = bicep build $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw ($bicepTemplateCompilationFailedException -f $templateFilePath)
+                    }
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'main.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'main.json'
+                    $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw ($jsonTemplateLoadFailedException -f $templateFilePath)
+                    }
+                } else {
+                    throw ($templateNotFoundException -f $moduleFolderPath)
+                }
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateContent = $templateContent
+                }
+            } else {
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+            }
 
             $metadataFileTestCases += @{
-                moduleFolderName       = $resourceTypeIdentifier
-                moduleFolderPath       = $moduleFolderPath
-                metadataFilePath       = $metadataFilePath
-                metadataContent        = (Test-Path -Path $metadataFilePath) ? (ConvertFrom-Json (Get-Content -Path $metadataFilePath -Raw) -AsHashtable) : ''
-                readMeFilePath         = $readMeFilePath
-                readMeContent          = (Test-Path -Path $readMeFilePath) ? (Get-Content -Path $readMeFilePath -Raw) : ''
-                resourceTypeIdentifier = $resourceTypeIdentifier
+                moduleFolderName    = $resourceTypeIdentifier
+                templateFileContent = $templateContent
             }
         }
 
         ###############
         ##   Tests   ##
         ###############
-        It '[<moduleFolderName>] `metadata.json` file should not be empty.' -TestCases $metadataFileTestCases {
+        It '[<moduleFolderName>] template file should have a module name specified.' -TestCases $metadataFileTestCases {
 
             param(
                 [string] $moduleFolderName,
-                [hashtable] $metadataContent
+                [hashtable] $templateFileContent
             )
 
-            $metadataContent | Should -Not -BeNullOrEmpty
+            $templateFileContent.metadata.name | Should -Not -BeNullOrEmpty
         }
 
-        It '[<moduleFolderName>] `metadata.json` file should have a module name specified.' -TestCases $metadataFileTestCases {
+        It '[<moduleFolderName>] template file should have a module description specified.' -TestCases $metadataFileTestCases {
 
             param(
                 [string] $moduleFolderName,
-                [hashtable] $metadataContent
+                [hashtable] $templateFileContent
             )
 
-            $metadataContent.name | Should -Not -BeNullOrEmpty
-        }
-
-        It '[<moduleFolderName>] `metadata.json` file should have a module description / summary specified.' -TestCases $metadataFileTestCases {
-
-            param(
-                [string] $moduleFolderName,
-                [hashtable] $metadataContent
-            )
-
-            $metadataContent.summary | Should -Not -BeNullOrEmpty
+            $templateFileContent.metadata.description | Should -Not -BeNullOrEmpty
         }
     }
 }
@@ -1361,6 +1414,88 @@ Describe 'Test file tests' -Tag 'TestTemplate' {
             if ($incorrectReferencesFound.Matches) {
                 $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Test file should not contain the value [{0}], instead it should reference the token value [{1}]. Please check the {2} lines: [{3}].' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
             }
+        }
+    }
+
+    Context 'Public Bicep Registry tests' {
+
+        $deploymentTestFileTestCases = @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            $testFolderPath = Join-Path $moduleFolderPath '.test'
+            if (Test-Path $testFolderPath) {
+                $centralTestFilePath = Join-Path $testFolderPath 'main.test.bicep'
+                $testFilePaths = Get-ModuleTestFileList -ModulePath $moduleFolderPath | ForEach-Object { Join-Path $moduleFolderPath $_ }
+
+                # Collect scopes for special modules that deploy to a diverse set of scopes
+                $scopes = @()
+                foreach ($testFilePath in $testFilePaths) {
+                    $content = Get-Content -Path $testFilePath
+
+                    if (($content | Where-Object { $_ -like '*targetScope =*' }).Count -gt 0) {
+                        # Custom scope
+                        $scopeLine = $content | Where-Object { $_ -like '*targetScope =*' }
+                        if ($scopeLine -match "targetScope = '([a-zA-Z]+)'") {
+                            $scopes += @{
+                                path  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+                                scope = $Matches[1]
+                            }
+                        } else {
+                            throw "Unable to detect scope in file [$testFilePath]"
+                        }
+                    } else {
+                        # Default scope
+                        $scopes += @{
+                            path  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+                            scope = 'resourceGroup'
+                        }
+                    }
+                }
+
+                # Create test cases
+                foreach ($testFilePath in $testFilePaths) {
+
+                    $deploymentTestFileTestCases += @{
+                        testFilePath        = $testFilePath
+                        allTestScopes       = $scopes
+                        testFileFolderName  = Split-Path (Split-Path $testFilePath -Parent) -Leaf
+                        centralTestFilePath = $centralTestFilePath
+                        moduleFolderName    = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
+                    }
+                }
+            }
+        }
+
+        It '[<moduleFolderName>] Module should have central test file [.test/main.test.bicep] for Public Bicep Registry CI' -TestCases ($deploymentTestFileTestCases | Select-Object -Unique) {
+
+            param(
+                [string] $centralTestFilePath
+            )
+
+            Test-Path $centralTestFilePath | Should -Be $true
+        }
+
+        It '[<moduleFolderName>] Module''s central test file should contain a reference to test folder [<testFileFolderName>] such as [module <testFileFolderName> ''<testFileFolderName>/main.test.bicep'' = {]' -TestCases $deploymentTestFileTestCases {
+
+            param(
+                [string] $testFileFolderName,
+                [string] $centralTestFilePath,
+                [hashtable[]] $allTestScopes
+            )
+
+            $unsupportedScopeCombination = $allTestScopes.scope -contains 'subscription' -and $allTestScopes.scope -contains 'managementGroup'
+            $currentInManagementGroupScope = ($allTestScopes | Where-Object { $_.path -eq $testFileFolderName }).scope -eq 'managementGroup'
+            if ($unsupportedScopeCombination -and $currentInManagementGroupScope) {
+                Set-ItResult -Skipped -Because 'the module has tests in the management group as well as subscription scope. In these cases we only require the subscription scope in the [.test/main.test.bicep] file.'
+                return
+            }
+
+            $centralTestFileContent = Get-Content $centralTestFilePath
+            $centralTestFileTestCases = $centralTestFileContent | Where-Object {
+                $_ -match "^module $testFileFolderName '$testFileFolderName\/main.test.bicep' = \{$"
+            }
+
+            $centralTestFileTestCases.Count | Should -Be 1
         }
     }
 }

@@ -1,3 +1,7 @@
+metadata name = 'Data Factory Integration RunTimes'
+metadata description = 'This module deploys a Data Factory Managed or Self-Hosted Integration Runtime.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment.')
 param dataFactoryName string
 

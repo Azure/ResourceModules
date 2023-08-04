@@ -13,7 +13,7 @@ param virtualNetworkSpoke2Name string
 @description('Optional. The location to deploy resources to.')
 param location string = resourceGroup().location
 
-resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: managedIdentityName
   location: location
 }
@@ -23,7 +23,7 @@ var addressPrefixSpoke1 = '172.16.0.0/12'
 var addressPrefixSpoke2 = '192.168.0.0/16'
 var subnetName = 'defaultSubnet'
 
-resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2023-02-01' = {
   name: virtualNetworkHubName
   location: location
   properties: {
@@ -43,7 +43,7 @@ resource virtualNetworkHub 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   }
 }
 
-resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2023-02-01' = {
   name: virtualNetworkSpoke1Name
   location: location
   properties: {
@@ -63,7 +63,7 @@ resource virtualNetworkSpoke1 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   }
 }
 
-resource virtualNetworkSpoke2 'Microsoft.Network/virtualNetworks@2022-01-01' = {
+resource virtualNetworkSpoke2 'Microsoft.Network/virtualNetworks@2023-02-01' = {
   name: virtualNetworkSpoke2Name
   location: location
   properties: {

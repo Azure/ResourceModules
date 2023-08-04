@@ -1,3 +1,7 @@
+metadata name = 'Web Site Basic Publishing Credentials Policies'
+metadata description = 'This module deploys a Web Site Basic Publishing Credentials Policy.'
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Required. The name of the resource.')
 @allowed([
   'scm'

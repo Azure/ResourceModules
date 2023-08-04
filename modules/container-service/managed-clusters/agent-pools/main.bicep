@@ -1,3 +1,7 @@
+metadata name = 'Azure Kubernetes Service (AKS) Managed Cluster Agent Pools'
+metadata description = 'This module deploys an Azure Kubernetes Service (AKS) Managed Cluster Agent Pool.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent managed cluster. Required if the template is used in a standalone deployment.')
 param managedClusterName string
 
@@ -166,11 +170,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-11-01' existing = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2023-05-02-preview' existing = {
   name: managedClusterName
 }
 
-resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2022-11-01' = {
+resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2023-05-02-preview' = {
   name: name
   parent: managedCluster
   properties: {

@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Service Bus Namespace Topic",
-    "summary": "This module deploys a Service Bus Namespace Topic.",
-    "owner": "Azure/module-maintainers"
-}

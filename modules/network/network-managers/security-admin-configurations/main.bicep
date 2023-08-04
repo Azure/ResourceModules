@@ -1,3 +1,8 @@
+metadata name = 'Network Manager Security Admin Configurations'
+metadata description = '''This module deploys an Network Manager Security Admin Configuration.
+A security admin configuration contains a set of rule collections. Each rule collection contains one or more security admin rules.'''
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Conditional. The name of the parent network manager. Required if the template is used in a standalone deployment.')
 param networkManagerName string
 
@@ -25,7 +30,7 @@ param enableDefaultTelemetry bool = true
 
 var enableReferencedModulesTelemetry = false
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -37,11 +42,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' existing = {
+resource networkManager 'Microsoft.Network/networkManagers@2023-02-01' existing = {
   name: networkManagerName
 }
 
-resource securityAdminConfigurations 'Microsoft.Network/networkManagers/securityAdminConfigurations@2022-07-01' = {
+resource securityAdminConfigurations 'Microsoft.Network/networkManagers/securityAdminConfigurations@2023-02-01' = {
   name: name
   parent: networkManager
   properties: {

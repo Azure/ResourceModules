@@ -1,3 +1,7 @@
+metadata name = 'Application Security Groups (ASG)'
+metadata description = 'This module deploys an Application Security Group (ASG).'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the Application Security Group.')
 param name string
 

@@ -1,3 +1,8 @@
+metadata name = 'Network Manager Scope Connections'
+metadata description = '''This module deploys a Network Manager Scope Connection.
+Create a cross-tenant connection to manage a resource from another tenant.'''
+metadata owner = 'Azure/module-maintainers'
+
 @sys.description('Conditional. The name of the parent network manager. Required if the template is used in a standalone deployment.')
 param networkManagerName string
 
@@ -18,7 +23,7 @@ param tenantId string
 @sys.description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+resource defaultTelemetry 'Microsoft.Resources/deployments@2022-09-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
@@ -30,11 +35,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkManager 'Microsoft.Network/networkManagers@2022-07-01' existing = {
+resource networkManager 'Microsoft.Network/networkManagers@2023-02-01' existing = {
   name: networkManagerName
 }
 
-resource scopeConnection 'Microsoft.Network/networkManagers/scopeConnections@2022-07-01' = {
+resource scopeConnection 'Microsoft.Network/networkManagers/scopeConnections@2023-02-01' = {
   name: name
   parent: networkManager
   properties: {

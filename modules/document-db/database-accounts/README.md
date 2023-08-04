@@ -49,7 +49,7 @@ This module deploys a DocumentDB Database Account.
 | `defaultConsistencyLevel` | string | `'Session'` | `[BoundedStaleness, ConsistentPrefix, Eventual, Session, Strong]` | The default consistency level of the Cosmos DB account. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, CassandraRequests, ControlPlaneRequests, DataPlaneRequests, GremlinRequests, MongoRequests, PartitionKeyRUConsumption, PartitionKeyStatistics, QueryRuntimeStatistics, TableApiRequests]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[Requests]` | `[Requests]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -502,8 +502,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -516,8 +516,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -568,7 +568,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddagrm002'
+    name: 'dddagrm002'
     // Non-required parameters
     capabilitiesToAdd: [
       'EnableGremlin'
@@ -601,7 +601,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-gdb-dddagrm-001'
+        name: 'gdb-dddagrm-001'
       }
       {
         collections: [
@@ -624,7 +624,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-gdb-dddagrm-002'
+        name: 'gdb-dddagrm-002'
       }
     ]
     location: '<location>'
@@ -674,7 +674,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddagrm002"
+      "value": "dddagrm002"
     },
     // Non-required parameters
     "capabilitiesToAdd": {
@@ -723,7 +723,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-gdb-dddagrm-001"
+          "name": "gdb-dddagrm-001"
         },
         {
           "collections": [
@@ -746,7 +746,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-gdb-dddagrm-002"
+          "name": "gdb-dddagrm-002"
         }
       ]
     },
@@ -803,7 +803,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddamng001'
+    name: 'dddamng001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -902,7 +902,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-mdb-dddamng-001'
+        name: 'mdb-dddamng-001'
       }
       {
         collections: [
@@ -993,7 +993,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             }
           }
         ]
-        name: '<<namePrefix>>-mdb-dddamng-002'
+        name: 'mdb-dddamng-002'
       }
     ]
     roleAssignments: [
@@ -1042,7 +1042,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddamng001"
+      "value": "dddamng001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -1157,7 +1157,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               }
             }
           ],
-          "name": "<<namePrefix>>-mdb-dddamng-001"
+          "name": "mdb-dddamng-001"
         },
         {
           "collections": [
@@ -1248,7 +1248,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               }
             }
           ],
-          "name": "<<namePrefix>>-mdb-dddamng-002"
+          "name": "mdb-dddamng-002"
         }
       ]
     },
@@ -1302,7 +1302,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddapln001'
+    name: 'dddapln001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -1356,7 +1356,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddapln001"
+      "value": "dddapln001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -1427,7 +1427,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
         locationName: 'North Europe'
       }
     ]
-    name: '<<namePrefix>>dddasql001'
+    name: 'dddasql001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -1478,12 +1478,12 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-sql-dddasql-001'
+        name: 'sql-dddasql-001'
         throughput: 1000
       }
       {
         containers: []
-        name: '<<namePrefix>>-sql-dddasql-002'
+        name: 'sql-dddasql-002'
       }
       {
         autoscaleSettingsMaxThroughput: 1000
@@ -1518,7 +1518,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
             ]
           }
         ]
-        name: '<<namePrefix>>-sql-dddasql-003'
+        name: 'sql-dddasql-003'
       }
     ]
     tags: {
@@ -1560,7 +1560,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>dddasql001"
+      "value": "dddasql001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -1629,12 +1629,12 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-001",
+          "name": "sql-dddasql-001",
           "throughput": 1000
         },
         {
           "containers": [],
-          "name": "<<namePrefix>>-sql-dddasql-002"
+          "name": "sql-dddasql-002"
         },
         {
           "autoscaleSettingsMaxThroughput": 1000,
@@ -1669,7 +1669,7 @@ module databaseAccounts './document-db/database-accounts/main.bicep' = {
               ]
             }
           ],
-          "name": "<<namePrefix>>-sql-dddasql-003"
+          "name": "sql-dddasql-003"
         }
       ]
     },

@@ -44,6 +44,7 @@ This module deploys an Azure NetApp File.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `smbServerNamePrefix` | string | `''` |  | Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -146,6 +147,39 @@ tags: {
 </details>
 <p>
 
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -177,7 +211,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaamin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nanaamin001'
+    name: 'nanaamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -198,7 +232,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nanaamin001"
+      "value": "nanaamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {
@@ -222,11 +256,11 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaanfs3'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nanaanfs3001'
+    name: 'nanaanfs3001'
     // Non-required parameters
     capacityPools: [
       {
-        name: '<<namePrefix>>-nanaanfs3-cp-001'
+        name: 'nanaanfs3-cp-001'
         roleAssignments: [
           {
             principalIds: [
@@ -250,7 +284,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: '<<namePrefix>>-nanaanfs3-vol-001'
+            name: 'nanaanfs3-vol-001'
             protocolTypes: [
               'NFSv3'
             ]
@@ -267,7 +301,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
             usageThreshold: 107374182400
           }
           {
-            name: '<<namePrefix>>-nanaanfs3-vol-002'
+            name: 'nanaanfs3-vol-002'
             protocolTypes: [
               'NFSv3'
             ]
@@ -277,7 +311,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
         ]
       }
       {
-        name: '<<namePrefix>>-nanaanfs3-cp-002'
+        name: 'nanaanfs3-cp-002'
         roleAssignments: [
           {
             principalIds: [
@@ -329,13 +363,13 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nanaanfs3001"
+      "value": "nanaanfs3001"
     },
     // Non-required parameters
     "capacityPools": {
       "value": [
         {
-          "name": "<<namePrefix>>-nanaanfs3-cp-001",
+          "name": "nanaanfs3-cp-001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -359,7 +393,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "<<namePrefix>>-nanaanfs3-vol-001",
+              "name": "nanaanfs3-vol-001",
               "protocolTypes": [
                 "NFSv3"
               ],
@@ -376,7 +410,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
               "usageThreshold": 107374182400
             },
             {
-              "name": "<<namePrefix>>-nanaanfs3-vol-002",
+              "name": "nanaanfs3-vol-002",
               "protocolTypes": [
                 "NFSv3"
               ],
@@ -386,7 +420,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
           ]
         },
         {
-          "name": "<<namePrefix>>-nanaanfs3-cp-002",
+          "name": "nanaanfs3-cp-002",
           "roleAssignments": [
             {
               "principalIds": [
@@ -447,11 +481,11 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-nanaanfs41'
   params: {
     // Required parameters
-    name: '<<namePrefix>>nanaanfs41001'
+    name: 'nanaanfs41001'
     // Non-required parameters
     capacityPools: [
       {
-        name: '<<namePrefix>>-nanaanfs41-cp-001'
+        name: 'nanaanfs41-cp-001'
         roleAssignments: [
           {
             principalIds: [
@@ -475,7 +509,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: '<<namePrefix>>-nanaanfs41-vol-001'
+            name: 'nanaanfs41-vol-001'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -502,7 +536,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                 unixReadWrite: true
               }
             ]
-            name: '<<namePrefix>>-nanaanfs41-vol-002'
+            name: 'nanaanfs41-vol-002'
             protocolTypes: [
               'NFSv4.1'
             ]
@@ -512,7 +546,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
         ]
       }
       {
-        name: '<<namePrefix>>-nanaanfs41-cp-002'
+        name: 'nanaanfs41-cp-002'
         roleAssignments: [
           {
             principalIds: [
@@ -545,6 +579,9 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
       Role: 'DeploymentValidation'
       ServiceName: 'DeploymentValidation'
     }
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -563,13 +600,13 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>nanaanfs41001"
+      "value": "nanaanfs41001"
     },
     // Non-required parameters
     "capacityPools": {
       "value": [
         {
-          "name": "<<namePrefix>>-nanaanfs41-cp-001",
+          "name": "nanaanfs41-cp-001",
           "roleAssignments": [
             {
               "principalIds": [
@@ -593,7 +630,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "<<namePrefix>>-nanaanfs41-vol-001",
+              "name": "nanaanfs41-vol-001",
               "protocolTypes": [
                 "NFSv4.1"
               ],
@@ -620,7 +657,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
                   "unixReadWrite": true
                 }
               ],
-              "name": "<<namePrefix>>-nanaanfs41-vol-002",
+              "name": "nanaanfs41-vol-002",
               "protocolTypes": [
                 "NFSv4.1"
               ],
@@ -630,7 +667,7 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
           ]
         },
         {
-          "name": "<<namePrefix>>-nanaanfs41-cp-002",
+          "name": "nanaanfs41-cp-002",
           "roleAssignments": [
             {
               "principalIds": [
@@ -668,6 +705,11 @@ module netAppAccounts './net-app/net-app-accounts/main.bicep' = {
         "PurchaseOrder": "1234",
         "Role": "DeploymentValidation",
         "ServiceName": "DeploymentValidation"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
       }
     }
   }

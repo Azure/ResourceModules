@@ -6,7 +6,7 @@ targetScope = 'subscription'
 
 @description('Optional. The name of the resource group to deploy for testing purposes.')
 @maxLength(90)
-param resourceGroupName string = 'ms.network.privateendpoints-${serviceShort}-rg'
+param resourceGroupName string = 'ms.network.serviceendpointpolicies-${serviceShort}-rg'
 
 @description('Optional. The location to deploy resources to.')
 param location string = deployment().location
@@ -16,6 +16,9 @@ param serviceShort string = 'nsnpmin'
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. A token to inject into the name of each resource.')
+param namePrefix string = '[[namePrefix]]'
 
 // ============ //
 // Dependencies //
@@ -37,6 +40,6 @@ module testDeployment '../../main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-${serviceShort}'
   params: {
     enableDefaultTelemetry: enableDefaultTelemetry
-    name: '<<namePrefix>>${serviceShort}001'
+    name: '${namePrefix}-${serviceShort}-001'
   }
 }

@@ -33,7 +33,7 @@ This module deploys a Public IP Address.
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DDoSMitigationFlowLogs, DDoSMitigationReports, DDoSProtectionNotifications]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -187,7 +187,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npiacom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npiacom001'
+    name: 'npiacom001'
     // Non-required parameters
     diagnosticEventHubAuthorizationRuleId: '<diagnosticEventHubAuthorizationRuleId>'
     diagnosticEventHubName: '<diagnosticEventHubName>'
@@ -234,7 +234,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npiacom001"
+      "value": "npiacom001"
     },
     // Non-required parameters
     "diagnosticEventHubAuthorizationRuleId": {
@@ -306,7 +306,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-npiamin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>npiamin001'
+    name: 'npiamin001'
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
   }
@@ -327,7 +327,7 @@ module publicIPAddresses './network/public-ip-addresses/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>npiamin001"
+      "value": "npiamin001"
     },
     // Non-required parameters
     "enableDefaultTelemetry": {

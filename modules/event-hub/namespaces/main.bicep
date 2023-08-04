@@ -1,3 +1,7 @@
+metadata name = 'Event Hub Namespaces'
+metadata description = 'This module deploys an Event Hub Namespace.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the event hub namespace.')
 @maxLength(50)
 param name string
@@ -9,10 +13,11 @@ param location string = resourceGroup().location
 @allowed([
   'Basic'
   'Standard'
+  'Premium'
 ])
 param skuName string = 'Standard'
 
-@description('Optional. Event Hub plan scale-out capacity of the resource.')
+@description('Optional. The Event Hub\'s throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium units.')
 @minValue(1)
 @maxValue(20)
 param skuCapacity int = 1
@@ -39,6 +44,29 @@ param authorizationRules array = [
     ]
   }
 ]
+
+@description('Optional. This property disables SAS authentication for the Event Hubs namespace.')
+param disableLocalAuth bool = true
+
+@description('Optional. Value that indicates whether Kafka is enabled for Event Hubs Namespace.')
+param kafkaEnabled bool = false
+
+@allowed([
+  '1.0'
+  '1.1'
+  '1.2'
+])
+@description('Optional. The minimum TLS version for the cluster to support.')
+param minimumTlsVersion string = '1.2'
+
+@description('Optional. Whether or not public network access is allowed for this resource. For security reasons it should be disabled. If not specified, it will be disabled by default if private endpoints are set.')
+@allowed([
+  ''
+  'Disabled'
+  'Enabled'
+  'SecuredByPerimeter'
+])
+param publicNetworkAccess string = ''
 
 @description('Optional. Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
@@ -77,6 +105,21 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
+@description('Optional. The name of the customer managed key to use for encryption. Customer-managed key encryption at rest is only available for namespaces of premium SKU or namespaces created in a Dedicated Cluster.')
+param cMKKeyName string = ''
+
+@description('Conditional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if "cMKKeyName" is not empty.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, the latest key version is used.')
+param cMKKeyVersion string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. The identity should have key usage permissions on the Key Vault Key. Required if "cMKKeyName" is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Optional. Enable infrastructure encryption (double encryption). Note, this setting requires the configuration of Customer-Managed-Keys (CMK) via the corresponding module parameters.')
+param requireInfrastructureEncryption bool = false
+
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
@@ -92,8 +135,9 @@ param eventhubs array = []
 @description('Optional. The disaster recovery config for this namespace.')
 param disasterRecoveryConfig object = {}
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'ArchiveLogs'
   'OperationalLogs'
@@ -122,7 +166,7 @@ var maximumThroughputUnitsVar = !isAutoInflateEnabled ? 0 : maximumThroughputUni
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -140,7 +184,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -161,6 +205,15 @@ var identity = identityType != 'None' ? {
 
 var enableReferencedModulesTelemetry = false
 
+resource cMKKeyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))!
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+
+  resource cMKKey 'keys@2022-07-01' existing = if (!empty(cMKKeyName)) {
+    name: cMKKeyName
+  }
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -173,7 +226,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -184,9 +237,27 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
     capacity: skuCapacity
   }
   properties: {
-    zoneRedundant: zoneRedundant
+    disableLocalAuth: disableLocalAuth
+    encryption: !empty(cMKKeyName) ? {
+      keySource: 'Microsoft.KeyVault'
+      keyVaultProperties: [
+        {
+          identity: !empty(cMKUserAssignedIdentityResourceId) ? {
+            userAssignedIdentity: cMKUserAssignedIdentityResourceId
+          } : null
+          keyName: cMKKeyName
+          keyVaultUri: cMKKeyVault.properties.vaultUri
+          keyVersion: !empty(cMKKeyVersion) ? cMKKeyVersion : last(split(cMKKeyVault::cMKKey.properties.keyUriWithVersion, '/'))
+        }
+      ]
+      requireInfrastructureEncryption: requireInfrastructureEncryption
+    } : null
     isAutoInflateEnabled: isAutoInflateEnabled
+    kafkaEnabled: kafkaEnabled
     maximumThroughputUnits: maximumThroughputUnitsVar
+    minimumTlsVersion: minimumTlsVersion
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) && empty(networkRuleSets) ? 'Disabled' : publicNetworkAccess)
+    zoneRedundant: zoneRedundant
   }
 }
 

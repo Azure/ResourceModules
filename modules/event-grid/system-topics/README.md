@@ -36,7 +36,7 @@ This module deploys an Event Grid System Topic.
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `[allLogs, DeliveryFailures]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. |
+| `diagnosticLogCategoriesToEnable` | array | `[allLogs]` | `['', allLogs, DeliveryFailures]` | The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to '' to disable log collection. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `''` |  | The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings". |
@@ -79,7 +79,7 @@ You can specify multiple event subscriptions using the following format:
           "enableAdvancedFilteringOnArrays": true,
           "isSubjectCaseSensitive": false
         },
-        "name": "<<namePrefix>>egstcom001",
+        "name": "[[namePrefix]]egstcom001",
         "retryPolicy": {
           "eventTimeToLive": "120",
           "maxDeliveryAttempts": 10
@@ -113,7 +113,7 @@ eventSubscriptions: [
         enableAdvancedFilteringOnArrays: true
         isSubjectCaseSensitive: false
       }
-      name: '<<namePrefix>>egstcom001'
+      name: '[[namePrefix]]egstcom001'
       retryPolicy: {
         eventTimeToLive: '120'
         maxDeliveryAttempts: 10
@@ -236,8 +236,8 @@ You can specify multiple user assigned identities to a resource by providing add
 ```json
 "userAssignedIdentities": {
     "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 }
 ```
@@ -250,8 +250,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```bicep
 userAssignedIdentities: {
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
-    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/[[subscriptionId]]/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
 }
 ```
 
@@ -290,7 +290,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egstcom'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstcom001'
+    name: 'egstcom001'
     source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
@@ -317,7 +317,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
           enableAdvancedFilteringOnArrays: true
           isSubjectCaseSensitive: false
         }
-        name: '<<namePrefix>>egstcom001'
+        name: 'egstcom001'
         retryPolicy: {
           eventTimeToLive: '120'
           maxDeliveryAttempts: 10
@@ -356,7 +356,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egstcom001"
+      "value": "egstcom001"
     },
     "source": {
       "value": "<source>"
@@ -401,7 +401,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
             "enableAdvancedFilteringOnArrays": true,
             "isSubjectCaseSensitive": false
           },
-          "name": "<<namePrefix>>egstcom001",
+          "name": "egstcom001",
           "retryPolicy": {
             "eventTimeToLive": "120",
             "maxDeliveryAttempts": 10
@@ -447,7 +447,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   name: '${uniqueString(deployment().name, location)}-test-egstmin'
   params: {
     // Required parameters
-    name: '<<namePrefix>>egstmin001'
+    name: 'egstmin001'
     source: '<source>'
     topicType: 'Microsoft.Storage.StorageAccounts'
     // Non-required parameters
@@ -470,7 +470,7 @@ module systemTopics './event-grid/system-topics/main.bicep' = {
   "parameters": {
     // Required parameters
     "name": {
-      "value": "<<namePrefix>>egstmin001"
+      "value": "egstmin001"
     },
     "source": {
       "value": "<source>"

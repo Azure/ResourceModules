@@ -1,6 +1,0 @@
-{
-    "$schema": "https://aka.ms/bicep-registry-module-metadata-file-schema-v2#",
-    "name": "Healthcare API Workspace IoT Connectors",
-    "summary": "This module deploys a Healthcare API Workspace IoT Connector.",
-    "owner": "Azure/module-maintainers"
-}

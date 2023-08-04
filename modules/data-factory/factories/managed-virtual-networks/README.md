@@ -57,7 +57,7 @@ To use Managed Private Endpoints the following dependencies must be deployed:
             "fqdns": [
                 "mystorageaccount.blob.core.windows.net" // Required: Fully qualified domain names
             ],
-            "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount"
+            "privateLinkResourceId": "/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount"
             // Required: The ARM resource ID of the resource to which the managed private endpoint is created.
         }
     ]
@@ -79,7 +79,7 @@ managedPrivateEndpoints:  [
         fqdns: [
           'mystorageaccount.blob.core.windows.net' // Required: Fully qualified domain names
         ]
-        privateLinkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount'
+        privateLinkResourceId: '/subscriptions/[[subscriptionId]]/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/mystorageaccount'
     } // Required: The ARM resource ID of the resource to which the managed private endpoint is created.
 ]
 ```

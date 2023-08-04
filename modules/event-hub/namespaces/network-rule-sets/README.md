@@ -13,7 +13,7 @@ This module deploys an Event Hub Namespace Network Rule Set.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/networkRuleSets` | [2021-11-01](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/networkRuleSets) |
+| `Microsoft.EventHub/namespaces/networkRuleSets` | [2022-01-01-preview](https://learn.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2022-01-01-preview/namespaces/networkRuleSets) |
 
 ## Parameters
 
@@ -45,13 +45,13 @@ Contains an array of subnets that this Event Hub Namespace is exposed to via Ser
       {
         "ignoreMissingVnetServiceEndpoint": true,
         "subnet": {
-          "id": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/<<virtualNetworkName>>/subnets/<<subnetName1>>"
+          "id": "/subscriptions/[[subscriptionId]]/resourcegroups/[[resourceGroupName]]/providers/Microsoft.Network/virtualNetworks/[[virtualNetworkName]]/subnets/[[subnetName1]]"
         }
       },
       {
       "ignoreMissingVnetServiceEndpoint": false,
       "subnet": {
-        "id": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/<<virtualNetworkName>>/subnets/<<subnetName2>>"
+        "id": "/subscriptions/[[subscriptionId]]/resourcegroups/[[resourceGroupName]]/providers/Microsoft.Network/virtualNetworks/[[virtualNetworkName]]/subnets/[[subnetName2]]"
         }
       }
     ]

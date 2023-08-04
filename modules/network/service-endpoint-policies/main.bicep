@@ -1,4 +1,8 @@
-@description('Required. Service Endpoint Policy name.')
+metadata name = 'Service Endpoint Policies'
+metadata description = 'This module deploys a Service Endpoint Policy.'
+metadata owner = 'Azure/module-maintainers'
+
+@description('Required. The Service Endpoint Policy name.')
 param name string
 
 @description('Optional. Location for all resources.')
@@ -42,7 +46,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource serviceEndpointPolicy 'Microsoft.network/ServiceEndpointPolicies@2022-07-01' = {
+resource serviceEndpointPolicy 'Microsoft.Network/serviceEndpointPolicies@2022-07-01' = {
   name: name
   location: location
   tags: tags
@@ -63,7 +67,7 @@ resource serviceEndpointPolicy_lock 'Microsoft.Authorization/locks@2020-05-01' =
 }
 
 module serviceEndpointPolicy_roleAssignments '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-RouteTable-Rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-ServiceEndpointPolicy-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds

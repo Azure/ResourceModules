@@ -1,3 +1,7 @@
+metadata name = 'App Configuration Stores Key Values'
+metadata description = 'This module deploys an App Configuration Store Key Value.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. Name of the key.')
 param name string
 

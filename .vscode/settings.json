@@ -50,5 +50,15 @@
   "spellright.language": [
     "en"
   ],
-  "yaml.format.singleQuote": true
+  "yaml.format.singleQuote": true,
+  "commandOnAllFiles.commands": {
+    "Format File": {
+      "command": "editor.action.formatDocument",
+      "includeFileExtensions": [
+        ".json",
+        ".bicep",
+        ".ps1"
+      ]
+    }
+  }
 }

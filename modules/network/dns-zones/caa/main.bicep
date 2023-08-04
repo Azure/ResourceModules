@@ -1,3 +1,7 @@
+metadata name = 'Public DNS Zone CAA record'
+metadata description = 'This module deploys a Public DNS Zone CAA record.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent DNS zone. Required if the template is used in a standalone deployment.')
 param dnsZoneName string
 

@@ -13,10 +13,9 @@ param managedIdentityName string
 var addressPrefix = '10.0.0.0/16'
 
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-08-01' = {
-  name: networkSecurityGroupName
-  location: location
-  properties: {
-  }
+    name: networkSecurityGroupName
+    location: location
+    properties: {}
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
@@ -45,7 +44,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
 }
 
 resource privateDNSZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
-    name:  'privatelink.azuresynapse.net'
+    name: 'privatelink.azuresynapse.net'
     location: 'global'
 
     resource virtualNetworkLinks 'virtualNetworkLinks@2020-06-01' = {

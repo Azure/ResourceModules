@@ -176,7 +176,7 @@ module capacities './power-bi-dedicated/capacities/main.bicep' = {
     members: [
       '<managedIdentityPrincipalId>'
     ]
-    name: '<<namePrefix>>pbdcapcom001'
+    name: 'pbdcapcom001'
     skuCapacity: 1
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -217,7 +217,7 @@ module capacities './power-bi-dedicated/capacities/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>pbdcapcom001"
+      "value": "pbdcapcom001"
     },
     "skuCapacity": {
       "value": 1
@@ -267,7 +267,7 @@ module capacities './power-bi-dedicated/capacities/main.bicep' = {
     members: [
       '<managedIdentityPrincipalId>'
     ]
-    name: '<<namePrefix>>pbdcapmin001'
+    name: 'pbdcapmin001'
     skuCapacity: 1
     // Non-required parameters
     enableDefaultTelemetry: '<enableDefaultTelemetry>'
@@ -294,7 +294,7 @@ module capacities './power-bi-dedicated/capacities/main.bicep' = {
       ]
     },
     "name": {
-      "value": "<<namePrefix>>pbdcapmin001"
+      "value": "pbdcapmin001"
     },
     "skuCapacity": {
       "value": 1

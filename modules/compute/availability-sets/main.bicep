@@ -1,3 +1,7 @@
+metadata name = 'Availability Sets'
+metadata description = 'This module deploys an Availability Set.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Required. The name of the availability set that is being created.')
 param name string
 
@@ -7,10 +11,7 @@ param platformFaultDomainCount int = 2
 @description('Optional. The number of update domains to use.')
 param platformUpdateDomainCount int = 5
 
-@description('''Optional. SKU of the availability set.
-- Use \'Aligned\' for virtual machines with managed disks.
-- Use \'Classic\' for virtual machines with unmanaged disks.
-''')
+@description('Optional. SKU of the availability set.</p>- Use \'Aligned\' for virtual machines with managed disks.</p>- Use \'Classic\' for virtual machines with unmanaged disks.')
 param skuName string = 'Aligned'
 
 @description('Optional. Resource ID of a proximity placement group.')

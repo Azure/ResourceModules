@@ -1,3 +1,7 @@
+metadata name = 'Web/Function Apps'
+metadata description = 'This module deploys a Web or Function App.'
+metadata owner = 'Azure/module-maintainers'
+
 // ================ //
 // Parameters       //
 // ================ //
@@ -111,8 +115,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource.')
+@description('Optional. The name of logs that will be streamed. "allLogs" includes all possible logs for the resource. Set to \'\' to disable log collection.')
 @allowed([
+  ''
   'allLogs'
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
@@ -150,10 +155,7 @@ param clientCertEnabled bool = false
 @description('Optional. Client certificate authentication comma-separated exclusion paths.')
 param clientCertExclusionPaths string = ''
 
-@description('''Optional. This composes with ClientCertEnabled setting.
-- ClientCertEnabled: false means ClientCert is ignored.
-- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
-- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.''')
+@description('Optional. This composes with ClientCertEnabled setting.</p>- ClientCertEnabled: false means ClientCert is ignored.</p>- ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.</p>- ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.')
 @allowed([
   'Optional'
   'OptionalInteractiveUser'
@@ -195,10 +197,13 @@ param redundancyMode string = 'None'
 @description('Optional. The site publishing credential policy names which are associated with the sites.')
 param basicPublishingCredentialsPolicies array = []
 
+@description('Optional. Names of hybrid connection relays to connect app with.')
+param hybridConnectionRelays array = []
+
 // =========== //
 // Variables   //
 // =========== //
-var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs'): {
+var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
   enabled: true
   retentionPolicy: {
@@ -216,7 +221,7 @@ var diagnosticsLogs = contains(diagnosticLogCategoriesToEnable, 'allLogs') ? [
       days: diagnosticLogsRetentionInDays
     }
   }
-] : diagnosticsLogsSpecified
+] : contains(diagnosticLogCategoriesToEnable, '') ? [] : diagnosticsLogsSpecified
 
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
@@ -356,6 +361,7 @@ module app_slots 'slots/main.bicep' = [for (slot, index) in slots: {
     vnetContentShareEnabled: contains(slot, 'vnetContentShareEnabled') ? slot.vnetContentShareEnabled : false
     vnetImagePullEnabled: contains(slot, 'vnetImagePullEnabled') ? slot.vnetImagePullEnabled : false
     vnetRouteAllEnabled: contains(slot, 'vnetRouteAllEnabled') ? slot.vnetRouteAllEnabled : false
+    hybridConnectionRelays: contains(slot, 'hybridConnectionRelays') ? slot.hybridConnectionRelays : []
   }
 }]
 
@@ -364,6 +370,16 @@ module app_basicPublishingCredentialsPolicies 'basic-publishing-credentials-poli
   params: {
     webAppName: app.name
     name: basicPublishingCredentialsPolicy.name
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}]
+
+module app_hybridConnectionRelays 'hybrid-connection-namespaces/relays/main.bicep' = [for (hybridConnectionRelay, index) in hybridConnectionRelays: {
+  name: '${uniqueString(deployment().name, location)}-HybridConnectionRelay-${index}'
+  params: {
+    hybridConnectionResourceId: hybridConnectionRelay.resourceId
+    appName: app.name
+    sendKeyName: contains(hybridConnectionRelay, 'sendKeyName') ? hybridConnectionRelay.sendKeyName : null
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]

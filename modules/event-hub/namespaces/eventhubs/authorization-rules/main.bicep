@@ -1,3 +1,7 @@
+metadata name = 'Event Hub Namespace Event Hub Authorization Rules'
+metadata description = 'This module deploys an Event Hub Namespace Event Hub Authorization Rule.'
+metadata owner = 'Azure/module-maintainers'
+
 @description('Conditional. The name of the parent event hub namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
@@ -30,15 +34,15 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' existing = {
   name: namespaceName
 
-  resource eventhub 'eventHubs@2021-11-01' existing = {
+  resource eventhub 'eventhubs@2022-01-01-preview' existing = {
     name: eventHubName
   }
 }
 
-resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-11-01' = {
+resource authorizationRule 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-01-01-preview' = {
   name: name
   parent: namespace::eventhub
   properties: {
