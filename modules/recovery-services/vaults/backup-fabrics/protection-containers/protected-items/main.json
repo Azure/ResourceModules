@@ -4,9 +4,12 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.19.5.34762",
-      "templateHash": "9148923827539718769"
-    }
+      "version": "0.20.4.51522",
+      "templateHash": "6407898441503460857"
+    },
+    "name": "Recovery Service Vaults Protection Container Protected Item",
+    "description": "This module deploys a Recovery Services Vault Protection Container Protected Item.",
+    "owner": "Azure/module-maintainers"
   },
   "parameters": {
     "name": {
@@ -36,9 +39,6 @@
     },
     "protectedItemType": {
       "type": "string",
-      "metadata": {
-        "description": "Required. The backup item type."
-      },
       "allowedValues": [
         "AzureFileShareProtectedItem",
         "AzureVmWorkloadSAPAseDatabase",
@@ -50,7 +50,10 @@
         "Microsoft.ClassicCompute/virtualMachines",
         "Microsoft.Compute/virtualMachines",
         "Microsoft.Sql/servers/databases"
-      ]
+      ],
+      "metadata": {
+        "description": "Required. The backup item type."
+      }
     },
     "policyId": {
       "type": "string",
