@@ -314,7 +314,7 @@ module logAnalyticsWorkspace_dataSources 'data-sources/main.bicep' = [for (dataS
   }
 }]
 
-module logAnalyticsWorkspace_tables 'tables/main.bicep' = [for (table, index) in tables: {
+module logAnalyticsWorkspace_tables 'table/main.bicep' = [for (table, index) in tables: {
   name: '${uniqueString(deployment().name, location)}-LAW-Table-${index}'
   params: {
     workspaceName: logAnalyticsWorkspace.name

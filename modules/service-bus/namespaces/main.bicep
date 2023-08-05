@@ -258,7 +258,7 @@ module serviceBusNamespace_networkRuleSet 'network-rule-sets/main.bicep' = if (!
   }
 }
 
-module serviceBusNamespace_queues 'queues/main.bicep' = [for (queue, index) in queues: {
+module serviceBusNamespace_queues 'queue/main.bicep' = [for (queue, index) in queues: {
   name: '${uniqueString(deployment().name, location)}-Queue-${index}'
   params: {
     namespaceName: serviceBusNamespace.name

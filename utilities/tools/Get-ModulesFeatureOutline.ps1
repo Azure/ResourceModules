@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Get an outline of all modules features for each module contained in the given path
 

@@ -1,13 +1,13 @@
-metadata name = 'Storage Account Queue Services'
-metadata description = 'This module deploys a Storage Account Queue Service.'
+metadata name = 'Storage Account Table Services'
+metadata description = 'This module deploys a Storage Account Table Service.'
 metadata owner = 'Azure/module-maintainers'
 
 @maxLength(24)
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. Queues to create.')
-param queues array = []
+@description('Optional. tables to create.')
+param tables array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -52,7 +52,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
 
-// The name of the blob services
+// The name of the table service
 var name = 'default'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
@@ -103,13 +103,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 }
 
-resource queueServices 'Microsoft.Storage/storageAccounts/queueServices@2021-09-01' = {
+resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2021-09-01' = {
   name: name
   parent: storageAccount
   properties: {}
 }
 
-resource queueServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource tableServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -119,25 +119,23 @@ resource queueServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: queueServices
+  scope: tableServices
 }
 
-module queueServices_queues 'queues/main.bicep' = [for (queue, index) in queues: {
-  name: '${deployment().name}-Queue-${index}'
+module tableServices_tables 'table/main.bicep' = [for (tableName, index) in tables: {
+  name: '${deployment().name}-Table-${index}'
   params: {
+    name: tableName
     storageAccountName: storageAccount.name
-    name: queue.name
-    metadata: contains(queue, 'metadata') ? queue.metadata : {}
-    roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-@description('The name of the deployed file share service.')
-output name string = queueServices.name
+@description('The name of the deployed table service.')
+output name string = tableServices.name
 
-@description('The resource ID of the deployed file share service.')
-output resourceId string = queueServices.id
+@description('The resource ID of the deployed table service.')
+output resourceId string = tableServices.id
 
-@description('The resource group of the deployed file share service.')
+@description('The resource group of the deployed table service.')
 output resourceGroupName string = resourceGroup().name

@@ -1,4 +1,4 @@
-﻿#region Helper functions
+#region Helper functions
 <#
 .SYNOPSIS
 Get a properly formatted 'Deploy to Azure' button for the template in the given path

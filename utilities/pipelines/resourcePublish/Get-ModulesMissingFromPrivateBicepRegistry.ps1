@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Get a list of all modules (path & version) in the given TemplatePath that do not exist as a repository in the given Container Registry
 

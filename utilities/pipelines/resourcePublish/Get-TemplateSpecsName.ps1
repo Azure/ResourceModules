@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Convert the given template file path into a valid Template Specs name
 

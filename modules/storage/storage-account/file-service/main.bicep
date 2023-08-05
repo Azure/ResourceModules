@@ -1,13 +1,22 @@
-metadata name = 'Storage Account Table Services'
-metadata description = 'This module deploys a Storage Account Table Service.'
+metadata name = 'Storage Account File Share Services'
+metadata description = 'This module deploys a Storage Account File Share Service.'
 metadata owner = 'Azure/module-maintainers'
 
 @maxLength(24)
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. tables to create.')
-param tables array = []
+@description('Optional. The name of the file service.')
+param name string = 'default'
+
+@description('Optional. Protocol settings for file service.')
+param protocolSettings object = {}
+
+@description('Optional. The service properties for soft delete.')
+param shareDeleteRetentionPolicy object = {
+  enabled: true
+  days: 7
+}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -25,6 +34,9 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
+
+@description('Optional. File shares to create.')
+param shares array = []
 
 @description('Optional. Enable telemetry via a Globally Unique Identifier (GUID).')
 param enableDefaultTelemetry bool = true
@@ -51,9 +63,6 @@ param diagnosticMetricsToEnable array = [
 
 @description('Optional. The name of the diagnostic setting, if deployed. If left empty, it defaults to "<resourceName>-diagnosticSettings".')
 param diagnosticSettingsName string = ''
-
-// The name of the table service
-var name = 'default'
 
 var diagnosticsLogsSpecified = [for category in filter(diagnosticLogCategoriesToEnable, item => item != 'allLogs' && item != ''): {
   category: category
@@ -87,6 +96,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var enableReferencedModulesTelemetry = false
 
+var defaultShareAccessTier = storageAccount.kind == 'FileStorage' ? 'Premium' : 'TransactionOptimized' // default share accessTier depends on the Storage Account kind: 'Premium' for 'FileStorage' kind, 'TransactionOptimized' otherwise
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -103,13 +114,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
   name: storageAccountName
 }
 
-resource tableServices 'Microsoft.Storage/storageAccounts/tableServices@2021-09-01' = {
+resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2021-09-01' = {
   name: name
   parent: storageAccount
-  properties: {}
+  properties: {
+    protocolSettings: protocolSettings
+    shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
+  }
 }
 
-resource tableServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource fileServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: !empty(diagnosticSettingsName) ? diagnosticSettingsName : '${name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -119,23 +133,29 @@ resource tableServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: tableServices
+  scope: fileServices
 }
 
-module tableServices_tables 'tables/main.bicep' = [for (tableName, index) in tables: {
-  name: '${deployment().name}-Table-${index}'
+module fileServices_shares 'share/main.bicep' = [for (share, index) in shares: {
+  name: '${deployment().name}-shares-${index}'
   params: {
-    name: tableName
     storageAccountName: storageAccount.name
+    fileServicesName: fileServices.name
+    name: share.name
+    accessTier: contains(share, 'accessTier') ? share.accessTier : defaultShareAccessTier
+    enabledProtocols: contains(share, 'enabledProtocols') ? share.enabledProtocols : 'SMB'
+    rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
+    shareQuota: contains(share, 'shareQuota') ? share.shareQuota : 5120
+    roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-@description('The name of the deployed table service.')
-output name string = tableServices.name
+@description('The name of the deployed file share service.')
+output name string = fileServices.name
 
-@description('The resource ID of the deployed table service.')
-output resourceId string = tableServices.id
+@description('The resource ID of the deployed file share service.')
+output resourceId string = fileServices.id
 
-@description('The resource group of the deployed table service.')
+@description('The resource group of the deployed file share service.')
 output resourceGroupName string = resourceGroup().name
