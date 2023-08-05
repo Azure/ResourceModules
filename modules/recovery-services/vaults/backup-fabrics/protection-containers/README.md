@@ -1,4 +1,4 @@
-# Recovery Services Vault Protection Container `[Microsoft.RecoveryServices/vaults/protectionContainers]`
+# Recovery Services Vault Protection Container `[Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers]`
 
 This module deploys a Recovery Services Vault Protection Container.
 
