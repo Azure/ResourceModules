@@ -1,4 +1,4 @@
-# Policy Assignments (Subscription scope) `[Microsoft.Authorization/policyAssignments/subscription]`
+# Policy Assignments (Subscription scope) `[Microsoft.Authorization/policyassignments]`
 
 This module deploys a Policy Assignment at a Subscription scope.
 

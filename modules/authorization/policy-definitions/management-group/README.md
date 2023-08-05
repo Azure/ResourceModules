@@ -1,4 +1,4 @@
-# Policy Definitions (Management Group scope) `[Microsoft.Authorization/policyDefinitions/managementGroup]`
+# Policy Definitions (Management Group scope) `[Microsoft.Authorization/policydefinitions]`
 
 This module deploys a Policy Definition at a Management Group scope.
 
