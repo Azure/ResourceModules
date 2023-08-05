@@ -47,7 +47,7 @@ function ConvertTo-ModuleResourceType {
                 break
             }
 
-            $innerResourceType = $innerResourceType.Replace('Microsoft.', ''), $childType -join '/'
+            $innerResourceType = $innerResourceType.Replace('Microsoft.', '', 'OrdinalIgnoreCase'), $childType -join '/'
             $fullResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $innerResourceType
             $innerResourceType = $fullResourceType
         }

@@ -1,4 +1,4 @@
-# Virtual Networks `[Microsoft.Network/virtualNetworks]`
+# Virtual Networks `[Microsoft.Network/virtualnetworks]`
 
 This module deploys a Virtual Network (vNet).
 

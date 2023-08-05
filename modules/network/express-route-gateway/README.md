@@ -1,4 +1,4 @@
-# Express Route Gateways `[Microsoft.Network/expressRouteGateway]`
+# Express Route Gateways `[Microsoft.Network/expressRouteGateways]`
 
 This module deploys an Express Route Gateway.
 

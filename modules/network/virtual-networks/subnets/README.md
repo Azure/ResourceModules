@@ -1,4 +1,4 @@
-# Virtual Network Subnets `[Microsoft.Network/virtualNetworks/subnets]`
+# Virtual Network Subnets `[Microsoft.Network/virtualnetworks/subnets]`
 
 This module deploys a Virtual Network Subnet.
 

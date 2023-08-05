@@ -1,4 +1,4 @@
-# Action Groups `[Microsoft.Insights/actionGroups]`
+# Action Groups `[microsoft.insights/actionGroups]`
 
 This module deploys an Action Group.
 
