@@ -39,9 +39,21 @@ function ConvertTo-ModuleResourceType {
 
         $innerResourceType = $fullParentResourceType
         foreach ($childType in $childTypeArray) {
+            # Write-Verbose $childType -Verbose
+            # additonal check for non existing child types (e.g. sites/hybridConnectionNamespaces does not exist, only sites/hybridConnectionNamespaces/relays does)
+            $innerResourceTypeLeafReduced = Get-ReducedWordString -StringToReduce ($innerResourceType -Split '/')[-1]
+            $childTypeReduced = Get-ReducedWordString -StringToReduce $childType
+            # Write-Verbose $innerResourceTypeLeafReduced -Verbose
+            # Write-Verbose $childTypeReduced -Verbose
+            if ($innerResourceTypeLeafReduced -eq $childTypeReduced) {
+                break
+            }
+
             $innerResourceType = $innerResourceType.Replace('Microsoft.', ''), $childType -join '/'
             $fullResourceType = Get-SpecsAlignedResourceName -ResourceIdentifier $innerResourceType
             $innerResourceType = $fullResourceType
+            # Write-Verbose $fullResourceType -Verbose
+
         }
     }
 

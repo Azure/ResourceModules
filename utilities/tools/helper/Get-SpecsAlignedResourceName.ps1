@@ -85,8 +85,23 @@ function Get-SpecsAlignedResourceName {
     if (-not $foundResourceTypeMatches) {
         $resourceType = $reducedResourceIdentifier.Split('/')[0]
         Write-Warning "Failed to identify resource type [$rawResourceType] in provider namespace [$providerNamespace]. Fallback to [$resourceType]."
+    } elseif ($foundResourceTypeMatches.Count -eq 1) {
+        $resourceType = $foundResourceTypeMatches
     } else {
-        $resourceType = ($foundResourceTypeMatches.Count -eq 1) ? $foundResourceTypeMatches : $foundResourceTypeMatches[0]
+        # if more than one specs resource type matches the input resource type core string, get all specs core strings and check exact match
+        # this is to avoid that e.g. web/connection fall to Microsoft.Web/connectionGateways instead of Microsoft.Web/connections
+        foreach ($foundResourceTypeMatch in $foundResourceTypeMatches) {
+            $foundResourceTypeMatchReduced = Get-ReducedWordString -StringToReduce $foundResourceTypeMatch
+            if ($rawResourceTypeReduced -eq $foundResourceTypeMatchReduced) {
+                $resourceType = $foundResourceTypeMatch
+                break
+            }
+        }
+
+        if (-not $resourceType) {
+            $resourceType = $foundResourceTypeMatches[0]
+            Write-Warning "Fallback to first ResourceType in the match list [$resourceType]."
+        }
     }
 
     return "$providerNamespace/$resourceType"
